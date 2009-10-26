@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<HTML>
+<HEAD><title>Beezer - Documentation</title></HEAD>
+
+<BODY BGCOLOR=white LINK=#1968CD>
+
+<CENTER><IMG SRC="images/Logo.png">
+<BR><B><FONT SIZE="+1">&copy; 2004 Ramshankar</FONT></B>
+</CENTER>
+
+<TABLE WIDTH=100% CELLPADDING="3" BORDER="0" BGCOLOR=#ebebeb>
+<TR><TD>&nbsp;<B><FONT SIZE="+2">Searching archives</FONT></B></TD></TR>
+</TABLE>
+<TABLE WIDTH=100% CELLPADDING="0" CELLSPACING="0" BORDER="0" BGCOLOR=#aaaaaa>
+<TR><TD><IMG SRC="" WIDTH="1" HEIGHT="1" BORDER="0"></TD></TR>
+</TABLE>	
+
+<BLOCKQUOTE>
+
+<P>Beezer allows you to search for files and folders in an archive. Please note, this search does NOT search the actual contents of each file in the archive. Rather it searches the names of files/folders.</P>
+
+<P>Once you have chosen to search the archive, the Search window pops up. It resembles something like the one shown below:</P>
+
+<CENTER><IMG src="images/SearchWindow.png"></CENTER>
+
+&nbsp;<BR>
+
+<A NAME="columns"></A>
+<B><FONT SIZE="+1">Column</FONT></B>
+<CENTER><TABLE WIDTH=95%><TD>
+<P>The column pop-up lets you choose which column to search in. The columns that are listed here depend on the type of archive you have opened. Some archive types do not have information about all columns. For example, the tar archiver does not list information about the "CRC" of files or the "Packed" size of files (as tar doesn't support compression only storage). Thus only the columns that have searchable content are listed.</P>
+
+<P>The pop-up menu beside the Column pop-up menu is a list of the methods of searching. They include "Starts with", "Ends with", "Contains", "Matches wildcard expression" and "Matches regular expression". These are self-explanatory search methods.</P>
+</TD>
+</TABLE></CENTER>
+
+
+<B><FONT SIZE="+1">Search text field</FONT></B>
+<CENTER><TABLE WIDTH=95%><TD>
+<P>Enter the string (text) you are searching for. In the above example, we are searching for all files that end with ".html".</P>
+</TD>
+</TABLE></CENTER>
+
+
+<B><FONT SIZE="+1">Scope</FONT></B>
+<CENTER><TABLE WIDTH=95%><TD>
+<P>Define the scope of the search here.
+<UL type=disc>
+<LI><B>All Entries</B>: This means all the entries in the archive will be searched. Before the search begins, all the folded (collapsed) folders will be expanded, then the search will commence
+<LI><B>Visible Entries</B>: This option specifies only physically visible entries be searched. Thus if a folder is collapsed, files and folders inside the collapsed folder will not be searched
+<LI><B>Selected Entries</B>: This option specifies that only the entries that have been selected must be searched
+</P>
+</TD>
+</TABLE></CENTER>
+
+<B><FONT SIZE="+1">Options</FONT></B>
+<CENTER><TABLE WIDTH=95%><TD>
+<P>Choose one or more options that you can apply to your search.
+<UL type=disc>
+<LI><B>Add to selection</B>: This means any newly found entries are added to the existing selection. If this option is not checked, a search always deselects ALL entries before searching
+<LI><B>Ignore case</B>: Uppercase and lowercase alphabets are treated the same, e.g. a search for "ReadMe" and "readme" yield similar results
+<LI><B>Invert</B>:  Reverses the result of the search, i.e. all entries that DO NOT match the search are selected and vice versa
+</P>
+</TD>
+</TABLE></CENTER>
+
+
+<B><FONT SIZE="+1">Persistent window</FONT></B>
+<CENTER><TABLE WIDTH=95%><TD>
+<P>Checking this option prevents the search window from closing after a search. This can be very useful when you want to do several searches that accumulate results. Like say, searching for ".htm", ".html", ".txt" etc.</P>
+</TD>
+</TABLE></CENTER>
+
+
+<P>Once you have chosen the options, click the "Search" button. The results are shown in the <A href="ArchiveWindow.html">Archive window</A> itself in the form of selections. You can easily find if a search has failed or not by looking at the <A href="ArchiveWindow.html#infobar">Infobar</A>.</P>
+
+</BLOCKQUOTE>
+<TABLE WIDTH=100% CELLPADDING="3" BORDER="0" BGCOLOR=#ebebeb>
+<TR><TD ALIGN=right>
+&nbsp;<B><FONT SIZE="+0"><A HREF="TestingArchives.html">Testing archives</A>&nbsp;&nbsp;|&nbsp;&nbsp;
+<A HREF="ArchiveInfo.html">Archive Info</A></FONT></B>
+</TD></TR>
+</TABLE>
+<TABLE WIDTH=100% CELLPADDING="0" CELLSPACING="0" BORDER="0" BGCOLOR=#aaaaaa>
+<TR><TD><IMG SRC="" WIDTH="1" HEIGHT="1" BORDER="0"></TD></TR>
+</TABLE>	
+
+</TD>
+</TABLE>
+&nbsp;
+
+</FONT>
+</BODY>
+</HTML>

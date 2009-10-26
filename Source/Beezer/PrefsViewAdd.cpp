@@ -1,0 +1,158 @@
+/*
+ *	Beezer
+ *	Copyright (c) 2002 Ramshankar (aka Teknomancer)
+ *	See "License.txt" for licensing info.
+*/
+
+#include <String.h>
+#include <CheckBox.h>
+#include <TextControl.h>
+#include <MenuField.h>
+#include <PopUpMenu.h>
+#include <MenuItem.h>
+
+#ifdef B_ZETA_VERSION
+#include <interface/StringView.h>
+#else
+#include <StringView.h>
+#endif
+
+#include <stdlib.h>
+
+#include "PrefsViewAdd.h"
+#include "LangStrings.h"
+#include "UIConstants.h"
+#include "AppConstants.h"
+#include "Preferences.h"
+
+#define M_WARN				'warn'
+
+//=============================================================================================================//
+
+PrefsViewAdd::PrefsViewAdd (BRect frame)
+	: PrefsView (frame, str (S_PREFS_TITLE_ADD), str (S_PREFS_DESC_ADD))
+{
+	SetBitmap (ResBitmap ("Img:Prefs_Add"));
+	Render();
+}
+
+//=============================================================================================================//
+
+void PrefsViewAdd::Render ()
+{
+	m_replaceMenu = new BPopUpMenu ("");
+		m_replaceMenu->AddItem (new BMenuItem (str (S_PREFS_ADD_NEVER), NULL));
+		m_replaceMenu->AddItem (new BMenuItem (str (S_PREFS_ADD_ASKUSER), NULL));
+		m_replaceMenu->AddItem (new BMenuItem (str (S_PREFS_ADD_ALWAYS), NULL));
+		m_replaceMenu->AddItem (new BMenuItem (str (S_PREFS_ADD_BYDATE), NULL));
+
+	m_replaceField = new BMenuField (BRect (m_margin, m_margin, Bounds().right - m_margin, m_margin),
+							"PrefsViewAdd:replaceField", str (S_PREFS_ADD_REPLACE), (BMenu*)m_replaceMenu,
+							B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
+	m_replaceField->ResizeToPreferred();
+	m_replaceField->SetDivider (StringWidth (m_replaceField->Label()) + StringWidth ("W"));
+	
+	font_height fntHt;
+	be_plain_font->GetHeight (&fntHt);
+	
+	m_warnMBChk = new BCheckBox (BRect (m_margin, 3 * m_margin + fntHt.ascent + fntHt.descent + m_vGap + 4, 0, 0),
+						"PrefsViewAdd:warnMBChk", str (S_PREFS_ADD_WARNMB), new BMessage (M_WARN), B_FOLLOW_LEFT,
+						B_WILL_DRAW | B_NAVIGABLE);
+	m_warnMBChk->ResizeToPreferred();
+	
+	m_mbView = new BTextControl (BRect (m_warnMBChk->Frame().right, m_warnMBChk->Frame().top - 2,
+					m_warnMBChk->Frame().right + StringWidth ("88888") + 4, 0), "PrefsViewAdd:mbView",
+					NULL, NULL, NULL, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
+	m_mbView->TextView()->DisallowChar (B_INSERT);
+	m_mbView->TextView()->SetMaxBytes (4);
+	m_mbView->SetDivider (0);
+	
+	BStringView *mbStrView = new BStringView (BRect (m_mbView->Frame().right + 4, m_warnMBChk->Frame().top + 1,
+								0,0),"PrefsViewAdd:mbStrView", str (S_PREFS_ADD_MB), B_FOLLOW_LEFT, B_WILL_DRAW);
+	mbStrView->ResizeToPreferred();
+
+	m_dropChk = new BCheckBox (BRect (m_margin,	m_warnMBChk->Frame().bottom + m_vGap, 0, 0),
+						"PrefsViewAdd:dropChk", str (S_PREFS_CONFIRM_DROP), NULL, B_FOLLOW_LEFT,
+						B_WILL_DRAW | B_NAVIGABLE);
+	m_dropChk->ResizeToPreferred();
+
+	m_sortChk = new BCheckBox (BRect (m_margin, m_dropChk->Frame().bottom + m_vGap, 0, 0),
+						"PrefsViewAdd:sortChk", str (S_PREFS_ADD_SORT), NULL, B_FOLLOW_LEFT,
+						B_WILL_DRAW | B_NAVIGABLE);
+	m_sortChk->ResizeToPreferred();
+	
+	AddChild (m_replaceField);
+	AddChild (m_warnMBChk);
+	AddChild (m_mbView);
+	AddChild (mbStrView);
+	AddChild (m_dropChk);
+	AddChild (m_sortChk);
+	AddRevertButton();
+}
+
+//=============================================================================================================//
+
+void PrefsViewAdd::AttachedToWindow ()
+{
+	m_warnMBChk->SetTarget (this);
+	return PrefsView::AttachedToWindow();
+}
+
+//=============================================================================================================//
+
+void PrefsViewAdd::Save ()
+{
+	_prefs_add.SetInt8 (kPfReplaceFiles, m_replaceMenu->IndexOf (m_replaceMenu->FindMarked()));
+	_prefs_add.SetBool (kPfWarnBeforeAdd, IsChecked (m_warnMBChk));
+	_prefs_add.SetInt16 (kPfWarnAmount, (int16)abs (atoi (m_mbView->Text())));
+	_prefs_add.SetBool (kPfSortAfterAdd, IsChecked (m_sortChk));
+	_prefs_add.SetBool (kPfConfirmDropAdd, IsChecked (m_dropChk));
+	_prefs_state.WritePrefs();
+}
+
+//=============================================================================================================//
+
+void PrefsViewAdd::Load ()
+{
+	m_replaceMenu->ItemAt (_prefs_add.FindInt8Def (kPfReplaceFiles, 1))->SetMarked (true);
+	
+	bool warn = _prefs_add.FindBoolDef (kPfWarnBeforeAdd, true);
+	m_warnMBChk->SetValue (warn);
+	if (!warn)
+		ToggleMBView (false);
+	
+	BString buf;
+	int16 mbSize = _prefs_add.FindInt16Def (kPfWarnAmount, 100);
+	buf << mbSize;
+	m_mbView->SetText (buf.String());
+
+	m_sortChk->SetValue (_prefs_add.FindBoolDef (kPfSortAfterAdd, true));
+	m_dropChk->SetValue (_prefs_add.FindBoolDef (kPfConfirmDropAdd, true));
+}
+
+//=============================================================================================================//
+
+void PrefsViewAdd::MessageReceived (BMessage *message)
+{
+	switch (message->what)
+	{		
+		case M_WARN:
+		{
+			ToggleMBView (m_warnMBChk->Value() == B_CONTROL_ON ? true : false);
+			break;
+		}
+		
+		default:
+			PrefsView::MessageReceived (message);
+			break;
+	}
+}
+
+//=============================================================================================================//
+
+void PrefsViewAdd::ToggleMBView (bool enable)
+{
+	m_mbView->SetEnabled (enable);
+}
+
+//=============================================================================================================//

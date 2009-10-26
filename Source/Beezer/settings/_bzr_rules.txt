@@ -1,0 +1,31 @@
+# Mime correction rules for Beezer
+# 
+# Beezer checks the file extension and accordingly checks the
+# mime type. If the extension and mime type doesn't match,
+# Beezer removes the wrong mime type and asks BeOS
+# to re-correct the mime type.
+#
+# If you don't understand this you probably shouldn't alter
+# anything. The rules are of the obvious format:
+# mimetype=extension
+
+application/zip=.zip
+application/x-zip-compressed=.zip
+
+application/x-tar=.tar
+
+application/x-gzip=.tar.gz
+application/x-gzip=.tgz
+application/x-gzip=.gz
+
+application/x-bzip2=.bz2
+
+application/x-lharc=.lha
+application/x-lzh=.lzh
+
+application/x-rar-compressed=.rar
+
+application/x-7zip-compressed=.7z
+application/x-7zip-compressed=.7zip
+
+application/x-arj-compressed=.arj

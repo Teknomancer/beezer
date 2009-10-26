@@ -1,0 +1,15 @@
+A note on libCLV
+
+I have made ColumnListView and its associated classes, files, data as a complete, functioning shared libary object for use with Beezer. I have made several modifications, re-implementations etc. to the original ColumnListView and its associations and thereby do NOT recommend using this library for your own programs. Its meant and will always be meant only for Beezer. I have even broken some interfaces for sake of optimization, functionality. That is why I've included this file in the local "lib" folder of Beezer - not in the public ~/config/lib folder.
+
+Some of the changes are decorative, such as new 3d-looking column headers, modified icons etc. Some are internal changes such as reimplemented sorting, list item handling, automatic list item destruction and many others. which apparently break the rules of the documentation of the original ColumnListView. Your programs will fail if you try to use this library with the original ColumnListView documentation guidelines. I highly recommend you download and use the original ColumnListView from Brian Tietz - part of Santa's Gift Bag package for BeOS.
+
+Then you might ask why I made this a shared library - I did this to reduce my binary size of base archiver, Beezer binary and more importantly, meaningfully the size of add-ons as by holding multiple copies we only bloat the size of the add-ons.
+
+For information on the License read "CLV License.txt" and for legal information from my part read "Disclaimer.txt". For information on how to use ColumnListView read the Documentation of ColumnListView. ColumnListView documentation may or may NOT have been included in this distribution due to constraints on the size of the distribution.
+
+Any queries regarding this, please e-mail me.
+
+Regards,
+Ram
+<v.ramshankar@gmail.com>

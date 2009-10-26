@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<HTML>
+<HEAD><title>Beezer - Documentation</title></HEAD>
+
+<BODY BGCOLOR=white LINK=#1968CD>
+
+<CENTER><IMG SRC="images/Logo.png">
+<BR><B><FONT SIZE="+1">&copy; 2004 Ramshankar</FONT></B>
+</CENTER>
+
+<TABLE WIDTH=100% CELLPADDING="3" BORDER="0" BGCOLOR=#ebebeb>
+<TR><TD>&nbsp;<B><FONT SIZE="+2">FileType Rules</FONT></B></TD></TR>
+</TABLE>
+<TABLE WIDTH=100% CELLPADDING="0" CELLSPACING="0" BORDER="0" BGCOLOR=#aaaaaa>
+<TR><TD><IMG SRC="" WIDTH="1" HEIGHT="1" BORDER="0"></TD></TR>
+</TABLE>	
+
+<BLOCKQUOTE>
+
+<P>Beezer uses mimetype corrections to rectify incorrect mimetypes for archives that you try to open using Beezer. It also uses these rules to open archives that resides in file systems that don't support mime (such as FAT32), in such cases the file extension would be critical. The mimetype correction rules are necessary if you want Beezer to open archives with incorrect mimetypes/extensions (often the case when archives are downloaded from the Internet).</P>
+
+<P>In general, you shouldn't alter the mimetype corrections file. The file named <TT><FONT color=#008800>_bzr_rules.txt</FONT></TT> in the Beezer's <TT><FONT color=#008800>settings</FONT></TT> folder is the mimetype corrections file. It's a plain text file whose format is explained within the file itself.</P>
+
+<P>Should anything happen to this file (deleted/renamed/moved), Beezer will for every archive you open re-assign the mimetype which isn't an efficient thing to do. Hence it's advised you don't do anything to this file.</P>
+
+<P>You can use this file to add new mimetypes that your system has (provided Beezer can open them), remove unwanted mimetypes etc.</P>
+
+
+</BLOCKQUOTE>
+<TABLE WIDTH=100% CELLPADDING="3" BORDER="0" BGCOLOR=#ebebeb>
+<TR><TD ALIGN=right>
+&nbsp;<B><FONT SIZE="+0"><A HREF="CompileTimestamp.html">Compile Timestamp</A>&nbsp;&nbsp;|&nbsp;&nbsp;
+<A HREF="Preferences.html#miscellaneous">Mimetype preferences</A></FONT></B>
+</TD></TR>
+</TABLE>
+<TABLE WIDTH=100% CELLPADDING="0" CELLSPACING="0" BORDER="0" BGCOLOR=#aaaaaa>
+<TR><TD><IMG SRC="" WIDTH="1" HEIGHT="1" BORDER="0"></TD></TR>
+</TABLE>	
+
+</TD>
+</TABLE>
+&nbsp;
+
+</FONT>
+</BODY>
+</HTML>

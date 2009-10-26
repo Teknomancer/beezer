@@ -1,0 +1,13 @@
+SplitPane (c) YNOP Talton.
+Version: Beta
+Date: Dec 10 1999.
+Modified: Jeremy Friesner (jaf), Ramshankar (Ram)
+
+Many thanks to YNOP for this easy to use, efficient SplitPane class.
+Read Disclaimer.txt for more information.
+
+Since I got no license with this, I assume it is public domain. But please
+give credit to the author YNOP for his efforts and time if you use it
+in your own programs.
+
+Thanks.

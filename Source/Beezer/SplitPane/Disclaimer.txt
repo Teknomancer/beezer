@@ -1,0 +1,32 @@
+Beezer (c) 2002 Ramshankar
+
+Many thanks to YNOP for providing the Be community with this
+neat and easy to use SplitPane class. Thanks YNOP!
+
+These files were generously distributed free of cost by a 3'rd party
+developer and does not fall under the Somebody Public License. The
+Author of this program wishes to thank the 3'rd party developer
+YNOP for his efforts and time.
+
+Any and all liabilities are hereby explicity, completely disclaimed.
+The responsibility is completely in the hands of the end-user. For a
+full disclaimer please read Section 6 of the Somebody Public License.
+
+
+Original code by YNOP
+Modifications -- Ramshankar (Ram) and Jeremy Friesner (jaf).
+
+This program uses the modified version of the code as used in
+BeShare 2.16 by Jeremy Friesner. (Don't ask my why).
+
+Apart from this I have made several modifications to the SplitPane
+class myself, most of the changes being so fine-tuned to suit
+this project.
+
+So DO NOT use this SplitPane in your own projects, get the
+original SplitPane version directly from YNOP or from some
+website.
+
+This should NOT be considered a distribution from the author of
+SplitPane. I recommend you to download the original SplitPane
+class.

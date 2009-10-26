@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<HTML>
+<HEAD><title>Beezer - Documentation</title></HEAD>
+
+<BODY BGCOLOR=white LINK=#1968CD>
+
+<CENTER><IMG SRC="images/Logo.png">
+<BR><B><FONT SIZE="+1">&copy; 2004 Ramshankar</FONT></B>
+</CENTER>
+
+<TABLE WIDTH=100% CELLPADDING="3" BORDER="0" BGCOLOR=#ebebeb>
+<TR><TD>&nbsp;<B><FONT SIZE="+2">Arj Settings</FONT></B></TD></TR>
+</TABLE>
+<TABLE WIDTH=100% CELLPADDING="0" CELLSPACING="0" BORDER="0" BGCOLOR=#aaaaaa>
+<TR><TD><IMG SRC="" WIDTH="1" HEIGHT="1" BORDER="0"></TD></TR>
+</TABLE>	
+
+<BLOCKQUOTE>
+
+<P>The arj binary (or the arj format itself) has some distinct differences that limit some actions that are generally available with other formats. The arj binary/format (ark v 3.10, 15 Feb 2005 Build) has the following limitations/issues:</P>
+
+<ol>
+<LI>Adding empty folders to an arj archive will not work. Hence the <A href="CreatingFolders.html">Create folder</a> option isn't available.
+<LI><A Href="DeletingFiles.html">Deleting</A> is messed. Meaning deleting a file named "Hello.txt" from the root of the archive will also remove all files named "Hello.txt" from all sub-directories as well. Dangerous!!
+<LI>Adding files and folders at the same time makes a mess of things, as ARJ apparently erroneous back-recursing with parent folders... extremely time consuming, ugly result. You can for the time being add folders seperately, and files seperately as two different Add actions. The ARJ binary v3.10 (15-02-2005 build) is probably to blame as I tried adding folders even from the command-line and it wouldn't behave like it should (either it won't find the folders or will not traverse links properly or other errors).<U></U>
+</ol>
+
+<P>My guess is that the above limitations are imposed by the arj format itself and isn't the fault of the arj binary port of BeOS...</P>
+
+<P>The arj archiver gives you the following options:</P>
+
+<A NAME="compressionlevel"></A>
+<B><FONT SIZE="+1">Compression Level</FONT></B>
+<CENTER><TABLE WIDTH=95%><TD>
+<P>Allows you to specify the amount of compression while creating archives on a scale of 0 to 4. 1 is maximum compression, 4 is minimum and 0 (zero) is no compression (just storage).</P>
+</TD></TABLE></CENTER>
+
+<A NAME="whileadding"></A>
+<B><FONT SIZE="+1">While Adding</FONT></B>
+<CENTER><TABLE WIDTH=95%><TD>
+<P>
+<ul type=disc>
+<LI><B>Recurse into folder</B>: Adds all the contents of folders being added, including sub-directories and its contents
+</UL></P>
+</TD></TABLE></CENTER>
+
+<A NAME="headerlevel"></A>
+<B><FONT SIZE="+1">While Extracting</FONT></B>
+<CENTER><TABLE WIDTH=95%><TD>
+<P>
+<ul type=disc>
+<LI><B>Update files (new and newer)</B>: Overwrites existing file if archive file is newer, creates files that are missing
+<LI><B>Freshen existing files</B>: Only existing files are overwritten if they are older than the ones in the archive, no new files are extracted
+<LI><B>Enable multiple volumes</B>: Enables extraction of multi-volume archives (recommended)
+</UL></P></TD></TABLE></CENTER>
+
+<P>For information on saving these settings to the archive or as defaults read the &lt;archiver&gt; menu in <a href="ArchiveWindow.html#archivermenu">this page</A>.</P>
+
+</BLOCKQUOTE>
+<TABLE WIDTH=100% CELLPADDING="3" BORDER="0" BGCOLOR=#ebebeb>
+<TR><TD ALIGN=right>
+&nbsp;<B><FONT SIZE="+0"><A HREF="CreatingArchives.html">CreatingArchives</A>&nbsp;&nbsp;|&nbsp;&nbsp;
+<A HREF="ExtractingArchives.html">Extracting Archives</A></FONT></B>
+</TD></TR>
+</TABLE>
+<TABLE WIDTH=100% CELLPADDING="0" CELLSPACING="0" BORDER="0" BGCOLOR=#aaaaaa>
+<TR><TD><IMG SRC="" WIDTH="1" HEIGHT="1" BORDER="0"></TD></TR>
+</TABLE>	
+
+</TD>
+</TABLE>
+&nbsp;
+
+</FONT>
+</BODY>
+</HTML>

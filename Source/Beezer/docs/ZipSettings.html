@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<HTML>
+<HEAD><title>Beezer - Documentation</title></HEAD>
+
+<BODY BGCOLOR=white LINK=#1968CD>
+
+<CENTER><IMG SRC="images/Logo.png">
+<BR><B><FONT SIZE="+1">&copy; 2004 Ramshankar</FONT></B>
+</CENTER>
+
+<TABLE WIDTH=100% CELLPADDING="3" BORDER="0" BGCOLOR=#ebebeb>
+<TR><TD>&nbsp;<B><FONT SIZE="+2">Zip Settings</FONT></B></TD></TR>
+</TABLE>
+<TABLE WIDTH=100% CELLPADDING="0" CELLSPACING="0" BORDER="0" BGCOLOR=#aaaaaa>
+<TR><TD><IMG SRC="" WIDTH="1" HEIGHT="1" BORDER="0"></TD></TR>
+</TABLE>	
+
+<BLOCKQUOTE>
+
+<P>The zip archiver gives you the following options:</P>
+
+<A NAME="compressionlevel"></A>
+<B><FONT SIZE="+1">Compression Level</FONT></B>
+<CENTER><TABLE WIDTH=95%><TD>
+<P>Allows you to specify the amount of compression while creating archives on a scale of 0 to 9. 9 is maximum compression, 1 is minimum and 0 (zero) is no compression (just storage).</P>
+</TD></TABLE></CENTER>
+
+<A NAME="whileadding"></A>
+<B><FONT SIZE="+1">While Adding</FONT></B>
+<CENTER><TABLE WIDTH=95%><TD>
+<P>
+<ul type=disc>
+<LI><B>Add attributes</B>: Stores BeOS file attributes to the zip. Its generally best to leave this option turned ON especially if you plan to use the archive in other BeOS partitions
+<LI><B>Recurse into folder</B>: Adds all the contents of folders being added, including sub-directories and its contents
+</UL></P>
+</TD></TABLE></CENTER>
+
+<A NAME="whileextracting"></A>
+<B><FONT SIZE="+1">While Extracting</FONT></B>
+<CENTER><TABLE WIDTH=95%><TD>
+<p><ul type=disc>
+<LI><B>Extract attributes</B>: Restores BeOS file attributes from the zip. Its generally best to leave this option turned ON
+<LI><B>Extract folders</B>: Allows extraction of folders
+<LI><B>Never overwrite existing files</B>: Doesn't overwrite files that already exist in the destination folder while extracting
+<LI><B>Update files, create if needed</B>: Overwrites existing file if archive file is newer, creates files that are missing
+<LI><B>Freshen existing files, create none</B>: Only existing files are overwritten if they are older than the ones in the archive, no new files are extracted
+</UL></P>
+</TD></TABLE></CENTER>
+
+<P>For information on saving these settings to the archive or as defaults read the &lt;archiver&gt; menu in <a href="ArchiveWindow.html#archivermenu">this page</A>.</P>
+
+</BLOCKQUOTE>
+<TABLE WIDTH=100% CELLPADDING="3" BORDER="0" BGCOLOR=#ebebeb>
+<TR><TD ALIGN=right>
+&nbsp;<B><FONT SIZE="+0"><A HREF="CreatingArchives.html">CreatingArchives</A>&nbsp;&nbsp;|&nbsp;&nbsp;
+<A HREF="ExtractingArchives.html">Extracting Archives</A></FONT></B>
+</TD></TR>
+</TABLE>
+<TABLE WIDTH=100% CELLPADDING="0" CELLSPACING="0" BORDER="0" BGCOLOR=#aaaaaa>
+<TR><TD><IMG SRC="" WIDTH="1" HEIGHT="1" BORDER="0"></TD></TR>
+</TABLE>	
+
+</TD>
+</TABLE>
+&nbsp;
+
+</FONT>
+</BODY>
+</HTML>
