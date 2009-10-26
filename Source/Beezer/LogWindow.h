@@ -22,14 +22,14 @@ class LogWindow : public BWindow
         LogWindow (BWindow *callerWindow, const char *title, const char *logText, BFont *displayFont = NULL);
         
         // Inherited hooks
-        virtual bool        QuitRequested ();
-        virtual void        FrameResized (float newWidth, float newHeight);
+        virtual bool         QuitRequested ();
+        virtual void         FrameResized (float newWidth, float newHeight);
         
     private:
         // Private members
-        BevelView            *m_backView;
-        BTextView            *m_textView;
-        BButton                *m_closeButton;
+        BevelView           *m_backView;
+        BTextView           *m_textView;
+        BButton             *m_closeButton;
         BetterScrollView    *m_scrollView;
         float                m_maxLineWidth;
 };

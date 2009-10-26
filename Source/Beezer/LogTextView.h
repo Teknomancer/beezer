@@ -21,21 +21,21 @@ class LogTextView : public BTextView
                 const rgb_color *initialColor, uint32 resizeMask, uint32 flags);
         
         // Inherited hooks
-        virtual void        MakeFocus (bool focused = true);
-        virtual void        MouseDown (BPoint point);
+        virtual void         MakeFocus (bool focused = true);
+        virtual void         MouseDown (BPoint point);
         
         // Additional hooks
-        void                Copy ();
-        void                SetContextMenu (BPopUpMenu *contextMenu);
-        void                AddText (const char *text, bool newLine = true,
+        void                 Copy ();
+        void                 SetContextMenu (BPopUpMenu *contextMenu);
+        void                 AddText (const char *text, bool newLine = true,
                                 bool capitalFirstLetter = false, bool trimLeadingSpaces = true);
 
     private:
         // Private hooks
-        void                InitSelf ();
+        void                 InitSelf ();
         
         // Private members
-        BPopUpMenu            *m_contextMenu;
+        BPopUpMenu           *m_contextMenu;
 };
 
 #endif /* _LOG_TEXT_VIEW_H */

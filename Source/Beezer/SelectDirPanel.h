@@ -13,9 +13,9 @@ class SelectDirPanel : public BFilePanel
 {
     public:
         SelectDirPanel (file_panel_mode mode = B_OPEN_PANEL, BMessenger *target = 0,
-                    const entry_ref *start_directory = 0, uint32 node_flavors = 0,
-                    bool allow_multiple_selection = true, BMessage *message = 0, BRefFilter * = 0,
-                    bool modal = false, bool hide_when_done = true);
+                        const entry_ref *start_directory = 0, uint32 node_flavors = 0,
+                        bool allow_multiple_selection = true, BMessage *message = 0, BRefFilter * = 0,
+                        bool modal = false, bool hide_when_done = true);
         ~SelectDirPanel ();
         
         // Inherited hooks
@@ -33,9 +33,9 @@ class SelectDirPanel : public BFilePanel
         
     private:
         // Private members
-        BString                m_buttonLabel,
+        BString             m_buttonLabel,
                             m_buttonName;
-        BButton                *m_curDirBtn;
+        BButton            *m_curDirBtn;
 };
 
 #endif /* _CURRENT_DIR_FILTER_H */

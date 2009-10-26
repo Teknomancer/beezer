@@ -28,9 +28,9 @@ class HashEntry
         HashEntry();
         ~HashEntry();
         
-        const char            *m_pathStr;
-        ListEntry            *m_clvItem;
-        HashEntry            *m_next;
+        const char          *m_pathStr;
+        ListEntry           *m_clvItem;
+        HashEntry           *m_next;
 };
 
 class HashTable
@@ -39,31 +39,31 @@ class HashTable
         HashTable (int32 sizeOfTable);
         ~HashTable ();
         
-        void                DeleteTable ();
-        bool                IsFound (const char *str);
-        bool                Delete (HashEntry *entry);
-        bool                Delete (char *str);
+        void                 DeleteTable ();
+        bool                 IsFound (const char *str);
+        bool                 Delete (HashEntry *entry);
+        bool                 Delete (char *str);
         int32                CountItems () const;
         int32                TableSize () const;
-        HashEntry            *Insert (char *str, bool *wasFound = NULL, bool copyInput = true);
-        HashEntry            *Find (const char *str);
-        HashEntry            *ItemAt (int32 bucket) const;
-        HashEntry            *LastAddedEntry () const;
-        HashEntry            *ForceInsert (const char *str, bool copyInput = true);
+        HashEntry           *Insert (char *str, bool *wasFound = NULL, bool copyInput = true);
+        HashEntry           *Find (const char *str);
+        HashEntry           *ItemAt (int32 bucket) const;
+        HashEntry           *LastAddedEntry () const;
+        HashEntry           *ForceInsert (const char *str, bool copyInput = true);
         int32                FindUnder (BMessage *message, const char *fieldName, const char *directoryPath,
-                                    BList *fileList, BList *folderList);
-        static int32        OptimalSize (int32 minSize);
+                                        BList *fileList, BList *folderList);
+        static int32         OptimalSize (int32 minSize);
         
     protected:
-        HashEntry            *LookUp (const char *str, bool insert, bool *wasFound = NULL, bool copyInput = true);
+        HashEntry           *LookUp (const char *str, bool insert, bool *wasFound = NULL, bool copyInput = true);
         int32                Hash (const char *str) const;
-        void                InitializeTable ();
-        void                ResetCache (HashEntry *element);
+        void                 InitializeTable ();
+        void                 ResetCache (HashEntry *element);
 
         int32                m_tableSize,
-                            m_itemCount;
+                             m_itemCount;
 
-        HashEntry            **m_table,
+        HashEntry          **m_table,
                             *m_lastAddedEntry,
                             *m_lastFoundEntry;
 };

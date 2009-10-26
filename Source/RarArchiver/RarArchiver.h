@@ -11,7 +11,7 @@
 
 #include "Archiver.h"
 
-#define BZR_ARK                            "rar"
+#define BZR_ARK                          "rar"
 #define BZR_UNARK                        "unrar"
 
 class BMessenger;
@@ -39,7 +39,7 @@ class RarArchiver : public Archiver
                                 BMessenger *progress, volatile bool *cancel);
     
         status_t            Create (BPath *archivePath, const char *relPath, BMessage *fileList,
-                                BMessage *addedPaths, BMessenger *progress, volatile bool *cancel);
+                                    BMessage *addedPaths, BMessenger *progress, volatile bool *cancel);
     
         status_t            Delete (char *&outputStr, BMessage *list, BMessenger *progress, volatile bool *cancel);
 

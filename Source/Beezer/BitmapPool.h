@@ -17,7 +17,7 @@ class BitmapPool
         ~BitmapPool ();
         
         BList                m_iconList;
-        BBitmap                *m_folderBmp,
+        BBitmap             *m_folderBmp,
                             *m_executableBmp,
                             *m_audioBmp,
                             *m_htmlBmp,
@@ -47,7 +47,7 @@ class BitmapPool
                             *m_largeAppIcon;
     
     private:
-        static int32        m_runCount;
+        static int32         m_runCount;
 };
 
 extern BitmapPool *_glob_bitmap_pool;

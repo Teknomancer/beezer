@@ -23,23 +23,23 @@ class ArkInfoWindow : public BWindow
         ArkInfoWindow (BWindow *callerWindow, Archiver *archiver, BEntry *archiveEntry);
         
         // Inherited hooks
-        virtual bool        QuitRequested ();
+        virtual bool         QuitRequested ();
                 
     private:
         // Private hooks
-        void                FillDetails ();
-        void                AutoSizeWindow (float cornerMargin, float midMargin, float leftSideMaxWidth);
+        void                 FillDetails ();
+        void                 AutoSizeWindow (float cornerMargin, float midMargin, float leftSideMaxWidth);
 
         // Private members
-        BevelView            *m_backView;
+        BevelView           *m_backView;
         Archiver            *m_archiver;
         
-        BEntry                *m_entry;
-        BList                *m_fileList,
+        BEntry              *m_entry;
+        BList               *m_fileList,
                             *m_dirList;
-        BButton                *m_closeButton;
-        BStatusBar            *m_compressRatioBar;
-        BStringView            *m_fileNameStr,
+        BButton             *m_closeButton;
+        BStatusBar          *m_compressRatioBar;
+        BStringView         *m_fileNameStr,
                             *m_compressedSizeStr,
                             *m_originalSizeStr,
                             *m_fileCountStr,

@@ -15,24 +15,24 @@ class BarberPole : public BevelView
         BarberPole (BRect frame, const char *name);
 
         // Additional hooks
-        void                SetValue (bool animate, bool adjustPulse = true);
-        void                Animate ();
-        bool                IsAnimating () const;
-        void                GetPreferredSize (float *width, float *height);
-        void                AttachedToWindow ();
+        void                 SetValue (bool animate, bool adjustPulse = true);
+        void                 Animate ();
+        bool                 IsAnimating () const;
+        void                 GetPreferredSize (float *width, float *height);
+        void                 AttachedToWindow ();
         float                Width () const;
         
     private:
         // Private inherited hooks
-        void                Draw (BRect updateRect);
-        void                Pulse ();
+        void                 Draw (BRect updateRect);
+        void                 Pulse ();
         
         // Data members
-        BBitmap                *m_poleImage;
+        BBitmap             *m_poleImage;
         float                m_imageHeight,
-                            m_edgeThickness,
-                            m_y;
-        bool                m_animate;
+                             m_edgeThickness,
+                             m_y;
+        bool                 m_animate;
         
         typedef BevelView    _inherited;
 };

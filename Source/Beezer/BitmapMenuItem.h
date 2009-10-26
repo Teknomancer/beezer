@@ -16,12 +16,12 @@ class BitmapMenuItem : public BMenuItem
         BitmapMenuItem (BMenu *subMenu, BBitmap *bitmap);
         
         // Inherited hooks
-        virtual void        DrawContent ();
-        virtual void        GetContentSize (float *width, float *height);
+        virtual void         DrawContent ();
+        virtual void         GetContentSize (float *width, float *height);
         
     private:
         // Private members
-        BBitmap                *m_bitmap;
+        BBitmap             *m_bitmap;
 };
 
 #endif /* _BITMAP_MENU_ITEM_H */

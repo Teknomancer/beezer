@@ -41,25 +41,25 @@ class InputAlert : public BAlert
                 button_spacing spacing, alert_type type = B_INFO_ALERT);
         
         // Inherited hooks
-        void                MessageReceived (BMessage *message);
+        void                 MessageReceived (BMessage *message);
         
         // Additional hooks
-        BMessage            GetInput (BWindow *window);
+        BMessage             GetInput (BWindow *window);
         BTextControl        *TextControl () const;
         
         // Static constants
-        static const uint32    kInputMessage = 'inpt';
+        static const uint32  kInputMessage = 'inpt';
         
     private:
         // Private hooks
-        void                InitInputAlert (const char *title, const char *label, const char *initialText,
+        void                 InitInputAlert (const char *title, const char *label, const char *initialText,
                                 bool hideTyping);
         
         // Private members
         BTextControl        *m_inputBox;
-        BStringView            *m_bytesView;
-        BButton                *m_farRightButton;
-        BString                m_inputText;
+        BStringView         *m_bytesView;
+        BButton             *m_farRightButton;
+        BString              m_inputText;
         volatile bool        m_isQuitting;
         int32                m_buttonIndex;
 };
