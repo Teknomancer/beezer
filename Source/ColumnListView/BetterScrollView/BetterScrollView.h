@@ -68,24 +68,24 @@
 //******************************************************************************************************
 class BetterScrollView : public BScrollView
 {
-	public:
-		BetterScrollView(const char *name, BView *target, uint32 resizeMask = B_FOLLOW_LEFT | B_FOLLOW_TOP,
-			uint32 flags = B_FRAME_EVENTS | B_WILL_DRAW, bool horizontal = true, bool vertical = true,
-			bool scroll_view_corner = true, border_style border = B_FANCY_BORDER);
-		virtual ~BetterScrollView();
-		virtual void SetDataRect(BRect data_rect, bool scrolling_allowed = true);
-		inline BRect DataRect() {return m_data_rect;}
-		virtual	void FrameResized(float new_width, float new_height);
-		virtual void AttachedToWindow();
+    public:
+        BetterScrollView(const char *name, BView *target, uint32 resizeMask = B_FOLLOW_LEFT | B_FOLLOW_TOP,
+            uint32 flags = B_FRAME_EVENTS | B_WILL_DRAW, bool horizontal = true, bool vertical = true,
+            bool scroll_view_corner = true, border_style border = B_FANCY_BORDER);
+        virtual ~BetterScrollView();
+        virtual void SetDataRect(BRect data_rect, bool scrolling_allowed = true);
+        inline BRect DataRect() {return m_data_rect;}
+        virtual    void FrameResized(float new_width, float new_height);
+        virtual void AttachedToWindow();
 
-	private:
-		void UpdateScrollBars(bool scrolling_allowed);
+    private:
+        void UpdateScrollBars(bool scrolling_allowed);
 
-		BRect m_data_rect;
-		BScrollBar* m_h_scrollbar;
-		BScrollBar* m_v_scrollbar;
-		ScrollViewCorner* m_scroll_view_corner;
-		BView* m_target;
+        BRect m_data_rect;
+        BScrollBar* m_h_scrollbar;
+        BScrollBar* m_v_scrollbar;
+        ScrollViewCorner* m_scroll_view_corner;
+        BView* m_target;
 };
 
 

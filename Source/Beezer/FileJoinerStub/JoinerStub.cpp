@@ -1,7 +1,7 @@
 /*
- *	Beezer
- *	Copyright (c) 2002 Ramshankar (aka Teknomancer)
- *	See "License.txt" for licensing info.
+ *    Beezer
+ *    Copyright (c) 2002 Ramshankar (aka Teknomancer)
+ *    See "License.txt" for licensing info.
 */
 
 #include "JoinerStub.h"
@@ -13,18 +13,18 @@
 //=============================================================================================================//
 
 JoinerStub::JoinerStub ()
-	: BApplication (K_JOINER_STUB_SIGNATURE)
+    : BApplication (K_JOINER_STUB_SIGNATURE)
 {
-	Run();
+    Run();
 }
 
 //=============================================================================================================//
 
 void JoinerStub::ReadyToRun ()
 {
-	m_joinWnd = new JoinerWindow ();
-		
-	return BApplication::ReadyToRun();
+    m_joinWnd = new JoinerWindow ();
+        
+    return BApplication::ReadyToRun();
 }
 
 //=============================================================================================================//
@@ -33,8 +33,8 @@ void JoinerStub::ReadyToRun ()
 
 int main ()
 {
-	delete new JoinerStub();
-	return B_OK;
+    delete new JoinerStub();
+    return B_OK;
 }
 
 //=============================================================================================================//

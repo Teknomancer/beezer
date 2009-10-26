@@ -34,7 +34,7 @@
 //BFont::GetStringWidths(), then finds the longest string width in the array and returns that width.
 //If a string_widths array is provided, it fills it in with the length of each string.
 float GetStringsMaxWidth(const char** strings, int32 num_strings, const BFont* font,
-	float* string_widths = NULL);
+    float* string_widths = NULL);
 
 //Each of these functions either duplicates or concatenates the strings into a new char array allocated
 //with new.  The resulting char array must be delete[]'d when finished with it.

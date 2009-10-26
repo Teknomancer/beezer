@@ -1,7 +1,7 @@
 /*
- *	Beezer
- *	Copyright (c) 2002 Ramshankar (aka Teknomancer)
- *	See "License.txt" for licensing info.
+ *    Beezer
+ *    Copyright (c) 2002 Ramshankar (aka Teknomancer)
+ *    See "License.txt" for licensing info.
 */
 
 #ifndef _JOINER_STRINGS_H
@@ -10,11 +10,11 @@
 #include <InterfaceDefs.h>
 
 #ifdef B_ZETA_VERSION
-	#include <Locale.h>
-	extern const char* _X (const char *key, int keyindex);
-	#define str(X) _X (# X, X)
+    #include <Locale.h>
+    extern const char* _X (const char *key, int keyindex);
+    #define str(X) _X (# X, X)
 #else
-	#define str(X) strR5(X)
+    #define str(X) strR5(X)
 #endif
 
 extern const char *strR5 (int whichString, int whichLanguage = -1);
@@ -24,8 +24,8 @@ extern int GetLanguage ();
 
 enum LanguageNames
 {
-	LANG_ENGLISH = 0,
-	NUM_LANGUAGES
+    LANG_ENGLISH = 0,
+    NUM_LANGUAGES
 };
 
 
@@ -36,15 +36,15 @@ enum LanguageNames
 
 enum LanguageStrings
 {
-	S_ENGLISH = 0,
-	S_JOINER_WINDOW_TITLE,
-	S_JOINING_FILE,
-	S_CANCEL,
-	S_OK,
-	S_JOIN_ERROR,
-	S_COMPUTING,
-	S_STUB_ERROR,
-	NUM_STRINGS
+    S_ENGLISH = 0,
+    S_JOINER_WINDOW_TITLE,
+    S_JOINING_FILE,
+    S_CANCEL,
+    S_OK,
+    S_JOIN_ERROR,
+    S_COMPUTING,
+    S_STUB_ERROR,
+    NUM_STRINGS
 };
 
 #endif /* _JOINER_STRINGS_H */

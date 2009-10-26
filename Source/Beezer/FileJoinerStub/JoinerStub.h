@@ -1,7 +1,7 @@
 /*
- *	Beezer
- *	Copyright (c) 2002 Ramshankar (aka Teknomancer)
- *	See "License.txt" for licensing info.
+ *    Beezer
+ *    Copyright (c) 2002 Ramshankar (aka Teknomancer)
+ *    See "License.txt" for licensing info.
 */
 
 #ifndef _JOINER_STUB_H
@@ -13,15 +13,15 @@ class JoinerWindow;
 
 class JoinerStub : public BApplication
 {
-	public:
-		JoinerStub ();
+    public:
+        JoinerStub ();
 
-		// Inherited hooks
-		void				ReadyToRun ();
-		
-	private:
-		// Private members
-		JoinerWindow		*m_joinWnd;
+        // Inherited hooks
+        void                ReadyToRun ();
+        
+    private:
+        // Private members
+        JoinerWindow        *m_joinWnd;
 };
 
 #endif /* _JOINER_STUB_H */

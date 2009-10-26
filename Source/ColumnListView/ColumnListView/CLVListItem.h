@@ -33,7 +33,7 @@
 //**** SYSTEM HEADER FILES
 //******************************************************************************************************
 #include <ListItem.h>
-#include <List.h>		// Ram
+#include <List.h>        // Ram
 
 //******************************************************************************************************
 //**** PROJECT HEADER FILES AND CLASS NAME DECLARATIONS
@@ -46,47 +46,47 @@ class ColumnListView;
 //******************************************************************************************************
 class CLVListItem : public BListItem
 {
-	public:
-		//Constructor and destructor
-		CLVListItem(uint32 level = 0, bool superitem = false, bool expanded = false, float minheight = 0.0);
-		virtual ~CLVListItem();
+    public:
+        //Constructor and destructor
+        CLVListItem(uint32 level = 0, bool superitem = false, bool expanded = false, float minheight = 0.0);
+        virtual ~CLVListItem();
 
-		//Archival stuff
-		/* Not implemented yet
-		CLVItem(BMessage* archive);
-		static CLVItem* Instantiate(BMessage* data);
-		virtual	status_t Archive(BMessage* data, bool deep = true) const;
-		*/
+        //Archival stuff
+        /* Not implemented yet
+        CLVItem(BMessage* archive);
+        static CLVItem* Instantiate(BMessage* data);
+        virtual    status_t Archive(BMessage* data, bool deep = true) const;
+        */
 
-		virtual void DrawItemColumn(BView* owner, BRect item_column_rect, int32 column_index,
-			bool complete) = 0;	//column_index (0-N) is based on the order in which the columns were added
-								//to the ColumnListView, not the display order.  An index of -1 indicates
-								//that the program needs to draw a blank area beyond the last column.  The
-								//main purpose is to allow the highlighting bar to continue all the way to
-								//the end of the ColumnListView, even after the end of the last column.
-		virtual void DrawItem(BView* owner, BRect itemRect, bool complete);
-								//In general, you don't need or want to override DrawItem().
-		BRect ItemColumnFrame(int32 column_index, ColumnListView* owner);
-		float ExpanderShift(int32 column_index, ColumnListView* owner);
-		virtual void Update(BView* owner, const BFont* font);
-		inline bool IsSuperItem() const {return fSuperItem;}
-		inline void SetSuperItem(bool superitem) {fSuperItem = superitem;}
-		inline uint32 OutlineLevel() const {return fOutlineLevel;}
-		inline void SetOutlineLevel(uint32 level) {fOutlineLevel = level;}
-		inline bool ExpanderRectContains(BPoint where) {return fExpanderButtonRect.Contains(where);}
-		virtual void ColumnWidthChanged(int32 column_index, float column_width, ColumnListView* the_view);
-		virtual void FrameChanged(int32 column_index, BRect new_frame, ColumnListView* the_view);
+        virtual void DrawItemColumn(BView* owner, BRect item_column_rect, int32 column_index,
+            bool complete) = 0;    //column_index (0-N) is based on the order in which the columns were added
+                                //to the ColumnListView, not the display order.  An index of -1 indicates
+                                //that the program needs to draw a blank area beyond the last column.  The
+                                //main purpose is to allow the highlighting bar to continue all the way to
+                                //the end of the ColumnListView, even after the end of the last column.
+        virtual void DrawItem(BView* owner, BRect itemRect, bool complete);
+                                //In general, you don't need or want to override DrawItem().
+        BRect ItemColumnFrame(int32 column_index, ColumnListView* owner);
+        float ExpanderShift(int32 column_index, ColumnListView* owner);
+        virtual void Update(BView* owner, const BFont* font);
+        inline bool IsSuperItem() const {return fSuperItem;}
+        inline void SetSuperItem(bool superitem) {fSuperItem = superitem;}
+        inline uint32 OutlineLevel() const {return fOutlineLevel;}
+        inline void SetOutlineLevel(uint32 level) {fOutlineLevel = level;}
+        inline bool ExpanderRectContains(BPoint where) {return fExpanderButtonRect.Contains(where);}
+        virtual void ColumnWidthChanged(int32 column_index, float column_width, ColumnListView* the_view);
+        virtual void FrameChanged(int32 column_index, BRect new_frame, ColumnListView* the_view);
 
-	private:
-		friend class ColumnListView;
+    private:
+        friend class ColumnListView;
 
-		bool fSuperItem;
-		uint32 fOutlineLevel;
-		float fMinHeight;
-		BRect fExpanderButtonRect;
-		BRect fExpanderColumnRect;
-		BList* fSortingContextBList;
-		ColumnListView* fSortingContextCLV;
+        bool fSuperItem;
+        uint32 fOutlineLevel;
+        float fMinHeight;
+        BRect fExpanderButtonRect;
+        BRect fExpanderColumnRect;
+        BList* fSortingContextBList;
+        ColumnListView* fSortingContextCLV;
 };
 
 

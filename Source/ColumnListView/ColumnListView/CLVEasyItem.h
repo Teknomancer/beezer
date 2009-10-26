@@ -34,7 +34,7 @@
 //******************************************************************************************************
 #include <List.h>
 #include <Font.h> // Ram
-#include <Bitmap.h>	// Ram
+#include <Bitmap.h>    // Ram
 
 //******************************************************************************************************
 //**** PROJECT HEADER FILES AND CLASS NAME DECLARATIONS
@@ -47,41 +47,41 @@
 //******************************************************************************************************
 class CLVEasyItem : public CLVListItem
 {
-	public:
-		//Constructor and destructor
-		CLVEasyItem(uint32 level = 0, bool superitem = false, bool expanded = false, float minheight = 0.0,
-				bool fullLineSelect = true);
-		virtual ~CLVEasyItem();
+    public:
+        //Constructor and destructor
+        CLVEasyItem(uint32 level = 0, bool superitem = false, bool expanded = false, float minheight = 0.0,
+                bool fullLineSelect = true);
+        virtual ~CLVEasyItem();
 
-		virtual void SetColumnContent(int column_index, const BBitmap *bitmap, float horizontal_offset = 2.0,
-			bool copy = true, bool right_justify = false);
-		virtual void SetColumnContent(int column_index, const char *text, bool truncate = true,
-			bool right_justify = false);
-		virtual void SetColumnUserTextContent(int column_index, bool truncate = true, bool right_justify = false);
-		const char* GetColumnContentText(int column_index);
-		const BBitmap* GetColumnContentBitmap(int column_index);
-		virtual void DrawItemColumn(BView* owner, BRect item_column_rect, int32 column_index, bool complete);
-		virtual void Update(BView *owner, const BFont *font);
-		static int CompareItems(const CLVListItem* a_Item1, const CLVListItem* a_Item2, int32 KeyColumn);
-		BRect TruncateText(int32 column_index, float column_width, BFont* font);
-			//Returns the area that needs to be redrawn, or BRect(-1,-1,-1,-1) if nothing
-		virtual void ColumnWidthChanged(int32 column_index, float column_width, ColumnListView* the_view);
-		virtual void FrameChanged(int32 column_index, BRect new_frame, ColumnListView* the_view);
-		inline float GetTextOffset() {return text_offset;}
-		virtual const char* GetUserText(int32 column_index, float column_width) const;
+        virtual void SetColumnContent(int column_index, const BBitmap *bitmap, float horizontal_offset = 2.0,
+            bool copy = true, bool right_justify = false);
+        virtual void SetColumnContent(int column_index, const char *text, bool truncate = true,
+            bool right_justify = false);
+        virtual void SetColumnUserTextContent(int column_index, bool truncate = true, bool right_justify = false);
+        const char* GetColumnContentText(int column_index);
+        const BBitmap* GetColumnContentBitmap(int column_index);
+        virtual void DrawItemColumn(BView* owner, BRect item_column_rect, int32 column_index, bool complete);
+        virtual void Update(BView *owner, const BFont *font);
+        static int CompareItems(const CLVListItem* a_Item1, const CLVListItem* a_Item2, int32 KeyColumn);
+        BRect TruncateText(int32 column_index, float column_width, BFont* font);
+            //Returns the area that needs to be redrawn, or BRect(-1,-1,-1,-1) if nothing
+        virtual void ColumnWidthChanged(int32 column_index, float column_width, ColumnListView* the_view);
+        virtual void FrameChanged(int32 column_index, BRect new_frame, ColumnListView* the_view);
+        inline float GetTextOffset() {return text_offset;}
+        virtual const char* GetUserText(int32 column_index, float column_width) const;
 
-	private:
-		void PrepListsForSet(int column_index);
-		
-		BList m_column_types;	//List of int32's converted from CLVColumnTypes
-		BList m_column_content;	//List of char* (full content) or BBitmap*
-		BList m_aux_content;	//List of char* (truncated content) or int32 for bitmap horizontal offset
-		BList m_cached_rects;	//List of BRect for truncated text
+    private:
+        void PrepListsForSet(int column_index);
+        
+        BList m_column_types;    //List of int32's converted from CLVColumnTypes
+        BList m_column_content;    //List of char* (full content) or BBitmap*
+        BList m_aux_content;    //List of char* (truncated content) or int32 for bitmap horizontal offset
+        BList m_cached_rects;    //List of BRect for truncated text
 
-	protected:
-		float text_offset;
-		bool full_line_select;		// Ram
-		font_height FontAttributes; // Ram
+    protected:
+        float text_offset;
+        bool full_line_select;        // Ram
+        font_height FontAttributes; // Ram
 };
 
 
