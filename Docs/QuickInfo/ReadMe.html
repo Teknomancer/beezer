@@ -1,0 +1,98 @@
+<HTML>
+<HEAD>
+<TITLE>Beezer: Quick-Info notes</TITLE>
+</HEAD>
+
+<BODY BGCOLOR=white LINK=#900000 VLINK=#900000>
+<FONT size=2 face="Swis721 BT, Arial">
+
+<CENTER><IMG SRC="images/Logo.png"><BR />
+<B><FONT size=5 color=#0080aa>Quick-Info</FONT></B></CENTER>
+<BR /><BR />
+<P Align=center><TABLE WIDTH=70% BORDER=0>
+<TD><FONT size=2 face="Swis721 BT,Arial">
+<P><FONT color=#0080aa><B>Quick Contents?</B></FONT><BR />
+<A HREF="#What">What is Beezer?</A><BR>
+<A HREF="#How">How to use</A><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;<A HREF="#Create">Creating archives</A><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;<A HREF="#Open">Opening archives</A><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;<A HREF="#Extract">Extracting archives</A><BR>
+<A HREF="#Advanced">Advanced operations</A><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;<A HREF="#Add">Adding files</A><BR>
+
+</P>
+<BR /><BR />
+
+
+<P><A NAME="What"></A><FONT color=#0080aa><B>What is Beezer ?</B></FONT><BR />
+Beezer is a WinZip like archiver program for the BeOS. Beezer was totally-from-scratch, native BeOS application. It supports the following basic archive formats:</P>
+
+<UL type=disc>
+<LI><I>zip</I>
+<LI><I>tar</I>
+<LI><I>gzip</I>
+<LI><I>bzip2</I>
+</UL>
+
+<P>These archive formats are supported through add-ons. More archive formats can be supported by writing add-ons for them.</P>
+
+<P><A NAME="How"></A><FONT color=#0080aa><B>How to use</B></FONT><BR />
+Using Beezer is fairly straight forward. Simply fire it up (double-click the app) and you will see a <B>startup window</B>. From here you may create new archives, open existing archives and edit program settings called 'Preferences'.
+</P>
+
+<BLOCKQUOTE>
+<P><A NAME="Create"></A><B>&bull; Creating archives</B><BR />
+Once you choose the create option, a standard "file save" dialog box will prompt you for the location, name and type of the archive. Once you choose these, you will be prompted to add files or folders to the archive.</P>
+
+<P>You must choose atleast one file or folder to create the archive as Beezer will not create an empty archive with no entries in them, as it is meaningless to do so. If you 'cancel' the "Add files" dialog box the creation of the archive will fail.</P>
+
+<P><A NAME="Open"></A><B>&bull; Opening archives</B><BR />
+Opening an archive is not the same as extracting its contents. Opening merely lists the contents of the archive. Beezer displays archive contents in a hierarchial list, i.e. in a treeview form. This makes archives more readable and easier to work with.</P>
+
+<P>Note: some archive types require some preliminery extraction and hence might take longer to load than archives that don't. For example, <I>bzip2</I> archives take longer to load than <I>zip</I> archives in Beezer. This is not a problem with Beezer or <I>bzip2</I>, but it's a result of the interaction between the two.
+
+<P>Beezer also supports loading archives from the <I><FONT color=#900000>Tracker</FONT></I> interface. You can also drag archives from <I><FONT color=#900000>Tracker</FONT></I> and drop them on Beezer's <I><FONT color=#900000>Deskbar</FONT></I> entry. Apart from this, you can also drag and drop archives on to the <B>startup window</B> and Beezer will try and open them for you.</P>
+
+<P><A NAME="Extract"></A><B>&bull; Extracting archives</B><BR />
+Extracting archives can be done through several methods.</P>
+
+<OL>
+<LI>Drop files to be extracted in a <I><FONT color=#900000>Tracker</FONT></I> window, or
+<LI>You can use the "Extract" toolbar button, or
+<LI>You can use the Actions menu.
+</OL>
+
+<P>You can extraction while in it's in progress. But please note, that you can only cancel in-between file extraction and not cancel the extraction of a single file. Apparently, most archiver programs like Beezer have this minor limitation as well.</P>
+
+</BLOCKQUOTE>
+
+<P><A NAME="Advanced"></A><FONT color=#0080aa><B>Advanced operations</B></FONT><BR />
+Apart from just creating and extracting archives, Beezer allows you to perform some complex operations on archives. Though these operations may seem trivial when compared to normal files on the hard-disk, they are indeed quite complex and possibly time consuming as well.</P>
+
+<P>Beezer always tries to keep the archive synchronised to what it shows you on-screen. Thus when you perform operations, they are always performed physically on the archive as well. Beezer does <U>NOT</U> queue operations.
+
+<P>I have tried my level best to make these complex operations as seemless and integrated as possible. But please be aware that as the archives become more and more larger and complex (in their directory structure etc.) there is a fair chance that such operations will consume more time.</P>
+
+<P>Before we proceed, you must understand the term "entry", which will be used subsequently, means either a file or folder. When I mention Beezer allows you to add "entries" to an archive - it means you can add files, folders and a combination of files & folders in one go.</P>
+
+<BLOCKQUOTE>
+<P><A NAME="Add"></A><B>&bull; Adding files</B><BR />
+Beezer allows you to add entries to any folder inside the archive not just at the root of the archive. Before adding entries to the archive, select where to add them in the archive.</P>
+
+<P>If you have selected a file, then newly added entries will be added in the same folder as the selected file. If you have selected a folder, then newly added entries will be added inside the selected folder. If you want to add entries to the root of the archive, you can either not have any selected entry or select a file that does not reside inside a folder (i.e. a file that is at the root of the archive). If you have multiple selections before adding entries, the first selected item will be used.</P>
+
+<P>Once you have chosen where to add new entires, choose Actions-&gt;Add or choose the "Add" toolbar button. You will be prompted to choose the entries you wish to add. Then press the "Add" button.
+
+<P>A progress bar shows the progress of the add operation. Beezer allows you to cancel this operation while it is in progress, but doing so will leave Beezer in a state of uncertainity regarding what has actually been added and what has not. Thus you will be forced to close the archive and re-open it. Most archiver programs do not even allow cancelling of such critical operations.</P>
+
+<P><A NAME="Add"></A><B>&bull; Deleting files</B><BR />
+Select the entries to the deleted, and press the Delete toolbar button or choose Actions-&gt;Delete. If you have chosen a folder to be deleted, then all files inside the folder will be deleted as well. After you confirm the irreversible delete operation, Beezer starts to delete files from the archive.</P>
+
+<P>You can cancel a delete operation while it is in progress. But it will have the same effect as cancelling an add operation. Read <A HREF="#Add">adding files</A> section to learn what happens when you cancel such an operation.</P>
+
+</BLOCKQUOTE>
+</TD>
+</TABLE></P>
+</FONT>
+</BODY>
+</HTML>

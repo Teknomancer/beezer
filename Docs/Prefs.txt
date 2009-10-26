@@ -1,0 +1,95 @@
+Preferences for Beezer
+Completed prefs are marked in blue
+
+
+[ Paths ]
+		... These paths are defaults when Extract and Add buttons
+		Default Paths:
+			Open Path [____________________] [ Select ]
+			Add Path     [___________________] [ Select ]
+			Extract Path
+				[ o ]	Directory Of Archive
+				[    ]	Choose [______________] [ Select ]
+
+		Favourite Paths:
+			Extract paths:   [ /boot/ProgramFiles/ ]	[ + ] [ - ]
+		
+			[x] Append archive name & generate more paths
+					[ DEFAULTS ]
+
+[ Extract ]
+		[x] Open destination folder after extracting
+		[x] Close window after extracting
+		[x] Quit app after extracting
+					
+					[ DEFAULTS ]
+
+[ Add ]
+		
+		Replace files [ Without asking ]
+					---> Always ask
+					---> If file being added has newer modified date
+					---> Never replace
+		[x] Confirm when adding more than  [__80] MB
+		[x] Confirm when adding files thru drag 'n drop
+		[x] Sort after an add operation
+
+					[  DEFAULTS  ]
+
+[ State ]
+		
+		Automatically store
+		[x] Inteface state
+		[x] Archiver settings
+		
+		Automatically restore
+		[x] Interface state
+		[x] Archiver settings
+
+					[ DEFAULTS ]
+
+[ Windows ]
+		
+		[x] Search window
+		[x] Log window
+		[x] Comment window
+		[x] Archive Info window
+		[x] Welcome window
+
+					[ DEFAULTS ]
+
+[ Recent ]
+		Recent archives
+			Number of recent archives [__10]
+			[x] Show full path in recent archives
+
+		Recent extract paths
+			Number of recent extract paths [__5]
+		
+
+					[ DEFAULTS ]
+
+[ Language ]
+		Language: [ English ∆ ]
+
+					[ DEFAULTS ]
+
+
+[ Miscellaneous ]
+		[x] Enable BubbleHelps
+		Show BubbleHelp after [_0.6] seconds
+
+		When all archives are closed
+			[o] Show welcome window
+			[  ] Quit Beezer
+		
+		At Startup	[ Show welcome window ]
+					Show create archive panel
+					Shown open archive panel
+
+		[x] Automatically show comments on opening archive
+		[x] Register file types at startup
+								[ Register File Types Now ]
+
+					
+					[ DEFAULTS ]
