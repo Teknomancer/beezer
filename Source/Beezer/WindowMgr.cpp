@@ -42,7 +42,7 @@ bool WindowMgr::AddWindow (BWindow *wnd)
 
     if (autolocker.IsLocked())
         if (m_windowList->HasItem (reinterpret_cast<void*>(wnd)) == false)
-            return m_windowList->AddItem (reinterpret_cast<void*>(wnd));
+           return m_windowList->AddItem (reinterpret_cast<void*>(wnd));
     
     return false;
 }
@@ -106,7 +106,7 @@ void WindowMgr::UpdateFrom (BWindow *sourceWnd, BMessage *message, bool updateBe
     {
         destWnd = reinterpret_cast<BWindow*>(m_windowList->ItemAtFast(i));
         if (destWnd != NULL && sourceWnd != destWnd)
-            destWnd->PostMessage (message);
+           destWnd->PostMessage (message);
     }
     
     if (updateBeApp)

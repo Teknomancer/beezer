@@ -66,7 +66,7 @@ void RuleMgr::ReadRules (const char *dir, const char *ruleFile)
         
         // skip comments and blank lines
         if (buffer[0] == '#' || buffer[0] == '\0')
-            continue;
+           continue;
 
         BString tempBuf = buffer;
         BString mime, extension;
@@ -75,12 +75,12 @@ void RuleMgr::ReadRules (const char *dir, const char *ruleFile)
         
         if (equalIndex > 0 && equalIndex < lineLen)
         {
-            // abcd=defg            assume "abcd" is mimetype and "defg" is extension
-            // 012345678
-            // Segregate mime type into mime and extension strings
-            tempBuf.CopyInto (mime, 0L, equalIndex);
-            tempBuf.CopyInto (extension, equalIndex + 1, lineLen - equalIndex);
-            m_ruleList->AddItem (new MimeRule (mime.String(), extension.String()));
+           // abcd=defg           assume "abcd" is mimetype and "defg" is extension
+           // 012345678
+           // Segregate mime type into mime and extension strings
+           tempBuf.CopyInto (mime, 0L, equalIndex);
+           tempBuf.CopyInto (extension, equalIndex + 1, lineLen - equalIndex);
+           m_ruleList->AddItem (new MimeRule (mime.String(), extension.String()));
         }
     }
     
@@ -104,18 +104,18 @@ char* RuleMgr::ValidateFileType (BPath *filePath) const
         MimeRule *rule = (MimeRule*)m_ruleList->ItemAtFast(i);
         int32 foundIndex = fileName.IFindLast (rule->m_extension.String());
 
-        // xyz.zip            .zip
-        // 0123457            0123
-        //    (len7)            (len4)
+        // xyz.zip           .zip
+        // 0123457           0123
+        //    (len7)           (len4)
         
         // Check if extension matches
         if (foundIndex > 0 && foundIndex == fileName.Length() - rule->m_extension.Length())
         {
-            // check if mime-type matches, if so everything is okay no need for any corrections
-            if (strcmp (rule->m_mime.String(), type) == 0)
-                return NULL;
-            else
-                extensionIndex = i;
+           // check if mime-type matches, if so everything is okay no need for any corrections
+           if (strcmp (rule->m_mime.String(), type) == 0)
+               return NULL;
+           else
+               extensionIndex = i;
         }
     }
 
@@ -124,14 +124,14 @@ char* RuleMgr::ValidateFileType (BPath *filePath) const
     {
         for (int32 i = 0; i < m_ruleList->CountItems(); i++)
         {
-            MimeRule *rule = (MimeRule*)m_ruleList->ItemAtFast(i);
+           MimeRule *rule = (MimeRule*)m_ruleList->ItemAtFast(i);
     
-            // Like say a .zip named "test" without any extension but with correct mime
-            if (strcmp (rule->m_mime.String(), type) == 0)
-            {
-                strcpy (mime, rule->m_mime.String());
-                return mime;
-            }
+           // Like say a .zip named "test" without any extension but with correct mime
+           if (strcmp (rule->m_mime.String(), type) == 0)
+           {
+               strcpy (mime, rule->m_mime.String());
+               return mime;
+           }
         }
     }
         

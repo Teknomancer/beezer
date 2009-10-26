@@ -54,7 +54,7 @@ status_t ArchiveRep::InitArchiver (const char *name, bool popupErrors)
         m_archiver->SetIconList (&(_glob_bitmap_pool->m_iconList));
         m_archiver->SetSettingsDirectoryPath ((_bzr()->m_settingsPathStr).String());
         if (m_archiver->NeedsTempDirectory())
-            m_archiver->SetTempDirectoryPath (MakeTempDirectory());
+           m_archiver->SetTempDirectoryPath (MakeTempDirectory());
 
         m_archiver->LoadSettingsMenu();
     }
@@ -74,13 +74,13 @@ status_t ArchiveRep::InitArchiver (entry_ref *ref, char *mimeString)
         
         if (!mimeString)
         {
-            update_mime_info (m_archivePath.Path(), false, true, false);
-            BNode node (&m_archiveEntry);
-            BNodeInfo nodeInfo (&node);
-            nodeInfo.GetType (type);
+           update_mime_info (m_archivePath.Path(), false, true, false);
+           BNode node (&m_archiveEntry);
+           BNodeInfo nodeInfo (&node);
+           nodeInfo.GetType (type);
         }
         else
-            strcpy (type, mimeString);
+           strcpy (type, mimeString);
     }
     else if (mimeString)
     {
@@ -101,7 +101,7 @@ status_t ArchiveRep::InitArchiver (entry_ref *ref, char *mimeString)
         m_archiver->SetIconList (&(_glob_bitmap_pool->m_iconList));
         m_archiver->SetSettingsDirectoryPath ((_bzr()->m_settingsPathStr).String());
         if (m_archiver->NeedsTempDirectory())
-            m_archiver->SetTempDirectoryPath (MakeTempDirectory());
+           m_archiver->SetTempDirectoryPath (MakeTempDirectory());
 
         m_archiver->LoadSettingsMenu();
     }
@@ -282,16 +282,16 @@ int32 ArchiveRep::_counter (void *arg)
     for (int32 i = --count; i >= 0; i--)
         if (message->FindRef ("refs", i, &ref) == B_OK)
         {
-            BEntry entry (&ref, false);        // Do NOT traverse links
-            if (entry.IsDirectory() == true)
-                GetDirectoryInfo (&entry, fileCount, folderCount, totalSize, cancel);
-            else
-            {
-                off_t size;
-                entry.GetSize (&size);
-                totalSize += size;
-                fileCount++;
-            }
+           BEntry entry (&ref, false);        // Do NOT traverse links
+           if (entry.IsDirectory() == true)
+               GetDirectoryInfo (&entry, fileCount, folderCount, totalSize, cancel);
+           else
+           {
+               off_t size;
+               entry.GetSize (&size);
+               totalSize += size;
+               fileCount++;
+           }
         }
     
     // Remove the following fields from message as they will be re-add (when message is re-used)
@@ -300,9 +300,9 @@ int32 ArchiveRep::_counter (void *arg)
     message->RemoveName (kCancel);
     
     // Don't delete message here as it doesn't belong to us! SPECIAL CASE
-    message->what = M_COUNT_COMPLETE;                    // See we are reusing the message
-    message->AddInt32 (kFiles, fileCount);                // Add the critical fields as that is what
-    message->AddInt32 (kFolders, folderCount);            // we are here for in the first place
+    message->what = M_COUNT_COMPLETE;                  // See we are reusing the message
+    message->AddInt32 (kFiles, fileCount);               // Add the critical fields as that is what
+    message->AddInt32 (kFolders, folderCount);           // we are here for in the first place
     message->AddInt64 (kSize, totalSize);
     if (statusWnd)
         statusWnd->PostMessage (M_CLOSE);

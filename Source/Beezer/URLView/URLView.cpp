@@ -37,7 +37,7 @@
 //=============================================================================================================//
 
 URLView::URLView (BRect frame, const char *name, const char *label, const char *url, uint32 resizingMode,
-                    uint32 flags)
+                  uint32 flags)
     : BStringView (frame, name, label, resizingMode, flags)
 {
     // Set the default values for the other definable instance variables.
@@ -151,7 +151,7 @@ void URLView::Draw (BRect updateRect)
     if (IsEnabled())
     {
         FillRect (BRect ((float)left, (float)(rect.bottom - descent), (float)right,
-                         (float)(rect.bottom - descent + (m_underlineThickness - 1))));
+                       (float)(rect.bottom - descent + (m_underlineThickness - 1))));
     }
     
     MovePenTo (BPoint (left, rect.bottom - descent - 1));
@@ -181,9 +181,9 @@ void URLView::MessageReceived (BMessage *message)
         
         // Set the new file as a bookmark or as a person as appropriate.
         if (IsEmailLink())
-            CreatePerson (fullName, title);
+           CreatePerson (fullName, title);
         else
-            CreateBookmark (fullName, title);
+           CreateBookmark (fullName, title);
         
         delete fullName;
         delete title;
@@ -218,13 +218,13 @@ void URLView::MouseDown (BPoint point)
         m_dragOffset = point;
 
         if (Alignment() == B_ALIGN_RIGHT)
-            m_dragOffset.x -= frame.Width() - StringWidth (Text());
+           m_dragOffset.x -= frame.Width() - StringWidth (Text());
         else if (Alignment() == B_ALIGN_CENTER)
-            m_dragOffset.x -= (frame.Width() / 2) - (StringWidth (Text()) / 2);
+           m_dragOffset.x -= (frame.Width() / 2) - (StringWidth (Text()) / 2);
         
         // Pop up the context menu?
         if (buttons == B_SECONDARY_MOUSE_BUTTON)
-            m_inPopup = true;
+           m_inPopup = true;
     }
 }
 
@@ -232,10 +232,10 @@ void URLView::MouseDown (BPoint point)
 
 void URLView::MouseMoved (BPoint point, uint32 transit, const BMessage *message)
 {
-    // If the link isn't enabled, don't do anything.                  
+    // If the link isn't enabled, don't do anything.                
     if (!IsEnabled())
         return;
-                          
+                        
     // Make sure the window is the active one.
     if (!Window()->IsActive())
         return;
@@ -250,138 +250,138 @@ void URLView::MouseMoved (BPoint point, uint32 transit, const BMessage *message)
     {
         case B_ENTERED_VIEW:
         {    
-            // Should we set the cursor to the link cursor?
-            if (GetTextRect().Contains (point)  &&  !m_draggedOut)
-            {
-                if (!alreadyDragging)
-                    be_app->SetCursor (m_linkCursor);
-                
-                // Did the user leave and re-enter the view while holding down the mouse button?
-                // If so, highlight the link.
-                if (m_selected)
-                {
-                    SetHighColor (m_clickColor);
-                    Redraw();
-                }
-                else if (m_hoverEnabled && !alreadyDragging)    // Should we hover-highlight the link?
-                {
-                    if (buttons == 0)
-                    {
-                        SetHighColor (m_hoverColor);
-                        Redraw();
-                        m_hovering = true;
-                    }
-                }    
-            }
+           // Should we set the cursor to the link cursor?
+           if (GetTextRect().Contains (point)  &&  !m_draggedOut)
+           {
+               if (!alreadyDragging)
+                  be_app->SetCursor (m_linkCursor);
+               
+               // Did the user leave and re-enter the view while holding down the mouse button?
+               // If so, highlight the link.
+               if (m_selected)
+               {
+                  SetHighColor (m_clickColor);
+                  Redraw();
+               }
+               else if (m_hoverEnabled && !alreadyDragging)    // Should we hover-highlight the link?
+               {
+                  if (buttons == 0)
+                  {
+                      SetHighColor (m_hoverColor);
+                      Redraw();
+                      m_hovering = true;
+                  }
+               }    
+           }
 
         break;
         }    
-            
+           
         case B_EXITED_VIEW:
         {
-            // We want to restore the link to it normal color and the mouse cursor to the normal hand.
-            // However, we should only set the color and re-draw if it is needed.
-            if (m_selected && !m_draggedOut)
-            {
-                be_app->SetCursor (B_HAND_CURSOR);
-                SetHighColor (m_foreColor);
-                Redraw();
-                
-                // Is the user drag-and-dropping a bookmark or person?
-                if (m_draggable)
-                {
-                    m_draggedOut = true;
-                    if (IsEmailLink())
-                        DoPersonDrag();
-                    else
-                        DoBookmarkDrag();
-                }
-            }
-            else if (m_hovering && !alreadyDragging) // Is currently hover-highlighted? Restore normal color then
-            {
-                be_app->SetCursor (B_HAND_CURSOR);
-                SetHighColor (m_foreColor);
-                Redraw();
-                m_hovering = false;
-            }
-            else                                    // Change the cursor back to the hand.
-                be_app->SetCursor (B_HAND_CURSOR);
+           // We want to restore the link to it normal color and the mouse cursor to the normal hand.
+           // However, we should only set the color and re-draw if it is needed.
+           if (m_selected && !m_draggedOut)
+           {
+               be_app->SetCursor (B_HAND_CURSOR);
+               SetHighColor (m_foreColor);
+               Redraw();
+               
+               // Is the user drag-and-dropping a bookmark or person?
+               if (m_draggable)
+               {
+                  m_draggedOut = true;
+                  if (IsEmailLink())
+                      DoPersonDrag();
+                  else
+                      DoBookmarkDrag();
+               }
+           }
+           else if (m_hovering && !alreadyDragging) // Is currently hover-highlighted? Restore normal color then
+           {
+               be_app->SetCursor (B_HAND_CURSOR);
+               SetHighColor (m_foreColor);
+               Redraw();
+               m_hovering = false;
+           }
+           else                                // Change the cursor back to the hand.
+               be_app->SetCursor (B_HAND_CURSOR);
 
         break;
         }
 
         case B_INSIDE_VIEW:
         {
-            // The user could either be moving out of the view or back into it here, so we must handle
-            // both cases. In the first case, the cursor is now over the link.
-            if (GetTextRect().Contains (point) && !m_draggedOut)
-            {
-                // We only want to change the cursor if not dragging.                        
-                if (!alreadyDragging)
-                    be_app->SetCursor (m_linkCursor);
-                
-                if (m_selected)
-                {
-                    if (m_draggable)
-                    {
-                        // If the user moves the mouse more than ten pixels, begin the drag.
-                        if ((point.x - m_dragOffset.x) > 10  ||
-                            (m_dragOffset.x - point.x) > 10  ||
-                            (point.y - m_dragOffset.y) > 10  ||
-                            (m_dragOffset.y - point.y) > 10)
-                        {
-                            m_draggedOut = true;
-                        
-                            // Draw the appropriate drag object, etc.
-                            if (IsEmailLink())
-                                DoPersonDrag();
-                            else
-                                DoBookmarkDrag();
-                                
-                            SetHighColor (m_foreColor);
-                            Redraw();
-                        }
-                    }
-                    else
-                    {
-                        // Since the link is not m_draggable, highlight it as long as the user holds
-                        // the button down and has the mouse cursor over it (like a standard button).
-                        SetHighColor (m_clickColor);
-                        Redraw();
-                    }
-                }
-                else if (m_hoverEnabled && !alreadyDragging)        // The link isn't currently selected? 
-                {                                                    // If hover-highlighting is enabled,
-                    SetHighColor (m_hoverColor);                    // highlight the link.
-                    Redraw();
-                    m_hovering = true;
-                }
-            }
-            else if (!m_draggedOut)    // In this case, the mouse cursor is not over the link, so we
-            {                        // need to restore the original link color, etc.
-                be_app->SetCursor (B_HAND_CURSOR);
-                if (m_selected)
-                {
-                    SetHighColor (m_foreColor);
-                    Redraw();
-                    
-                    // Is the user dragging the link?
-                    if (m_draggable)
-                    {
-                        m_draggedOut = true;
-                        if (IsEmailLink())
-                            DoPersonDrag();
-                        else
-                            DoBookmarkDrag();
-                    }
-                }
-                else if (m_hovering)                // Is the mouse cursor hovering over the link?
-                {
-                    SetHighColor (m_foreColor);
-                    Redraw();
-                    m_hovering = false;
-                }
-            }
+           // The user could either be moving out of the view or back into it here, so we must handle
+           // both cases. In the first case, the cursor is now over the link.
+           if (GetTextRect().Contains (point) && !m_draggedOut)
+           {
+               // We only want to change the cursor if not dragging.                      
+               if (!alreadyDragging)
+                  be_app->SetCursor (m_linkCursor);
+               
+               if (m_selected)
+               {
+                  if (m_draggable)
+                  {
+                      // If the user moves the mouse more than ten pixels, begin the drag.
+                      if ((point.x - m_dragOffset.x) > 10  ||
+                         (m_dragOffset.x - point.x) > 10  ||
+                         (point.y - m_dragOffset.y) > 10  ||
+                         (m_dragOffset.y - point.y) > 10)
+                      {
+                         m_draggedOut = true;
+                      
+                         // Draw the appropriate drag object, etc.
+                         if (IsEmailLink())
+                             DoPersonDrag();
+                         else
+                             DoBookmarkDrag();
+                             
+                         SetHighColor (m_foreColor);
+                         Redraw();
+                      }
+                  }
+                  else
+                  {
+                      // Since the link is not m_draggable, highlight it as long as the user holds
+                      // the button down and has the mouse cursor over it (like a standard button).
+                      SetHighColor (m_clickColor);
+                      Redraw();
+                  }
+               }
+               else if (m_hoverEnabled && !alreadyDragging)        // The link isn't currently selected? 
+               {                                               // If hover-highlighting is enabled,
+                  SetHighColor (m_hoverColor);                  // highlight the link.
+                  Redraw();
+                  m_hovering = true;
+               }
+           }
+           else if (!m_draggedOut)    // In this case, the mouse cursor is not over the link, so we
+           {                      // need to restore the original link color, etc.
+               be_app->SetCursor (B_HAND_CURSOR);
+               if (m_selected)
+               {
+                  SetHighColor (m_foreColor);
+                  Redraw();
+                  
+                  // Is the user dragging the link?
+                  if (m_draggable)
+                  {
+                      m_draggedOut = true;
+                      if (IsEmailLink())
+                         DoPersonDrag();
+                      else
+                         DoBookmarkDrag();
+                  }
+               }
+               else if (m_hovering)               // Is the mouse cursor hovering over the link?
+               {
+                  SetHighColor (m_foreColor);
+                  Redraw();
+                  m_hovering = false;
+               }
+           }
 
         break;
         }
@@ -404,26 +404,26 @@ void URLView::MouseUp (BPoint point)
         
         // Work around a current bug in Be's popup menus.
         point.y = point.y - 6;
-            
+           
         // Display the popup menu.
         BMenuItem *selected = popup->Go (ConvertToScreen (point) , false, true);
-            
+           
         // Did the user select an item?
         if (selected)
         {
-            BString label (selected->Label());
+           BString label (selected->Label());
 
-            // Did the user select the first item?  If so, launch the URL.
-            if (label.FindFirst ("Open") != B_ERROR || label.FindFirst ("Send") != B_ERROR ||
-                    label.FindFirst ("Connect") != B_ERROR)
-                LaunchURL();
-            else if (label.FindFirst ("Copy") != B_ERROR)            // Did the user select the second item?
-                CopyToClipboard();
+           // Did the user select the first item?  If so, launch the URL.
+           if (label.FindFirst ("Open") != B_ERROR || label.FindFirst ("Send") != B_ERROR ||
+                  label.FindFirst ("Connect") != B_ERROR)
+               LaunchURL();
+           else if (label.FindFirst ("Copy") != B_ERROR)           // Did the user select the second item?
+               CopyToClipboard();
         }
-        else                // If not, restore the normal link color.
+        else               // If not, restore the normal link color.
         {
-            SetHighColor (m_foreColor);
-            Redraw();
+           SetHighColor (m_foreColor);
+           Redraw();
         }
     }
 
@@ -454,8 +454,8 @@ void URLView::WindowActivated (bool active)
     {
         if (IsEnabled())
         {
-            SetHighColor (m_foreColor);
-            Redraw();
+           SetHighColor (m_foreColor);
+           Redraw();
         }
     }
 }
@@ -573,12 +573,12 @@ void URLView::SetEnabled (bool enabled)
     {
         Window()->Lock();
         if (!enabled)
-            SetHighColor (m_disabledColor);
+           SetHighColor (m_disabledColor);
         else
-            SetHighColor (m_foreColor);
+           SetHighColor (m_foreColor);
 
         if (redraw)
-            Invalidate();
+           Invalidate();
         
         Window()->Unlock();
     }
@@ -645,8 +645,8 @@ void URLView::SetURL (const char *url)
     {
         if (m_url->FindFirst ("mailto:") != 0)
         {
-            m_url->Prepend ("mailto:");
-            return;
+           m_url->Prepend ("mailto:");
+           return;
         }
     }
     
@@ -672,8 +672,8 @@ void URLView::CopyToClipboard ()
         clipboard.Clear();
         if ((clip = clipboard.Data()))
         {
-            clip->AddData("text/plain", B_MIME_TYPE, newclip.String(), newclip.Length() + 1);
-            clipboard.Commit();
+           clip->AddData("text/plain", B_MIME_TYPE, newclip.String(), newclip.Length() + 1);
+           clipboard.Commit();
         }
         clipboard.Unlock();
     }
@@ -756,12 +756,12 @@ BPopUpMenu * URLView::CreatePopupMenu ()
         // Find the name of the default e-mail client.
         if(be_roster->FindApp ("text/x-email", &app) == B_OK)
         {
-            BEntry entry (&app);
-            BString openLabel ("Send e-mail to this address using ");
-            char name[B_FILE_NAME_LENGTH];
-            entry.GetName (name);
-            openLabel.Append (name);
-            returnMe->AddItem (new BMenuItem (openLabel.String(), NULL));
+           BEntry entry (&app);
+           BString openLabel ("Send e-mail to this address using ");
+           char name[B_FILE_NAME_LENGTH];
+           entry.GetName (name);
+           openLabel.Append (name);
+           returnMe->AddItem (new BMenuItem (openLabel.String(), NULL));
         }
     }
     else if (IsFTPLink())
@@ -769,12 +769,12 @@ BPopUpMenu * URLView::CreatePopupMenu ()
         // Find the name of the default FTP client.
         if (be_roster->FindApp ("application/x-vnd.Be.URL.ftp", &app) == B_OK)
         {
-            BEntry entry (&app);
-            BString openLabel ("Connect to this server using ");
-            char name[B_FILE_NAME_LENGTH];
-            entry.GetName (name);
-            openLabel.Append (name);
-            returnMe->AddItem (new BMenuItem (openLabel.String(), NULL));
+           BEntry entry (&app);
+           BString openLabel ("Connect to this server using ");
+           char name[B_FILE_NAME_LENGTH];
+           entry.GetName (name);
+           openLabel.Append (name);
+           returnMe->AddItem (new BMenuItem (openLabel.String(), NULL));
         }
     }
     else
@@ -782,12 +782,12 @@ BPopUpMenu * URLView::CreatePopupMenu ()
         // Find the name of the default HTML handler (browser).
         if (be_roster->FindApp ("text/html", &app) == B_OK)
         {
-            BEntry entry (&app);
-            BString openLabel ("Open this link using ");
-            char name[B_FILE_NAME_LENGTH];
-            entry.GetName (name);
-            openLabel.Append (name);
-            returnMe->AddItem (new BMenuItem (openLabel.String(), NULL));
+           BEntry entry (&app);
+           BString openLabel ("Open this link using ");
+           char name[B_FILE_NAME_LENGTH];
+           entry.GetName (name);
+           openLabel.Append (name);
+           returnMe->AddItem (new BMenuItem (openLabel.String(), NULL));
         }
     }
     
@@ -815,7 +815,7 @@ void URLView::DoBookmarkDrag ()
     // This allows the user to drag the URL into a standard BTextView.
     BString link = GetImportantURL();
     dragMessage->AddData ("text/plain", B_MIME_DATA, link.String(), link.Length() + 1);
-            
+           
     // Query for the system's icon for bookmarks.
     BBitmap *bookmarkIcon = new BBitmap(BRect(0, 0, m_iconSize - 1, m_iconSize - 1), B_CMAP8);
     BMimeType mime("application/x-vnd.Be-bookmark");
@@ -882,8 +882,8 @@ void URLView::DoBookmarkDrag ()
 
     // Draw the underline in the requested thickness.
     dragView->FillRect (BRect ((float) frameRect.left + m_iconSize + 4, (float) (textCenter + 1),
-                        (float)StringWidth (m_url->String()) + m_iconSize + 4,
-                        (float)textCenter + m_underlineThickness));
+                      (float)StringWidth (m_url->String()) + m_iconSize + 4,
+                      (float)textCenter + m_underlineThickness));
     
     // Be sure to flush the view buffer so everything is drawn.
     dragView->Flush();
@@ -992,7 +992,7 @@ void URLView::DoPersonDrag()
     m_dragOffset.x = horiz * frameRect.right;
 
     DragMessage (dragMessage, dragBitmap, B_OP_ALPHA, BPoint (m_dragOffset.x,
-                          (rect.Height() + m_underlineThickness) / 2 + 2), this);
+                        (rect.Height() + m_underlineThickness) / 2 + 2), this);
     delete dragMessage;
     m_draggedOut = true;
 }
@@ -1083,7 +1083,7 @@ BRect URLView::GetURLRect()
     
     // Get the rectangle of just the string.
     return BRect (frame.left, frame.bottom - stringHeight, frame.left + StringWidth (m_url->String()),
-                  frame.bottom - 1);
+                frame.bottom - 1);
 }
 
 //=============================================================================================================//
@@ -1131,13 +1131,13 @@ void URLView::LaunchURL ()
         // Make sure the user has an e-mail program.
         if (result != B_NO_ERROR  &&  result != B_ALREADY_RUNNING)
         {
-            BAlert *alert = new BAlert ("Warning", "There is no e-mail program on your machine "
-                                        "that is configured as the default program to send e-mail.",
-                                        "OK", NULL, NULL, B_WIDTH_AS_USUAL,    B_WARNING_ALERT);
-            alert->Go();
+           BAlert *alert = new BAlert ("Warning", "There is no e-mail program on your machine "
+                                    "that is configured as the default program to send e-mail.",
+                                    "OK", NULL, NULL, B_WIDTH_AS_USUAL,    B_WARNING_ALERT);
+           alert->Go();
         }
     }
-    else if (IsHTMLLink())            // Handle an HTTP link.
+    else if (IsHTMLLink())           // Handle an HTTP link.
     {
         // Lock the string buffer and pass it to the web browser.
         char *link = m_url->LockBuffer(0);
@@ -1147,10 +1147,10 @@ void URLView::LaunchURL ()
         // Make sure the user has a web browser.
         if (result != B_NO_ERROR && result != B_ALREADY_RUNNING)
         {
-            BAlert *alert = new BAlert("Warning", "There is no web browser on your machine that is "
-                                        "configured as the default program to view web pages.", "OK", NULL,
-                                        NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
-            alert->Go();
+           BAlert *alert = new BAlert("Warning", "There is no web browser on your machine that is "
+                                    "configured as the default program to view web pages.", "OK", NULL,
+                                    NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
+           alert->Go();
         }
     }
     else if (IsFTPLink())    // Handle an FTP link.
@@ -1163,10 +1163,10 @@ void URLView::LaunchURL ()
         // Make sure the user has an FTP client.
         if (result != B_NO_ERROR && result != B_ALREADY_RUNNING)
         {
-            BAlert *alert = new BAlert("Warning", "There is no FTP client on your machine that is "
-                                        "configured as the default program to connect to an FTP server.",
-                                        "OK", NULL, NULL, B_WIDTH_AS_USUAL,    B_WARNING_ALERT);
-            alert->Go();
+           BAlert *alert = new BAlert("Warning", "There is no FTP client on your machine that is "
+                                    "configured as the default program to connect to an FTP server.",
+                                    "OK", NULL, NULL, B_WIDTH_AS_USUAL,    B_WARNING_ALERT);
+           alert->Go();
         }
     }
     // We don't know how to handle anything else.
@@ -1191,7 +1191,7 @@ void URLView::WriteAttributes (int fd)
     for (int32 i = 0;  (item = (KeyPair*)m_attributes->ItemAt(i)); i++)
     {
         fs_write_attr (fd, item->key->String(), B_STRING_TYPE, 0, item->value->String(),
-            item->value->Length() + 1);
+           item->value->Length() + 1);
     }
 }
 

@@ -33,7 +33,7 @@
 //=============================================================================================================//
 
 CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, const char *commentText,
-                    BFont *displayFont = NULL)
+                  BFont *displayFont = NULL)
     : BWindow (BRect (0, 0, 590, 290), str (S_COMMENT_WINDOW_TITLE), B_TITLED_WINDOW,
         B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE)
 {
@@ -63,23 +63,23 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
     BBitmap *commentBmp = ResBitmap ("Img:Comment");
 
     BevelView *sepView1 = new BevelView (BRect (-1, commentBmp->Bounds().Height() + 4 * K_MARGIN,
-                                    Bounds().right - 1.0, commentBmp->Bounds().Height() + 4 * K_MARGIN + 1),
-                                    "CommentWindow:SepView1", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+                                Bounds().right - 1.0, commentBmp->Bounds().Height() + 4 * K_MARGIN + 1),
+                                "CommentWindow:SepView1", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     m_backView->AddChild (sepView1);
     
     // Add icon view, make it hold the picture
     StaticBitmapView *commentBmpView = new StaticBitmapView (BRect (K_MARGIN * 5, K_MARGIN * 2,
-                                commentBmp->Bounds().Width() + K_MARGIN * 5,
-                                commentBmp->Bounds().Height() + K_MARGIN * 2), "CommentWindow:commentBmpView",
-                                commentBmp);
+                             commentBmp->Bounds().Width() + K_MARGIN * 5,
+                             commentBmp->Bounds().Height() + K_MARGIN * 2), "CommentWindow:commentBmpView",
+                             commentBmp);
     commentBmpView->SetViewColor (m_backView->ViewColor());
     AddChild (commentBmpView);
     
     // Add the file name string view (align it vertically with the icon view)
     BStringView *fileNameStr = new BStringView (BRect (commentBmpView->Frame().right + K_MARGIN * 3,
-                                        commentBmpView->Frame().top, Bounds().right - 1,
-                                        commentBmpView->Frame().top + totalFontHeight),
-                                        "CommentWindow:FileNameView", archiveName, B_FOLLOW_LEFT, B_WILL_DRAW);
+                                    commentBmpView->Frame().top, Bounds().right - 1,
+                                    commentBmpView->Frame().top + totalFontHeight),
+                                    "CommentWindow:FileNameView", archiveName, B_FOLLOW_LEFT, B_WILL_DRAW);
     fileNameStr->SetFont (&font);
     m_backView->AddChild (fileNameStr);
     fileNameStr->MoveTo (fileNameStr->Frame().left,
@@ -87,12 +87,12 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
     fileNameStr->ResizeToPreferred ();
 
     m_textView = new BTextView (BRect (K_MARGIN, sepView1->Frame().bottom + K_MARGIN,
-                        bounds.right - K_MARGIN - B_V_SCROLL_BAR_WIDTH,
-                        bounds.bottom - 2 * K_MARGIN - K_BUTTON_HEIGHT - B_H_SCROLL_BAR_HEIGHT),
-                        "CommentWindow:TextView", BRect (2, 2, 100000, 0), B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
+                      bounds.right - K_MARGIN - B_V_SCROLL_BAR_WIDTH,
+                      bounds.bottom - 2 * K_MARGIN - K_BUTTON_HEIGHT - B_H_SCROLL_BAR_HEIGHT),
+                      "CommentWindow:TextView", BRect (2, 2, 100000, 0), B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     
     BetterScrollView *scrollView = new BetterScrollView ("CommentWindow:ScrollView", m_textView,
-                                    B_FOLLOW_ALL_SIDES,    B_WILL_DRAW, true, true, true, B_PLAIN_BORDER);
+                                B_FOLLOW_ALL_SIDES,    B_WILL_DRAW, true, true, true, B_PLAIN_BORDER);
     m_backView->AddChild (scrollView);
     
     m_textView->SetWordWrap (false);
@@ -112,23 +112,23 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
         m_textView->SetFontAndColor (displayFont);
     
     m_saveButton = new BButton (BRect (bounds.right - K_MARGIN - K_BUTTON_WIDTH,
-                            bounds.bottom - K_MARGIN - K_BUTTON_HEIGHT, bounds.right - K_MARGIN,
-                            bounds.bottom - K_MARGIN), "CommentWindow:SaveButton", 
-                            str (S_COMMENT_WINDOW_SAVE), new BMessage (M_SAVE_COMMENT),
-                            B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW);
+                         bounds.bottom - K_MARGIN - K_BUTTON_HEIGHT, bounds.right - K_MARGIN,
+                         bounds.bottom - K_MARGIN), "CommentWindow:SaveButton", 
+                         str (S_COMMENT_WINDOW_SAVE), new BMessage (M_SAVE_COMMENT),
+                         B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW);
     m_backView->AddChild (m_saveButton);
 
     m_closeButton = new BButton (BRect (m_saveButton->Frame().left - K_MARGIN - K_BUTTON_WIDTH,
-                            bounds.bottom - K_MARGIN - K_BUTTON_HEIGHT,
-                            m_saveButton->Frame().left - K_MARGIN, bounds.bottom - K_MARGIN),
-                            "CommentWindow:CloseButton", str (S_COMMENT_WINDOW_CLOSE),
-                            new BMessage (B_QUIT_REQUESTED), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW);
+                         bounds.bottom - K_MARGIN - K_BUTTON_HEIGHT,
+                         m_saveButton->Frame().left - K_MARGIN, bounds.bottom - K_MARGIN),
+                         "CommentWindow:CloseButton", str (S_COMMENT_WINDOW_CLOSE),
+                         new BMessage (B_QUIT_REQUESTED), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW);
     m_backView->AddChild (m_closeButton);
 
     float minH, maxH, minV, maxV;
     GetSizeLimits (&minH, &maxH, &minV, &maxV);
     float rightLimit = MAX (m_saveButton->Frame().Width() + m_closeButton->Frame().Width() + 3 * K_MARGIN,
-                            fileNameStr->Frame().right + K_MARGIN * 5);
+                         fileNameStr->Frame().right + K_MARGIN * 5);
     SetSizeLimits (rightLimit, maxH, m_saveButton->Frame().Height() + 2 * K_MARGIN + 50, maxV);
     
     BRect screen_rect (BScreen().Frame());
@@ -142,8 +142,8 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
     if (_prefs_windows.FindBoolDef (kPfCommentWnd, true))
         if (_prefs_windows.FindRect (kPfCommentWndFrame, &frame) == B_OK)
         {
-            MoveTo (frame.LeftTop());
-            ResizeTo (frame.Width(), frame.Height());
+           MoveTo (frame.LeftTop());
+           ResizeTo (frame.Width(), frame.Height());
         }
     
     Show();
@@ -167,20 +167,20 @@ void CommentWindow::MessageReceived (BMessage *message)
     {
         case M_SAVE_COMMENT:
         {
-            // Let the main window handle talking with the archiver to write the comments
-            // We will just pass it the comment (if any) as a field in a BMessage
-            const char *commentStr = m_textView->Text();
-            if (commentStr && strlen (commentStr) > 0L)
-                message->AddString (kCommentContent, commentStr);
-            
-            m_callerWindow->PostMessage (message);
-            m_closeButton->Invoke();
-            break;
+           // Let the main window handle talking with the archiver to write the comments
+           // We will just pass it the comment (if any) as a field in a BMessage
+           const char *commentStr = m_textView->Text();
+           if (commentStr && strlen (commentStr) > 0L)
+               message->AddString (kCommentContent, commentStr);
+           
+           m_callerWindow->PostMessage (message);
+           m_closeButton->Invoke();
+           break;
         }
         
         default:
-            BWindow::MessageReceived (message);
-            break;
+           BWindow::MessageReceived (message);
+           break;
     }
 }
 

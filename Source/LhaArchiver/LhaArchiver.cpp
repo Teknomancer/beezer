@@ -63,9 +63,9 @@ status_t LhaArchiver::ReadOpen (FILE *fp)
 {
     uint16 len = B_PATH_NAME_LENGTH + 500;
     char lineString[len],
-            permStr[25], sizeStr[25], uidgidStr[20], methodStr[25], packedStr[25], ratioStr[15], dayStr[5],
-            monthStr[5], yearStr[8], hourStr[5], minuteStr[5], secondStr[5], dateStr[90], crcStr[25],
-            pathStr[B_PATH_NAME_LENGTH + 1];
+           permStr[25], sizeStr[25], uidgidStr[20], methodStr[25], packedStr[25], ratioStr[15], dayStr[5],
+           monthStr[5], yearStr[8], hourStr[5], minuteStr[5], secondStr[5], dateStr[90], crcStr[25],
+           pathStr[B_PATH_NAME_LENGTH + 1];
     
     // Lha doesn't report the time for files (only date) hence we use the modification time of the
     // archive along with the corresponding date reported by lha
@@ -91,16 +91,16 @@ status_t LhaArchiver::ReadOpen (FILE *fp)
         
         if (strncmp (lineString, "[generic]", 9) == 0)
         {
-            sscanf (lineString, 
-                "%[^ ] %[0-9] %[0-9] %[^ ] %[^ ] %[^ ] %[^ ] %[^ ] %[^ ]%[^\n]", permStr, packedStr, sizeStr,
-                ratioStr, methodStr, crcStr, monthStr, dayStr, yearStr, pathStr);
+           sscanf (lineString, 
+               "%[^ ] %[0-9] %[0-9] %[^ ] %[^ ] %[^ ] %[^ ] %[^ ] %[^ ]%[^\n]", permStr, packedStr, sizeStr,
+               ratioStr, methodStr, crcStr, monthStr, dayStr, yearStr, pathStr);
         }
         else
         {
-            sscanf (lineString,
-                "%[^ ] %[^ ] %[0-9] %[0-9] %[^ ] %[^ ] %[^ ] %[^ ] %[0-9] %[^ ]%[^\n]",
-                permStr, uidgidStr, packedStr, sizeStr, ratioStr, methodStr, crcStr, monthStr, dayStr, yearStr,
-                pathStr);
+           sscanf (lineString,
+               "%[^ ] %[^ ] %[0-9] %[0-9] %[^ ] %[^ ] %[^ ] %[^ ] %[0-9] %[^ ]%[^\n]",
+               permStr, uidgidStr, packedStr, sizeStr, ratioStr, methodStr, crcStr, monthStr, dayStr, yearStr,
+               pathStr);
         }
 
         // Workaround bug fix for files/folder with space before them
@@ -113,24 +113,24 @@ status_t LhaArchiver::ReadOpen (FILE *fp)
         // Stupid lha! for directories and some other files reports time in-place of year,
         // fix that with current system year
         if (strstr (yearStr, ":"))
-            sprintf (yearStr, "%d", mod_tm.tm_year);
+           sprintf (yearStr, "%d", mod_tm.tm_year);
 
         struct tm timeStruct; time_t timeValue;
         MakeTime (&timeStruct, &timeValue, dayStr, (char*)monthStrCorrect.String(), yearStr, hourStr,
-                    minuteStr, secondStr);
+                  minuteStr, secondStr);
         FormatDate (dateStr, 60, &timeStruct);
         
         // Check to see if last char of pathStr = '/' add it as folder, else as a file
         uint16 pathLength = pathString.Length() - 1;
         if (pathString[pathLength] == '/' || permStr[0] == 'd')
         {
-            m_entriesList.AddItem (new ArchiveEntry (true, pathString.String(), sizeStr, packedStr, dateStr,
-                                            timeValue, methodStr, crcStr));
+           m_entriesList.AddItem (new ArchiveEntry (true, pathString.String(), sizeStr, packedStr, dateStr,
+                                        timeValue, methodStr, crcStr));
         }
         else
         {
-            m_entriesList.AddItem (new ArchiveEntry (false, pathString.String(), sizeStr, packedStr, dateStr,
-                                            timeValue, methodStr,crcStr));
+           m_entriesList.AddItem (new ArchiveEntry (false, pathString.String(), sizeStr, packedStr, dateStr,
+                                        timeValue, methodStr,crcStr));
         }
         
         fgets (lineString, len, fp);
@@ -179,7 +179,7 @@ status_t LhaArchiver::Open (entry_ref *ref, BMessage *fileList)
 //=============================================================================================================//
 
 status_t LhaArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger *progress,
-                        volatile bool *cancel)
+                      volatile bool *cancel)
 {
     BEntry dirEntry;
     entry_ref dirRef;
@@ -189,7 +189,7 @@ status_t LhaArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     if (progress)        // Perform output directory checking only when a messenger is passed
     {
         if (dirEntry.Exists() == false || dirEntry.IsDirectory() == false)
-            return BZR_EXTRACT_DIR_INIT_ERROR;
+           return BZR_EXTRACT_DIR_INIT_ERROR;
     }
 
     BPath dirPath (refToDir);
@@ -203,7 +203,7 @@ status_t LhaArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         uint32 type;
         message->GetInfo (kPath, &type, &count);
         if (type != B_STRING_TYPE)
-            return BZR_UNKNOWN;
+           return BZR_UNKNOWN;
     }
     
     // Setup argv, fill with selection names if needed
@@ -217,7 +217,7 @@ status_t LhaArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     {
         const char *pathString = NULL;
         if (message->FindString (kPath, i, &pathString) == B_OK)
-            m_pipeMgr << SupressWildcards (pathString);
+           m_pipeMgr << SupressWildcards (pathString);
     }
     
     FILE *out;
@@ -225,7 +225,7 @@ status_t LhaArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
     
     if (tid == B_ERROR || tid == B_NO_MEMORY)
-        return B_ERROR;            // Handle lha unloadable error here
+        return B_ERROR;           // Handle lha unloadable error here
 
     if (progress)
         resume_thread (tid);
@@ -271,7 +271,7 @@ status_t LhaArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool
     while (fgets (lineString, 927, fp))
     {
         if (cancel && *cancel == true)
-            return BZR_CANCEL_ARCHIVER;
+           return BZR_CANCEL_ARCHIVER;
         
         lineString[strlen (lineString) - 1] = '\0';
         buf = lineString; 
@@ -280,10 +280,10 @@ status_t LhaArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool
         // Don't report making of directories (only files)
         if (found > 0)
         {
-            buf.Truncate (found - 1);
-            updateMessage.RemoveName ("text");
-            updateMessage.AddString ("text", LeafFromPath (buf.String()));
-            progress->SendMessage (&updateMessage, &reply);
+           buf.Truncate (found - 1);
+           updateMessage.RemoveName ("text");
+           updateMessage.AddString ("text", LeafFromPath (buf.String()));
+           progress->SendMessage (&updateMessage, &reply);
         }
     }
 
@@ -327,8 +327,8 @@ status_t LhaArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
         BString errStreamContent;
         Archiver::ReadStream(err, errStreamContent);
         if (errStreamContent.Length() > 0)
-            exitCode = BZR_ERRSTREAM_FOUND;
-            
+           exitCode = BZR_ERRSTREAM_FOUND;
+           
         close (errdes[0]);
         close (outdes[0]);
         fclose (out);
@@ -336,11 +336,11 @@ status_t LhaArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
     
         if (exitCode == BZR_ERRSTREAM_FOUND)
         {
-            BString outStr = outputStr;
-            delete[] outputStr;
-            outStr << "\n" << errStreamContent << "\n";
-            outputStr = new char[strlen (outStr.String()) + 1];
-            strcpy (outputStr, outStr.String());
+           BString outStr = outputStr;
+           delete[] outputStr;
+           outStr << "\n" << errStreamContent << "\n";
+           outputStr = new char[strlen (outStr.String()) + 1];
+           strcpy (outputStr, outStr.String());
         }
     }
         
@@ -369,34 +369,34 @@ status_t LhaArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
         int c;
         while (1)
         {
-            c = fgetc (fp);
-            if (c == EOF || c == '\r' || c == '\n')
-                break;
-            buf << (char)c;
+           c = fgetc (fp);
+           if (c == EOF || c == '\r' || c == '\n')
+               break;
+           buf << (char)c;
         }
         if (c == EOF)
-            break;
+           break;
         
         if (cancel && *cancel == true)
         {
-            exitCode = BZR_CANCEL_ARCHIVER;
-            break;
+           exitCode = BZR_CANCEL_ARCHIVER;
+           break;
         }
         
         if (c == '\r')
-            continue;
+           continue;
         else if (c == '\n')
         {
-            fullOutputStr << buf.String() << "\n";
-            int32 found = buf.FindLast ("- Tested");
+           fullOutputStr << buf.String() << "\n";
+           int32 found = buf.FindLast ("- Tested");
     
-            if (found > 0)
-            {
-                buf.Truncate (found - 1);
-                updateMessage.RemoveName ("text");
-                updateMessage.AddString ("text", LeafFromPath (buf.String()));
-                progress->SendMessage (&updateMessage, &reply);
-            }
+           if (found > 0)
+           {
+               buf.Truncate (found - 1);
+               updateMessage.RemoveName ("text");
+               updateMessage.AddString ("text", LeafFromPath (buf.String()));
+               progress->SendMessage (&updateMessage, &reply);
+           }
         }
     }
 
@@ -427,7 +427,7 @@ bool LhaArchiver::CanPartiallyOpen () const
 //=============================================================================================================//
 
 status_t LhaArchiver::Add (bool createMode, const char *relativePath, BMessage *message, BMessage *addedPaths,
-                        BMessenger *progress, volatile bool *cancel)
+                      BMessenger *progress, volatile bool *cancel)
 {
     // Don't EVER check if archive exist (FOR LHA ONLY) this is because when all files from an open lha ark are
     // deleted, (lha binary) deletes the archive itself
@@ -454,7 +454,7 @@ status_t LhaArchiver::Add (bool createMode, const char *relativePath, BMessage *
     {
         const char *pathString = NULL;
         if (message->FindString (kPath, i, &pathString) == B_OK)
-            m_pipeMgr << pathString;
+           m_pipeMgr << pathString;
     }
 
     FILE *out, *err;
@@ -509,33 +509,33 @@ status_t LhaArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
         int c;
         while (1)
         {
-            c = fgetc (fp);
-            if (c == EOF || c == '\r' || c == '\n')
-                break;
-            buf << (char)c;
+           c = fgetc (fp);
+           if (c == EOF || c == '\r' || c == '\n')
+               break;
+           buf << (char)c;
         }
         if (c == EOF)
-            break;
+           break;
         
         if (cancel && *cancel == true)
         {
-            exitCode = BZR_CANCEL_ARCHIVER;
-            break;
+           exitCode = BZR_CANCEL_ARCHIVER;
+           break;
         }
         
         if (c == '\r')
-            continue;
+           continue;
         else if (c == '\n')
         {
-            int32 found = buf.FindLast ("- Frozen(");
-            if (found > 0)
-            {
-                buf.Truncate (found - 1);
-                addedPaths->AddString (kPath, buf.String());
-                updateMessage.RemoveName ("text");
-                updateMessage.AddString ("text", LeafFromPath (buf.String()));
-                progress->SendMessage (&updateMessage, &reply);
-            }
+           int32 found = buf.FindLast ("- Frozen(");
+           if (found > 0)
+           {
+               buf.Truncate (found - 1);
+               addedPaths->AddString (kPath, buf.String());
+               updateMessage.RemoveName ("text");
+               updateMessage.AddString ("text", LeafFromPath (buf.String()));
+               progress->SendMessage (&updateMessage, &reply);
+           }
         }
     }
     
@@ -545,7 +545,7 @@ status_t LhaArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
 //=============================================================================================================//
 
 status_t LhaArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *progress,
-                        volatile bool *cancel)
+                      volatile bool *cancel)
 {
     // Setup deleting process
     BEntry archiveEntry (&m_archiveRef, true);
@@ -561,7 +561,7 @@ status_t LhaArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
         uint32 type;
         message->GetInfo (kPath, &type, &count);
         if (type != B_STRING_TYPE)
-            return BZR_UNKNOWN;
+           return BZR_UNKNOWN;
     }
 
     m_pipeMgr.FlushArgs();
@@ -572,7 +572,7 @@ status_t LhaArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
     {
         const char *pathString = NULL;
         if (message->FindString (kPath, i, &pathString) == B_OK)
-            m_pipeMgr << SupressWildcardSet (pathString);
+           m_pipeMgr << SupressWildcardSet (pathString);
         // Use SupressWildcardSet (which does not supress * character as lha needs * to delete folders fully)
     }
     
@@ -615,7 +615,7 @@ status_t LhaArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
 //=============================================================================================================//
 
 status_t LhaArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progress,
-                        volatile bool *cancel)
+                      volatile bool *cancel)
 {
     int32 len = B_PATH_NAME_LENGTH + strlen ("Delete ") + 2;
     char lineString[len];
@@ -627,14 +627,14 @@ status_t LhaArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progre
     while (fgets (lineString, len - 1, fp))
     {
         if (cancel && *cancel == true)
-            return BZR_CANCEL_ARCHIVER;
+           return BZR_CANCEL_ARCHIVER;
         
         lineString[strlen (lineString) - 1] = '\0';
         if (strncmp (lineString, "delete ", 7) == 0)
         {
-            updateMessage.RemoveName ("text");
-            updateMessage.AddString ("text", FinalPathComponent (lineString + 7));
-            progress->SendMessage (&updateMessage, &reply);
+           updateMessage.RemoveName ("text");
+           updateMessage.AddString ("text", FinalPathComponent (lineString + 7));
+           progress->SendMessage (&updateMessage, &reply);
         }
     }
 
@@ -644,7 +644,7 @@ status_t LhaArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progre
 //=============================================================================================================//
 
 status_t LhaArchiver::Create (BPath *archivePath, const char *relPath, BMessage *fileList, BMessage *addedPaths,
-                                BMessenger *progress, volatile bool *cancel)
+                             BMessenger *progress, volatile bool *cancel)
 {
     // true=>normalize path, which means everything otherthan the leaf must exist,
     // meaning we have everything ready and only need to create the leaf (by add)
@@ -657,7 +657,7 @@ status_t LhaArchiver::Create (BPath *archivePath, const char *relPath, BMessage 
     {
         BEntry tempEntry (m_archivePath.Path(), true);
         if (tempEntry.Exists())
-            tempEntry.GetRef (&m_archiveRef);
+           tempEntry.GetRef (&m_archiveRef);
         
         SetMimeType();
     }

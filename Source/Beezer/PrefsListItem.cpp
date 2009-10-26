@@ -58,15 +58,15 @@ void PrefsListItem::DrawItem (BView *owner, BRect frame, bool complete)
         // lighten top 2 lines
         owner->BeginLineArray (4);
         owner->AddLine (BPoint (frame.left, frame.top), BPoint (frame.right, frame.top),
-                            tint_color (owner->HighColor(), B_LIGHTEN_2_TINT));
+                         tint_color (owner->HighColor(), B_LIGHTEN_2_TINT));
         owner->AddLine (BPoint (frame.left, frame.top + 1), BPoint (frame.right, frame.top + 1),
-                            tint_color (owner->HighColor(), B_LIGHTEN_1_TINT));
+                         tint_color (owner->HighColor(), B_LIGHTEN_1_TINT));
 
         // Darken bottom 2 liness (cool effect!!)
         rgb_color specialDark1 = tint_color (owner->HighColor(), B_DARKEN_1_TINT);
         specialDark1.red += 10; specialDark1.green += 10; specialDark1.blue += 10;
         owner->AddLine (BPoint (frame.left, frame.bottom - 1), BPoint (frame.right, frame.bottom - 1),
-                            specialDark1);
+                         specialDark1);
         rgb_color specialDark = specialDark1;
         specialDark.red -= 20; specialDark.green -= 20; specialDark.blue -= 20;
         owner->AddLine (BPoint (frame.left, frame.bottom), BPoint (frame.right, frame.bottom), specialDark);
@@ -79,17 +79,17 @@ void PrefsListItem::DrawItem (BView *owner, BRect frame, bool complete)
     {
         if (IsSelected())
         {
-            owner->SetHighColor (m_selTextColor);
-            if (m_makeBold)
-                owner->SetFont (be_bold_font);
+           owner->SetHighColor (m_selTextColor);
+           if (m_makeBold)
+               owner->SetFont (be_bold_font);
         }
         else
         {
-            owner->SetHighColor (owner->ViewColor());
-            owner->FillRect (frame);
-            owner->SetHighColor (0,0,0,255);
-            if (m_makeBold)
-                owner->SetFont (be_plain_font);
+           owner->SetHighColor (owner->ViewColor());
+           owner->FillRect (frame);
+           owner->SetHighColor (0,0,0,255);
+           if (m_makeBold)
+               owner->SetFont (be_plain_font);
         }
     }
     else

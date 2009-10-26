@@ -15,18 +15,18 @@ class PrefsViewWindows : public PrefsView
         PrefsViewWindows (BRect frame);
         
         // Inherited hooks
-        virtual void         Render ();
-        virtual void         Save ();
-        virtual void         Load ();
+        virtual void        Render ();
+        virtual void        Save ();
+        virtual void        Load ();
     
     private:
         // Private members
-        BCheckBox           *m_searchChk,
-                            *m_logChk,
-                            *m_commentChk,
-                            *m_arkInfoChk,
-                            *m_welcomeChk,
-                            *m_prefsChk;
+        BCheckBox          *m_searchChk,
+                         *m_logChk,
+                         *m_commentChk,
+                         *m_arkInfoChk,
+                         *m_welcomeChk,
+                         *m_prefsChk;
 };
 
 #endif /* _PREFS_VIEW_WINDOWS_H */

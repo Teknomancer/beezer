@@ -10,8 +10,8 @@
 //=============================================================================================================//
 
 InputAlert::InputAlert (const char *title, const char *text, const char *initialText, bool hideTyping,
-                const char *button1, const char *button2, const char *button3, button_width width,
-                alert_type type)
+               const char *button1, const char *button2, const char *button3, button_width width,
+               alert_type type)
     : BAlert (title, "\n\n", button1, button2, button3, width, type)
 {
     InitInputAlert (title, text, initialText, hideTyping);
@@ -20,8 +20,8 @@ InputAlert::InputAlert (const char *title, const char *text, const char *initial
 //=============================================================================================================//
 
 InputAlert::InputAlert (const char *title, const char *text, const char *initialText, bool hideTyping,
-                const char *button1, const char *button2, const char *button3, button_width width,
-                button_spacing spacing, alert_type type)
+               const char *button1, const char *button2, const char *button3, button_width width,
+               button_spacing spacing, alert_type type)
     : BAlert (title, "\n\n", button1, button2, button3, width, spacing, type)
 {
     InitInputAlert (title, text, initialText, hideTyping);
@@ -42,7 +42,7 @@ void InputAlert::InitInputAlert (const char *title, const char *label, const cha
 
     for (int i = 0; i < numlines; i++)
         if ((linewidth = int (textView->LineWidth (i))) > width)
-            width = linewidth;
+           width = linewidth;
 
     textView->ResizeTo (width + 2, height);
 
@@ -77,8 +77,8 @@ void InputAlert::InitInputAlert (const char *title, const char *label, const cha
     }
     
     m_inputBox = new BTextControl (BRect (textView->Frame().left, textView->Frame().bottom,
-                        extremeRight, 0), "_textInput_", label, NULL, NULL, B_FOLLOW_LEFT,
-                        B_WILL_DRAW | B_NAVIGABLE);
+                      extremeRight, 0), "_textInput_", label, NULL, NULL, B_FOLLOW_LEFT,
+                      B_WILL_DRAW | B_NAVIGABLE);
     
     m_inputBox->SetDivider (m_inputBox->StringWidth (label) + 10);
     m_inputBox->SetModificationMessage (new BMessage (kInputBox));
@@ -108,7 +108,7 @@ BMessage InputAlert::GetInput (BWindow *window)
     while (m_isQuitting == false)
     {
         if (window)
-            window->UpdateIfNeeded();
+           window->UpdateIfNeeded();
         
         snooze (10000);
     }
@@ -127,29 +127,29 @@ void InputAlert::MessageReceived (BMessage *message)
     {
         case kButton0: case kButton1 : case kButton2:
         {
-            int32 w = message->what;
-            m_buttonIndex = w == kButton0 ? 0 : w == kButton1 ? 1 : 2;
-            m_inputText = m_inputBox->Text();
-            m_isQuitting = true;
-            
-            snooze (20000);
-            PostMessage (B_QUIT_REQUESTED);
-            break;
+           int32 w = message->what;
+           m_buttonIndex = w == kButton0 ? 0 : w == kButton1 ? 1 : 2;
+           m_inputText = m_inputBox->Text();
+           m_isQuitting = true;
+           
+           snooze (20000);
+           PostMessage (B_QUIT_REQUESTED);
+           break;
         }
 
         case kInputBox:
         {
-            int32 len = strlen (m_inputBox->Text());
-            if (len > 0L)
-                m_farRightButton->SetEnabled (true);
-            else
-                m_farRightButton->SetEnabled (false);
-            break;
+           int32 len = strlen (m_inputBox->Text());
+           if (len > 0L)
+               m_farRightButton->SetEnabled (true);
+           else
+               m_farRightButton->SetEnabled (false);
+           break;
         }
         
         default:
-            BAlert::MessageReceived (message);
-            break;
+           BAlert::MessageReceived (message);
+           break;
     }
 }
 

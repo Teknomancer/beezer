@@ -78,13 +78,13 @@ void BarberPole::SetValue (bool animate, bool adjustPulse)
     if (m_animate)
     {
         if (adjustPulse)
-            Window()->SetPulseRate (Window()->PulseRate() > 0 ? Window()->PulseRate() : K_BARBERPOLE_PULSERATE);
+           Window()->SetPulseRate (Window()->PulseRate() > 0 ? Window()->PulseRate() : K_BARBERPOLE_PULSERATE);
         Show();
     }
     else
     {
         if (adjustPulse)
-            Window()->SetPulseRate (0);
+           Window()->SetPulseRate (0);
         Hide();
     }
 }

@@ -31,24 +31,24 @@ class BevelView : public BView
 {
     public:
         BevelView (BRect frame, const char *name, BevelType bevelMode, uint32 resizeMask = B_FOLLOW_LEFT,
-                   uint32 flags = B_WILL_DRAW);
+                 uint32 flags = B_WILL_DRAW);
         
         // Inherited hooks
-        virtual void         Draw (BRect updateRect);
-        virtual void         FrameResized (float newWidth, float newHeight);
-        virtual void         AttachedToWindow ();
+        virtual void        Draw (BRect updateRect);
+        virtual void        FrameResized (float newWidth, float newHeight);
+        virtual void        AttachedToWindow ();
     
         // Additional hooks
-        float                 EdgeThickness () const;
+        float                EdgeThickness () const;
         
     private:
         // Private members
-        BRect                m_cachedRect;
-        BevelType            m_bevelType;
-        rgb_color            m_darkEdge1,
-                             m_darkEdge2,
-                             m_lightEdge;
-        float                m_edgeThickness;
+        BRect               m_cachedRect;
+        BevelType           m_bevelType;
+        rgb_color           m_darkEdge1,
+                          m_darkEdge2,
+                          m_lightEdge;
+        float               m_edgeThickness;
 };
 
 #endif /* _BEVEL_VIEW_H */

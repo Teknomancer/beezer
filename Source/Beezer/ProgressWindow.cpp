@@ -34,9 +34,9 @@
 //=============================================================================================================//
 
 ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
-                    BMessenger *&messenger, volatile bool *&cancel)
+                  BMessenger *&messenger, volatile bool *&cancel)
     : BWindow (BRect (0, 0, 370, 0), NULL, B_TITLED_WINDOW,
-            B_ASYNCHRONOUS_CONTROLS | B_NOT_V_RESIZABLE | B_NOT_ZOOMABLE | B_NOT_CLOSABLE, B_CURRENT_WORKSPACE),
+           B_ASYNCHRONOUS_CONTROLS | B_NOT_V_RESIZABLE | B_NOT_ZOOMABLE | B_NOT_CLOSABLE, B_CURRENT_WORKSPACE),
     m_progressCount (1L),
     m_cancel (false)
 {
@@ -65,59 +65,59 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
     {
         case M_EXTRACT_TO: case M_EXTRACT_SELECTED_TO:
         {
-            actionIcon = ResBitmap ("Img:ExtractStatus");
-            fileCount = actionMessage->FindInt32 (kCount);
-            actionMessage->FindString (kProgressAction, &strOfStrView);
-            actionMessage->FindString (kPreparing, &prepareString);
-            break;
+           actionIcon = ResBitmap ("Img:ExtractStatus");
+           fileCount = actionMessage->FindInt32 (kCount);
+           actionMessage->FindString (kProgressAction, &strOfStrView);
+           actionMessage->FindString (kPreparing, &prepareString);
+           break;
         }
         
         case M_ACTIONS_DELETE:
         {
-            actionIcon = ResBitmap ("Img:DeleteStatus");
-            fileCount = actionMessage->FindInt32 (kCount);
-            actionMessage->FindString (kProgressAction, &strOfStrView);
-            actionMessage->FindString (kPreparing, &prepareString);
-            break;
+           actionIcon = ResBitmap ("Img:DeleteStatus");
+           fileCount = actionMessage->FindInt32 (kCount);
+           actionMessage->FindString (kProgressAction, &strOfStrView);
+           actionMessage->FindString (kPreparing, &prepareString);
+           break;
         }
         
         case M_ACTIONS_TEST:
         {
-            actionIcon = ResBitmap ("Img:TestStatus");
-            fileCount = actionMessage->FindInt32 (kCount);
-            actionMessage->FindString (kProgressAction, &strOfStrView);
-            actionMessage->FindString (kPreparing, &prepareString);
-            break;
+           actionIcon = ResBitmap ("Img:TestStatus");
+           fileCount = actionMessage->FindInt32 (kCount);
+           actionMessage->FindString (kProgressAction, &strOfStrView);
+           actionMessage->FindString (kPreparing, &prepareString);
+           break;
         }
         
         case M_ACTIONS_ADD:
         {
-            actionIcon = ResBitmap ("Img:AddStatus");
-            fileCount = actionMessage->FindInt32 (kCount);
-            actionMessage->FindString (kProgressAction, &strOfStrView);
-            actionMessage->FindString (kPreparing, &prepareString);
+           actionIcon = ResBitmap ("Img:AddStatus");
+           fileCount = actionMessage->FindInt32 (kCount);
+           actionMessage->FindString (kProgressAction, &strOfStrView);
+           actionMessage->FindString (kPreparing, &prepareString);
         }
     }
 
     StaticBitmapView *iconView = new StaticBitmapView (BRect (2 * K_MARGIN + 2, 2 * K_MARGIN + 2,
-                                        2 * K_MARGIN + 2 + 31.0, 2 * K_MARGIN + 2 + 31.0),
-                                        "ProgressWindow:iconView", actionIcon);
+                                    2 * K_MARGIN + 2 + 31.0, 2 * K_MARGIN + 2 + 31.0),
+                                    "ProgressWindow:iconView", actionIcon);
     iconView->SetViewColor (m_backView->ViewColor());
     AddChild (iconView);
     
     BStringView *strView = new BStringView (BRect (iconView->Frame().right + totalFontHeight,
-                                K_MARGIN + 3.0, iconView->Frame().right + totalFontHeight +
-                                font.StringWidth (strOfStrView) + font.StringWidth ("W"),
-                                totalFontHeight + K_MARGIN + 3.0), "ProgressWindow:StringView",
-                                strOfStrView, B_FOLLOW_LEFT, B_WILL_DRAW);
+                             K_MARGIN + 3.0, iconView->Frame().right + totalFontHeight +
+                             font.StringWidth (strOfStrView) + font.StringWidth ("W"),
+                             totalFontHeight + K_MARGIN + 3.0), "ProgressWindow:StringView",
+                             strOfStrView, B_FOLLOW_LEFT, B_WILL_DRAW);
     strView->SetFont (&font, B_FONT_ALL);
     strView->SetHighColor (K_STARTUP_MAIN_HEADING);
     strView->SetLowColor (strView->ViewColor());
     m_backView->AddChild (strView);
     
     m_statusBar = new BStatusBar (BRect (strView->Frame().left + 3 * K_MARGIN,
-                            strView->Frame().bottom + K_MARGIN, bounds.right - 2 * K_MARGIN, 0),
-                            "ProgressWindow:StatusBar", NULL, NULL);
+                         strView->Frame().bottom + K_MARGIN, bounds.right - 2 * K_MARGIN, 0),
+                         "ProgressWindow:StatusBar", NULL, NULL);
     m_statusBar->SetText (prepareString);
     m_statusBar->SetResizingMode (B_FOLLOW_LEFT_RIGHT);
     m_statusBar->SetBarHeight (K_PROGRESSBAR_HEIGHT);
@@ -127,20 +127,20 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
     m_backView->AddChild (m_statusBar);
     
     BevelView *edgeView = new BevelView (BRect (-1, m_statusBar->Frame().bottom + 2 * K_MARGIN,
-                                bounds.right - 1, m_statusBar->Frame().bottom + 2 * K_MARGIN + 1.0),
-                                "ProgressWindow:EdgeView", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+                             bounds.right - 1, m_statusBar->Frame().bottom + 2 * K_MARGIN + 1.0),
+                             "ProgressWindow:EdgeView", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     m_backView->AddChild (edgeView);
     
     m_cancelButton = new BButton (BRect (bounds.right - K_BUTTON_WIDTH - 2 * K_MARGIN,
-                            edgeView->Frame().bottom + K_MARGIN, bounds.right - 2 * K_MARGIN,
-                            edgeView->Frame().bottom + K_MARGIN + K_BUTTON_HEIGHT),
-                            "ProgressWindow:CancelButton", str (S_STOP_OPERATION),
-                            new BMessage (M_STOP_OPERATION), B_FOLLOW_RIGHT, B_WILL_DRAW);
+                         edgeView->Frame().bottom + K_MARGIN, bounds.right - 2 * K_MARGIN,
+                         edgeView->Frame().bottom + K_MARGIN + K_BUTTON_HEIGHT),
+                         "ProgressWindow:CancelButton", str (S_STOP_OPERATION),
+                         new BMessage (M_STOP_OPERATION), B_FOLLOW_RIGHT, B_WILL_DRAW);
     m_backView->AddChild (m_cancelButton);
     ResizeTo (Frame().Width(), m_cancelButton->Frame().bottom + K_MARGIN);
     
     m_barberPole = new BarberPole (BRect (strView->Frame().left, m_statusBar->Frame().bottom - 30, 0,
-                        m_statusBar->Frame().bottom - 3), "ProgressWindow::BarberPole");
+                      m_statusBar->Frame().bottom - 3), "ProgressWindow::BarberPole");
     m_backView->AddChild (m_barberPole);
     
     // Center window on-screen & set the constraints
@@ -174,54 +174,54 @@ void ProgressWindow::MessageReceived (BMessage *message)
     {
         case BZR_UPDATE_PROGRESS:
         {
-            message->what = B_UPDATE_STATUS_BAR;
+           message->what = B_UPDATE_STATUS_BAR;
 
-            char fileCountUpdateStr [60];
-            sprintf (fileCountUpdateStr, "%ld of %ld", m_progressCount++, m_fileCount);
-            message->AddString ("trailing_text", fileCountUpdateStr);
+           char fileCountUpdateStr [60];
+           sprintf (fileCountUpdateStr, "%ld of %ld", m_progressCount++, m_fileCount);
+           message->AddString ("trailing_text", fileCountUpdateStr);
 
-            const char *mainText;
-            if (message->FindString ("text", &mainText) != B_OK)
-                mainText = "";
+           const char *mainText;
+           if (message->FindString ("text", &mainText) != B_OK)
+               mainText = "";
 
-            m_statusBar->Update (1.0, mainText, fileCountUpdateStr);
-            message->SendReply ('repl');
-            break;
+           m_statusBar->Update (1.0, mainText, fileCountUpdateStr);
+           message->SendReply ('repl');
+           break;
         }
         
         case M_STOP_OPERATION:
         {
-            m_barberPole->SetValue (false, false);
-            m_cancel = true;
-            break;
+           m_barberPole->SetValue (false, false);
+           m_cancel = true;
+           break;
         }
         
         case M_CLOSE:
         {
-            // The below fills the status bar fully - for example, gzip tests only 1 file
-            // even in a tar.gzip (which has many files) thus the status won't fill fully
-            // hence, we do this for it - but maybe we shouldn't be doing it ... don't know
-            // Hmm, we don't do it for cancelled operations
-            if (m_cancel == false)
-            {
-                float currentValue = m_statusBar->CurrentValue();
-                float maxValue = m_statusBar->MaxValue();
-                if (currentValue < maxValue)
-                    m_statusBar->Update (maxValue - currentValue);
-                snooze (65000);
-            }
-            
-            // Added minor time delay so that window doesn't close before progress bar updates
-            snooze (90000);
-            m_barberPole->SetValue (false, false);
-            Quit();
-            break;
+           // The below fills the status bar fully - for example, gzip tests only 1 file
+           // even in a tar.gzip (which has many files) thus the status won't fill fully
+           // hence, we do this for it - but maybe we shouldn't be doing it ... don't know
+           // Hmm, we don't do it for cancelled operations
+           if (m_cancel == false)
+           {
+               float currentValue = m_statusBar->CurrentValue();
+               float maxValue = m_statusBar->MaxValue();
+               if (currentValue < maxValue)
+                  m_statusBar->Update (maxValue - currentValue);
+               snooze (65000);
+           }
+           
+           // Added minor time delay so that window doesn't close before progress bar updates
+           snooze (90000);
+           m_barberPole->SetValue (false, false);
+           Quit();
+           break;
         }
         
         default:
         {
-            BWindow::MessageReceived (message);
-            break;
+           BWindow::MessageReceived (message);
+           break;
         }
     }
 }

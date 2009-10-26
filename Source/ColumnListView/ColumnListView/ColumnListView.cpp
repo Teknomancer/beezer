@@ -27,8 +27,8 @@
 
 // All AssertWindowLocked() commented-out by Ram -- for performance
 
-#include <stdlib.h>                // Ram
-#include <Debug.h>                // Ram -- temp
+#include <stdlib.h>               // Ram
+#include <Debug.h>               // Ram -- temp
 
 #include <support/ClassInfo.h> // jaf
 #include <interface/Window.h>  // jaf
@@ -146,7 +146,7 @@ ColumnListView::~ColumnListView()
     {
         CLVColumn* Item = (CLVColumn*)fColumnList.RemoveItem(Counter);
         if(Item)
-            delete Item;
+           delete Item;
     }
         
     //Remove and delete the container view if necessary
@@ -201,23 +201,23 @@ void ColumnListView::UpdateColumnSizesDataRectSizeScrollBars(bool scrolling_allo
     {
         CLVColumn* Column = (CLVColumn*)fColumnDisplayList.ItemAt(Counter);
         if(NextPushedByExpander)
-            Column->fPushedByExpander = true;
+           Column->fPushedByExpander = true;
         else
-            Column->fPushedByExpander = false;
+           Column->fPushedByExpander = false;
         if(Column->IsShown())
         {
-            float ColumnWidth = Column->Width();
-            ColumnBegin = ColumnEnd + 1.0;
-            ColumnEnd = ColumnBegin + ColumnWidth;
-            Column->fColumnBegin = ColumnBegin;
-            Column->fColumnEnd = ColumnEnd;
-            DataWidth = Column->fColumnEnd;
-            if(NextPushedByExpander)
-                if(!(Column->fFlags & CLV_PUSH_PASS))
-                    NextPushedByExpander = false;
-            if(Column->fFlags & CLV_EXPANDER)
-                //Set the next column to be pushed
-                NextPushedByExpander = true;
+           float ColumnWidth = Column->Width();
+           ColumnBegin = ColumnEnd + 1.0;
+           ColumnEnd = ColumnBegin + ColumnWidth;
+           Column->fColumnBegin = ColumnBegin;
+           Column->fColumnEnd = ColumnEnd;
+           DataWidth = Column->fColumnEnd;
+           if(NextPushedByExpander)
+               if(!(Column->fFlags & CLV_PUSH_PASS))
+                  NextPushedByExpander = false;
+           if(Column->fFlags & CLV_EXPANDER)
+               //Set the next column to be pushed
+               NextPushedByExpander = true;
         }
     }
 
@@ -271,12 +271,12 @@ bool ColumnListView::AddColumn(CLVColumn* Column)
     if(Column->fFlags & CLV_EXPANDER)
     {
         if(!fHierarchical)
-            return false;
+           return false;
         for(int32 Counter = 0; Counter < NumberOfColumns; Counter++)
-            if(((CLVColumn*)fColumnList.ItemAt(Counter))->fFlags & CLV_EXPANDER)
-                return false;
+           if(((CLVColumn*)fColumnList.ItemAt(Counter))->fFlags & CLV_EXPANDER)
+               return false;
         if(Column->IsShown())
-            fExpanderColumn = NumberOfColumns;
+           fExpanderColumn = NumberOfColumns;
     }
 
     //Make sure this column hasn't already been added to another ColumnListView
@@ -289,34 +289,34 @@ bool ColumnListView::AddColumn(CLVColumn* Column)
         bool Repeat;
         if(Column->Flags() & CLV_LOCK_AT_BEGINNING)
         {
-            //Move it to the beginning, after the last CLV_LOCK_AT_BEGINNING item
-            DisplayIndex = 0;
-            Repeat = true;
-            while(Repeat && DisplayIndex < NumberOfColumns)
-            {
-                Repeat = false;
-                CLVColumn* LastColumn = (CLVColumn*)fColumnDisplayList.ItemAt(DisplayIndex);
-                if(LastColumn->Flags() & CLV_LOCK_AT_BEGINNING)
-                {
-                    DisplayIndex++;
-                    Repeat = true;
-                }
-            }
+           //Move it to the beginning, after the last CLV_LOCK_AT_BEGINNING item
+           DisplayIndex = 0;
+           Repeat = true;
+           while(Repeat && DisplayIndex < NumberOfColumns)
+           {
+               Repeat = false;
+               CLVColumn* LastColumn = (CLVColumn*)fColumnDisplayList.ItemAt(DisplayIndex);
+               if(LastColumn->Flags() & CLV_LOCK_AT_BEGINNING)
+               {
+                  DisplayIndex++;
+                  Repeat = true;
+               }
+           }
         }
         else
         {
-            //Make sure it isn't after a CLV_LOCK_AT_END item
-            Repeat = true;
-            while(Repeat && DisplayIndex > 0)
-            {
-                Repeat = false;
-                CLVColumn* LastColumn = (CLVColumn*)fColumnDisplayList.ItemAt(DisplayIndex-1);
-                if(LastColumn->Flags() & CLV_LOCK_AT_END)
-                {
-                    DisplayIndex--;
-                    Repeat = true;
-                }
-            }
+           //Make sure it isn't after a CLV_LOCK_AT_END item
+           Repeat = true;
+           while(Repeat && DisplayIndex > 0)
+           {
+               Repeat = false;
+               CLVColumn* LastColumn = (CLVColumn*)fColumnDisplayList.ItemAt(DisplayIndex-1);
+               if(LastColumn->Flags() & CLV_LOCK_AT_END)
+               {
+                  DisplayIndex--;
+                  Repeat = true;
+               }
+           }
         }
     }
 
@@ -348,16 +348,16 @@ bool ColumnListView::AddColumnList(BList* NewColumns)
     int32 NumberOfExpanders = 0;
     for(Counter = 0; Counter < NumberOfColumns; Counter++)
         if(((CLVColumn*)fColumnList.ItemAt(Counter))->fFlags & CLV_EXPANDER)
-            NumberOfExpanders++;
+           NumberOfExpanders++;
     int32 SetfExpanderColumnTo = -1;
     for(Counter = 0; Counter < NumberOfColumnsToAdd; Counter++)
     {
         CLVColumn* ThisColumn = (CLVColumn*)NewColumns->ItemAt(Counter);
         if(ThisColumn->fFlags & CLV_EXPANDER)
         {
-            NumberOfExpanders++;
-            if(ThisColumn->IsShown())
-                SetfExpanderColumnTo = NumberOfColumns + Counter;
+           NumberOfExpanders++;
+           if(ThisColumn->IsShown())
+               SetfExpanderColumnTo = NumberOfColumns + Counter;
         }
     }
     if(NumberOfExpanders != 0 && !fHierarchical)
@@ -370,12 +370,12 @@ bool ColumnListView::AddColumnList(BList* NewColumns)
     //Make sure none of these columns have already been added to a ColumnListView
     for(Counter = 0; Counter < NumberOfColumnsToAdd; Counter++)
         if(((CLVColumn*)NewColumns->ItemAt(Counter))->fParent != NULL)
-            return false;
+           return false;
     //Make sure none of these columns are being added twice
     for(Counter = 0; Counter < NumberOfColumnsToAdd-1; Counter++)
         for(int32 Counter2 = Counter+1; Counter2 < NumberOfColumnsToAdd; Counter2++)
-            if(NewColumns->ItemAt(Counter) == NewColumns->ItemAt(Counter2))
-                return false;
+           if(NewColumns->ItemAt(Counter) == NewColumns->ItemAt(Counter2))
+               return false;
 
     for(Counter = 0; Counter < NumberOfColumnsToAdd; Counter++)
     {
@@ -384,38 +384,38 @@ bool ColumnListView::AddColumnList(BList* NewColumns)
         int32 DisplayIndex = NumberOfColumns;
         if(!Column->Flags() & CLV_LOCK_AT_END)
         {
-            bool Repeat;
-            if(Column->Flags() & CLV_LOCK_AT_BEGINNING)
-            {
-                //Move it to the beginning, after the last CLV_LOCK_AT_BEGINNING item
-                DisplayIndex = 0;
-                Repeat = true;
-                while(Repeat && DisplayIndex < NumberOfColumns)
-                {
-                    Repeat = false;
-                    CLVColumn* LastColumn = (CLVColumn*)fColumnDisplayList.ItemAt(DisplayIndex);
-                    if(LastColumn->Flags() & CLV_LOCK_AT_BEGINNING)
-                    {
-                        DisplayIndex++;
-                        Repeat = true;
-                    }
-                }
-            }
-            else
-            {
-                //Make sure it isn't after a CLV_LOCK_AT_END item
-                Repeat = true;
-                while(Repeat && DisplayIndex > 0)
-                {
-                    Repeat = false;
-                    CLVColumn* LastColumn = (CLVColumn*)fColumnDisplayList.ItemAt(DisplayIndex-1);
-                    if(LastColumn->Flags() & CLV_LOCK_AT_END)
-                    {
-                        DisplayIndex--;
-                        Repeat = true;
-                    }
-                }
-            }
+           bool Repeat;
+           if(Column->Flags() & CLV_LOCK_AT_BEGINNING)
+           {
+               //Move it to the beginning, after the last CLV_LOCK_AT_BEGINNING item
+               DisplayIndex = 0;
+               Repeat = true;
+               while(Repeat && DisplayIndex < NumberOfColumns)
+               {
+                  Repeat = false;
+                  CLVColumn* LastColumn = (CLVColumn*)fColumnDisplayList.ItemAt(DisplayIndex);
+                  if(LastColumn->Flags() & CLV_LOCK_AT_BEGINNING)
+                  {
+                      DisplayIndex++;
+                      Repeat = true;
+                  }
+               }
+           }
+           else
+           {
+               //Make sure it isn't after a CLV_LOCK_AT_END item
+               Repeat = true;
+               while(Repeat && DisplayIndex > 0)
+               {
+                  Repeat = false;
+                  CLVColumn* LastColumn = (CLVColumn*)fColumnDisplayList.ItemAt(DisplayIndex-1);
+                  if(LastColumn->Flags() & CLV_LOCK_AT_END)
+                  {
+                      DisplayIndex--;
+                      Repeat = true;
+                  }
+               }
+           }
         }
 
         //Add the column to the display list in the appropriate position
@@ -480,10 +480,10 @@ bool ColumnListView::RemoveColumns(CLVColumn* Column, int32 Count)
 
         int32 SortIndex = fSortKeyList.IndexOf(Column);
         if(SortIndex >= 0)
-            fSortKeyList.RemoveItem(SortIndex);
+           fSortKeyList.RemoveItem(SortIndex);
 
         if(ThisColumn->fFlags & CLV_EXPANDER)
-            fExpanderColumn = -1;
+           fExpanderColumn = -1;
 
         //Tell the column it has been removed
         ThisColumn->fParent = NULL;
@@ -527,10 +527,10 @@ bool ColumnListView::SetDisplayOrder(const int32* ColumnOrder)
     for(int32 Counter = 0; Counter < ColumnsToSet; Counter++)
     {
         if(ColumnOrder[Counter] >= ColumnsToSet)
-            return false;
+           return false;
         for(int32 Counter2 = 0; Counter2 < Counter; Counter2++)
-            if(ColumnOrder[Counter] == ColumnOrder[Counter2])
-                return false;
+           if(ColumnOrder[Counter] == ColumnOrder[Counter2])
+               return false;
         fColumnDisplayList.AddItem(fColumnList.ItemAt(ColumnOrder[Counter]));
     }
 
@@ -551,68 +551,68 @@ void ColumnListView::ColumnWidthChanged(int32 ColumnIndex, float NewWidth)
         float PushMax = 100000;
         if(ThisColumn->fPushedByExpander || (ThisColumn->fFlags & CLV_EXPANDER))
         {
-            int32 NumberOfColumns = fColumnDisplayList.CountItems();
-            for(int32 Counter = 0; Counter < NumberOfColumns; Counter++)
-            {
-                CLVColumn* SomeColumn = (CLVColumn*)fColumnDisplayList.ItemAt(Counter);
-                if((SomeColumn->fFlags & CLV_EXPANDER) || SomeColumn->fPushedByExpander)
-                    PushMax = SomeColumn->fColumnEnd;
-            }
+           int32 NumberOfColumns = fColumnDisplayList.CountItems();
+           for(int32 Counter = 0; Counter < NumberOfColumns; Counter++)
+           {
+               CLVColumn* SomeColumn = (CLVColumn*)fColumnDisplayList.ItemAt(Counter);
+               if((SomeColumn->fFlags & CLV_EXPANDER) || SomeColumn->fPushedByExpander)
+                  PushMax = SomeColumn->fColumnEnd;
+           }
         }
 
         int32 number_of_items;
         if(fHierarchical)
-            number_of_items = fFullItemList.CountItems();
+           number_of_items = fFullItemList.CountItems();
         else
-            number_of_items = CountItems();
+           number_of_items = CountItems();
         float ColumnEnd = ThisColumn->fColumnEnd;
         for(int32 Counter = 0; Counter < number_of_items; Counter++)
         {
-            CLVListItem* ThisItem;
-            if(fHierarchical)
-                ThisItem = (CLVListItem*)fFullItemList.ItemAt(Counter);
-            else
-                ThisItem = (CLVListItem*)ItemAt(Counter);
-            if(ThisColumn->fPushedByExpander || (ThisColumn->fFlags & CLV_EXPANDER))
-            {
-                float ColumnWidth = NewWidth;
-                float ExpanderShift = ThisItem->OutlineLevel() * 20.0;
-                if(ThisColumn->fFlags & CLV_EXPANDER)
-                {
-                    if(ColumnEnd + ExpanderShift > PushMax)
-                        ColumnWidth += PushMax - ColumnEnd;
-                    else
-                        ColumnWidth += ExpanderShift;
-                }
-                else
-                {
-                    if(ColumnEnd + ExpanderShift > PushMax)
-                    {
-                        ColumnWidth -= (ColumnEnd + ExpanderShift - PushMax);
-                        if(ColumnWidth < 0)
-                            ColumnWidth = 0;
-                    }
-                }
-                if(ExpanderShift > 0)
-                {
-                    int32 DisplayIndex = IndexOf(ThisItem);
-                    if(DisplayIndex >= 0)
-                    {
-                        //The column scrolling scrolled some content that is encroaching into the next
-                        //column and needs to be invalidated now
-                        BRect InvalidateRect = ItemFrame(DisplayIndex);
-                        InvalidateRect.left = ColumnEnd;
-                        InvalidateRect.right = ColumnEnd + ExpanderShift;
-                        if(InvalidateRect.right > PushMax)
-                            InvalidateRect.right = PushMax;
-                        if(InvalidateRect.right >= InvalidateRect.left)
-                        Invalidate(InvalidateRect);
-                    }
-                }
-                ThisItem->ColumnWidthChanged(ColumnIndex,ColumnWidth,this);
-            }
-            else
-                ThisItem->ColumnWidthChanged(ColumnIndex,NewWidth,this);
+           CLVListItem* ThisItem;
+           if(fHierarchical)
+               ThisItem = (CLVListItem*)fFullItemList.ItemAt(Counter);
+           else
+               ThisItem = (CLVListItem*)ItemAt(Counter);
+           if(ThisColumn->fPushedByExpander || (ThisColumn->fFlags & CLV_EXPANDER))
+           {
+               float ColumnWidth = NewWidth;
+               float ExpanderShift = ThisItem->OutlineLevel() * 20.0;
+               if(ThisColumn->fFlags & CLV_EXPANDER)
+               {
+                  if(ColumnEnd + ExpanderShift > PushMax)
+                      ColumnWidth += PushMax - ColumnEnd;
+                  else
+                      ColumnWidth += ExpanderShift;
+               }
+               else
+               {
+                  if(ColumnEnd + ExpanderShift > PushMax)
+                  {
+                      ColumnWidth -= (ColumnEnd + ExpanderShift - PushMax);
+                      if(ColumnWidth < 0)
+                         ColumnWidth = 0;
+                  }
+               }
+               if(ExpanderShift > 0)
+               {
+                  int32 DisplayIndex = IndexOf(ThisItem);
+                  if(DisplayIndex >= 0)
+                  {
+                      //The column scrolling scrolled some content that is encroaching into the next
+                      //column and needs to be invalidated now
+                      BRect InvalidateRect = ItemFrame(DisplayIndex);
+                      InvalidateRect.left = ColumnEnd;
+                      InvalidateRect.right = ColumnEnd + ExpanderShift;
+                      if(InvalidateRect.right > PushMax)
+                         InvalidateRect.right = PushMax;
+                      if(InvalidateRect.right >= InvalidateRect.left)
+                      Invalidate(InvalidateRect);
+                  }
+               }
+               ThisItem->ColumnWidthChanged(ColumnIndex,ColumnWidth,this);
+           }
+           else
+               ThisItem->ColumnWidthChanged(ColumnIndex,NewWidth,this);
         }
     }
 }
@@ -628,9 +628,9 @@ void ColumnListView::DisplayOrderChanged(const int32* order)
     if(fHierarchical)
         for(int32 Counter = 0; Counter < num_columns; Counter++)
         {
-            ThisColumn = (CLVColumn*)fColumnDisplayList.ItemAt(Counter);
-            if((ThisColumn->fFlags & CLV_EXPANDER) || ThisColumn->fPushedByExpander)
-                PushMax = ThisColumn->fColumnEnd;
+           ThisColumn = (CLVColumn*)fColumnDisplayList.ItemAt(Counter);
+           if((ThisColumn->fFlags & CLV_EXPANDER) || ThisColumn->fPushedByExpander)
+               PushMax = ThisColumn->fColumnEnd;
         }
 
     int32 number_of_items;
@@ -643,47 +643,47 @@ void ColumnListView::DisplayOrderChanged(const int32* order)
         ThisColumn = (CLVColumn*)fColumnList.ItemAt(column);
         if(ThisColumn->fFlags & CLV_TELL_ITEMS_WIDTH)
         {
-            float ColumnLeft = ThisColumn->fColumnBegin;
-            float ColumnRight = ThisColumn->fColumnEnd;
-            for(int32 item_index = 0; item_index < number_of_items; item_index++)
-            {
-                CLVListItem* item;
-                if(fHierarchical)
-                    item = (CLVListItem*)fFullItemList.ItemAt(item_index);
-                else
-                    item = (CLVListItem*)ItemAt(item_index);
-                int32 DisplayIndex = IndexOf(item);    
-                if(DisplayIndex >= 0 && ThisColumn->IsShown())
-                {
-                    BRect ThisColumnRect = ItemFrame(DisplayIndex);
-                    ThisColumnRect.left = ColumnLeft;
-                    ThisColumnRect.right = ColumnRight;
-                    if(ThisColumn->fFlags & CLV_EXPANDER)
-                    {
-                        ThisColumnRect.right += item->OutlineLevel() * 20.0;
-                        if(ThisColumnRect.right > PushMax)
-                            ThisColumnRect.right = PushMax;
-                    }
-                    else
-                    {
-                        if(ThisColumn->fPushedByExpander)
-                        {
-                            float Shift = item->OutlineLevel() * 20.0;
-                            ThisColumnRect.left += Shift;
-                            ThisColumnRect.right += Shift;
-                            if(Shift > 0.0 && ThisColumnRect.right > PushMax)
-                                ThisColumnRect.right = PushMax;
-                        }
-                    }
-                
-                    if(ThisColumnRect.right >= ThisColumnRect.left)
-                        item->FrameChanged(column,ThisColumnRect,this);
-                    else
-                        item->FrameChanged(column,BRect(-1,-1,-1,-1),this);
-                }
-                else
-                    item->FrameChanged(column,BRect(-1,-1,-1,-1),this);
-            }
+           float ColumnLeft = ThisColumn->fColumnBegin;
+           float ColumnRight = ThisColumn->fColumnEnd;
+           for(int32 item_index = 0; item_index < number_of_items; item_index++)
+           {
+               CLVListItem* item;
+               if(fHierarchical)
+                  item = (CLVListItem*)fFullItemList.ItemAt(item_index);
+               else
+                  item = (CLVListItem*)ItemAt(item_index);
+               int32 DisplayIndex = IndexOf(item);    
+               if(DisplayIndex >= 0 && ThisColumn->IsShown())
+               {
+                  BRect ThisColumnRect = ItemFrame(DisplayIndex);
+                  ThisColumnRect.left = ColumnLeft;
+                  ThisColumnRect.right = ColumnRight;
+                  if(ThisColumn->fFlags & CLV_EXPANDER)
+                  {
+                      ThisColumnRect.right += item->OutlineLevel() * 20.0;
+                      if(ThisColumnRect.right > PushMax)
+                         ThisColumnRect.right = PushMax;
+                  }
+                  else
+                  {
+                      if(ThisColumn->fPushedByExpander)
+                      {
+                         float Shift = item->OutlineLevel() * 20.0;
+                         ThisColumnRect.left += Shift;
+                         ThisColumnRect.right += Shift;
+                         if(Shift > 0.0 && ThisColumnRect.right > PushMax)
+                             ThisColumnRect.right = PushMax;
+                      }
+                  }
+               
+                  if(ThisColumnRect.right >= ThisColumnRect.left)
+                      item->FrameChanged(column,ThisColumnRect,this);
+                  else
+                      item->FrameChanged(column,BRect(-1,-1,-1,-1),this);
+               }
+               else
+                  item->FrameChanged(column,BRect(-1,-1,-1,-1),this);
+           }
         }
     }
     //Get rid of a warning:
@@ -717,21 +717,21 @@ void ColumnListView::SetSortKey(int32 ColumnIndex, bool sortNow)
         int32 SortKeyCount = fSortKeyList.CountItems();
         for(int32 Counter = 0; Counter < SortKeyCount; Counter++)
         {
-            CLVColumn* UnderlineColumn = (CLVColumn*)fSortKeyList.ItemAt(Counter);
-            if(UnderlineColumn->fSortMode != NoSort)
-                fColumnLabelView->Invalidate(BRect(UnderlineColumn->fColumnBegin,LabelBounds.top,
-                    UnderlineColumn->fColumnEnd,LabelBounds.bottom));
+           CLVColumn* UnderlineColumn = (CLVColumn*)fSortKeyList.ItemAt(Counter);
+           if(UnderlineColumn->fSortMode != NoSort)
+               fColumnLabelView->Invalidate(BRect(UnderlineColumn->fColumnBegin,LabelBounds.top,
+                  UnderlineColumn->fColumnEnd,LabelBounds.bottom));
         }
         fSortKeyList.MakeEmpty();
 
         if(Column)
         {
-            fSortKeyList.AddItem(Column);
-            if(Column->fSortMode == NoSort)
-                SetSortMode(ColumnIndex,Ascending);
-            if (sortNow)
-                SortItems();
-            fColumnLabelView->Invalidate(BRect(Column->fColumnBegin,LabelBounds.top,Column->fColumnEnd, LabelBounds.bottom));
+           fSortKeyList.AddItem(Column);
+           if(Column->fSortMode == NoSort)
+               SetSortMode(ColumnIndex,Ascending);
+           if (sortNow)
+               SortItems();
+           fColumnLabelView->Invalidate(BRect(Column->fColumnBegin,LabelBounds.top,Column->fColumnEnd, LabelBounds.bottom));
         }
     }
 
@@ -758,7 +758,7 @@ void ColumnListView::AddSortKey(int32 ColumnIndex)
         SortItems();
         //Need to draw new underline
         fColumnLabelView->Invalidate(BRect(Column->fColumnBegin,LabelBounds.top,Column->fColumnEnd,
-            LabelBounds.bottom));
+           LabelBounds.bottom));
     }
 
     SortingChanged();
@@ -781,11 +781,11 @@ void ColumnListView::SetSortMode(int32 ColumnIndex,CLVSortMode Mode)
         BRect LabelBounds = fColumnLabelView->Bounds();
         Column->fSortMode = Mode;
         if(Mode == NoSort && fSortKeyList.HasItem(Column))
-            fSortKeyList.RemoveItem(Column);
+           fSortKeyList.RemoveItem(Column);
         SortItems();
         //Need to draw or erase underline
         fColumnLabelView->Invalidate(BRect(Column->fColumnBegin,LabelBounds.top,Column->fColumnEnd,
-            LabelBounds.bottom));
+           LabelBounds.bottom));
     }
 
     SortingChanged();
@@ -837,17 +837,17 @@ void ColumnListView::SetSorting(int32 NumberOfKeys, int32* SortKeys, CLVSortMode
     {
         CLVColumn* UnderlineColumn = (CLVColumn*)fSortKeyList.ItemAt(Counter);
         if(UnderlineColumn->fSortMode != NoSort)
-            fColumnLabelView->Invalidate(BRect(UnderlineColumn->fColumnBegin,LabelBounds.top,
-                UnderlineColumn->fColumnEnd,LabelBounds.bottom));
+           fColumnLabelView->Invalidate(BRect(UnderlineColumn->fColumnBegin,LabelBounds.top,
+               UnderlineColumn->fColumnEnd,LabelBounds.bottom));
     }
     fSortKeyList.MakeEmpty();
 
     for(int32 Counter = 0; Counter < NumberOfKeys; Counter++)
     {
         if(Counter == 0)
-            SetSortKey(SortKeys[0], false);
+           SetSortKey(SortKeys[0], false);
         else
-            AddSortKey(SortKeys[Counter]);
+           AddSortKey(SortKeys[Counter]);
         
         SetSortMode(SortKeys[Counter],SortModes[Counter]);
     }
@@ -890,91 +890,91 @@ void ColumnListView::MouseDown(BPoint where)
         CLVListItem* clicked_item = (CLVListItem*)BListView::ItemAt(item_index);
         if(clicked_item->IsSuperItem() && clicked_item->ExpanderRectContains(where))
         {
-            if(clicked_item->IsExpanded())
-                Collapse(clicked_item);
-            else
-                Expand(clicked_item);
+           if(clicked_item->IsExpanded())
+               Collapse(clicked_item);
+           else
+               Expand(clicked_item);
         }
         else
         {
-            if(!clicked_item->IsSelected())
-            {
-                //Clicked a new item...select it.
-                list_view_type type = ListType();
-                if((modifier_keys & B_SHIFT_KEY) && type != B_SINGLE_SELECTION_LIST)
-                {
-                    //If shift held down, expand the selection to include all intervening items.
-                    int32 min_selection = 0x7FFFFFFF;
-                    int32 max_selection = -1;
-                    int32 selection_index = 0;
-                    int32 selection_item_index;
-                    while((selection_item_index = CurrentSelection(selection_index)) != -1)
-                    {
-                        if(min_selection > selection_item_index)
-                            min_selection = selection_item_index;
-                        if(max_selection < selection_item_index)
-                            max_selection = selection_item_index;
-                        selection_index++;
-                    }
-                    if(min_selection == 0x7FFFFFFF)
-                        Select(item_index,false);
-                    else
-                    {
-                        if(min_selection > item_index)
-                            min_selection = item_index;
-                        if(max_selection < item_index)
-                            max_selection = item_index;
-                        Select(min_selection,max_selection,false);
-                    }
-                }
-                else if((modifier_keys & B_OPTION_KEY) && type != B_SINGLE_SELECTION_LIST)
-                    //If option held down, expand the selection to include just it.
-                    Select(item_index,true);
-                else
-                    //If neither key held down, select this item alone.
-                    Select(item_index,false);
+           if(!clicked_item->IsSelected())
+           {
+               //Clicked a new item...select it.
+               list_view_type type = ListType();
+               if((modifier_keys & B_SHIFT_KEY) && type != B_SINGLE_SELECTION_LIST)
+               {
+                  //If shift held down, expand the selection to include all intervening items.
+                  int32 min_selection = 0x7FFFFFFF;
+                  int32 max_selection = -1;
+                  int32 selection_index = 0;
+                  int32 selection_item_index;
+                  while((selection_item_index = CurrentSelection(selection_index)) != -1)
+                  {
+                      if(min_selection > selection_item_index)
+                         min_selection = selection_item_index;
+                      if(max_selection < selection_item_index)
+                         max_selection = selection_item_index;
+                      selection_index++;
+                  }
+                  if(min_selection == 0x7FFFFFFF)
+                      Select(item_index,false);
+                  else
+                  {
+                      if(min_selection > item_index)
+                         min_selection = item_index;
+                      if(max_selection < item_index)
+                         max_selection = item_index;
+                      Select(min_selection,max_selection,false);
+                  }
+               }
+               else if((modifier_keys & B_OPTION_KEY) && type != B_SINGLE_SELECTION_LIST)
+                  //If option held down, expand the selection to include just it.
+                  Select(item_index,true);
+               else
+                  //If neither key held down, select this item alone.
+                  Select(item_index,false);
 
-                //Also watch for drag of the new selection
-                fLastMouseDown = where;
-                fNoKeyMouseDownItemIndex = -1;
-                fWatchingForDrag = true;
-            }
-            else
-            {
-                //Clicked an already selected item...
-                if(modifier_keys & B_OPTION_KEY)
-                    //if option held down, remove it.
-                    Deselect(item_index);
-                else if(modifier_keys & B_SHIFT_KEY)
-                {
-                    //If shift held down, ignore it and just watch for drag.
-                    fLastMouseDown = where;
-                    fNoKeyMouseDownItemIndex = -1;
-                    fWatchingForDrag = true;
-                }
-                else
-                {
-                    if(clicks > 1)
-                        Invoke(InvocationMessage());
-                    else
-                    {
-                        //If neither key held down, watch for drag, but if no drag and just a click on
-                        //this item, select it alone at mouse up.
-                        fLastMouseDown = where;
-                        fNoKeyMouseDownItemIndex = item_index;
-                        fWatchingForDrag = true;
-                    }
-                }
-            }
-            if(fWatchingForDrag)
-                SetMouseEventMask(B_POINTER_EVENTS,B_NO_POINTER_HISTORY);
+               //Also watch for drag of the new selection
+               fLastMouseDown = where;
+               fNoKeyMouseDownItemIndex = -1;
+               fWatchingForDrag = true;
+           }
+           else
+           {
+               //Clicked an already selected item...
+               if(modifier_keys & B_OPTION_KEY)
+                  //if option held down, remove it.
+                  Deselect(item_index);
+               else if(modifier_keys & B_SHIFT_KEY)
+               {
+                  //If shift held down, ignore it and just watch for drag.
+                  fLastMouseDown = where;
+                  fNoKeyMouseDownItemIndex = -1;
+                  fWatchingForDrag = true;
+               }
+               else
+               {
+                  if(clicks > 1)
+                      Invoke(InvocationMessage());
+                  else
+                  {
+                      //If neither key held down, watch for drag, but if no drag and just a click on
+                      //this item, select it alone at mouse up.
+                      fLastMouseDown = where;
+                      fNoKeyMouseDownItemIndex = item_index;
+                      fWatchingForDrag = true;
+                  }
+               }
+           }
+           if(fWatchingForDrag)
+               SetMouseEventMask(B_POINTER_EVENTS,B_NO_POINTER_HISTORY);
         }
     }
     else
     {
         //Clicked outside of any items.  If no shift or option key, deselect all.
         if((!(modifier_keys & B_SHIFT_KEY)) && (!(modifier_keys & B_OPTION_KEY)))
-            DeselectAll();
+           DeselectAll();
     }
 }
 
@@ -1013,8 +1013,8 @@ void ColumnListView::WindowActivated(bool active)
         int32 selected;
         while((selected = CurrentSelection(index)) >= 0)
         {
-            InvalidateItem(selected);
-            index++;
+           InvalidateItem(selected);
+           index++;
         }
     }
     BListView::WindowActivated(active);
@@ -1047,13 +1047,13 @@ bool ColumnListView::AddUnder(BListItem* a_item, BListItem* a_superitem)
         CLVListItem* Temp = (CLVListItem*)fFullItemList.ItemAt(ItemPos);
         if(Temp)
         {
-            if(Temp->fOutlineLevel > SuperItemLevel)
-                ItemPos++;
-            else
-                break;
+           if(Temp->fOutlineLevel > SuperItemLevel)
+               ItemPos++;
+           else
+               break;
         }
         else
-            break;
+           break;
     }
     return AddItemPrivate(item,ItemPos);
 }
@@ -1075,7 +1075,7 @@ bool ColumnListView::AddUnderFast(BListItem* a_item, BListItem* a_superitem)
     {
         CLVListItem* Temp = (CLVListItem*)fFullItemList.ItemAt(ItemPos);
         if(!Temp || Temp->fOutlineLevel <= SuperItemLevel)
-            break;
+           break;
 
         ItemPos++;
     }
@@ -1126,64 +1126,64 @@ bool ColumnListView::AddItemPrivate(CLVListItem* item, int32 fullListIndex)
         //Find the item that contains it in the full list
         int32 SuperItemPos;
         if(ItemLevel == 0)
-            SuperItemPos = -1;
+           SuperItemPos = -1;
         else
-            SuperItemPos = fullListIndex - 1;
+           SuperItemPos = fullListIndex - 1;
         CLVListItem* SuperItem;
         while(SuperItemPos >= 0)
         {
-            SuperItem = (CLVListItem*)fFullItemList.ItemAt(SuperItemPos);
-            if(SuperItem)
-            {
-                if(SuperItem->fOutlineLevel >= ItemLevel)
-                    SuperItemPos--;
-                else
-                    break;
-            }
-            else
-                return false;
+           SuperItem = (CLVListItem*)fFullItemList.ItemAt(SuperItemPos);
+           if(SuperItem)
+           {
+               if(SuperItem->fOutlineLevel >= ItemLevel)
+                  SuperItemPos--;
+               else
+                  break;
+           }
+           else
+               return false;
         }
         if(SuperItemPos >= 0 && SuperItem)
         {
-            if(!SuperItem->IsExpanded())
-                //SuperItem's contents aren't visible
-                Visible = false;
-            if(!HasItem(SuperItem))
-                //SuperItem itself isn't showing
-                Visible = false;
+           if(!SuperItem->IsExpanded())
+               //SuperItem's contents aren't visible
+               Visible = false;
+           if(!HasItem(SuperItem))
+               //SuperItem itself isn't showing
+               Visible = false;
         }
         
         //Add the item to the full list
         if(!fFullItemList.AddItem(item,fullListIndex))
-            return false;
+           return false;
         else
         {
-            //Add the item to the display list
-            if (Visible)
-            {
-                //Find the previous item, or -1 if the item I'm adding will be the first one
-                int32 PreviousItemPos = fullListIndex - 1;
-                CLVListItem* PreviousItem;
-                while(PreviousItemPos >= 0)
-                {
-                    PreviousItem = (CLVListItem*)fFullItemList.ItemAt(PreviousItemPos);
-                    if(PreviousItem && HasItem(PreviousItem))
-                        break;
-                    else
-                        PreviousItemPos--;
-                }
-                
-                //Add the item after the previous item, or first on the list
-                bool Result;
-                if(PreviousItemPos >= 0)
-                    Result = BListView::AddItem((BListItem*)item,IndexOf(PreviousItem)+1);
-                else
-                    Result = BListView::AddItem((BListItem*)item,0);
-                if(Result == false)
-                    fFullItemList.RemoveItem(item);
-                return Result;
-            }
-            return true;
+           //Add the item to the display list
+           if (Visible)
+           {
+               //Find the previous item, or -1 if the item I'm adding will be the first one
+               int32 PreviousItemPos = fullListIndex - 1;
+               CLVListItem* PreviousItem;
+               while(PreviousItemPos >= 0)
+               {
+                  PreviousItem = (CLVListItem*)fFullItemList.ItemAt(PreviousItemPos);
+                  if(PreviousItem && HasItem(PreviousItem))
+                      break;
+                  else
+                      PreviousItemPos--;
+               }
+               
+               //Add the item after the previous item, or first on the list
+               bool Result;
+               if(PreviousItemPos >= 0)
+                  Result = BListView::AddItem((BListItem*)item,IndexOf(PreviousItem)+1);
+               else
+                  Result = BListView::AddItem((BListItem*)item,0);
+               if(Result == false)
+                  fFullItemList.RemoveItem(item);
+               return Result;
+           }
+           return true;
         }
     }
     else
@@ -1212,7 +1212,7 @@ bool ColumnListView::AddListPrivate(BList* newItems, int32 fullListIndex)
     int32 NumberOfItems = newItems->CountItems();
     for(int32 count = 0; count < NumberOfItems; count++)
         if(!AddItemPrivate((CLVListItem*)newItems->ItemAt(count),fullListIndex+count))
-            return false;
+           return false;
     return true;
 }
 
@@ -1228,7 +1228,7 @@ bool ColumnListView::RemoveItem(BListItem* a_item)
     if(fHierarchical)
     {
         if(!fFullItemList.HasItem(item))
-            return false;
+           return false;
         int32 ItemsToRemove = 1 + FullListNumberOfSubitems(item);
         return RemoveItems(fFullItemList.IndexOf(item),ItemsToRemove);
     }
@@ -1245,14 +1245,14 @@ BListItem* ColumnListView::RemoveItem(int32 fullListIndex)
         CLVListItem* TheItem = (CLVListItem*)fFullItemList.ItemAt(fullListIndex);
         if(TheItem)
         {
-            int32 ItemsToRemove = 1 + FullListNumberOfSubitems(TheItem);
-            if(RemoveItems(fullListIndex,ItemsToRemove))
-                return TheItem;
-            else
-                return NULL;
+           int32 ItemsToRemove = 1 + FullListNumberOfSubitems(TheItem);
+           if(RemoveItems(fullListIndex,ItemsToRemove))
+               return TheItem;
+           else
+               return NULL;
         }
         else
-            return NULL;
+           return NULL;
     }
     else
         return BListView::RemoveItem(fullListIndex);
@@ -1271,38 +1271,38 @@ bool ColumnListView::RemoveItems(int32 fullListIndex, int32 count)
         int32 FirstDisplayItemToRemove = -1;
         for(Counter = fullListIndex; Counter < fullListIndex+count; Counter++)
         {
-            TheItem = FullListItemAt(Counter);
-            if(TheItem->fOutlineLevel < LastSuperItemLevel)
-                LastSuperItemLevel = TheItem->fOutlineLevel;
-            if(BListView::HasItem((BListItem*)TheItem))
-            {
-                DisplayItemsToRemove++;
-                if(FirstDisplayItemToRemove == -1)
-                    FirstDisplayItemToRemove = BListView::IndexOf(TheItem);
-            }
+           TheItem = FullListItemAt(Counter);
+           if(TheItem->fOutlineLevel < LastSuperItemLevel)
+               LastSuperItemLevel = TheItem->fOutlineLevel;
+           if(BListView::HasItem((BListItem*)TheItem))
+           {
+               DisplayItemsToRemove++;
+               if(FirstDisplayItemToRemove == -1)
+                  FirstDisplayItemToRemove = BListView::IndexOf(TheItem);
+           }
         }
         while(true)
         {
-            TheItem = FullListItemAt(Counter);
-            if(TheItem && TheItem->fOutlineLevel > LastSuperItemLevel)
-            {
-                count++;
-                Counter++;
-                if(BListView::HasItem((BListItem*)TheItem))
-                {
-                    DisplayItemsToRemove++;
-                    if(FirstDisplayItemToRemove == -1)
-                        FirstDisplayItemToRemove = BListView::IndexOf((BListItem*)TheItem);
-                }
-            }
-            else
-                break;
+           TheItem = FullListItemAt(Counter);
+           if(TheItem && TheItem->fOutlineLevel > LastSuperItemLevel)
+           {
+               count++;
+               Counter++;
+               if(BListView::HasItem((BListItem*)TheItem))
+               {
+                  DisplayItemsToRemove++;
+                  if(FirstDisplayItemToRemove == -1)
+                      FirstDisplayItemToRemove = BListView::IndexOf((BListItem*)TheItem);
+               }
+           }
+           else
+               break;
         }
         while(DisplayItemsToRemove > 0)
         {
-            if(BListView::RemoveItem(FirstDisplayItemToRemove) == NULL)
-                return false;
-            DisplayItemsToRemove--;
+           if(BListView::RemoveItem(FirstDisplayItemToRemove) == NULL)
+               return false;
+           DisplayItemsToRemove--;
         }
         return fFullItemList.RemoveItems(fullListIndex,count);
     }
@@ -1402,7 +1402,7 @@ void ColumnListView::FullListDoForEach(bool (*func)(CLVListItem*))
     int32 NumberOfItems = fFullItemList.CountItems();
     for(int32 Counter = 0; Counter < NumberOfItems; Counter++)
         if(func((CLVListItem*)fFullItemList.ItemAt(Counter)) == true)
-            return;
+           return;
 }
 
 
@@ -1412,7 +1412,7 @@ void ColumnListView::FullListDoForEach(bool (*func)(CLVListItem*, void*), void* 
     int32 NumberOfItems = fFullItemList.CountItems();
     for(int32 Counter = 0; Counter < NumberOfItems; Counter++)
         if(func((CLVListItem*)fFullItemList.ItemAt(Counter),arg2) == true)
-            return;
+           return;
 }
 
 
@@ -1431,13 +1431,13 @@ CLVListItem* ColumnListView::Superitem(const CLVListItem* item) const
         SuperItem = (CLVListItem*)fFullItemList.ItemAt(SuperItemPos);
         if(SuperItem)
         {
-            if(SuperItem->fOutlineLevel >= ItemLevel)
-                SuperItemPos--;
-            else
-                break;
+           if(SuperItem->fOutlineLevel >= ItemLevel)
+               SuperItemPos--;
+           else
+               break;
         }
         else
-            return NULL;
+           return NULL;
     }
     if(SuperItemPos >= 0)
         return SuperItem;
@@ -1458,9 +1458,9 @@ int32 ColumnListView::FullListNumberOfSubitems(const CLVListItem* item) const
     {
         for(SubItemPos = ItemPos + 1; SubItemPos >= 1; SubItemPos++)
         {
-            CLVListItem* TheItem = FullListItemAt(SubItemPos);
-            if(TheItem == NULL || TheItem->fOutlineLevel <= SuperItemLevel)
-                break;
+           CLVListItem* TheItem = FullListItemAt(SubItemPos);
+           if(TheItem == NULL || TheItem->fOutlineLevel <= SuperItemLevel)
+               break;
         }
     }
     else
@@ -1485,12 +1485,12 @@ void ColumnListView::Expand(CLVListItem* item)
     {
         if(fExpanderColumn >= 0)
         {
-            //Change the state of the arrow
-            item->DrawItemColumn(this,item->fExpanderColumnRect,fExpanderColumn,true);
-            SetDrawingMode(B_OP_OVER);
-            DrawBitmap(&fDownArrow, BRect(0.0,0.0,item->fExpanderButtonRect.right-
-                item->fExpanderButtonRect.left,10.0),item->fExpanderButtonRect);
-            SetDrawingMode(B_OP_COPY);
+           //Change the state of the arrow
+           item->DrawItemColumn(this,item->fExpanderColumnRect,fExpanderColumn,true);
+           SetDrawingMode(B_OP_OVER);
+           DrawBitmap(&fDownArrow, BRect(0.0,0.0,item->fExpanderButtonRect.right-
+               item->fExpanderButtonRect.left,10.0),item->fExpanderButtonRect);
+           SetDrawingMode(B_OP_COPY);
         }
 
         //Add the items under it
@@ -1500,31 +1500,31 @@ void ColumnListView::Expand(CLVListItem* item)
         int32 AddPos = DisplayIndex + 1;
         while(true)
         {
-            CLVListItem* NextItem = (CLVListItem*)fFullItemList.ItemAt(Counter);
-            if(NextItem == NULL)
-                break;
-            if(NextItem->fOutlineLevel > ItemLevel)
-            {
-                BListView::AddItem((BListItem*)NextItem,AddPos++);
-                if(NextItem->fSuperItem && !NextItem->IsExpanded())
-                {
-                    //The item I just added is collapsed, so skip all its children
-                    uint32 SkipLevel = NextItem->fOutlineLevel + 1;
-                    while(true)
-                    {
-                        Counter++;
-                        NextItem = (CLVListItem*)fFullItemList.ItemAt(Counter);
-                        if(NextItem == NULL)
-                            break;
-                        if(NextItem->fOutlineLevel < SkipLevel)
-                            break;
-                    }
-                }
-                else
-                    Counter++;
-            }
-            else
-                break;
+           CLVListItem* NextItem = (CLVListItem*)fFullItemList.ItemAt(Counter);
+           if(NextItem == NULL)
+               break;
+           if(NextItem->fOutlineLevel > ItemLevel)
+           {
+               BListView::AddItem((BListItem*)NextItem,AddPos++);
+               if(NextItem->fSuperItem && !NextItem->IsExpanded())
+               {
+                  //The item I just added is collapsed, so skip all its children
+                  uint32 SkipLevel = NextItem->fOutlineLevel + 1;
+                  while(true)
+                  {
+                      Counter++;
+                      NextItem = (CLVListItem*)fFullItemList.ItemAt(Counter);
+                      if(NextItem == NULL)
+                         break;
+                      if(NextItem->fOutlineLevel < SkipLevel)
+                         break;
+                  }
+               }
+               else
+                  Counter++;
+           }
+           else
+               break;
         }
     }
 }
@@ -1546,12 +1546,12 @@ void ColumnListView::Collapse(CLVListItem* item)
     {
         if(fExpanderColumn >= 0)
         {
-            //Change the state of the arrow
-            item->DrawItemColumn(this,item->fExpanderColumnRect,fExpanderColumn,true);
-            SetDrawingMode(B_OP_OVER);
-            DrawBitmap(&fRightArrow, BRect(0.0,0.0,item->fExpanderButtonRect.right-
-                item->fExpanderButtonRect.left,10.0),item->fExpanderButtonRect);
-            SetDrawingMode(B_OP_COPY);
+           //Change the state of the arrow
+           item->DrawItemColumn(this,item->fExpanderColumnRect,fExpanderColumn,true);
+           SetDrawingMode(B_OP_OVER);
+           DrawBitmap(&fRightArrow, BRect(0.0,0.0,item->fExpanderButtonRect.right-
+               item->fExpanderButtonRect.left,10.0),item->fExpanderButtonRect);
+           SetDrawingMode(B_OP_COPY);
         }
 
         //Remove the items under it
@@ -1559,16 +1559,16 @@ void ColumnListView::Collapse(CLVListItem* item)
         int32 NextItemIndex = DisplayIndex+1;
         while(true)
         {
-            CLVListItem* NextItem = (CLVListItem*)ItemAt(NextItemIndex);
-            if(NextItem)
-            {
-                if(NextItem->fOutlineLevel > ItemLevel)
-                    BListView::RemoveItem(NextItemIndex);
-                else
-                    break;
-            }
-            else
-                break;
+           CLVListItem* NextItem = (CLVListItem*)ItemAt(NextItemIndex);
+           if(NextItem)
+           {
+               if(NextItem->fOutlineLevel > ItemLevel)
+                  BListView::RemoveItem(NextItemIndex);
+               else
+                  break;
+           }
+           else
+               break;
         }
     }
 }
@@ -1609,7 +1609,7 @@ void ColumnListView::SortItems()
         //Plain sort
         //Remember the list context for each item
         for(Counter = 0; Counter < NumberOfItems; Counter++)
-            ((CLVListItem*)ItemAt(Counter))->fSortingContextCLV = this;
+           ((CLVListItem*)ItemAt(Counter))->fSortingContextCLV = this;
         //Do the actual sort
         BListView::SortItems((int (*)(const void*, const void*))ColumnListView::PlainBListSortFunc);
     }
@@ -1621,7 +1621,7 @@ void ColumnListView::SortItems()
         fFullItemList = NewList;
         //Remember the list context for each item
         for(Counter = 0; Counter < NumberOfItems; Counter++)
-            ((CLVListItem*)fFullItemList.ItemAt(Counter))->fSortingContextBList = &fFullItemList;
+           ((CLVListItem*)fFullItemList.ItemAt(Counter))->fSortingContextBList = &fFullItemList;
         //Do the actual sort
         BListView::SortItems((int (*)(const void*, const void*))ColumnListView::HierarchicalBListSortFunc);
     }
@@ -1638,12 +1638,12 @@ int ColumnListView::PlainBListSortFunc(BListItem** a_item1, BListItem** a_item2)
     if(SortingContext->fCompare)
         for(int32 SortIteration = 0; SortIteration < SortDepth && CompareResult == 0; SortIteration++)
         {
-            CLVColumn* Column = (CLVColumn*)SortingContext->fSortKeyList.ItemAt(SortIteration);
-            CompareResult = SortingContext->fCompare(item1,item2, &(SortingContext->fColumnList),
-                                SortingContext->fColumnList.IndexOf(Column));
-                                
-            if(Column->fSortMode == Descending)
-                CompareResult = 0-CompareResult;
+           CLVColumn* Column = (CLVColumn*)SortingContext->fSortKeyList.ItemAt(SortIteration);
+           CompareResult = SortingContext->fCompare(item1,item2, &(SortingContext->fColumnList),
+                             SortingContext->fColumnList.IndexOf(Column));
+                             
+           if(Column->fSortMode == Descending)
+               CompareResult = 0-CompareResult;
         }
     return CompareResult;
 }
@@ -1676,11 +1676,11 @@ void ColumnListView::SortFullListSegment(int32 OriginalListStartIndex, int32 Ins
         CLVListItem* NextItem = (CLVListItem*)fFullItemList.ItemAt(fFullItemList.IndexOf(ThisItem)+1);
         if(ThisItem->IsSuperItem() && NextItem && ThisItem->fOutlineLevel < NextItem->fOutlineLevel)
         {
-            int32 OldListSize = NewList->CountItems();
-            SortFullListSegment(fFullItemList.IndexOf(ThisItem)+1,Counter+1,NewList);
-            int32 NewListSize = NewList->CountItems();
-            NewItemsStopIndex += NewListSize - OldListSize;
-            Counter += NewListSize - OldListSize;
+           int32 OldListSize = NewList->CountItems();
+           SortFullListSegment(fFullItemList.IndexOf(ThisItem)+1,Counter+1,NewList);
+           int32 NewListSize = NewList->CountItems();
+           NewItemsStopIndex += NewListSize - OldListSize;
+           Counter += NewListSize - OldListSize;
         }
     }
 }
@@ -1698,15 +1698,15 @@ BList* ColumnListView::SortItemsInThisLevel(int32 OriginalListStartIndex)
     {
         CLVListItem* ThisItem = (CLVListItem*)fFullItemList.ItemAt(Counter);
         if(ThisItem == NULL)
-            break;
+           break;
         uint32 ThisItemLevel = ThisItem->fOutlineLevel;
         if(ThisItemLevel == ThisLevel)
         {
-            ThisLevelItems->AddItem(ThisItem);
-            ItemsInThisLevel++;
+           ThisLevelItems->AddItem(ThisItem);
+           ItemsInThisLevel++;
         }
         else if(ThisItemLevel < ThisLevel)
-            break;
+           break;
         Counter++;
     }
 
@@ -1737,11 +1737,11 @@ void ColumnListView::SortListArray (CLVListItem** SortArray, int32 NumberOfItems
     CLVColumn* Column = (CLVColumn*)fSortKeyList.ItemAt(0);
     if (NumberOfItems > 1)
         for (int32 i = 0; i < NumberOfItems; i++)
-            if (fCompare (FullListItemAt(i), FullListItemAt(i+1), &fColumnList,fColumnList.IndexOf(Column)) != 0)
-            {
-                canSort = true;
-                break;
-            }
+           if (fCompare (FullListItemAt(i), FullListItemAt(i+1), &fColumnList,fColumnList.IndexOf(Column)) != 0)
+           {
+               canSort = true;
+               break;
+           }
 
     // We use quicksort now, instead of bubblesort -- Ram
     if (canSort == true)
@@ -1769,19 +1769,19 @@ void ColumnListView::QuickSort (CLVListItem **SortArray, int32 n)
         int32 CompareResult = 0;
         for (int32 SortIteration = 0; SortIteration < SortDepth && (CompareResult == 0); SortIteration++)
         {
-            CLVColumn* Column = (CLVColumn*)fSortKeyList.ItemAt(SortIteration);
-            CompareResult = fCompare (SortArray[Counter1], pivot, &fColumnList, fColumnList.IndexOf(Column));
-            
-            //if (CompareResult > 0)
-            //    CompareResult = 1;
-            //else if (CompareResult < 0)
-            //    CompareResult = -1;
-            if (Column->fSortMode == Descending)
-                CompareResult = -CompareResult;
+           CLVColumn* Column = (CLVColumn*)fSortKeyList.ItemAt(SortIteration);
+           CompareResult = fCompare (SortArray[Counter1], pivot, &fColumnList, fColumnList.IndexOf(Column));
+           
+           //if (CompareResult > 0)
+           //    CompareResult = 1;
+           //else if (CompareResult < 0)
+           //    CompareResult = -1;
+           if (Column->fSortMode == Descending)
+               CompareResult = -CompareResult;
         }
 
         if (CompareResult < 0)
-            SwapItems (SortArray, Counter1, ++last);
+           SwapItems (SortArray, Counter1, ++last);
     }
     
     SwapItems (SortArray, 0L, last);

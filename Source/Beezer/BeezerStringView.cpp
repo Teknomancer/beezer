@@ -18,7 +18,7 @@
 //=============================================================================================================//
 
 BeezerStringView::BeezerStringView (BRect frame, const char *name, const char *label,
-                uint32 rmask, uint32 flags)
+               uint32 rmask, uint32 flags)
     : BView (frame, name, rmask, flags),
     m_mouseTargetView (NULL),
     m_text (strdup (label)),

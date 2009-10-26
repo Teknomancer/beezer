@@ -53,36 +53,36 @@ int main (int argc, char *argv[])
     {
         //lineNum ++;
         data[strlen (data) - 1] = '\0';
-                
+               
         if (lineNum > 3)
         {
-            temp = data;
-            temp [strlen(temp)] = '\0';
-            temp += SkipSpaces (temp, 0);
-            i = 1;
-            while ((lenString = strtok (temp, " \t")) != NULL)
-            {
-//                cout << lenString << endl;
-                int32 length = strlen (lenString) +  2;
-                temp += length;
-                i++;
-                
-                if (i == 4)
-                {
-                    lenString = strtok (temp, "\n");
-                    temp += strlen (lenString);
-//                    cout << ++lenString << endl;
-                }
-            }
+           temp = data;
+           temp [strlen(temp)] = '\0';
+           temp += SkipSpaces (temp, 0);
+           i = 1;
+           while ((lenString = strtok (temp, " \t")) != NULL)
+           {
+//               cout << lenString << endl;
+               int32 length = strlen (lenString) +  2;
+               temp += length;
+               i++;
+               
+               if (i == 4)
+               {
+                  lenString = strtok (temp, "\n");
+                  temp += strlen (lenString);
+//                  cout << ++lenString << endl;
+               }
+           }
         }
         
 //        if (lineNum == 60)
 //        {
-//            BMessage msg;
-//            msg.AddPointer ("pFile", (void*)fp);
-//            tID = spawn_thread (ThreadOne, "ThreadOne",
-//                                60, &msg);
-//            resume_thread (tID);
+//           BMessage msg;
+//           msg.AddPointer ("pFile", (void*)fp);
+//           tID = spawn_thread (ThreadOne, "ThreadOne",
+//                             60, &msg);
+//           resume_thread (tID);
 //        }
     }
     
@@ -125,25 +125,25 @@ int32 ThreadOne (void *arg)
     while (fgets (data, 768, fp))
     {
         data[strlen (data) - 1] = '\0';
-                
+               
         temp = data;
         temp [strlen(temp)] = '\0';
         temp += SkipSpaces (temp, 0);
         i = 1;
         while ((lenString = strtok (temp, " \t")) != NULL)
         {
-            cout << lenString << endl;
-            int32 length = strlen (lenString) +  2;
-            temp += length;
-            i++;
-            
-            if (i == 4)
-            {
-                lenString = strtok (temp, "\n");
-                temp += strlen (lenString);
-                cout << ++lenString << endl;
-            }
-            cout.flush();
+           cout << lenString << endl;
+           int32 length = strlen (lenString) +  2;
+           temp += length;
+           i++;
+           
+           if (i == 4)
+           {
+               lenString = strtok (temp, "\n");
+               temp += strlen (lenString);
+               cout << ++lenString << endl;
+           }
+           cout.flush();
         }
     }
     pclose (fp);

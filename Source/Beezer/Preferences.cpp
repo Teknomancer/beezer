@@ -102,11 +102,11 @@ void Preferences::WritePrefs ()
 
         BEntry settingsDirEntry (settingsDirPath.Path(), true);
         if (settingsDirEntry.Exists() == false)
-            create_directory (settingsDirPath.Path(), 0777);
+           create_directory (settingsDirPath.Path(), 0777);
         
         BFile file (m_prefsPathStr, B_CREATE_FILE | B_ERASE_FILE | B_WRITE_ONLY);
         if (file.InitCheck() == B_OK)
-            Flatten (&file);
+           Flatten (&file);
     }
 }
 
@@ -238,7 +238,7 @@ status_t Preferences::SetColor (const char *name, rgb_color &col)
 {
     RemoveName (name);
     return AddInt32 (name, (((uint32)col.red) << 24) | (((uint32)col.green) << 16)
-                | (((uint32)col.blue) << 8)    | (((uint32)col.alpha) << 0)); 
+               | (((uint32)col.blue) << 8)    | (((uint32)col.alpha) << 0)); 
 }
 
 //=============================================================================================================//

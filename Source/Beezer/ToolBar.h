@@ -43,22 +43,22 @@ class ToolBar : public BView
         virtual void        RenderEdges ();
 
         // Protected members
-        BView              *m_finalSep,
-                           *m_finalSepEdge;
-        bool                m_isEnabled;
-        bool                m_isHidden;
-        BPoint              m_ptToDraw;
-        int32               m_nButtons,
-                            m_nSeparators,
-                            m_horizGap,
-                            m_vertGap;
-        BList               m_buttonList,
-                            m_separatorList;
-        rgb_color           m_backColor,
-                            m_lightEdge,
-                            m_darkEdge1,
-                            m_darkEdge2,
-                            m_darkEdge3;
+        BView             *m_finalSep,
+                        *m_finalSepEdge;
+        bool               m_isEnabled;
+        bool               m_isHidden;
+        BPoint             m_ptToDraw;
+        int32              m_nButtons,
+                         m_nSeparators,
+                         m_horizGap,
+                         m_vertGap;
+        BList              m_buttonList,
+                         m_separatorList;
+        rgb_color          m_backColor,
+                         m_lightEdge,
+                         m_darkEdge1,
+                         m_darkEdge2,
+                         m_darkEdge3;
         
         typedef BView       _inherited;
 };

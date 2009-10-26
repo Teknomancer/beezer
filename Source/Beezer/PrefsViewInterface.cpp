@@ -45,56 +45,56 @@ PrefsViewInterface::PrefsViewInterface (BRect frame)
 void PrefsViewInterface::Render ()
 {
     m_fullLengthBarsChk = new BCheckBox (BRect (m_margin, m_margin, 0, 0), "PrefsViewInterface:fullLenBars",
-                            str (S_PREFS_INTERFACE_FULLBARS), NULL);
+                         str (S_PREFS_INTERFACE_FULLBARS), NULL);
     m_fullLengthBarsChk->ResizeToPreferred();
 
     BStringView *colorStrView = new BStringView (BRect (m_margin, m_fullLengthBarsChk->Frame().bottom + 
-                                        m_margin + 2 * m_vGap, 0, 0), NULL, str (S_PREFS_INTERFACE_COLORS));
+                                    m_margin + 2 * m_vGap, 0, 0), NULL, str (S_PREFS_INTERFACE_COLORS));
     colorStrView->SetFont (&m_sectionFont);
     colorStrView->ResizeToPreferred();
     colorStrView->SetLowColor (ViewColor());
 
     BevelView *outerView =     new BevelView (BRect (3 * m_margin, colorStrView->Frame().bottom + m_margin,
-                                    3 * m_margin + 30, colorStrView->Frame().bottom + m_margin + 30),
-                                    "PrefsViewInterface:outerView", btDeep, B_FOLLOW_LEFT, B_WILL_DRAW);
+                                3 * m_margin + 30, colorStrView->Frame().bottom + m_margin + 30),
+                                "PrefsViewInterface:outerView", btDeep, B_FOLLOW_LEFT, B_WILL_DRAW);
     float boundary = outerView->EdgeThickness();
     
     m_colorWell = new BView (BRect (boundary, boundary, outerView->Frame().Width() - boundary,
-                                outerView->Frame().Height() - boundary), "PrefsViewInterface:colorWell",
-                                B_FOLLOW_LEFT, B_WILL_DRAW);
+                             outerView->Frame().Height() - boundary), "PrefsViewInterface:colorWell",
+                             B_FOLLOW_LEFT, B_WILL_DRAW);
     outerView->AddChild (m_colorWell);
     m_colorWell->SetViewColor (0,0,0,255);
     
     m_colorPopUp = new BPopUpMenu ("");
     m_colorField = new BMenuField (BRect (outerView->Frame().right + 3 * m_margin,
-                            outerView->Frame().top + 2, Frame().Width(), 0),
-                            "PrefsViewInterface:colorField", NULL, (BMenu*)m_colorPopUp, B_FOLLOW_LEFT,
-                            B_WILL_DRAW);
+                         outerView->Frame().top + 2, Frame().Width(), 0),
+                         "PrefsViewInterface:colorField", NULL, (BMenu*)m_colorPopUp, B_FOLLOW_LEFT,
+                         B_WILL_DRAW);
     m_colorPopUp->AddItem (new BMenuItem (str (S_PREFS_INTERFACE_ACTFORE), new BMessage (M_ITEM_CHANGE)));
     m_colorPopUp->AddItem (new BMenuItem (str (S_PREFS_INTERFACE_ACTBACK), new BMessage (M_ITEM_CHANGE)));
     m_colorPopUp->ResizeToPreferred();
     
     m_colorControl = new BColorControl (BPoint (3 * m_margin,
-                            MAX (m_colorPopUp->Frame().bottom, outerView->Frame().bottom) + m_margin + 2),
-                            B_CELLS_32x8, 8, "PrefsViewInteface:colorControl", new BMessage (M_COLOR_CHANGE));
+                         MAX (m_colorPopUp->Frame().bottom, outerView->Frame().bottom) + m_margin + 2),
+                         B_CELLS_32x8, 8, "PrefsViewInteface:colorControl", new BMessage (M_COLOR_CHANGE));
 
 
     BStringView *defStrView = new BStringView (BRect (m_margin, m_colorControl->Frame().bottom + 
-                                        2*m_margin + 2 * m_vGap, 0, 0), NULL, str (S_PREFS_INTERFACE_DEFAULTS));
+                                    2*m_margin + 2 * m_vGap, 0, 0), NULL, str (S_PREFS_INTERFACE_DEFAULTS));
     defStrView->SetFont (&m_sectionFont);
     defStrView->ResizeToPreferred();
     defStrView->SetLowColor (ViewColor());
 
     m_toolbarChk = new BCheckBox (BRect (3 * m_margin, defStrView->Frame().bottom + m_vGap, 0, 0),
-                                "PrefsViewInterface:toolbarChk", str (S_PREFS_INTERFACE_TOOLBAR), NULL);
+                             "PrefsViewInterface:toolbarChk", str (S_PREFS_INTERFACE_TOOLBAR), NULL);
     m_toolbarChk->ResizeToPreferred();
 
     m_infobarChk = new BCheckBox (BRect (3 * m_margin, m_toolbarChk->Frame().bottom + m_vGap, 0, 0),
-                                "PrefsViewInterface:infoBarChk", str (S_PREFS_INTERFACE_INFOBAR), NULL);
+                             "PrefsViewInterface:infoBarChk", str (S_PREFS_INTERFACE_INFOBAR), NULL);
     m_infobarChk->ResizeToPreferred();
 
     m_actionLogChk = new BCheckBox (BRect (3 * m_margin, m_infobarChk->Frame().bottom + m_vGap, 0, 0),
-                                "PrefsViewInterface:actionLogChk", str (S_PREFS_INTERFACE_ACTION_LOG), NULL);
+                             "PrefsViewInterface:actionLogChk", str (S_PREFS_INTERFACE_ACTION_LOG), NULL);
     m_actionLogChk->ResizeToPreferred();
 
     m_foldingPopUp = new BPopUpMenu ("");
@@ -109,10 +109,10 @@ void PrefsViewInterface::Render ()
     maxW += 5 * m_margin + 30;
 
     m_foldingField = new BMenuField (BRect (m_toolbarChk->Frame().left + maxW,
-                            m_toolbarChk->Frame().top, Bounds().right - m_margin, 0),
-                            "PrefsViewInterface:foldingField", str (S_PREFS_INTERFACE_FOLDING),
-                            (BMenu*)m_foldingPopUp, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
-    float div = m_foldingField->StringWidth (m_foldingField->Label()) + 10;                        
+                         m_toolbarChk->Frame().top, Bounds().right - m_margin, 0),
+                         "PrefsViewInterface:foldingField", str (S_PREFS_INTERFACE_FOLDING),
+                         (BMenu*)m_foldingPopUp, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
+    float div = m_foldingField->StringWidth (m_foldingField->Label()) + 10;                      
     m_foldingField->SetDivider (div);
 
     font_height fntHt;
@@ -148,7 +148,7 @@ void PrefsViewInterface::Save ()
     path << "/" << K_SETTINGS_MAINWINDOW;
 
     BFile file (path.String(), B_READ_ONLY);
-    msg.Unflatten (&file);                        // may fail (if settings file is missing, but doesn't matter
+    msg.Unflatten (&file);                      // may fail (if settings file is missing, but doesn't matter
 
     // Change only the fields we need, rest (such as Window size and position, columns etc. remain unchanged
     // and will be preserved)
@@ -219,28 +219,28 @@ void PrefsViewInterface::MessageReceived (BMessage *message)
     {
         case M_COLOR_CHANGE:
         {
-            BMenuItem *item = m_colorPopUp->FindMarked();
-            if (!item)
-                break;
-                
-            BString itemText = item->Label();
-            if (itemText == str (S_PREFS_INTERFACE_ACTFORE))
-                m_actFore = m_colorControl->ValueAsColor();
-            else if (itemText == str (S_PREFS_INTERFACE_ACTBACK))
-                m_actBack = m_colorControl->ValueAsColor();
-            
-            UpdateColorWell();
-            break;
+           BMenuItem *item = m_colorPopUp->FindMarked();
+           if (!item)
+               break;
+               
+           BString itemText = item->Label();
+           if (itemText == str (S_PREFS_INTERFACE_ACTFORE))
+               m_actFore = m_colorControl->ValueAsColor();
+           else if (itemText == str (S_PREFS_INTERFACE_ACTBACK))
+               m_actBack = m_colorControl->ValueAsColor();
+           
+           UpdateColorWell();
+           break;
         }
         
         case M_ITEM_CHANGE:
         {
-            BMenuItem *item = NULL;
-            message->FindPointer ("source", (void**)&item);
-            if (!item)
-                break;
-            UpdateColorControl (item);
-            break;
+           BMenuItem *item = NULL;
+           message->FindPointer ("source", (void**)&item);
+           if (!item)
+               break;
+           UpdateColorControl (item);
+           break;
         }
     }
     

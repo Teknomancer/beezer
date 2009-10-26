@@ -21,11 +21,11 @@ class AuthorWindow : public BWindow
         AuthorWindow ();
     
         // Inherited hooks
-        virtual void         Quit ();
+        virtual void        Quit ();
         
     private:
-        BevelView           *m_backView,
-                            *m_contentView;
+        BevelView          *m_backView,
+                         *m_contentView;
 };
 
 #endif /* _AUTHOR_WINDOW_H */

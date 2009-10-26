@@ -19,37 +19,37 @@ class Preferences : public BMessage
         ~Preferences ();
     
         // Additional hooks
-        virtual void         Init (const char *dir, const char *file);
-        virtual void         WritePrefs ();
-        virtual void         ReadPrefs ();
-        virtual void         SetLocation (const char *path);
-        const char          *Location() const;
+        virtual void        Init (const char *dir, const char *file);
+        virtual void        WritePrefs ();
+        virtual void        ReadPrefs ();
+        virtual void        SetLocation (const char *path);
+        const char         *Location() const;
 
-        status_t             SetBool (const char *name, bool b);
-        status_t             SetInt8 (const char *name, int8 i);
-        status_t             SetInt16 (const char *name, int16 i);
-        status_t             SetInt32 (const char *name, int32 i);
-        status_t             SetInt64 (const char *name, int64 i);
-        status_t             SetFloat (const char *name, float f);
-        status_t             SetDouble (const char *name, double d);
-        status_t             SetString (const char *name, const char *string);
-        status_t             SetPoint (const char *name, BPoint p);
-        status_t             SetRect (const char *name, BRect r);
-        status_t             SetMessage (const char *name, const BMessage *message);
-        status_t             SetColor (const char *name, rgb_color &color);
-        status_t             SetFlat (const char *name, const BFlattenable *obj);
+        status_t            SetBool (const char *name, bool b);
+        status_t            SetInt8 (const char *name, int8 i);
+        status_t            SetInt16 (const char *name, int16 i);
+        status_t            SetInt32 (const char *name, int32 i);
+        status_t            SetInt64 (const char *name, int64 i);
+        status_t            SetFloat (const char *name, float f);
+        status_t            SetDouble (const char *name, double d);
+        status_t            SetString (const char *name, const char *string);
+        status_t            SetPoint (const char *name, BPoint p);
+        status_t            SetRect (const char *name, BRect r);
+        status_t            SetMessage (const char *name, const BMessage *message);
+        status_t            SetColor (const char *name, rgb_color &color);
+        status_t            SetFlat (const char *name, const BFlattenable *obj);
         
-        bool                 FindBoolDef (const char *name, bool defaultValue);
-        int8                 FindInt8Def (const char *name, int8 defaultValue);
-        int16                FindInt16Def (const char *name, int16 defaultValue);
-        rgb_color            FindColorDef (const char *name, rgb_color defaultValue);
+        bool                FindBoolDef (const char *name, bool defaultValue);
+        int8                FindInt8Def (const char *name, int8 defaultValue);
+        int16               FindInt16Def (const char *name, int16 defaultValue);
+        rgb_color           FindColorDef (const char *name, rgb_color defaultValue);
 
     private:
         // Private hooks
-        void                 FreePathString ();
+        void                FreePathString ();
         
         // Private members
-        const char          *m_prefsPathStr;
+        const char         *m_prefsPathStr;
 };
 
 extern Preferences _prefs_colors;

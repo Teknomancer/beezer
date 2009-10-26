@@ -64,10 +64,10 @@ class URLView : public BStringView
 {
     public:
         URLView (BRect frame, const char *name, const char *label, const char *url,
-                  uint32 resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP, uint32 flags = B_WILL_DRAW );
+                uint32 resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP, uint32 flags = B_WILL_DRAW );
         ~URLView ();
         
-        // Inherited hooks                        
+        // Inherited hooks                      
         virtual void        AttachedToWindow ();
         virtual void        Draw (BRect updateRect);
         virtual void        MessageReceived (BMessage *message);
@@ -96,44 +96,44 @@ class URLView : public BStringView
         
     private:
         // Private hooks
-        void                CopyToClipboard();
-        void                CreateBookmark (const BString *fullName, const BString *title);
-        void                CreatePerson (const BString *fullName, const BString *title);
-        BPopUpMenu         *CreatePopupMenu ();
-        void                DoBookmarkDrag ();
-        void                DoPersonDrag ();
-        BString             GetImportantURL ();
-        BRect               GetTextRect ();
-        BRect               GetURLRect ();
-        bool                IsEmailLink ();
-        bool                IsFTPLink ();
-        bool                IsHTMLLink ();
-        void                LaunchURL ();
-        void                Redraw ();
-        void                WriteAttributes (int fd);
+        void               CopyToClipboard();
+        void               CreateBookmark (const BString *fullName, const BString *title);
+        void               CreatePerson (const BString *fullName, const BString *title);
+        BPopUpMenu        *CreatePopupMenu ();
+        void               DoBookmarkDrag ();
+        void               DoPersonDrag ();
+        BString            GetImportantURL ();
+        BRect              GetTextRect ();
+        BRect              GetURLRect ();
+        bool               IsEmailLink ();
+        bool               IsFTPLink ();
+        bool               IsHTMLLink ();
+        void               LaunchURL ();
+        void               Redraw ();
+        void               WriteAttributes (int fd);
     
-        BString            *m_url;
-        rgb_color           m_foreColor;
-        rgb_color           m_clickColor;
-        rgb_color           m_hoverColor;
-        rgb_color           m_disabledColor;
-        bool                m_enabled;
-        bool                m_hoverEnabled;
-        bool                m_draggable;
-        int                 m_underlineThickness;
-        int                 m_iconSize;
-        bool                m_selected;
-        bool                m_hovering;
-        bool                m_draggedOut;
-        bool                m_inPopup;
+        BString           *m_url;
+        rgb_color          m_foreColor;
+        rgb_color          m_clickColor;
+        rgb_color          m_hoverColor;
+        rgb_color          m_disabledColor;
+        bool               m_enabled;
+        bool               m_hoverEnabled;
+        bool               m_draggable;
+        int                m_underlineThickness;
+        int                m_iconSize;
+        bool               m_selected;
+        bool               m_hovering;
+        bool               m_draggedOut;
+        bool               m_inPopup;
         const BCursor      *m_linkCursor;
-        BPoint              m_dragOffset;
-        BList              *m_attributes;
+        BPoint             m_dragOffset;
+        BList             *m_attributes;
         
         typedef struct kp
         {
-            BString        *key;
-            BString        *value;
+           BString        *key;
+           BString        *value;
         } KeyPair;
 };
 

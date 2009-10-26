@@ -33,27 +33,27 @@ PrefsViewWindows::PrefsViewWindows (BRect frame)
 void PrefsViewWindows::Render ()
 {
     m_searchChk = new BCheckBox (BRect (m_margin, m_margin, 0, 0), "PrefsViewWindows:searchChk",
-                            str (S_PREFS_WINDOWS_SEARCH), NULL);
+                         str (S_PREFS_WINDOWS_SEARCH), NULL);
     m_searchChk->ResizeToPreferred();
 
     m_logChk = new BCheckBox (BRect (m_margin, m_searchChk->Frame().bottom + m_vGap, 0, 0),
-                                "PrefsViewWindows:logChk", str (S_PREFS_WINDOWS_LOG), NULL);
+                             "PrefsViewWindows:logChk", str (S_PREFS_WINDOWS_LOG), NULL);
     m_logChk->ResizeToPreferred();
 
     m_commentChk = new BCheckBox (BRect (m_margin, m_logChk->Frame().bottom + m_vGap, 0, 0),
-                                "PrefsViewWindows:commentChk", str (S_PREFS_WINDOWS_COMMENT), NULL);
+                             "PrefsViewWindows:commentChk", str (S_PREFS_WINDOWS_COMMENT), NULL);
     m_commentChk->ResizeToPreferred();
 
     m_arkInfoChk = new BCheckBox (BRect (m_margin, m_commentChk->Frame().bottom + m_vGap, 0, 0),
-                                "PrefsViewWindows:arkInfoChk", str (S_PREFS_WINDOWS_ARKINFO), NULL);
+                             "PrefsViewWindows:arkInfoChk", str (S_PREFS_WINDOWS_ARKINFO), NULL);
     m_arkInfoChk->ResizeToPreferred();
 
     m_welcomeChk = new BCheckBox (BRect (m_margin, m_arkInfoChk->Frame().bottom + m_vGap, 0, 0),
-                                "PrefsViewWindows:welcomeChk", str (S_PREFS_WINDOWS_WELCOME), NULL);
+                             "PrefsViewWindows:welcomeChk", str (S_PREFS_WINDOWS_WELCOME), NULL);
     m_welcomeChk->ResizeToPreferred();
 
     m_prefsChk = new BCheckBox (BRect (m_margin, m_welcomeChk->Frame().bottom + m_vGap, 0, 0),
-                                "PrefsViewWindows:presfChk", str (S_PREFS_WINDOWS_PREFS), NULL);
+                             "PrefsViewWindows:presfChk", str (S_PREFS_WINDOWS_PREFS), NULL);
     m_prefsChk->ResizeToPreferred();
 
     AddChild (m_searchChk);

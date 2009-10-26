@@ -424,7 +424,7 @@ static const char * _englishStrings [NUM_STRINGS] =
         "Make %s the preferred app for this type?",
     "Install " B_UTF8_OPEN_QUOTE "%t" B_UTF8_CLOSE_QUOTE "\n and associate it with %s?",
     "Yes, make it preferred",
-    "Register all types!!",                                                // 0.06 (only 2 new in 0.06)
+    "Register all types!!",                                           // 0.06 (only 2 new in 0.06)
     "Completed registering of file types. Associated %ld file types with %s.",
     "%s has already been associated with all supported archive types.",
     "Couldn't locate the help files.",
@@ -450,7 +450,7 @@ static const char * _englishStrings [NUM_STRINGS] =
         "Comment window",
         "Archive Info window",
         "Welcome window",
-        "Preferences window",                                            // 0.06 (see above)
+        "Preferences window",                                        // 0.06 (see above)
     "Paths",
         "Configure default & favourite paths",
         "Default Paths:",
@@ -467,7 +467,7 @@ static const char * _englishStrings [NUM_STRINGS] =
         "Add a favourite extract path",
         "List more paths (using archive name)",
         "The path " B_UTF8_OPEN_QUOTE "%s" B_UTF8_CLOSE_QUOTE " is already present in your "
-            "list of favourite paths.",
+           "list of favourite paths.",
     "Recent",
         "Configure recent archives & extract locations",
         "Recent archives",
@@ -505,7 +505,7 @@ static const char * _englishStrings [NUM_STRINGS] =
         "Show create archive panel",
         "Show open archive panel",
     
-    "Tools",                                // 0.07 starts here
+    "Tools",                             // 0.07 starts here
     "Tools",
     "Additional tools",
     "File Splitter",
@@ -520,7 +520,7 @@ static const char * _englishStrings [NUM_STRINGS] =
     "File size:",
     "Custom size:",
     "Custom size... ",
-    "1.44 MB - (floppy)",                // Must be of the format !!     <size> - (description)
+    "1.44 MB - (floppy)",               // Must be of the format !!     <size> - (description)
     "1.20 MB - (floppy)",
     "100 MB - (zip disk)",
     "250 MB - (zip disk)",
@@ -555,7 +555,7 @@ static const char * _englishStrings [NUM_STRINGS] =
     "_Create_%s",        // The underscore at the beginning is just to make the stub file alphabetically on top
     
     
-    "File Joiner",                                                // Joiner strings
+    "File Joiner",                                           // Joiner strings
     "This tool lets you join several files into a single file.",
     "The order of joining is based on number suffixes in the filenames...",
     "First file piece:",
@@ -593,7 +593,7 @@ static const char * _englishStrings [NUM_STRINGS] =
     "Password: ",
     "QuickCreate Archive\n\nAdding is in progress, force it to stop?",
     
-    "Default Interface settings:",                    // 0.09 preferences::interface
+    "Default Interface settings:",                  // 0.09 preferences::interface
     "Show Toolbar",
     "Show Infobar",
     "Show Action Log",

@@ -27,7 +27,7 @@ typedef struct stat StatStruct;
 //=============================================================================================================//
 
 status_t JoinFile (const char *firstChunkPathStr, const char *outputDir, const char *separator,
-            BMessenger *progress, volatile bool *cancel)
+           BMessenger *progress, volatile bool *cancel)
 {
     BString firstChunkPath = firstChunkPathStr;
     int32 index = firstChunkPath.FindLast ('/');
@@ -77,12 +77,12 @@ status_t JoinFile (const char *firstChunkPathStr, const char *outputDir, const c
         get_system_info (&sysInfo);
 
         size_t freeSize = static_cast<size_t>((sysInfo.max_pages - sysInfo.used_pages) * B_PAGE_SIZE);
-        bufSize = freeSize / 4;                        // take 1/4 of RAM max
-        bufSize -= bufSize % (16 * 1024);            // Round to 16 KB boundaries
-        if (bufSize < kMinBufferSize)                // at least kMinBufferSize
-            bufSize = kMinBufferSize;
-        else if (bufSize > kMaxBufferSize)            // no more than kMaxBufferSize
-            bufSize = kMaxBufferSize; 
+        bufSize = freeSize / 4;                      // take 1/4 of RAM max
+        bufSize -= bufSize % (16 * 1024);           // Round to 16 KB boundaries
+        if (bufSize < kMinBufferSize)               // at least kMinBufferSize
+           bufSize = kMinBufferSize;
+        else if (bufSize > kMaxBufferSize)           // no more than kMaxBufferSize
+           bufSize = kMaxBufferSize; 
     }
 
     BDirectory dir (dirString.String());
@@ -96,41 +96,41 @@ status_t JoinFile (const char *firstChunkPathStr, const char *outputDir, const c
         // Do the copying stuff!!
         for (;;)
         {
-            if (cancel && *cancel == true)
-            {
-                destFile.Unset();
+           if (cancel && *cancel == true)
+           {
+               destFile.Unset();
 
-                BEntry destEntry;
-                if (dir.FindEntry (baseName.String(), &destEntry) == B_OK)
-                    destEntry.Remove();
+               BEntry destEntry;
+               if (dir.FindEntry (baseName.String(), &destEntry) == B_OK)
+                  destEntry.Remove();
 
-                return BZR_CANCEL;
-            }
-            
-            ssize_t bytes = srcFile.Read (buffer, bufSize);
-            if (bytes > 0)
-            {
-                ssize_t updateBytes = 0;
-                if (bytes > 32 * 1024)
-                    updateBytes = bytes / 2;
-                
-                ssize_t result = destFile.WriteAt (writePosition, buffer, (size_t)bytes);
+               return BZR_CANCEL;
+           }
+           
+           ssize_t bytes = srcFile.Read (buffer, bufSize);
+           if (bytes > 0)
+           {
+               ssize_t updateBytes = 0;
+               if (bytes > 32 * 1024)
+                  updateBytes = bytes / 2;
+               
+               ssize_t result = destFile.WriteAt (writePosition, buffer, (size_t)bytes);
 
-                if (progress)
-                {
-                    BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
-                    updateMessage.AddString ("text", curFileName.String());
-                    updateMessage.AddFloat ("delta", (float)result);
-                    progress->SendMessage (&updateMessage, &reply);
-                }
+               if (progress)
+               {
+                  BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
+                  updateMessage.AddString ("text", curFileName.String());
+                  updateMessage.AddFloat ("delta", (float)result);
+                  progress->SendMessage (&updateMessage, &reply);
+               }
 
-                if (result != bytes)
-                    return B_ERROR;
-                    
-                writePosition += bytes;
-            }
-            else
-                break;
+               if (result != bytes)
+                  return B_ERROR;
+                  
+               writePosition += bytes;
+           }
+           else
+               break;
         }
         
         start++;
@@ -162,23 +162,23 @@ void JoinCopyAttributes (BNode *srcNode, BNode *destNode, void *buffer, size_t b
     {
         attr_info info;
         if (srcNode->GetAttrInfo (name, &info) != B_OK)
-            continue;
+           continue;
 
         ssize_t bytes;
         ssize_t numToRead = (ssize_t)info.size;
         
         for (off_t offset = 0; numToRead > 0; offset += bytes)
         {
-            size_t chunkSize = (size_t)numToRead;
-            if (chunkSize > bufSize)
-                chunkSize = bufSize;
+           size_t chunkSize = (size_t)numToRead;
+           if (chunkSize > bufSize)
+               chunkSize = bufSize;
 
-            bytes = srcNode->ReadAttr (name, info.type, offset, buffer, chunkSize);
-            if (bytes <= 0) 
-                break;
-            
-            destNode->WriteAttr (name, info.type, offset, buffer, (size_t)bytes);
-            numToRead -= bytes;
+           bytes = srcNode->ReadAttr (name, info.type, offset, buffer, chunkSize);
+           if (bytes <= 0) 
+               break;
+           
+           destNode->WriteAttr (name, info.type, offset, buffer, (size_t)bytes);
+           numToRead -= bytes;
         }
     }
 }
@@ -186,7 +186,7 @@ void JoinCopyAttributes (BNode *srcNode, BNode *destNode, void *buffer, size_t b
 //=============================================================================================================//
 
 void FindChunks (const char *firstChunkPathStr, const char *separator, int32 &fileCount,
-            off_t &totalSize, volatile bool *cancel)
+           off_t &totalSize, volatile bool *cancel)
 {
     BString firstChunkPath = firstChunkPathStr;
     int32 index = firstChunkPath.FindLast ('/');
@@ -212,12 +212,12 @@ void FindChunks (const char *firstChunkPathStr, const char *separator, int32 &fi
     BEntry chunkEntry;
     off_t size;
     uint16 start = atoi (numberString.String());    // start from the number they choose eg 2 or 3
-    // uint16 start = 1;                            // always start with 1 as the first file number
+    // uint16 start = 1;                         // always start with 1 as the first file number
     // Determine what is to be done, either 1 or the number user chooses
     while (dir.FindEntry (curFileName.String(), &chunkEntry, false) == B_OK)
     {
         if (cancel && *cancel == true)
-            break;
+           break;
         
         fileCount++;
         chunkEntry.GetSize (&size);

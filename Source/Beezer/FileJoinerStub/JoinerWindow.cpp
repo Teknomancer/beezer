@@ -41,7 +41,7 @@ JoinerWindow::JoinerWindow ()
     AddChild (m_backView);
     
     m_statusBar = new BStatusBar (BRect (2 * K_MARGIN, 2 * K_MARGIN, Bounds().right - 2 * K_MARGIN, 0),
-                            "JoinerWindow:StatusBar", str (S_JOINING_FILE), NULL);
+                         "JoinerWindow:StatusBar", str (S_JOINING_FILE), NULL);
     m_statusBar->ResizeToPreferred();
     m_statusBar->ResizeTo (Bounds().right - 4 * K_MARGIN - 1, m_statusBar->Frame().Height());
     m_statusBar->SetResizingMode (B_FOLLOW_LEFT_RIGHT);
@@ -50,10 +50,10 @@ JoinerWindow::JoinerWindow ()
     m_backView->AddChild (m_statusBar);
 
     m_cancelBtn = new BButton (BRect (Bounds().right - 2 * K_MARGIN - K_BUTTON_WIDTH,
-                            m_statusBar->Frame().bottom + K_MARGIN, Bounds().right - 2 * K_MARGIN,
-                            m_statusBar->Frame().bottom + K_MARGIN + K_BUTTON_HEIGHT),
-                            "JoinerWindow:CancelBtn", str (S_CANCEL), new BMessage (M_CANCEL),
-                            B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
+                         m_statusBar->Frame().bottom + K_MARGIN, Bounds().right - 2 * K_MARGIN,
+                         m_statusBar->Frame().bottom + K_MARGIN + K_BUTTON_HEIGHT),
+                         "JoinerWindow:CancelBtn", str (S_CANCEL), new BMessage (M_CANCEL),
+                         B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
     m_backView->AddChild (m_cancelBtn);
     
     ResizeTo (Frame().Width(), m_cancelBtn->Frame().bottom + 2 * K_MARGIN);
@@ -101,41 +101,41 @@ void JoinerWindow::MessageReceived (BMessage *message)
     {
         case M_OPERATION_COMPLETE:
         {
-            status_t result = message->FindInt32 (kResult);
-            if (result == BZR_ERROR)
-            {
-                BAlert *alert = new BAlert ("Error", str (S_JOIN_ERROR), str (S_OK), NULL, NULL,
-                                        B_WIDTH_AS_USUAL, B_STOP_ALERT);
-                alert->Go();
-            }
-            
-            snooze (100000);
-            PostMessage (B_QUIT_REQUESTED);
-            break;
+           status_t result = message->FindInt32 (kResult);
+           if (result == BZR_ERROR)
+           {
+               BAlert *alert = new BAlert ("Error", str (S_JOIN_ERROR), str (S_OK), NULL, NULL,
+                                    B_WIDTH_AS_USUAL, B_STOP_ALERT);
+               alert->Go();
+           }
+           
+           snooze (100000);
+           PostMessage (B_QUIT_REQUESTED);
+           break;
         }
         
         case M_CANCEL:
         {
-            m_cancel = true;
-            break;
+           m_cancel = true;
+           break;
         }
-                
+               
         case BZR_UPDATE_PROGRESS:
         {
-            char percentStr [100];
-            float delta = message->FindFloat ("delta");
-            int8 percent = (int8)ceil(100 * ((m_statusBar->CurrentValue() + delta) / m_statusBar->MaxValue()));
-            sprintf (percentStr, "%d%%", percent);
-            
-            BString text = message->FindString ("text");
-            
-            m_statusBar->Update (delta, text.String(), percentStr);
-            message->SendReply ('DUMB');
-            break;
+           char percentStr [100];
+           float delta = message->FindFloat ("delta");
+           int8 percent = (int8)ceil(100 * ((m_statusBar->CurrentValue() + delta) / m_statusBar->MaxValue()));
+           sprintf (percentStr, "%d%%", percent);
+           
+           BString text = message->FindString ("text");
+           
+           m_statusBar->Update (delta, text.String(), percentStr);
+           message->SendReply ('DUMB');
+           break;
         }
 
         default:
-            return BWindow::MessageReceived (message);
+           return BWindow::MessageReceived (message);
     }
 }
 
@@ -205,7 +205,7 @@ int32 JoinerWindow::_joiner (void *arg)
     JoinerWindow *wnd = (JoinerWindow*)arg;
 
     status_t result = JoinFile (wnd->m_chunkPathStr.String(), wnd->m_dirPathStr.String(),
-                            wnd->m_separatorStr.String(), wnd->m_messenger, &(wnd->m_cancel));
+                         wnd->m_separatorStr.String(), wnd->m_messenger, &(wnd->m_cancel));
 
     BMessage completeMsg (M_OPERATION_COMPLETE);
     completeMsg.AddInt32 (kResult, result);

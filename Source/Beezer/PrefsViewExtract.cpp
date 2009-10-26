@@ -28,21 +28,21 @@ PrefsViewExtract::PrefsViewExtract (BRect frame)
 void PrefsViewExtract::Render ()
 {
     m_openFolderChk = new BCheckBox (BRect (m_margin, m_margin, 0, 0), "PrefsViewExtract:openFolderChk",
-                            str (S_PREFS_EXTRACT_OPEN_DIR), NULL);
+                         str (S_PREFS_EXTRACT_OPEN_DIR), NULL);
     m_openFolderChk->ResizeToPreferred();
 
     m_closeChk = new BCheckBox (BRect (m_margin, m_openFolderChk->Frame().bottom + m_vGap, 0, 0),
-                                "PrefsViewExtract:closeChk", str (S_PREFS_EXTRACT_CLOSE_WINDOW), NULL);
+                             "PrefsViewExtract:closeChk", str (S_PREFS_EXTRACT_CLOSE_WINDOW), NULL);
     m_closeChk->ResizeToPreferred();
 
     BString s = str (S_PREFS_EXTRACT_QUIT_APP);
     s.ReplaceAll ("%s", K_APP_TITLE);
     m_quitChk = new BCheckBox (BRect (m_margin, m_closeChk->Frame().bottom + m_vGap, 0, 0),
-                                "PrefsViewExtract:closeChk", s.String(), NULL);
+                             "PrefsViewExtract:closeChk", s.String(), NULL);
     m_quitChk->ResizeToPreferred();
 
     m_dragChk = new BCheckBox (BRect (m_margin, m_quitChk->Frame().bottom + m_vGap, 0, 0),
-                                "PrefsViewExtract:dragChk", str (S_PREFS_EXTRACT_DRAG_PATH), NULL);
+                             "PrefsViewExtract:dragChk", str (S_PREFS_EXTRACT_DRAG_PATH), NULL);
     m_dragChk->ResizeToPreferred();
 
     AddChild (m_openFolderChk);

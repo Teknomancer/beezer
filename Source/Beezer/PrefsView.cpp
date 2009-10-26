@@ -80,9 +80,9 @@ bool PrefsView::IsChecked (BCheckBox *chkBox) const
 void PrefsView::AddRevertButton ()
 {
     m_revertBtn = new BButton (BRect (Bounds().right - m_margin - K_BUTTON_WIDTH,
-                                Bounds().bottom - m_margin - K_BUTTON_HEIGHT - 1, Bounds().right - m_margin,
-                                Bounds().bottom - m_margin - 1), "PrefsView:defaultBtn", str (S_REVERT),
-                                new BMessage (M_REVERT), B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
+                             Bounds().bottom - m_margin - K_BUTTON_HEIGHT - 1, Bounds().right - m_margin,
+                             Bounds().bottom - m_margin - 1), "PrefsView:defaultBtn", str (S_REVERT),
+                             new BMessage (M_REVERT), B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
     AddChild (m_revertBtn);
     m_revertBtn->SetTarget (this);
 }

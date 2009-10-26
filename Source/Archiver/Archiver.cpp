@@ -207,7 +207,7 @@ void Archiver::FillLists (BList *files, BList *dirs)
     {
         m_hashTable = new HashTable (HashTable::OptimalSize (entryCount * 3.5L));
         if (!m_hashTable)
-            debugger ("couldn't alloc hash table");
+           debugger ("couldn't alloc hash table");
     }
     
     BList fileList, dirList;
@@ -232,40 +232,40 @@ void Archiver::FillLists (BList *files, BList *dirs)
         // Don't call with folder items to filepath table function
         if (entry->m_isDir == false)
         {
-            HashEntry *item = AddFilePathToTable (&fileList, entry->m_pathStr);
-            
-            // Get rid of trailing slash
-            entry->m_dirStr[strlen(entry->m_dirStr) - 1] = '\0';
+           HashEntry *item = AddFilePathToTable (&fileList, entry->m_pathStr);
+           
+           // Get rid of trailing slash
+           entry->m_dirStr[strlen(entry->m_dirStr) - 1] = '\0';
         
-            // Check for folders without any files, in which case ArchiveEntry will exist but will have its
-            // fileName as "" (not NULL but "")
-            BBitmap *icon = BitmapForExtension (entry->m_nameStr);
-            ListEntry *listItem;
-            listItem = new ListEntry (0UL, false, false, icon, entry->m_nameStr,
-                                    StringFromBytes (atol (entry->m_sizeStr)).String(),
-                                    StringFromBytes (atol (entry->m_packedStr)).String(), entry->m_ratioStr,
-                                    entry->m_dirStr, entry->m_dateStr, entry->m_methodStr, entry->m_crcStr,
-                                    entry->m_dirStr, entry->m_pathStr, atol (entry->m_sizeStr),
-                                    atol (entry->m_packedStr), entry->m_timeValue);
+           // Check for folders without any files, in which case ArchiveEntry will exist but will have its
+           // fileName as "" (not NULL but "")
+           BBitmap *icon = BitmapForExtension (entry->m_nameStr);
+           ListEntry *listItem;
+           listItem = new ListEntry (0UL, false, false, icon, entry->m_nameStr,
+                                StringFromBytes (atol (entry->m_sizeStr)).String(),
+                                StringFromBytes (atol (entry->m_packedStr)).String(), entry->m_ratioStr,
+                                entry->m_dirStr, entry->m_dateStr, entry->m_methodStr, entry->m_crcStr,
+                                entry->m_dirStr, entry->m_pathStr, atol (entry->m_sizeStr),
+                                atol (entry->m_packedStr), entry->m_timeValue);
 
-            // If file doesn't exist simply set its HashItem to have its listentry
-            if (item != NULL)
-                item->m_clvItem = listItem;
-            else
-            {
-                // Or else update old listentry with new one
-                HashEntry *existingItem = m_hashTable->Find (entry->m_pathStr);
-                ListEntry *existingEntry = existingItem->m_clvItem;
-                if (existingEntry && existingEntry->IsSuperItem() == false)
-                    existingItem->m_clvItem->Update (listItem);
-                
-                // Now if existingEntry is NULL that means there exists a folder and file with the same
-                // name in the archive, we don't handle such an odd situation
-                
-                delete listItem;
-            }
+           // If file doesn't exist simply set its HashItem to have its listentry
+           if (item != NULL)
+               item->m_clvItem = listItem;
+           else
+           {
+               // Or else update old listentry with new one
+               HashEntry *existingItem = m_hashTable->Find (entry->m_pathStr);
+               ListEntry *existingEntry = existingItem->m_clvItem;
+               if (existingEntry && existingEntry->IsSuperItem() == false)
+                  existingItem->m_clvItem->Update (listItem);
+               
+               // Now if existingEntry is NULL that means there exists a folder and file with the same
+               // name in the archive, we don't handle such an odd situation
+               
+               delete listItem;
+           }
         }
-            
+           
         delete entry;
     }
 
@@ -279,22 +279,22 @@ void Archiver::FillLists (BList *files, BList *dirs)
         const char *dirPath = item->m_pathStr;
         
         if (item->m_clvItem != NULL)
-            continue;
+           continue;
 
         uint32 level = LastOccurrence (dirPath, '/');
 
         // Try to determine whether to show the dir item expanded or not as quick as possible
         bool expand = false;
         if (m_foldingLevel == 3)
-            expand = true;
+           expand = true;
         else if (m_foldingLevel == 1 || m_foldingLevel == 2)
-            if ((int8)level < m_foldingLevel)
-                expand = true;
+           if ((int8)level < m_foldingLevel)
+               expand = true;
 
         // Get parent's path without the slash (true = truncate slash)
         char *parentDirPath = ParentPath (dirPath, true);
         ListEntry *itemEntry = new ListEntry (level, true, expand, m_folderBmp, LeafFromPath (dirPath),
-                                    NULL, NULL, NULL, NULL, NULL, NULL, NULL, parentDirPath, dirPath, 0, 0, 0);
+                                NULL, NULL, NULL, NULL, NULL, NULL, NULL, parentDirPath, dirPath, 0, 0, 0);
         item->m_clvItem = itemEntry;
         free ((char*)parentDirPath);
     }
@@ -339,7 +339,7 @@ void Archiver::AddDirPathToTable (BList *dirList, const char *path)
     for (int32 i = 0; i < len; i++)
     {
         if (path[i] != '/')
-            continue;
+           continue;
 
         char *t = new char[i+1];
         strncpy (t, path, i);
@@ -348,7 +348,7 @@ void Archiver::AddDirPathToTable (BList *dirList, const char *path)
         bool insertFailed;
         m_hashTable->Insert (t, &insertFailed, false);
         if (insertFailed == false)
-            dirList->AddItem ((void*)(m_hashTable->LastAddedEntry()));
+           dirList->AddItem ((void*)(m_hashTable->LastAddedEntry()));
         // For efficiency: we made Hashtable to use 't' rather than copy it, so don't delete[] t here.
     }
 }
@@ -362,21 +362,21 @@ HashEntry *Archiver::AddFilePathToTable (BList *fileList, const char *path)
     {
         if (CanReplaceFiles() == true)
         {
-            bool insertFailed;
-            m_hashTable->Insert ((char*)path, &insertFailed, true);    // copy path into hashtable
-            if (insertFailed == false)
-            {
-                HashEntry *addedItem = m_hashTable->LastAddedEntry();
-                fileList->AddItem ((void*)addedItem);
+           bool insertFailed;
+           m_hashTable->Insert ((char*)path, &insertFailed, true);    // copy path into hashtable
+           if (insertFailed == false)
+           {
+               HashEntry *addedItem = m_hashTable->LastAddedEntry();
+               fileList->AddItem ((void*)addedItem);
     
-                return addedItem;
-            }
+               return addedItem;
+           }
         }
         else
         {
-            HashEntry *addedItem = m_hashTable->ForceInsert ((char*)path, true);
-            fileList->AddItem ((void*)addedItem);
-            return addedItem;
+           HashEntry *addedItem = m_hashTable->ForceInsert ((char*)path, true);
+           fileList->AddItem ((void*)addedItem);
+           return addedItem;
         }
     }
     
@@ -394,27 +394,27 @@ BBitmap* Archiver::BitmapForExtension (const char *str) const
     if (extn)
     {
         if (strcmp (extn, "htm") == 0|| strcmp (extn, "html") == 0)
-            icon = m_htmlBmp;
+           icon = m_htmlBmp;
         else if (strcmp (extn, "cpp") == 0 || strcmp (extn, "c") == 0 || strcmp (extn, "h") == 0 ||
-                strcmp (extn, "py") == 0)
-            icon = m_sourceBmp;
+               strcmp (extn, "py") == 0)
+           icon = m_sourceBmp;
         else if (strcmp (extn, "txt") == 0 || strcmp (extn, "sh") == 0 || strcmp (extn, "doc") == 0)
-            icon = m_textBmp;
+           icon = m_textBmp;
         else if (strcmp (extn, "bmp") == 0 || strcmp (extn, "gif") == 0 || strcmp (extn, "png") == 0    ||
-                    strcmp (extn, "jpg") == 0 || strcmp (extn, "jpeg") == 0 || strcmp (extn, "tga") == 0 ||
-                    strcmp (extn, "tiff") == 0)
-            icon = m_imageBmp;
+                  strcmp (extn, "jpg") == 0 || strcmp (extn, "jpeg") == 0 || strcmp (extn, "tga") == 0 ||
+                  strcmp (extn, "tiff") == 0)
+           icon = m_imageBmp;
         else if (strcmp (extn, "z") == 0 || strcmp (extn, "zip") == 0 || strcmp (extn, "gz") == 0 ||
-                strcmp (extn, "gzip") == 0 || strcmp (extn, "tgz") == 0)
-            icon = m_archiveBmp;
+               strcmp (extn, "gzip") == 0 || strcmp (extn, "tgz") == 0)
+           icon = m_archiveBmp;
         else if (strcmp (extn, "wav") == 0 || strcmp (extn, "mp3") == 0 || strcmp (extn, "mp2") == 0    ||
-                strcmp (extn, "aiff") == 0 || strcmp (extn, "riff") == 0 || strcmp (extn, "ogg") == 0 ||
-                strcmp (extn, "mod") == 0 || strcmp (extn, "mid") == 0 || strcmp (extn, "midi") == 0)
-            icon = m_audioBmp;
+               strcmp (extn, "aiff") == 0 || strcmp (extn, "riff") == 0 || strcmp (extn, "ogg") == 0 ||
+               strcmp (extn, "mod") == 0 || strcmp (extn, "mid") == 0 || strcmp (extn, "midi") == 0)
+           icon = m_audioBmp;
         else if (strcmp (extn, "pdf") == 0)
-            icon = m_pdfBmp;
+           icon = m_pdfBmp;
         else if (strcmp (extn, "pkg") == 0)
-            icon = m_packageBmp;
+           icon = m_packageBmp;
 
         delete[] extn;
     }
@@ -435,7 +435,7 @@ status_t Archiver::ReadErrStream (FILE *fp, const char *escapeSeq)
         // An option string to escape ("Empty archive warning" lines etc. can be passed here)
         // and in general any line which must not be treated as an error
         if (escapeSeq && fullErrorString.FindFirst (escapeSeq) >= 0L)
-            return BZR_DONE;
+           return BZR_DONE;
 
         m_errorDetails.RemoveName (kErrorString);
         m_errorDetails.AddString (kErrorString, fullErrorString.String());
@@ -456,7 +456,7 @@ void Archiver::ReadStream (FILE *fp, BString &str) const
         
         // Check for end of pipe, else append
         if (c != 255)
-            str << (char)c;
+           str << (char)c;
     }
 }
 
@@ -695,7 +695,7 @@ void Archiver::LoadSettingsMenu ()
     // Load settings file of archiver
     BString settingsFilePath;
     BString temp = m_typeStr;
-    temp.ToLower();            // Use lowercase filenames :)
+    temp.ToLower();           // Use lowercase filenames :)
     
     settingsFilePath = m_settingsDirectoryPath;
     settingsFilePath << "/" << temp.String() << "_settings";
@@ -708,7 +708,7 @@ void Archiver::LoadSettingsMenu ()
     
         m_settingsMenu = new BMenu (&settingsMsg);
         if (m_settingsMenu == NULL)
-            BuildDefaultMenu();
+           BuildDefaultMenu();
     }
     else
         BuildDefaultMenu();
@@ -717,14 +717,14 @@ void Archiver::LoadSettingsMenu ()
 //=============================================================================================================//
 
 void Archiver::MakeTime (struct tm *timeStruct, time_t *timeValue, char *day, char *month, char *year,
-                    char *hour, char *min, char *sec)
+                  char *hour, char *min, char *sec)
 {
     // Zero-initialize time structure
     memset ((void*)timeStruct, 0, sizeof (*timeStruct));
         
     int16 numYear = atoi (year);
     int8 numMonth = atoi (month) - 1;
-    if (numYear > 999)                // Convert long year to short (as tm requires short year)
+    if (numYear > 999)               // Convert long year to short (as tm requires short year)
         numYear = numYear % 100;
     
     if (numYear < 70)

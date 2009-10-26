@@ -78,7 +78,7 @@ void RecentMgr::AddPath (const char *path)
     {
         const char *existingPath = (const char*)m_paths.ItemAtFast(i);
         if (strcmp (existingPath, path) == 0)
-            free ((char*)m_paths.RemoveItem (i));
+           free ((char*)m_paths.RemoveItem (i));
     }
     
     // Clip away any paths that are more than m_maxInternalCount, we store
@@ -86,7 +86,7 @@ void RecentMgr::AddPath (const char *path)
     if (m_paths.CountItems() > RecentMgr::m_maxInternalCount)
     {
         for (int32 i = m_maxNumPaths; i < m_paths.CountItems(); i++)
-            free ((char*)m_paths.RemoveItem(m_maxNumPaths));
+           free ((char*)m_paths.RemoveItem(m_maxNumPaths));
     }
     
     m_paths.AddItem ((void*)strdup (path), 0L);
@@ -143,7 +143,7 @@ void RecentMgr::FillMenu (BMenu *menu, const char *fieldName, BHandler *target)
     for (int32 i = 0; i < m_paths.CountItems(); i++)
     {
         if (addedCount >= m_maxNumPaths || addedCount >= RecentMgr::m_maxInternalCount)
-            break;
+           break;
         
         BPath path = (const char*)m_paths.ItemAtFast (i);
         bool canAddInMenu = true;
@@ -153,26 +153,26 @@ void RecentMgr::FillMenu (BMenu *menu, const char *fieldName, BHandler *target)
         BEntry dummyEntry (path.Path(), true);
         if (dummyEntry.Exists() == true)
         {
-            if (m_type == ritFile && dummyEntry.IsFile() == false)
-                canAddInMenu = false;
-            else if (m_type == ritFolder && dummyEntry.IsDirectory() == false)
-                canAddInMenu = false;
+           if (m_type == ritFile && dummyEntry.IsFile() == false)
+               canAddInMenu = false;
+           else if (m_type == ritFolder && dummyEntry.IsDirectory() == false)
+               canAddInMenu = false;
         }
         else if (m_type != ritFolder)    // MainWindow will create folder if needed
-            canAddInMenu = false;
+           canAddInMenu = false;
         
         if (canAddInMenu)
         {
-            const char *displayPath = path.Path();
-            if (m_showFullPath == false)
-                displayPath = path.Leaf();
-            
-            BMessage *targetMessage = new BMessage (m_command);
-            targetMessage->AddFlat (fieldName, &path);
+           const char *displayPath = path.Path();
+           if (m_showFullPath == false)
+               displayPath = path.Leaf();
+           
+           BMessage *targetMessage = new BMessage (m_command);
+           targetMessage->AddFlat (fieldName, &path);
         
-            BMenuItem *item = new BMenuItem (displayPath, targetMessage);
-            menu->AddItem (item);
-            addedCount++;
+           BMenuItem *item = new BMenuItem (displayPath, targetMessage);
+           menu->AddItem (item);
+           addedCount++;
         }
     }
 
@@ -193,7 +193,7 @@ void RecentMgr::SavePrefs ()
     for (int32 i = 0; i < m_paths.CountItems(); i++)
     {
         if (i >= RecentMgr::m_maxInternalCount)
-            break;
+           break;
         
         m_prefs->AddString (kPfRecentPath, (const char*)m_paths.ItemAtFast(i));
     }

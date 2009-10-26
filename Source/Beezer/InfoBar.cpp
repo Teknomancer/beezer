@@ -55,7 +55,7 @@ void InfoBar::AttachedToWindow ()
     m_darkEdge3 = tint_color (ViewColor(), B_DARKEN_3_TINT);
 
     m_barberPole = new BarberPole (BRect (m_horizGap + 6, m_vertGap, 0, Bounds().Height() - m_vertGap),
-                            "InfoBar:BarberPole");
+                         "InfoBar:BarberPole");
     AddChild (m_barberPole);
 
     font_height fntHt;
@@ -68,16 +68,16 @@ void InfoBar::AttachedToWindow ()
     float oneX = *((float*)m_slotPositions->ItemAtFast(0L));
     float twoX = *((float*)m_slotPositions->ItemAtFast(1L));
     m_filesStr = new BeezerStringView (BRect (m_barberPole->Frame().right + m_horizGap + 6,
-                        Bounds().Height() / 2 - normFontHeight / 2 - 1, oneX - 1, Bounds().Height() / 2 -
-                        normFontHeight / 2 + normFontHeight), "InfoBar:FilesStr", str (S_INFOBAR_FILES));
+                      Bounds().Height() / 2 - normFontHeight / 2 - 1, oneX - 1, Bounds().Height() / 2 -
+                      normFontHeight / 2 + normFontHeight), "InfoBar:FilesStr", str (S_INFOBAR_FILES));
     AddChild (m_filesStr);
     m_filesStr->SendMouseEventsTo (this);
     UpdateFilesDisplay (0L, 0L, true);
     AddSeparatorItem (oneX, false);
 
     m_bytesStr = new BeezerStringView (BRect (m_filesStr->Frame().right + m_horizGap + 25,
-                        Bounds().Height() / 2 - normFontHeight / 2 - 1, twoX - 1, Bounds().Height() / 2 -
-                        normFontHeight / 2 + normFontHeight), "InfoBar:BytesStr", str (S_INFOBAR_BYTES));
+                      Bounds().Height() / 2 - normFontHeight / 2 - 1, twoX - 1, Bounds().Height() / 2 -
+                      normFontHeight / 2 + normFontHeight), "InfoBar:BytesStr", str (S_INFOBAR_BYTES));
     AddChild (m_bytesStr);
     m_bytesStr->SendMouseEventsTo (this);
     UpdateBytesDisplay (0L, 0L, true);
@@ -199,17 +199,17 @@ void InfoBar::Toggle ()
         m_barberPole->Hide();
 
         for (int32 i = 0L; i < separatorCount; i++)
-            ((BView*)m_separatorList.ItemAtFast(i))->Hide();
+           ((BView*)m_separatorList.ItemAtFast(i))->Hide();
 
         ResizeBy (0, -unHiddenHeight);
     }
     else
     {
         if (m_barberPole->IsAnimating())
-            m_barberPole->Show();
+           m_barberPole->Show();
 
         for (int32 i = 0L; i < separatorCount; i++)
-            ((BView*)m_separatorList.ItemAtFast(i))->Show();
+           ((BView*)m_separatorList.ItemAtFast(i))->Show();
 
         ResizeBy (0, unHiddenHeight);
     }
@@ -234,23 +234,23 @@ void InfoBar::AddSeparatorItem (float x, bool finalSeparator)
     for (int32 i = 0L; i < 1; i++)
     {
         BView *sepViewEdge1 = new BView (BRect (x, 1, x, Bounds().bottom - 2), "Infobar:Separator",
-                                    B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
+                                B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
         sepViewEdge1->SetViewColor (midCol);
         x++;
         
         BView *sepView = new BView (BRect (x, 0, x, Bounds().bottom - 1), "InfoBar:Separator",
-                                B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
+                             B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
         sepView->SetViewColor (m_darkEdge2);
         x++;
 
         if (finalSeparator == false)
         {
-            BView *sepViewEdge2 = new BView (BRect (x, 0, x, Bounds().bottom - 1), "InfoBar:SeparatorEdge",
-                                        B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
-            sepViewEdge2->SetViewColor (m_lightEdge);
-            x++;
-            AddChild (sepViewEdge2);
-            m_separatorList.AddItem ((void*)sepViewEdge2);
+           BView *sepViewEdge2 = new BView (BRect (x, 0, x, Bounds().bottom - 1), "InfoBar:SeparatorEdge",
+                                    B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
+           sepViewEdge2->SetViewColor (m_lightEdge);
+           x++;
+           AddChild (sepViewEdge2);
+           m_separatorList.AddItem ((void*)sepViewEdge2);
         }
         
         AddChild (sepViewEdge1);
@@ -258,15 +258,15 @@ void InfoBar::AddSeparatorItem (float x, bool finalSeparator)
         
         if (finalSeparator)
         {
-            m_finalSepEdge = sepViewEdge1;
-            m_finalSep = sepView;
+           m_finalSepEdge = sepViewEdge1;
+           m_finalSep = sepView;
 
-            // If full length bars are needed by user then hide the final separators
-            if (_prefs_interface.FindBoolDef (kPfFullLengthBars, false) == true)
-            {
-                m_finalSepEdge->Hide();
-                m_finalSep->Hide();
-            }
+           // If full length bars are needed by user then hide the final separators
+           if (_prefs_interface.FindBoolDef (kPfFullLengthBars, false) == true)
+           {
+               m_finalSepEdge->Hide();
+               m_finalSep->Hide();
+           }
         }
 
         m_separatorList.AddItem ((void*)sepView);

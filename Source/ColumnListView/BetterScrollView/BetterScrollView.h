@@ -70,8 +70,8 @@ class BetterScrollView : public BScrollView
 {
     public:
         BetterScrollView(const char *name, BView *target, uint32 resizeMask = B_FOLLOW_LEFT | B_FOLLOW_TOP,
-            uint32 flags = B_FRAME_EVENTS | B_WILL_DRAW, bool horizontal = true, bool vertical = true,
-            bool scroll_view_corner = true, border_style border = B_FANCY_BORDER);
+           uint32 flags = B_FRAME_EVENTS | B_WILL_DRAW, bool horizontal = true, bool vertical = true,
+           bool scroll_view_corner = true, border_style border = B_FANCY_BORDER);
         virtual ~BetterScrollView();
         virtual void SetDataRect(BRect data_rect, bool scrolling_allowed = true);
         inline BRect DataRect() {return m_data_rect;}

@@ -15,25 +15,25 @@ class PrefsViewMisc : public PrefsView
         PrefsViewMisc (BRect frame);
         
         // Inherited hooks
-        virtual void         AttachedToWindow ();
-        virtual void         MessageReceived (BMessage *message);
+        virtual void        AttachedToWindow ();
+        virtual void        MessageReceived (BMessage *message);
 
-        virtual void         Render ();
-        virtual void         Save ();
-        virtual void         Load ();
+        virtual void        Render ();
+        virtual void        Save ();
+        virtual void        Load ();
     
     private:
         // Private members
-        BCheckBox           *m_commentChk,
-                            *m_mimeChk;
-        BButton             *m_mimeBtn;
-        BPopUpMenu          *m_arkTypePopUp,
-                            *m_quitPopUp,
-                            *m_startupPopUp;
-        BMenuField          *m_arkTypeField,
-                            *m_quitField,
-                            *m_startupField;
-        BList                m_arkTypes;
+        BCheckBox          *m_commentChk,
+                         *m_mimeChk;
+        BButton            *m_mimeBtn;
+        BPopUpMenu         *m_arkTypePopUp,
+                         *m_quitPopUp,
+                         *m_startupPopUp;
+        BMenuField         *m_arkTypeField,
+                         *m_quitField,
+                         *m_startupField;
+        BList               m_arkTypes;
 };
 
 #endif /* _PREFS_VIEW_MISC_H */

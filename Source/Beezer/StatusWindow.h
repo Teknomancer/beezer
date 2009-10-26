@@ -17,14 +17,14 @@ class StatusWindow : public BWindow
 {
     public:
         StatusWindow (const char *title, BWindow *callerWindow, const char *text, volatile bool *cancel,
-                      bool showWindow = true);
+                    bool showWindow = true);
     
         // Inherited hooks
         virtual void        MessageReceived (BMessage *message);
         
     private:
-        BevelView          *m_backView;
-        BarberPole         *m_barberPole;
+        BevelView         *m_backView;
+        BarberPole        *m_barberPole;
         volatile bool      *m_cancel;
 };
 

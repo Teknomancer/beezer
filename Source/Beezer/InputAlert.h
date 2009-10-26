@@ -34,17 +34,17 @@ class InputAlert : public BAlert
 {
     public:
         InputAlert (const char *title, const char *text, const char *initialText, bool hideTyping,
-                const char *button1, const char *button2 = NULL, const char *button3 = NULL,
-                button_width width = B_WIDTH_AS_USUAL, alert_type type = B_INFO_ALERT);
+               const char *button1, const char *button2 = NULL, const char *button3 = NULL,
+               button_width width = B_WIDTH_AS_USUAL, alert_type type = B_INFO_ALERT);
         InputAlert (const char *title, const char *text, const char *initialText, bool hideTyping,
-                const char *button1, const char *button2, const char *button3, button_width width,
-                button_spacing spacing, alert_type type = B_INFO_ALERT);
+               const char *button1, const char *button2, const char *button3, button_width width,
+               button_spacing spacing, alert_type type = B_INFO_ALERT);
         
         // Inherited hooks
-        void                 MessageReceived (BMessage *message);
+        void                MessageReceived (BMessage *message);
         
         // Additional hooks
-        BMessage             GetInput (BWindow *window);
+        BMessage            GetInput (BWindow *window);
         BTextControl        *TextControl () const;
         
         // Static constants
@@ -52,16 +52,16 @@ class InputAlert : public BAlert
         
     private:
         // Private hooks
-        void                 InitInputAlert (const char *title, const char *label, const char *initialText,
-                                bool hideTyping);
+        void                InitInputAlert (const char *title, const char *label, const char *initialText,
+                             bool hideTyping);
         
         // Private members
         BTextControl        *m_inputBox;
-        BStringView         *m_bytesView;
-        BButton             *m_farRightButton;
-        BString              m_inputText;
+        BStringView        *m_bytesView;
+        BButton            *m_farRightButton;
+        BString             m_inputText;
         volatile bool        m_isQuitting;
-        int32                m_buttonIndex;
+        int32               m_buttonIndex;
 };
 
 #endif /* _INPUT_ALERT_H */

@@ -40,24 +40,24 @@ SplitPane::SplitPane (BRect frame, BView *one, BView *two,uint32 Mode)
     PaneOne = one;
     PaneTwo = two;
     
-    prevSize.Set (0.0f,0.0f);                         // used for resizing when resizeOne(X|Y) is true --jaf
+    prevSize.Set (0.0f,0.0f);                       // used for resizing when resizeOne(X|Y) is true --jaf
     resizeOneX = resizeOneY = false;
-    align = B_VERTICAL;                                // Most people use it this way
+    align = B_VERTICAL;                             // Most people use it this way
     pos.Set (b.Width() / 2.0f, b.Height() / 2.0f);    // Center is a good start place
     thickness.Set (10.0f, 10.0f);
-    jump.Set (1.0f, 1.0f);                            // 1 makes a smother slide
+    jump.Set (1.0f, 1.0f);                         // 1 makes a smother slide
     VOneDetachable = false;
     VTwoDetachable = false;
     pad.Set (3.0f, 3.0f);
     MinSizeOne.Set (0, 0);
     MinSizeTwo.Set (0, 0);
-    poslocked = false;                                // free movement
-    alignlocked = false;                            // free alignment
+    poslocked = false;                             // free movement
+    alignlocked = false;                         // free alignment
     Draggin = false;
     attached = false;
     
-    vertpos.Set (-1, -1);                            // nothing is stored yet
-    horizpos.Set (-1, -1);                            // nothing is stored yet
+    vertpos.Set (-1, -1);                         // nothing is stored yet
+    horizpos.Set (-1, -1);                         // nothing is stored yet
     
     WinOne = NULL;
     WinTwo = NULL;
@@ -118,10 +118,10 @@ void SplitPane::Draw (BRect updateRect)
         float x = (pos.x + pos.x + thickness.x) / 2.0 - 1;
         for (float i = 3; i < Bounds().bottom - pad.x - 1 - 2; i += 3)
         {
-            SetHighColor (dark);
-            StrokeLine (BPoint (x,i), BPoint (x,i));
-            SetHighColor (lite);
-            StrokeLine (BPoint (x+1, i+1), BPoint (x+1,i+1));
+           SetHighColor (dark);
+           StrokeLine (BPoint (x,i), BPoint (x,i));
+           SetHighColor (lite);
+           StrokeLine (BPoint (x+1, i+1), BPoint (x+1,i+1));
         }
     }
     else
@@ -146,10 +146,10 @@ void SplitPane::Draw (BRect updateRect)
         float y = (pos.y + pos.y + thickness.y) / 2.0 - 1;
         for (float i = 3; i < Bounds().right - pad.y - 1 - 2; i += 3)
         {
-            SetHighColor (dark);
-            StrokeLine (BPoint (i,y), BPoint (i,y));
-            SetHighColor (lite);
-            StrokeLine (BPoint (i+1, y+1), BPoint (i+1,y+1));
+           SetHighColor (dark);
+           StrokeLine (BPoint (i,y), BPoint (i,y));
+           SetHighColor (lite);
+           StrokeLine (BPoint (i+1, y+1), BPoint (i+1,y+1));
         }
     }
 }
@@ -163,36 +163,36 @@ void SplitPane::Update ()
     if (align == B_VERTICAL)
     {
         if ((resizeOneX) && (prevSize.x > 0))
-            pos.x += Bounds().Width()-prevSize.x;
+           pos.x += Bounds().Width()-prevSize.x;
         
         PaneOne->SetResizingMode ((resizeOneX ? B_FOLLOW_LEFT_RIGHT : B_FOLLOW_LEFT) | B_FOLLOW_TOP_BOTTOM);
         PaneTwo->SetResizingMode ((resizeOneX ? B_FOLLOW_RIGHT : B_FOLLOW_LEFT_RIGHT) | B_FOLLOW_TOP_BOTTOM);
 
         if (pos.x > (Bounds().Width() - thickness.x - MinSizeTwo.x))
-            if(!poslocked)
-                pos.x = Bounds().Width() - thickness.x - MinSizeTwo.x;
+           if(!poslocked)
+               pos.x = Bounds().Width() - thickness.x - MinSizeTwo.x;
 
         if(pos.x < MinSizeOne.x)
-            if(!poslocked)
-                pos.x = MinSizeOne.x;
+           if(!poslocked)
+               pos.x = MinSizeOne.x;
         
         vertpos = pos;
     }
     else
     {
         if ((resizeOneY) && (prevSize.y > 0))
-            pos.y += Bounds().Height() - prevSize.y;
+           pos.y += Bounds().Height() - prevSize.y;
 
         PaneOne->SetResizingMode ((resizeOneY ? B_FOLLOW_TOP_BOTTOM : B_FOLLOW_TOP) | B_FOLLOW_LEFT_RIGHT);
         PaneTwo->SetResizingMode ((resizeOneY ? B_FOLLOW_BOTTOM : B_FOLLOW_TOP_BOTTOM) | B_FOLLOW_LEFT_RIGHT);
 
         if (pos.y > (Bounds().Height() - thickness.y - MinSizeTwo.y))
-            if(!poslocked)
-                pos.y = Bounds().Height() - thickness.y - MinSizeTwo.y;
+           if(!poslocked)
+               pos.y = Bounds().Height() - thickness.y - MinSizeTwo.y;
 
         if (pos.y < MinSizeOne.y)
-            if(!poslocked)
-                pos.y = MinSizeOne.y;
+           if(!poslocked)
+               pos.y = MinSizeOne.y;
         
         horizpos = pos;
     }
@@ -204,16 +204,16 @@ void SplitPane::Update ()
     {
         if (!WinOne)
         {
-            if(align == B_VERTICAL)
-            {
-                PaneOne->MoveTo (pad.x, Bounds().top + pad.x);
-                PaneOne->ResizeTo (pos.x - pad.x, Bounds().Height() - pad.x - pad.x); // width x height
-            }
-            else
-            {
-                PaneOne->MoveTo (pad.y,Bounds().top + pad.y);
-                PaneOne->ResizeTo (Bounds().Width() - pad.y - pad.y, pos.y - pad.y - pad.y); // width x height
-            }
+           if(align == B_VERTICAL)
+           {
+               PaneOne->MoveTo (pad.x, Bounds().top + pad.x);
+               PaneOne->ResizeTo (pos.x - pad.x, Bounds().Height() - pad.x - pad.x); // width x height
+           }
+           else
+           {
+               PaneOne->MoveTo (pad.y,Bounds().top + pad.y);
+               PaneOne->ResizeTo (Bounds().Width() - pad.y - pad.y, pos.y - pad.y - pad.y); // width x height
+           }
         }
     }
     
@@ -221,18 +221,18 @@ void SplitPane::Update ()
     {
         if (!WinTwo)
         {
-            if (align == B_VERTICAL)
-            {
-                PaneTwo->MoveTo (pos.x+thickness.x,Bounds().top+pad.x);
-                PaneTwo->ResizeTo (Bounds().Width() - (pos.x + thickness.x) - pad.x,
-                                Bounds().Height() - pad.x - pad.x);
-            }
-            else
-            {
-                PaneTwo->MoveTo (Bounds().left+pad.y,pos.y+thickness.y);
-                PaneTwo->ResizeTo (Bounds().Width() - pad.y - pad.y,
-                            Bounds().Height() - pos.y - pad.y - thickness.y);
-            }
+           if (align == B_VERTICAL)
+           {
+               PaneTwo->MoveTo (pos.x+thickness.x,Bounds().top+pad.x);
+               PaneTwo->ResizeTo (Bounds().Width() - (pos.x + thickness.x) - pad.x,
+                             Bounds().Height() - pad.x - pad.x);
+           }
+           else
+           {
+               PaneTwo->MoveTo (Bounds().left+pad.y,pos.y+thickness.y);
+               PaneTwo->ResizeTo (Bounds().Width() - pad.y - pad.y,
+                         Bounds().Height() - pos.y - pad.y - thickness.y);
+           }
         }
     }
     
@@ -255,32 +255,32 @@ void SplitPane::MouseDown (BPoint where)
         
         if (buttons & B_SECONDARY_MOUSE_BUTTON)
         {
-            if (!alignlocked)
-            {
-                switch (align)
-                {
-                    case B_VERTICAL: align = B_HORIZONTAL; break;
-                    case B_HORIZONTAL: align = B_VERTICAL; break;
-                }
-                
-                Update();
-                Invalidate();
-                
-                // ONLY FOR THIS APP WE NEED THE BELOW LINE -- BUG FIX -- Don't Implement for other apps
-                // Unless needed -- Ram (Custom bug fix/workaround for project)
-                Window()->FrameResized (Window()->Bounds().Width(), Window()->Bounds().Height());
-            }
+           if (!alignlocked)
+           {
+               switch (align)
+               {
+                  case B_VERTICAL: align = B_HORIZONTAL; break;
+                  case B_HORIZONTAL: align = B_VERTICAL; break;
+               }
+               
+               Update();
+               Invalidate();
+               
+               // ONLY FOR THIS APP WE NEED THE BELOW LINE -- BUG FIX -- Don't Implement for other apps
+               // Unless needed -- Ram (Custom bug fix/workaround for project)
+               Window()->FrameResized (Window()->Bounds().Width(), Window()->Bounds().Height());
+           }
         }
         
         if ((buttons & B_PRIMARY_MOUSE_BUTTON) && (!Draggin) && (IsInDraggerBounds(where)))
         {
-            if (!poslocked)
-            {
-                Draggin = true; // this is so we can drag
-                here = where;
-            }
-            
-            SetMouseEventMask (B_POINTER_EVENTS,B_LOCK_WINDOW_FOCUS);
+           if (!poslocked)
+           {
+               Draggin = true; // this is so we can drag
+               here = where;
+           }
+           
+           SetMouseEventMask (B_POINTER_EVENTS,B_LOCK_WINDOW_FOCUS);
         }
     }
 
@@ -313,43 +313,43 @@ void SplitPane::MouseMoved (BPoint where, uint32 info, const BMessage *message)
         float minVal;
         switch (align)
         {
-            case B_HORIZONTAL:
-                pos.y = (where.y)-(thickness.y/2);
-                minVal = MinSizeOne.y;
-                break;
+           case B_HORIZONTAL:
+               pos.y = (where.y)-(thickness.y/2);
+               minVal = MinSizeOne.y;
+               break;
 
-            case B_VERTICAL:
-                pos.x = (where.x)-(thickness.x/2);
-                minVal = MinSizeOne.x;
-                break;
+           case B_VERTICAL:
+               pos.x = (where.x)-(thickness.x/2);
+               minVal = MinSizeOne.x;
+               break;
         }
         
         switch (align)
         {
-            case B_HORIZONTAL:
-                if (pos.y < MinSizeOne.y)
-                    pos.y = MinSizeOne.y;
-                break;
+           case B_HORIZONTAL:
+               if (pos.y < MinSizeOne.y)
+                  pos.y = MinSizeOne.y;
+               break;
 
-            case B_VERTICAL:
-                if (pos.x < MinSizeOne.x)
-                    pos.x = MinSizeOne.x;
-                break;
+           case B_VERTICAL:
+               if (pos.x < MinSizeOne.x)
+                  pos.x = MinSizeOne.x;
+               break;
         }
         
         if (align == B_VERTICAL)
         {
-            if (pos.x > (Bounds().Width() - thickness.x - MinSizeTwo.x))
-                pos.x = (Bounds().Width() - thickness.x - MinSizeTwo.x + 1);
-            
-            vertpos = pos;
+           if (pos.x > (Bounds().Width() - thickness.x - MinSizeTwo.x))
+               pos.x = (Bounds().Width() - thickness.x - MinSizeTwo.x + 1);
+           
+           vertpos = pos;
         }
         else
         {
-            if (pos.y > (Bounds().Height() - thickness.y - MinSizeTwo.y))
-                pos.y = (Bounds().Height() - thickness.y - MinSizeTwo.y + 1);
-            
-            horizpos = pos;
+           if (pos.y > (Bounds().Height() - thickness.y - MinSizeTwo.y))
+               pos.y = (Bounds().Height() - thickness.y - MinSizeTwo.y + 1);
+           
+           horizpos = pos;
         }
         
         Update();
@@ -685,12 +685,12 @@ void SplitPane::MessageReceived (BMessage *msg)
     switch (msg->what)
     {
         case SPLITPANE_STATE:
-            SetState (msg);   
-            break;
+           SetState (msg);   
+           break;
     
         default:
-            BView::MessageReceived (msg);
-            break;
+           BView::MessageReceived (msg);
+           break;
     }
 }
 
@@ -714,12 +714,12 @@ void SplitPane::RestoreBarPosition ()
     if (storedvpos.x != -1)
     {
         if (storedalign == B_VERTICAL)
-            pos = storedvpos;
+           pos = storedvpos;
         else
-            pos = storedhpos;
+           pos = storedhpos;
         
         if (attached)
-            Update();
+           Update();
         
         Invalidate();
     }

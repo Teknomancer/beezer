@@ -11,7 +11,7 @@
 //=============================================================================================================//
 
 StaticBitmapView::StaticBitmapView (BRect frame, const char *name, BBitmap *bmp,
-                                        uint32 resizeMask, uint32 flags)
+                                    uint32 resizeMask, uint32 flags)
     : BView (frame, name, resizeMask, flags),
         m_bitmap (bmp)
 {

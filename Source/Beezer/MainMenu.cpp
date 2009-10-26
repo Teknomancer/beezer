@@ -51,7 +51,7 @@ MainMenu::MainMenu (BRect frame)
     
     m_editMenu->AddItem (new BMenuItem (str (S_DESELECT_ALL), new BMessage (M_EDIT_DESELECT_ALL)));
     m_editMenu->AddItem (new BMenuItem (str (S_INVERT_SELECTION), new BMessage (M_EDIT_INVERT_SELECTION), 'I',
-                    B_SHIFT_KEY));
+                  B_SHIFT_KEY));
     m_editMenu->AddSeparatorItem();
     m_editMenu->AddItem (new BMenuItem (str (S_EXPAND_ALL), new BMessage (M_EDIT_EXPAND_ALL)));
     m_editMenu->AddItem (new BMenuItem (str (S_EXPAND_SELECTED), new BMessage (M_EDIT_EXPAND_SELECTED)));    
@@ -70,7 +70,7 @@ MainMenu::MainMenu (BRect frame)
     m_actionsMenu->AddItem (new BMenuItem (str (S_TEST), new BMessage (M_ACTIONS_TEST), 'T'));
     m_actionsMenu->AddItem (new BMenuItem (str (S_SEARCH_ARCHIVE), new BMessage (M_ACTIONS_SEARCH_ARCHIVE), 'F'));
     //m_actionsMenu->AddItem (new BMenuItem (str (S_DEEP_SEARCH), new BMessage (M_ACTIONS_DEEP_SEARCH), 'F',
-    //                    B_SHIFT_KEY));
+    //                  B_SHIFT_KEY));
     m_actionsMenu->AddItem (new BMenuItem (str (S_COMMENT), new BMessage (M_ACTIONS_COMMENT), 'C', B_SHIFT_KEY));
     m_actionsMenu->AddSeparatorItem();
     m_actionsMenu->AddItem (new BMenuItem (str (S_DELETE_IN_ACTIONS), new BMessage (M_ACTIONS_DELETE), 'D'));
@@ -105,7 +105,7 @@ MainMenu::MainMenu (BRect frame)
         
         int32 columnCount = m_columnsSubMenu->CountItems();
         for (int32 i = 0; i < columnCount; i++)
-            m_columnsSubMenu->ItemAt(i)->SetMarked (true);
+           m_columnsSubMenu->ItemAt(i)->SetMarked (true);
 
         m_foldingMenu = new BMenu (str (S_SETTINGS_FOLDING));
         m_foldingMenu->SetRadioMode (true);
@@ -178,7 +178,7 @@ void MainMenu::SetRecentMenu (BMenu *menu)
 {
     if (m_recentMenu != NULL)
         if (m_fileMenu->RemoveItem (m_recentMenu))
-            delete m_recentMenu;
+           delete m_recentMenu;
     
     m_recentMenu = menu;
     m_fileMenu->AddItem (m_recentMenu, 1);
@@ -201,7 +201,7 @@ void MainMenu::SetExtractPathsMenu (BMenu *menu)
 {
     if (m_extractPathsMenu != NULL)
         if (m_actionsMenu->RemoveItem (m_extractPathsMenu))
-            delete m_extractPathsMenu;
+           delete m_extractPathsMenu;
     
     m_extractPathsMenu = menu;
     m_actionsMenu->AddItem (m_extractPathsMenu, 1);
@@ -221,7 +221,7 @@ void MainMenu::SetExtractSelPathsMenu (BMenu *menu)
     // Preserve enabled/disabled state
     if (m_extractSelPathsMenu != NULL)
         if (m_actionsMenu->RemoveItem (m_extractSelPathsMenu))
-            delete m_extractSelPathsMenu;
+           delete m_extractSelPathsMenu;
     
     m_extractSelPathsMenu = menu;
     m_actionsMenu->AddItem (m_extractSelPathsMenu, 2);

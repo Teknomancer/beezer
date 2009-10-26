@@ -27,7 +27,7 @@ LogTextView::LogTextView (BRect frame, const char *name, uint32 resizeMask, uint
 //=============================================================================================================//
 
 LogTextView::LogTextView (BRect frame, const char *name, const BFont *initialFont,
-                const rgb_color *initialColor, uint32 resizeMask, uint32 flags)
+               const rgb_color *initialColor, uint32 resizeMask, uint32 flags)
     : BTextView (frame, name, kInternalTextRect, initialFont, initialColor, resizeMask, flags)
 {
     InitSelf();
@@ -72,17 +72,17 @@ void LogTextView::AddText (const char *text, bool newLine, bool capitalizeFirstL
     // Skip all leading spaces
     if (trimLeadingSpaces == true)
         while (*text == ' ')
-            text++;
+           text++;
     
     BString outText = text;
     outText.RemoveAll ("\n");
 
     #ifdef B_ZETA_VERSION
         if (capitalizeFirstLetter == true)
-            outText.ReplaceFirst (outText[0], toupper(outText[0]));
+           outText.ReplaceFirst (outText[0], toupper(outText[0]));
     #else
         if (capitalizeFirstLetter == true)
-            outText[0] = toupper(outText[0]);
+           outText[0] = toupper(outText[0]);
     #endif
     
     Insert (textLen, outText.String(), byteLenOfText);
@@ -108,9 +108,9 @@ void LogTextView::MouseDown (BPoint point)
         m_contextMenu->SetAsyncAutoDestruct (true);
         BMenuItem *selectedItem = m_contextMenu->Go (screenPt, false, true, openRect, false);
         if (selectedItem && Window())
-            Window()->PostMessage (selectedItem->Message());
+           Window()->PostMessage (selectedItem->Message());
     }
-    else            // Bug Fix -- else added, otherwise selection will take place after RIGHT-click
+    else           // Bug Fix -- else added, otherwise selection will take place after RIGHT-click
         BTextView::MouseDown (point);
 }
 
@@ -128,18 +128,18 @@ void LogTextView::Copy ()
         
         if (len > 0L)
         {
-            // Now copy the buffer to the clipboard
-            BMessage *clip = NULL;
-            if (be_clipboard->Lock())
-            {
-                be_clipboard->Clear();
-                if ((clip = be_clipboard->Data()))
-                {
-                    clip->AddData ("text/plain", B_MIME_TYPE, text, len);
-                    be_clipboard->Commit();
-                }
-                be_clipboard->Unlock();
-            }
+           // Now copy the buffer to the clipboard
+           BMessage *clip = NULL;
+           if (be_clipboard->Lock())
+           {
+               be_clipboard->Clear();
+               if ((clip = be_clipboard->Data()))
+               {
+                  clip->AddData ("text/plain", B_MIME_TYPE, text, len);
+                  be_clipboard->Commit();
+               }
+               be_clipboard->Unlock();
+           }
         }
     }
     else
@@ -148,7 +148,7 @@ void LogTextView::Copy ()
 
         // Now remove the selection (if there was any)
         if (selStart != selEnd)
-            Select (selEnd, selEnd);
+           Select (selEnd, selEnd);
     }    
 }
 

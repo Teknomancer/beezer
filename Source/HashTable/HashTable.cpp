@@ -55,7 +55,7 @@ int32 HashTable::OptimalSize (int32 minSize)
     // Static function that returns an optimal prime-size given a desired size
     for (int32 i = 0; kTableSizes[i] != 0; i++)
         if (kTableSizes[i] >= minSize)
-            return kTableSizes[i];
+           return kTableSizes[i];
 
     return 0;
 }
@@ -78,13 +78,13 @@ void HashTable::DeleteTable ()
     for (int64 bucket = 0LL; bucket < m_tableSize; bucket++)
         for (HashEntry *element = m_table[bucket]; element != NULL;)
         {
-            // Don't simply delete element as we will lose it's m_next field, store m_next then delete
-            HashEntry *next = element->m_next;
-            
-            // Reset cached entries
-            ResetCache (element);    
-            delete element;
-            element = next;
+           // Don't simply delete element as we will lose it's m_next field, store m_next then delete
+           HashEntry *next = element->m_next;
+           
+           // Reset cached entries
+           ResetCache (element);    
+           delete element;
+           element = next;
         }
     
     m_itemCount = 0L;
@@ -148,10 +148,10 @@ HashEntry* HashTable::LookUp (const char *str, bool insert, bool *wasFound, bool
     {
         if (strcmp (bucket->m_pathStr, str) == 0)
         {
-            if (wasFound != NULL)
-                *wasFound = true;
+           if (wasFound != NULL)
+               *wasFound = true;
 
-            return bucket;
+           return bucket;
         }
     }
 
@@ -165,7 +165,7 @@ HashEntry* HashTable::LookUp (const char *str, bool insert, bool *wasFound, bool
 //=============================================================================================================//
 
 int32 HashTable::FindUnder (BMessage *message, const char *fieldName, const char *directoryPath,
-            BList *fileList, BList *folderList)
+           BList *fileList, BList *folderList)
 {
     // Add all hashitems which is under the specified directoryPath,
     // eg: if directory path is be/book, then add be/book/* (everything under it)
@@ -176,23 +176,23 @@ int32 HashTable::FindUnder (BMessage *message, const char *fieldName, const char
     for (int64 bucket = 0LL; bucket < m_tableSize; bucket++)
         for (HashEntry *element = m_table[bucket]; element != NULL;)
         {
-            BString buf = element->m_pathStr;
-            if (buf.FindFirst (directoryPath) >= 0L)
-            {
-                BString buf = element->m_pathStr;
-                buf.ReplaceAll ("*", "\\*");
-                // Don't add filenames - this is because tar will get stuck up when there are 
-                // duplicate entries (same filenames) as samenames must be supplied to tar only
-                // once
-                //message->AddString (fieldName, buf.String());
-                //count++;
-                if (element->m_clvItem->IsSuperItem())
-                    folderList->AddItem ((void*)element->m_clvItem);
-                else
-                    fileList->AddItem ((void*)element->m_clvItem);
-            }
-            
-            element = element->m_next;
+           BString buf = element->m_pathStr;
+           if (buf.FindFirst (directoryPath) >= 0L)
+           {
+               BString buf = element->m_pathStr;
+               buf.ReplaceAll ("*", "\\*");
+               // Don't add filenames - this is because tar will get stuck up when there are 
+               // duplicate entries (same filenames) as samenames must be supplied to tar only
+               // once
+               //message->AddString (fieldName, buf.String());
+               //count++;
+               if (element->m_clvItem->IsSuperItem())
+                  folderList->AddItem ((void*)element->m_clvItem);
+               else
+                  fileList->AddItem ((void*)element->m_clvItem);
+           }
+           
+           element = element->m_next;
         }
     return count;
 }
@@ -215,7 +215,7 @@ HashEntry* HashTable::Find (const char *str)
     // Cached find - performance gain
     if (m_lastFoundEntry)
         if (strcmp (m_lastFoundEntry->m_pathStr, str) == 0)
-            return m_lastFoundEntry;
+           return m_lastFoundEntry;
     
     // Cache result of current find, return what is found
     m_lastFoundEntry = LookUp (const_cast<char*>(str), false, NULL, false);
@@ -249,22 +249,22 @@ bool HashTable::Delete (char *str)
     {
         if (strcmp (targetElement->m_pathStr, str) == 0)
         {
-            // If there is a prev element connect it to the next one, else make next element as top of bucket
-            if (prevElement != NULL)
-                prevElement->m_next = targetElement->m_next;
-            else
-                m_table[hashValue] = targetElement->m_next;
-            
-            // Reset cached entries -- very important
-            ResetCache (targetElement);
-            delete targetElement;
-            targetElement = NULL;
-            
-            m_itemCount--;
-            return true;
+           // If there is a prev element connect it to the next one, else make next element as top of bucket
+           if (prevElement != NULL)
+               prevElement->m_next = targetElement->m_next;
+           else
+               m_table[hashValue] = targetElement->m_next;
+           
+           // Reset cached entries -- very important
+           ResetCache (targetElement);
+           delete targetElement;
+           targetElement = NULL;
+           
+           m_itemCount--;
+           return true;
         }
         //prevElement = m_table[hashValue];
-        prevElement = targetElement;            // bug-fix
+        prevElement = targetElement;           // bug-fix
     }
 
     return false;

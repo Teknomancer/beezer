@@ -31,12 +31,12 @@ const char *const kPfSpecialField = "beezer_special_field_magix!";
 //=============================================================================================================//
 
 BeezerListView::BeezerListView (BRect frame, CLVContainerView **containerView, const char *name = NULL,
-                    uint32 resizingMode = B_FOLLOW_LEFT, uint32 flags = B_WILL_DRAW,
-                    list_view_type type = B_SINGLE_SELECTION_LIST, bool hierarchical = false,
-                    bool horizontalScroll = true, bool verticalScroll = true, bool scrollViewCorner = true,
-                    border_style borderStyle = B_NO_BORDER, const BFont *labelFont = be_plain_font)
+                  uint32 resizingMode = B_FOLLOW_LEFT, uint32 flags = B_WILL_DRAW,
+                  list_view_type type = B_SINGLE_SELECTION_LIST, bool hierarchical = false,
+                  bool horizontalScroll = true, bool verticalScroll = true, bool scrollViewCorner = true,
+                  border_style borderStyle = B_NO_BORDER, const BFont *labelFont = be_plain_font)
     : ColumnListView (frame, containerView, name, resizingMode, flags, type, hierarchical, horizontalScroll,
-                    verticalScroll, scrollViewCorner, borderStyle, labelFont)
+                  verticalScroll, scrollViewCorner, borderStyle, labelFont)
 {
     m_contextMenu = NULL;
     m_cachedCount = -1L;
@@ -67,69 +67,69 @@ void BeezerListView::MessageReceived (BMessage *message)
     {
         case B_COPY_TARGET:
         {
-            BMessage dropDoneMessage (*message);
-            dropDoneMessage.what = M_DROP_MESSAGE;
-            
-            // Remove the temporary file (dropped object) created by Tracker
-            entry_ref dirRef;
-            message->FindRef ("directory", &dirRef);
-            BPath path (&dirRef);
-            path.Append (kDropClipping);
+           BMessage dropDoneMessage (*message);
+           dropDoneMessage.what = M_DROP_MESSAGE;
+           
+           // Remove the temporary file (dropped object) created by Tracker
+           entry_ref dirRef;
+           message->FindRef ("directory", &dirRef);
+           BPath path (&dirRef);
+           path.Append (kDropClipping);
 
-            BEntry entry (path.Path(), false);
-            entry.Remove();
-            
-            // MainWindow must handle the message
-            Window()->PostMessage (&dropDoneMessage);
-            break;
+           BEntry entry (path.Path(), false);
+           entry.Remove();
+           
+           // MainWindow must handle the message
+           Window()->PostMessage (&dropDoneMessage);
+           break;
         }
         
         case B_SIMPLE_DATA:
         {
-            // We are getting files dropped on our listview FROM tracker
-            // Make sure it has "refs" field and is NOT the beezer special field
-            if (message->HasRef ("refs") && message->HasBool (kPfSpecialField) == false)
-            {
-                // Grab the directory ref from the ref in the message
-                entry_ref dirRef;
-                entry_ref ref;
-                message->FindRef ("refs", 0, &ref);
-                BEntry entry (&ref, false);        // Don't traverse links here
-                entry.GetParent (&entry);
-                entry.GetRef (&dirRef);
-                
-                BMessage *dropMsg = new BMessage (*message);
-                dropMsg->what = M_ADD;
-                if (m_dropItem == NULL)
-                    dropMsg->AddBool (kRoot, true);
-                else
-                    dropMsg->AddPointer (kListItem, m_dropItem);
-                
-                dropMsg->AddRef (kDirectoryRef, &dirRef);
-                EraseIndicator ();
-                Window()->PostMessage (dropMsg);
-                delete dropMsg;
-            }
-            break;
+           // We are getting files dropped on our listview FROM tracker
+           // Make sure it has "refs" field and is NOT the beezer special field
+           if (message->HasRef ("refs") && message->HasBool (kPfSpecialField) == false)
+           {
+               // Grab the directory ref from the ref in the message
+               entry_ref dirRef;
+               entry_ref ref;
+               message->FindRef ("refs", 0, &ref);
+               BEntry entry (&ref, false);        // Don't traverse links here
+               entry.GetParent (&entry);
+               entry.GetRef (&dirRef);
+               
+               BMessage *dropMsg = new BMessage (*message);
+               dropMsg->what = M_ADD;
+               if (m_dropItem == NULL)
+                  dropMsg->AddBool (kRoot, true);
+               else
+                  dropMsg->AddPointer (kListItem, m_dropItem);
+               
+               dropMsg->AddRef (kDirectoryRef, &dirRef);
+               EraseIndicator ();
+               Window()->PostMessage (dropMsg);
+               delete dropMsg;
+           }
+           break;
         }
         
         case B_MODIFIERS_CHANGED:
         {
-            // New from 0.05 -- now pressing SHIFT while adding files without moving the mouse
-            // correctly updates the DropLine colour!
-            if (m_dropPossible)
-            {
-                BPoint pt;
-                uint32 buttons;
-                GetMouse (&pt, &buttons, true);
-                MouseMoved (pt, B_INSIDE_VIEW, message);
-            }
-            break;
+           // New from 0.05 -- now pressing SHIFT while adding files without moving the mouse
+           // correctly updates the DropLine colour!
+           if (m_dropPossible)
+           {
+               BPoint pt;
+               uint32 buttons;
+               GetMouse (&pt, &buttons, true);
+               MouseMoved (pt, B_INSIDE_VIEW, message);
+           }
+           break;
         }
         
         default:
-            ColumnListView::MessageReceived (message);
-            break;
+           ColumnListView::MessageReceived (message);
+           break;
     }
 }
 
@@ -137,49 +137,49 @@ void BeezerListView::MessageReceived (BMessage *message)
 
 void BeezerListView::KeyDown (const char *bytes, int32 numBytes)
 {
-    if ((modifiers() & B_SHIFT_KEY) == 0)            // When shift key is not held down
+    if ((modifiers() & B_SHIFT_KEY) == 0)           // When shift key is not held down
     {
         // Remove selection when user presses left/right without SHIFT when all items are selected
         if (bytes[0] == B_ESCAPE || bytes[0] == B_LEFT_ARROW || bytes[0] == B_RIGHT_ARROW)
         {
-            int32 i = 0;
-            while (FullListCurrentSelection (i) >= 0)
-                i++;
-            
-            if ((i == FullListCountItems() || i == CountItems()) && i > 1)
-            {
-                DeselectAll();
-                return ColumnListView::KeyDown(bytes, numBytes);
-            }
+           int32 i = 0;
+           while (FullListCurrentSelection (i) >= 0)
+               i++;
+           
+           if ((i == FullListCountItems() || i == CountItems()) && i > 1)
+           {
+               DeselectAll();
+               return ColumnListView::KeyDown(bytes, numBytes);
+           }
         }
         else
         {
-            // Don't mind the repeat of the above code as this is for performance, by duplicating
-            // (almost if (i>1) is extra) we avoid recounting items when user presses up/down which
-            // will be the MOST frequently used keys we count only on "rarer" keys like ESCAPE,LEFT,RIGHT
-            int32 i = 0;
-            while (FullListCurrentSelection (i) >= 0)
-            {
-                i++;
-                if (i > 1)
-                    break;
-            }
-            
-            if (i > 1)
-            {
-                // User is allowed to move up/down when everything is selected - left/right deselects though
-                 BScrollBar *vScrollBar = ScrollBar (B_VERTICAL);
-                float smallStep, largeStep;
-                vScrollBar->GetSteps (&smallStep, &largeStep);
-                
-                switch (bytes[0])
-                {
-                    case B_DOWN_ARROW: vScrollBar->SetValue (vScrollBar->Value() + smallStep); break;
-                    case B_UP_ARROW: vScrollBar->SetValue (vScrollBar->Value() - smallStep); break;
-                    case B_PAGE_DOWN: vScrollBar->SetValue (vScrollBar->Value() + largeStep); break;
-                    case B_PAGE_UP: vScrollBar->SetValue (vScrollBar->Value() - largeStep); break;
-                }
-            }
+           // Don't mind the repeat of the above code as this is for performance, by duplicating
+           // (almost if (i>1) is extra) we avoid recounting items when user presses up/down which
+           // will be the MOST frequently used keys we count only on "rarer" keys like ESCAPE,LEFT,RIGHT
+           int32 i = 0;
+           while (FullListCurrentSelection (i) >= 0)
+           {
+               i++;
+               if (i > 1)
+                  break;
+           }
+           
+           if (i > 1)
+           {
+               // User is allowed to move up/down when everything is selected - left/right deselects though
+                BScrollBar *vScrollBar = ScrollBar (B_VERTICAL);
+               float smallStep, largeStep;
+               vScrollBar->GetSteps (&smallStep, &largeStep);
+               
+               switch (bytes[0])
+               {
+                  case B_DOWN_ARROW: vScrollBar->SetValue (vScrollBar->Value() + smallStep); break;
+                  case B_UP_ARROW: vScrollBar->SetValue (vScrollBar->Value() - smallStep); break;
+                  case B_PAGE_DOWN: vScrollBar->SetValue (vScrollBar->Value() + largeStep); break;
+                  case B_PAGE_UP: vScrollBar->SetValue (vScrollBar->Value() - largeStep); break;
+               }
+           }
         }
     }
     
@@ -191,92 +191,92 @@ void BeezerListView::KeyDown (const char *bytes, int32 numBytes)
     {
         case B_RIGHT_ARROW: case B_LEFT_ARROW: case B_ENTER:
         {
-            // Calculate selection again - speed boost as we calculate (count) selection only
-            // when user presses LEFT/RIGHT ARROW/ENTER not up/down which will be used all the time
-            int32 i = 0;
-            while (FullListCurrentSelection (i) >= 0)    // No need to count fully here as we only check
-            {                                            // if more than one selection is present
-                i++;
-                if (i > 1)
-                    break;
-            }
+           // Calculate selection again - speed boost as we calculate (count) selection only
+           // when user presses LEFT/RIGHT ARROW/ENTER not up/down which will be used all the time
+           int32 i = 0;
+           while (FullListCurrentSelection (i) >= 0)    // No need to count fully here as we only check
+           {                                        // if more than one selection is present
+               i++;
+               if (i > 1)
+                  break;
+           }
 
-            // Don't collapse folders when multi-selection is there and user pressed LEFT arrow
-            if (i > 1 && (bytes[0] == B_LEFT_ARROW || bytes[0] == B_RIGHT_ARROW))
-                break;
-            
-            // When shift is NOT held down, pretty confusing?    
-            if ((modifiers() & B_SHIFT_KEY) == 0)        // removed i == 1 && 
-            {
-                CLVListItem *item = FullListItemAt (FullListCurrentSelection (0L));
-                if (!item)
-                    return;
-                
-                // If superitem expand using right arrow or enter and collapse using left arrow or enter
-                if (item->IsSuperItem() == true)
-                {
-                    if (item->IsExpanded() == true && (bytes[0] == B_LEFT_ARROW || bytes[0] == B_ENTER))
-                        Collapse (item);
-                    else if (item->IsExpanded() == false && (bytes[0] == B_RIGHT_ARROW || bytes[0] == B_ENTER))
-                        Expand (item);
-                }
-                else
-                {
-                    // If normal item collapse its superitem (if any) using left arrow
-                    if (bytes[0] == B_LEFT_ARROW)
-                    {
-                        CLVListItem *superItem = Superitem (item);
-                        if (superItem)
-                        {
-                            Collapse (superItem);
-                            Select (IndexOf (superItem));
-                            ScrollToSelection();
-                        }
-                    }
-                }
-                
-                if (bytes[0] == B_ENTER)
-                {
-                    BMessage msg (M_ENTER);
-                    msg.AddBool (kSuperItem, item->IsSuperItem());
-                    Window()->PostMessage (&msg);
-                }
-            }
-            break;
+           // Don't collapse folders when multi-selection is there and user pressed LEFT arrow
+           if (i > 1 && (bytes[0] == B_LEFT_ARROW || bytes[0] == B_RIGHT_ARROW))
+               break;
+           
+           // When shift is NOT held down, pretty confusing?    
+           if ((modifiers() & B_SHIFT_KEY) == 0)        // removed i == 1 && 
+           {
+               CLVListItem *item = FullListItemAt (FullListCurrentSelection (0L));
+               if (!item)
+                  return;
+               
+               // If superitem expand using right arrow or enter and collapse using left arrow or enter
+               if (item->IsSuperItem() == true)
+               {
+                  if (item->IsExpanded() == true && (bytes[0] == B_LEFT_ARROW || bytes[0] == B_ENTER))
+                      Collapse (item);
+                  else if (item->IsExpanded() == false && (bytes[0] == B_RIGHT_ARROW || bytes[0] == B_ENTER))
+                      Expand (item);
+               }
+               else
+               {
+                  // If normal item collapse its superitem (if any) using left arrow
+                  if (bytes[0] == B_LEFT_ARROW)
+                  {
+                      CLVListItem *superItem = Superitem (item);
+                      if (superItem)
+                      {
+                         Collapse (superItem);
+                         Select (IndexOf (superItem));
+                         ScrollToSelection();
+                      }
+                  }
+               }
+               
+               if (bytes[0] == B_ENTER)
+               {
+                  BMessage msg (M_ENTER);
+                  msg.AddBool (kSuperItem, item->IsSuperItem());
+                  Window()->PostMessage (&msg);
+               }
+           }
+           break;
         }
         
         case B_DOWN_ARROW: case B_UP_ARROW:
         {
-            // When user expands selection (adds new items to the selection) using keyboard report only
-            // added item to the selection to the MainWindow so that it can update its display
-            if ((modifiers() & B_SHIFT_KEY) != 0)    // When shift is held down
-            {
-                int32 count = m_cachedCount != -1 ? m_cachedCount : SelectionCount();
-                int32 index = CurrentSelection (bytes[0] == B_DOWN_ARROW ? count - 1 : 0L);
-                CLVListItem *item = (CLVListItem*)ItemAt (bytes[0] == B_DOWN_ARROW ? index + 1 : index - 1);
-                
-                // If final item make sure we recount it
-                if (item && item->IsSelected() == false)
-                {
-                    BMessage msg (M_SELECTION_ADDED);
-                    msg.AddPointer (kListItem, item);
-                    m_sendSelectionMessage = false;
-                    m_cachedCount++;
-                    Window()->PostMessage (&msg);
-                }
-            }
-            else
-                m_sendSelectionMessage = true;
-            
-            break;
+           // When user expands selection (adds new items to the selection) using keyboard report only
+           // added item to the selection to the MainWindow so that it can update its display
+           if ((modifiers() & B_SHIFT_KEY) != 0)    // When shift is held down
+           {
+               int32 count = m_cachedCount != -1 ? m_cachedCount : SelectionCount();
+               int32 index = CurrentSelection (bytes[0] == B_DOWN_ARROW ? count - 1 : 0L);
+               CLVListItem *item = (CLVListItem*)ItemAt (bytes[0] == B_DOWN_ARROW ? index + 1 : index - 1);
+               
+               // If final item make sure we recount it
+               if (item && item->IsSelected() == false)
+               {
+                  BMessage msg (M_SELECTION_ADDED);
+                  msg.AddPointer (kListItem, item);
+                  m_sendSelectionMessage = false;
+                  m_cachedCount++;
+                  Window()->PostMessage (&msg);
+               }
+           }
+           else
+               m_sendSelectionMessage = true;
+           
+           break;
         }
         
         case B_DELETE:
         {
-            if (HasSelection())
-                Window()->PostMessage (M_ACTIONS_DELETE);
-            
-            break;
+           if (HasSelection())
+               Window()->PostMessage (M_ACTIONS_DELETE);
+           
+           break;
         }
     }
 
@@ -295,76 +295,76 @@ void BeezerListView::MouseMoved (BPoint point, uint32 status, const BMessage *me
     {
         case B_ENTERED_VIEW:
         {
-            // Means a drop is about to take place (user is dragging something from outside)
-            if (message && buttons != 0)
-                m_dropPossible = true;
-            else
-                m_dropPossible = false;
-            
-            break;
+           // Means a drop is about to take place (user is dragging something from outside)
+           if (message && buttons != 0)
+               m_dropPossible = true;
+           else
+               m_dropPossible = false;
+           
+           break;
         }
         
         case B_EXITED_VIEW:
         {
-            if (m_dropPossible == true)
-            {
-                EraseIndicator();
-                m_dropY = -1;
-            }
-            
-            m_dropPossible = false;
-            break;
+           if (m_dropPossible == true)
+           {
+               EraseIndicator();
+               m_dropY = -1;
+           }
+           
+           m_dropPossible = false;
+           break;
         }
         
         case B_INSIDE_VIEW:
         {
-            // Erase previous indicator if any
-            if (m_dropY != -1)
-            {
-                EraseIndicator ();
-                m_dropY = -1;    // Very important we reset this to prevent further erasals
-            }
-            
-            if (m_dropPossible && message && buttons != 0)
-            {
-                if (message->HasBool (kPfSpecialField))
-                    break;
-                
-                // Draw the indicator (a vertical line)
-                int32 index = IndexOf (point);
-                if (index < 0)
-                    index = CountItems() - 1;
-                
-                BRect itemFrame = ItemFrame (index);
-                BRect firstFrame = ItemFrame (0);
-                if (point.y > itemFrame.bottom)
-                    m_dropY = itemFrame.bottom;
-                else
-                {
-                    m_dropY = itemFrame.top;
-                    if (index > 0)
-                        index--;
-                }
-                
-                bool addAtRoot = false;
-                if ((modifiers() & B_SHIFT_KEY) != 0 || ((m_dropY == firstFrame.top) && (index == 0)))
-                    addAtRoot = true;
-                
-                if (!addAtRoot)
-                    SetHighColor (0, 0, 200, 255);
-                else
-                    SetHighColor (200, 0, 0, 255);
+           // Erase previous indicator if any
+           if (m_dropY != -1)
+           {
+               EraseIndicator ();
+               m_dropY = -1;    // Very important we reset this to prevent further erasals
+           }
+           
+           if (m_dropPossible && message && buttons != 0)
+           {
+               if (message->HasBool (kPfSpecialField))
+                  break;
+               
+               // Draw the indicator (a vertical line)
+               int32 index = IndexOf (point);
+               if (index < 0)
+                  index = CountItems() - 1;
+               
+               BRect itemFrame = ItemFrame (index);
+               BRect firstFrame = ItemFrame (0);
+               if (point.y > itemFrame.bottom)
+                  m_dropY = itemFrame.bottom;
+               else
+               {
+                  m_dropY = itemFrame.top;
+                  if (index > 0)
+                      index--;
+               }
+               
+               bool addAtRoot = false;
+               if ((modifiers() & B_SHIFT_KEY) != 0 || ((m_dropY == firstFrame.top) && (index == 0)))
+                  addAtRoot = true;
+               
+               if (!addAtRoot)
+                  SetHighColor (0, 0, 200, 255);
+               else
+                  SetHighColor (200, 0, 0, 255);
 
-                SetPenSize(2);
-                StrokeLine (BPoint (0, m_dropY), BPoint (Bounds().right, m_dropY));
-                
-                if (addAtRoot)
-                    m_dropItem = NULL;
-                else
-                    m_dropItem = (ListEntry*)ItemAt (index);
-            }
+               SetPenSize(2);
+               StrokeLine (BPoint (0, m_dropY), BPoint (Bounds().right, m_dropY));
+               
+               if (addAtRoot)
+                  m_dropItem = NULL;
+               else
+                  m_dropItem = (ListEntry*)ItemAt (index);
+           }
 
-            break;
+           break;
         }
     }
 
@@ -378,8 +378,8 @@ void BeezerListView::EraseIndicator ()
     rgb_color eraseColor = ViewColor();
     if (m_dropItem)
         if (m_dropItem->IsSelected())
-            eraseColor = ItemSelectColor (true);
-            
+           eraseColor = ItemSelectColor (true);
+           
     SetHighColor (eraseColor);
     SetPenSize(2);
     StrokeLine (BPoint (0, m_dropY), BPoint (Bounds().right, m_dropY));
@@ -416,21 +416,21 @@ void BeezerListView::MouseDown (BPoint point)
         
         CLVListItem *item = FullListItemAt (FullListIndexOf(point));
         if (!item)        // In case we have no items at all or something like that -- Bug fix
-            return;
+           return;
         
         // If a superitem is dbl-clicked, select all its sub-items (visible subitems)
         if (item->IsSuperItem())
         {
-            if (item->IsExpanded() == true)
-            {
-                msg2.AddBool (kSuperItem, true);
-                SelectSubItems (item);
-            }
-            else
-            {
-                Expand (item);
-                return;
-            }
+           if (item->IsExpanded() == true)
+           {
+               msg2.AddBool (kSuperItem, true);
+               SelectSubItems (item);
+           }
+           else
+           {
+               Expand (item);
+               return;
+           }
         }
 
         Window()->PostMessage (&msg2);
@@ -444,10 +444,10 @@ void BeezerListView::MouseDown (BPoint point)
     {
         CLVListItem *clickedItem = FullListItemAt (FullListIndexOf(point));
         if (!clickedItem)
-            return;
-                        
+           return;
+                      
         if (clickedItem->IsSelected() == false)
-            Select (IndexOf (clickedItem), false);
+           Select (IndexOf (clickedItem), false);
         
         BPoint screenPt = point;
         BRect openRect (point.x - 2, point.y - 2, point.x + 2, point.y + 2);
@@ -463,26 +463,26 @@ void BeezerListView::MouseDown (BPoint point)
     
         while ((selItem = (CLVEasyItem*)FullListItemAt (FullListCurrentSelection (i++))) != NULL)
         {
-            if (selItem->IsSuperItem() == false)
-            {
-                enabler = true;
-                break;
-            }
+           if (selItem->IsSuperItem() == false)
+           {
+               enabler = true;
+               break;
+           }
         }
         
         BMenuItem *viewItem = m_contextMenu->FindItem (M_ACTIONS_VIEW);
         BMenuItem *openWithItem = m_contextMenu->FindItem (M_ACTIONS_OPEN_WITH);
 
         if (viewItem)
-            viewItem->SetEnabled (enabler);
-            
+           viewItem->SetEnabled (enabler);
+           
         if (openWithItem)
-            openWithItem->SetEnabled (enabler);
+           openWithItem->SetEnabled (enabler);
 
         m_contextMenu->SetAsyncAutoDestruct (true);
         BMenuItem *selectedItem = m_contextMenu->Go (screenPt, true, true, openRect, false);
         if (selectedItem && Window())
-            Window()->PostMessage (selectedItem->Message());
+           Window()->PostMessage (selectedItem->Message());
     }
     
     ColumnListView::MouseDown (point);
@@ -523,7 +523,7 @@ void BeezerListView::SelectionChanged ()
         int32 i (0);
         uint32 val (0);
         while ((item = (ListEntry*)FullListItemAt(FullListCurrentSelection(i++))) != NULL)
-            val += item->m_length;
+           val += item->m_length;
 
         int32 temp = i - 1;
         PostSelectionMessage (&temp, &val);
@@ -532,7 +532,7 @@ void BeezerListView::SelectionChanged ()
         // Also send the kCount and kBytes so that MainWindow's UpdateInfoBar()
         // need not calculate it again
         m_cachedCount = temp;
-    }            
+    }           
     ColumnListView::SelectionChanged ();
 }
 
@@ -553,16 +553,16 @@ void BeezerListView::SelectSubItems (CLVListItem *superItem)
     {
         for (i = itemPos + 1; i >= 1; i++)
         {
-            CLVListItem *subItem = (CLVListItem*)FullListItemAt (i);
-            if (subItem == NULL || subItem->OutlineLevel() <= parentLevel)
-                break;
-            
-            if (subItem->IsSelected() == false)
-            {
-                selected = true;
-                Select (IndexOf (subItem), true);
-                UpdateWindow();
-            }
+           CLVListItem *subItem = (CLVListItem*)FullListItemAt (i);
+           if (subItem == NULL || subItem->OutlineLevel() <= parentLevel)
+               break;
+           
+           if (subItem->IsSelected() == false)
+           {
+               selected = true;
+               Select (IndexOf (subItem), true);
+               UpdateWindow();
+           }
         }
     }
     
@@ -590,12 +590,12 @@ void BeezerListView::DeselectSubItems (CLVListItem *superItem)
     {
         for (i = itemPos + 1; i >= 1; i++)
         {
-            CLVListItem *subItem = (CLVListItem*)FullListItemAt (i);
-            if (subItem == NULL || subItem->OutlineLevel() <= parentLevel)
-                break;
+           CLVListItem *subItem = (CLVListItem*)FullListItemAt (i);
+           if (subItem == NULL || subItem->OutlineLevel() <= parentLevel)
+               break;
 
-            Deselect (IndexOf (subItem));
-            UpdateWindow();
+           Deselect (IndexOf (subItem));
+           UpdateWindow();
         }
     }
 
@@ -624,13 +624,13 @@ void BeezerListView::InvertSelection ()
     for (int32 i = 0; i < count; i++)
     {
         if (ItemAt(i)->IsSelected())
-            Deselect (i);
+           Deselect (i);
         else
         {
-            ListEntry *item = reinterpret_cast<ListEntry*>(ItemAt(i));
-            bytes += item->m_length;
-            selCount++;
-            Select (i, true);
+           ListEntry *item = reinterpret_cast<ListEntry*>(ItemAt(i));
+           bytes += item->m_length;
+           selCount++;
+           Select (i, true);
         }
 
         UpdateWindow();
@@ -700,7 +700,7 @@ void BeezerListView::ToggleAllSuperItems (bool expand)
     {
         CLVListItem *iThItem = FullListItemAt (i);
         if (iThItem->IsSuperItem())
-            (this->*toggleFunc)(iThItem);
+           (this->*toggleFunc)(iThItem);
 
         UpdateWindow();
     }
@@ -729,7 +729,7 @@ void BeezerListView::ToggleSelectedSuperItems (bool expand)
     while ((selEntry = FullListItemAt (FullListCurrentSelection (i++))) != NULL)
     {
         if (selEntry->IsSuperItem())
-            (this->*toggleFunc)(selEntry);
+           (this->*toggleFunc)(selEntry);
 
         UpdateWindow();
     }
@@ -775,13 +775,13 @@ int32 BeezerListView::Search (const BMessage *message, const char *&errorString)
         regExpr.SetTo (expression);
         if (regExpr.InitCheck() != B_OK)
         {
-            errorString = strdup (regExpr.ErrorString());
+           errorString = strdup (regExpr.ErrorString());
 
-            // Restore selection message bool before returning!        
-            m_sendSelectionMessage = t;
-            SelectionChanged();
-            
-            return -1;
+           // Restore selection message bool before returning!        
+           m_sendSelectionMessage = t;
+           SelectionChanged();
+           
+           return -1;
         }
     }
     
@@ -792,11 +792,11 @@ int32 BeezerListView::Search (const BMessage *message, const char *&errorString)
         // selection
         if (addToSelection == true)
         {
-            CLVEasyItem *selItem = NULL;
-            int32 i = 0L;
+           CLVEasyItem *selItem = NULL;
+           int32 i = 0L;
         
-            while ((selItem = (CLVEasyItem*)FullListItemAt (FullListCurrentSelection (i++))) != NULL)
-                selectedItemsList.AddItem ((void*)selItem);
+           while ((selItem = (CLVEasyItem*)FullListItemAt (FullListCurrentSelection (i++))) != NULL)
+               selectedItemsList.AddItem ((void*)selItem);
         }
         
         ToggleAllSuperItems (true);
@@ -814,26 +814,26 @@ int32 BeezerListView::Search (const BMessage *message, const char *&errorString)
         
         for (int32 index = 0; index < count; index++)
         {
-            CLVEasyItem *item = (CLVEasyItem*)ItemAt (index);
-            const char *columnText = item->GetColumnContentText (columnIndex);
-            
-            if (!columnText)
-                continue;
-            
-            RegExString regExStr (columnText);
-            if (regExStr.Matches (expression.String(), !ignoreCase, expressionType) ^ invertSelection)
-            {
-                found++;
-                Select (index, true);
-            }
+           CLVEasyItem *item = (CLVEasyItem*)ItemAt (index);
+           const char *columnText = item->GetColumnContentText (columnIndex);
+           
+           if (!columnText)
+               continue;
+           
+           RegExString regExStr (columnText);
+           if (regExStr.Matches (expression.String(), !ignoreCase, expressionType) ^ invertSelection)
+           {
+               found++;
+               Select (index, true);
+           }
         }
         
         // Now select the items that were selected before expanding (stored in the list)
         if (addToSelection == true)
         {
-            count = selectedItemsList.CountItems();
-            for (int32 index = 0; index < count; index++)
-                Select (FullListIndexOf ((CLVListItem*)selectedItemsList.ItemAtFast(index)), true);
+           count = selectedItemsList.CountItems();
+           for (int32 index = 0; index < count; index++)
+               Select (FullListIndexOf ((CLVListItem*)selectedItemsList.ItemAtFast(index)), true);
         }
     }
     else
@@ -845,27 +845,27 @@ int32 BeezerListView::Search (const BMessage *message, const char *&errorString)
         // Search through selection without modifying the selections
         while ((selectedItem = (CLVEasyItem*)FullListItemAt (FullListCurrentSelection (i++))) != NULL)
         {
-            const char *columnText = selectedItem->GetColumnContentText (columnIndex);
-            if (!columnText)
-                continue;
-                
-            RegExString regExStr (columnText);
-            if (regExStr.Matches (expression.String(), !ignoreCase, expressionType) ^ invertSelection)
-                found++;
-            else
-                unmatchedItems.AddItem ((void*)selectedItem);
+           const char *columnText = selectedItem->GetColumnContentText (columnIndex);
+           if (!columnText)
+               continue;
+               
+           RegExString regExStr (columnText);
+           if (regExStr.Matches (expression.String(), !ignoreCase, expressionType) ^ invertSelection)
+               found++;
+           else
+               unmatchedItems.AddItem ((void*)selectedItem);
         }
         
         // addToSelection works as "Deselect unmatched entries" in "Search selection" mode
         if (addToSelection == true)
         {
-            // Now deselect all unmatched items we have got from searching the current selection
-            int32 count = unmatchedItems.CountItems();
-            for (int32 index = 0; index < count; index++)
-            {
-                CLVEasyItem *item = reinterpret_cast<CLVEasyItem*>(unmatchedItems.ItemAtFast(index));
-                Deselect (IndexOf (item));
-            }
+           // Now deselect all unmatched items we have got from searching the current selection
+           int32 count = unmatchedItems.CountItems();
+           for (int32 index = 0; index < count; index++)
+           {
+               CLVEasyItem *item = reinterpret_cast<CLVEasyItem*>(unmatchedItems.ItemAtFast(index));
+               Deselect (IndexOf (item));
+           }
         }
     }
 
@@ -894,7 +894,7 @@ void BeezerListView::CopyToClipboard (char columnSeparator)
     {
         CLVColumn *column = (CLVColumn*)ColumnAt (displayOrderArray[k]);
         if (column->IsShown())
-            visibleColumnList.AddItem ((void*)displayOrderArray[k]);
+           visibleColumnList.AddItem ((void*)displayOrderArray[k]);
     }
     columnCount = visibleColumnList.CountItems();
 
@@ -908,11 +908,11 @@ void BeezerListView::CopyToClipboard (char columnSeparator)
     {
         for (int32 j = 0; j < columnCount; j++)
         {
-            const char *columnText = selectedItem->GetColumnContentText ((int32)visibleColumnList.ItemAt(j));
-            if (columnText && !(strcmp (columnText, "") == 0))
-                buf << columnText;
+           const char *columnText = selectedItem->GetColumnContentText ((int32)visibleColumnList.ItemAt(j));
+           if (columnText && !(strcmp (columnText, "") == 0))
+               buf << columnText;
 
-            buf << columnSeparator;
+           buf << columnSeparator;
         }
         buf << '\n';
         
@@ -925,13 +925,13 @@ void BeezerListView::CopyToClipboard (char columnSeparator)
         BMessage *clip = NULL;
         if (be_clipboard->Lock())
         {
-            be_clipboard->Clear();
-            if ((clip = be_clipboard->Data()))
-            {
-                clip->AddData ("text/plain", B_MIME_TYPE, buf.String(), buf.Length());
-                be_clipboard->Commit();
-            }
-            be_clipboard->Unlock();
+           be_clipboard->Clear();
+           if ((clip = be_clipboard->Data()))
+           {
+               clip->AddData ("text/plain", B_MIME_TYPE, buf.String(), buf.Length());
+               be_clipboard->Commit();
+           }
+           be_clipboard->Unlock();
         }
     }
 
@@ -964,12 +964,12 @@ int BeezerListView::SortAsPerName (const char *name1, const char *name2, BList *
     if (((CLVColumn*)columnList->ItemAt(2))->SortMode() == NoSort)
     {
         if (((CLVColumn*)columnList->ItemAt(sortKey))->SortMode() == Descending)
-            return strcasecmp (name1, name2);
+           return strcasecmp (name1, name2);
         else
-            return -strcasecmp (name1, name2);
+           return -strcasecmp (name1, name2);
     }
     else if (((CLVColumn*)columnList->ItemAt(2))->SortMode() ==
-                ((CLVColumn*)columnList->ItemAt(sortKey))->SortMode())
+               ((CLVColumn*)columnList->ItemAt(sortKey))->SortMode())
         return strcasecmp (name1, name2);
     else
         return -strcasecmp (name1, name2);
@@ -978,7 +978,7 @@ int BeezerListView::SortAsPerName (const char *name1, const char *name2, BList *
 //=============================================================================================================//
 
 int BeezerListView::SortFunction (const CLVListItem *a, const CLVListItem *b, BList *columnList,
-                        int32 sortKey)
+                      int32 sortKey)
 {
     // If neither ascending/descending just don't sort!
     if (sortKey == -1)
@@ -1015,64 +1015,64 @@ int BeezerListView::SortFunction (const CLVListItem *a, const CLVListItem *b, BL
         // Name column
         case 2:
         {
-            retValue = strcasecmp (s1, s2);
-            break;
+           retValue = strcasecmp (s1, s2);
+           break;
         }
         
         // Size and Packed Columns
         case 3: case 4:
         {
-            int64 valx = BytesFromString ((char*)s1);
-            int64 valy = BytesFromString ((char*)s2);
-            
-            if (valx < valy)
-                retValue = -1;
-            else if (valx > valy)
-                retValue = 1;
-            else    // If same size sort intelligently by their name
-                retValue = SortAsPerName (name1, name2, columnList, sortKey);
-            
-            break;
+           int64 valx = BytesFromString ((char*)s1);
+           int64 valy = BytesFromString ((char*)s2);
+           
+           if (valx < valy)
+               retValue = -1;
+           else if (valx > valy)
+               retValue = 1;
+           else    // If same size sort intelligently by their name
+               retValue = SortAsPerName (name1, name2, columnList, sortKey);
+           
+           break;
         }
         
         // Ratio column
         case 5:
         {
-            double vs1, vs2;
-            vs1 = s1 == NULL ? 0 : atof (s1);
-            vs2 = s2 == NULL ? 0 : atof (s2);
+           double vs1, vs2;
+           vs1 = s1 == NULL ? 0 : atof (s1);
+           vs2 = s2 == NULL ? 0 : atof (s2);
 
-            if (vs1 < vs2)
-                retValue = -1;
-            else if (vs1 > vs2)
-                retValue = 1;
-            else    // If same ratio sort intelligently by their name
-                retValue = SortAsPerName (name1, name2, columnList, sortKey);
-            
-            break;
+           if (vs1 < vs2)
+               retValue = -1;
+           else if (vs1 > vs2)
+               retValue = 1;
+           else    // If same ratio sort intelligently by their name
+               retValue = SortAsPerName (name1, name2, columnList, sortKey);
+           
+           break;
         }
         
         // Date column
         case 7:
         {
-            if (x->m_timeValue < y->m_timeValue)
-                retValue = -1;
-            else if (x->m_timeValue > y->m_timeValue)
-                retValue = 1;
-            else
-                retValue = SortAsPerName (name1, name2, columnList, sortKey);
-            
-            break;
+           if (x->m_timeValue < y->m_timeValue)
+               retValue = -1;
+           else if (x->m_timeValue > y->m_timeValue)
+               retValue = 1;
+           else
+               retValue = SortAsPerName (name1, name2, columnList, sortKey);
+           
+           break;
         }
         
         // Path, Method, CRC column
         case 6: case 8: case 9:
         {
-            retValue = strcasecmp (s1, s2);
-            if (retValue == 0)        // If same sort intelligently by names
-                retValue = SortAsPerName (name1, name2, columnList, sortKey);
-            
-            break;
+           retValue = strcasecmp (s1, s2);
+           if (retValue == 0)        // If same sort intelligently by names
+               retValue = SortAsPerName (name1, name2, columnList, sortKey);
+           
+           break;
         }
     }
 
@@ -1089,9 +1089,9 @@ void BeezerListView::SelectSubItemsOfSelection (bool select)
     // Select the entire folder for all selected items:
     // Eg:
     //        > A
-    //            B                if C is selected, then select B, C, D. Do this for all
-    //            C                selected items like C. (Note A is not selected)
-    //            D                if "select" is false - then deselect all instead of selecting.
+    //           B               if C is selected, then select B, C, D. Do this for all
+    //           C               selected items like C. (Note A is not selected)
+    //           D               if "select" is false - then deselect all instead of selecting.
 
     register int32 i = 0L;
     BList originalSelectionList;
@@ -1108,14 +1108,14 @@ void BeezerListView::SelectSubItemsOfSelection (bool select)
     {
         item = (CLVListItem*)originalSelectionList.ItemAtFast (i);
         if (!item->IsSuperItem())
-            item = Superitem (item);
+           item = Superitem (item);
         
         if (item)
         {
-            if (select)
-                SelectSubItems (item);
-            else
-                DeselectSubItems (item);
+           if (select)
+               SelectSubItems (item);
+           else
+               DeselectSubItems (item);
         }
     }
 
@@ -1180,8 +1180,8 @@ bool BeezerListView::InitiateDrag (BPoint point, int32 index, bool wasSelected)
     dragMessage->AddString ("be:types", "application/octet-stream");
     dragMessage->AddString ("be:filetypes", "application/octet-stream");
     dragMessage->AddString ("be:clip_name", kDropClipping);
-    dragMessage->AddInt32 ("buttons", buttons);                            // For future use?
-    dragMessage->AddBool (kPfSpecialField, true);                        // To identify in MouseMoved()
+    dragMessage->AddInt32 ("buttons", buttons);                         // For future use?
+    dragMessage->AddBool (kPfSpecialField, true);                      // To identify in MouseMoved()
     dragMessage->AddInt32 ("be:actions", B_COPY_TARGET);
     
     // Get app icon and construct the text to display while dragging
@@ -1197,13 +1197,13 @@ bool BeezerListView::InitiateDrag (BPoint point, int32 index, bool wasSelected)
         CountSelectionSmart (fileCount, folderCount);
     
         if (fileCount == 0)
-            dragStr << folderCount << " " << (folderCount > 1 ? str (S_DRAG_FOLDERS) : str (S_DRAG_FOLDER));
+           dragStr << folderCount << " " << (folderCount > 1 ? str (S_DRAG_FOLDERS) : str (S_DRAG_FOLDER));
         else if (folderCount == 0)
-            dragStr << fileCount << " " << (fileCount > 1 ? str (S_DRAG_FILES) : str (S_DRAG_FILE));
+           dragStr << fileCount << " " << (fileCount > 1 ? str (S_DRAG_FILES) : str (S_DRAG_FILE));
         else
         {
-            dragStr << folderCount << " " << (folderCount > 1 ? str (S_DRAG_FOLDERS) : str (S_DRAG_FOLDER))
-                << " (" << fileCount << " " << (fileCount > 1 ? str (S_DRAG_FILES) : str (S_DRAG_FILE)) << ")";
+           dragStr << folderCount << " " << (folderCount > 1 ? str (S_DRAG_FOLDERS) : str (S_DRAG_FOLDER))
+               << " (" << fileCount << " " << (fileCount > 1 ? str (S_DRAG_FILES) : str (S_DRAG_FILE)) << ")";
         }
         dragStr << " " << str (S_DRAG_TO_EXTRACT);        
     }
@@ -1255,7 +1255,7 @@ bool BeezerListView::InitiateDrag (BPoint point, int32 index, bool wasSelected)
     
     // Finally! Initiate drag and drop action
     DragMessage (dragMessage, dragBitmap, B_OP_ALPHA, BPoint (frameRect.left + iconSize,frameRect.bottom - 2),
-                    this);
+                  this);
     delete dragMessage;
     return true;
 }
@@ -1271,9 +1271,9 @@ void BeezerListView::CountSelectionDumb (int32 &subItems, int32 &superItems)
     while ((selEntry = (ListEntry*)FullListItemAt (FullListCurrentSelection (i))) != NULL)
     {
         if (selEntry->IsSuperItem() == false)
-            fileCount++;
+           fileCount++;
         else
-            folderCount++;
+           folderCount++;
 
         i++;
     }
@@ -1293,15 +1293,15 @@ void BeezerListView::CountSelectionSmart (int32 &subItems, int32 &superItems)
     while ((selEntry = (ListEntry*)FullListItemAt (FullListCurrentSelection (i))) != NULL)
     {
         if (selEntry->IsSuperItem() == false)
-            fileCount++;
+           fileCount++;
         else
         {
-            folderCount++;
+           folderCount++;
 
-            // If a folder is collapsed and selected add all its subitems to our message
-            // this is done in "Smart" version of this counting function
-            //if (selEntry->IsExpanded() == false)
-            //    CountSubItemsOf (fileCount, folderCount, (CLVListItem*)selEntry);
+           // If a folder is collapsed and selected add all its subitems to our message
+           // this is done in "Smart" version of this counting function
+           //if (selEntry->IsExpanded() == false)
+           //    CountSubItemsOf (fileCount, folderCount, (CLVListItem*)selEntry);
         }
         i++;
     }
@@ -1324,14 +1324,14 @@ void BeezerListView::CountSubItemsOf (int32 &subItems, int32 &superItems, CLVLis
     {
         for (i = itemPos + 1; i >= 1; i++)
         {
-            ListEntry *subItem = (ListEntry*)FullListItemAt (i);
-            if (subItem == NULL || subItem->OutlineLevel() <= parentLevel)
-                break;
+           ListEntry *subItem = (ListEntry*)FullListItemAt (i);
+           if (subItem == NULL || subItem->OutlineLevel() <= parentLevel)
+               break;
 
-            if (subItem->IsSuperItem() == false)
-                fileCount++;
-            else
-                folderCount++;
+           if (subItem->IsSuperItem() == false)
+               fileCount++;
+           else
+               folderCount++;
         }
     }
     
@@ -1359,9 +1359,9 @@ void BeezerListView::SelectAllEx (bool superItems)
         
         if (item->IsSuperItem() == superItems)
         {
-            selCount++;
-            bytes += item->m_length;
-            Select (i, true);
+           selCount++;
+           bytes += item->m_length;
+           Select (i, true);
         }
         
         UpdateWindow();
@@ -1384,9 +1384,9 @@ void BeezerListView::GetState (BMessage &msg) const
     // column's visibility - nice optimization in terms of space we reduce a good 16 bytes
     for (int8 i = 0; i < nColumns; i++)
         if (ColumnAt(i)->IsShown() == true)
-            msg.AddFloat (kColumnWidth, ColumnAt(i)->Width());
+           msg.AddFloat (kColumnWidth, ColumnAt(i)->Width());
         else
-            msg.AddFloat (kColumnWidth, -ColumnAt(i)->Width());    
+           msg.AddFloat (kColumnWidth, -ColumnAt(i)->Width());    
 
     // Add order of columns
     int32 *displayOrder = new int32[nColumns];
@@ -1420,21 +1420,21 @@ void BeezerListView::SetState (BMessage *msg)
     // Restore width AND visibility of columns
     for (int8 i = 0; i < nColumns; i++)
         if (msg->FindFloat (kColumnWidth, i, &width) == B_OK)
-            if (width > 0)
-                ColumnAt(i)->SetWidth (width);
-            else
-            {
-                ColumnAt(i)->SetShown (false);
-                ColumnAt(i)->SetWidth (-width);
-            }
+           if (width > 0)
+               ColumnAt(i)->SetWidth (width);
+           else
+           {
+               ColumnAt(i)->SetShown (false);
+               ColumnAt(i)->SetWidth (-width);
+           }
 
     // Restore order of columns
     int32 *displayOrder = new int32[nColumns];
     for (int8 i = 0; i < nColumns; i++)
         if (msg->FindInt8 (kColumnOrder, i, &dummy) != B_OK)
-            displayOrder[i] = i;
+           displayOrder[i] = i;
         else    
-            displayOrder[i] = (int32)dummy;
+           displayOrder[i] = (int32)dummy;
     
     SetDisplayOrder (displayOrder);
     delete[] displayOrder;
