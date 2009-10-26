@@ -155,63 +155,63 @@ class MainWindow : public BWindow
         MainMenu           *m_mainMenu;
         ToolBar            *m_toolBar;
         InfoBar            *m_infoBar;
-        SearchWindow        *m_searchWnd;
+        SearchWindow       *m_searchWnd;
         ImageButton        *m_newButton,
-                         *m_openButton,
-                         *m_closeButton,
-                         *m_searchButton,
-                         *m_viewButton,
-                         *m_addButton,
-                         *m_deleteButton,
-                         *m_extractButton;
-        BubbleHelper        *m_bubbleHelper;
-        CLVContainerView    *m_listContainer;
+                           *m_openButton,
+                           *m_closeButton,
+                           *m_searchButton,
+                           *m_viewButton,
+                           *m_addButton,
+                           *m_deleteButton,
+                           *m_extractButton;
+        BubbleHelper       *m_bubbleHelper;
+        CLVContainerView   *m_listContainer;
         CLVColumn          *m_fileNameColumn,
-                         *m_sizeColumn,
-                         *m_packedColumn,
-                         *m_ratioColumn,
-                         *m_pathColumn,
-                         *m_dateColumn,
-                         *m_methodColumn,
-                         *m_crcColumn;
-        BeezerListView      *m_listView;
-        SelectDirPanel      *m_extractToPanel;
+                           *m_sizeColumn,
+                           *m_packedColumn,
+                           *m_ratioColumn,
+                           *m_pathColumn,
+                           *m_dateColumn,
+                           *m_methodColumn,
+                           *m_crcColumn;
+        BeezerListView     *m_listView;
+        SelectDirPanel     *m_extractToPanel;
         BFilePanel         *m_addPanel;
         Archiver           *m_archiver;
         SplitPane          *m_splitPane;
         BEntry              m_archiveEntry,
-                          m_binDirEntry;
+                            m_binDirEntry;
         entry_ref           m_archiveRef;
         bool                m_logHidden,
-                          m_badArchive,
-                          m_createMode,
-                          m_dragExtract;
+                            m_badArchive,
+                            m_createMode,
+                            m_dragExtract;
         BDirectory         *m_archiversDir,
-                         *m_tempDir;
+                           *m_tempDir;
         const char         *m_tempDirPath;
         BList              *m_fileList,
-                         *m_dirList,
-                          m_addedFileList,
-                          m_addedDirList,
-                          m_columnList,
-                         *m_deleteFileList,
-                         *m_deleteDirList;
+                           *m_dirList,
+                            m_addedFileList,
+                            m_addedDirList,
+                            m_columnList,
+                           *m_deleteFileList,
+                           *m_deleteDirList;
         WindowMgr          *m_windowMgr;
         RecentMgr          *m_recentMgr,
-                         *m_extractMgr;
+                           *m_extractMgr;
         RuleMgr            *m_ruleMgr;
         BMessage           *m_searchSettingsMsg,
-                         *m_cachedUIState,
-                         *m_cachedArkState,
-                          m_dragExtractItems;
+                           *m_cachedUIState,
+                           *m_cachedArkState,
+                            m_dragExtractItems;
         off_t               m_archiveSize;
         int8                m_foldingLevel;
         float               m_slotOneX,
-                          m_slotTwoX;
-        ProgressWindow      *m_progressWnd;
-        StatusWindow        *m_statusWnd;
-        volatile bool        m_publicThreadCancel,
-                          m_criticalSection;
+                            m_slotTwoX;
+        ProgressWindow     *m_progressWnd;
+        StatusWindow       *m_statusWnd;
+        volatile bool       m_publicThreadCancel,
+                            m_criticalSection;
         BMenuBar           *m_addPanelMenuBar;
 };
 
