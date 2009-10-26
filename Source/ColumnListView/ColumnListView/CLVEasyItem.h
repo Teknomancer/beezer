@@ -50,13 +50,13 @@ class CLVEasyItem : public CLVListItem
     public:
         //Constructor and destructor
         CLVEasyItem(uint32 level = 0, bool superitem = false, bool expanded = false, float minheight = 0.0,
-                bool fullLineSelect = true);
+               bool fullLineSelect = true);
         virtual ~CLVEasyItem();
 
         virtual void SetColumnContent(int column_index, const BBitmap *bitmap, float horizontal_offset = 2.0,
-            bool copy = true, bool right_justify = false);
+           bool copy = true, bool right_justify = false);
         virtual void SetColumnContent(int column_index, const char *text, bool truncate = true,
-            bool right_justify = false);
+           bool right_justify = false);
         virtual void SetColumnUserTextContent(int column_index, bool truncate = true, bool right_justify = false);
         const char* GetColumnContentText(int column_index);
         const BBitmap* GetColumnContentBitmap(int column_index);
@@ -64,7 +64,7 @@ class CLVEasyItem : public CLVListItem
         virtual void Update(BView *owner, const BFont *font);
         static int CompareItems(const CLVListItem* a_Item1, const CLVListItem* a_Item2, int32 KeyColumn);
         BRect TruncateText(int32 column_index, float column_width, BFont* font);
-            //Returns the area that needs to be redrawn, or BRect(-1,-1,-1,-1) if nothing
+           //Returns the area that needs to be redrawn, or BRect(-1,-1,-1,-1) if nothing
         virtual void ColumnWidthChanged(int32 column_index, float column_width, ColumnListView* the_view);
         virtual void FrameChanged(int32 column_index, BRect new_frame, ColumnListView* the_view);
         inline float GetTextOffset() {return text_offset;}

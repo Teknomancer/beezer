@@ -19,12 +19,12 @@ class ListSorter
         
     private:
         // Private hooks
-        void                QuickSort (unsigned long *list, int32 n);
+        void               QuickSort (unsigned long *list, int32 n);
         virtual void        SwapItems (unsigned long *list, int32 i, int32 j);
         
         // Private members
-        BList                *m_sortList;
-        CompareFunc            m_compareFunc;
+        BList               *m_sortList;
+        CompareFunc           m_compareFunc;
 };
 
 #endif /* _LIST_SORTER_H */

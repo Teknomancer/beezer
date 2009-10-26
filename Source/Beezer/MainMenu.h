@@ -21,29 +21,29 @@ class MainMenu : public BMenuBar
         virtual ~MainMenu ();
         
         // Public hooks
-        void                 SetRecentMenu (BMenu *menu);
-        void                 SetExtractPathsMenu (BMenu *menu);
-        void                 SetExtractSelPathsMenu (BMenu *menu);
-        BMenu               *RecentMenu () const;
-        BMenu               *ExtractPathsMenu () const;
+        void                SetRecentMenu (BMenu *menu);
+        void                SetExtractPathsMenu (BMenu *menu);
+        void                SetExtractSelPathsMenu (BMenu *menu);
+        BMenu              *RecentMenu () const;
+        BMenu              *ExtractPathsMenu () const;
         
         // Public members
-        BMenu               *m_fileMenu,
-                            *m_recentMenu,
-                            *m_extractPathsMenu,
-                            *m_extractSelPathsMenu,
-                            *m_editMenu,
-                            *m_selectAllMenu,
-                            *m_actionsMenu,
-                            *m_columnsSubMenu,
-                            *m_sortBySubMenu,
-                            *m_sortOrderSubMenu,
-                            *m_foldingMenu,
-                            *m_toolsMenu,
-                            *m_windowsMenu,
-                            *m_settingsMenu;
-        BPopUpMenu          *m_archiveContextMenu,
-                            *m_logContextMenu;
+        BMenu              *m_fileMenu,
+                         *m_recentMenu,
+                         *m_extractPathsMenu,
+                         *m_extractSelPathsMenu,
+                         *m_editMenu,
+                         *m_selectAllMenu,
+                         *m_actionsMenu,
+                         *m_columnsSubMenu,
+                         *m_sortBySubMenu,
+                         *m_sortOrderSubMenu,
+                         *m_foldingMenu,
+                         *m_toolsMenu,
+                         *m_windowsMenu,
+                         *m_settingsMenu;
+        BPopUpMenu         *m_archiveContextMenu,
+                         *m_logContextMenu;
         BitmapMenuItem      *m_systemMenu;
 };
 

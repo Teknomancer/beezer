@@ -16,8 +16,8 @@ class MimeRule
         MimeRule (const char *mime, const char *extension);
         
         // Public members
-        BString             m_mime,
-                            m_extension;
+        BString            m_mime,
+                         m_extension;
 };
 
 class RuleMgr
@@ -27,14 +27,14 @@ class RuleMgr
         ~RuleMgr ();
         
         // Public hooks
-        char                *ValidateFileType (BPath *filePath) const;
+        char               *ValidateFileType (BPath *filePath) const;
 
     private:
         // Private hooks
-        void                ReadRules (const char *dir, const char *ruleFile);
+        void               ReadRules (const char *dir, const char *ruleFile);
 
         // Private members
-        BList              *m_ruleList;
+        BList             *m_ruleList;
         
         static int32        m_runCount;
 };

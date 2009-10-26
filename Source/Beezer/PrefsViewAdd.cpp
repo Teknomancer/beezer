@@ -25,7 +25,7 @@
 #include "AppConstants.h"
 #include "Preferences.h"
 
-#define M_WARN                'warn'
+#define M_WARN               'warn'
 
 //=============================================================================================================//
 
@@ -47,8 +47,8 @@ void PrefsViewAdd::Render ()
         m_replaceMenu->AddItem (new BMenuItem (str (S_PREFS_ADD_BYDATE), NULL));
 
     m_replaceField = new BMenuField (BRect (m_margin, m_margin, Bounds().right - m_margin, m_margin),
-                            "PrefsViewAdd:replaceField", str (S_PREFS_ADD_REPLACE), (BMenu*)m_replaceMenu,
-                            B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
+                         "PrefsViewAdd:replaceField", str (S_PREFS_ADD_REPLACE), (BMenu*)m_replaceMenu,
+                         B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
     m_replaceField->ResizeToPreferred();
     m_replaceField->SetDivider (StringWidth (m_replaceField->Label()) + StringWidth ("W"));
     
@@ -56,29 +56,29 @@ void PrefsViewAdd::Render ()
     be_plain_font->GetHeight (&fntHt);
     
     m_warnMBChk = new BCheckBox (BRect (m_margin, 3 * m_margin + fntHt.ascent + fntHt.descent + m_vGap + 4, 0, 0),
-                        "PrefsViewAdd:warnMBChk", str (S_PREFS_ADD_WARNMB), new BMessage (M_WARN), B_FOLLOW_LEFT,
-                        B_WILL_DRAW | B_NAVIGABLE);
+                      "PrefsViewAdd:warnMBChk", str (S_PREFS_ADD_WARNMB), new BMessage (M_WARN), B_FOLLOW_LEFT,
+                      B_WILL_DRAW | B_NAVIGABLE);
     m_warnMBChk->ResizeToPreferred();
     
     m_mbView = new BTextControl (BRect (m_warnMBChk->Frame().right, m_warnMBChk->Frame().top - 2,
-                    m_warnMBChk->Frame().right + StringWidth ("88888") + 4, 0), "PrefsViewAdd:mbView",
-                    NULL, NULL, NULL, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
+                  m_warnMBChk->Frame().right + StringWidth ("88888") + 4, 0), "PrefsViewAdd:mbView",
+                  NULL, NULL, NULL, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
     m_mbView->TextView()->DisallowChar (B_INSERT);
     m_mbView->TextView()->SetMaxBytes (4);
     m_mbView->SetDivider (0);
     
     BStringView *mbStrView = new BStringView (BRect (m_mbView->Frame().right + 4, m_warnMBChk->Frame().top + 1,
-                                0,0),"PrefsViewAdd:mbStrView", str (S_PREFS_ADD_MB), B_FOLLOW_LEFT, B_WILL_DRAW);
+                             0,0),"PrefsViewAdd:mbStrView", str (S_PREFS_ADD_MB), B_FOLLOW_LEFT, B_WILL_DRAW);
     mbStrView->ResizeToPreferred();
 
     m_dropChk = new BCheckBox (BRect (m_margin,    m_warnMBChk->Frame().bottom + m_vGap, 0, 0),
-                        "PrefsViewAdd:dropChk", str (S_PREFS_CONFIRM_DROP), NULL, B_FOLLOW_LEFT,
-                        B_WILL_DRAW | B_NAVIGABLE);
+                      "PrefsViewAdd:dropChk", str (S_PREFS_CONFIRM_DROP), NULL, B_FOLLOW_LEFT,
+                      B_WILL_DRAW | B_NAVIGABLE);
     m_dropChk->ResizeToPreferred();
 
     m_sortChk = new BCheckBox (BRect (m_margin, m_dropChk->Frame().bottom + m_vGap, 0, 0),
-                        "PrefsViewAdd:sortChk", str (S_PREFS_ADD_SORT), NULL, B_FOLLOW_LEFT,
-                        B_WILL_DRAW | B_NAVIGABLE);
+                      "PrefsViewAdd:sortChk", str (S_PREFS_ADD_SORT), NULL, B_FOLLOW_LEFT,
+                      B_WILL_DRAW | B_NAVIGABLE);
     m_sortChk->ResizeToPreferred();
     
     AddChild (m_replaceField);
@@ -138,13 +138,13 @@ void PrefsViewAdd::MessageReceived (BMessage *message)
     {        
         case M_WARN:
         {
-            ToggleMBView (m_warnMBChk->Value() == B_CONTROL_ON ? true : false);
-            break;
+           ToggleMBView (m_warnMBChk->Value() == B_CONTROL_ON ? true : false);
+           break;
         }
         
         default:
-            PrefsView::MessageReceived (message);
-            break;
+           PrefsView::MessageReceived (message);
+           break;
     }
 }
 

@@ -49,7 +49,7 @@ StartupWindow::StartupWindow (RecentMgr *recentMgr, BubbleHelper *helper, bool s
     
     float width, height;
     m_headingView = new BeezerStringView (BRect (1, 1, Bounds().right - 1, 25), "StartupWindow:HeadingView",
-                            str (S_WELCOME_TO), B_FOLLOW_H_CENTER, B_WILL_DRAW);
+                         str (S_WELCOME_TO), B_FOLLOW_H_CENTER, B_WILL_DRAW);
     m_headingView->SetFont (be_bold_font);
     m_headingView->SetHighColor (K_STARTUP_MAIN_HEADING);
     m_headingView->SetLowColor (m_headingView->ViewColor());
@@ -58,15 +58,15 @@ StartupWindow::StartupWindow (RecentMgr *recentMgr, BubbleHelper *helper, bool s
     m_backView->AddChild (m_headingView);
 
     BView *sepViewLiteEdge = new BView (BRect (1, m_headingView->Frame().bottom + 9, Bounds().right - 1,
-                                    m_headingView->Frame().bottom + 9), "StartupWindow:SepViewLiteEdge",
-                                    B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+                                m_headingView->Frame().bottom + 9), "StartupWindow:SepViewLiteEdge",
+                                B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     rgb_color backColor = m_backView->ViewColor();
     backColor.red -= 40; backColor.green -= 40; backColor.blue -= 40;
     sepViewLiteEdge->SetViewColor (backColor);
 
     BView *sepViewDarkEdge = new BView (BRect (1, sepViewLiteEdge->Frame().bottom + 1, Bounds().right - 1,
-                                    sepViewLiteEdge->Frame().bottom + 1), "StartupWindow:SepViewDarkEdge",
-                                    B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+                                sepViewLiteEdge->Frame().bottom + 1), "StartupWindow:SepViewDarkEdge",
+                                B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     sepViewDarkEdge->SetViewColor (K_WHITE_COLOR);
 
     m_backView->AddChild (sepViewLiteEdge);
@@ -80,32 +80,32 @@ StartupWindow::StartupWindow (RecentMgr *recentMgr, BubbleHelper *helper, bool s
     BitmapPool *_bmps = _glob_bitmap_pool;
     
     m_createBtn = new ImageButton (buttonRect, "StartupWindow:New", str (S_TOOLBAR_NEW),
-                            _bmps->m_tbarNewBmp, NULL, new BMessage (M_FILE_NEW), false, backColor, kBelowIcon,
-                            false, true, true, B_FOLLOW_H_CENTER);
+                         _bmps->m_tbarNewBmp, NULL, new BMessage (M_FILE_NEW), false, backColor, kBelowIcon,
+                         false, true, true, B_FOLLOW_H_CENTER);
     m_createBtn->MoveBy (gapBetweenBtns-1, 0);
     m_createBtn->ResizeToPreferred();
 
     m_openBtn = new ImageButton (buttonRect, "StartupWindow:Open", str (S_TOOLBAR_OPEN),
-                            _bmps->m_tbarOpenBmp, NULL, new BMessage (M_FILE_OPEN), false, backColor, kBelowIcon,
-                            false, true, true, B_FOLLOW_H_CENTER);
+                         _bmps->m_tbarOpenBmp, NULL, new BMessage (M_FILE_OPEN), false, backColor, kBelowIcon,
+                         false, true, true, B_FOLLOW_H_CENTER);
     m_openBtn->MoveBy (m_createBtn->Frame().right + gapBetweenBtns, 0);
     m_openBtn->ResizeToPreferred();
 
     m_openRecentBtn = new ImageButton (buttonRect, "StartupWindow:OpenRecent", str (S_TOOLBAR_OPEN_RECENT),
-                            _bmps->m_tbarOpenRecentBmp, NULL, new BMessage (M_FILE_OPEN_RECENT), false,
-                            backColor, kBelowIcon, false, true, true, B_FOLLOW_H_CENTER);
+                         _bmps->m_tbarOpenRecentBmp, NULL, new BMessage (M_FILE_OPEN_RECENT), false,
+                         backColor, kBelowIcon, false, true, true, B_FOLLOW_H_CENTER);
     m_openRecentBtn->MoveBy (m_openBtn->Frame().right + gapBetweenBtns, 0);
     m_openRecentBtn->ResizeToPreferred();
     
     m_toolsBtn = new ImageButton (buttonRect, "StartupWindow:Tools", str (S_TOOLBAR_TOOLS),
-                            _bmps->m_tbarToolsBmp, NULL, new BMessage (M_TOOLS_LIST), false,
-                            backColor, kBelowIcon, false, true, true, B_FOLLOW_H_CENTER);
+                         _bmps->m_tbarToolsBmp, NULL, new BMessage (M_TOOLS_LIST), false,
+                         backColor, kBelowIcon, false, true, true, B_FOLLOW_H_CENTER);
     m_toolsBtn->MoveBy (m_openRecentBtn->Frame().right + gapBetweenBtns, 0);
     m_toolsBtn->ResizeToPreferred();
     
     m_prefsBtn = new ImageButton (buttonRect, "StartupWindow:Prefs", str (S_TOOLBAR_PREFS),
-                            _bmps->m_tbarPrefsBmp, NULL, new BMessage (M_EDIT_PREFERENCES), false, backColor,
-                            kBelowIcon,    false, true, true, B_FOLLOW_H_CENTER);
+                         _bmps->m_tbarPrefsBmp, NULL, new BMessage (M_EDIT_PREFERENCES), false, backColor,
+                         kBelowIcon,    false, true, true, B_FOLLOW_H_CENTER);
     m_prefsBtn->MoveBy (m_toolsBtn->Frame().right + gapBetweenBtns, 0);
     m_prefsBtn->ResizeToPreferred();
 
@@ -142,15 +142,15 @@ StartupWindow::StartupWindow (RecentMgr *recentMgr, BubbleHelper *helper, bool s
     // Center the heading view
     BRect window_rect (Frame());
     m_headingView->MoveTo (window_rect.Width() / 2 - m_headingView->Frame().Width() / 2,
-                        m_headingView->Frame().top);
+                      m_headingView->Frame().top);
 
     // Restore from prefs
     BRect frame;
     if (_prefs_windows.FindBoolDef (kPfWelcomeWnd, true))
         if (_prefs_windows.FindRect (kPfWelcomeWndFrame, &frame) == B_OK)
         {
-            MoveTo (frame.LeftTop());
-            ResizeTo (frame.Width(), frame.Height());
+           MoveTo (frame.LeftTop());
+           ResizeTo (frame.Width(), frame.Height());
         }
     
     m_recentMenu = NULL;
@@ -191,74 +191,74 @@ void StartupWindow::MessageReceived (BMessage *message)
     {
         case M_FILE_OPEN: case M_FILE_NEW: case M_EDIT_PREFERENCES:
         {
-            be_app_messenger.SendMessage (message);
-            break;
+           be_app_messenger.SendMessage (message);
+           break;
         }
         
         case B_SIMPLE_DATA:
         {
-            message->what = B_REFS_RECEIVED;
-            be_app_messenger.SendMessage (message);
-            break;
+           message->what = B_REFS_RECEIVED;
+           be_app_messenger.SendMessage (message);
+           break;
         }
         
         case M_FILE_OPEN_RECENT:
         {
-            if (m_recentMenu)
-            {
-                delete m_recentMenu;
-                m_recentMenu = NULL;
-            }
-                
-            m_recentMenu = m_recentMgr->BuildPopUpMenu (NULL, "refs", be_app);
-            
-            BPoint point (m_openRecentBtn->Frame().left, m_openRecentBtn->Frame().bottom + 4);
-            BPoint screenPt = point;
-            BRect ignoreClickRect (m_openRecentBtn->Frame());
-            
-            ConvertToScreen (&screenPt);
-            ConvertToScreen (&ignoreClickRect);
+           if (m_recentMenu)
+           {
+               delete m_recentMenu;
+               m_recentMenu = NULL;
+           }
+               
+           m_recentMenu = m_recentMgr->BuildPopUpMenu (NULL, "refs", be_app);
+           
+           BPoint point (m_openRecentBtn->Frame().left, m_openRecentBtn->Frame().bottom + 4);
+           BPoint screenPt = point;
+           BRect ignoreClickRect (m_openRecentBtn->Frame());
+           
+           ConvertToScreen (&screenPt);
+           ConvertToScreen (&ignoreClickRect);
         
-            m_recentMenu->SetAsyncAutoDestruct (true);
-            m_recentMenu->Go (screenPt, true, true, ignoreClickRect, false);
-            break;
+           m_recentMenu->SetAsyncAutoDestruct (true);
+           m_recentMenu->Go (screenPt, true, true, ignoreClickRect, false);
+           break;
         }
 
         case M_TOOLS_LIST:
         {
-            if (m_toolsMenu)
-            {
-                delete m_toolsMenu;
-                m_toolsMenu = NULL;
-            }
-            
-            m_toolsMenu = _bzr()->BuildToolsPopUpMenu ();
-            m_toolsMenu->SetTargetForItems (be_app);        // send-directly to be_app object ;)
-            
-            BPoint point (m_toolsBtn->Frame().left, m_toolsBtn->Frame().bottom + 4);
-            BPoint screenPt = point;
-            BRect ignoreClickRect (m_toolsBtn->Frame());
-            
-            ConvertToScreen (&screenPt);
-            ConvertToScreen (&ignoreClickRect);
+           if (m_toolsMenu)
+           {
+               delete m_toolsMenu;
+               m_toolsMenu = NULL;
+           }
+           
+           m_toolsMenu = _bzr()->BuildToolsPopUpMenu ();
+           m_toolsMenu->SetTargetForItems (be_app);        // send-directly to be_app object ;)
+           
+           BPoint point (m_toolsBtn->Frame().left, m_toolsBtn->Frame().bottom + 4);
+           BPoint screenPt = point;
+           BRect ignoreClickRect (m_toolsBtn->Frame());
+           
+           ConvertToScreen (&screenPt);
+           ConvertToScreen (&ignoreClickRect);
 
-            m_toolsMenu->SetAsyncAutoDestruct (true);
-            m_toolsMenu->Go (screenPt, true, true, ignoreClickRect, false);
-            break;
+           m_toolsMenu->SetAsyncAutoDestruct (true);
+           m_toolsMenu->Go (screenPt, true, true, ignoreClickRect, false);
+           break;
         }
         
         case M_UPDATE_RECENT:
         {
-            // this isn't needed as we can always call BuildPopUpMenu() not a big deal, but i have
-            // provided for the future where we may be in a situation where we may not control the
-            // showing of the context menu in which case we will need to update it every time a change is
-            // made, this is completely useless for the time being -- but its better implemented this way
-            // If this need to be implemented also see  Beezer::MessageReceived()'s M_UPDATE_RECENT case.
-            break;
+           // this isn't needed as we can always call BuildPopUpMenu() not a big deal, but i have
+           // provided for the future where we may be in a situation where we may not control the
+           // showing of the context menu in which case we will need to update it every time a change is
+           // made, this is completely useless for the time being -- but its better implemented this way
+           // If this need to be implemented also see  Beezer::MessageReceived()'s M_UPDATE_RECENT case.
+           break;
         }
         
         default:
-            BWindow::MessageReceived (message);
+           BWindow::MessageReceived (message);
     }
 }
 

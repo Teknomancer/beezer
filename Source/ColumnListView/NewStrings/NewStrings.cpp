@@ -53,11 +53,11 @@ float GetStringsMaxWidth(const char** strings, int32 num_strings, const BFont* f
     if(string_widths == NULL)
     {
         if(num_strings <= 20)
-            string_widths = strwidths_fixed;
+           string_widths = strwidths_fixed;
         else
         {
-            string_widths = new float[num_strings];
-            release_string_widths = true;
+           string_widths = new float[num_strings];
+           release_string_widths = true;
         }
     }
 
@@ -68,7 +68,7 @@ float GetStringsMaxWidth(const char** strings, int32 num_strings, const BFont* f
     float max = string_widths[0];
     for(i = 1; i < num_strings; i++)
         if(string_widths[i] > max)
-            max = string_widths[i];
+           max = string_widths[i];
 
     if(release_string_widths)
         delete[] string_widths;
@@ -135,7 +135,7 @@ void StrToUpper(char* string)
     while(*string != 0)
     {
         if(*string >= 'a' && *string <= 'z')
-            *string = *string - 'a' + 'A';
+           *string = *string - 'a' + 'A';
         string++;
     }
 }
@@ -146,7 +146,7 @@ void StrToLower(char* string)
     while(*string != 0)
     {
         if(*string >= 'A' && *string <= 'Z')
-            *string = *string - 'A' + 'a';
+           *string = *string - 'A' + 'a';
         string++;
     }
 }

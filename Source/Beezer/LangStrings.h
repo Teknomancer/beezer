@@ -334,7 +334,7 @@ enum LanguageStrings
     S_MAKE_APP_PREFERRED,
     S_INSTALL_MIMETYPE,
     S_MAKE_DEFAULT,
-    S_REGISTER_ALL,                            // 0.06
+    S_REGISTER_ALL,                         // 0.06
     S_COMPLETED_REGISTER,
     S_ALREADY_REGISTERED,
     S_HELP_FILE_NOT_FOUND,
@@ -360,7 +360,7 @@ enum LanguageStrings
         S_PREFS_WINDOWS_COMMENT,
         S_PREFS_WINDOWS_ARKINFO,
         S_PREFS_WINDOWS_WELCOME,
-        S_PREFS_WINDOWS_PREFS,                // 0.06
+        S_PREFS_WINDOWS_PREFS,               // 0.06
     S_PREFS_TITLE_PATHS,
         S_PREFS_DESC_PATHS,
         S_PREFS_PATHS_DEFAULT,
@@ -414,10 +414,10 @@ enum LanguageStrings
         S_PREFS_MISC_CREATE,
         S_PREFS_MISC_OPEN,
         
-    S_TOOLBAR_TOOLS,                    // 0.07 starts here
+    S_TOOLBAR_TOOLS,                  // 0.07 starts here
     S_TOOLS,
     S_BUBBLEHELP_TOOLS,    
-    S_FILE_SPLITTER_TITLE,                // Splitter strings
+    S_FILE_SPLITTER_TITLE,               // Splitter strings
     S_FILE_SPLITTER_DESC,
     S_FILE_SPLITTER_DESC2,
     S_DEBUG_RELEASE,
@@ -463,7 +463,7 @@ enum LanguageStrings
     S_STUB_DIR_NOT_FOUND,
     S_STUB_NAME,
     
-    S_FILE_JOINER_TITLE,                        // Joiner strings
+    S_FILE_JOINER_TITLE,                      // Joiner strings
     S_FILE_JOINER_DESC,
     S_FILE_JOINER_DESC2,
     S_FIRST_FILE_TO_JOIN,
@@ -483,8 +483,8 @@ enum LanguageStrings
     S_FORCE_JOIN_CLOSE_WARNING,
     S_CLOSE_AFTER_JOIN,
     
-    S_PREFS_EXTRACT_DRAG_PATH,                        // 0.09 starts here
-    S_TA_TITLE,                                        // TA - Tracker Addon stuff
+    S_PREFS_EXTRACT_DRAG_PATH,                      // 0.09 starts here
+    S_TA_TITLE,                                    // TA - Tracker Addon stuff
     S_TA_ARCHIVE_NAME,
     S_TA_ARCHIVE_TYPE,
     S_TA_PROMPT_DROP,
@@ -501,7 +501,7 @@ enum LanguageStrings
     S_TA_PASSWORD,
     S_FORCE_ADDON_CLOSE_WARNING,
     
-    S_PREFS_INTERFACE_DEFAULTS,                        // 0.09 preference::interface!!
+    S_PREFS_INTERFACE_DEFAULTS,                      // 0.09 preference::interface!!
     S_PREFS_INTERFACE_TOOLBAR,
     S_PREFS_INTERFACE_INFOBAR,
     S_PREFS_INTERFACE_ACTION_LOG,

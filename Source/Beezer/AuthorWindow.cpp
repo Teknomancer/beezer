@@ -50,27 +50,27 @@ AuthorWindow::AuthorWindow ()
     BBitmap *appBmp = _glob_bitmap_pool->m_largeAppIcon;
 
     BevelView *sepView1 = new BevelView (BRect (-1, appBmp->Bounds().Height() + 4 * K_MARGIN,
-                                    Bounds().right - 1.0, appBmp->Bounds().Height() + 4 * K_MARGIN + 1),
-                                    "CommentWindow:SepView1", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+                                Bounds().right - 1.0, appBmp->Bounds().Height() + 4 * K_MARGIN + 1),
+                                "CommentWindow:SepView1", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     m_backView->AddChild (sepView1);
     
     // Add icon to ImageButton (since icon we use ImageButton because it draws in B_OP_ALPHA mode to render
     // the icon with transparency)
     ImageButton *appBmpView = new ImageButton (BRect (K_MARGIN * 5, K_MARGIN * 2,
-                                appBmp->Bounds().Width() + K_MARGIN * 5,
-                                appBmp->Bounds().Height() + K_MARGIN * 2), NULL, NULL, appBmp, appBmp, NULL,
-                                false, m_backView->ViewColor(), kBelowIcon, false, true, false, B_FOLLOW_TOP,
-                                B_WILL_DRAW);
+                             appBmp->Bounds().Width() + K_MARGIN * 5,
+                             appBmp->Bounds().Height() + K_MARGIN * 2), NULL, NULL, appBmp, appBmp, NULL,
+                             false, m_backView->ViewColor(), kBelowIcon, false, true, false, B_FOLLOW_TOP,
+                             B_WILL_DRAW);
     m_backView->AddChild (appBmpView);
     appBmpView->SetEnabled (false);
     appBmpView->SetMargin (2, 2);
     appBmpView->ResizeTo (appBmp->Bounds().Width() + 4, appBmp->Bounds().Height() + 4);
     
     ImageButton *appBmpView2 = new ImageButton (BRect (Bounds().right - K_MARGIN * 5 - appBmp->Bounds().Width()-1,
-                                K_MARGIN * 2, Bounds().right - K_MARGIN * 5,
-                                appBmp->Bounds().Height() + K_MARGIN * 2), NULL, NULL, appBmp, appBmp, NULL,
-                                false, m_backView->ViewColor(), kBelowIcon, false, true, false, B_FOLLOW_TOP,
-                                B_WILL_DRAW);
+                             K_MARGIN * 2, Bounds().right - K_MARGIN * 5,
+                             appBmp->Bounds().Height() + K_MARGIN * 2), NULL, NULL, appBmp, appBmp, NULL,
+                             false, m_backView->ViewColor(), kBelowIcon, false, true, false, B_FOLLOW_TOP,
+                             B_WILL_DRAW);
     m_backView->AddChild (appBmpView2);
     appBmpView2->SetEnabled (false);
     appBmpView2->SetMargin (2, 2);
@@ -78,9 +78,9 @@ AuthorWindow::AuthorWindow ()
     
     // Add the file name string view (align it vertically with the icon view)
     BStringView *appTitleView = new BStringView (BRect (appBmpView->Frame().right + K_MARGIN * 3 - 2,
-                                        appBmpView->Frame().top, Bounds().right - 1,
-                                        appBmpView->Frame().top + totalFontHeight),
-                                        "AuthorWindow:appTitleView", K_APP_TITLE, B_FOLLOW_LEFT, B_WILL_DRAW);
+                                    appBmpView->Frame().top, Bounds().right - 1,
+                                    appBmpView->Frame().top + totalFontHeight),
+                                    "AuthorWindow:appTitleView", K_APP_TITLE, B_FOLLOW_LEFT, B_WILL_DRAW);
     appTitleView->SetFont (&font);
     appTitleView->ResizeToPreferred ();
     appTitleView->SetHighColor (255, 255, 255, 255);
@@ -91,9 +91,9 @@ AuthorWindow::AuthorWindow ()
 
     // Draw main string (the PREVIOUS was the shadow/gradient ie the background)
     BStringView *appTitleView2 = new BStringView (BRect (appBmpView->Frame().right + K_MARGIN * 3 - 2,
-                                        appBmpView->Frame().top, Bounds().right - 1,
-                                        appBmpView->Frame().top + totalFontHeight),
-                                        "AuthorWindow:appTitleView", K_APP_TITLE, B_FOLLOW_LEFT, B_WILL_DRAW);
+                                    appBmpView->Frame().top, Bounds().right - 1,
+                                    appBmpView->Frame().top + totalFontHeight),
+                                    "AuthorWindow:appTitleView", K_APP_TITLE, B_FOLLOW_LEFT, B_WILL_DRAW);
     appTitleView2->SetFont (&font);
     appTitleView2->ResizeToPreferred ();
     appTitleView2->SetHighColor (135, 48, 48, 255);
@@ -102,8 +102,8 @@ AuthorWindow::AuthorWindow ()
     m_backView->AddChild (appTitleView2);
 
     m_contentView = new BevelView (BRect (K_MARGIN, sepView1->Frame().bottom + K_MARGIN,
-                            Bounds().right - K_MARGIN, Bounds().bottom - K_MARGIN),
-                            "AuthorWindow:ContentView", btInset);
+                         Bounds().right - K_MARGIN, Bounds().bottom - K_MARGIN),
+                         "AuthorWindow:ContentView", btInset);
     m_backView->AddChild (m_contentView);
     m_contentView->SetViewColor (255, 254, 242, 255);
     
@@ -144,84 +144,84 @@ AuthorWindow::AuthorWindow ()
     
     // Render controls inside the content view
     BStringView *authorDesc = new BStringView (BRect (K_MARGIN * 6, K_MARGIN,
-                                        K_MARGIN * 6 + maxWidth + 2,
-                                        K_MARGIN + totalFontHeight + 2), "AuthorWindow:AuthorDesc",
-                                        str (S_AUTHOR_AUTHOR_DESC));
+                                    K_MARGIN * 6 + maxWidth + 2,
+                                    K_MARGIN + totalFontHeight + 2), "AuthorWindow:AuthorDesc",
+                                    str (S_AUTHOR_AUTHOR_DESC));
     m_contentView->AddChild (authorDesc);
     authorDesc->SetHighColor (K_DARK_GREY_COLOR);
     authorDesc->SetAlignment (B_ALIGN_RIGHT);
     
     BStringView *authorView = new BStringView (BRect (dividerWidth, authorDesc->Frame().top,
-                                            dividerWidth + m_backView->StringWidth (K_APP_AUTHOR) + 2,
-                                            authorDesc->Frame().bottom), "AuthorWindow:AuthorView", K_APP_AUTHOR);
+                                        dividerWidth + m_backView->StringWidth (K_APP_AUTHOR) + 2,
+                                        authorDesc->Frame().bottom), "AuthorWindow:AuthorView", K_APP_AUTHOR);
     m_contentView->AddChild (authorView);
     
     BStringView *ageDesc = new BStringView (BRect (K_MARGIN * 6, authorView->Frame().bottom + totalFontHeight,
-                                    K_MARGIN * 6 + maxWidth + 2,
-                                    authorView->Frame().bottom + 2 * totalFontHeight + 2),
-                                    "AuthorWindow:AgeDesc", str (S_AUTHOR_AGE_DESC));
+                                K_MARGIN * 6 + maxWidth + 2,
+                                authorView->Frame().bottom + 2 * totalFontHeight + 2),
+                                "AuthorWindow:AgeDesc", str (S_AUTHOR_AGE_DESC));
     m_contentView->AddChild (ageDesc);
     ageDesc->SetHighColor (K_DARK_GREY_COLOR);
     ageDesc->SetAlignment (B_ALIGN_RIGHT);
     
     BStringView *ageView = new BStringView (BRect (dividerWidth, ageDesc->Frame().top,
-                                    dividerWidth + m_backView->StringWidth (K_APP_AUTHOR_AGE) + 2,
-                                    ageDesc->Frame().bottom), "AuthorWindow:AgeView", K_APP_AUTHOR_AGE);
+                                dividerWidth + m_backView->StringWidth (K_APP_AUTHOR_AGE) + 2,
+                                ageDesc->Frame().bottom), "AuthorWindow:AgeView", K_APP_AUTHOR_AGE);
     m_contentView->AddChild (ageView);
     
     BStringView *natDesc = new BStringView (BRect (K_MARGIN * 6, ageView->Frame().bottom,
-                                    K_MARGIN * 6 + maxWidth + 2, ageView->Frame().bottom + totalFontHeight + 2),
-                                    "AuthorWindow:NatDesc", str (S_AUTHOR_NATIONALITY_DESC));
+                                K_MARGIN * 6 + maxWidth + 2, ageView->Frame().bottom + totalFontHeight + 2),
+                                "AuthorWindow:NatDesc", str (S_AUTHOR_NATIONALITY_DESC));
     m_contentView->AddChild (natDesc);
     natDesc->SetHighColor (K_DARK_GREY_COLOR);
     natDesc->SetAlignment (B_ALIGN_RIGHT);
     
     BStringView *natView = new BStringView (BRect (dividerWidth, natDesc->Frame().top,
-                                    dividerWidth + m_backView->StringWidth (K_APP_AUTHOR_COUNTRY) + 2,
-                                    natDesc->Frame().bottom), "AuthorWindow:NatView", K_APP_AUTHOR_COUNTRY);
+                                dividerWidth + m_backView->StringWidth (K_APP_AUTHOR_COUNTRY) + 2,
+                                natDesc->Frame().bottom), "AuthorWindow:NatView", K_APP_AUTHOR_COUNTRY);
     m_contentView->AddChild (natView);
 
 
     BStringView *occDesc = new BStringView (BRect (K_MARGIN * 6, natView->Frame().bottom,
-                                    K_MARGIN * 6 + maxWidth + 2, natView->Frame().bottom + totalFontHeight + 2),
-                                    "AuthorWindow:NatDesc", str (S_AUTHOR_OCCUPATION_DESC));
+                                K_MARGIN * 6 + maxWidth + 2, natView->Frame().bottom + totalFontHeight + 2),
+                                "AuthorWindow:NatDesc", str (S_AUTHOR_OCCUPATION_DESC));
     m_contentView->AddChild (occDesc);
     occDesc->SetHighColor (K_DARK_GREY_COLOR);
     occDesc->SetAlignment (B_ALIGN_RIGHT);
     
     BStringView *occView = new BStringView (BRect (dividerWidth, occDesc->Frame().top,
-                                    dividerWidth + m_backView->StringWidth (K_APP_AUTHOR_OCCUPATION) + 2,
-                                    occDesc->Frame().bottom), "AuthorWindow:NatView", K_APP_AUTHOR_OCCUPATION);
+                                dividerWidth + m_backView->StringWidth (K_APP_AUTHOR_OCCUPATION) + 2,
+                                occDesc->Frame().bottom), "AuthorWindow:NatView", K_APP_AUTHOR_OCCUPATION);
     m_contentView->AddChild (occView);
 
 
     BStringView *beshareDesc = new BStringView (BRect (K_MARGIN * 6, occView->Frame().bottom + totalFontHeight,
-                                        K_MARGIN * 6 + maxWidth + 2,
-                                        occView->Frame().bottom + 2 * totalFontHeight + 2),
-                                        "AuthorWindow:BeShareDesc", str (S_AUTHOR_BESHARE_DESC));
+                                    K_MARGIN * 6 + maxWidth + 2,
+                                    occView->Frame().bottom + 2 * totalFontHeight + 2),
+                                    "AuthorWindow:BeShareDesc", str (S_AUTHOR_BESHARE_DESC));
     m_contentView->AddChild (beshareDesc);
     beshareDesc->SetHighColor (K_DARK_GREY_COLOR);
     beshareDesc->SetAlignment (B_ALIGN_RIGHT);
 
     BStringView *beshareView = new BStringView (BRect (dividerWidth, beshareDesc->Frame().top,
-                                            dividerWidth + m_backView->StringWidth (K_APP_AUTHOR_BESHARE_NICK)+2,
-                                            beshareDesc->Frame().bottom), "AuthorWindow:BeShareView",
-                                            K_APP_AUTHOR_BESHARE_NICK);
+                                        dividerWidth + m_backView->StringWidth (K_APP_AUTHOR_BESHARE_NICK)+2,
+                                        beshareDesc->Frame().bottom), "AuthorWindow:BeShareView",
+                                        K_APP_AUTHOR_BESHARE_NICK);
     m_contentView->AddChild (beshareView);
 
 
     BStringView *webDesc = new BStringView (BRect (K_MARGIN * 6, beshareView->Frame().bottom,
-                                        K_MARGIN * 6 + maxWidth + 2,
-                                        beshareView->Frame().bottom + totalFontHeight + 2),
-                                        "AuthorWindow:AuthorDesc", str (S_AUTHOR_WEBSITE_DESC));
+                                    K_MARGIN * 6 + maxWidth + 2,
+                                    beshareView->Frame().bottom + totalFontHeight + 2),
+                                    "AuthorWindow:AuthorDesc", str (S_AUTHOR_WEBSITE_DESC));
     m_contentView->AddChild (webDesc);
     webDesc->SetHighColor (K_DARK_GREY_COLOR);
     webDesc->SetAlignment (B_ALIGN_RIGHT);
     
     URLView *webView = new URLView (BRect (dividerWidth + 1, webDesc->Frame().top,
-                                        dividerWidth + m_backView->StringWidth (K_APP_WEBSITE) + 2,
-                                        webDesc->Frame().bottom), "AuthorWindow:WebView", K_APP_WEBSITE,
-                                        K_APP_WEBSITE_URL);
+                                    dividerWidth + m_backView->StringWidth (K_APP_WEBSITE) + 2,
+                                    webDesc->Frame().bottom), "AuthorWindow:WebView", K_APP_WEBSITE,
+                                    K_APP_WEBSITE_URL);
     m_contentView->AddChild (webView);
     webView->SetColor (K_DEEP_BLUE_COLOR);
     webView->SetHoverEnabled (true);
@@ -229,17 +229,17 @@ AuthorWindow::AuthorWindow ()
     webView->SetClickColor (K_ORANGE_COLOR);
 
     BStringView *mailDesc = new BStringView (BRect (K_MARGIN * 6, webView->Frame().bottom,
-                                        K_MARGIN * 6 + maxWidth + 2,
-                                        webView->Frame().bottom + totalFontHeight + 2),
-                                        "AuthorWindow:MailDesc", str (S_AUTHOR_EMAIL_DESC));
+                                    K_MARGIN * 6 + maxWidth + 2,
+                                    webView->Frame().bottom + totalFontHeight + 2),
+                                    "AuthorWindow:MailDesc", str (S_AUTHOR_EMAIL_DESC));
     m_contentView->AddChild (mailDesc);
     mailDesc->SetHighColor (K_DARK_GREY_COLOR);
     mailDesc->SetAlignment (B_ALIGN_RIGHT);
 
     URLView *mailView1 = new URLView (BRect (dividerWidth + 1, mailDesc->Frame().top,
-                                        dividerWidth + m_backView->StringWidth (K_APP_AUTHOR_MAIL_1) + 2,
-                                        mailDesc->Frame().bottom), "AuthorWindow:MailView1", K_APP_AUTHOR_MAIL_1,
-                                        K_APP_AUTHOR_MAIL_URL_1);
+                                    dividerWidth + m_backView->StringWidth (K_APP_AUTHOR_MAIL_1) + 2,
+                                    mailDesc->Frame().bottom), "AuthorWindow:MailView1", K_APP_AUTHOR_MAIL_1,
+                                    K_APP_AUTHOR_MAIL_URL_1);
     m_contentView->AddChild (mailView1);
     mailView1->SetEnabled (true);
     mailView1->SetColor (K_DEEP_BLUE_COLOR);
@@ -252,9 +252,9 @@ AuthorWindow::AuthorWindow ()
     mailView1->AddAttribute ("META:country", K_APP_AUTHOR_COUNTRY);
     
     URLView *mailView2 = new URLView (BRect (dividerWidth + 1, mailDesc->Frame().bottom,
-                                        dividerWidth + m_backView->StringWidth (K_APP_AUTHOR_MAIL_2) + 2,
-                                        mailDesc->Frame().bottom + totalFontHeight + 2),
-                                        "AuthorWindow:MailView2", K_APP_AUTHOR_MAIL_2, K_APP_AUTHOR_MAIL_URL_2);
+                                    dividerWidth + m_backView->StringWidth (K_APP_AUTHOR_MAIL_2) + 2,
+                                    mailDesc->Frame().bottom + totalFontHeight + 2),
+                                    "AuthorWindow:MailView2", K_APP_AUTHOR_MAIL_2, K_APP_AUTHOR_MAIL_URL_2);
     m_contentView->AddChild (mailView2);
     mailView2->SetEnabled (true);
     mailView2->SetColor (K_DEEP_BLUE_COLOR);
@@ -271,15 +271,15 @@ AuthorWindow::AuthorWindow ()
     m_contentView->ResizeTo (m_contentView->Frame().Width(), mailView2->Frame().bottom + 4 + K_MARGIN);
 
     BevelView *sepView2 = new BevelView (BRect (-1, m_contentView->Frame().bottom + K_MARGIN + 1,
-                                    Bounds().right - 1.0, m_contentView->Frame().bottom + K_MARGIN + 2),
-                                    "CommentWindow:SepView2", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+                                Bounds().right - 1.0, m_contentView->Frame().bottom + K_MARGIN + 2),
+                                "CommentWindow:SepView2", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     m_backView->AddChild (sepView2);
 
     BButton *closeButton = new BButton (BRect (Bounds().right - 3 * K_MARGIN - K_BUTTON_WIDTH,
-                                    sepView2->Frame().bottom + K_MARGIN, Bounds().right - 3 * K_MARGIN,
-                                    sepView2->Frame().bottom + K_MARGIN + K_BUTTON_HEIGHT),
-                                    "AuthorWindow:CloseButton", str (S_AUTHOR_CLOSE),
-                                    new BMessage (B_QUIT_REQUESTED));
+                                sepView2->Frame().bottom + K_MARGIN, Bounds().right - 3 * K_MARGIN,
+                                sepView2->Frame().bottom + K_MARGIN + K_BUTTON_HEIGHT),
+                                "AuthorWindow:CloseButton", str (S_AUTHOR_CLOSE),
+                                new BMessage (B_QUIT_REQUESTED));
     m_backView->AddChild (closeButton);
     closeButton->MakeDefault (true);
     closeButton->MoveBy (0, 4);

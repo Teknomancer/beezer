@@ -56,7 +56,7 @@ void ListSorter::QuickSort (unsigned long *list, int32 n)
     
     for (; i < n; ++i)
         if (strcasecmp (((HashEntry*)list[i])->m_pathStr, pvt->m_pathStr) < 0)
-            SwapItems (list, ++last, i);
+           SwapItems (list, ++last, i);
     
     SwapItems (list, 0L, last);
 

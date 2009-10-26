@@ -78,9 +78,9 @@ BRect CLVListItem::ItemColumnFrame(int32 column_index, ColumnListView* owner)
         int32 NumberOfColumns = DisplayList->CountItems();
         for(int32 Counter = 0; Counter < NumberOfColumns; Counter++)
         {
-            CLVColumn* SomeColumn = (CLVColumn*)DisplayList->ItemAt(Counter);
-            if((SomeColumn->fFlags & CLV_EXPANDER) || SomeColumn->fPushedByExpander)
-                PushMax = SomeColumn->fColumnEnd;
+           CLVColumn* SomeColumn = (CLVColumn*)DisplayList->ItemAt(Counter);
+           if((SomeColumn->fFlags & CLV_EXPANDER) || SomeColumn->fPushedByExpander)
+               PushMax = SomeColumn->fColumnEnd;
         }
     }
 
@@ -92,17 +92,17 @@ BRect CLVListItem::ItemColumnFrame(int32 column_index, ColumnListView* owner)
     {
         ThisColumnRect.right += OutlineLevel() * 20.0;
         if(ThisColumnRect.right > PushMax)
-            ThisColumnRect.right = PushMax;
+           ThisColumnRect.right = PushMax;
     }
     else
     {
         if(ThisColumn->fPushedByExpander)
         {
-            float Shift = OutlineLevel() * 20.0;
-            ThisColumnRect.left += Shift;
-            ThisColumnRect.right += Shift;
-            if(Shift > 0.0 && ThisColumnRect.right > PushMax)
-                ThisColumnRect.right = PushMax;
+           float Shift = OutlineLevel() * 20.0;
+           ThisColumnRect.left += Shift;
+           ThisColumnRect.right += Shift;
+           if(Shift > 0.0 && ThisColumnRect.right > PushMax)
+               ThisColumnRect.right = PushMax;
         }
     }
 
@@ -131,7 +131,7 @@ void CLVListItem::DrawItem(BView* owner, BRect itemRect, bool complete)
     {
         ThisColumn = (CLVColumn*)DisplayList->ItemAt(Counter);
         if((ThisColumn->fFlags & CLV_EXPANDER) || ThisColumn->fPushedByExpander)
-            PushMax = ThisColumn->fColumnEnd;
+           PushMax = ThisColumn->fColumnEnd;
     }
     BRegion ClippingRegion;
     if(!complete)
@@ -145,58 +145,58 @@ void CLVListItem::DrawItem(BView* owner, BRect itemRect, bool complete)
     {
         ThisColumn = (CLVColumn*)DisplayList->ItemAt(Counter);
         if(!ThisColumn->IsShown())
-            continue;
+           continue;
         ThisColumnRect.left = ThisColumn->fColumnBegin;
         ThisColumnRect.right = LastColumnEnd = ThisColumn->fColumnEnd;
         float Shift = 0.0;
         if((ThisColumn->fFlags & CLV_EXPANDER) || ThisColumn->fPushedByExpander)
-            Shift = ExpanderDelta;
+           Shift = ExpanderDelta;
         if(ThisColumn->fFlags & CLV_EXPANDER)
         {
-            ThisColumnRect.right += Shift;
-            if(ThisColumnRect.right > PushMax)
-                ThisColumnRect.right = PushMax;
-            fExpanderColumnRect = ThisColumnRect;
-            if(ClippingRegion.Intersects(ThisColumnRect))
-            {
-                //Give the programmer a chance to do his kind of highlighting if the item is selected
-                DrawItemColumn (owner, ThisColumnRect,
-                    ((ColumnListView*)owner)->fColumnList.IndexOf(ThisColumn),complete);
-                if(fSuperItem)
-                {
-                    //Draw the expander, clip manually
-                    float TopOffset = ceil((ThisColumnRect.bottom-ThisColumnRect.top-10.0)/2.0);
-                    float LeftOffset = ThisColumn->fColumnEnd + Shift - 3.0 - 10.0;
-                    float RightClip = LeftOffset + 10.0 - ThisColumnRect.right;
-                    if(RightClip < 0.0)
-                        RightClip = 0.0;
-                    BBitmap* Arrow;
-                    if(IsExpanded())
-                        Arrow = &((ColumnListView*)owner)->fDownArrow;
-                    else
-                        Arrow = &((ColumnListView*)owner)->fRightArrow;
-                    if(LeftOffset <= ThisColumnRect.right)
-                    {
-                        fExpanderButtonRect.Set(LeftOffset,ThisColumnRect.top+TopOffset,
-                            LeftOffset+10.0-RightClip,ThisColumnRect.top+TopOffset+10.0);
-                        owner->SetDrawingMode(B_OP_OVER);
-                        owner->DrawBitmap(Arrow, BRect(0.0,0.0,10.0-RightClip,10.0),fExpanderButtonRect);
-                        owner->SetDrawingMode(B_OP_COPY);
-                    }
-                    else
-                        fExpanderButtonRect.Set(-1.0,-1.0,-1.0,-1.0);
-                }
-            }
+           ThisColumnRect.right += Shift;
+           if(ThisColumnRect.right > PushMax)
+               ThisColumnRect.right = PushMax;
+           fExpanderColumnRect = ThisColumnRect;
+           if(ClippingRegion.Intersects(ThisColumnRect))
+           {
+               //Give the programmer a chance to do his kind of highlighting if the item is selected
+               DrawItemColumn (owner, ThisColumnRect,
+                  ((ColumnListView*)owner)->fColumnList.IndexOf(ThisColumn),complete);
+               if(fSuperItem)
+               {
+                  //Draw the expander, clip manually
+                  float TopOffset = ceil((ThisColumnRect.bottom-ThisColumnRect.top-10.0)/2.0);
+                  float LeftOffset = ThisColumn->fColumnEnd + Shift - 3.0 - 10.0;
+                  float RightClip = LeftOffset + 10.0 - ThisColumnRect.right;
+                  if(RightClip < 0.0)
+                      RightClip = 0.0;
+                  BBitmap* Arrow;
+                  if(IsExpanded())
+                      Arrow = &((ColumnListView*)owner)->fDownArrow;
+                  else
+                      Arrow = &((ColumnListView*)owner)->fRightArrow;
+                  if(LeftOffset <= ThisColumnRect.right)
+                  {
+                      fExpanderButtonRect.Set(LeftOffset,ThisColumnRect.top+TopOffset,
+                         LeftOffset+10.0-RightClip,ThisColumnRect.top+TopOffset+10.0);
+                      owner->SetDrawingMode(B_OP_OVER);
+                      owner->DrawBitmap(Arrow, BRect(0.0,0.0,10.0-RightClip,10.0),fExpanderButtonRect);
+                      owner->SetDrawingMode(B_OP_COPY);
+                  }
+                  else
+                      fExpanderButtonRect.Set(-1.0,-1.0,-1.0,-1.0);
+               }
+           }
         }
         else
         {
-            ThisColumnRect.left += Shift;
-            ThisColumnRect.right += Shift;
-            if(Shift > 0.0 && ThisColumnRect.right > PushMax)
-                ThisColumnRect.right = PushMax;
-            if(ThisColumnRect.right >= ThisColumnRect.left && ClippingRegion.Intersects(ThisColumnRect))
-                DrawItemColumn(owner, ThisColumnRect,
-                    ((ColumnListView*)owner)->fColumnList.IndexOf(ThisColumn),complete);
+           ThisColumnRect.left += Shift;
+           ThisColumnRect.right += Shift;
+           if(Shift > 0.0 && ThisColumnRect.right > PushMax)
+               ThisColumnRect.right = PushMax;
+           if(ThisColumnRect.right >= ThisColumnRect.left && ClippingRegion.Intersects(ThisColumnRect))
+               DrawItemColumn(owner, ThisColumnRect,
+                  ((ColumnListView*)owner)->fColumnList.IndexOf(ThisColumn),complete);
         }
     }
     //Fill the area after all the columns (so the select highlight goes all the way across)

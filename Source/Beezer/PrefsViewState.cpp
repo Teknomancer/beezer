@@ -33,31 +33,31 @@ PrefsViewState::PrefsViewState (BRect frame)
 void PrefsViewState::Render ()
 {
     BStringView *storeStrView = new BStringView (BRect (m_margin, m_margin, 0, 0), NULL,
-                                        str (S_PREFS_STATE_STORE));
+                                    str (S_PREFS_STATE_STORE));
     storeStrView->SetFont (&m_sectionFont);
     storeStrView->ResizeToPreferred();
     storeStrView->SetLowColor (ViewColor());
-                            
+                         
     m_storeUIChk = new BCheckBox (BRect (3 * m_margin, storeStrView->Frame().bottom + m_vGap, 0, 0),
-                            "PrefsViewState:storeUIChk", str (S_PREFS_STATE_UI), NULL);
+                         "PrefsViewState:storeUIChk", str (S_PREFS_STATE_UI), NULL);
     m_storeUIChk->ResizeToPreferred();
 
     m_storeArkChk = new BCheckBox (BRect (3 * m_margin, m_storeUIChk->Frame().bottom + m_vGap, 0, 0),
-                                "PrefsViewState:storeArkChk", str (S_PREFS_STATE_ARK), NULL);
+                             "PrefsViewState:storeArkChk", str (S_PREFS_STATE_ARK), NULL);
     m_storeArkChk->ResizeToPreferred();
 
     BStringView *restoreStrView = new BStringView (BRect (m_margin, m_storeArkChk->Frame().bottom + m_vGap +
-                    m_storeArkChk->Frame().Height() / 2, 0, 0), NULL, str (S_PREFS_STATE_RESTORE));
+                  m_storeArkChk->Frame().Height() / 2, 0, 0), NULL, str (S_PREFS_STATE_RESTORE));
     restoreStrView->SetFont (&m_sectionFont);
     restoreStrView->ResizeToPreferred();
     restoreStrView->SetLowColor (ViewColor());
-                    
+                  
     m_restoreUIChk = new BCheckBox (BRect (3 * m_margin, restoreStrView->Frame().bottom + m_vGap, 0, 0),
-                                "PrefsViewState:restoreUIChk", str (S_PREFS_STATE_UI), NULL);
+                             "PrefsViewState:restoreUIChk", str (S_PREFS_STATE_UI), NULL);
     m_restoreUIChk->ResizeToPreferred();
 
     m_restoreArkChk = new BCheckBox (BRect (3 * m_margin, m_restoreUIChk->Frame().bottom + m_vGap, 0, 0),
-                                "PrefsViewState:restoreArkChk", str (S_PREFS_STATE_ARK), NULL);
+                             "PrefsViewState:restoreArkChk", str (S_PREFS_STATE_ARK), NULL);
     m_restoreArkChk->ResizeToPreferred();
 
     AddChild (storeStrView);

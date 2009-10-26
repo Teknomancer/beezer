@@ -18,9 +18,9 @@
 //=============================================================================================================//
 
 ImageButton::ImageButton (BRect frame, const char *name, const char *text, BBitmap *smallIcon,
-                BBitmap *disabled, BMessage *message, bool popUpMenu, const rgb_color bgColor,
-                textPosition textPos, bool borders, bool smallFont, bool hoverHighlight, uint32 resizeMask,
-                uint32 flags)
+               BBitmap *disabled, BMessage *message, bool popUpMenu, const rgb_color bgColor,
+               textPosition textPos, bool borders, bool smallFont, bool hoverHighlight, uint32 resizeMask,
+               uint32 flags)
     : BView (frame, name, resizeMask, flags),
         m_handler (NULL),
         m_clickBitmap (smallIcon),
@@ -116,48 +116,48 @@ void ImageButton::Draw (BRect updateRect)
     else
     {
         if (m_buttonText == NULL)
-            MovePenTo (m_marginWidth, m_marginHeight);
+           MovePenTo (m_marginWidth, m_marginHeight);
         else
         {
-            MovePenTo (Bounds().Width() / 2.0 - 10.0, m_marginHeight);
-            if (m_popUpMenu)
-                MovePenBy (-kContextWidth / 2.0, 0);
+           MovePenTo (Bounds().Width() / 2.0 - 10.0, m_marginHeight);
+           if (m_popUpMenu)
+               MovePenBy (-kContextWidth / 2.0, 0);
         }
     }
     
     if (m_isEnabled)
     {
         if (m_clickBitmap)
-            DrawBitmapAsync (m_clickBitmap);
+           DrawBitmapAsync (m_clickBitmap);
         else if (m_disabledBitmap)
-            DrawBitmapAsync (m_disabledBitmap);
+           DrawBitmapAsync (m_disabledBitmap);
     }
     else
     {
         if (m_disabledBitmap)
-            DrawBitmapAsync (m_disabledBitmap);
+           DrawBitmapAsync (m_disabledBitmap);
         else if (m_clickBitmap)
-            DrawBitmapAsync (m_clickBitmap);
+           DrawBitmapAsync (m_clickBitmap);
     }
     
     SetDrawingMode (B_OP_COPY);
     if (m_textPosition == kRightOfIcon)
     {
         if (m_clickBitmap)
-            MovePenTo (2 * m_marginWidth + 20, m_marginHeight + m_fontPlacement);
+           MovePenTo (2 * m_marginWidth + 20, m_marginHeight + m_fontPlacement);
         else
-            MovePenTo (m_marginWidth, m_marginHeight + m_fontPlacement);
+           MovePenTo (m_marginWidth, m_marginHeight + m_fontPlacement);
     }
     else
     {
         float strWidth = m_buttonText != NULL ? StringWidth (m_buttonText) : 0;
         float viewWidth = Bounds().Width();
         if (m_clickBitmap || m_disabledBitmap)
-            MovePenTo (viewWidth / 2.0 - strWidth / 2.0, 20 + m_marginHeight + 1 + m_fontPlacement - 1);
+           MovePenTo (viewWidth / 2.0 - strWidth / 2.0, 20 + m_marginHeight + 1 + m_fontPlacement - 1);
         else
-            MovePenTo (viewWidth / 2.0 - strWidth / 2.0, m_marginHeight + 1 + m_fontPlacement - 1);
+           MovePenTo (viewWidth / 2.0 - strWidth / 2.0, m_marginHeight + 1 + m_fontPlacement - 1);
         if (m_popUpMenu)
-            MovePenBy (-kContextWidth/2.0,0);
+           MovePenBy (-kContextWidth/2.0,0);
     }
     
     // SetHighColor (foreground) and LowColor (to background color) for proper anti-aliasing
@@ -168,7 +168,7 @@ void ImageButton::Draw (BRect updateRect)
         MovePenBy (1, 1);
         SetHighColor (K_WHITE_COLOR);
         if (m_buttonText != NULL)
-            DrawString (m_buttonText);
+           DrawString (m_buttonText);
         MovePenTo (origPt);
     }
     
@@ -232,67 +232,67 @@ void ImageButton::MouseMoved (BPoint point, uint32 status, const BMessage *dragI
     {
         case B_ENTERED_VIEW:
         {
-            if (!Window()->IsActive())
-                break;
+           if (!Window()->IsActive())
+               break;
 
-            m_firstClick = false;
-            m_mouseInside = true;
+           m_firstClick = false;
+           m_mouseInside = true;
 
-            if (buttons != 0 && m_isPushed == true && m_firstClick == false && m_isEnabled)
-            {
-                BRect rect = Bounds();
-                if (m_popUpMenu && m_borders)
-                {
-                    if (m_drawingTriangle)
-                        rect.left = rect.right - kContextWidth - 1;
-                    else
-                        rect.right = rect.right - kContextWidth - 4;
-                }
-                
-                if (rect.Contains (point))
-                    Invalidate (rect);
-            }
-            else if (m_hoverHighlight == true && buttons == 0 && m_borders == true)
-                HighlightNow (false);
-            
-            break;
+           if (buttons != 0 && m_isPushed == true && m_firstClick == false && m_isEnabled)
+           {
+               BRect rect = Bounds();
+               if (m_popUpMenu && m_borders)
+               {
+                  if (m_drawingTriangle)
+                      rect.left = rect.right - kContextWidth - 1;
+                  else
+                      rect.right = rect.right - kContextWidth - 4;
+               }
+               
+               if (rect.Contains (point))
+                  Invalidate (rect);
+           }
+           else if (m_hoverHighlight == true && buttons == 0 && m_borders == true)
+               HighlightNow (false);
+           
+           break;
         }
         
         case B_INSIDE_VIEW:
         {
-            if (!Window()->IsActive())
-                break;
+           if (!Window()->IsActive())
+               break;
 
-            if (m_hoverHighlight && buttons == 0)
-                HighlightNow (false);
+           if (m_hoverHighlight && buttons == 0)
+               HighlightNow (false);
 
-            m_mouseInside = true;
-            
-            break;
+           m_mouseInside = true;
+           
+           break;
         }
         
         case B_EXITED_VIEW:
         {
-            m_mouseInside = false;
-            if (m_isPushed == true && m_isEnabled == true)
-            {
-                if (m_hoverHighlight)
-                {
-                    Draw (Bounds());                // Invalidate() doesn't work!
-                    HighlightNow (false);
-                }
-                else
-                {
-                    if (m_borders == true)            // Saves unnecessary re-draws when in no border mode
-                        Draw (Bounds());
-                }
-            }
-            else
-            {
-                if (m_borders == true)                // Saves unncessesary re-draws when in no border mode
-                    Draw (Bounds());
-            }
-            break;
+           m_mouseInside = false;
+           if (m_isPushed == true && m_isEnabled == true)
+           {
+               if (m_hoverHighlight)
+               {
+                  Draw (Bounds());               // Invalidate() doesn't work!
+                  HighlightNow (false);
+               }
+               else
+               {
+                  if (m_borders == true)           // Saves unnecessary re-draws when in no border mode
+                      Draw (Bounds());
+               }
+           }
+           else
+           {
+               if (m_borders == true)               // Saves unncessesary re-draws when in no border mode
+                  Draw (Bounds());
+           }
+           break;
         }
     }
 
@@ -328,7 +328,7 @@ void ImageButton::DrawShinyEdge (BRect bounds, bool isPressing)
     {
         int8 lineCount = 4L;
         if (m_popUpMenu)
-            lineCount += 3;
+           lineCount += 3;
 
         BeginLineArray (lineCount);
         AddLine (BPoint (1, 1), BPoint (bounds.right - 1, 1), m_lightEdge);
@@ -339,17 +339,17 @@ void ImageButton::DrawShinyEdge (BRect bounds, bool isPressing)
         // Draw popup menu separator line
         if (m_popUpMenu == true)
         {
-            BPoint sepPtTop (bounds.right - kContextWidth - 3, bounds.top + 1); 
-            BPoint sepPtBtm (bounds.right - kContextWidth - 3, bounds.bottom - 1);
-            AddLine (sepPtTop, sepPtBtm, m_lightEdge2);
-            sepPtTop.y-=1;
-            sepPtTop.x++;
-            sepPtBtm.x++;
-            AddLine (sepPtTop, sepPtBtm, m_darkEdge1);
-            sepPtTop.y+=1;
-            sepPtTop.x++;
-            sepPtBtm.x++;
-            AddLine (sepPtTop, sepPtBtm, m_lightEdge);
+           BPoint sepPtTop (bounds.right - kContextWidth - 3, bounds.top + 1); 
+           BPoint sepPtBtm (bounds.right - kContextWidth - 3, bounds.bottom - 1);
+           AddLine (sepPtTop, sepPtBtm, m_lightEdge2);
+           sepPtTop.y-=1;
+           sepPtTop.x++;
+           sepPtBtm.x++;
+           AddLine (sepPtTop, sepPtBtm, m_darkEdge1);
+           sepPtTop.y+=1;
+           sepPtTop.x++;
+           sepPtBtm.x++;
+           AddLine (sepPtTop, sepPtBtm, m_lightEdge);
         }
     }
     else
@@ -381,8 +381,8 @@ void ImageButton::MouseDown (BPoint point)
         bounds.Set (0, 0, Bounds().right - kContextWidth - 4, Bounds().bottom);
         if (bounds.Contains (point) == false && Bounds().Contains (point))
         {
-            bounds.Set (Bounds().right - kContextWidth - 1, 0, Bounds().right, Bounds().bottom);
-            m_drawingTriangle = true;
+           bounds.Set (Bounds().right - kContextWidth - 1, 0, Bounds().right, Bounds().bottom);
+           m_drawingTriangle = true;
         }
     }
     else
@@ -395,13 +395,13 @@ void ImageButton::MouseDown (BPoint point)
 
         if (m_drawingTriangle && m_contextMenu)
         {
-            // Bug-fix: now clicking several times in the triangle region doesn't show context menu
-            // again and again - this happened because of SetMouseEventMask which sends us mouseDOWNs 
-            // even though we try and ignore it in ShowContextMenu()
-            BPoint curPoint; uint32 buttons;
-            GetMouse (&curPoint, &buttons, false);    // Important that current state of mouse is here
-            if (bounds.Contains (curPoint))
-                ShowContextMenu (point);
+           // Bug-fix: now clicking several times in the triangle region doesn't show context menu
+           // again and again - this happened because of SetMouseEventMask which sends us mouseDOWNs 
+           // even though we try and ignore it in ShowContextMenu()
+           BPoint curPoint; uint32 buttons;
+           GetMouse (&curPoint, &buttons, false);    // Important that current state of mouse is here
+           if (bounds.Contains (curPoint))
+               ShowContextMenu (point);
         }
     }
     
@@ -430,21 +430,21 @@ void ImageButton::MouseUp (BPoint point)
         triBounds.left = bounds.right - kContextWidth - 1;
         if (triBounds.Contains (point))
         {
-            if (!m_contextMenu)
-            {
-                m_isPushed = false;
-                Draw (triBounds);
-                Draw (bounds);
-            }
-            return;
+           if (!m_contextMenu)
+           {
+               m_isPushed = false;
+               Draw (triBounds);
+               Draw (bounds);
+           }
+           return;
         }
         
         if (m_drawingTriangle == true)
         {
-            m_drawingTriangle = false;
-            m_isPushed = false;
-            Invalidate();
-            return;
+           m_drawingTriangle = false;
+           m_isPushed = false;
+           Invalidate();
+           return;
         }
     }
     
@@ -456,21 +456,21 @@ void ImageButton::MouseUp (BPoint point)
     {
         if (m_firstClick == false && m_isPushed == true)
         {
-            // Critical order, don't change
-            m_isPushed = false;
-            Draw (bounds);
-            if (m_clickMessage)
-            {
-                if (m_handler == NULL)
-                    Window()->PostMessage (m_clickMessage);
-                else
-                    m_handler->MessageReceived (m_clickMessage);
-            }
+           // Critical order, don't change
+           m_isPushed = false;
+           Draw (bounds);
+           if (m_clickMessage)
+           {
+               if (m_handler == NULL)
+                  Window()->PostMessage (m_clickMessage);
+               else
+                  m_handler->MessageReceived (m_clickMessage);
+           }
         }
         else
         {
-            m_isPushed = false;
-            m_firstClick = false;
+           m_isPushed = false;
+           m_firstClick = false;
         }
         //else    // It's not nice to call MouseMoved() so lets do something better hmm :)
         //    MouseMoved (point, B_ENTERED_VIEW, NULL);
@@ -519,12 +519,12 @@ void ImageButton::PushButton (BRect rect)
     else
     {
         if (m_buttonText == NULL)
-            MovePenTo (m_marginWidth + 1, m_marginHeight + 1);
+           MovePenTo (m_marginWidth + 1, m_marginHeight + 1);
         else
-            MovePenTo (bounds.Width() / 2.0 - 10.0 + 1, m_marginHeight + 1);
+           MovePenTo (bounds.Width() / 2.0 - 10.0 + 1, m_marginHeight + 1);
         
         if (m_popUpMenu)
-            MovePenBy (1, 0);
+           MovePenBy (1, 0);
     }
     
     if (m_clickBitmap)
@@ -538,21 +538,21 @@ void ImageButton::PushButton (BRect rect)
     if (m_textPosition == kRightOfIcon)
     {
         if (m_clickBitmap || m_disabledBitmap)
-            MovePenTo (2 * (m_marginWidth) + 20 + 1, m_marginHeight + 1 + m_fontPlacement);
+           MovePenTo (2 * (m_marginWidth) + 20 + 1, m_marginHeight + 1 + m_fontPlacement);
         else
-            MovePenTo (m_marginWidth + 1, m_marginHeight + 1 + m_fontPlacement);
+           MovePenTo (m_marginWidth + 1, m_marginHeight + 1 + m_fontPlacement);
     }
     else
     {
         float strWidth = m_buttonText != NULL ? StringWidth (m_buttonText) : 0;
         float viewWidth = bounds.Width();
         if (m_clickBitmap || m_disabledBitmap)
-            MovePenTo (viewWidth / 2.0 - strWidth / 2.0 + 1, 20 + m_marginHeight + 1 + m_fontPlacement);
+           MovePenTo (viewWidth / 2.0 - strWidth / 2.0 + 1, 20 + m_marginHeight + 1 + m_fontPlacement);
         else
-            MovePenTo (viewWidth / 2.0 - strWidth / 2.0 + 1, m_marginHeight + 1 + m_fontPlacement);
+           MovePenTo (viewWidth / 2.0 - strWidth / 2.0 + 1, m_marginHeight + 1 + m_fontPlacement);
         
         if (m_popUpMenu)
-            MovePenBy (1, 0);
+           MovePenBy (1, 0);
     }
     
     if (m_buttonText)
@@ -577,9 +577,9 @@ void ImageButton::GetPreferredSize (float *width, float *height)
     if (m_buttonText == NULL)
     {
         if (m_clickBitmap || m_disabledBitmap)
-            *height = m_marginHeight + 20 + m_marginHeight - 1;
+           *height = m_marginHeight + 20 + m_marginHeight - 1;
         else
-            *height = 2 * m_marginHeight + m_fontPlacement + 2;
+           *height = 2 * m_marginHeight + m_fontPlacement + 2;
         
         *width = m_marginWidth + 20 + m_marginWidth - 1;
         return;
@@ -589,9 +589,9 @@ void ImageButton::GetPreferredSize (float *width, float *height)
     if (m_textPosition == kRightOfIcon)
     {
         if (m_clickBitmap || m_disabledBitmap)
-            *height = m_marginHeight + 20 + m_marginHeight - 1;
+           *height = m_marginHeight + 20 + m_marginHeight - 1;
         else
-            *height = 2 * m_marginHeight + m_fontPlacement + 2;
+           *height = 2 * m_marginHeight + m_fontPlacement + 2;
         
         *width = 2 * m_marginWidth + 20 + m_marginWidth + StringWidth (m_buttonText);
         return;
@@ -599,9 +599,9 @@ void ImageButton::GetPreferredSize (float *width, float *height)
     else
     {
         if (m_clickBitmap || m_disabledBitmap)
-            *height = 2 * m_marginHeight + 20 + (m_buttonText != NULL ? m_fontPlacement : 0) + 2;
+           *height = 2 * m_marginHeight + 20 + (m_buttonText != NULL ? m_fontPlacement : 0) + 2;
         else
-            *height = 2 * m_marginHeight + m_fontPlacement + 2;
+           *height = 2 * m_marginHeight + m_fontPlacement + 2;
     }
     
     if (m_borders == false)
@@ -613,7 +613,7 @@ void ImageButton::GetPreferredSize (float *width, float *height)
     
     if (m_buttonText)
         if (StringWidth (m_buttonText) > *width)
-            *width += (StringWidth (m_buttonText) - *width) + 2 * m_marginWidth;
+           *width += (StringWidth (m_buttonText) - *width) + 2 * m_marginWidth;
 }
 
 //=============================================================================================================//
@@ -636,17 +636,17 @@ status_t ImageButton::SetMargin (float width, float height)
     if (width != -1)
     {
         if (width > 0 && width <= 10)
-            m_marginWidth = width;
+           m_marginWidth = width;
         else
-            retVal = B_ERROR;
+           retVal = B_ERROR;
     }
     
     if (height != -1)
     {
         if (height > 0 && height <= 10)
-            m_marginHeight = height;
+           m_marginHeight = height;
         else
-            retVal = B_ERROR;
+           retVal = B_ERROR;
     }
     
     Invalidate ();
@@ -781,7 +781,7 @@ void ImageButton::ShowContextMenu (BPoint point)
     // nonsense and lots of other annoying stuff :)
     // Thank god Be, Inc. gave the BRect argument in Go() of BPopUpMenu class :)
     BRect ignoreClickRect (point.x, point.y - Bounds().Height() - 1, point.x + Bounds().Width(),
-            point.y + Bounds().Height());
+           point.y + Bounds().Height());
     
     ConvertToScreen (&screenPt);
     ConvertToScreen (&ignoreClickRect);
@@ -794,9 +794,9 @@ void ImageButton::ShowContextMenu (BPoint point)
         BMessage *msg = selectedItem->Message();
         msg->AddPointer ("source", (void*)selectedItem);
         if (!m_handler)
-            Window()->PostMessage (msg);
+           Window()->PostMessage (msg);
         else
-            m_handler->MessageReceived (msg);
+           m_handler->MessageReceived (msg);
     }
     else    // else-part added :: BugFix
     {

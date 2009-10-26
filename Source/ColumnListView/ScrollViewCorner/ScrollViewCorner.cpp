@@ -49,7 +49,7 @@ void ScrollViewCorner::Draw(BRect Update)
         StrokeLine(BPoint(0.0,B_H_SCROLL_BAR_HEIGHT),BPoint(B_V_SCROLL_BAR_WIDTH,B_H_SCROLL_BAR_HEIGHT));
     if(Update.right >= B_V_SCROLL_BAR_WIDTH)
         StrokeLine(BPoint(B_V_SCROLL_BAR_WIDTH,0.0),
-            BPoint(B_V_SCROLL_BAR_WIDTH,B_H_SCROLL_BAR_HEIGHT-1.0));
+           BPoint(B_V_SCROLL_BAR_WIDTH,B_H_SCROLL_BAR_HEIGHT-1.0));
 }
 
 

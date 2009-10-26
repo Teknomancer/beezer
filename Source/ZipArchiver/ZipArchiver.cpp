@@ -50,7 +50,7 @@ ZipArchiver::ZipArchiver (const char *binPath)
     m_error = BZR_DONE;
     // Detect zip, unzip binary
     if (IsBinaryFound (m_unzipPath, binPath, BZR_UNARK) == false ||
-            IsBinaryFound (m_zipPath, binPath, BZR_ARK) == false)
+           IsBinaryFound (m_zipPath, binPath, BZR_ARK) == false)
     {
         m_error = BZR_BINARY_MISSING;
         return;
@@ -70,9 +70,9 @@ status_t ZipArchiver::ReadOpen (FILE *fp)
 {
     uint16 len = B_PATH_NAME_LENGTH + 500;
     char lineString[len],
-            sizeStr[25], methodStr[25], packedStr[25], ratioStr[15], dayStr[5],
-            monthStr[5], yearStr[8], hourStr[5], minuteStr[5], dateStr[90], crcStr[25],
-            pathStr[B_PATH_NAME_LENGTH + 1];
+           sizeStr[25], methodStr[25], packedStr[25], ratioStr[15], dayStr[5],
+           monthStr[5], yearStr[8], hourStr[5], minuteStr[5], dateStr[90], crcStr[25],
+           pathStr[B_PATH_NAME_LENGTH + 1];
     
     do
     {
@@ -86,9 +86,9 @@ status_t ZipArchiver::ReadOpen (FILE *fp)
         lineString[strlen (lineString) - 1] = '\0';
         
         sscanf (lineString,
-            " %[0-9]  %[^ ] %[0-9]  %[^ ]  %[0-9]-%[0-9]-%[0-9] %[0-9]:%[0-9]  %[^ ]%[^\n]",
-            sizeStr, methodStr, packedStr, ratioStr, monthStr, dayStr, yearStr, hourStr, minuteStr, crcStr,
-            pathStr);
+           " %[0-9]  %[^ ] %[0-9]  %[^ ]  %[0-9]-%[0-9]-%[0-9] %[0-9]:%[0-9]  %[^ ]%[^\n]",
+           sizeStr, methodStr, packedStr, ratioStr, monthStr, dayStr, yearStr, hourStr, minuteStr, crcStr,
+           pathStr);
         
         // Workaround bug fix, for paths with space before
         BString pathString = pathStr;
@@ -102,13 +102,13 @@ status_t ZipArchiver::ReadOpen (FILE *fp)
         uint16 pathLength = pathString.Length() - 1;
         if (pathString[pathLength] == '/')
         {
-            m_entriesList.AddItem (new ArchiveEntry (true, pathString.String(), sizeStr, packedStr, dateStr,
-                                            timeValue, methodStr, crcStr));
+           m_entriesList.AddItem (new ArchiveEntry (true, pathString.String(), sizeStr, packedStr, dateStr,
+                                        timeValue, methodStr, crcStr));
         }
         else
         {
-            m_entriesList.AddItem (new ArchiveEntry (false, pathString.String(), sizeStr, packedStr, dateStr,
-                                            timeValue, methodStr,crcStr));
+           m_entriesList.AddItem (new ArchiveEntry (false, pathString.String(), sizeStr, packedStr, dateStr,
+                                        timeValue, methodStr,crcStr));
         }
         
         fgets (lineString, len, fp);
@@ -135,8 +135,8 @@ status_t ZipArchiver::Open (entry_ref *ref, BMessage *fileList)
         fileList->GetInfo (kPath, &type, &count);
 
         for (int32 i = --count; i >= 0; i--)
-            if (fileList->FindString (kPath, i, &path) == B_OK)
-                m_pipeMgr << SupressWildcards (path);
+           if (fileList->FindString (kPath, i, &path) == B_OK)
+               m_pipeMgr << SupressWildcards (path);
     }
     
     FILE *out, *err;
@@ -169,7 +169,7 @@ status_t ZipArchiver::Open (entry_ref *ref, BMessage *fileList)
 //=============================================================================================================//
 
 status_t ZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger *progress,
-                        volatile bool *cancel)
+                      volatile bool *cancel)
 {
     BEntry dirEntry;
     entry_ref dirRef;
@@ -179,7 +179,7 @@ status_t ZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     if (progress)        // Perform output directory checking only when a messenger is passed
     {
         if (dirEntry.Exists() == false || dirEntry.IsDirectory() == false)
-            return BZR_EXTRACT_DIR_INIT_ERROR;
+           return BZR_EXTRACT_DIR_INIT_ERROR;
     }
 
     BPath dirPath (refToDir);
@@ -193,7 +193,7 @@ status_t ZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         uint32 type;
         message->GetInfo (kPath, &type, &count);
         if (type != B_STRING_TYPE)
-            return BZR_UNKNOWN;
+           return BZR_UNKNOWN;
     }
     
     // Setup argv, fill with selection names if needed
@@ -211,11 +211,11 @@ status_t ZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     if (progress)    // Use extract options only when user is NOT viewing
     {
         if (m_settingsMenu->FindItem(kNoOverwrite)->IsMarked() == true)
-            m_pipeMgr << "-n";
+           m_pipeMgr << "-n";
         else if (m_settingsMenu->FindItem(kUpdate)->IsMarked() == true)
-            m_pipeMgr << "-u";
+           m_pipeMgr << "-u";
         else if (m_settingsMenu->FindItem(kUpdateOnly)->IsMarked() == true)
-            m_pipeMgr << "-f";
+           m_pipeMgr << "-f";
     }
     
     m_pipeMgr << m_archivePath.Path() << "-d" << dirPath.Path();
@@ -225,7 +225,7 @@ status_t ZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     {
         const char *pathString = NULL;
         if (message->FindString (kPath, i, &pathString) == B_OK)
-            m_pipeMgr << SupressWildcards (pathString);
+           m_pipeMgr << SupressWildcards (pathString);
     }
     
     FILE *out;
@@ -233,7 +233,7 @@ status_t ZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
     
     if (tid == B_ERROR || tid == B_NO_MEMORY)
-        return B_ERROR;            // Handle unzip unloadable error here
+        return B_ERROR;           // Handle unzip unloadable error here
 
     if (progress)
         resume_thread (tid);
@@ -278,20 +278,20 @@ status_t ZipArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool
     while (fgets (lineString, 727, fp))
     {
         if (cancel && *cancel == true)
-            return BZR_CANCEL_ARCHIVER;
+           return BZR_CANCEL_ARCHIVER;
         
         // The following -2 is because we somehow get 2 characters extra after filename
         lineString[strlen (lineString) - 3] = '\0';
         
         // Later must handle "error" and "file #no: error at offset" strings in unzip output
         if (strncmp (lineString, "  inflating:", 12) == 0 ||
-            strncmp (lineString, " extracting:", 12) == 0 || 
-            strncmp (lineString, "    linking:", 12) == 0)
+           strncmp (lineString, " extracting:", 12) == 0 || 
+           strncmp (lineString, "    linking:", 12) == 0)
         {
-            updateMessage.RemoveName ("text");
-            updateMessage.AddString ("text", LeafFromPath (lineString));
+           updateMessage.RemoveName ("text");
+           updateMessage.AddString ("text", LeafFromPath (lineString));
 
-            progress->SendMessage (&updateMessage, &reply);
+           progress->SendMessage (&updateMessage, &reply);
         }
     }
 
@@ -357,8 +357,8 @@ status_t ZipArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
     {
         if (cancel && *cancel == true)
         {
-            exitCode = BZR_CANCEL_ARCHIVER;
-            break;
+           exitCode = BZR_CANCEL_ARCHIVER;
+           break;
         }
         
         lineString[strlen (lineString) - 1] = '\0';
@@ -368,54 +368,54 @@ status_t ZipArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
         // Skip first line which contains Archive: <path of archive> | We don't need this here
         if (lineCount > 0)
         {
-            char *testingStr = lineString;
-            testingStr += CountCharsInFront (testingStr, ' ');
-            
-            if (strncmp (testingStr, "testing:", 8) == 0)
-            {
-                // The format of testingStr is now "testing: path-here    OK"
-                // Number of spaces between path and OK is 3, so simply
-                // remove "OK" and "testing: ", then parse out just the filename from path
-                BString pathStr = testingStr;
-                pathStr.RemoveLast ("OK");
-                pathStr.RemoveLast ("   ");
-                while (pathStr[pathStr.Length() - 1] == ' ')     // Trim right hand side spaces
-                    pathStr.RemoveLast (" ");
+           char *testingStr = lineString;
+           testingStr += CountCharsInFront (testingStr, ' ');
+           
+           if (strncmp (testingStr, "testing:", 8) == 0)
+           {
+               // The format of testingStr is now "testing: path-here    OK"
+               // Number of spaces between path and OK is 3, so simply
+               // remove "OK" and "testing: ", then parse out just the filename from path
+               BString pathStr = testingStr;
+               pathStr.RemoveLast ("OK");
+               pathStr.RemoveLast ("   ");
+               while (pathStr[pathStr.Length() - 1] == ' ')     // Trim right hand side spaces
+                  pathStr.RemoveLast (" ");
 
-                if (pathStr.ByteAt (pathStr.Length() - 1) != '/')
-                {
-                    updateMessage.RemoveName ("text");
-                    updateMessage.AddString ("text", FinalPathComponent (pathStr.String() + 9));
-                    progress->SendMessage (&updateMessage, &reply);
-                }
-            }
-            else if (strncmp (testingStr, "No errors detected in", 21) == 0 && errFlag == false)
-            {
-                // Must be the last line if no error && no errors detected before (ie errFlag = false)
-                exitCode = BZR_DONE;
-            }
-            else
-            {
-                // Special check for empty zip :)
-                if (strstr (testingStr, "zipfile is empty"))
-                {
-                    exitCode = BZR_DONE;
-                    continue;
-                }
-                else if (strstr (testingStr, "No errors detected in compressed data of"))
-                {
-                    // Special check (sometimes comments may cause BZR_ERRSTREAM_FOUND, but if in
-                    // the end if it says "No errors" then the file is OKAY.
-                    exitCode = BZR_DONE;
-                    continue;
-                }
-                else
-                {    
-                    // uh oh! something wrong - set error found flag to true
-                    errFlag = true;
-                    exitCode = BZR_ERRSTREAM_FOUND;
-                }
-            }
+               if (pathStr.ByteAt (pathStr.Length() - 1) != '/')
+               {
+                  updateMessage.RemoveName ("text");
+                  updateMessage.AddString ("text", FinalPathComponent (pathStr.String() + 9));
+                  progress->SendMessage (&updateMessage, &reply);
+               }
+           }
+           else if (strncmp (testingStr, "No errors detected in", 21) == 0 && errFlag == false)
+           {
+               // Must be the last line if no error && no errors detected before (ie errFlag = false)
+               exitCode = BZR_DONE;
+           }
+           else
+           {
+               // Special check for empty zip :)
+               if (strstr (testingStr, "zipfile is empty"))
+               {
+                  exitCode = BZR_DONE;
+                  continue;
+               }
+               else if (strstr (testingStr, "No errors detected in compressed data of"))
+               {
+                  // Special check (sometimes comments may cause BZR_ERRSTREAM_FOUND, but if in
+                  // the end if it says "No errors" then the file is OKAY.
+                  exitCode = BZR_DONE;
+                  continue;
+               }
+               else
+               {    
+                  // uh oh! something wrong - set error found flag to true
+                  errFlag = true;
+                  exitCode = BZR_ERRSTREAM_FOUND;
+               }
+           }
         }
     }
 
@@ -544,14 +544,14 @@ bool ZipArchiver::SupportsFolderEntity () const
 //=============================================================================================================//
 
 status_t ZipArchiver::Add (bool createMode, const char *relativePath, BMessage *message, BMessage *addedPaths,
-                        BMessenger *progress, volatile bool *cancel)
+                      BMessenger *progress, volatile bool *cancel)
 {
     // Don't check if archive exists in createMode, otherwise check
     if (createMode == false)
     {
-         BEntry archiveEntry (&m_archiveRef, true);
+        BEntry archiveEntry (&m_archiveRef, true);
         if (archiveEntry.Exists() == false)
-            return BZR_ARCHIVE_PATH_INIT_ERROR;
+           return BZR_ARCHIVE_PATH_INIT_ERROR;
     }
 
     m_pipeMgr.FlushArgs();
@@ -576,7 +576,7 @@ status_t ZipArchiver::Add (bool createMode, const char *relativePath, BMessage *
     {
         const char *pathString = NULL;
         if (message->FindString (kPath, i, &pathString) == B_OK)
-            m_pipeMgr << pathString;
+           m_pipeMgr << pathString;
     }
 
     FILE *out, *err;
@@ -629,30 +629,30 @@ status_t ZipArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
     {
         if (cancel && *cancel == true)
         {
-            exitCode = BZR_CANCEL_ARCHIVER;
-            break;
+           exitCode = BZR_CANCEL_ARCHIVER;
+           break;
         }
         
 
         lineString[strlen (lineString) - 1] = '\0';
         if (strncmp (lineString, "  adding:", 9) == 0 || strncmp (lineString, "updating:", 9) == 0)
         {
-            BString filePath = lineString + 10;
-            int32 openBraceIndex = filePath.FindLast ('(');
-            if (openBraceIndex != B_ERROR)
-                filePath.Remove (openBraceIndex - 1, filePath.Length() - openBraceIndex + 1);
-            
-            const char *fileName = FinalPathComponent (filePath.String());
+           BString filePath = lineString + 10;
+           int32 openBraceIndex = filePath.FindLast ('(');
+           if (openBraceIndex != B_ERROR)
+               filePath.Remove (openBraceIndex - 1, filePath.Length() - openBraceIndex + 1);
+           
+           const char *fileName = FinalPathComponent (filePath.String());
 
-            // Don't update progress bar for folders
-            if (fileName[strlen(fileName)-1] != '/' && progress)
-            {
-                updateMessage.RemoveName ("text");
-                updateMessage.AddString ("text", fileName);
-                progress->SendMessage (&updateMessage, &reply);
-            }
-            
-            addedPaths->AddString (kPath, filePath.String());
+           // Don't update progress bar for folders
+           if (fileName[strlen(fileName)-1] != '/' && progress)
+           {
+               updateMessage.RemoveName ("text");
+               updateMessage.AddString ("text", fileName);
+               progress->SendMessage (&updateMessage, &reply);
+           }
+           
+           addedPaths->AddString (kPath, filePath.String());
         }
     }
     
@@ -662,7 +662,7 @@ status_t ZipArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
 //=============================================================================================================//
 
 status_t ZipArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *progress,
-                        volatile bool *cancel)
+                      volatile bool *cancel)
 {
     // Setup deleting process
     BEntry archiveEntry (&m_archiveRef, true);
@@ -678,7 +678,7 @@ status_t ZipArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
         uint32 type;
         message->GetInfo (kPath, &type, &count);
         if (type != B_STRING_TYPE)
-            return BZR_UNKNOWN;
+           return BZR_UNKNOWN;
     }
 
     m_pipeMgr.FlushArgs();
@@ -689,7 +689,7 @@ status_t ZipArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
     {
         const char *pathString = NULL;
         if (message->FindString (kPath, i, &pathString) == B_OK)
-            m_pipeMgr << SupressWildcardSet (pathString);
+           m_pipeMgr << SupressWildcardSet (pathString);
         // Use SupressWildcardSet (which does not supress * character as zip needs * to delete folders fully)
     }
     
@@ -717,9 +717,9 @@ status_t ZipArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
         Archiver::ReadStream (err, errContent);
         if (errContent.Length() > 1)
         {
-            if (!(errContent.FindFirst ("zip warning: zip file empty\n") >= 0
-                || errContent.FindFirst ("zip warning: couldn't write complete file type") >= 0))
-                    exitCode = BZR_ERRSTREAM_FOUND;
+           if (!(errContent.FindFirst ("zip warning: zip file empty\n") >= 0
+               || errContent.FindFirst ("zip warning: couldn't write complete file type") >= 0))
+                  exitCode = BZR_ERRSTREAM_FOUND;
         }
         
         close (errdes[0]);
@@ -739,7 +739,7 @@ status_t ZipArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
 //=============================================================================================================//
 
 status_t ZipArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progress,
-                        volatile bool *cancel)
+                      volatile bool *cancel)
 {
     char lineString[999];
     BString fullStr;
@@ -751,7 +751,7 @@ status_t ZipArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progre
     while (fgets (lineString, 998, fp))
     {
         if (cancel && *cancel == true)
-            return BZR_CANCEL_ARCHIVER;
+           return BZR_CANCEL_ARCHIVER;
         
         lineString[strlen (lineString) - 1] = '\0';
         fullStr.Append (lineString);
@@ -760,9 +760,9 @@ status_t ZipArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progre
         // do this as soon as we get an erroraneous zip file. If we code this now, we can't test it
         if (strncmp (lineString, "deleting:", 9) == 0)
         {
-            updateMessage.RemoveName ("text");
-            updateMessage.AddString ("text", FinalPathComponent (lineString + 9));
-            progress->SendMessage (&updateMessage, &reply);
+           updateMessage.RemoveName ("text");
+           updateMessage.AddString ("text", FinalPathComponent (lineString + 9));
+           progress->SendMessage (&updateMessage, &reply);
         }
     }
 
@@ -772,7 +772,7 @@ status_t ZipArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progre
 //=============================================================================================================//
 
 status_t ZipArchiver::Create (BPath *archivePath, const char *relPath, BMessage *fileList, BMessage *addedPaths,
-                                BMessenger *progress, volatile bool *cancel)
+                             BMessenger *progress, volatile bool *cancel)
 {
     // true=>normalize path, which means everything otherthan the leaf must exist,
     // meaning we have everything ready and only need to create the leaf (by add)
@@ -785,7 +785,7 @@ status_t ZipArchiver::Create (BPath *archivePath, const char *relPath, BMessage 
     {
         BEntry tempEntry (m_archivePath.Path(), true);
         if (tempEntry.Exists())
-            tempEntry.GetRef (&m_archiveRef);
+           tempEntry.GetRef (&m_archiveRef);
     }
 
     return result;

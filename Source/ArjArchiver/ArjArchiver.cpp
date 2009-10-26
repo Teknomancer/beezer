@@ -62,9 +62,9 @@ status_t ArjArchiver::ReadOpen (FILE *fp)
 {
     uint16 len = B_PATH_NAME_LENGTH + 500;
     char lineString[len], fileCount[20], revisionStr[20],
-            sizeStr[25], packedStr[25], ratioStr[15], dayStr[5], permStr[50],
-            monthStr[5], yearStr[8], hourStr[5], minuteStr[5], secondStr[5], dateStr[90], guaStr[25],
-            bpmgsStr[20], osStr[30], osStr2[15], pathStr[B_PATH_NAME_LENGTH + 1];
+           sizeStr[25], packedStr[25], ratioStr[15], dayStr[5], permStr[50],
+           monthStr[5], yearStr[8], hourStr[5], minuteStr[5], secondStr[5], dateStr[90], guaStr[25],
+           bpmgsStr[20], osStr[30], osStr2[15], pathStr[B_PATH_NAME_LENGTH + 1];
     
     do
     {
@@ -81,46 +81,46 @@ status_t ArjArchiver::ReadOpen (FILE *fp)
         sscanf (lineString,    "%[^ ] %[^\n]", fileCount, pathStr);
         fgets (lineString, len, fp);
         sscanf (lineString,
-            " %[0-9] %[^ ] %[0-9] %[0-9] %[^ ] %[0-9]-%[0-9]-%[0-9] %[0-9]:%[0-9]:%[0-9] %[^ ] %[^ ] %[^\n]",
-            revisionStr, osStr, 
-            sizeStr, packedStr, ratioStr, yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr,
-            permStr, guaStr, bpmgsStr);
+           " %[0-9] %[^ ] %[0-9] %[0-9] %[^ ] %[0-9]-%[0-9]-%[0-9] %[0-9]:%[0-9]:%[0-9] %[^ ] %[^ ] %[^\n]",
+           revisionStr, osStr, 
+           sizeStr, packedStr, ratioStr, yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr,
+           permStr, guaStr, bpmgsStr);
         
         // Possible host OS strings from code of ARJ port from 3dEyes -- thanks to him for giving me this info!
         // static char *host_os_names[]={"MS-DOS", "PRIMOS", "UNIX", "AMIGA", "MAC-OS",
-        //                    "OS/2", "APPLE GS", "ATARI ST", "NEXT", "VAX VMS", "WIN95", "WIN32", NULL};
+        //                  "OS/2", "APPLE GS", "ATARI ST", "NEXT", "VAX VMS", "WIN95", "WIN32", NULL};
         if (strcmp (osStr, "ATARI") == 0 || strcmp (osStr, "APPLE") == 0 ||
-            strcmp (osStr, "VAX") == 0)        // include those with spaces
+           strcmp (osStr, "VAX") == 0)        // include those with spaces
         {
-            // We need to re-read the lineString to include an extra column because of the space (i.e. osStr2)
-            sscanf (lineString,
-                " %[0-9] %[^ ] %[^ ] %[0-9] %[0-9] %[^ ] %[0-9]-%[0-9]-%[0-9] %[0-9]:%[0-9]:%[0-9] %[^ ] %[^ ] %[^\n]",
-                revisionStr, osStr2, osStr2,
-                sizeStr, packedStr, ratioStr, yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr,
-                permStr, guaStr, bpmgsStr);
-            
-            strcat (osStr, " ");
-            strcat (osStr, osStr2);
+           // We need to re-read the lineString to include an extra column because of the space (i.e. osStr2)
+           sscanf (lineString,
+               " %[0-9] %[^ ] %[^ ] %[0-9] %[0-9] %[^ ] %[0-9]-%[0-9]-%[0-9] %[0-9]:%[0-9]:%[0-9] %[^ ] %[^ ] %[^\n]",
+               revisionStr, osStr2, osStr2,
+               sizeStr, packedStr, ratioStr, yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr,
+               permStr, guaStr, bpmgsStr);
+           
+           strcat (osStr, " ");
+           strcat (osStr, osStr2);
         }
         
         struct tm timeStruct; time_t timeValue;
         MakeTime (&timeStruct, &timeValue, dayStr, monthStr, yearStr, hourStr, minuteStr, "00");
         FormatDate (dateStr, 90, &timeStruct);
-                
+               
         BString pathString = pathStr;
         
         // Check to see if pathStr is as folder, else add it as a file
         if (strstr (permStr, "D") != NULL || permStr[0] == 'd')
         {
-            // Critical we add '/' for empty folders as rar doesn't report folder names with '/'
-            pathString << '/';
-            m_entriesList.AddItem (new ArchiveEntry (true, pathString.String(), sizeStr, packedStr, dateStr,
-                                        timeValue, "-", "-"));
+           // Critical we add '/' for empty folders as rar doesn't report folder names with '/'
+           pathString << '/';
+           m_entriesList.AddItem (new ArchiveEntry (true, pathString.String(), sizeStr, packedStr, dateStr,
+                                    timeValue, "-", "-"));
         }
         else
         {
-            m_entriesList.AddItem (new ArchiveEntry (false, pathString.String(), sizeStr, packedStr, dateStr,
-                                        timeValue, "-", "-"));
+           m_entriesList.AddItem (new ArchiveEntry (false, pathString.String(), sizeStr, packedStr, dateStr,
+                                    timeValue, "-", "-"));
         }
         
         fgets (lineString, len, fp);
@@ -171,7 +171,7 @@ status_t ArjArchiver::Open (entry_ref *ref, BMessage *fileList)
 //=============================================================================================================//
 
 status_t ArjArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger *progress,
-                        volatile bool *cancel)
+                      volatile bool *cancel)
 {
     BEntry dirEntry;
     entry_ref dirRef;
@@ -181,7 +181,7 @@ status_t ArjArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     if (progress)        // Perform output directory checking only when a messenger is passed
     {
         if (dirEntry.Exists() == false || dirEntry.IsDirectory() == false)
-            return BZR_EXTRACT_DIR_INIT_ERROR;
+           return BZR_EXTRACT_DIR_INIT_ERROR;
     }
 
     BPath dirPath (refToDir);
@@ -195,7 +195,7 @@ status_t ArjArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         uint32 type;
         message->GetInfo (kPath, &type, &count);
         if (type != B_STRING_TYPE)
-            return BZR_UNKNOWN;
+           return BZR_UNKNOWN;
     }
     
     // Setup argv, fill with selection names if needed
@@ -206,13 +206,13 @@ status_t ArjArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     if (progress)
     {
         if (m_settingsMenu->FindItem (kUpdate)->IsMarked() == true)
-            m_pipeMgr << "-u";
+           m_pipeMgr << "-u";
         else if (m_settingsMenu->FindItem (kFreshen)->IsMarked() == true)
-            m_pipeMgr << "-f";
+           m_pipeMgr << "-f";
     }
         
     if (m_settingsMenu->FindItem (kMultiVolume)->IsMarked() == true)
-            m_pipeMgr << "-v";
+           m_pipeMgr << "-v";
 
     m_pipeMgr << m_archivePath.Path() << dirPath.Path();
 
@@ -221,7 +221,7 @@ status_t ArjArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     {
         const char *pathString = NULL;
         if (message->FindString (kPath, i, &pathString) == B_OK)
-            m_pipeMgr << SupressWildcards (pathString);
+           m_pipeMgr << SupressWildcards (pathString);
     }
     
     FILE *out;
@@ -229,7 +229,7 @@ status_t ArjArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
     
     if (tid == B_ERROR || tid == B_NO_MEMORY)
-        return B_ERROR;            // Handle arj unloadable error here
+        return B_ERROR;           // Handle arj unloadable error here
 
     if (progress)
         resume_thread (tid);
@@ -275,34 +275,34 @@ status_t ArjArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool
     while (fgets (lineString, 727, fp))
     {
         if (cancel && *cancel == true)
-            return BZR_CANCEL_ARCHIVER;
+           return BZR_CANCEL_ARCHIVER;
         
         lineString[strlen (lineString) - 1] = '\0';
         
         // Later must handle "error" and "file #no: error at offset" strings in unzip output
         // Line format is as follows:
-        // Extracting pictures/Batio.jpg         to /boot/home/temp/ax/pictures/Batio.jpg  OK
-        // Extracting pictures/ue3.jpg           to /boot/home/temp/ax/pictures/ue3.jpg  OK
+        // Extracting pictures/Batio.jpg        to /boot/home/temp/ax/pictures/Batio.jpg  OK
+        // Extracting pictures/ue3.jpg          to /boot/home/temp/ax/pictures/ue3.jpg  OK
         if (strncmp (lineString, "Extracting ", 11) == 0)
         {
-            // Remove the OK first, then the "to /", because OK will always exists (except in case of error)
-            // and the "to" part will exist when dest dir is specified
-            BString lineStr = lineString;
-            int32 index = lineStr.FindLast ("OK");
-            if (index > 0)
-                lineStr.Remove (index, lineStr.Length() - index);
-            
-            index = lineStr.FindLast ("to /");
-            if (index > 0)
-                lineStr.Remove (index, lineStr.Length() - index);
+           // Remove the OK first, then the "to /", because OK will always exists (except in case of error)
+           // and the "to" part will exist when dest dir is specified
+           BString lineStr = lineString;
+           int32 index = lineStr.FindLast ("OK");
+           if (index > 0)
+               lineStr.Remove (index, lineStr.Length() - index);
+           
+           index = lineStr.FindLast ("to /");
+           if (index > 0)
+               lineStr.Remove (index, lineStr.Length() - index);
 
-            while (lineStr[lineStr.Length() - 1] == ' ')     // Trim right hand side spaces
-                    lineStr.RemoveLast (" ");
+           while (lineStr[lineStr.Length() - 1] == ' ')     // Trim right hand side spaces
+                  lineStr.RemoveLast (" ");
 
-            updateMessage.RemoveName ("text");
-            updateMessage.AddString ("text", LeafFromPath (lineStr.String()));
+           updateMessage.RemoveName ("text");
+           updateMessage.AddString ("text", LeafFromPath (lineStr.String()));
 
-            progress->SendMessage (&updateMessage, &reply);
+           progress->SendMessage (&updateMessage, &reply);
         }
     }
 
@@ -347,8 +347,8 @@ status_t ArjArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
         BString errStreamContent;
         Archiver::ReadStream(err, errStreamContent);
         if (errStreamContent.Length() > 0)
-            exitCode = BZR_ERRSTREAM_FOUND;
-            
+           exitCode = BZR_ERRSTREAM_FOUND;
+           
         close (errdes[0]);
         close (outdes[0]);
         fclose (out);
@@ -356,11 +356,11 @@ status_t ArjArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
     
         if (exitCode == BZR_ERRSTREAM_FOUND)
         {
-            BString outStr = outputStr;
-            delete[] outputStr;
-            outStr << "\n" << errStreamContent << "\n";
-            outputStr = new char[strlen (outStr.String()) + 1];
-            strcpy (outputStr, outStr.String());
+           BString outStr = outputStr;
+           delete[] outputStr;
+           outStr << "\n" << errStreamContent << "\n";
+           outputStr = new char[strlen (outStr.String()) + 1];
+           strcpy (outputStr, outStr.String());
         }
     }
         
@@ -389,8 +389,8 @@ status_t ArjArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
     {
         if (cancel && *cancel == true)
         {
-            exitCode = BZR_CANCEL_ARCHIVER;
-            break;
+           exitCode = BZR_CANCEL_ARCHIVER;
+           break;
         }
         
         lineString[strlen (lineString) - 1] = '\0';
@@ -400,28 +400,28 @@ status_t ArjArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
         // Skip first 4 line which contains Archive: <path of archive> | We don't need this here
         if (lineCount > 3)
         {
-            char *testingStr = lineString;
-            testingStr += CountCharsInFront (testingStr, ' ');
-            
-            if (strncmp (testingStr, "Testing ", 8) == 0)
-            {
-                // The format of testingStr is now "Testing path-here    OK"
-                // Number of spaces between path and OK is not constant
-                BString pathStr = testingStr;
-                if (pathStr.FindLast ("OK") < 0)
-                    exitCode = BZR_ERRSTREAM_FOUND;
-                
-                pathStr.RemoveLast ("OK");
-                while (pathStr[pathStr.Length() - 1] == ' ')     // Trim right hand side spaces
-                    pathStr.RemoveLast (" ");
+           char *testingStr = lineString;
+           testingStr += CountCharsInFront (testingStr, ' ');
+           
+           if (strncmp (testingStr, "Testing ", 8) == 0)
+           {
+               // The format of testingStr is now "Testing path-here    OK"
+               // Number of spaces between path and OK is not constant
+               BString pathStr = testingStr;
+               if (pathStr.FindLast ("OK") < 0)
+                  exitCode = BZR_ERRSTREAM_FOUND;
+               
+               pathStr.RemoveLast ("OK");
+               while (pathStr[pathStr.Length() - 1] == ' ')     // Trim right hand side spaces
+                  pathStr.RemoveLast (" ");
 
-                if (pathStr.ByteAt (pathStr.Length() - 1) != '/')
-                {
-                    updateMessage.RemoveName ("text");
-                    updateMessage.AddString ("text", FinalPathComponent (pathStr.String() + 9));
-                    progress->SendMessage (&updateMessage, &reply);
-                }
-            }
+               if (pathStr.ByteAt (pathStr.Length() - 1) != '/')
+               {
+                  updateMessage.RemoveName ("text");
+                  updateMessage.AddString ("text", FinalPathComponent (pathStr.String() + 9));
+                  progress->SendMessage (&updateMessage, &reply);
+               }
+           }
         }
     }
 
@@ -450,7 +450,7 @@ bool ArjArchiver::CanPartiallyOpen () const
 //=============================================================================================================//
 
 status_t ArjArchiver::Add (bool createMode, const char *relativePath, BMessage *message, BMessage *addedPaths,
-                        BMessenger *progress, volatile bool *cancel)
+                      BMessenger *progress, volatile bool *cancel)
 {
     // Don't EVER check if archive exist (FOR ARJ ONLY) this is because when all files from an open arj ark are
     // deleted, (arj binary) deletes the archive itself
@@ -489,7 +489,7 @@ status_t ArjArchiver::Add (bool createMode, const char *relativePath, BMessage *
     {
         const char *pathString = NULL;
         if (message->FindString (kPath, i, &pathString) == B_OK)
-            m_pipeMgr << pathString;
+           m_pipeMgr << pathString;
     }
 
     FILE *out, *err;
@@ -543,34 +543,34 @@ status_t ArjArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
     {
         if (cancel && *cancel == true)
         {
-            exitCode = BZR_CANCEL_ARCHIVER;
-            break;
+           exitCode = BZR_CANCEL_ARCHIVER;
+           break;
         }
 
         lineString[strlen (lineString) - 1] = '\0';
         if (strncmp (lineString, "Adding", 6) == 0 || strncmp (lineString, "Replacing", 9) == 0)
         {
-            BString filePath = lineString + 10;
-            int32 index = filePath.FindLast ('%');
-            if (index > 7)
-                filePath.Remove (index - 5, 6);
-            else
-                exitCode = BZR_ERRSTREAM_FOUND;
-            
-            while (filePath[filePath.Length() - 1] == ' ')     // Trim right hand side spaces
-                    filePath.RemoveLast (" ");
+           BString filePath = lineString + 10;
+           int32 index = filePath.FindLast ('%');
+           if (index > 7)
+               filePath.Remove (index - 5, 6);
+           else
+               exitCode = BZR_ERRSTREAM_FOUND;
+           
+           while (filePath[filePath.Length() - 1] == ' ')     // Trim right hand side spaces
+                  filePath.RemoveLast (" ");
     
-            const char *fileName = FinalPathComponent (filePath.String());
+           const char *fileName = FinalPathComponent (filePath.String());
 
-            // Don't update progress bar for folders
-            if (fileName[strlen(fileName)-1] != '/' && progress)
-            {
-                updateMessage.RemoveName ("text");
-                updateMessage.AddString ("text", fileName);
-                progress->SendMessage (&updateMessage, &reply);
-            }
-            
-            addedPaths->AddString (kPath, filePath.String());
+           // Don't update progress bar for folders
+           if (fileName[strlen(fileName)-1] != '/' && progress)
+           {
+               updateMessage.RemoveName ("text");
+               updateMessage.AddString ("text", fileName);
+               progress->SendMessage (&updateMessage, &reply);
+           }
+           
+           addedPaths->AddString (kPath, filePath.String());
         }
     }
     
@@ -580,7 +580,7 @@ status_t ArjArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
 //=============================================================================================================//
 
 status_t ArjArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *progress,
-                        volatile bool *cancel)
+                      volatile bool *cancel)
 {
     // Setup deleting process
     BEntry archiveEntry (&m_archiveRef, true);
@@ -596,7 +596,7 @@ status_t ArjArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
         uint32 type;
         message->GetInfo (kPath, &type, &count);
         if (type != B_STRING_TYPE)
-            return BZR_UNKNOWN;
+           return BZR_UNKNOWN;
     }
 
     m_pipeMgr.FlushArgs();
@@ -608,7 +608,7 @@ status_t ArjArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
     {
         const char *pathString = NULL;
         if (message->FindString (kPath, i, &pathString) == B_OK)
-            m_pipeMgr << SupressWildcardSet (pathString);
+           m_pipeMgr << SupressWildcardSet (pathString);
         // Use SupressWildcardSet (which does not supress * character as arj needs * to delete folders fully)
     }
     
@@ -651,7 +651,7 @@ status_t ArjArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
 //=============================================================================================================//
 
 status_t ArjArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progress,
-                        volatile bool *cancel)
+                      volatile bool *cancel)
 {
     int32 len = B_PATH_NAME_LENGTH + strlen ("Deleting ") + 2;
     char lineString[len];
@@ -663,14 +663,14 @@ status_t ArjArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progre
     while (fgets (lineString, len - 1, fp))
     {
         if (cancel && *cancel == true)
-            return BZR_CANCEL_ARCHIVER;
+           return BZR_CANCEL_ARCHIVER;
         
         lineString[strlen (lineString) - 1] = '\0';
         if (strncmp (lineString, "Deleting ", 9) == 0)
         {
-            updateMessage.RemoveName ("text");
-            updateMessage.AddString ("text", FinalPathComponent (lineString + 9));
-            progress->SendMessage (&updateMessage, &reply);
+           updateMessage.RemoveName ("text");
+           updateMessage.AddString ("text", FinalPathComponent (lineString + 9));
+           progress->SendMessage (&updateMessage, &reply);
         }
     }
 
@@ -680,7 +680,7 @@ status_t ArjArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progre
 //=============================================================================================================//
 
 status_t ArjArchiver::Create (BPath *archivePath, const char *relPath, BMessage *fileList, BMessage *addedPaths,
-                                BMessenger *progress, volatile bool *cancel)
+                             BMessenger *progress, volatile bool *cancel)
 {
     // true=>normalize path, which means everything otherthan the leaf must exist,
     // meaning we have everything ready and only need to create the leaf (by add)
@@ -693,7 +693,7 @@ status_t ArjArchiver::Create (BPath *archivePath, const char *relPath, BMessage 
     {
         BEntry tempEntry (m_archivePath.Path(), true);
         if (tempEntry.Exists())
-            tempEntry.GetRef (&m_archiveRef);
+           tempEntry.GetRef (&m_archiveRef);
         
         SetMimeType();
     }

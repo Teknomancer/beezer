@@ -90,28 +90,28 @@ RegExString::~RegExString()
 //=============================================================================================================//
 
 bool RegExString::Matches (const char *string, bool caseSensitivity,
-                        RegExStringExpressionType expressionType) const
+                      RegExStringExpressionType expressionType) const
 {
     switch (expressionType)
     {
         case kStartsWith:
-            return StartsWith(string, caseSensitivity);
-            
+           return StartsWith(string, caseSensitivity);
+           
         case kEndsWith:
-            return EndsWith(string, caseSensitivity);
+           return EndsWith(string, caseSensitivity);
     
         case kContains:
-            return Contains(string, caseSensitivity);
+           return Contains(string, caseSensitivity);
 
         case kGlobMatch:
-            return MatchesGlob(string, caseSensitivity);
+           return MatchesGlob(string, caseSensitivity);
 
         case kRegexpMatch:
-            return MatchesRegExp(string, caseSensitivity);
+           return MatchesRegExp(string, caseSensitivity);
 
         default:
         case kNone:
-            return false;
+           return false;
     }
 }
 
@@ -227,13 +227,13 @@ int32 RegExString::FindFirst (const char *string, int32 fromOffset) const
     
     for (int32 i = start; i <= stop; i++)
         if (string[0] == ByteAt(i))
-            // This check is to avoid mute str*cmp() calls. Performance.
-            if (strncmp (string, String() + i, stringLength) == 0)
-            {
-                position = i;
-                break;
-            }
-                
+           // This check is to avoid mute str*cmp() calls. Performance.
+           if (strncmp (string, String() + i, stringLength) == 0)
+           {
+               position = i;
+               break;
+           }
+               
     return position;
 }
 
@@ -297,13 +297,13 @@ int32 RegExString::FindLast (const char *string, int32 beforeOffset) const
     
     for (int32 i = start; i >= stop; i--)
         if (string[0] == ByteAt(i))
-            // This check is to avoid mute str*cmp() calls. Performance.
-            if (strncmp(string, String() + i, stringLength) == 0)
-            {
-                position = i;
-                break;
-            }
-                
+           // This check is to avoid mute str*cmp() calls. Performance.
+           if (strncmp(string, String() + i, stringLength) == 0)
+           {
+               position = i;
+               break;
+           }
+               
     return position;
 }
 
@@ -367,12 +367,12 @@ int32 RegExString::IFindFirst (const char *string, int32 fromOffset) const
         
     for (int32 i = start; i <= stop; i++)
         if (tolower(string[0]) == tolower(ByteAt(i)))
-            // This check is to avoid mute str*cmp() calls. Performance.
-            if (strncasecmp(string, String() + i, stringLength) == 0) {
-                position = i;
-                break;
-            }
-                
+           // This check is to avoid mute str*cmp() calls. Performance.
+           if (strncasecmp(string, String() + i, stringLength) == 0) {
+               position = i;
+               break;
+           }
+               
     return position;
 }
 
@@ -420,13 +420,13 @@ int32 RegExString::IFindLast(const char *string, int32 beforeOffset) const
     
     for (int32 i = start; i >= stop; i--)
         if (tolower(string[0]) == tolower(ByteAt(i)))
-            // This check is to avoid mute str*cmp() calls. Performance.
-            if (strncasecmp(string, String() + i, stringLength) == 0)
-            {
-                position = i;
-                break;
-            }
-                
+           // This check is to avoid mute str*cmp() calls. Performance.
+           if (strncasecmp(string, String() + i, stringLength) == 0)
+           {
+               position = i;
+               break;
+           }
+               
     return position;
 }
 
@@ -452,41 +452,41 @@ bool RegExString::MatchesBracketExpression(const char *string, const char *patte
     
     if (inverse)
         pattern++;    
-            
+           
     while (!match && *pattern != ']' && *pattern != '\0')
     {
         switch (*pattern)
         {
-            case '-':
-            {
-                char start = ConditionalToLower (*(pattern - 1), caseSensitivity),
-                    stop = ConditionalToLower (*(pattern + 1), caseSensitivity);
-                
-                if (IsGlyph (start) || IsGlyph (stop))
-                    return false;                // Not a valid range!
-                
-                if (islower (start) && islower (stop)    
-                    || isupper (start) && isupper (stop)
-                    || isdigit (start) && isdigit (stop))
-                        match = start <= testChar && testChar <= stop;
-                else
-                    return false;
-            }
-            break;
-            
-            default:
-                if (GlyphMatch)
-                    match = UTF8CharsAreEqual (string, pattern);
-                else
-                    match = CharsAreEqual (testChar, *pattern, caseSensitivity);
-                break;
+           case '-':
+           {
+               char start = ConditionalToLower (*(pattern - 1), caseSensitivity),
+                  stop = ConditionalToLower (*(pattern + 1), caseSensitivity);
+               
+               if (IsGlyph (start) || IsGlyph (stop))
+                  return false;               // Not a valid range!
+               
+               if (islower (start) && islower (stop)    
+                  || isupper (start) && isupper (stop)
+                  || isdigit (start) && isdigit (stop))
+                      match = start <= testChar && testChar <= stop;
+               else
+                  return false;
+           }
+           break;
+           
+           default:
+               if (GlyphMatch)
+                  match = UTF8CharsAreEqual (string, pattern);
+               else
+                  match = CharsAreEqual (testChar, *pattern, caseSensitivity);
+               break;
         }
         
         if (!match)
         {
-            pattern++;
-            if (IsInsideGlyph (pattern[0]))
-                pattern = MoveToEndOfGlyph (pattern);
+           pattern++;
+           if (IsInsideGlyph (pattern[0]))
+               pattern = MoveToEndOfGlyph (pattern);
         }
     } 
 
@@ -519,140 +519,140 @@ bool RegExString::StringMatchesPattern (const char *string, const char *pattern,
     {
         switch (*pattern)
         {
-            case '?':
-            {
-                pattern++;
-                string++;
-                if (IsInsideGlyph (string[0]))
-                    string = MoveToEndOfGlyph (string);
-                break;
-            }
-                
-            case '*':
-            {
-                // Collapse any ** and *? constructions:
-                while (*pattern == '*' || *pattern == '?')
-                {
-                    pattern++;
-                    if (*pattern == '?' && string != '\0')
-                    {
-                        string++;
-                        if (IsInsideGlyph (string[0]))
-                            string = MoveToEndOfGlyph (string);
-                    }
-                }
-                
-                if (*pattern == '\0')                    // An ending * matches all strings.
-                    return true;
-                
-                bool match = false;
-                const char *pBefore = pattern - 1;
+           case '?':
+           {
+               pattern++;
+               string++;
+               if (IsInsideGlyph (string[0]))
+                  string = MoveToEndOfGlyph (string);
+               break;
+           }
+               
+           case '*':
+           {
+               // Collapse any ** and *? constructions:
+               while (*pattern == '*' || *pattern == '?')
+               {
+                  pattern++;
+                  if (*pattern == '?' && string != '\0')
+                  {
+                      string++;
+                      if (IsInsideGlyph (string[0]))
+                         string = MoveToEndOfGlyph (string);
+                  }
+               }
+               
+               if (*pattern == '\0')                  // An ending * matches all strings.
+                  return true;
+               
+               bool match = false;
+               const char *pBefore = pattern - 1;
 
-                if (*pattern == '[')
-                {
-                    pattern++;
+               if (*pattern == '[')
+               {
+                  pattern++;
 
-                    while (!match && *string != '\0')
-                        match = MatchesBracketExpression (string++, pattern, caseSensitivity);
-            
-                    // Skip the rest of the bracket:
-                    while (*pattern != ']' && *pattern != '\0')
-                        pattern++;
+                  while (!match && *string != '\0')
+                      match = MatchesBracketExpression (string++, pattern, caseSensitivity);
+           
+                  // Skip the rest of the bracket:
+                  while (*pattern != ']' && *pattern != '\0')
+                      pattern++;
     
-                    // Failure if no closing bracket;
-                    if (*pattern == '\0')
-                        return false;
-                    
-                }
-                else
-                {
-                    // No bracket, just one character:
-                    while (!match && *string != '\0')
-                    {
-                        if (IsGlyph (string[0]))
-                            match = UTF8CharsAreEqual(string++, pattern);
-                        else
-                            match = CharsAreEqual(*string++, *pattern, caseSensitivity);
-                    }
-                }
+                  // Failure if no closing bracket;
+                  if (*pattern == '\0')
+                      return false;
+                  
+               }
+               else
+               {
+                  // No bracket, just one character:
+                  while (!match && *string != '\0')
+                  {
+                      if (IsGlyph (string[0]))
+                         match = UTF8CharsAreEqual(string++, pattern);
+                      else
+                         match = CharsAreEqual(*string++, *pattern, caseSensitivity);
+                  }
+               }
     
-                if (!match)
-                        return false;
-                else
-                {
-                    pStorage[patternLevel] = pBefore;
-                    if (IsInsideGlyph (string[0]))
-                        string = MoveToEndOfGlyph (string);
-                    sStorage[patternLevel++] = string;
-                    if (patternLevel > kWildCardMaximum)
-                        return false;
-                    pattern++;
-                    if (IsInsideGlyph (pattern[0]))
-                        pattern = MoveToEndOfGlyph (pattern);
-                }
-            }
-            break;            
+               if (!match)
+                      return false;
+               else
+               {
+                  pStorage[patternLevel] = pBefore;
+                  if (IsInsideGlyph (string[0]))
+                      string = MoveToEndOfGlyph (string);
+                  sStorage[patternLevel++] = string;
+                  if (patternLevel > kWildCardMaximum)
+                      return false;
+                  pattern++;
+                  if (IsInsideGlyph (pattern[0]))
+                      pattern = MoveToEndOfGlyph (pattern);
+               }
+           }
+           break;           
     
-            case '[':
-                pattern++;
-                
-                if (!MatchesBracketExpression (string, pattern, caseSensitivity))
-                    if (patternLevel > 0)
-                    {
-                        pattern = pStorage[--patternLevel];
-                        string = sStorage[patternLevel];
-                    }
-                    else
-                        return false;
-                else
-                {
-                    // Skip the rest of the bracket:
-                    while (*pattern != ']' && *pattern != '\0')
-                        pattern++;
+           case '[':
+               pattern++;
+               
+               if (!MatchesBracketExpression (string, pattern, caseSensitivity))
+                  if (patternLevel > 0)
+                  {
+                      pattern = pStorage[--patternLevel];
+                      string = sStorage[patternLevel];
+                  }
+                  else
+                      return false;
+               else
+               {
+                  // Skip the rest of the bracket:
+                  while (*pattern != ']' && *pattern != '\0')
+                      pattern++;
     
-                    // Failure if no closing bracket;
-                    if (*pattern == '\0')
-                        return false;
-                    
-                    string++;
-                    if (IsInsideGlyph (string[0]))
-                        string = MoveToEndOfGlyph (string);
-                    pattern++;
-                }
-                break;
-                
-            default:
-            {
-                bool equal = false;
-                if (IsGlyph (string[0]))
-                    equal = UTF8CharsAreEqual (string, pattern);
-                else
-                    equal = CharsAreEqual (*string, *pattern, caseSensitivity);
-                
-                if (equal)
-                {
-                    pattern++;
-                    if (IsInsideGlyph (pattern[0]))
-                        pattern = MoveToEndOfGlyph (pattern);
-                    string++;
-                    if (IsInsideGlyph (string[0]))
-                        string = MoveToEndOfGlyph (string);
-                }
-                else if (patternLevel > 0)
-                {
-                    pattern = pStorage[--patternLevel];
-                    string = sStorage[patternLevel];
-                }
-                else 
-                    return false;
-            }
-            break;        
+                  // Failure if no closing bracket;
+                  if (*pattern == '\0')
+                      return false;
+                  
+                  string++;
+                  if (IsInsideGlyph (string[0]))
+                      string = MoveToEndOfGlyph (string);
+                  pattern++;
+               }
+               break;
+               
+           default:
+           {
+               bool equal = false;
+               if (IsGlyph (string[0]))
+                  equal = UTF8CharsAreEqual (string, pattern);
+               else
+                  equal = CharsAreEqual (*string, *pattern, caseSensitivity);
+               
+               if (equal)
+               {
+                  pattern++;
+                  if (IsInsideGlyph (pattern[0]))
+                      pattern = MoveToEndOfGlyph (pattern);
+                  string++;
+                  if (IsInsideGlyph (string[0]))
+                      string = MoveToEndOfGlyph (string);
+               }
+               else if (patternLevel > 0)
+               {
+                  pattern = pStorage[--patternLevel];
+                  string = sStorage[patternLevel];
+               }
+               else 
+                  return false;
+           }
+           break;        
         }
     
         if (*pattern == '\0' && *string != '\0' && patternLevel > 0)
         {
-            pattern = pStorage[--patternLevel];
-            string = sStorage[patternLevel];
+           pattern = pStorage[--patternLevel];
+           string = sStorage[patternLevel];
         }
     }
     
@@ -673,8 +673,8 @@ bool RegExString::UTF8CharsAreEqual (const char *string1, const char *string2) c
         
         while (IsInsideGlyph (*s1) && *s1 == *s2)
         {
-            s1++;
-            s2++;
+           s1++;
+           s2++;
         }
         
         return !IsInsideGlyph(*s1) && !IsInsideGlyph(*s2) && *(s1 - 1) == *(s2 - 1);

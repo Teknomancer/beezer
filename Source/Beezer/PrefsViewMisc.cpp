@@ -45,13 +45,13 @@ void PrefsViewMisc::Render ()
     buf2.ReplaceAll ("%s", K_APP_TITLE);
 
     float maxWidth = MAX (be_plain_font->StringWidth (str (S_PREFS_MISC_ALLCLOSE)),
-                        be_plain_font->StringWidth (buf2.String())) + 5;
+                      be_plain_font->StringWidth (buf2.String())) + 5;
 
     // Add the startup fields
     m_startupPopUp = new BPopUpMenu ("");
     m_startupField = new BMenuField (BRect (m_margin, m_margin, Frame().Width(), 0),
-                                "PrefsViewMisc:startupField", buf2.String(), (BMenu*)m_startupPopUp,
-                                B_FOLLOW_LEFT, B_WILL_DRAW);
+                             "PrefsViewMisc:startupField", buf2.String(), (BMenu*)m_startupPopUp,
+                             B_FOLLOW_LEFT, B_WILL_DRAW);
     m_startupField->SetDivider (maxWidth);
     m_startupField->SetAlignment (B_ALIGN_RIGHT);
     m_startupPopUp->AddItem (new BMenuItem (str (S_PREFS_MISC_WELCOME), NULL));
@@ -63,8 +63,8 @@ void PrefsViewMisc::Render ()
     // Add the quit fields
     m_quitPopUp = new BPopUpMenu ("");
     m_quitField = new BMenuField (BRect (m_margin, m_startupField->Frame().top + m_vGap, Frame().Width(), 0),
-                            "PrefsViewMisc:quitField", str (S_PREFS_MISC_ALLCLOSE), (BMenu*)m_quitPopUp,
-                            B_FOLLOW_LEFT, B_WILL_DRAW);
+                         "PrefsViewMisc:quitField", str (S_PREFS_MISC_ALLCLOSE), (BMenu*)m_quitPopUp,
+                         B_FOLLOW_LEFT, B_WILL_DRAW);
     m_quitField->SetDivider (maxWidth);
     m_quitField->SetAlignment (B_ALIGN_RIGHT);
     m_quitPopUp->AddItem (new BMenuItem (str (S_PREFS_MISC_WELCOME), NULL));
@@ -78,27 +78,27 @@ void PrefsViewMisc::Render ()
 
     // Add other controls
     m_commentChk = new BCheckBox (BRect (m_margin, 2 * m_quitPopUp->Frame().Height(), 0, 0),
-                        "PrefsViewMisc:commentChk", str (S_PREFS_MISC_COMMENTS), NULL, B_FOLLOW_LEFT,
-                        B_WILL_DRAW | B_NAVIGABLE);
+                      "PrefsViewMisc:commentChk", str (S_PREFS_MISC_COMMENTS), NULL, B_FOLLOW_LEFT,
+                      B_WILL_DRAW | B_NAVIGABLE);
     m_commentChk->ResizeToPreferred();    
 
     buf = str (S_PREFS_MISC_MIME);
     buf.ReplaceAll ("%s", K_APP_TITLE);
     m_mimeChk = new BCheckBox (BRect (m_margin, m_commentChk->Frame().bottom + m_vGap, 0, 0),
-                        "PrefsViewMisc:mimeChk", buf.String(), NULL, B_FOLLOW_LEFT,
-                        B_WILL_DRAW | B_NAVIGABLE);
+                      "PrefsViewMisc:mimeChk", buf.String(), NULL, B_FOLLOW_LEFT,
+                      B_WILL_DRAW | B_NAVIGABLE);
     m_mimeChk->ResizeToPreferred();    
     
     float btnWidth = MAX (K_BUTTON_WIDTH, StringWidth (str (S_PREFS_MISC_MIMENOW)) + 22);
     m_mimeBtn = new BButton (BRect (5 * m_margin, m_mimeChk->Frame().bottom + m_vGap + 2,
-                        5 * m_margin + btnWidth, m_mimeChk->Frame().bottom + m_vGap + 2 + K_BUTTON_HEIGHT),
-                        "PrefsViewMisc:mimeBtn", str (S_PREFS_MISC_MIMENOW), new BMessage (M_REGISTER_TYPES),
-                        B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
+                      5 * m_margin + btnWidth, m_mimeChk->Frame().bottom + m_vGap + 2 + K_BUTTON_HEIGHT),
+                      "PrefsViewMisc:mimeBtn", str (S_PREFS_MISC_MIMENOW), new BMessage (M_REGISTER_TYPES),
+                      B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
     
     m_arkTypePopUp = new BPopUpMenu ("");
     m_arkTypeField = new BMenuField (BRect (m_margin, m_mimeBtn->Frame().bottom + 2 * m_margin,
-                            Frame().Width(), 0), "PrefsViewMisc:arkTypeField", str (S_PREFS_MISC_DEFARK),
-                            (BMenu*)m_arkTypePopUp, B_FOLLOW_LEFT, B_WILL_DRAW);
+                         Frame().Width(), 0), "PrefsViewMisc:arkTypeField", str (S_PREFS_MISC_DEFARK),
+                         (BMenu*)m_arkTypePopUp, B_FOLLOW_LEFT, B_WILL_DRAW);
     m_arkTypeField->SetDivider (be_plain_font->StringWidth (str (S_PREFS_MISC_DEFARK)) + 5);
     
     m_arkTypes = ArchiversInstalled (NULL);
@@ -156,7 +156,7 @@ void PrefsViewMisc::Load ()
     if (wasFound != B_OK || item == NULL)
     {
         if (m_arkTypePopUp->CountItems() > 0)
-            item = m_arkTypePopUp->ItemAt(m_arkTypePopUp->CountItems() - 1);
+           item = m_arkTypePopUp->ItemAt(m_arkTypePopUp->CountItems() - 1);
     }
     
     if (item)
@@ -179,13 +179,13 @@ void PrefsViewMisc::MessageReceived (BMessage *message)
     {
         case M_REGISTER_TYPES:
         {
-            be_app->PostMessage (message);
-            break;
+           be_app->PostMessage (message);
+           break;
         }
         
         default:
-            PrefsView::MessageReceived (message);
-            break;
+           PrefsView::MessageReceived (message);
+           break;
     }
 }
 

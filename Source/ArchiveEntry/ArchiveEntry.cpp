@@ -23,11 +23,11 @@ ArchiveEntry::ArchiveEntry()
 //=============================================================================================================//
 
 ArchiveEntry::ArchiveEntry (bool dir, const char *pathStr, const char *sizeStr, const char *packedStr,
-                    const char *dateStr, time_t timeValue, const char *methodStr, const char *crcStr)
+                  const char *dateStr, time_t timeValue, const char *methodStr, const char *crcStr)
 {
     m_isDir = dir;
     m_nameStr = strdup (LeafFromPath (pathStr));        // Never call FinalPathComponent here - only use
-    m_pathStr = strdup (pathStr);                        // LeafFromPath() bug fixed
+    m_pathStr = strdup (pathStr);                      // LeafFromPath() bug fixed
     
     // Get path of parent directory
     int32 len = strlen(pathStr) - strlen(m_nameStr);

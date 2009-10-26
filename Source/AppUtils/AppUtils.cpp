@@ -38,15 +38,15 @@ BString StringFromBytes (int64 v)
     {
         char buf[50];
         if (v > (1024LL * 1024LL * 1024LL * 1024LL))
-            sprintf (buf, "%.2f TB", ((double)v) / (1024LL * 1024LL * 1024LL * 1024LL));
+           sprintf (buf, "%.2f TB", ((double)v) / (1024LL * 1024LL * 1024LL * 1024LL));
         else if (v > (1024LL * 1024LL * 1024LL))
-            sprintf(buf, "%.2f GB", ((double)v)/(1024LL * 1024LL * 1024LL));
+           sprintf(buf, "%.2f GB", ((double)v)/(1024LL * 1024LL * 1024LL));
         else if (v > (1024LL * 1024LL))
-            sprintf(buf, "%.2f MB", ((double)v) / (1024LL * 1024LL));
+           sprintf(buf, "%.2f MB", ((double)v) / (1024LL * 1024LL));
         else if (v > (1024LL))
-            sprintf(buf, "%.2f KB", ((double)v) / 1024LL);
+           sprintf(buf, "%.2f KB", ((double)v) / 1024LL);
         else
-            sprintf(buf, "%Li bytes", v);
+           sprintf(buf, "%Li bytes", v);
         
         str = buf;
     }
@@ -65,7 +65,7 @@ int32 LastOccurrence (const char *str, char whatChar)
     while (*str)
     {
         if (*str == whatChar)
-            count++;
+           count++;
 
         str++;
     }
@@ -119,7 +119,7 @@ const char* FinalPathComponent (const char *path)
     
     while (len > 0)
         if (path[--len] == '/')
-            break;
+           break;
     
     const char *leafStr = path;
     leafStr += len > 0 ? ++len : len;
@@ -136,7 +136,7 @@ const char* LeafFromPath (const char *path)
     
     while (len > 0)
         if (path[--len] == '/')
-            break;
+           break;
     
     const char *leafStr = path;
     leafStr += len > 0 ? ++len : len;        // Workaround for no slashes ie root directory
@@ -157,7 +157,7 @@ char *ParentPath (const char *pathStr, bool truncateSlash)
     {
         parent = (char*)malloc ((parentLen + 1) * sizeof(char));
         if (pathStr[parentLen-1] == '/' && truncateSlash == true)
-            parentLen--;
+           parentLen--;
         strncpy (parent, pathStr, parentLen);
     }
     else
@@ -179,8 +179,8 @@ char *Extension (const char *fileName, int extLen)
     while (len >= lenCopy - extLen - 1)
         if (fileName[--len] == '.')
         {
-            dotEncountered = true;
-            break;
+           dotEncountered = true;
+           break;
         }
     
     if (len >= 0 && dotEncountered == true)

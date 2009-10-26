@@ -14,10 +14,10 @@
 //=============================================================================================================//
 
 SelectDirPanel::SelectDirPanel (file_panel_mode mode, BMessenger *target, const entry_ref *start_directory,
-                    uint32 node_flavors, bool allow_multiple_selection, BMessage *message, BRefFilter *filter,
-                    bool modal, bool hide_when_done)
+                  uint32 node_flavors, bool allow_multiple_selection, BMessage *message, BRefFilter *filter,
+                  bool modal, bool hide_when_done)
     : BFilePanel (mode, target, start_directory, B_DIRECTORY_NODE, allow_multiple_selection, message, filter,
-                modal, hide_when_done)
+               modal, hide_when_done)
 {
     m_buttonName = "bzr:special_button";
 
@@ -25,8 +25,8 @@ SelectDirPanel::SelectDirPanel (file_panel_mode mode, BMessenger *target, const 
 
     BButton *cancelBtn = (BButton*)Window()->FindView ("cancel button");
     m_curDirBtn = new BButton (BRect (cancelBtn->Frame().left - 20 - 185, cancelBtn->Frame().top,
-                            cancelBtn->Frame().left - 20, cancelBtn->Frame().bottom), m_buttonName.String(),
-                            NULL, message, B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW | B_NAVIGABLE);
+                         cancelBtn->Frame().left - 20, cancelBtn->Frame().bottom), m_buttonName.String(),
+                         NULL, message, B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW | B_NAVIGABLE);
     m_curDirBtn->SetTarget (target->Target(NULL));
 
     // Tweak the default button (turn it off) so <ENTER> doesn't select the folder, instead
@@ -87,8 +87,8 @@ void SelectDirPanel::UpdateButton ()
         BMessage *msg = curDirBtn->Message();
         if (msg)
         {
-            msg->RemoveName ("refs");
-            msg->AddRef ("refs", &dirRef);
+           msg->RemoveName ("refs");
+           msg->AddRef ("refs", &dirRef);
         }
     }
     Window()->UnlockLooper();

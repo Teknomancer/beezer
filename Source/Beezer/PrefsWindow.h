@@ -15,8 +15,8 @@ class BTextView;
 class BevelView;
 class PrefsView;
 
-#define M_CLOSE_PREFS               'clpf'
-#define M_SAVE_PREFS                'svpf'
+#define M_CLOSE_PREFS              'clpf'
+#define M_SAVE_PREFS               'svpf'
 #define M_PREFS_PANEL_SELECTED      'pspf'
 
 class PrefsWindow : public BWindow
@@ -25,21 +25,21 @@ class PrefsWindow : public BWindow
         PrefsWindow ();
         
         // Inherited hooks
-        virtual void         Quit ();
-        virtual void         MessageReceived (BMessage *message);
+        virtual void        Quit ();
+        virtual void        MessageReceived (BMessage *message);
         
     private:
         // Private hooks
-        void                 AddControls ();
-        void                 SetActivePanel (PrefsView *panel);
+        void                AddControls ();
+        void                SetActivePanel (PrefsView *panel);
 
         // Private members
-        BRect                m_panelFrame;
-        BList                m_panelList;
-        PrefsView           *m_currentPanel;
-        BevelView           *m_backView;
-        BListView           *m_listView;
-        BTextView           *m_descTextView;
+        BRect               m_panelFrame;
+        BList               m_panelList;
+        PrefsView          *m_currentPanel;
+        BevelView          *m_backView;
+        BListView          *m_listView;
+        BTextView          *m_descTextView;
 };
 
 #endif /* _PREFS_WINDOW_H */

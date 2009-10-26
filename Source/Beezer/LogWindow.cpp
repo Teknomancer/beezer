@@ -37,12 +37,12 @@ LogWindow::LogWindow (BWindow *callerWindow, const char *title, const char *logT
     AddChild (m_backView); 
 
     m_textView = new BTextView (BRect (K_MARGIN, K_MARGIN, bounds.right - K_MARGIN - B_V_SCROLL_BAR_WIDTH,
-                        bounds.bottom - 2 * K_MARGIN - K_BUTTON_HEIGHT - B_H_SCROLL_BAR_HEIGHT),
-                        "LogWindow:TextView", BRect (2, 2, 100000, 0), B_FOLLOW_ALL_SIDES,
-                        B_WILL_DRAW | B_FRAME_EVENTS);
+                      bounds.bottom - 2 * K_MARGIN - K_BUTTON_HEIGHT - B_H_SCROLL_BAR_HEIGHT),
+                      "LogWindow:TextView", BRect (2, 2, 100000, 0), B_FOLLOW_ALL_SIDES,
+                      B_WILL_DRAW | B_FRAME_EVENTS);
     
     m_scrollView = new BetterScrollView ("LogWindow:ScrollView", m_textView,
-                                    B_FOLLOW_ALL_SIDES, B_WILL_DRAW, true, true, true, B_PLAIN_BORDER);
+                                B_FOLLOW_ALL_SIDES, B_WILL_DRAW, true, true, true, B_PLAIN_BORDER);
     m_backView->AddChild (m_scrollView);
 
     m_textView->SetText (logText);
@@ -59,16 +59,16 @@ LogWindow::LogWindow (BWindow *callerWindow, const char *title, const char *logT
         m_textView->SetFontAndColor (displayFont);
     
     m_closeButton = new BButton (BRect (bounds.right - K_MARGIN - K_BUTTON_WIDTH,
-                            bounds.bottom - K_MARGIN - K_BUTTON_HEIGHT, bounds.right - K_MARGIN,
-                            bounds.bottom - K_MARGIN), "LogWindow:CloseButton", str (S_LOG_WINDOW_CLOSE),
-                            new BMessage (B_QUIT_REQUESTED), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW);
+                         bounds.bottom - K_MARGIN - K_BUTTON_HEIGHT, bounds.right - K_MARGIN,
+                         bounds.bottom - K_MARGIN), "LogWindow:CloseButton", str (S_LOG_WINDOW_CLOSE),
+                         new BMessage (B_QUIT_REQUESTED), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW);
     m_backView->AddChild (m_closeButton);
 
     // Constrain the width and height of the window
     float minH, maxH, minV, maxV;
     GetSizeLimits (&minH, &maxH, &minV, &maxV);
     SetSizeLimits (m_closeButton->Frame().Width() + 2 * K_MARGIN, maxH,
-            m_closeButton->Frame().Height() + 2 * K_MARGIN + 50, maxV);
+           m_closeButton->Frame().Height() + 2 * K_MARGIN + 50, maxV);
     
     // Center window on-screen
     BRect screen_rect (BScreen().Frame());
@@ -79,8 +79,8 @@ LogWindow::LogWindow (BWindow *callerWindow, const char *title, const char *logT
     if (_prefs_windows.FindBoolDef (kPfLogWnd, true))
         if (_prefs_windows.FindRect (kPfLogWndFrame, &frame) == B_OK)
         {
-            MoveTo (frame.LeftTop());
-            ResizeTo (frame.Width(), frame.Height());
+           MoveTo (frame.LeftTop());
+           ResizeTo (frame.Width(), frame.Height());
         }
     
     Show();

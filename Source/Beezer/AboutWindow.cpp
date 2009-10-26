@@ -78,7 +78,7 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
     {
         Hide();
         (new BAlert ("Error", str (S_ERROR_LOADING_ABOUT_RSRC), str (S_CLOSE_WORD), NULL, NULL,
-                        B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT))->Go();
+                      B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT))->Go();
         PostMessage (B_QUIT_REQUESTED);
         Show();
         return;
@@ -92,8 +92,8 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
     delete titleBmp;
 
     m_textView = new MarqueeView (BRect (15, 130, bounds.right - 15, bounds.bottom - 45),
-                                    "AboutWindow:CreditsView", BRect (0, 0, bounds.right - 2*(15)-5, 0),
-                                    B_FOLLOW_LEFT, B_WILL_DRAW);
+                                "AboutWindow:CreditsView", BRect (0, 0, bounds.right - 2*(15)-5, 0),
+                                B_FOLLOW_LEFT, B_WILL_DRAW);
     m_backView->AddChild (m_textView);
     m_textView->SetStylable (true);
     m_textView->MakeSelectable (false);
@@ -118,7 +118,7 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
     #endif
 
     formatStr.ReplaceAll ("$BUILD_DATE$", compileTimeStr);
-    free ((char*)compileTimeStr);                    // Free-this as we are passed a ptr in HEAP as per caller Beezer
+    free ((char*)compileTimeStr);                  // Free-this as we are passed a ptr in HEAP as per caller Beezer
 
     formatStr.ReplaceAll ("$S_PROGRAMMING$", str (S_ABOUT_PROGRAMMING));
     formatStr.ReplaceAll ("$S_CREDITS$", str (S_ABOUT_CREDITS));
@@ -150,22 +150,22 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
     int32 nSubHeadings = 8;
     BString subHeadings[] =
     {
-        str (S_ABOUT_PROGRAMMING),                // 0
-        str (S_ABOUT_COLUMN_LIST_VIEW),            // 1
-        str (S_ABOUT_SPLITPANE),                // 2
-        str (S_ABOUT_BUBBLE_HELP),                // 3
-        str (S_ABOUT_URLVIEW),                    // 4
-        str (S_ABOUT_BESHARE),                    // 5
-        str (S_ABOUT_7ZIP),                        // 6
-        str (S_ABOUT_DISCLAIMER)                // 7
+        str (S_ABOUT_PROGRAMMING),               // 0
+        str (S_ABOUT_COLUMN_LIST_VIEW),           // 1
+        str (S_ABOUT_SPLITPANE),               // 2
+        str (S_ABOUT_BUBBLE_HELP),               // 3
+        str (S_ABOUT_URLVIEW),                  // 4
+        str (S_ABOUT_BESHARE),                  // 5
+        str (S_ABOUT_7ZIP),                      // 6
+        str (S_ABOUT_DISCLAIMER)               // 7
     };
 
     int32 nMainHeadings = 3;
     BString mainHeadings[] =
     {
-        str (S_ABOUT_CREDITS),                    // 0
+        str (S_ABOUT_CREDITS),                  // 0
         str (S_ABOUT_LEGAL_MUMBO_JUMBO),        // 1
-        str (S_ABOUT_SPECIAL_THANKS)            // 2
+        str (S_ABOUT_SPECIAL_THANKS)           // 2
     };
 
     // Search and color sub headings
@@ -174,16 +174,16 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
     for (int32 i = 0; i < nSubHeadings; i++)
         if ((strt = temp.FindFirst (subHeadings[i].String())) != B_ERROR)
         {
-            m_textView->SetFontAndColor (strt, strt + strlen(subHeadings[i].String()),
-                            be_plain_font, B_FONT_ALL, &K_ABOUT_SUB_HEADING);
+           m_textView->SetFontAndColor (strt, strt + strlen(subHeadings[i].String()),
+                         be_plain_font, B_FONT_ALL, &K_ABOUT_SUB_HEADING);
         }
     
     // Search and color main headings
     for (int32 i = 0; i < nMainHeadings; i++)
         if ((strt = temp.FindFirst (mainHeadings[i].String())) != B_ERROR)
         {
-            m_textView->SetFontAndColor (strt, strt + strlen(mainHeadings[i].String()),
-                            be_plain_font, B_FONT_ALL, &K_ABOUT_MAIN_HEADING);
+           m_textView->SetFontAndColor (strt, strt + strlen(mainHeadings[i].String()),
+                         be_plain_font, B_FONT_ALL, &K_ABOUT_MAIN_HEADING);
         }
 
     // Center window on-screen    
@@ -214,13 +214,13 @@ void AboutWindow::DispatchMessage (BMessage *message, BHandler *handler)
     {
         case B_KEY_DOWN: case B_MOUSE_DOWN:
         {
-            // According to BeBook its ok to call Quit() from message loop as it shuts down the message
-            // loop (and deletes any pending messages), so this will be the last message to be processed
-            Quit();
-            break;
+           // According to BeBook its ok to call Quit() from message loop as it shuts down the message
+           // loop (and deletes any pending messages), so this will be the last message to be processed
+           Quit();
+           break;
         }
     }
-            
+           
     BWindow::DispatchMessage (message, handler);
 }
 
@@ -252,12 +252,12 @@ int32 AboutWindow::_scroller (void *data)
     for (;;)
     {
         if (wnd->Lock() == true)
-            vw->ScrollBy (0, 1);
+           vw->ScrollBy (0, 1);
         else
-            return 0;
+           return 0;
         
         if (vw->Bounds().bottom > ptY)
-            vw->ScrollTo (0, 0);
+           vw->ScrollTo (0, 0);
         
         wnd->Unlock();
         snooze (K_SCROLL_DELAY);

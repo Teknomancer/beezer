@@ -17,7 +17,7 @@ class JoinerStub : public BApplication
         JoinerStub ();
 
         // Inherited hooks
-        void                 ReadyToRun ();
+        void                ReadyToRun ();
         
     private:
         // Private members

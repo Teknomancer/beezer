@@ -49,8 +49,8 @@ status_t CopyDirectory (BEntry *srcDir, BDirectory *destDir, BMessenger *progres
     destDir->CreateDirectory (subDirLeaf, &subDir);
     subDir.SetTo (destDir, subDirLeaf);
     if (subDir.InitCheck() != B_OK)        // a file with the subDirLeaf name exists, don't bother
-        return B_ERROR;                    // clobbering it, just quit we have already overcome possibility of
-                                        // a folder with the subDirLeaf name existing, don't bother anymore
+        return B_ERROR;                  // clobbering it, just quit we have already overcome possibility of
+                                    // a folder with the subDirLeaf name existing, don't bother anymore
         
     // Copies the attributes of source-directory (in-case of custom icon'd-folders etc)
     // This will copy all that to the destination directory as well
@@ -69,12 +69,12 @@ status_t CopyDirectory (BEntry *srcDir, BDirectory *destDir, BMessenger *progres
     while (dir.GetNextEntry (&entry, false) == B_OK)
     {
         if (*cancel == true)
-            return BZR_CANCEL;
+           return BZR_CANCEL;
         
         if (entry.IsDirectory() == false)
-            exitCode = CopyFile (&entry, &subDir, progress, cancel);
+           exitCode = CopyFile (&entry, &subDir, progress, cancel);
         else
-            exitCode = CopyDirectory (&entry, &subDir, progress, cancel);
+           exitCode = CopyDirectory (&entry, &subDir, progress, cancel);
 
     }
     
@@ -84,7 +84,7 @@ status_t CopyDirectory (BEntry *srcDir, BDirectory *destDir, BMessenger *progres
 //=============================================================================================================//
 
 void GetDirectoryInfo (BEntry *srcDir, int32 &fileCount, int32 &folderCount, off_t &totalSize,
-            volatile bool *cancel)
+           volatile bool *cancel)
 {
     BAutolock autoLocker (&_fs_utils_locker);
     if (!autoLocker.IsLocked())
@@ -101,17 +101,17 @@ void GetDirectoryInfo (BEntry *srcDir, int32 &fileCount, int32 &folderCount, off
     while (dir.GetNextEntry (&entry, false) == B_OK)
     {
         if (cancel && *cancel == true)
-            return;
+           return;
         
         if (entry.IsDirectory() == false)
         {
-            off_t size;
-            entry.GetSize (&size);
-            fileCount ++;
-            totalSize += size;
+           off_t size;
+           entry.GetSize (&size);
+           fileCount ++;
+           totalSize += size;
         }
         else
-            GetDirectoryInfo (&entry, fileCount, folderCount, totalSize, cancel);
+           GetDirectoryInfo (&entry, fileCount, folderCount, totalSize, cancel);
     }
 }
 
@@ -130,11 +130,11 @@ void RemoveDirectory (BDirectory *dir)
     {
         if (entry.IsDirectory() == true)
         {
-            BDirectory subDir (&entry);
-            RemoveDirectory (&subDir);
+           BDirectory subDir (&entry);
+           RemoveDirectory (&subDir);
         }
         else
-            entry.Remove();
+           entry.Remove();
     }
     
     dir->GetEntry(&entry);
@@ -164,7 +164,7 @@ BString CreateTempDirectory (const char *prefix, BDirectory **createdDir, bool c
     {
         create_directory (tempDirName.String(), 0777);
         if (createdDir)
-            *createdDir = new BDirectory (tempDirName.String());
+           *createdDir = new BDirectory (tempDirName.String());
     }
 
     return tempDirName;
@@ -189,7 +189,7 @@ status_t CopyFile (BEntry *srcEntry, BDirectory *destDir, BMessenger *progress, 
         progress->SendMessage (&updateMessage, &reply);
     }
     
-    if (srcEntry->IsSymLink())                    // Handle copying of symlink
+    if (srcEntry->IsSymLink())                  // Handle copying of symlink
     {
         BSymLink srcLink;
         BSymLink newLink;
@@ -199,12 +199,12 @@ status_t CopyFile (BEntry *srcEntry, BDirectory *destDir, BMessenger *progress, 
         srcLink.ReadLink (linkPath, MAXPATHLEN-1);
 
         if (destDir->CreateSymLink (destLeaf, linkPath, &newLink) == B_OK)
-            return BZR_DONE;
+           return BZR_DONE;
         else
-            return B_ERROR;
-            
+           return B_ERROR;
+           
     }
-    else if (srcEntry->IsFile())                // Handle copying of file
+    else if (srcEntry->IsFile())               // Handle copying of file
     {
         StatStruct srcStat;
         BFile srcFile (srcEntry, B_READ_ONLY);
@@ -217,17 +217,17 @@ status_t CopyFile (BEntry *srcEntry, BDirectory *destDir, BMessenger *progress, 
         
         if (bufSize < srcStat.st_size)
         {
-            // File is bigger than buffer size; find an optimal buffer size for copying
-            system_info sysInfo;
-            get_system_info (&sysInfo);
+           // File is bigger than buffer size; find an optimal buffer size for copying
+           system_info sysInfo;
+           get_system_info (&sysInfo);
 
-            size_t freeSize = static_cast<size_t>((sysInfo.max_pages - sysInfo.used_pages) * B_PAGE_SIZE);
-            bufSize = freeSize / 4;                        // take 1/4 of RAM max 
-            bufSize -= bufSize % (16 * 1024);            // Round to 16 KB boundaries 
-            if (bufSize < kMinBufferSize)                // at least kMinBufferSize 
-                bufSize = kMinBufferSize; 
-            else if (bufSize > kMaxBufferSize)            // no more than kMaxBufferSize 
-                bufSize = kMaxBufferSize; 
+           size_t freeSize = static_cast<size_t>((sysInfo.max_pages - sysInfo.used_pages) * B_PAGE_SIZE);
+           bufSize = freeSize / 4;                      // take 1/4 of RAM max 
+           bufSize -= bufSize % (16 * 1024);           // Round to 16 KB boundaries 
+           if (bufSize < kMinBufferSize)               // at least kMinBufferSize 
+               bufSize = kMinBufferSize; 
+           else if (bufSize > kMaxBufferSize)           // no more than kMaxBufferSize 
+               bufSize = kMaxBufferSize; 
         }
         
         BFile destFile;
@@ -237,30 +237,30 @@ status_t CopyFile (BEntry *srcEntry, BDirectory *destDir, BMessenger *progress, 
         char *buffer = new char[bufSize];
         for (;;)
         {
-            if (cancel && *cancel == true)
-            {
-                destFile.Unset();
+           if (cancel && *cancel == true)
+           {
+               destFile.Unset();
 
-                BEntry destEntry;
-                if (destDir->FindEntry (destLeaf, &destEntry) == B_OK)
-                    destEntry.Remove();
+               BEntry destEntry;
+               if (destDir->FindEntry (destLeaf, &destEntry) == B_OK)
+                  destEntry.Remove();
 
-                return BZR_CANCEL;
-            }
-            
-            ssize_t bytes = srcFile.Read (buffer, bufSize);
-            if (bytes > 0)
-            {
-                ssize_t updateBytes = 0;
-                if (bytes > 32 * 1024)
-                    updateBytes = bytes / 2;
-                
-                ssize_t result = destFile.Write (buffer, (size_t)bytes);
-                if (result != bytes)
-                    return B_ERROR;
-            }
-            else
-                break;
+               return BZR_CANCEL;
+           }
+           
+           ssize_t bytes = srcFile.Read (buffer, bufSize);
+           if (bytes > 0)
+           {
+               ssize_t updateBytes = 0;
+               if (bytes > 32 * 1024)
+                  updateBytes = bytes / 2;
+               
+               ssize_t result = destFile.Write (buffer, (size_t)bytes);
+               if (result != bytes)
+                  return B_ERROR;
+           }
+           else
+               break;
         }
         
         CopyAttributes (&srcFile, &destFile, buffer, bufSize);
@@ -285,23 +285,23 @@ void CopyAttributes (BNode *srcNode, BNode *destNode, void *buffer, size_t bufSi
     {
         attr_info info;
         if (srcNode->GetAttrInfo (name, &info) != B_OK)
-            continue;
+           continue;
 
         ssize_t bytes;
         ssize_t numToRead = (ssize_t)info.size;
         
         for (off_t offset = 0; numToRead > 0; offset += bytes)
         {
-            size_t chunkSize = (size_t)numToRead;
-            if (chunkSize > bufSize)
-                chunkSize = bufSize;
+           size_t chunkSize = (size_t)numToRead;
+           if (chunkSize > bufSize)
+               chunkSize = bufSize;
 
-            bytes = srcNode->ReadAttr (name, info.type, offset, buffer, chunkSize);
-            if (bytes <= 0) 
-                break;
-            
-            destNode->WriteAttr (name, info.type, offset, buffer, (size_t)bytes);
-            numToRead -= bytes;
+           bytes = srcNode->ReadAttr (name, info.type, offset, buffer, chunkSize);
+           if (bytes <= 0) 
+               break;
+           
+           destNode->WriteAttr (name, info.type, offset, buffer, (size_t)bytes);
+           numToRead -= bytes;
         }
     }
 }
@@ -309,7 +309,7 @@ void CopyAttributes (BNode *srcNode, BNode *destNode, void *buffer, size_t bufSi
 //=============================================================================================================//
 
 status_t SplitFile (BEntry *srcEntry, BDirectory *destDir, BMessenger *progress, uint64 fragmentSize,
-            uint16 fragmentCount, char *sepString, BString &firstChunkName, volatile bool *cancel)
+           uint16 fragmentCount, char *sepString, BString &firstChunkName, volatile bool *cancel)
 {
     BAutolock autoLocker (&_fs_utils_locker);
     if (!autoLocker.IsLocked())
@@ -322,7 +322,7 @@ status_t SplitFile (BEntry *srcEntry, BDirectory *destDir, BMessenger *progress,
     
     BString outputName = destLeaf;
 
-    if (srcEntry->IsFile() == false)                // Handle reading of file
+    if (srcEntry->IsFile() == false)               // Handle reading of file
         return BZR_ERROR;
     
     // Now determine the width of numbers needed for proper alphabetical sort
@@ -353,12 +353,12 @@ status_t SplitFile (BEntry *srcEntry, BDirectory *destDir, BMessenger *progress,
         get_system_info (&sysInfo);
 
         size_t freeSize = static_cast<size_t>((sysInfo.max_pages - sysInfo.used_pages) * B_PAGE_SIZE);
-        bufSize = freeSize / 4;                        // take 1/4 of RAM max
-        bufSize -= bufSize % (16 * 1024);            // Round to 16 KB boundaries
-        if (bufSize < kMinBufferSize)                // at least kMinBufferSize
-            bufSize = kMinBufferSize;
-        else if (bufSize > kMaxBufferSize)            // no more than kMaxBufferSize
-            bufSize = kMaxBufferSize; 
+        bufSize = freeSize / 4;                      // take 1/4 of RAM max
+        bufSize -= bufSize % (16 * 1024);           // Round to 16 KB boundaries
+        if (bufSize < kMinBufferSize)               // at least kMinBufferSize
+           bufSize = kMinBufferSize;
+        else if (bufSize > kMaxBufferSize)           // no more than kMaxBufferSize
+           bufSize = kMaxBufferSize; 
     }
     
     if (bufSize > fragmentSize)
@@ -373,79 +373,79 @@ status_t SplitFile (BEntry *srcEntry, BDirectory *destDir, BMessenger *progress,
         BString destFileName = bufFileName;
         
         status_t err = destFile.SetTo (destDir, destFileName.String(),
-                            B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE);
+                         B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE);
 
         if (err != B_OK)
-            return BZR_ERROR;
+           return BZR_ERROR;
         
         // Restore bufferSize to original buffer size!
         if (bufSize != bufSizeOriginal)
-            bufSize = bufSizeOriginal;
+           bufSize = bufSizeOriginal;
         
         char *buffer = new char[bufSize];
         uint64 bytesWritten = 0;
         for (;;)
         {
-            if (cancel && *cancel == true)
-            {
-                destFile.Unset();
+           if (cancel && *cancel == true)
+           {
+               destFile.Unset();
     
-                BEntry destEntry;
-                if (destDir->FindEntry (destFileName.String(), &destEntry) == B_OK)
-                    destEntry.Remove();
+               BEntry destEntry;
+               if (destDir->FindEntry (destFileName.String(), &destEntry) == B_OK)
+                  destEntry.Remove();
     
-                return BZR_CANCEL;
-            }
-            
-            
-            // Example: Fragment size = 1.4 MB
-            //          bufSize = 1 MB
-            //          so it will write 1 MB, then another 1 MB, but no we must write only 0.4 MB
-            //          -- the below check does that, i.e. sets buffersize as 0.4 MB
-            // Thus change buffersize to write denominations less than buffersize :)
+               return BZR_CANCEL;
+           }
+           
+           
+           // Example: Fragment size = 1.4 MB
+           //         bufSize = 1 MB
+           //         so it will write 1 MB, then another 1 MB, but no we must write only 0.4 MB
+           //         -- the below check does that, i.e. sets buffersize as 0.4 MB
+           // Thus change buffersize to write denominations less than buffersize :)
         
-            if (fragmentSize - bytesWritten < bufSize)
-                bufSize = fragmentSize - bytesWritten;
-            
-            ssize_t bytes = srcFile.Read (buffer, bufSize);
-            if (bytes > 0)
-            {
-                ssize_t result = destFile.Write (buffer, (size_t)bytes);
-                
-                if (progress)
-                {
-                    BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
-                    updateMessage.AddString ("text", destFileName.String());
-                    updateMessage.AddFloat ("delta", (float)result);
-                    progress->SendMessage (&updateMessage, &reply);
-                }
-                
-                if (result != bytes)
-                    return BZR_ERROR;
-                else
-                    bytesWritten += bytes;
-            }
-            else
-                break;
-            
-            if (bytesWritten >= fragmentSize)
-                break;
+           if (fragmentSize - bytesWritten < bufSize)
+               bufSize = fragmentSize - bytesWritten;
+           
+           ssize_t bytes = srcFile.Read (buffer, bufSize);
+           if (bytes > 0)
+           {
+               ssize_t result = destFile.Write (buffer, (size_t)bytes);
+               
+               if (progress)
+               {
+                  BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
+                  updateMessage.AddString ("text", destFileName.String());
+                  updateMessage.AddFloat ("delta", (float)result);
+                  progress->SendMessage (&updateMessage, &reply);
+               }
+               
+               if (result != bytes)
+                  return BZR_ERROR;
+               else
+                  bytesWritten += bytes;
+           }
+           else
+               break;
+           
+           if (bytesWritten >= fragmentSize)
+               break;
         }
         
         // Copy attributes only for the first file
         if (i == 0)
         {
-            sprintf (bufFileName, "%s%s%0*d", destLeaf, sepString, width, 1);
-            destFile.Unset();
-            status_t err = destFile.SetTo (destDir, bufFileName, B_READ_WRITE);
-            
-            if (err == B_OK)
-                CopyAttributes (&srcFile, &destFile, buffer, bufSize);
+           sprintf (bufFileName, "%s%s%0*d", destLeaf, sepString, width, 1);
+           destFile.Unset();
+           status_t err = destFile.SetTo (destDir, bufFileName, B_READ_WRITE);
+           
+           if (err == B_OK)
+               CopyAttributes (&srcFile, &destFile, buffer, bufSize);
 
-            // Pass this information back to the caller!!
-            firstChunkName = bufFileName;
+           // Pass this information back to the caller!!
+           firstChunkName = bufFileName;
         }
-                
+               
         delete[] buffer;
         destFile.SetPermissions (srcStat.st_mode);
         destFile.SetOwner (srcStat.st_uid);

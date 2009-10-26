@@ -37,28 +37,28 @@ PrefsViewRecent::PrefsViewRecent (BRect frame)
 void PrefsViewRecent::Render ()
 {
     BStringView *arkStrView = new BStringView (BRect (m_margin, m_margin, 0, 0), NULL,
-                                        str (S_PREFS_RECENT_ARCHIVES));
+                                    str (S_PREFS_RECENT_ARCHIVES));
     arkStrView->SetFont (&m_sectionFont);
     arkStrView->ResizeToPreferred();
     arkStrView->SetLowColor (ViewColor());
-                            
+                         
     float strW = StringWidth (str (S_PREFS_RECENT_NUMARK));
     strW += 6;
     
     m_recentArkView = new BTextControl (BRect (3 * m_margin, arkStrView->Frame().bottom + m_vGap + 2,
-                                3 * m_margin + strW + StringWidth("WWW"), 0),
-                                "PrefsViewRecent:recentArkView", str (S_PREFS_RECENT_NUMARK), NULL, NULL,
-                                B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
+                             3 * m_margin + strW + StringWidth("WWW"), 0),
+                             "PrefsViewRecent:recentArkView", str (S_PREFS_RECENT_NUMARK), NULL, NULL,
+                             B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
     m_recentArkView->TextView()->SetMaxBytes (2);
     m_recentArkView->TextView()->DisallowChar (B_INSERT);
     m_recentArkView->SetDivider (strW);
 
     m_showPathChk = new BCheckBox (BRect (3 * m_margin, m_recentArkView->Frame().bottom + m_vGap + 2, 0, 0),
-                            "PrefsViewRecent:showPathChk", str (S_PREFS_RECENT_SHOWPATH), NULL);
+                         "PrefsViewRecent:showPathChk", str (S_PREFS_RECENT_SHOWPATH), NULL);
     m_showPathChk->ResizeToPreferred();
 
     BStringView *extStrView = new BStringView (BRect (m_margin, m_showPathChk->Frame().bottom + m_vGap + 8, 0,0),
-                                    NULL, str (S_PREFS_RECENT_EXTRACTS));
+                                NULL, str (S_PREFS_RECENT_EXTRACTS));
     extStrView->SetFont (&m_sectionFont);
     extStrView->ResizeToPreferred();
     extStrView->SetLowColor (ViewColor());
@@ -66,9 +66,9 @@ void PrefsViewRecent::Render ()
     strW = StringWidth (str (S_PREFS_RECENT_NUMEXT));
     strW += 6;
     m_recentExtView = new BTextControl (BRect (3 * m_margin, extStrView->Frame().bottom + m_vGap + 2,
-                                3 * m_margin + strW + StringWidth("WWW"), 0),
-                                "PrefsViewRecent:recentExtView", str (S_PREFS_RECENT_NUMEXT), NULL, NULL,
-                                B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
+                             3 * m_margin + strW + StringWidth("WWW"), 0),
+                             "PrefsViewRecent:recentExtView", str (S_PREFS_RECENT_NUMEXT), NULL, NULL,
+                             B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
     m_recentExtView->TextView()->SetMaxBytes (2);
     m_recentExtView->TextView()->DisallowChar (B_INSERT);
     m_recentExtView->SetDivider (strW);

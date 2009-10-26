@@ -20,16 +20,16 @@ class WindowMgr
         ~WindowMgr ();
         
         // Public hooks
-        bool                AddWindow (BWindow *wnd);
-        bool                RemoveWindow (BWindow *wnd);
-        void                UpdateFrom (BWindow *sourceWnd, bool updateBeApp);
-        void                UpdateFrom (BWindow *sourceWnd, BMessage *message, bool updateBeApp);
-        int32               CountWindows () const;
-        BWindow            *WindowAt (int32 index) const;
+        bool               AddWindow (BWindow *wnd);
+        bool               RemoveWindow (BWindow *wnd);
+        void               UpdateFrom (BWindow *sourceWnd, bool updateBeApp);
+        void               UpdateFrom (BWindow *sourceWnd, BMessage *message, bool updateBeApp);
+        int32              CountWindows () const;
+        BWindow           *WindowAt (int32 index) const;
 
     private:
         // Private members
-        BList              *m_windowList;
+        BList             *m_windowList;
         
         static int32        m_runCount;
 };

@@ -72,7 +72,7 @@
 #pragma mark --- Inherited Hooks ---
 
 MainWindow::MainWindow (BRect frame, BubbleHelper *bubbleHelper, WindowMgr *windowMgr, RecentMgr *recentMgr,
-                    RecentMgr *extractMgr, RuleMgr *ruleMgr)
+                  RecentMgr *extractMgr, RuleMgr *ruleMgr)
     : BWindow (frame, str (S_UNTITLED), B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE),
     m_searchWnd (NULL),
     m_bubbleHelper (bubbleHelper),
@@ -141,7 +141,7 @@ MainWindow::MainWindow (BRect frame, BubbleHelper *bubbleHelper, WindowMgr *wind
     float minH, maxH, minV, maxV;
     GetSizeLimits (&minH, &maxH, &minV, &maxV);
     SetSizeLimits (m_toolBar->InnerFrame().right - 2, maxH,
-            m_mainMenu->Frame().Height() + m_toolBar->Frame().Height() + 157, maxV);    
+           m_mainMenu->Frame().Height() + m_toolBar->Frame().Height() + 157, maxV);    
 }
 
 //=============================================================================================================//
@@ -200,7 +200,7 @@ void MainWindow::Quit ()
     {
         m_progressWnd->PostMessage (M_STOP_OPERATION);
         if (m_progressWnd->Lock())
-            m_progressWnd->Quit();
+           m_progressWnd->Quit();
     }
 
     m_publicThreadCancel = true;
@@ -245,1072 +245,1072 @@ void MainWindow::MessageReceived (BMessage *message)
     {
         case M_ADD_FOLDERS:
         {
-            int32 i, totalItems;
-            if (message->FindInt32 ("start_index", &i) != B_OK)
-            {
-                i = 0L;
-                m_archiver->FillLists ();
-                m_archiver->GetLists (m_fileList, m_dirList);
-            }
-            
-            i = AddFoldersFromList (i, &totalItems);
-            // Bug-fix it should be < not <= -Bug was found when opening BeIDE.zip
-            if (i < totalItems)
-            {
-                message->RemoveName ("start_index");
-                message->AddInt32 ("start_index", i);
-                PostMessage (message);
-            }
-            else
-                PostMessage (M_ADD_ITEMS);
-                
-            break;
+           int32 i, totalItems;
+           if (message->FindInt32 ("start_index", &i) != B_OK)
+           {
+               i = 0L;
+               m_archiver->FillLists ();
+               m_archiver->GetLists (m_fileList, m_dirList);
+           }
+           
+           i = AddFoldersFromList (i, &totalItems);
+           // Bug-fix it should be < not <= -Bug was found when opening BeIDE.zip
+           if (i < totalItems)
+           {
+               message->RemoveName ("start_index");
+               message->AddInt32 ("start_index", i);
+               PostMessage (message);
+           }
+           else
+               PostMessage (M_ADD_ITEMS);
+               
+           break;
         }
         
         case M_ADD_ITEMS:
         {
-            int32 i, totalItems;
-            if (message->FindInt32 ("start_index", &i) != B_OK) i = 0L;
-            i = AddItemsFromList (i, &totalItems);
-            
-            // Check if all items have been added
-            if (i < totalItems)
-            {
-                message->RemoveName ("start_index");
-                message->AddInt32 ("start_index", i);
-                PostMessage (message);
-            }
-            else
-            {
-                // Calculate the total size of the archive
-                for (int32 i = 0; i < totalItems; i++)
-                {
-                    ListEntry *item = ((HashEntry*)m_fileList->ItemAtFast(i))->m_clvItem;
-                    if (item)
-                        m_archiveSize += item->m_length;
-                }
+           int32 i, totalItems;
+           if (message->FindInt32 ("start_index", &i) != B_OK) i = 0L;
+           i = AddItemsFromList (i, &totalItems);
+           
+           // Check if all items have been added
+           if (i < totalItems)
+           {
+               message->RemoveName ("start_index");
+               message->AddInt32 ("start_index", i);
+               PostMessage (message);
+           }
+           else
+           {
+               // Calculate the total size of the archive
+               for (int32 i = 0; i < totalItems; i++)
+               {
+                  ListEntry *item = ((HashEntry*)m_fileList->ItemAtFast(i))->m_clvItem;
+                  if (item)
+                      m_archiveSize += item->m_length;
+               }
 
-                m_infoBar->UpdateFilesDisplay (0L, totalItems + m_dirList->CountItems(), true);
-                m_infoBar->UpdateBytesDisplay (0L, m_archiveSize, true);
+               m_infoBar->UpdateFilesDisplay (0L, totalItems + m_dirList->CountItems(), true);
+               m_infoBar->UpdateBytesDisplay (0L, m_archiveSize, true);
 
-                SetBusyState (false);
-                PostMessage (M_OPEN_FINISHED);
-            }
-            
-            break;
+               SetBusyState (false);
+               PostMessage (M_OPEN_FINISHED);
+           }
+           
+           break;
         }
-                
+               
         case M_BROADCAST_STATUS:
         {
-            // Called from WindowMgr when some other windows modified
-            // When this window is being created - be_app will do the updating of Window Manager
-            UpdateWindowsMenu();
-            break;
+           // Called from WindowMgr when some other windows modified
+           // When this window is being created - be_app will do the updating of Window Manager
+           UpdateWindowsMenu();
+           break;
         }
         
         case M_UPDATE_RECENT:
         {
-            // Called from WindowMgr (see OpenArchivePartTwo) when some file has been opened
-            // and we need to add it to our recent file list or when Preferences window is closed (ie from
-            // BeApp object)
-            UpdateRecentMenu();
+           // Called from WindowMgr (see OpenArchivePartTwo) when some file has been opened
+           // and we need to add it to our recent file list or when Preferences window is closed (ie from
+           // BeApp object)
+           UpdateRecentMenu();
 
-            if (m_archiver)
-                UpdateExtractMenu();
-            
-            break;
+           if (m_archiver)
+               UpdateExtractMenu();
+           
+           break;
         }
         
         case M_UPDATE_INTERFACE:
         {
-            // Called from beapp object when prefs are closed
-            m_toolBar->Redraw();
-            m_infoBar->Redraw();
-            UpdateListView (true);
-            break;
+           // Called from beapp object when prefs are closed
+           m_toolBar->Redraw();
+           m_infoBar->Redraw();
+           UpdateListView (true);
+           break;
         }
         
         case M_SWITCH_WINDOW:
         {
-            MainWindow *wnd = NULL;
-            message->FindPointer (kWindowPtr, reinterpret_cast<void**>(&wnd));
-            if (wnd)
-                wnd->Activate (true);
-            
-            break;
+           MainWindow *wnd = NULL;
+           message->FindPointer (kWindowPtr, reinterpret_cast<void**>(&wnd));
+           if (wnd)
+               wnd->Activate (true);
+           
+           break;
         }
         
         case M_OPEN_REQUESTED:
         {
-            // Open file notifications come here from be_app
-            if (message->FindRef (kRef, &m_archiveRef) == B_OK)
-            {
-                m_archivePath.SetTo (&m_archiveRef);
+           // Open file notifications come here from be_app
+           if (message->FindRef (kRef, &m_archiveRef) == B_OK)
+           {
+               m_archivePath.SetTo (&m_archiveRef);
 
-                SetTitle (m_archivePath.Leaf());
-                OpenArchive ();
-                
-                if (m_archiver == NULL)
-                {
-                    BMessage reply;
-                    reply.AddBool (kFailOnNull, true);
-                    message->SendReply (&reply);
-                    Quit();
-                }
-                else    
-                    message->SendReply ('repl');
-            }
-            
-            break;
+               SetTitle (m_archivePath.Leaf());
+               OpenArchive ();
+               
+               if (m_archiver == NULL)
+               {
+                  BMessage reply;
+                  reply.AddBool (kFailOnNull, true);
+                  message->SendReply (&reply);
+                  Quit();
+               }
+               else    
+                  message->SendReply ('repl');
+           }
+           
+           break;
         }
         
         case M_OPEN_PART_TWO:
         {
-            status_t result;
-            message->FindInt32 (kResult, &result);
-            OpenArchivePartTwo (result);
-            PostMessage (M_ADD_FOLDERS);
-            break;
+           status_t result;
+           message->FindInt32 (kResult, &result);
+           OpenArchivePartTwo (result);
+           PostMessage (M_ADD_FOLDERS);
+           break;
         }
         
         case M_OPEN_FINISHED:
         {
-            // Output that an error occurred while reading the archive
-            if (m_badArchive == true)
-            {
-                // Mimetypes are correct but archive is corrupted/buggy
-                BMessage *msg = m_archiver->ErrorMessage();
-                const char *errString;
-                if (msg->FindString (kErrorString, &errString) == B_OK)
-                {
-                    m_logTextView->AddText (str (S_LOADING_ERROR), false, false, false);
-                    BAlert *errAlert = new BAlert ("Error", str (S_VIEW_ERRORS_NOW), str (S_VIEW_ERROR),
-                                            str (S_CANCEL), NULL, B_WIDTH_AS_USUAL,    B_EVEN_SPACING,    B_STOP_ALERT);
-                    errAlert->SetDefaultButton (errAlert->ButtonAt (1L));
-                    errAlert->SetShortcut (1L, B_ESCAPE);
-                    errAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
-                    errAlert->AddToSubset (this);
-                    int32 buttonIndex = errAlert->Go();
-                    if (buttonIndex == 0L)
-                    {
-                        BString errWindowTitle = str (S_ERRORS_AND_WARNINGS);
-                        errWindowTitle << Title();
-                        new LogWindow (this, errWindowTitle.String(), errString);
-                    }
-                }
-            }
-            else
-                m_logTextView->AddText (str (S_LOADING_DONE), false, false, false);
+           // Output that an error occurred while reading the archive
+           if (m_badArchive == true)
+           {
+               // Mimetypes are correct but archive is corrupted/buggy
+               BMessage *msg = m_archiver->ErrorMessage();
+               const char *errString;
+               if (msg->FindString (kErrorString, &errString) == B_OK)
+               {
+                  m_logTextView->AddText (str (S_LOADING_ERROR), false, false, false);
+                  BAlert *errAlert = new BAlert ("Error", str (S_VIEW_ERRORS_NOW), str (S_VIEW_ERROR),
+                                        str (S_CANCEL), NULL, B_WIDTH_AS_USUAL,    B_EVEN_SPACING,    B_STOP_ALERT);
+                  errAlert->SetDefaultButton (errAlert->ButtonAt (1L));
+                  errAlert->SetShortcut (1L, B_ESCAPE);
+                  errAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
+                  errAlert->AddToSubset (this);
+                  int32 buttonIndex = errAlert->Go();
+                  if (buttonIndex == 0L)
+                  {
+                      BString errWindowTitle = str (S_ERRORS_AND_WARNINGS);
+                      errWindowTitle << Title();
+                      new LogWindow (this, errWindowTitle.String(), errString);
+                  }
+               }
+           }
+           else
+               m_logTextView->AddText (str (S_LOADING_DONE), false, false, false);
 
-            if (m_archiver->SupportsPassword() && m_archiver->PasswordRequired())
-                m_logTextView->AddText (str (S_PASSWORD_FOUND), true, false, false);
-            
-            ActivateUIForValidArchive();
-            break;
+           if (m_archiver->SupportsPassword() && m_archiver->PasswordRequired())
+               m_logTextView->AddText (str (S_PASSWORD_FOUND), true, false, false);
+           
+           ActivateUIForValidArchive();
+           break;
         }
 
         case M_CREATE_REQUESTED:
         {
-            entry_ref dirRef;
-            const char *fileName (NULL);
-            message->FindRef ("directory", &dirRef);
-            message->FindString ("name", &fileName);
-            message->FindPointer (kArchiverPtr, reinterpret_cast<void**>(&m_archiver));
-            
-            if (!m_archiver)
-                break;
-            
-            m_createMode = true;
-            InitArchiver ();
-            
-            // Get filename with the extension, if user entered "a" as the filename we
-            // always append the extension because if we don't and the ZipArchiver's binary (zip eg)
-            // does it we will end up with a different name than the one we have
-            BString correctedFileName = fileName;
-            
-            // Don't correct filenames here as we already correct in-front of the user in the
-            // create file panel in beezer - if he has adjusted the filename after that maybe he wants it
-            // that way -- keep this commented and finally verdict later
-            //const char *extension = m_archiver->ArchiveExtension();
-            //int32 foundIndex = correctedFileName.FindLast (extension);
-            //if (foundIndex < 0L || foundIndex != (int32)(correctedFileName.Length() - strlen (extension)))
-            //    correctedFileName.Append (extension);
-            
-            BPath path (&dirRef);
-            path.Append (correctedFileName.String(), false);
+           entry_ref dirRef;
+           const char *fileName (NULL);
+           message->FindRef ("directory", &dirRef);
+           message->FindString ("name", &fileName);
+           message->FindPointer (kArchiverPtr, reinterpret_cast<void**>(&m_archiver));
+           
+           if (!m_archiver)
+               break;
+           
+           m_createMode = true;
+           InitArchiver ();
+           
+           // Get filename with the extension, if user entered "a" as the filename we
+           // always append the extension because if we don't and the ZipArchiver's binary (zip eg)
+           // does it we will end up with a different name than the one we have
+           BString correctedFileName = fileName;
+           
+           // Don't correct filenames here as we already correct in-front of the user in the
+           // create file panel in beezer - if he has adjusted the filename after that maybe he wants it
+           // that way -- keep this commented and finally verdict later
+           //const char *extension = m_archiver->ArchiveExtension();
+           //int32 foundIndex = correctedFileName.FindLast (extension);
+           //if (foundIndex < 0L || foundIndex != (int32)(correctedFileName.Length() - strlen (extension)))
+           //    correctedFileName.Append (extension);
+           
+           BPath path (&dirRef);
+           path.Append (correctedFileName.String(), false);
 
-            m_archivePath = path;
-            m_archiveEntry.SetTo (m_archivePath.Path(), true);
-            m_archiveEntry.GetRef (&m_archiveRef);
-            message->what = M_ACTIONS_ADD;
-            PostMessage (message);
-            
-            break;
+           m_archivePath = path;
+           m_archiveEntry.SetTo (m_archivePath.Path(), true);
+           m_archiveEntry.GetRef (&m_archiveRef);
+           message->what = M_ACTIONS_ADD;
+           PostMessage (message);
+           
+           break;
         }
         
         case M_ACTIONS_CREATE_FOLDER:
         {
-            AddNewFolder();
-            break;
+           AddNewFolder();
+           break;
         }
-                
+               
         case M_ACTIONS_TEST:
         {
-            TestArchive();
-            break;
+           TestArchive();
+           break;
         }
 
         case M_TEST_DONE:
         {
-            TestDone (message);
-            break;
+           TestDone (message);
+           break;
         }
         
         case M_DELETE_DONE:
         {
-            DeleteDone (message);
-            break;
+           DeleteDone (message);
+           break;
         }
         
         case M_TOGGLE_TOOLBAR:
         {
-            // User chose this menu item to show/hide the toolbar
-            ToggleToolBar();
-            break;
+           // User chose this menu item to show/hide the toolbar
+           ToggleToolBar();
+           break;
         }
     
         case M_TOGGLE_INFOBAR:
         {
-            // User chose this menu item to show/hide the infobar
-            ToggleInfoBar();
-            break;
+           // User chose this menu item to show/hide the infobar
+           ToggleInfoBar();
+           break;
         }
         
         case M_TOGGLE_LOG:
         {
-            ToggleActionLog();
-            break;
+           ToggleActionLog();
+           break;
         }
-                
+               
         case M_TOOLBAR_TOGGLED: case M_INFOBAR_TOGGLED:
         {
-            // User has hidden/unhidden the toolbar/infobar object which has sent us this message. Act 
-            // accordingly to move/resize other controls on the window
-            bool isHidden = message->FindBool (kHidden);
-            float height = message->FindFloat (kBarHeight);
-            if (isHidden == true)
-                height *= -1;
+           // User has hidden/unhidden the toolbar/infobar object which has sent us this message. Act 
+           // accordingly to move/resize other controls on the window
+           bool isHidden = message->FindBool (kHidden);
+           float height = message->FindFloat (kBarHeight);
+           if (isHidden == true)
+               height *= -1;
 
-            if (message->what == M_TOOLBAR_TOGGLED)
-                m_infoBar->MoveBy (0, height);
-            
-            m_splitPane->MoveBy (0, height);
-            m_splitPane->ResizeBy (0, -height);
-            
-            // If the log is hidden, keep it that way, Otherwise it will pop-back up
-            if (m_logHidden)
-            {
-                m_splitPane->SetBarLocked (false);
-                m_splitPane->SetBarPosition (BPoint (Bounds().Width(), Bounds().Height()));
-                m_splitPane->SetBarLocked (true);
-            }
+           if (message->what == M_TOOLBAR_TOGGLED)
+               m_infoBar->MoveBy (0, height);
+           
+           m_splitPane->MoveBy (0, height);
+           m_splitPane->ResizeBy (0, -height);
+           
+           // If the log is hidden, keep it that way, Otherwise it will pop-back up
+           if (m_logHidden)
+           {
+               m_splitPane->SetBarLocked (false);
+               m_splitPane->SetBarPosition (BPoint (Bounds().Width(), Bounds().Height()));
+               m_splitPane->SetBarLocked (true);
+           }
 
-            if (message->what == M_TOOLBAR_TOGGLED)
-                m_mainMenu->m_settingsMenu->FindItem(M_TOGGLE_TOOLBAR)->SetMarked (!isHidden);
-            else
-                m_mainMenu->m_settingsMenu->FindItem(M_TOGGLE_INFOBAR)->SetMarked (!isHidden);
-            
-            break;
+           if (message->what == M_TOOLBAR_TOGGLED)
+               m_mainMenu->m_settingsMenu->FindItem(M_TOGGLE_TOOLBAR)->SetMarked (!isHidden);
+           else
+               m_mainMenu->m_settingsMenu->FindItem(M_TOGGLE_INFOBAR)->SetMarked (!isHidden);
+           
+           break;
         }
         
         case M_SELECTION_ADDED:
         {
-            // For performance reason we get this message - we avoid calling
-            // UpdateInfoBar() which RECOUNTS all selected items and readds the selected bytes
-            // This will simply add to the infobar's already existing selection information
-            // This is sent by BeezerListView::KeyDown() implementation when we get this we
-            // will NOT get M_SELECTION_CHANGED message
-            ListEntry *item;
-            message->FindPointer (kListItem, reinterpret_cast<void**>(&item));
+           // For performance reason we get this message - we avoid calling
+           // UpdateInfoBar() which RECOUNTS all selected items and readds the selected bytes
+           // This will simply add to the infobar's already existing selection information
+           // This is sent by BeezerListView::KeyDown() implementation when we get this we
+           // will NOT get M_SELECTION_CHANGED message
+           ListEntry *item;
+           message->FindPointer (kListItem, reinterpret_cast<void**>(&item));
 
-            if (item)
-            {
-                UpdateUIAsPerSelection();
-                m_infoBar->UpdateBy (1, item->m_length);
-            }
-                
-            break;
+           if (item)
+           {
+               UpdateUIAsPerSelection();
+               m_infoBar->UpdateBy (1, item->m_length);
+           }
+               
+           break;
         }
         
         case M_SELECTION_CHANGED:
         {
-            // Check if ONLY directories has been selected, if so don't enable
-            int32 count;
-            int64 bytes;
-            message->FindInt32 (kCount, &count);
-            message->FindInt64 (kBytes, &bytes);
-            UpdateUIAsPerSelection ();
-            UpdateInfoBar (count, bytes);
-            break;
+           // Check if ONLY directories has been selected, if so don't enable
+           int32 count;
+           int64 bytes;
+           message->FindInt32 (kCount, &count);
+           message->FindInt64 (kBytes, &bytes);
+           UpdateUIAsPerSelection ();
+           UpdateInfoBar (count, bytes);
+           break;
         }
         
         case M_ENTER: case M_ACTIONS_VIEW: case M_ACTIONS_OPEN_WITH:
         {
-            bool isSuper;
-            if (message->FindBool (kSuperItem, &isSuper) != B_OK)
-                isSuper = false;
-            
-            if (isSuper == true && message->what == M_ENTER)
-                break;
-            
-            ListEntry *selEntry (NULL);
-            BMessage *viewMsg = new BMessage (message->what != M_ENTER ? message->what : M_ACTIONS_VIEW);
-            int32 i = 0L;
-            int32 fileCount = 0L;
-            while ((selEntry =
-                    (ListEntry*)m_listView->FullListItemAt(m_listView->FullListCurrentSelection (i))) != NULL)
-            {
-                if (!selEntry->IsSuperItem())
-                {
-                    viewMsg->AddString (kPath, selEntry->m_fullPath.String());
-                    fileCount++;
-                }
-                i++;
-            }
+           bool isSuper;
+           if (message->FindBool (kSuperItem, &isSuper) != B_OK)
+               isSuper = false;
+           
+           if (isSuper == true && message->what == M_ENTER)
+               break;
+           
+           ListEntry *selEntry (NULL);
+           BMessage *viewMsg = new BMessage (message->what != M_ENTER ? message->what : M_ACTIONS_VIEW);
+           int32 i = 0L;
+           int32 fileCount = 0L;
+           while ((selEntry =
+                  (ListEntry*)m_listView->FullListItemAt(m_listView->FullListCurrentSelection (i))) != NULL)
+           {
+               if (!selEntry->IsSuperItem())
+               {
+                  viewMsg->AddString (kPath, selEntry->m_fullPath.String());
+                  fileCount++;
+               }
+               i++;
+           }
 
-            if (fileCount > 10)
-            {
-                char *confirmStr = new char[strlen (str (S_MANY_FILES_TO_VIEW)) + 15];
-                sprintf (confirmStr, str (S_MANY_FILES_TO_VIEW), fileCount);
-                BAlert *confirmAlert = new BAlert ("confirm", confirmStr, str (S_YES_VIEW),
-                        str (S_NO), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_WARNING_ALERT);
-                confirmAlert->SetShortcut (1, B_ESCAPE);
-                confirmAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
-                confirmAlert->AddToSubset (this);
-                delete[] confirmStr;
+           if (fileCount > 10)
+           {
+               char *confirmStr = new char[strlen (str (S_MANY_FILES_TO_VIEW)) + 15];
+               sprintf (confirmStr, str (S_MANY_FILES_TO_VIEW), fileCount);
+               BAlert *confirmAlert = new BAlert ("confirm", confirmStr, str (S_YES_VIEW),
+                      str (S_NO), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_WARNING_ALERT);
+               confirmAlert->SetShortcut (1, B_ESCAPE);
+               confirmAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
+               confirmAlert->AddToSubset (this);
+               delete[] confirmStr;
 
-                int32 ans = confirmAlert->Go();
-                if (ans == 1)
-                    break;
-            }
+               int32 ans = confirmAlert->Go();
+               if (ans == 1)
+                  break;
+           }
 
-            // Create temp directory if needed
-            MakeTempDirectory();
-            BEntry tempDirEntry (m_tempDirPath, false);
-            entry_ref tempDirRef;
-            tempDirEntry.GetRef (&tempDirRef);
-            
-            m_statusWnd = new StatusWindow (str (S_EXTRACTING), this, str (S_PLEASE_WAIT), &m_publicThreadCancel);
-            
-            viewMsg->AddPointer (kWindowPtr, (void*)this);
-            viewMsg->AddPointer (kArchiverPtr, (void*)m_archiver);
-            viewMsg->AddPointer (kCancel, (void*)(&m_publicThreadCancel));
-            viewMsg->AddPointer (kStatusPtr, (void*)m_statusWnd);
-            viewMsg->AddString (kTempPath, m_tempDirPath);
-            viewMsg->AddRef (kRef, &tempDirRef);
-            
-            // Make extraction (viewing) on separate thread as it will not freeze the interface
-            // while extracting large files
-            resume_thread (spawn_thread (_viewer, "_viewer", B_NORMAL_PRIORITY, (void*)viewMsg));
+           // Create temp directory if needed
+           MakeTempDirectory();
+           BEntry tempDirEntry (m_tempDirPath, false);
+           entry_ref tempDirRef;
+           tempDirEntry.GetRef (&tempDirRef);
+           
+           m_statusWnd = new StatusWindow (str (S_EXTRACTING), this, str (S_PLEASE_WAIT), &m_publicThreadCancel);
+           
+           viewMsg->AddPointer (kWindowPtr, (void*)this);
+           viewMsg->AddPointer (kArchiverPtr, (void*)m_archiver);
+           viewMsg->AddPointer (kCancel, (void*)(&m_publicThreadCancel));
+           viewMsg->AddPointer (kStatusPtr, (void*)m_statusWnd);
+           viewMsg->AddString (kTempPath, m_tempDirPath);
+           viewMsg->AddRef (kRef, &tempDirRef);
+           
+           // Make extraction (viewing) on separate thread as it will not freeze the interface
+           // while extracting large files
+           resume_thread (spawn_thread (_viewer, "_viewer", B_NORMAL_PRIORITY, (void*)viewMsg));
 
-            // Also this thread that is NOT controlled by StatusWindow is controlled by
-            // m_publicThreadCancel -- this way when the window quits it will set that cancel flag to true
-            // thus quitting this thread as well
-            
-            break;
+           // Also this thread that is NOT controlled by StatusWindow is controlled by
+           // m_publicThreadCancel -- this way when the window quits it will set that cancel flag to true
+           // thus quitting this thread as well
+           
+           break;
         }
         
         case M_ACTIONS_EXTRACT:
         {
-            // Get the extract path from prefs, if none call M_ACTIONS_EXTRACT_TO
-            BString extractDirPath;
-            bool arkDir;
-            if (_prefs_paths.FindBool (kPfUseArkDir, &arkDir) == B_OK)
-            {
-                if (arkDir == true)
-                {
-                    BPath arkDirPath;
-                    m_archivePath.GetParent (&arkDirPath);
-                    extractDirPath = arkDirPath.Path();
-                }
-                else
-                    _prefs_paths.FindString (kPfDefExtractPath, &extractDirPath);
-            }
-            
-            if (extractDirPath.Length() > 0 && IsExtractPathValid (extractDirPath.String(), true) == false)
-                break;
-                
-            entry_ref ref;
-            get_ref_for_path (extractDirPath.String(), &ref);
-                
-            BMessage extractMsg (M_EXTRACT_TO);
-            extractMsg.AddRef ("refs", &ref);
-            extractMsg.AddBool (kDynamic, true);    // Prevent this path from being added to recent paths
-                
-            if (extractDirPath.Length() == 0)
-                PostMessage (M_ACTIONS_EXTRACT_TO);
-            else
-                PostMessage (&extractMsg);
-            
-            break;
+           // Get the extract path from prefs, if none call M_ACTIONS_EXTRACT_TO
+           BString extractDirPath;
+           bool arkDir;
+           if (_prefs_paths.FindBool (kPfUseArkDir, &arkDir) == B_OK)
+           {
+               if (arkDir == true)
+               {
+                  BPath arkDirPath;
+                  m_archivePath.GetParent (&arkDirPath);
+                  extractDirPath = arkDirPath.Path();
+               }
+               else
+                  _prefs_paths.FindString (kPfDefExtractPath, &extractDirPath);
+           }
+           
+           if (extractDirPath.Length() > 0 && IsExtractPathValid (extractDirPath.String(), true) == false)
+               break;
+               
+           entry_ref ref;
+           get_ref_for_path (extractDirPath.String(), &ref);
+               
+           BMessage extractMsg (M_EXTRACT_TO);
+           extractMsg.AddRef ("refs", &ref);
+           extractMsg.AddBool (kDynamic, true);    // Prevent this path from being added to recent paths
+               
+           if (extractDirPath.Length() == 0)
+               PostMessage (M_ACTIONS_EXTRACT_TO);
+           else
+               PostMessage (&extractMsg);
+           
+           break;
         }
         
         case M_ACTIONS_EXTRACT_TO: case M_ACTIONS_EXTRACT_SELECTED:
         {
-            SetupExtractPanel (message);
-            m_extractToPanel->Show();
-            break;
+           SetupExtractPanel (message);
+           m_extractToPanel->Show();
+           break;
         }
         
         case M_RECENT_EXTRACT_ITEM:
         {
-            BMenuItem *source (NULL);
-            message->FindPointer ("source", reinterpret_cast<void**>(&source));
-            bool allFiles = true;
-            BMenu *sourceMenu = source->Menu();
-            if (sourceMenu && sourceMenu->Superitem() && strcmp (sourceMenu->Superitem()->Label(),
-                                                    str (S_EXTRACT_SELECTED)) == 0)
-            {
-                allFiles = false;
-            }
-            
-            if (IsExtractPathValid (source->Label(), true) == false)
-                break;
-            
-            entry_ref ref;
-            get_ref_for_path (source->Label(), &ref);
+           BMenuItem *source (NULL);
+           message->FindPointer ("source", reinterpret_cast<void**>(&source));
+           bool allFiles = true;
+           BMenu *sourceMenu = source->Menu();
+           if (sourceMenu && sourceMenu->Superitem() && strcmp (sourceMenu->Superitem()->Label(),
+                                               str (S_EXTRACT_SELECTED)) == 0)
+           {
+               allFiles = false;
+           }
+           
+           if (IsExtractPathValid (source->Label(), true) == false)
+               break;
+           
+           entry_ref ref;
+           get_ref_for_path (source->Label(), &ref);
 
-            BMessage extractMsg (allFiles ? M_EXTRACT_TO : M_EXTRACT_SELECTED_TO);
-            extractMsg.AddRef ("refs", &ref);
-            if (message->HasBool (kDynamic))
-                extractMsg.AddBool (kDynamic, true);    // This prevents adding this to recent extract paths
-            PostMessage (&extractMsg);
-            
-            break;
+           BMessage extractMsg (allFiles ? M_EXTRACT_TO : M_EXTRACT_SELECTED_TO);
+           extractMsg.AddRef ("refs", &ref);
+           if (message->HasBool (kDynamic))
+               extractMsg.AddBool (kDynamic, true);    // This prevents adding this to recent extract paths
+           PostMessage (&extractMsg);
+           
+           break;
         }
         
         case M_EXTRACT_TO: case M_EXTRACT_SELECTED_TO: case M_DROP_MESSAGE:
         {
-            entry_ref ref;
-            status_t found;
-            bool allFiles;
+           entry_ref ref;
+           status_t found;
+           bool allFiles;
 
-            // If its a drag 'n dropped message callback, then Tracker will return the dropped
-            // destination directory ref in "directory" & we would have added a "kFieldFull" to see if all
-            // files where dropped or not
-            if (message->what == M_DROP_MESSAGE)
-            {
-                found = message->FindRef ("directory", &ref);
-                if (message->FindBool (kFieldFull, &allFiles) != B_OK)
-                    allFiles = false;
-                
-                m_dragExtract = true;
-            }
-            else
-            {
-                found = message->FindRef ("refs", &ref);
-                
-                if (m_extractToPanel && m_extractToPanel->IsShowing())
-                    m_extractToPanel->Hide();
-                    
-                allFiles = message->what == M_EXTRACT_TO ? true : false;
-                
-                if (message->HasBool (kDynamic) == false)
-                {
-                    BPath extractPath (&ref);
-                    m_extractMgr->AddPath (extractPath.Path());
-                    UpdateExtractMenu();
-                    m_windowMgr->UpdateFrom (this, new BMessage (M_UPDATE_RECENT), true);
-                }
-            }
-            
-            if (found == B_OK)
-                ExtractArchive (ref, allFiles);
+           // If its a drag 'n dropped message callback, then Tracker will return the dropped
+           // destination directory ref in "directory" & we would have added a "kFieldFull" to see if all
+           // files where dropped or not
+           if (message->what == M_DROP_MESSAGE)
+           {
+               found = message->FindRef ("directory", &ref);
+               if (message->FindBool (kFieldFull, &allFiles) != B_OK)
+                  allFiles = false;
+               
+               m_dragExtract = true;
+           }
+           else
+           {
+               found = message->FindRef ("refs", &ref);
+               
+               if (m_extractToPanel && m_extractToPanel->IsShowing())
+                  m_extractToPanel->Hide();
+                  
+               allFiles = message->what == M_EXTRACT_TO ? true : false;
+               
+               if (message->HasBool (kDynamic) == false)
+               {
+                  BPath extractPath (&ref);
+                  m_extractMgr->AddPath (extractPath.Path());
+                  UpdateExtractMenu();
+                  m_windowMgr->UpdateFrom (this, new BMessage (M_UPDATE_RECENT), true);
+               }
+           }
+           
+           if (found == B_OK)
+               ExtractArchive (ref, allFiles);
 
-            break;
+           break;
         }
         
         case M_EXTRACT_DONE:
         {
-            ExtractDone (message);
-            break;
+           ExtractDone (message);
+           break;
         }
         
         case M_ACTIONS_ADD:
         {
-            if (CanAddFiles() == false && m_createMode == false)
-                break;
-            
-            if (CanWriteArchive() == false)
-                break;
-            
-            // NOTE: do NOT add check here to see if the archive exists or not because it need not
-            // (eg: while creating archives)    -- bugfix 0.05
+           if (CanAddFiles() == false && m_createMode == false)
+               break;
+           
+           if (CanWriteArchive() == false)
+               break;
+           
+           // NOTE: do NOT add check here to see if the archive exists or not because it need not
+           // (eg: while creating archives)    -- bugfix 0.05
 
-            SetupAddPanel();        
-            m_addPanel->Show();
-            break;
+           SetupAddPanel();        
+           m_addPanel->Show();
+           break;
         }
         
         case B_CANCEL:
         {
-            int32 oldWhat;
-            message->FindInt32 ("old_what", &oldWhat);
-            if ((uint32)oldWhat == M_ADD && m_createMode == true && message->HasBool (kFailOnNull) == B_OK)
-                PostMessage (M_FILE_CLOSE);
-            break;
+           int32 oldWhat;
+           message->FindInt32 ("old_what", &oldWhat);
+           if ((uint32)oldWhat == M_ADD && m_createMode == true && message->HasBool (kFailOnNull) == B_OK)
+               PostMessage (M_FILE_CLOSE);
+           break;
         }
-            
+           
         case M_ADD:
         {
-            // The B_CANCEL will get called even AFTER the user clicks the Add button, to let
-            // B_CANCEL know that Add was clicked (and not plain cancel button) we add a bool argument to the
-            // addPanel's message (notice B_CANCEL above, does a HasBool check)
+           // The B_CANCEL will get called even AFTER the user clicks the Add button, to let
+           // B_CANCEL know that Add was clicked (and not plain cancel button) we add a bool argument to the
+           // addPanel's message (notice B_CANCEL above, does a HasBool check)
 
-            if (CanWriteArchive() == false)        // We need to check here too: because dropped files come here
-                break;                            // and NOT through "M_ACTIONS_ADD", hence this check again.
+           if (CanWriteArchive() == false)        // We need to check here too: because dropped files come here
+               break;                         // and NOT through "M_ACTIONS_ADD", hence this check again.
 
-            if (CanAddFiles() == false && m_createMode == false)    // Same here
-                break;
+           if (CanAddFiles() == false && m_createMode == false)    // Same here
+               break;
 
-            // NOTE: do NOT add check here to see if the archive exists or not because it need not
-            // (eg: while creating archives)    -- bugfix 0.05
-            
-            BMessage *uglyMessage = new BMessage (M_ADD);
-            uglyMessage->AddBool (kFailOnNull, true);
-            
-            if (m_addPanel)    // If we get from a drag-drop operation (there would not be a filepanel)
-            {
-                m_addPanel->SetMessage (uglyMessage);
-                BTextControl *pwdText = (BTextControl*)m_addPanel->Window()->FindView ("pwdText");
-                if (m_archiver->SupportsPassword() && pwdText)
-                    m_archiver->SetPassword (pwdText->Text());
-            }
-            
-            // While this thread counts the directories and files sizes in message, we setup a blocker-status
-            // window so that it shows barber pole PLUS blocks our MainWindow preventing the user from
-            // doing other operations (2-in-1) ! Plus user can cancel the operation - (3-in-1) !! Yay!
-            m_statusWnd = new StatusWindow (str (S_PREPARING_FOR_ADD), this, str (S_GATHERING_INFO),
-                                &m_publicThreadCancel);
+           // NOTE: do NOT add check here to see if the archive exists or not because it need not
+           // (eg: while creating archives)    -- bugfix 0.05
+           
+           BMessage *uglyMessage = new BMessage (M_ADD);
+           uglyMessage->AddBool (kFailOnNull, true);
+           
+           if (m_addPanel)    // If we get from a drag-drop operation (there would not be a filepanel)
+           {
+               m_addPanel->SetMessage (uglyMessage);
+               BTextControl *pwdText = (BTextControl*)m_addPanel->Window()->FindView ("pwdText");
+               if (m_archiver->SupportsPassword() && pwdText)
+                  m_archiver->SetPassword (pwdText->Text());
+           }
+           
+           // While this thread counts the directories and files sizes in message, we setup a blocker-status
+           // window so that it shows barber pole PLUS blocks our MainWindow preventing the user from
+           // doing other operations (2-in-1) ! Plus user can cancel the operation - (3-in-1) !! Yay!
+           m_statusWnd = new StatusWindow (str (S_PREPARING_FOR_ADD), this, str (S_GATHERING_INFO),
+                             &m_publicThreadCancel);
 
-            BMessage *countMsg = new BMessage (*message);
-            countMsg->AddPointer (kCancel, (void*)(&m_publicThreadCancel));
-            countMsg->AddPointer (kStatusPtr, (void*)m_statusWnd);
-            countMsg->AddPointer (kWindowPtr, (void*)this);
-            
-            resume_thread (spawn_thread (_counter, "_counter", B_NORMAL_PRIORITY, (void*)countMsg));
-            break;
+           BMessage *countMsg = new BMessage (*message);
+           countMsg->AddPointer (kCancel, (void*)(&m_publicThreadCancel));
+           countMsg->AddPointer (kStatusPtr, (void*)m_statusWnd);
+           countMsg->AddPointer (kWindowPtr, (void*)this);
+           
+           resume_thread (spawn_thread (_counter, "_counter", B_NORMAL_PRIORITY, (void*)countMsg));
+           break;
         }
         
         case M_COUNT_COMPLETE:
         {
-            // Now we really get down to business...
-            int32 fileCount(0);
-            if (message->FindInt32 (kFiles, &fileCount) != B_OK)
-                break;
+           // Now we really get down to business...
+           int32 fileCount(0);
+           if (message->FindInt32 (kFiles, &fileCount) != B_OK)
+               break;
 
-            // If drag and drop must be confirmed -- do it
-            if ((message->HasBool (kRoot) || message->HasPointer (kListItem)) &&
-                _prefs_add.FindBoolDef (kPfConfirmDropAdd, true))
-            {
-                BAlert *confirmAlert = new BAlert ("confirm", str (S_CONFIRM_DROP_ADD), str (S_YES_ADD),
-                                                str (S_NO), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING,
-                                                B_INFO_ALERT);
-                confirmAlert->SetShortcut (1, B_ESCAPE);
-                confirmAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
-                confirmAlert->AddToSubset (this);
-                int32 ans = confirmAlert->Go();
-                if (ans == 1)
-                    break;
-            }
+           // If drag and drop must be confirmed -- do it
+           if ((message->HasBool (kRoot) || message->HasPointer (kListItem)) &&
+               _prefs_add.FindBoolDef (kPfConfirmDropAdd, true))
+           {
+               BAlert *confirmAlert = new BAlert ("confirm", str (S_CONFIRM_DROP_ADD), str (S_YES_ADD),
+                                           str (S_NO), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING,
+                                           B_INFO_ALERT);
+               confirmAlert->SetShortcut (1, B_ESCAPE);
+               confirmAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
+               confirmAlert->AddToSubset (this);
+               int32 ans = confirmAlert->Go();
+               if (ans == 1)
+                  break;
+           }
 
-            off_t totalSize (0);
-            if (message->FindInt64 (kSize, &totalSize) == B_OK && _prefs_add.FindBoolDef (kPfWarnBeforeAdd, true))
-            {
-                // if more than "n" MB is being added, warn, get "n" from prefs or default to 100 MB
-                if (totalSize > _prefs_add.FindInt16Def (kPfWarnAmount, 100) * 1024 * 1024)
-                {
-                    char *confirmStr = new char[strlen (str (S_MANY_FILES_TO_ADD)) + 15];
-                    sprintf (confirmStr, str (S_MANY_FILES_TO_ADD), StringFromBytes (totalSize).String());
-                    BAlert *confirmAlert = new BAlert ("confirm", confirmStr, str (S_YES_ADD),
-                            str (S_NO), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_WARNING_ALERT);
-                    confirmAlert->SetShortcut (1, B_ESCAPE);
-                    confirmAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
-                    confirmAlert->AddToSubset (this);
-                    delete[] confirmStr;
+           off_t totalSize (0);
+           if (message->FindInt64 (kSize, &totalSize) == B_OK && _prefs_add.FindBoolDef (kPfWarnBeforeAdd, true))
+           {
+               // if more than "n" MB is being added, warn, get "n" from prefs or default to 100 MB
+               if (totalSize > _prefs_add.FindInt16Def (kPfWarnAmount, 100) * 1024 * 1024)
+               {
+                  char *confirmStr = new char[strlen (str (S_MANY_FILES_TO_ADD)) + 15];
+                  sprintf (confirmStr, str (S_MANY_FILES_TO_ADD), StringFromBytes (totalSize).String());
+                  BAlert *confirmAlert = new BAlert ("confirm", confirmStr, str (S_YES_ADD),
+                         str (S_NO), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_WARNING_ALERT);
+                  confirmAlert->SetShortcut (1, B_ESCAPE);
+                  confirmAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
+                  confirmAlert->AddToSubset (this);
+                  delete[] confirmStr;
     
-                    int32 ans = confirmAlert->Go();
-                    if (ans == 1)
-                    {
-                        if (m_createMode == true)
-                            PostMessage (M_FILE_CLOSE);
-                        
-                        break;
-                    }
-                }
-            }
-            
-            ListEntry *selectedItem = NULL;
-            // kListItem, will be added by BeezerListView's drag-drop implementation hence we must
-            // not take into account the selected item, rather take the item passed to us
-            if (message->FindPointer (kListItem, reinterpret_cast<void**>(&selectedItem)) != B_OK)
-            {
-                int32 i = m_listView->CurrentSelection (0L);
-                if (i >= 0L)
-                    selectedItem = (ListEntry*)m_listView->ItemAt (i);
-            }
-            
-            // Drag and drop (with SHIFT held down) will have a Bool field saying forcefully add at root
-            if (message->HasBool (kRoot) == true)
-                selectedItem = NULL;
-            
-            // Add common fields applicable to both "adding at root" or "adding at sub-dir or archive"
-            BMessage *copyMsg = new BMessage (*message);
-            copyMsg->AddInt32 (kCount, (int32)fileCount);
+                  int32 ans = confirmAlert->Go();
+                  if (ans == 1)
+                  {
+                      if (m_createMode == true)
+                         PostMessage (M_FILE_CLOSE);
+                      
+                      break;
+                  }
+               }
+           }
+           
+           ListEntry *selectedItem = NULL;
+           // kListItem, will be added by BeezerListView's drag-drop implementation hence we must
+           // not take into account the selected item, rather take the item passed to us
+           if (message->FindPointer (kListItem, reinterpret_cast<void**>(&selectedItem)) != B_OK)
+           {
+               int32 i = m_listView->CurrentSelection (0L);
+               if (i >= 0L)
+                  selectedItem = (ListEntry*)m_listView->ItemAt (i);
+           }
+           
+           // Drag and drop (with SHIFT held down) will have a Bool field saying forcefully add at root
+           if (message->HasBool (kRoot) == true)
+               selectedItem = NULL;
+           
+           // Add common fields applicable to both "adding at root" or "adding at sub-dir or archive"
+           BMessage *copyMsg = new BMessage (*message);
+           copyMsg->AddInt32 (kCount, (int32)fileCount);
 
-            bool addingAtRoot = false;
-            if (!selectedItem)
-                addingAtRoot = true;
-            else if (selectedItem->IsSuperItem() == false && selectedItem->OutlineLevel() == 0L)
-                addingAtRoot = true;
+           bool addingAtRoot = false;
+           if (!selectedItem)
+               addingAtRoot = true;
+           else if (selectedItem->IsSuperItem() == false && selectedItem->OutlineLevel() == 0L)
+               addingAtRoot = true;
 
-            if (addingAtRoot == false)
-            {
-                // If a folder item is selected, add files inside it otherwise add files inside
-                // the directory of the selected file item
-                const char *itemPath = selectedItem->m_dirPath.String();
-                if (selectedItem->IsSuperItem() == true)
-                    itemPath = selectedItem->m_fullPath.String();
-                
-                int32 count = 0L, skipped = 0L;
-                if (ConfirmAddOperation (itemPath, copyMsg, &count, &skipped) == false
-                    || count == skipped)
-                {
-                    delete copyMsg;
-                    break;
-                }
-                
-                copyMsg->what = M_ACTIONS_ADD;
-                MakeTempDirectory();
-                
-                BString copyToDir = m_tempDirPath;
-                copyToDir << "/" << itemPath;
-                create_directory (copyToDir.String(), 0777);
-                
-                BMessenger *messenger (NULL);
-                volatile bool *cancel;
+           if (addingAtRoot == false)
+           {
+               // If a folder item is selected, add files inside it otherwise add files inside
+               // the directory of the selected file item
+               const char *itemPath = selectedItem->m_dirPath.String();
+               if (selectedItem->IsSuperItem() == true)
+                  itemPath = selectedItem->m_fullPath.String();
+               
+               int32 count = 0L, skipped = 0L;
+               if (ConfirmAddOperation (itemPath, copyMsg, &count, &skipped) == false
+                  || count == skipped)
+               {
+                  delete copyMsg;
+                  break;
+               }
+               
+               copyMsg->what = M_ACTIONS_ADD;
+               MakeTempDirectory();
+               
+               BString copyToDir = m_tempDirPath;
+               copyToDir << "/" << itemPath;
+               create_directory (copyToDir.String(), 0777);
+               
+               BMessenger *messenger (NULL);
+               volatile bool *cancel;
 
-                copyMsg->AddString (kTempPath, copyToDir.String());
-                copyMsg->AddString (kLaunchDir, m_tempDirPath);
-                copyMsg->AddString (kProgressAction, str (S_COPYING));
-                copyMsg->AddString (kPreparing, str (S_PREPARING_FOR_ADD));
-                copyMsg->AddPointer (kSuperItem, (void*)selectedItem);        // Will be used in M_ADD_DONE
-                copyMsg->AddString (kSuperItemPath, itemPath);                // Will be used in _copier
-                
-                m_progressWnd = new ProgressWindow (this, copyMsg, messenger, cancel);
+               copyMsg->AddString (kTempPath, copyToDir.String());
+               copyMsg->AddString (kLaunchDir, m_tempDirPath);
+               copyMsg->AddString (kProgressAction, str (S_COPYING));
+               copyMsg->AddString (kPreparing, str (S_PREPARING_FOR_ADD));
+               copyMsg->AddPointer (kSuperItem, (void*)selectedItem);        // Will be used in M_ADD_DONE
+               copyMsg->AddString (kSuperItemPath, itemPath);               // Will be used in _copier
+               
+               m_progressWnd = new ProgressWindow (this, copyMsg, messenger, cancel);
 
-                copyMsg->AddMessenger (kProgressMessenger, *messenger);
-                copyMsg->AddPointer (kCancel, (void*)cancel);
-                copyMsg->AddPointer (kWindowPtr, (void*)this);
-                
-                m_logTextView->AddText (str (S_PREPARING_FOR_ADD), true, false, false);
-                m_logTextView->AddText (" ", false, false, false);
-                resume_thread (spawn_thread (_copier, "_copier", B_NORMAL_PRIORITY, (void*)copyMsg));
-            }
-            else            // user is adding at the root of the archive so DON'T copy files to temp
-            {
-                if (m_createMode == false)
-                {
-                    int32 count = 0L, skipped = 0L;
-                    if (ConfirmAddOperation (NULL, copyMsg, &count, &skipped) == false || count == skipped)
-                    {
-                        delete copyMsg;
-                        break;
-                    }
-                }
+               copyMsg->AddMessenger (kProgressMessenger, *messenger);
+               copyMsg->AddPointer (kCancel, (void*)cancel);
+               copyMsg->AddPointer (kWindowPtr, (void*)this);
+               
+               m_logTextView->AddText (str (S_PREPARING_FOR_ADD), true, false, false);
+               m_logTextView->AddText (" ", false, false, false);
+               resume_thread (spawn_thread (_copier, "_copier", B_NORMAL_PRIORITY, (void*)copyMsg));
+           }
+           else           // user is adding at the root of the archive so DON'T copy files to temp
+           {
+               if (m_createMode == false)
+               {
+                  int32 count = 0L, skipped = 0L;
+                  if (ConfirmAddOperation (NULL, copyMsg, &count, &skipped) == false || count == skipped)
+                  {
+                      delete copyMsg;
+                      break;
+                  }
+               }
 
-                copyMsg->what = M_READY_TO_ADD;
-                copyMsg->AddInt32 (kResult, M_SKIPPED);        // Tell READY_TO_ADD we skipped the copying of files
+               copyMsg->what = M_READY_TO_ADD;
+               copyMsg->AddInt32 (kResult, M_SKIPPED);        // Tell READY_TO_ADD we skipped the copying of files
 
-                // Either get refs from FilePanel if available, or incase of drag and drop (where no 
-                // file panel would have been created/used get from kDirectoryRef field)
-                entry_ref tmpRef;
-                if (message->FindRef (kDirectoryRef, &tmpRef) != B_OK)
-                    m_addPanel->GetPanelDirectory (&tmpRef);            // Get directory of "refs"
-                
-                BPath launchPath (&tmpRef);                        
-                copyMsg->AddString (kLaunchDir, launchPath.Path());        // add launching dir
-                
-                uint32 type;
-                int32 count;
-                copyMsg->GetInfo ("refs", &type, &count);
-                for (int32 i = --count; i >= 0; i--)
-                    if (copyMsg->FindRef ("refs", i, &tmpRef) == B_OK)
-                        copyMsg->AddString (kPath, tmpRef.name);
-                
-                PostMessage (copyMsg); 
-            }
-            
-            break;    
+               // Either get refs from FilePanel if available, or incase of drag and drop (where no 
+               // file panel would have been created/used get from kDirectoryRef field)
+               entry_ref tmpRef;
+               if (message->FindRef (kDirectoryRef, &tmpRef) != B_OK)
+                  m_addPanel->GetPanelDirectory (&tmpRef);           // Get directory of "refs"
+               
+               BPath launchPath (&tmpRef);                      
+               copyMsg->AddString (kLaunchDir, launchPath.Path());        // add launching dir
+               
+               uint32 type;
+               int32 count;
+               copyMsg->GetInfo ("refs", &type, &count);
+               for (int32 i = --count; i >= 0; i--)
+                  if (copyMsg->FindRef ("refs", i, &tmpRef) == B_OK)
+                      copyMsg->AddString (kPath, tmpRef.name);
+               
+               PostMessage (copyMsg); 
+           }
+           
+           break;    
         }
         
         case M_READY_TO_ADD:
         {
-            // We must NOT delete "message" here as it was used through PostMessage, I thought it might
-            // need to be deleted but PostMessage (new BMessage) should delete it. In effect that is what
-            // we are doing (look at _copier thread func -- it uses PostMessage to the new'ly created message
-            // (copyMsg) we did in case M_ADD.
-            status_t result;
-            message->FindInt32 (kResult, &result);
-            if (result == BZR_CANCEL)
-            {
-                m_logTextView->AddText (str (S_COPYING_CANCELLED), false, false, false);
-                break;
-            }
-            
-            if (result != (int32)M_SKIPPED)
-                m_logTextView->AddText (str (S_COPYING_DONE), false, false, false);
+           // We must NOT delete "message" here as it was used through PostMessage, I thought it might
+           // need to be deleted but PostMessage (new BMessage) should delete it. In effect that is what
+           // we are doing (look at _copier thread func -- it uses PostMessage to the new'ly created message
+           // (copyMsg) we did in case M_ADD.
+           status_t result;
+           message->FindInt32 (kResult, &result);
+           if (result == BZR_CANCEL)
+           {
+               m_logTextView->AddText (str (S_COPYING_CANCELLED), false, false, false);
+               break;
+           }
+           
+           if (result != (int32)M_SKIPPED)
+               m_logTextView->AddText (str (S_COPYING_DONE), false, false, false);
 
-            BMessage *addMsg = new BMessage (*message);
-            BMessenger *messenger (NULL);
-            volatile bool *cancel;
-            
-            addMsg->what = M_ACTIONS_ADD;
-            addMsg->RemoveName (kProgressAction);
-            addMsg->AddString (kProgressAction, str (S_ADDING));
-            addMsg->AddString (kPreparing, str (S_PREPARING_FOR_ADD));
-            
-            m_progressWnd = new ProgressWindow (this, addMsg, messenger, cancel);
-            
-            addMsg->RemoveName (kArchiverPtr);
-            addMsg->AddPointer (kArchiverPtr, (void*)m_archiver);
-            addMsg->AddMessenger (kProgressMessenger, *messenger);
-            addMsg->AddPointer (kCancel, (void*)cancel);
-            addMsg->AddPointer (kWindowPtr, (void*)this);
-            addMsg->AddBool (kCreateMode, m_createMode);
-            
-            if (m_createMode == true)
-                m_archiveEntry.Remove();    // Overwrite existing file if any
-            
-            SetTitle (m_archivePath.Leaf());            
-            m_logTextView->AddText (str (S_ADDING), true, false, false);
-            m_logTextView->AddText (" ", false, false, false);
-            resume_thread (spawn_thread (_adder, "_adder", B_NORMAL_PRIORITY, (void*)addMsg));
-            break;
+           BMessage *addMsg = new BMessage (*message);
+           BMessenger *messenger (NULL);
+           volatile bool *cancel;
+           
+           addMsg->what = M_ACTIONS_ADD;
+           addMsg->RemoveName (kProgressAction);
+           addMsg->AddString (kProgressAction, str (S_ADDING));
+           addMsg->AddString (kPreparing, str (S_PREPARING_FOR_ADD));
+           
+           m_progressWnd = new ProgressWindow (this, addMsg, messenger, cancel);
+           
+           addMsg->RemoveName (kArchiverPtr);
+           addMsg->AddPointer (kArchiverPtr, (void*)m_archiver);
+           addMsg->AddMessenger (kProgressMessenger, *messenger);
+           addMsg->AddPointer (kCancel, (void*)cancel);
+           addMsg->AddPointer (kWindowPtr, (void*)this);
+           addMsg->AddBool (kCreateMode, m_createMode);
+           
+           if (m_createMode == true)
+               m_archiveEntry.Remove();    // Overwrite existing file if any
+           
+           SetTitle (m_archivePath.Leaf());           
+           m_logTextView->AddText (str (S_ADDING), true, false, false);
+           m_logTextView->AddText (" ", false, false, false);
+           resume_thread (spawn_thread (_adder, "_adder", B_NORMAL_PRIORITY, (void*)addMsg));
+           break;
         }
         
         case M_ADD_DONE:
         {
-            int32 result;
-            message->FindInt32 (kResult, &result);
-            
-            if (result == BZR_CANCEL_ARCHIVER)
-            {
-                BAlert *errAlert = new BAlert ("Error", str (S_CRITICAL_ERROR), str (S_OK), NULL, NULL,
-                        B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
-                errAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
-                errAlert->AddToSubset (this);
-                errAlert->Go();
-                PostMessage (M_FILE_CLOSE);
-                break;
-            }
-            else if (result == BZR_NOT_SUPPORTED)
-            {
-                ShowOpNotSupported();
-                break;
-            }
-            else if (result != BZR_DONE)
-            {
-                m_logTextView->AddText (str (S_LOADING_ERROR), false, false, false);
-                if (m_archiver->CanPartiallyOpen() == false)
-                    break;
-            }
-            
-            BMessage addedFiles;
-            message->FindMessage (kFileList, &addedFiles);
-            SetBusyState (true);
-            m_archiver->Open (&m_archiveRef, &addedFiles);
-            UpdateIfNeeded ();
-            EmptyListViewIfNeeded ();
-            PostMessage (M_ADD_FOLDERS_LIST);
-            
-            break;
+           int32 result;
+           message->FindInt32 (kResult, &result);
+           
+           if (result == BZR_CANCEL_ARCHIVER)
+           {
+               BAlert *errAlert = new BAlert ("Error", str (S_CRITICAL_ERROR), str (S_OK), NULL, NULL,
+                      B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
+               errAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
+               errAlert->AddToSubset (this);
+               errAlert->Go();
+               PostMessage (M_FILE_CLOSE);
+               break;
+           }
+           else if (result == BZR_NOT_SUPPORTED)
+           {
+               ShowOpNotSupported();
+               break;
+           }
+           else if (result != BZR_DONE)
+           {
+               m_logTextView->AddText (str (S_LOADING_ERROR), false, false, false);
+               if (m_archiver->CanPartiallyOpen() == false)
+                  break;
+           }
+           
+           BMessage addedFiles;
+           message->FindMessage (kFileList, &addedFiles);
+           SetBusyState (true);
+           m_archiver->Open (&m_archiveRef, &addedFiles);
+           UpdateIfNeeded ();
+           EmptyListViewIfNeeded ();
+           PostMessage (M_ADD_FOLDERS_LIST);
+           
+           break;
         }
         
         case M_ADD_FOLDERS_LIST:
         {
-            int32 i;
-            if (message->FindInt32 ("start_index", &i) != B_OK)
-            {
-                i = 0L;
-                m_archiver->FillLists (&m_addedFileList, &m_addedDirList);
-                if (m_createMode == true)
-                    m_archiver->GetLists (m_fileList, m_dirList);
-            }
-            
-            i = AddFoldersFromList (&m_addedDirList, i);
-            if (i < m_addedDirList.CountItems())
-            {
-                message->RemoveName ("start_index");
-                message->AddInt32 ("start_index", i);
-                PostMessage (message);
-            }
-            else
-                PostMessage (M_ADD_ITEMS_LIST);
-                
-            break;
+           int32 i;
+           if (message->FindInt32 ("start_index", &i) != B_OK)
+           {
+               i = 0L;
+               m_archiver->FillLists (&m_addedFileList, &m_addedDirList);
+               if (m_createMode == true)
+                  m_archiver->GetLists (m_fileList, m_dirList);
+           }
+           
+           i = AddFoldersFromList (&m_addedDirList, i);
+           if (i < m_addedDirList.CountItems())
+           {
+               message->RemoveName ("start_index");
+               message->AddInt32 ("start_index", i);
+               PostMessage (message);
+           }
+           else
+               PostMessage (M_ADD_ITEMS_LIST);
+               
+           break;
         }
         
         case M_ADD_ITEMS_LIST:
         {
-            int32 i;
-            if (message->FindInt32 ("start_index", &i) != B_OK)
-                i = 0L;
+           int32 i;
+           if (message->FindInt32 ("start_index", &i) != B_OK)
+               i = 0L;
 
-            i = AddItemsFromList (&m_addedFileList, i);
-            // Check if all items have been added
-            if (i < m_addedFileList.CountItems())
-            {
-                message->RemoveName ("start_index");
-                message->AddInt32 ("start_index", i);
-                PostMessage (message);
-            }
-            else
-            {
-                // Calculate the total size of the archive
-                for (int32 i = 0; i < m_addedFileList.CountItems(); i++)
-                {
-                    ListEntry *item = (ListEntry*)m_addedFileList.ItemAtFast(i);
-                    if (item)
-                        m_archiveSize += item->m_length;
-                }
-                
-                m_addedFileList.MakeEmpty();
-                m_addedDirList.MakeEmpty();
-                
-                m_infoBar->UpdateFilesDisplay (0L, m_fileList->CountItems() + m_dirList->CountItems(), true);
-                m_infoBar->UpdateBytesDisplay (0L, m_archiveSize, true);
+           i = AddItemsFromList (&m_addedFileList, i);
+           // Check if all items have been added
+           if (i < m_addedFileList.CountItems())
+           {
+               message->RemoveName ("start_index");
+               message->AddInt32 ("start_index", i);
+               PostMessage (message);
+           }
+           else
+           {
+               // Calculate the total size of the archive
+               for (int32 i = 0; i < m_addedFileList.CountItems(); i++)
+               {
+                  ListEntry *item = (ListEntry*)m_addedFileList.ItemAtFast(i);
+                  if (item)
+                      m_archiveSize += item->m_length;
+               }
+               
+               m_addedFileList.MakeEmpty();
+               m_addedDirList.MakeEmpty();
+               
+               m_infoBar->UpdateFilesDisplay (0L, m_fileList->CountItems() + m_dirList->CountItems(), true);
+               m_infoBar->UpdateBytesDisplay (0L, m_archiveSize, true);
 
-                SetBusyState (false);
-                m_logTextView->AddText (str (S_ADDING_DONE), false, false, false);
-                
-                if (m_createMode == true)
-                {
-                    ActivateUIForValidArchive();
-                    update_mime_info (m_archivePath.Path(), false, false, false);
-                    
-                    // Now update the window manager and recent file manager, now that creation is over
-                    UpdateNewWindow ();
-                    
-                    m_createMode = false;
-                    if (m_addPanelMenuBar && m_archiver->SettingsMenu())
-                    {
-                        m_addPanelMenuBar->RemoveItem (m_archiver->SettingsMenu());
-                        AddArchiverMenu ();
-                    }
-                }
-                
-                if (_prefs_add.FindBoolDef (kPfSortAfterAdd, true) == true)
-                    m_listView->SortItems();
-            }
-            
-            break;
+               SetBusyState (false);
+               m_logTextView->AddText (str (S_ADDING_DONE), false, false, false);
+               
+               if (m_createMode == true)
+               {
+                  ActivateUIForValidArchive();
+                  update_mime_info (m_archivePath.Path(), false, false, false);
+                  
+                  // Now update the window manager and recent file manager, now that creation is over
+                  UpdateNewWindow ();
+                  
+                  m_createMode = false;
+                  if (m_addPanelMenuBar && m_archiver->SettingsMenu())
+                  {
+                      m_addPanelMenuBar->RemoveItem (m_archiver->SettingsMenu());
+                      AddArchiverMenu ();
+                  }
+               }
+               
+               if (_prefs_add.FindBoolDef (kPfSortAfterAdd, true) == true)
+                  m_listView->SortItems();
+           }
+           
+           break;
         }
         
         case M_ACTIONS_DELETE:
         {
-            DeleteFilesFromArchive();
-            break;
+           DeleteFilesFromArchive();
+           break;
         }
 
         case M_FILE_NEW: case M_FILE_OPEN: case M_FILE_ABOUT: case M_FILE_DEVELOPER_INFO:
         case M_EDIT_PREFERENCES: case M_FILE_HELP:
         {
+           be_app_messenger.SendMessage (message);
+           break;
+        }
+
+        case M_TOOLS_FILE_SPLITTER: case M_TOOLS_FILE_JOINER:
+        {
+            message->AddRef ("refs", &m_archiveRef);
             be_app_messenger.SendMessage (message);
             break;
         }
 
-         case M_TOOLS_FILE_SPLITTER: case M_TOOLS_FILE_JOINER:
-         {
-             message->AddRef ("refs", &m_archiveRef);
-             be_app_messenger.SendMessage (message);
-             break;
-         }
-
         case M_FILE_QUIT:
         {
-            be_app_messenger.SendMessage (B_QUIT_REQUESTED);
-            break;
+           be_app_messenger.SendMessage (B_QUIT_REQUESTED);
+           break;
         }
 
         case M_FILE_CLOSE:
         {
-            // According to BeBook its ok to call Quit() from message loop as it shuts down the message
-            // loop (and deletes any pending messages, so this will be the last message to be processed
-            Quit();
-            break;
+           // According to BeBook its ok to call Quit() from message loop as it shuts down the message
+           // loop (and deletes any pending messages, so this will be the last message to be processed
+           Quit();
+           break;
         }
 
         case M_ACTIONS_SEARCH_ARCHIVE:
         {
-            if (m_searchWnd == NULL)
-            {
-                if (m_searchSettingsMsg == NULL && _prefs_windows.FindBoolDef (kPfSearchWnd, false))
-                {
-                    m_searchSettingsMsg = new BMessage;
-                    _prefs_windows.FindMessage (kPfSearchWndFrame, m_searchSettingsMsg);
-                }
-                
-                m_searchWnd = new SearchWindow (this, m_searchSettingsMsg, m_bubbleHelper, &m_archiveEntry,
-                                    &m_columnList, m_archiver);
-                m_searchWnd->Show();
-            }
-            else
-                m_searchWnd->Activate();
-            
-            break;
+           if (m_searchWnd == NULL)
+           {
+               if (m_searchSettingsMsg == NULL && _prefs_windows.FindBoolDef (kPfSearchWnd, false))
+               {
+                  m_searchSettingsMsg = new BMessage;
+                  _prefs_windows.FindMessage (kPfSearchWndFrame, m_searchSettingsMsg);
+               }
+               
+               m_searchWnd = new SearchWindow (this, m_searchSettingsMsg, m_bubbleHelper, &m_archiveEntry,
+                                &m_columnList, m_archiver);
+               m_searchWnd->Show();
+           }
+           else
+               m_searchWnd->Activate();
+           
+           break;
         }
         
         case M_SEARCH_CLOSED:
         {
-            // Cache the search settings so we can pass it to the SearchWindow next time
-            if (m_searchSettingsMsg)
-                delete m_searchSettingsMsg;
-            
-            m_searchSettingsMsg = new BMessage(*message);
-            m_searchWnd = NULL;
-            break;
+           // Cache the search settings so we can pass it to the SearchWindow next time
+           if (m_searchSettingsMsg)
+               delete m_searchSettingsMsg;
+           
+           m_searchSettingsMsg = new BMessage(*message);
+           m_searchWnd = NULL;
+           break;
         }
         
         case M_SEARCH:
         {
-            // Cache the search settings so we can pass it to the SearchWindow the next time
-            if (m_searchSettingsMsg)
-                delete m_searchSettingsMsg;
-            
-            m_searchSettingsMsg = new BMessage(*message);
+           // Cache the search settings so we can pass it to the SearchWindow the next time
+           if (m_searchSettingsMsg)
+               delete m_searchSettingsMsg;
+           
+           m_searchSettingsMsg = new BMessage(*message);
 
-            bool persistent;
-            message->FindBool (kPersistent, &persistent);
-            
-            // Add logtext view descriptive text
-            BString searchText = str (S_SEARCHING_FOR);
-            searchText << " ";
-            searchText.ReplaceFirst ("%s", message->FindString (kExpr));
-            m_logTextView->AddText (searchText.String(), true, true, false);
-            
-            const char *errorString = NULL;
-            int32 foundCount = m_listView->Search (message, errorString);
+           bool persistent;
+           message->FindBool (kPersistent, &persistent);
+           
+           // Add logtext view descriptive text
+           BString searchText = str (S_SEARCHING_FOR);
+           searchText << " ";
+           searchText.ReplaceFirst ("%s", message->FindString (kExpr));
+           m_logTextView->AddText (searchText.String(), true, true, false);
+           
+           const char *errorString = NULL;
+           int32 foundCount = m_listView->Search (message, errorString);
 
-            if (!persistent && m_searchWnd->Lock())
-            {
-                m_searchWnd->Quit();
-                m_searchWnd = NULL;
-            }
-            
-            m_logTextView->AddText (str (S_SEARCHING_DONE), false, false, false);
-            
-            if (foundCount == -1)
-            {
-                // We need to do this little hack (ugly) but without Hide() our BAlert() don't work!
-                if (persistent)
-                {
-                    m_searchWnd->LockLooper();
-                    m_searchWnd->Hide();
-                    m_searchWnd->UnlockLooper();
-                }
-                
-                BString errorStr = str (S_ERROR_IN_REGEXP);
-                errorStr << "\n\n'" << errorString << "'";
-                (new BAlert ("", errorStr.String(), str (S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
-                        B_STOP_ALERT))->Go();
-                
-                free ((char*)errorString);
-                PostMessage (M_ACTIONS_SEARCH_ARCHIVE);
-            }
-            
-            break;
+           if (!persistent && m_searchWnd->Lock())
+           {
+               m_searchWnd->Quit();
+               m_searchWnd = NULL;
+           }
+           
+           m_logTextView->AddText (str (S_SEARCHING_DONE), false, false, false);
+           
+           if (foundCount == -1)
+           {
+               // We need to do this little hack (ugly) but without Hide() our BAlert() don't work!
+               if (persistent)
+               {
+                  m_searchWnd->LockLooper();
+                  m_searchWnd->Hide();
+                  m_searchWnd->UnlockLooper();
+               }
+               
+               BString errorStr = str (S_ERROR_IN_REGEXP);
+               errorStr << "\n\n'" << errorString << "'";
+               (new BAlert ("", errorStr.String(), str (S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
+                      B_STOP_ALERT))->Go();
+               
+               free ((char*)errorString);
+               PostMessage (M_ACTIONS_SEARCH_ARCHIVE);
+           }
+           
+           break;
         }
         
         case M_ACTIONS_COMMENT:
         {
-            bool failIfNoComment;
-            if (message->FindBool (kFailOnNull, &failIfNoComment) != B_OK)
-                EditComment (false);
-            else
-            {
-                EditComment (failIfNoComment);
-                if (message->IsSourceWaiting())
-                    message->SendReply ('repl');
-            }
+           bool failIfNoComment;
+           if (message->FindBool (kFailOnNull, &failIfNoComment) != B_OK)
+               EditComment (false);
+           else
+           {
+               EditComment (failIfNoComment);
+               if (message->IsSourceWaiting())
+                  message->SendReply ('repl');
+           }
 
-            break;
+           break;
         }
         
         case M_SAVE_COMMENT:
         {
-            if (m_archiveEntry.Exists() == false)
-            {
-                ShowArkPathError();
-                break;
-            }
+           if (m_archiveEntry.Exists() == false)
+           {
+               ShowArkPathError();
+               break;
+           }
 
-            if (CanWriteArchive() == false)
-                break;
+           if (CanWriteArchive() == false)
+               break;
 
-            const char *comment = NULL;
-            message->FindString (kCommentContent, &comment);
-            
-            m_statusWnd = new StatusWindow (str (S_SETTING_COMMENT), this, str (S_PLEASE_WAIT), NULL);
-            m_archiver->SetComment (const_cast<char*>(comment), MakeTempDirectory());
-            update_mime_info (m_archivePath.Path(), false, true, true);
-            m_statusWnd->PostMessage (M_CLOSE);
-            
-            break;
+           const char *comment = NULL;
+           message->FindString (kCommentContent, &comment);
+           
+           m_statusWnd = new StatusWindow (str (S_SETTING_COMMENT), this, str (S_PLEASE_WAIT), NULL);
+           m_archiver->SetComment (const_cast<char*>(comment), MakeTempDirectory());
+           update_mime_info (m_archivePath.Path(), false, true, true);
+           m_statusWnd->PostMessage (M_CLOSE);
+           
+           break;
         }
         
         case M_LOG_CONTEXT_COPY:
         {
-            m_logTextView->Copy();
-            break;
+           m_logTextView->Copy();
+           break;
         }
         
         case M_EDIT_COPY:
         {
-            if (m_logTextView->IsFocus() == true)
-                PostMessage (M_LOG_CONTEXT_COPY);
-            else
-                PostMessage (M_CONTEXT_COPY);
+           if (m_logTextView->IsFocus() == true)
+               PostMessage (M_LOG_CONTEXT_COPY);
+           else
+               PostMessage (M_CONTEXT_COPY);
         
-            break;
+           break;
         }
         
         case M_GOT_FOCUS:
         {
-            // Handle focus changed and selection
-            if (m_listView->IsFocus() == true)
-            {
-                if (m_listView->FullListCurrentSelection() >= 0L)
-                    UpdateFocusNeeders (true);
-                else
-                    UpdateFocusNeeders (false);
-            }
-            else if (m_logTextView->IsFocus() == true)    // Because the menu can have focus too
-                UpdateFocusNeeders (true);
-            
-            break;
+           // Handle focus changed and selection
+           if (m_listView->IsFocus() == true)
+           {
+               if (m_listView->FullListCurrentSelection() >= 0L)
+                  UpdateFocusNeeders (true);
+               else
+                  UpdateFocusNeeders (false);
+           }
+           else if (m_logTextView->IsFocus() == true)    // Because the menu can have focus too
+               UpdateFocusNeeders (true);
+           
+           break;
         }
         
         case M_CONTEXT_COPY:
         {
-            m_listView->CopyToClipboard (';');
-            break;
+           m_listView->CopyToClipboard (';');
+           break;
         }
 
         case M_FILE_ARCHIVE_INFO:
         {
-            new ArkInfoWindow (this, m_archiver, &m_archiveEntry);
-            break;
+           new ArkInfoWindow (this, m_archiver, &m_archiveEntry);
+           break;
         }
         
         // We call SendSelectionMessage (true) because KeyDown of BeezerListView might have turned it off
@@ -1322,97 +1322,97 @@ void MainWindow::MessageReceived (BMessage *message)
 
         case M_EDIT_EXPAND_ALL: case M_EDIT_COLLAPSE_ALL:
         {
-            m_listView->ToggleAllSuperItems (message->what == M_EDIT_EXPAND_ALL ? true : false);
-            break;
+           m_listView->ToggleAllSuperItems (message->what == M_EDIT_EXPAND_ALL ? true : false);
+           break;
         }
         
         case M_EDIT_EXPAND_SELECTED: case M_EDIT_COLLAPSE_SELECTED:
         {
-            m_listView->ToggleSelectedSuperItems (message->what == M_EDIT_EXPAND_SELECTED ? true : false);
-            break;            
+           m_listView->ToggleSelectedSuperItems (message->what == M_EDIT_EXPAND_SELECTED ? true : false);
+           break;           
         }
 
         case M_CONTEXT_SELECT:
         {
-            m_listView->SelectSubItemsOfSelection (true);
-            break;
+           m_listView->SelectSubItemsOfSelection (true);
+           break;
         }
         
         case M_CONTEXT_DESELECT:
         {
-            m_listView->SelectSubItemsOfSelection (false);
-            break;
+           m_listView->SelectSubItemsOfSelection (false);
+           break;
         }
         
         case BZR_MENUITEM_SELECTED:
         {
-            // An archiver (add-on)'s menu item has been toggled (we should toggle it to be precise)
-            // Get the source and toggle it
-            BMenuItem *source_item = NULL;
-            message->FindPointer ("source", reinterpret_cast<void**>(&source_item));
-            if (source_item)
-                source_item->SetMarked (!(source_item->IsMarked()));
+           // An archiver (add-on)'s menu item has been toggled (we should toggle it to be precise)
+           // Get the source and toggle it
+           BMenuItem *source_item = NULL;
+           message->FindPointer ("source", reinterpret_cast<void**>(&source_item));
+           if (source_item)
+               source_item->SetMarked (!(source_item->IsMarked()));
 
-            break;
+           break;
         }
         
         case M_SAVE_AS_DEFAULT:
         {
-            BAlert *alert = new BAlert (K_APP_TITLE, str (S_SAVE_AS_DEFAULT_CONFIRM), str (S_DONT_SAVE),
-                                    str (S_SAVE), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
-            alert->SetDefaultButton (alert->ButtonAt(1));
-            alert->SetShortcut (0, B_ESCAPE);
-            if (alert->Go() == 1)
-                SaveSettingsAsDefaults();
-            
-            break;
+           BAlert *alert = new BAlert (K_APP_TITLE, str (S_SAVE_AS_DEFAULT_CONFIRM), str (S_DONT_SAVE),
+                                str (S_SAVE), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
+           alert->SetDefaultButton (alert->ButtonAt(1));
+           alert->SetShortcut (0, B_ESCAPE);
+           if (alert->Go() == 1)
+               SaveSettingsAsDefaults();
+           
+           break;
         }
         
         case M_SAVE_TO_ARCHIVE:
         {
-            BAlert *alert = new BAlert (K_APP_TITLE, str (S_SAVE_TO_ARCHIVE_CONFIRM), str (S_DONT_SAVE),
-                                    str (S_SAVE), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
-            alert->SetDefaultButton (alert->ButtonAt(1));
-            alert->SetShortcut (0, B_ESCAPE);
-            alert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
-            alert->AddToSubset (this);
-            if (alert->Go() == 1)
-                SaveSettingsToArchive (NULL);
-            
-            break;
+           BAlert *alert = new BAlert (K_APP_TITLE, str (S_SAVE_TO_ARCHIVE_CONFIRM), str (S_DONT_SAVE),
+                                str (S_SAVE), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
+           alert->SetDefaultButton (alert->ButtonAt(1));
+           alert->SetShortcut (0, B_ESCAPE);
+           alert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
+           alert->AddToSubset (this);
+           if (alert->Go() == 1)
+               SaveSettingsToArchive (NULL);
+           
+           break;
         }
         
         case M_SAVE_ARK_AS_DEFAULT:
         {
-            char *confirmStr = new char[strlen (str (S_SAVE_ARK_AS_DEFAULT_CONFIRM)) +
-                                2 * strlen (m_archiver->ArchiveType()) + 1];
-            sprintf (confirmStr, str (S_SAVE_ARK_AS_DEFAULT_CONFIRM), m_archiver->ArchiveType(),
-                                m_archiver->ArchiveType());
-            BAlert *alert = new BAlert (K_APP_TITLE, confirmStr, str (S_DONT_SAVE),
-                                    str (S_SAVE), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
-            alert->SetDefaultButton (alert->ButtonAt(1));
-            alert->SetShortcut (0, B_ESCAPE);
-            delete[] confirmStr;
-            if (alert->Go() == 1)
-                m_archiver->SaveSettingsMenu();
-            
-            break;            
+           char *confirmStr = new char[strlen (str (S_SAVE_ARK_AS_DEFAULT_CONFIRM)) +
+                             2 * strlen (m_archiver->ArchiveType()) + 1];
+           sprintf (confirmStr, str (S_SAVE_ARK_AS_DEFAULT_CONFIRM), m_archiver->ArchiveType(),
+                             m_archiver->ArchiveType());
+           BAlert *alert = new BAlert (K_APP_TITLE, confirmStr, str (S_DONT_SAVE),
+                                str (S_SAVE), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
+           alert->SetDefaultButton (alert->ButtonAt(1));
+           alert->SetShortcut (0, B_ESCAPE);
+           delete[] confirmStr;
+           if (alert->Go() == 1)
+               m_archiver->SaveSettingsMenu();
+           
+           break;           
         }
         
         case M_SAVE_ARK_TO_ARCHIVE:
         {
-            char *confirmStr = new char[strlen (str (S_SAVE_ARK_TO_ARCHIVE_CONFIRM)) +
-                                strlen (m_archiver->ArchiveType()) + 2];
-            sprintf (confirmStr, str (S_SAVE_ARK_TO_ARCHIVE_CONFIRM), m_archiver->ArchiveType());
-            BAlert *alert = new BAlert (K_APP_TITLE, confirmStr, str (S_DONT_SAVE),
-                                    str (S_SAVE), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
-            alert->SetDefaultButton (alert->ButtonAt(1));
-            alert->SetShortcut (0, B_ESCAPE);
-            delete[] confirmStr;
-            if (alert->Go() == 1)
-                SaveArchiverToArchive (NULL);
-            
-            break;
+           char *confirmStr = new char[strlen (str (S_SAVE_ARK_TO_ARCHIVE_CONFIRM)) +
+                             strlen (m_archiver->ArchiveType()) + 2];
+           sprintf (confirmStr, str (S_SAVE_ARK_TO_ARCHIVE_CONFIRM), m_archiver->ArchiveType());
+           BAlert *alert = new BAlert (K_APP_TITLE, confirmStr, str (S_DONT_SAVE),
+                                str (S_SAVE), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
+           alert->SetDefaultButton (alert->ButtonAt(1));
+           alert->SetShortcut (0, B_ESCAPE);
+           delete[] confirmStr;
+           if (alert->Go() == 1)
+               SaveArchiverToArchive (NULL);
+           
+           break;
         }
         
         case M_TOGGLE_COLUMN_SIZE: ToggleColumn (m_sizeColumn, message); break;
@@ -1425,59 +1425,59 @@ void MainWindow::MessageReceived (BMessage *message)
         
         case M_FILE_DELETE:
         {
-            BAlert *confirm = new BAlert ("", str (S_DELETE_ARCHIVE_WARNING), str (S_NO_DONT_DELETE),
-                                    str (S_YES_DELETE), str (S_MOVE_TO_TRASH), B_WIDTH_AS_USUAL,
-                                    B_OFFSET_SPACING, B_WARNING_ALERT);
-            confirm->SetShortcut (0, B_ESCAPE);
-            confirm->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
-            confirm->AddToSubset (this);
-            int32 index = confirm->Go();
-            
-            if (index == 2)                    // Trash archive
-            {
-                BPath trashPath;
-                find_directory (B_TRASH_DIRECTORY, &trashPath, false);
-                BDirectory trashDir (trashPath.Path());
+           BAlert *confirm = new BAlert ("", str (S_DELETE_ARCHIVE_WARNING), str (S_NO_DONT_DELETE),
+                                str (S_YES_DELETE), str (S_MOVE_TO_TRASH), B_WIDTH_AS_USUAL,
+                                B_OFFSET_SPACING, B_WARNING_ALERT);
+           confirm->SetShortcut (0, B_ESCAPE);
+           confirm->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
+           confirm->AddToSubset (this);
+           int32 index = confirm->Go();
+           
+           if (index == 2)                  // Trash archive
+           {
+               BPath trashPath;
+               find_directory (B_TRASH_DIRECTORY, &trashPath, false);
+               BDirectory trashDir (trashPath.Path());
 
-                m_archiveEntry.MoveTo (&trashDir, NULL, false);
-            }
-            else if (index == 1)            // Delete archive
-                m_archiveEntry.Remove();
-            else                            // Cancel
-                break;
+               m_archiveEntry.MoveTo (&trashDir, NULL, false);
+           }
+           else if (index == 1)           // Delete archive
+               m_archiveEntry.Remove();
+           else                         // Cancel
+               break;
 
-            PostMessage (M_FILE_CLOSE);
-            break;
+           PostMessage (M_FILE_CLOSE);
+           break;
         }
         
         case M_FILE_PASSWORD:
         {
-            if (!m_archiver)
-                break;
-            
-            InputAlert *passwordAlert = new InputAlert (str (S_PASSWORD_REQUEST), str (S_PASSWORD_PROMPT),
-                                m_archiver->Password().String(), true, "Cancel", "Clear", "OK",
-                                B_WIDTH_AS_USUAL, B_OFFSET_SPACING, B_INFO_ALERT);
-            BMessage msg = passwordAlert->GetInput (this);
+           if (!m_archiver)
+               break;
+           
+           InputAlert *passwordAlert = new InputAlert (str (S_PASSWORD_REQUEST), str (S_PASSWORD_PROMPT),
+                             m_archiver->Password().String(), true, "Cancel", "Clear", "OK",
+                             B_WIDTH_AS_USUAL, B_OFFSET_SPACING, B_INFO_ALERT);
+           BMessage msg = passwordAlert->GetInput (this);
 
-            int32 buttonIndex;
-            const char *password;
-            if (msg.FindInt32 (kButtonIndex, &buttonIndex) == B_OK &&
-                    msg.FindString (kInputText, &password) == B_OK)
-            {
-                if (buttonIndex == 2L)
-                    m_archiver->SetPassword (password);
-                
-                if (buttonIndex == 1L)
-                    m_archiver->SetPassword ("");
-            }
-            break;
+           int32 buttonIndex;
+           const char *password;
+           if (msg.FindInt32 (kButtonIndex, &buttonIndex) == B_OK &&
+                  msg.FindString (kInputText, &password) == B_OK)
+           {
+               if (buttonIndex == 2L)
+                  m_archiver->SetPassword (password);
+               
+               if (buttonIndex == 1L)
+                  m_archiver->SetPassword ("");
+           }
+           break;
         }
         
         case M_LOG_CONTEXT_CLEAR: m_logTextView->SetText (NULL, 0L); break;
         
         default:
-            BWindow::MessageReceived (message);
+           BWindow::MessageReceived (message);
     }
 }
 
@@ -1525,8 +1525,8 @@ void MainWindow::AddInfoBar ()
     slotPositions->AddItem ((void*)&m_slotTwoX);
     
     m_infoBar = new InfoBar (BRect (0, m_toolBar->Frame().bottom + 1, Bounds().right,
-                        m_toolBar->Frame().bottom + 1 + K_INFOBAR_HEIGHT), slotPositions, "MainWindow:InfoBar",
-                        K_TOOLBAR_BACK_COLOR);
+                      m_toolBar->Frame().bottom + 1 + K_INFOBAR_HEIGHT), slotPositions, "MainWindow:InfoBar",
+                      K_TOOLBAR_BACK_COLOR);
     m_backView->AddChild (m_infoBar);
 }
 
@@ -1536,15 +1536,15 @@ void MainWindow::AddSplitterBar ()
 {
     // Setup the splitter bar, which handles adding child operation
     m_splitPane = new SplitPane (BRect (0, m_infoBar->Frame().bottom + 1, Bounds().right,
-                        Bounds().bottom), m_listContainer, m_outputBackView, B_FOLLOW_ALL_SIDES);
+                      Bounds().bottom), m_listContainer, m_outputBackView, B_FOLLOW_ALL_SIDES);
     m_splitPane->SetResizeViewOne (true, true);
     m_splitPane->SetAlignment (B_HORIZONTAL);
     m_splitPane->SetBarThickness (BPoint (8.0, 8.0));
     m_splitPane->SetViewInsetBy (BPoint (0.0, 0.0));
     m_splitPane->SetMinSizeOne (BPoint (m_fileNameColumn->Width() + 36.0 + B_V_SCROLL_BAR_WIDTH + 8.0,
-                        m_listView->GetColumnLabelView()->Frame().Height() + B_H_SCROLL_BAR_HEIGHT + 10.0));
+                      m_listView->GetColumnLabelView()->Frame().Height() + B_H_SCROLL_BAR_HEIGHT + 10.0));
     m_splitPane->SetBarPosition (BPoint (Bounds().Width() * (75.0 / 100.0),
-                        Bounds().Height() * (62.0 / 100.0)));
+                      Bounds().Height() * (62.0 / 100.0)));
     m_splitPane->SetViewTwoDetachable (true);
     m_splitPane->SetViewColor (K_BACKGROUND_COLOR);
 
@@ -1562,43 +1562,43 @@ void MainWindow::AddToolBar ()
     
     // Construct the toolbar buttons
     m_newButton = new ImageButton (buttonRect, "MainWindow:New", str (S_TOOLBAR_NEW), _bmps->m_tbarNewBmp,
-                    NULL, new BMessage (M_FILE_NEW), false, backColor, kBelowIcon);
+                  NULL, new BMessage (M_FILE_NEW), false, backColor, kBelowIcon);
     m_bubbleHelper->SetHelp (m_newButton, const_cast<char*>(str (S_TOOLBAR_NEW_BH)));
 
     m_openButton = new ImageButton (buttonRect, "MainWindow:Open", str (S_TOOLBAR_OPEN), _bmps->m_tbarOpenBmp,
-                    NULL, new BMessage (M_FILE_OPEN), true, backColor, kBelowIcon);
+                  NULL, new BMessage (M_FILE_OPEN), true, backColor, kBelowIcon);
     m_bubbleHelper->SetHelp (m_openButton, const_cast<char*>(str (S_TOOLBAR_OPEN_BH)));
 
     m_closeButton = new ImageButton (buttonRect, "MainWindow:Close", str (S_TOOLBAR_CLOSE),
-                    _bmps->m_tbarCloseBmp, NULL, new BMessage (M_FILE_CLOSE), false, backColor, kBelowIcon);
+                  _bmps->m_tbarCloseBmp, NULL, new BMessage (M_FILE_CLOSE), false, backColor, kBelowIcon);
     m_bubbleHelper->SetHelp (m_closeButton, const_cast<char*>(str (S_TOOLBAR_CLOSE_BH)));
 
     m_searchButton = new ImageButton (buttonRect, "MainWindow:Search", str (S_TOOLBAR_SEARCH),
-                    _bmps->m_tbarSearchBmp, _bmps->m_tbarSearchDisabledBmp,
-                    new BMessage (M_ACTIONS_SEARCH_ARCHIVE), false, backColor, kBelowIcon);
+                  _bmps->m_tbarSearchBmp, _bmps->m_tbarSearchDisabledBmp,
+                  new BMessage (M_ACTIONS_SEARCH_ARCHIVE), false, backColor, kBelowIcon);
     m_bubbleHelper->SetHelp (m_searchButton, const_cast<char*>(str (S_TOOLBAR_SEARCH_BH)));
 
     m_extractButton = new ImageButton (buttonRect, "MainWindow:Extact", str (S_TOOLBAR_EXTRACT),
-                    _bmps->m_tbarExtractBmp, _bmps->m_tbarExtractDisabledBmp,
-                    new BMessage (M_ACTIONS_EXTRACT), true, backColor, kBelowIcon);
+                  _bmps->m_tbarExtractBmp, _bmps->m_tbarExtractDisabledBmp,
+                  new BMessage (M_ACTIONS_EXTRACT), true, backColor, kBelowIcon);
     m_extractButton->SetEnabled (false);
     m_bubbleHelper->SetHelp (m_extractButton, const_cast<char*>(str (S_TOOLBAR_EXTRACT_BH)));
     
     m_viewButton = new ImageButton (buttonRect, "MainWindow:View", str (S_TOOLBAR_VIEW),
-                    _bmps->m_tbarViewBmp, _bmps->m_tbarViewDisabledBmp, new BMessage (M_ACTIONS_VIEW),false, 
-                    backColor, kBelowIcon);
+                  _bmps->m_tbarViewBmp, _bmps->m_tbarViewDisabledBmp, new BMessage (M_ACTIONS_VIEW),false, 
+                  backColor, kBelowIcon);
     m_viewButton->SetEnabled (false);
     m_bubbleHelper->SetHelp (m_viewButton, const_cast<char*>(str (S_TOOLBAR_VIEW_BH)));
 
     m_addButton = new ImageButton (buttonRect, "MainWindow:Add", str (S_TOOLBAR_ADD),
-                    _bmps->m_tbarAddBmp, _bmps->m_tbarAddDisabledBmp, new BMessage (M_ACTIONS_ADD),false, 
-                    backColor, kBelowIcon);
+                  _bmps->m_tbarAddBmp, _bmps->m_tbarAddDisabledBmp, new BMessage (M_ACTIONS_ADD),false, 
+                  backColor, kBelowIcon);
     m_addButton->SetEnabled (false);
     m_bubbleHelper->SetHelp (m_addButton, const_cast<char*>(str (S_TOOLBAR_ADD_BH)));
 
     m_deleteButton = new ImageButton (buttonRect, "MainWindow:Delete", str (S_TOOLBAR_DELETE),
-                    _bmps->m_tbarDeleteBmp, _bmps->m_tbarDeleteDisabledBmp,
-                    new BMessage (M_ACTIONS_DELETE), false, backColor, kBelowIcon);
+                  _bmps->m_tbarDeleteBmp, _bmps->m_tbarDeleteDisabledBmp,
+                  new BMessage (M_ACTIONS_DELETE), false, backColor, kBelowIcon);
     m_deleteButton->SetEnabled (false);
     
     m_bubbleHelper->SetHelp (m_deleteButton, const_cast<char*>(str (S_TOOLBAR_DELETE_BH)));
@@ -1608,8 +1608,8 @@ void MainWindow::AddToolBar ()
     m_newButton->GetPreferredSize (&btnWidth, &btnHeight);
 
     m_toolBar = new ToolBar (BRect (0, m_mainMenu->Bounds().Height() + 1, Bounds().right,
-                            m_mainMenu->Bounds().Height() + 2 + btnHeight + 2 * ToolBar::mk_Border),
-                            "MainWindow:ToolBar", backColor);
+                         m_mainMenu->Bounds().Height() + 2 + btnHeight + 2 * ToolBar::mk_Border),
+                         "MainWindow:ToolBar", backColor);
     
     // Add toolbar to the window's view and add toolbar buttons to the toolbar object
     m_backView->AddChild (m_toolBar);
@@ -1631,16 +1631,16 @@ void MainWindow::AddListView ()
 {
     // Just an initial setup of the ColumnListView to keep the window constructor fairly clear
     m_listView = new BeezerListView (BRect (0, 0, Bounds().right - B_V_SCROLL_BAR_WIDTH - 1,
-                            Bounds().bottom - B_H_SCROLL_BAR_HEIGHT), &m_listContainer,
-                            "MainWindow:ListView", B_FOLLOW_ALL_SIDES, B_WILL_DRAW | B_FRAME_EVENTS |
-                            B_NAVIGABLE, B_MULTIPLE_SELECTION_LIST, true, true, true, true, B_NO_BORDER);
+                         Bounds().bottom - B_H_SCROLL_BAR_HEIGHT), &m_listContainer,
+                         "MainWindow:ListView", B_FOLLOW_ALL_SIDES, B_WILL_DRAW | B_FRAME_EVENTS |
+                         B_NAVIGABLE, B_MULTIPLE_SELECTION_LIST, true, true, true, true, B_NO_BORDER);
     // Small UI hack -- only for this app
     m_listContainer->ChildAt(0)->MoveBy (0,-1);
     
     // Set up the ColumnListView columns, first one is the expander column. Next column holds the icon
     m_listView->AddColumn (new CLVColumn (NULL, 20.0, CLV_EXPANDER | CLV_LOCK_AT_BEGINNING | CLV_NOT_MOVABLE));
     m_listView->AddColumn (new CLVColumn (NULL, 20.0, CLV_LOCK_AT_BEGINNING | CLV_NOT_MOVABLE |
-                                        CLV_NOT_RESIZABLE | CLV_PUSH_PASS |    CLV_MERGE_WITH_RIGHT));
+                                    CLV_NOT_RESIZABLE | CLV_PUSH_PASS |    CLV_MERGE_WITH_RIGHT));
     
     // Create the data columns
     uint32 columnFlags = CLV_SORT_KEYABLE | CLV_TELL_ITEMS_WIDTH | CLV_HEADER_TRUNCATE;
@@ -1675,26 +1675,26 @@ void MainWindow::AddLogTextView ()
 {
     // Setup the output text view's background (parent) view (AddChild done by SplitPane)
     m_outputBackView = new BevelView (BRect (0, Bounds().bottom - (Bounds().Height() * (35.0 / 100.0)),
-                        Bounds().right, Bounds().bottom), "MainWindow:OutputBackView", btOutset,
-                        B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
+                      Bounds().right, Bounds().bottom), "MainWindow:OutputBackView", btOutset,
+                      B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_outputBackView->SetViewColor (K_BACKGROUND_COLOR);
 
     // Create an inset view just for looks
     BevelView *insetView = new BevelView (m_outputBackView->Bounds().InsetByCopy (K_MARGIN, K_MARGIN),
-                                "MainWindow:InnerLogBackView", btInset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
+                             "MainWindow:InnerLogBackView", btInset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_outputBackView->AddChild (insetView);
     float edge = insetView->EdgeThickness();
 
     // Setup the LogTextView
     m_logTextView = new LogTextView (BRect (edge, edge, insetView->Bounds().right - B_V_SCROLL_BAR_WIDTH
-                                - 2 * edge, insetView->Bounds().bottom - edge), "MainWindow:LogTextView",
-                                B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
+                             - 2 * edge, insetView->Bounds().bottom - edge), "MainWindow:LogTextView",
+                             B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     
     m_logTextView->SetContextMenu (m_mainMenu->m_logContextMenu);
     
     // Setup scrolling for the LogTextView
     BetterScrollView *scrollView = new BetterScrollView ("MainWindow:LogScrollView", m_logTextView,
-                                    B_FOLLOW_ALL_SIDES, B_WILL_DRAW, false, true, true, B_NO_BORDER);
+                                B_FOLLOW_ALL_SIDES, B_WILL_DRAW, false, true, true, B_NO_BORDER);
     insetView->AddChild (scrollView);
 }
 
@@ -1748,7 +1748,7 @@ void MainWindow::ToggleActionLog ()
     if (m_logHidden == true)
     {
         //m_splitPane->SetBarPosition (BPoint (Bounds().Height() * 40.0 / 100.0,
-        //                Bounds().Width() * 40.0 / 100.0));
+        //               Bounds().Width() * 40.0 / 100.0));
         m_splitPane->RestoreBarPosition();
         m_splitPane->ViewAt(2L)->Invalidate();
     }
@@ -1774,9 +1774,9 @@ void MainWindow::AdjustColumns ()
         CLVColumn *hiddenColumn = (CLVColumn*)newColumnList.ItemAtFast(i);
         for (int8 j = 0L; j < m_columnList.CountItems(); j++)
         {
-            CLVColumn *shownColumn = (CLVColumn*)m_columnList.ItemAtFast(j);
-            if (shownColumn == hiddenColumn && shownColumn->IsShown())
-                ToggleColumn (hiddenColumn, NULL);
+           CLVColumn *shownColumn = (CLVColumn*)m_columnList.ItemAtFast(j);
+           if (shownColumn == hiddenColumn && shownColumn->IsShown())
+               ToggleColumn (hiddenColumn, NULL);
         }
     }
 }
@@ -1872,7 +1872,7 @@ void MainWindow::UpdateValidArchiveNeeders (bool enable)
     BMenuItem *item = m_mainMenu->m_actionsMenu->FindItem(M_ACTIONS_COMMENT);
     if (item)
         if (!m_badArchive)
-            item->SetEnabled (enable);
+           item->SetEnabled (enable);
     
     // We handle archive passwords differently
     item = m_mainMenu->m_fileMenu->FindItem(M_FILE_PASSWORD);
@@ -1916,9 +1916,9 @@ void MainWindow::UpdateUIAsPerSelection ()
         ListEntry *item = dynamic_cast<ListEntry*>(m_listView->FullListItemAt(selected));
         if (item->IsSuperItem() == false)
         {
-            enable = true;
-            allDirs = false;
-            break;
+           enable = true;
+           allDirs = false;
+           break;
         }
     }
 
@@ -2016,13 +2016,13 @@ void MainWindow::UpdateWindowsMenu ()
         BWindow *wndPtr = m_windowMgr->WindowAt(i);
         if (wndPtr)
         {
-            BMessage *msg = new BMessage (M_SWITCH_WINDOW);
-            msg->AddPointer (kWindowPtr, wndPtr);
+           BMessage *msg = new BMessage (M_SWITCH_WINDOW);
+           msg->AddPointer (kWindowPtr, wndPtr);
 
-            BMenuItem *menuItem = new BMenuItem (wndPtr->Title(), msg, i < 10 ? i + 48 : 0);
-            wndMenu->AddItem (menuItem);
-            if (wndPtr == this)
-                menuItem->SetMarked (true);
+           BMenuItem *menuItem = new BMenuItem (wndPtr->Title(), msg, i < 10 ? i + 48 : 0);
+           wndMenu->AddItem (menuItem);
+           if (wndPtr == this)
+               menuItem->SetMarked (true);
         }
     }
 }
@@ -2086,66 +2086,66 @@ void MainWindow::DeleteFilesFromArchive ()
 
     m_publicThreadCancel = false;        // Reset this
     m_statusWnd = new StatusWindow (str (S_PREPARING_FOR_DELETE), this, str (S_GATHERING_INFO),
-                            &m_publicThreadCancel);
+                         &m_publicThreadCancel);
     
     ListEntry *selEntry (NULL);
     BList hackEntryList;
     int32 i = 0L;
     int32 count = 0L;
     while ((selEntry =
-            (ListEntry*)m_listView->FullListItemAt(m_listView->FullListCurrentSelection (i))) != NULL)
+           (ListEntry*)m_listView->FullListItemAt(m_listView->FullListCurrentSelection (i))) != NULL)
     {
         if (m_publicThreadCancel == true)
-            break;
+           break;
         
         // Addition of files to the list of files to remove
         if (selEntry->IsSuperItem() == false)
         {
-            // Don't add file entries if the folder entry has been added (SELECTED) but add files
-            // that are at the root i.e. no parent folder (BUG-FIX)
-            if (m_listView->Superitem((CLVListItem*)selEntry) == NULL ||
-                    (m_listView->Superitem((CLVListItem*)selEntry))->IsSelected() == false)
-            {
-                BString buf = selEntry->m_fullPath.String();
-                buf.ReplaceAll ("*", "\\*");
-                msg->AddString (kPath, buf.String());
-            }
-            
-            m_deleteFileList->AddItem (selEntry);
-            count++;
+           // Don't add file entries if the folder entry has been added (SELECTED) but add files
+           // that are at the root i.e. no parent folder (BUG-FIX)
+           if (m_listView->Superitem((CLVListItem*)selEntry) == NULL ||
+                  (m_listView->Superitem((CLVListItem*)selEntry))->IsSelected() == false)
+           {
+               BString buf = selEntry->m_fullPath.String();
+               buf.ReplaceAll ("*", "\\*");
+               msg->AddString (kPath, buf.String());
+           }
+           
+           m_deleteFileList->AddItem (selEntry);
+           count++;
         }
-        else            // Addition of folders
+        else           // Addition of folders
         {
-            // For add-ons that SupportFolderEntity() == false (like zip) if we simply pass the folder
-            // name it won't delete files inside it, we need to pass folder/* but before this we need
-            // to escape * with \\* from the path
-            if (m_archiver->SupportsFolderEntity() == false)
-            {
-                BString buf = selEntry->m_fullPath.String();
-                buf.ReplaceAll ("*", "\\*");        // escape name manually, then add the real wildcard
-                buf << '/' << '*';                    // so that names with * are escaped and finally * is appended
-                msg->AddString (kPath, buf);
-                
-                // If a folder is collapsed and selected add all its subitems to our message,
-                // else select its subitems this is critical as we rely on selection (as mentioned above)
-                if (selEntry->IsExpanded() == false)
-                    count += AddFolderToMessage (selEntry, msg, false, m_deleteFileList, m_deleteDirList, true);
-                else
-                    m_listView->SelectSubItems ((CLVListItem*)selEntry); // alter selection so items under
-                                                                         // this dir are included in the loop
-                m_deleteDirList->AddItem (selEntry);
-                count++;
-            }                
-            else
-            {
-                if (selEntry->IsExpanded() == true)
-                    hackEntryList.AddItem ((void*)selEntry);
-                
-                count += m_archiver->Table()->FindUnder (msg, kPath, selEntry->m_fullPath.String(),
-                                        m_deleteFileList, m_deleteDirList);
-                // Don't select any sub-items here as what happens is (since this main loop loops selected
-                // items we re-add items that are selected, so don't change selection here)
-            }
+           // For add-ons that SupportFolderEntity() == false (like zip) if we simply pass the folder
+           // name it won't delete files inside it, we need to pass folder/* but before this we need
+           // to escape * with \\* from the path
+           if (m_archiver->SupportsFolderEntity() == false)
+           {
+               BString buf = selEntry->m_fullPath.String();
+               buf.ReplaceAll ("*", "\\*");        // escape name manually, then add the real wildcard
+               buf << '/' << '*';                  // so that names with * are escaped and finally * is appended
+               msg->AddString (kPath, buf);
+               
+               // If a folder is collapsed and selected add all its subitems to our message,
+               // else select its subitems this is critical as we rely on selection (as mentioned above)
+               if (selEntry->IsExpanded() == false)
+                  count += AddFolderToMessage (selEntry, msg, false, m_deleteFileList, m_deleteDirList, true);
+               else
+                  m_listView->SelectSubItems ((CLVListItem*)selEntry); // alter selection so items under
+                                                                 // this dir are included in the loop
+               m_deleteDirList->AddItem (selEntry);
+               count++;
+           }               
+           else
+           {
+               if (selEntry->IsExpanded() == true)
+                  hackEntryList.AddItem ((void*)selEntry);
+               
+               count += m_archiver->Table()->FindUnder (msg, kPath, selEntry->m_fullPath.String(),
+                                    m_deleteFileList, m_deleteDirList);
+               // Don't select any sub-items here as what happens is (since this main loop loops selected
+               // items we re-add items that are selected, so don't change selection here)
+           }
         }
 
         i++;
@@ -2172,8 +2172,8 @@ void MainWindow::DeleteFilesFromArchive ()
     
     // Ask confirmation!!
     BAlert *warnAlert = new BAlert ("Warning", str (S_DELETE_WARNING), str (S_YES_DELETE),
-                                str (S_NO_DONT_DELETE), NULL, B_WIDTH_AS_USUAL,
-                                B_EVEN_SPACING, B_WARNING_ALERT);
+                             str (S_NO_DONT_DELETE), NULL, B_WIDTH_AS_USUAL,
+                             B_EVEN_SPACING, B_WARNING_ALERT);
     warnAlert->SetDefaultButton (warnAlert->ButtonAt (1L));
     warnAlert->SetShortcut (1L, B_ESCAPE);
     warnAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
@@ -2232,26 +2232,26 @@ void MainWindow::DeleteDone (BMessage *message)
     {
         case BZR_CANCEL_ARCHIVER:
         {
-            // Cancelling a delete is painful
-            BAlert *errAlert = new BAlert ("Error", str (S_CRITICAL_ERROR), str (S_OK), NULL, NULL,
-                    B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
-            errAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
-            errAlert->AddToSubset (this);
-            errAlert->Go();
-            PostMessage (M_FILE_CLOSE);
-            break;
+           // Cancelling a delete is painful
+           BAlert *errAlert = new BAlert ("Error", str (S_CRITICAL_ERROR), str (S_OK), NULL, NULL,
+                  B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
+           errAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
+           errAlert->AddToSubset (this);
+           errAlert->Go();
+           PostMessage (M_FILE_CLOSE);
+           break;
         }
         
         case BZR_DONE: case BZR_ERRSTREAM_FOUND:
         {
-            if (result == BZR_DONE)
-            {
-                m_logTextView->AddText (str (S_DELETING_DONE), false, false, false);
-                DeleteUpdate();
-            }
-            else
-                m_logTextView->AddText (str (S_DELETING_ERROR),    false, false, false);
-            break;
+           if (result == BZR_DONE)
+           {
+               m_logTextView->AddText (str (S_DELETING_DONE), false, false, false);
+               DeleteUpdate();
+           }
+           else
+               m_logTextView->AddText (str (S_DELETING_ERROR),    false, false, false);
+           break;
         }
         
         
@@ -2261,8 +2261,8 @@ void MainWindow::DeleteDone (BMessage *message)
         //    break;
         
         case BZR_ARCHIVE_PATH_INIT_ERROR:
-            ShowArkPathError();
-            break;
+           ShowArkPathError();
+           break;
     }
 }
 
@@ -2287,17 +2287,17 @@ void MainWindow::DeleteUpdate ()
         HashEntry *entry (NULL);
         while ((entry = m_archiver->Table()->Find (path.String())) != NULL)
         {
-            bytesRemoved += entry->m_clvItem->m_length;
-            m_fileList->RemoveItem (entry);
-            m_listView->RemoveItem (entry->m_clvItem);
+           bytesRemoved += entry->m_clvItem->m_length;
+           m_fileList->RemoveItem (entry);
+           m_listView->RemoveItem (entry->m_clvItem);
 
-            delete entry->m_clvItem;
-            m_archiver->Table()->Delete (entry);
-            
-            // No need to waste time Find()ing selEntry again if the archiver has only
-            // unique files
-            if (m_archiver->CanReplaceFiles() == true)
-                break;
+           delete entry->m_clvItem;
+           m_archiver->Table()->Delete (entry);
+           
+           // No need to waste time Find()ing selEntry again if the archiver has only
+           // unique files
+           if (m_archiver->CanReplaceFiles() == true)
+               break;
         }
     }
     
@@ -2309,12 +2309,12 @@ void MainWindow::DeleteUpdate ()
         HashEntry *entry = m_archiver->Table()->Find (selEntry->m_fullPath.String());
         if (entry)
         {
-            bytesRemoved += selEntry->m_length;
-            m_dirList->RemoveItem (entry);
-            m_listView->RemoveItem (selEntry);
+           bytesRemoved += selEntry->m_length;
+           m_dirList->RemoveItem (entry);
+           m_listView->RemoveItem (selEntry);
 
-            m_archiver->Table()->Delete (entry);    // Bug fixed
-            delete selEntry;
+           m_archiver->Table()->Delete (entry);    // Bug fixed
+           delete selEntry;
         }
     }
 
@@ -2366,51 +2366,51 @@ void MainWindow::TestDone (BMessage *message)
     switch (result)
     {
         case BZR_CANCEL_ARCHIVER:
-            m_logTextView->AddText (str (S_TESTING_CANCELLED), false, false, false);
-            break;
+           m_logTextView->AddText (str (S_TESTING_CANCELLED), false, false, false);
+           break;
         
         case BZR_DONE: case BZR_ERRSTREAM_FOUND:
         {
-            m_logTextView->AddText (result == BZR_DONE ? str (S_TESTING_DONE) : str (S_TESTING_ERROR),
-                false, false, false);
+           m_logTextView->AddText (result == BZR_DONE ? str (S_TESTING_DONE) : str (S_TESTING_ERROR),
+               false, false, false);
 
-            const char *testResult = NULL;
-            if (message->FindString (kText, &testResult) == B_OK)
-            {
-                BAlert *errAlert;
-                if (result == BZR_ERRSTREAM_FOUND)
-                {
-                    errAlert = new BAlert ("Error", str (S_TESTING_ERRORWARNING), str (S_VIEW_ERROR), 
-                                        str (S_CANCEL), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
-                }
-                else
-                {
-                    errAlert = new BAlert ("Result", str (S_TESTING_NOERRORFOUND), str (S_VIEW_ERROR), 
-                                        str (S_OK), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
-                }
-                
-                errAlert->SetDefaultButton (errAlert->ButtonAt (1L));
-                errAlert->SetShortcut (1L, B_ESCAPE);
-                errAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
-                errAlert->AddToSubset (this);
-                if (errAlert->Go() == 0L)
-                {
-                    BString title = (result == BZR_ERRSTREAM_FOUND ?
-                                    str (S_ERRORS_AND_WARNINGS) : str (S_TEST_RESULTS));
-                    title << Title();
-                    new LogWindow (this, title.String(), testResult);
-                }
-            }
-            break;
+           const char *testResult = NULL;
+           if (message->FindString (kText, &testResult) == B_OK)
+           {
+               BAlert *errAlert;
+               if (result == BZR_ERRSTREAM_FOUND)
+               {
+                  errAlert = new BAlert ("Error", str (S_TESTING_ERRORWARNING), str (S_VIEW_ERROR), 
+                                    str (S_CANCEL), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
+               }
+               else
+               {
+                  errAlert = new BAlert ("Result", str (S_TESTING_NOERRORFOUND), str (S_VIEW_ERROR), 
+                                    str (S_OK), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
+               }
+               
+               errAlert->SetDefaultButton (errAlert->ButtonAt (1L));
+               errAlert->SetShortcut (1L, B_ESCAPE);
+               errAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
+               errAlert->AddToSubset (this);
+               if (errAlert->Go() == 0L)
+               {
+                  BString title = (result == BZR_ERRSTREAM_FOUND ?
+                                str (S_ERRORS_AND_WARNINGS) : str (S_TEST_RESULTS));
+                  title << Title();
+                  new LogWindow (this, title.String(), testResult);
+               }
+           }
+           break;
         }
         
         case BZR_ARCHIVE_PATH_INIT_ERROR:
-            ShowArkPathError();
-            break;
+           ShowArkPathError();
+           break;
         
         case BZR_NOT_SUPPORTED:
-            ShowOpNotSupported();
-            break;
+           ShowOpNotSupported();
+           break;
     }
 }
 
@@ -2430,59 +2430,59 @@ void MainWindow::ExtractDone (BMessage *message)
     {
         case BZR_CANCEL_ARCHIVER:
         {
-            m_logTextView->AddText (str (S_EXTRACTION_CANCELLED), true, true, true);
+           m_logTextView->AddText (str (S_EXTRACTION_CANCELLED), true, true, true);
 
-            if (_prefs_extract.FindBoolDef (kPfOpen, true))
-                TrackerOpenFolder (&refToDir);
+           if (_prefs_extract.FindBoolDef (kPfOpen, true))
+               TrackerOpenFolder (&refToDir);
         
-            break;
+           break;
         }
-                
+               
         case BZR_PASSWORD_ERROR:
         {
-            m_logTextView->AddText (str (S_PASSWORD_ERROR), true, true, true);
-            if (message->HasBool (kFailOnNull) == false)
-            {
-                BAlert *alert = new BAlert ("Error", str (S_PASSWORD_ERROR_DESC), str (S_CANCEL),
-                                    str (S_PASSWORD_SET), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
-                if (alert->Go() == 1L)
-                    PostMessage (M_FILE_PASSWORD);
-            }
-            
-            break;
+           m_logTextView->AddText (str (S_PASSWORD_ERROR), true, true, true);
+           if (message->HasBool (kFailOnNull) == false)
+           {
+               BAlert *alert = new BAlert ("Error", str (S_PASSWORD_ERROR_DESC), str (S_CANCEL),
+                                str (S_PASSWORD_SET), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
+               if (alert->Go() == 1L)
+                  PostMessage (M_FILE_PASSWORD);
+           }
+           
+           break;
         }
         
         case BZR_DONE:
         {
-            m_logTextView->AddText (str (S_EXTRACTING_DONE), true, true, true);
+           m_logTextView->AddText (str (S_EXTRACTING_DONE), true, true, true);
 
-            if (_prefs_extract.FindBoolDef (kPfOpen, true))
-                TrackerOpenFolder (&refToDir);
+           if (_prefs_extract.FindBoolDef (kPfOpen, true))
+               TrackerOpenFolder (&refToDir);
 
-            if (_prefs_extract.FindBoolDef (kPfQuit, false))
-                PostMessage (M_FILE_QUIT);
-            else if (_prefs_extract.FindBoolDef (kPfClose, false))
-                PostMessage (M_FILE_CLOSE);
+           if (_prefs_extract.FindBoolDef (kPfQuit, false))
+               PostMessage (M_FILE_QUIT);
+           else if (_prefs_extract.FindBoolDef (kPfClose, false))
+               PostMessage (M_FILE_CLOSE);
 
-            break;
+           break;
         }
-            
+           
         case BZR_EXTRACT_DIR_INIT_ERROR:
         {
-            m_logTextView->AddText (str (S_EXTRACT_DIR_ERROR), true, true, true);
-            break;
+           m_logTextView->AddText (str (S_EXTRACT_DIR_ERROR), true, true, true);
+           break;
         }
         
         case BZR_ARCHIVE_PATH_INIT_ERROR:
         {
-            ShowArkPathError();
-            break;
+           ShowArkPathError();
+           break;
         }
         
         default:
         {
-            m_logTextView->AddText (str (S_UNKNOWN_ERROR), true, true, true);
-            break;
+           m_logTextView->AddText (str (S_UNKNOWN_ERROR), true, true, true);
+           break;
         }
     }
 
@@ -2490,40 +2490,40 @@ void MainWindow::ExtractDone (BMessage *message)
     {
         if (_prefs_extract.FindBoolDef (kPfDrag, true) == false)
         {
-            // Move files to destination folder as user has extracted without full path
-            BPath path (&refToDir);
-            BDirectory destDir (&refToDir);
-            
-            BString pathStr;
-            int32 i = 0;
-            status_t allMoved = B_ERROR;
-            while (m_dragExtractItems.FindString (kPath, i++, &pathStr) == B_OK)
-            {
-                BPath buf (path);
-                buf.Append (pathStr.String());
-                
-                BEntry bufEntry (buf.Path(), false);
-                allMoved = bufEntry.MoveTo (&destDir);
-            }
-            
-            // Delete base directory from path
-            i = 0;
-            while (m_dragExtractItems.FindString (kPath, i++, &pathStr) == B_OK)
-            {
-                BString buf;
-                int32 index = pathStr.FindFirst ('/');
-                pathStr.CopyInto (buf, 0, index);
+           // Move files to destination folder as user has extracted without full path
+           BPath path (&refToDir);
+           BDirectory destDir (&refToDir);
+           
+           BString pathStr;
+           int32 i = 0;
+           status_t allMoved = B_ERROR;
+           while (m_dragExtractItems.FindString (kPath, i++, &pathStr) == B_OK)
+           {
+               BPath buf (path);
+               buf.Append (pathStr.String());
+               
+               BEntry bufEntry (buf.Path(), false);
+               allMoved = bufEntry.MoveTo (&destDir);
+           }
+           
+           // Delete base directory from path
+           i = 0;
+           while (m_dragExtractItems.FindString (kPath, i++, &pathStr) == B_OK)
+           {
+               BString buf;
+               int32 index = pathStr.FindFirst ('/');
+               pathStr.CopyInto (buf, 0, index);
     
-                buf.Prepend ("/");
-                buf.Prepend (path.Path());
-                
-                BDirectory dir (buf.String());
-                BEntry dirEntry (&dir, NULL, false);
-                if (dirEntry.Exists() == true && dirEntry.IsDirectory() == true && allMoved == B_OK)
-                    RemoveDirectory (&dir);
-            }
+               buf.Prepend ("/");
+               buf.Prepend (path.Path());
+               
+               BDirectory dir (buf.String());
+               BEntry dirEntry (&dir, NULL, false);
+               if (dirEntry.Exists() == true && dirEntry.IsDirectory() == true && allMoved == B_OK)
+                  RemoveDirectory (&dir);
+           }
 
-            m_dragExtractItems.MakeEmpty();
+           m_dragExtractItems.MakeEmpty();
         }        
 
         m_dragExtract = false;
@@ -2549,7 +2549,7 @@ void MainWindow::ExtractArchive (entry_ref refToDir, bool fullArchive)
         m_criticalSection = true;
 
     m_publicThreadCancel = false;        // Reset this incase some previous public thread was cancelled
-                                        // as it will be checked in AddFolderToMessage()
+                                    // as it will be checked in AddFolderToMessage()
     BMessage msg (fullArchive == true ? M_EXTRACT_TO : M_EXTRACT_SELECTED_TO);
     msg.AddRef (kRef, &refToDir);
     
@@ -2560,54 +2560,54 @@ void MainWindow::ExtractArchive (entry_ref refToDir, bool fullArchive)
     else
     {
         m_dragExtractItems.MakeEmpty();    // Contains list of paths (archive items) that are to be moved to
-                                        // destination extract folder after extraction
+                                    // destination extract folder after extraction
         
         ListEntry *selEntry (NULL);
         int32 i = 0L;
         int32 fileCount = 0L;
         while ((selEntry =
-                (ListEntry*)m_listView->FullListItemAt(m_listView->FullListCurrentSelection (i))) != NULL)
+               (ListEntry*)m_listView->FullListItemAt(m_listView->FullListCurrentSelection (i))) != NULL)
         {
-            if (selEntry->IsSuperItem() == false)                // File - no problems just add it!
-            {
-                msg.AddString (kPath, selEntry->m_fullPath.String());
-                fileCount++;
-                
-                if (_prefs_extract.FindBoolDef (kPfDrag, true) == false && m_dragExtract == true
-                    && m_listView->Superitem (selEntry)
-                    && m_listView->Superitem (selEntry)->IsSelected() == false)
-                {
-                    m_dragExtractItems.AddString (kPath, selEntry->m_fullPath.String());
-                }
-            }
-            else
-            {
-                // If a folder is collapsed and selected add all its subitems to our message
-                if (selEntry->IsExpanded() == false)    // Count only file entries not folder entries
-                {
-                    fileCount += AddFolderToMessage (selEntry, &msg, true);
-                }
-                else
-                {
-                    // For expanded+selected folders just select all its sub-items
-                    // This is because for add-ons that DOES support folder entry instead of JUST
-                    // extract that ONE dir (without contents) it would actually extract WITH the contents
-                    // So what we do is: Whether the add-on supports folders or NOT we always extract
-                    // the contents of a expanded+selected folder by selecting its subitems
-                    m_listView->SelectSubItems ((CLVListItem*)selEntry);
-                    
-                    // Old method: Commented out - BUG FIX -- don't delete it just yet
-                    // For expanded+selected folders just add the folder entry (add its path with
-                    //    a trailing slash)
-                    //BString pathWithTrailingSlash = selEntry->m_fullPath.String();
-                    //pathWithTrailingSlash << '/';
-                    //msg.AddString (kPath, pathWithTrailingSlash.String());
-                }
+           if (selEntry->IsSuperItem() == false)               // File - no problems just add it!
+           {
+               msg.AddString (kPath, selEntry->m_fullPath.String());
+               fileCount++;
+               
+               if (_prefs_extract.FindBoolDef (kPfDrag, true) == false && m_dragExtract == true
+                  && m_listView->Superitem (selEntry)
+                  && m_listView->Superitem (selEntry)->IsSelected() == false)
+               {
+                  m_dragExtractItems.AddString (kPath, selEntry->m_fullPath.String());
+               }
+           }
+           else
+           {
+               // If a folder is collapsed and selected add all its subitems to our message
+               if (selEntry->IsExpanded() == false)    // Count only file entries not folder entries
+               {
+                  fileCount += AddFolderToMessage (selEntry, &msg, true);
+               }
+               else
+               {
+                  // For expanded+selected folders just select all its sub-items
+                  // This is because for add-ons that DOES support folder entry instead of JUST
+                  // extract that ONE dir (without contents) it would actually extract WITH the contents
+                  // So what we do is: Whether the add-on supports folders or NOT we always extract
+                  // the contents of a expanded+selected folder by selecting its subitems
+                  m_listView->SelectSubItems ((CLVListItem*)selEntry);
+                  
+                  // Old method: Commented out - BUG FIX -- don't delete it just yet
+                  // For expanded+selected folders just add the folder entry (add its path with
+                  //    a trailing slash)
+                  //BString pathWithTrailingSlash = selEntry->m_fullPath.String();
+                  //pathWithTrailingSlash << '/';
+                  //msg.AddString (kPath, pathWithTrailingSlash.String());
+               }
     
-                if (m_dragExtract == true && _prefs_extract.FindBoolDef (kPfDrag, true) == false)
-                    m_dragExtractItems.AddString (kPath, selEntry->m_fullPath.String());
-            }
-            i++;
+               if (m_dragExtract == true && _prefs_extract.FindBoolDef (kPfDrag, true) == false)
+                  m_dragExtractItems.AddString (kPath, selEntry->m_fullPath.String());
+           }
+           i++;
         }
 
         // fileCount shouldn't be zero due to disabling/enabling of the menuitem
@@ -2653,12 +2653,12 @@ bool MainWindow::IsExtractPathValid (const char *path, bool throwAlertErrorIfAny
     {
         if (throwAlertErrorIfAny)
         {
-            BAlert *errAlert = new BAlert ("error", str (S_FOLDER_CREATION_FAILED), str (S_OK), NULL, NULL,
-                                    B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
-            errAlert->SetShortcut (0L, B_ESCAPE);
-            errAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
-            errAlert->AddToSubset ((BWindow*)this);
-            errAlert->Go();
+           BAlert *errAlert = new BAlert ("error", str (S_FOLDER_CREATION_FAILED), str (S_OK), NULL, NULL,
+                                B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
+           errAlert->SetShortcut (0L, B_ESCAPE);
+           errAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
+           errAlert->AddToSubset ((BWindow*)this);
+           errAlert->Go();
         }
         return false;
     }
@@ -2675,7 +2675,7 @@ void MainWindow::SetupExtractPanel (BMessage *extractMessage)
     if (m_extractToPanel == NULL)
     {
         m_extractToPanel = new SelectDirPanel (B_OPEN_PANEL, new BMessenger (this), 0,
-                                    B_DIRECTORY_NODE, false, NULL);
+                                B_DIRECTORY_NODE, false, NULL);
         m_extractToPanel->SetButtonLabel (B_DEFAULT_BUTTON, str (S_EXTRACT_SELECT_BUTTON));
         m_extractToPanel->Window()->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
         m_extractToPanel->Window()->AddToSubset (this);
@@ -2687,7 +2687,7 @@ void MainWindow::SetupExtractPanel (BMessage *extractMessage)
     {
         // Set the title for the BFilePanel
         BString titleStr = w == M_ACTIONS_EXTRACT_TO ? str (S_SELECT_EXTRACT_TO_PATH) :
-                                                        str (S_SELECT_EXTRACT_SELECTED_TO_PATH);
+                                                  str (S_SELECT_EXTRACT_SELECTED_TO_PATH);
         titleStr << Title() << ":";
         m_extractToPanel->Window()->SetTitle (titleStr.String());
         m_extractToPanel->Window()->UnlockLooper();
@@ -2704,7 +2704,7 @@ void MainWindow::SetupExtractPanel (BMessage *extractMessage)
 #pragma mark --- Open Functions ---
 
 int32 MainWindow::AddFolderToMessage (ListEntry *item, BMessage *message, bool countOnlyFiles,
-                        BList *fileList, BList *dirList, bool skipFiles)
+                      BList *fileList, BList *dirList, bool skipFiles)
 {
     // The following code gets all subitems of an item both for expanded/unexpanded items
     uint32 parentLevel = item->OutlineLevel();
@@ -2716,35 +2716,35 @@ int32 MainWindow::AddFolderToMessage (ListEntry *item, BMessage *message, bool c
     {
         for (i = itemPos + 1; i >= 1; i++)
         {
-            if (m_publicThreadCancel == true)
-                break;
-            
-            ListEntry *subItem = (ListEntry*)m_listView->FullListItemAt (i);
-            if (subItem == NULL || subItem->OutlineLevel() <= parentLevel)
-                break;
-            
-            count++;
-            if (subItem->IsSuperItem() == false)            // File
-            {
-                if (fileList)
-                    fileList->AddItem (subItem);    
-                
-                if (skipFiles == false)
-                    message->AddString (kPath, subItem->m_fullPath.String());
-            }
-            else                                            // Folder
-            {
-                folderCount++;
-                BString pathWithTrailingSlash = subItem->m_fullPath.String();
-                pathWithTrailingSlash << '/';
-                if (dirList)
-                    dirList->AddItem (subItem);
+           if (m_publicThreadCancel == true)
+               break;
+           
+           ListEntry *subItem = (ListEntry*)m_listView->FullListItemAt (i);
+           if (subItem == NULL || subItem->OutlineLevel() <= parentLevel)
+               break;
+           
+           count++;
+           if (subItem->IsSuperItem() == false)           // File
+           {
+               if (fileList)
+                  fileList->AddItem (subItem);    
+               
+               if (skipFiles == false)
+                  message->AddString (kPath, subItem->m_fullPath.String());
+           }
+           else                                        // Folder
+           {
+               folderCount++;
+               BString pathWithTrailingSlash = subItem->m_fullPath.String();
+               pathWithTrailingSlash << '/';
+               if (dirList)
+                  dirList->AddItem (subItem);
 
-                if (skipFiles == true)
-                    pathWithTrailingSlash << '*';
+               if (skipFiles == true)
+                  pathWithTrailingSlash << '*';
 
-                message->AddString (kPath, pathWithTrailingSlash.String());
-            }
+               message->AddString (kPath, pathWithTrailingSlash.String());
+           }
         }
     }
     
@@ -2764,20 +2764,20 @@ int32 MainWindow::AddFoldersFromList (int32 index, int32 *totalItems)
     if (count >= split * 2)
     {
         if (index + (count / split) > count)
-            limit = count;
+           limit = count;
         else
-            limit = index + (count / split);
+           limit = index + (count / split);
 
         for (; index < limit; index++)
         {
-            ListEntry *dirEntry = ((HashEntry*)m_dirList->ItemAtFast(index))->m_clvItem;
-            HashEntry *parent = m_archiver->Table()->Find(dirEntry->m_dirPath.String());
-            if (parent)
-                m_listView->AddUnderFast (dirEntry, parent->m_clvItem);
-            else
-                m_listView->AddItemFastHierarchical (dirEntry);
+           ListEntry *dirEntry = ((HashEntry*)m_dirList->ItemAtFast(index))->m_clvItem;
+           HashEntry *parent = m_archiver->Table()->Find(dirEntry->m_dirPath.String());
+           if (parent)
+               m_listView->AddUnderFast (dirEntry, parent->m_clvItem);
+           else
+               m_listView->AddItemFastHierarchical (dirEntry);
 
-            dirEntry->m_added = true;
+           dirEntry->m_added = true;
         }
         
         return index;
@@ -2787,14 +2787,14 @@ int32 MainWindow::AddFoldersFromList (int32 index, int32 *totalItems)
         int32 i = 0L;
         for (; i < count; i++)
         {
-            ListEntry *dirEntry = (ListEntry*)(((HashEntry*)m_dirList->ItemAtFast(i))->m_clvItem);
-            HashEntry *parent = m_archiver->Table()->Find(dirEntry->m_dirPath.String());
-            if (parent)
-                m_listView->AddUnderFast (dirEntry, parent->m_clvItem);
-            else
-                m_listView->AddItemFastHierarchical (dirEntry);
+           ListEntry *dirEntry = (ListEntry*)(((HashEntry*)m_dirList->ItemAtFast(i))->m_clvItem);
+           HashEntry *parent = m_archiver->Table()->Find(dirEntry->m_dirPath.String());
+           if (parent)
+               m_listView->AddUnderFast (dirEntry, parent->m_clvItem);
+           else
+               m_listView->AddItemFastHierarchical (dirEntry);
 
-            dirEntry->m_added = true;
+           dirEntry->m_added = true;
         }
         
         return i;
@@ -2814,22 +2814,22 @@ int32 MainWindow::AddItemsFromList (int32 index, int32 *totalItems)
     if (count >= split * 2)
     {
         if (index + (count / split) > count)
-            limit = count;
+           limit = count;
         else
-            limit = index + (count / split);
+           limit = index + (count / split);
 
         for (; index < limit; index++)
         {
-            ListEntry *item = ((HashEntry*)m_fileList->ItemAtFast(index))->m_clvItem;
-            HashEntry *parentHash = m_archiver->Table()->Find (item->m_dirPath.String());
-            
-            // In case the entry doesn't have a parent folder at all
-            if (parentHash)
-                m_listView->AddUnderFast (item, parentHash->m_clvItem);
-            else
-                m_listView->AddItemFastHierarchical (item);
+           ListEntry *item = ((HashEntry*)m_fileList->ItemAtFast(index))->m_clvItem;
+           HashEntry *parentHash = m_archiver->Table()->Find (item->m_dirPath.String());
+           
+           // In case the entry doesn't have a parent folder at all
+           if (parentHash)
+               m_listView->AddUnderFast (item, parentHash->m_clvItem);
+           else
+               m_listView->AddItemFastHierarchical (item);
 
-            item->m_added = true;
+           item->m_added = true;
         }
 
         // We have added index number of files
@@ -2840,16 +2840,16 @@ int32 MainWindow::AddItemsFromList (int32 index, int32 *totalItems)
         int32 i = 0L, c = m_fileList->CountItems();
         for (; i < c; i++)
         {
-            ListEntry *item = ((HashEntry*)m_fileList->ItemAtFast(i))->m_clvItem;
-            HashEntry *parentHash = m_archiver->Table()->Find (item->m_dirPath.String());
-            
-            // In case the entry doesn't have a parent folder at all
-            if (parentHash)
-                m_listView->AddUnderFast (item, parentHash->m_clvItem);
-            else
-                m_listView->AddItemFastHierarchical (item);
-                    
-            item->m_added = true;
+           ListEntry *item = ((HashEntry*)m_fileList->ItemAtFast(i))->m_clvItem;
+           HashEntry *parentHash = m_archiver->Table()->Find (item->m_dirPath.String());
+           
+           // In case the entry doesn't have a parent folder at all
+           if (parentHash)
+               m_listView->AddUnderFast (item, parentHash->m_clvItem);
+           else
+               m_listView->AddItemFastHierarchical (item);
+                  
+           item->m_added = true;
         }
         
         // We have added all files
@@ -2871,13 +2871,13 @@ void MainWindow::SetupArchiver (entry_ref *ref, char *mimeString)
         
         if (!mimeString)
         {
-            update_mime_info (m_archivePath.Path(), false, true, false);
-            BNode node (&m_archiveEntry);
-            BNodeInfo nodeInfo (&node);
-            nodeInfo.GetType (type);
+           update_mime_info (m_archivePath.Path(), false, true, false);
+           BNode node (&m_archiveEntry);
+           BNodeInfo nodeInfo (&node);
+           nodeInfo.GetType (type);
         }
         else
-            strcpy (type, mimeString);
+           strcpy (type, mimeString);
     }
     else if (mimeString)
     {
@@ -2894,7 +2894,7 @@ void MainWindow::SetupArchiver (entry_ref *ref, char *mimeString)
         sprintf (errStr, str (S_BAD_MIME_TYPE), m_archivePath.Leaf());
 
         BAlert *errAlert = new BAlert ("error", errStr, str (S_OK), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING,
-                B_INFO_ALERT);
+               B_INFO_ALERT);
         errAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
         errAlert->AddToSubset (this);
         errAlert->Go();
@@ -2906,26 +2906,26 @@ void MainWindow::SetupArchiver (entry_ref *ref, char *mimeString)
     m_logTextView->AddText (str (S_LOADING_DONE), false, false, false);
     m_logTextView->AddText (str (S_VERIFYING_ARCHIVER), true, false, false);
     if ((errCode = m_archiver->InitCheck()) != BZR_DONE)    // Type is supported,
-    {                                                        // but add-on has error initializing
+    {                                                  // but add-on has error initializing
         switch (errCode)
         {
-            case BZR_BINARY_MISSING:            // Add-on couldn't trace its binary in the Binaries folder
-            {
-                m_logTextView->AddText (str (S_DETECTING_FAILED), false, false, false);
-                (new BAlert ("error", str (S_BINARY_MISSING), str (S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
-                        B_EVEN_SPACING, B_STOP_ALERT))->Go();
+           case BZR_BINARY_MISSING:           // Add-on couldn't trace its binary in the Binaries folder
+           {
+               m_logTextView->AddText (str (S_DETECTING_FAILED), false, false, false);
+               (new BAlert ("error", str (S_BINARY_MISSING), str (S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
+                      B_EVEN_SPACING, B_STOP_ALERT))->Go();
 
-                PostMessage (M_FILE_CLOSE);
-                return;
-            }
-            
-            case BZR_OPTIONAL_BINARY_MISSING:    // Add-on couldn't find a non-critical binary (optional)
-            {
-                m_logTextView->AddText (str (S_DETECTING_PARTIALLY_FAILED), false, false, false);
-                (new BAlert ("error", str (S_OPTIONAL_BINARY_MISSING), str (S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
-                        B_EVEN_SPACING, B_INFO_ALERT))->Go();
-                break;
-            }
+               PostMessage (M_FILE_CLOSE);
+               return;
+           }
+           
+           case BZR_OPTIONAL_BINARY_MISSING:    // Add-on couldn't find a non-critical binary (optional)
+           {
+               m_logTextView->AddText (str (S_DETECTING_PARTIALLY_FAILED), false, false, false);
+               (new BAlert ("error", str (S_OPTIONAL_BINARY_MISSING), str (S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
+                      B_EVEN_SPACING, B_INFO_ALERT))->Go();
+               break;
+           }
         }
     }
     else
@@ -2959,9 +2959,9 @@ void MainWindow::InitArchiver ()
     {
         BMenu *arkMenuFromArchive = LoadArchiverFromArchive (&m_archiveRef);
         if (arkMenuFromArchive != NULL && _prefs_state.FindBoolDef (kPfRestoreArk, true) == true)
-            m_archiver->SetSettingsMenu (arkMenuFromArchive);
+           m_archiver->SetSettingsMenu (arkMenuFromArchive);
         else
-            m_archiver->LoadSettingsMenu();
+           m_archiver->LoadSettingsMenu();
     }
     else
         m_archiver->LoadSettingsMenu();
@@ -3006,7 +3006,7 @@ void MainWindow::OpenArchive ()
     openMsg->AddRef (kRef, &m_archiveRef);
 
     thread_info tinfo;
-    bigtime_t pollTime = 50000;            // time interval to check each time if the thread is still running
+    bigtime_t pollTime = 50000;           // time interval to check each time if the thread is still running
     bigtime_t waitTime = pollTime;        // initialize waitTime, this keeps incrementing
     bigtime_t maxWaitTime = 1600000;    // 1.6 seconds before popping status window
 
@@ -3023,25 +3023,25 @@ void MainWindow::OpenArchive ()
     {
         status_t isAlive = get_thread_info (tid, &tinfo);
         if (isAlive == B_OK)
-            snooze (pollTime);
+           snooze (pollTime);
         else
         {
-            // Bug-fix: we can't use m_statusWnd->PostMessage(M_CLOSE) when it is NOT Show()ing
-            // therefore quit manually
-            if (m_statusWnd->Lock())
-            {
-                m_statusWnd->Quit();
-                m_statusWnd = NULL;
-            }
-            m_criticalSection = false;
-            break;
+           // Bug-fix: we can't use m_statusWnd->PostMessage(M_CLOSE) when it is NOT Show()ing
+           // therefore quit manually
+           if (m_statusWnd->Lock())
+           {
+               m_statusWnd->Quit();
+               m_statusWnd = NULL;
+           }
+           m_criticalSection = false;
+           break;
         }
         
         waitTime += pollTime;
         if (waitTime >= maxWaitTime)
         {
-            m_statusWnd->Show();
-            break;
+           m_statusWnd->Show();
+           break;
         }
     }
 }
@@ -3081,25 +3081,25 @@ int32 MainWindow::AddFoldersFromList (BList *folderList, int32 index)
     if (count >= split * 2)
     {
         if (index + (count / split) > count)
-            limit = count;
+           limit = count;
         else
-            limit = index + (count / split);
+           limit = index + (count / split);
 
         int32 j = index;
         for (; index < limit; index++)
         {
-            ListEntry *dirEntry = ((HashEntry*)folderList->ItemAtFast(index))->m_clvItem;
-            HashEntry *parentHash = m_archiver->Table()->Find (dirEntry->m_dirPath.String());
-            if (dirEntry->m_added == false)
-            {
-                if (parentHash)
-                    m_listView->AddUnderFast (dirEntry, parentHash->m_clvItem);
-                else
-                    m_listView->AddItemFastHierarchical (dirEntry);
+           ListEntry *dirEntry = ((HashEntry*)folderList->ItemAtFast(index))->m_clvItem;
+           HashEntry *parentHash = m_archiver->Table()->Find (dirEntry->m_dirPath.String());
+           if (dirEntry->m_added == false)
+           {
+               if (parentHash)
+                  m_listView->AddUnderFast (dirEntry, parentHash->m_clvItem);
+               else
+                  m_listView->AddItemFastHierarchical (dirEntry);
 
-                dirEntry->m_added = true;
-                j++;
-            }
+               dirEntry->m_added = true;
+               j++;
+           }
         }
         
         return j;
@@ -3109,18 +3109,18 @@ int32 MainWindow::AddFoldersFromList (BList *folderList, int32 index)
         int32 i = 0L, j = 0L;
         for (; i < count; i++)
         {
-            ListEntry *dirEntry = ((HashEntry*)folderList->ItemAtFast(i))->m_clvItem;
-            HashEntry *parentHash = m_archiver->Table()->Find (dirEntry->m_dirPath.String());
-            if (dirEntry->m_added == false)
-            {
-                if (parentHash)
-                    m_listView->AddUnderFast (dirEntry, parentHash->m_clvItem);
-                else
-                    m_listView->AddItemFastHierarchical (dirEntry);
-                
-                dirEntry->m_added = true;
-                j++;
-            }
+           ListEntry *dirEntry = ((HashEntry*)folderList->ItemAtFast(i))->m_clvItem;
+           HashEntry *parentHash = m_archiver->Table()->Find (dirEntry->m_dirPath.String());
+           if (dirEntry->m_added == false)
+           {
+               if (parentHash)
+                  m_listView->AddUnderFast (dirEntry, parentHash->m_clvItem);
+               else
+                  m_listView->AddItemFastHierarchical (dirEntry);
+               
+               dirEntry->m_added = true;
+               j++;
+           }
         }
         
         return j;
@@ -3141,27 +3141,27 @@ int32 MainWindow::AddItemsFromList (BList *fileList, int32 index)
     if (count >= split * 2)
     {
         if (index + (count / split) > count)
-            limit = count;
+           limit = count;
         else
-            limit = index + (count / split);
+           limit = index + (count / split);
 
         int32 j = index;
         for (; index < limit; index++)
         {
-            ListEntry *item = ((HashEntry*)fileList->ItemAtFast(index))->m_clvItem;
-            HashEntry *parentHash = m_archiver->Table()->Find (item->m_dirPath.String());
-            
-            if (item->m_added == false)
-            {
-                // In case the entry doesn't have a parent folder at all
-                if (parentHash)
-                    m_listView->AddUnderFast (item, parentHash->m_clvItem);
-                else
-                    m_listView->AddItemFastHierarchical (item);
-                
-                item->m_added = true;
-                j++;
-            }
+           ListEntry *item = ((HashEntry*)fileList->ItemAtFast(index))->m_clvItem;
+           HashEntry *parentHash = m_archiver->Table()->Find (item->m_dirPath.String());
+           
+           if (item->m_added == false)
+           {
+               // In case the entry doesn't have a parent folder at all
+               if (parentHash)
+                  m_listView->AddUnderFast (item, parentHash->m_clvItem);
+               else
+                  m_listView->AddItemFastHierarchical (item);
+               
+               item->m_added = true;
+               j++;
+           }
         }
 
         // We have added "j" number of files
@@ -3172,20 +3172,20 @@ int32 MainWindow::AddItemsFromList (BList *fileList, int32 index)
         int32 i = 0L, j = 0L;
         for (; i < count; i++)
         {
-            ListEntry *item = ((HashEntry*)fileList->ItemAtFast(i))->m_clvItem;
-            HashEntry *parentHash = m_archiver->Table()->Find (item->m_dirPath.String());
-            
-            if (item->m_added == false)
-            {
-                // In case the entry doesn't have a parent folder at all
-                if (parentHash)
-                    m_listView->AddUnderFast (item, parentHash->m_clvItem);
-                else
-                    m_listView->AddItemFastHierarchical (item);
-                
-                item->m_added = true;
-                j++;
-            }
+           ListEntry *item = ((HashEntry*)fileList->ItemAtFast(i))->m_clvItem;
+           HashEntry *parentHash = m_archiver->Table()->Find (item->m_dirPath.String());
+           
+           if (item->m_added == false)
+           {
+               // In case the entry doesn't have a parent folder at all
+               if (parentHash)
+                  m_listView->AddUnderFast (item, parentHash->m_clvItem);
+               else
+                  m_listView->AddItemFastHierarchical (item);
+               
+               item->m_added = true;
+               j++;
+           }
         }
         
         // We have added all files
@@ -3196,15 +3196,15 @@ int32 MainWindow::AddItemsFromList (BList *fileList, int32 index)
 //=============================================================================================================//
 
 bool MainWindow::ConfirmAddOperation (const char *addingUnderPath, BMessage *refsMessage, int32 *countL,
-                    int32 *skipped)
+                  int32 *skipped)
 {
     // Function that return true, if there files are added/appended to archive - in the process
     // what it does is, it confirms overwriting of files/folders, prevents overwriting of file-with-folder
     // and folder-with-file. If all files are SKIPPED (overwriting skipped) it returns false
     // warnType: 0 = Never replace
-    //             1 = Ask before replace
-    //             2 = Replace without asking
-    //             3 = If file being added has newer modified timestamp
+    //            1 = Ask before replace
+    //            2 = Replace without asking
+    //            3 = If file being added has newer modified timestamp
     
     int8 warnType = _prefs_add.FindInt8Def (kPfReplaceFiles, 1);
     
@@ -3228,151 +3228,151 @@ bool MainWindow::ConfirmAddOperation (const char *addingUnderPath, BMessage *ref
     for (int32 i = --count; i >= 0; i--)
         if (refsMessage->FindRef ("refs", i, &ref) == B_OK)
         {
-            BString buf = parentPath;
-            buf << ref.name;
-            
-            HashEntry *hashEntry = m_archiver->Table()->Find (buf.String());
-            if (hashEntry)
-            {
-                BEntry entry (&ref, false);
-                BString confirmBufStr;
+           BString buf = parentPath;
+           buf << ref.name;
+           
+           HashEntry *hashEntry = m_archiver->Table()->Find (buf.String());
+           if (hashEntry)
+           {
+               BEntry entry (&ref, false);
+               BString confirmBufStr;
 
-                char nameBuf[B_FILE_NAME_LENGTH+1];
-                entry.GetName (nameBuf);
+               char nameBuf[B_FILE_NAME_LENGTH+1];
+               entry.GetName (nameBuf);
 
-                bool existingEntrySuper = hashEntry->m_clvItem->IsSuperItem();
-                bool addingEntrySuper = entry.IsDirectory();
-                bool showError = false;
-                if (existingEntrySuper && !addingEntrySuper)        // Trying to add file in place of folder
-                {
-                    confirmBufStr = str (S_CANNOT_ADD_FILE);
-                    showError = true;
-                }
-                else if (!existingEntrySuper && addingEntrySuper)    // Trying to add folder in place of file
-                {
-                    confirmBufStr = str (S_CANNOT_ADD_FOLDER);
-                    showError = true;
-                }
-                else if (existingEntrySuper && addingEntrySuper)    // Replacement of folder
-                {
-                    if (warnType == 0)    // Never replace folders that already exist, so skip them
-                    {
-                        refsMessage->RemoveData ("refs", i);
-                        *skipped = *skipped + 1;
-                        continue;
-                    }
-                    else if (warnType == 2 || warnType == 3)
-                    {
-                        // Replace without asking (2), for (3) we don't compare time-stamp of folders
-                        // so automatically replace as well
-                        continue;
-                    }
-                    
-                    // The warnType left is (1) i.e. to ask the user
-                    BString confirmBufStr = str (S_REPLACEDIR_CONFIRM);
-                    confirmBufStr.ReplaceAll ("%s", hashEntry->m_clvItem->GetColumnContentText(2));
-                    
-                    BAlert *confAlert = new BAlert ("Confirm", confirmBufStr.String(), str (S_CANCEL),
-                                                str (S_SKIP), str (S_REPLACE), B_WIDTH_AS_USUAL,
-                                                B_EVEN_SPACING, B_INFO_ALERT);
-                    confAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
-                    confAlert->AddToSubset (this);
-                    int32 buttonIndex = confAlert->Go();
-                    
-                    if (buttonIndex == 0L)
-                        return false;
-                    else if (buttonIndex == 1L)
-                    {
-                        refsMessage->RemoveData ("refs", i);
-                        *skipped = *skipped + 1;
-                        continue;
-                    }
-                    
-                }
-                else if (!existingEntrySuper && !addingEntrySuper)        // Replacement of file
-                {
-                    if (warnType == 0)    // Never replace files that already exist, so skip them
-                    {
-                        refsMessage->RemoveData ("refs", i);
-                        *skipped = *skipped + 1;
-                        continue;
-                    }
-                    else if (warnType == 2)    // Replace without asking
-                        continue;
+               bool existingEntrySuper = hashEntry->m_clvItem->IsSuperItem();
+               bool addingEntrySuper = entry.IsDirectory();
+               bool showError = false;
+               if (existingEntrySuper && !addingEntrySuper)        // Trying to add file in place of folder
+               {
+                  confirmBufStr = str (S_CANNOT_ADD_FILE);
+                  showError = true;
+               }
+               else if (!existingEntrySuper && addingEntrySuper)    // Trying to add folder in place of file
+               {
+                  confirmBufStr = str (S_CANNOT_ADD_FOLDER);
+                  showError = true;
+               }
+               else if (existingEntrySuper && addingEntrySuper)    // Replacement of folder
+               {
+                  if (warnType == 0)    // Never replace folders that already exist, so skip them
+                  {
+                      refsMessage->RemoveData ("refs", i);
+                      *skipped = *skipped + 1;
+                      continue;
+                  }
+                  else if (warnType == 2 || warnType == 3)
+                  {
+                      // Replace without asking (2), for (3) we don't compare time-stamp of folders
+                      // so automatically replace as well
+                      continue;
+                  }
+                  
+                  // The warnType left is (1) i.e. to ask the user
+                  BString confirmBufStr = str (S_REPLACEDIR_CONFIRM);
+                  confirmBufStr.ReplaceAll ("%s", hashEntry->m_clvItem->GetColumnContentText(2));
+                  
+                  BAlert *confAlert = new BAlert ("Confirm", confirmBufStr.String(), str (S_CANCEL),
+                                           str (S_SKIP), str (S_REPLACE), B_WIDTH_AS_USUAL,
+                                           B_EVEN_SPACING, B_INFO_ALERT);
+                  confAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
+                  confAlert->AddToSubset (this);
+                  int32 buttonIndex = confAlert->Go();
+                  
+                  if (buttonIndex == 0L)
+                      return false;
+                  else if (buttonIndex == 1L)
+                  {
+                      refsMessage->RemoveData ("refs", i);
+                      *skipped = *skipped + 1;
+                      continue;
+                  }
+                  
+               }
+               else if (!existingEntrySuper && !addingEntrySuper)        // Replacement of file
+               {
+                  if (warnType == 0)    // Never replace files that already exist, so skip them
+                  {
+                      refsMessage->RemoveData ("refs", i);
+                      *skipped = *skipped + 1;
+                      continue;
+                  }
+                  else if (warnType == 2)    // Replace without asking
+                      continue;
 
-                    time_t existingEntryTime = hashEntry->m_clvItem->m_timeValue;
-                    time_t modTime;
-                    tm mod_tm;
-                    tm existingTime;
-                    off_t size;
-                    entry.GetModificationTime (&modTime);
-                    entry.GetSize (&size);
-                    localtime_r (&modTime, &mod_tm);
-                    localtime_r (&existingEntryTime, &existingTime);
-                    
-                    if (warnType == 3)    // Auto-replace if modTime > existingEntryTime
-                    {
-                        if (modTime > existingEntryTime)    // means existingFile is older
-                            continue;
-                        else                                // means existingFile is newer, so skip new file
-                        {
-                            refsMessage->RemoveData ("refs", i);
-                            *skipped = *skipped + 1;
-                            continue;
-                        }
-                    }
-                    
-                    // warnType left is (1) i.e. to ask user
-                    char dateTimeBuf[256];
-                    char existingTimeBuf[256];
-                    strftime (dateTimeBuf, 256, "%b %d %Y, %I:%M:%S %p", &mod_tm);
-                    strftime (existingTimeBuf, 256, "%b %d %Y, %I:%M:%S %p", &existingTime);
+                  time_t existingEntryTime = hashEntry->m_clvItem->m_timeValue;
+                  time_t modTime;
+                  tm mod_tm;
+                  tm existingTime;
+                  off_t size;
+                  entry.GetModificationTime (&modTime);
+                  entry.GetSize (&size);
+                  localtime_r (&modTime, &mod_tm);
+                  localtime_r (&existingEntryTime, &existingTime);
+                  
+                  if (warnType == 3)    // Auto-replace if modTime > existingEntryTime
+                  {
+                      if (modTime > existingEntryTime)    // means existingFile is older
+                         continue;
+                      else                             // means existingFile is newer, so skip new file
+                      {
+                         refsMessage->RemoveData ("refs", i);
+                         *skipped = *skipped + 1;
+                         continue;
+                      }
+                  }
+                  
+                  // warnType left is (1) i.e. to ask user
+                  char dateTimeBuf[256];
+                  char existingTimeBuf[256];
+                  strftime (dateTimeBuf, 256, "%b %d %Y, %I:%M:%S %p", &mod_tm);
+                  strftime (existingTimeBuf, 256, "%b %d %Y, %I:%M:%S %p", &existingTime);
 
-                    if (m_archiver->CanReplaceFiles() == true)
-                        confirmBufStr = str (S_OVERWRITE_CONFIRM);
-                    else
-                        confirmBufStr = str (S_APPEND_CONFIRM);
-                    
-                    confirmBufStr.ReplaceAll ("\t", "    ");
-                    confirmBufStr.ReplaceAll ("%s1", hashEntry->m_clvItem->GetColumnContentText (2));
-                    confirmBufStr.ReplaceAll ("%z1", hashEntry->m_clvItem->GetColumnContentText (3));
-                    confirmBufStr.ReplaceAll ("%d1", existingTimeBuf);
-                    confirmBufStr.ReplaceAll ("%s2", nameBuf);
-                    confirmBufStr.ReplaceAll ("%z2", StringFromBytes(size).String());
-                    confirmBufStr.ReplaceAll ("%d2", dateTimeBuf);
-                    
-                    BAlert *confAlert = new BAlert ("Confirm", confirmBufStr.String(), str (S_CANCEL),
-                                                str (S_SKIP), 
-                                                m_archiver->CanReplaceFiles() ? str (S_REPLACE) : str (S_APPEND),
-                                                B_WIDTH_AS_USUAL,
-                                                B_EVEN_SPACING, B_INFO_ALERT);
-                    confAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
-                    confAlert->AddToSubset (this);
-                    int32 buttonIndex = confAlert->Go();
-                    if (buttonIndex == 0L)
-                        return false;
-                    else if (buttonIndex == 1L)
-                    {
-                        refsMessage->RemoveData ("refs", i);
-                        *skipped = *skipped + 1;
-                        continue;
-                    }
-                }
-                
-                if (showError == true)
-                {
-                    confirmBufStr.ReplaceAll ("%s", nameBuf);
-                    
-                    BAlert *errAlert = new BAlert ("Error", confirmBufStr.String(), str (S_OK), NULL, NULL,
-                                            B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
-                    errAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
-                    errAlert->AddToSubset (this);
-                    errAlert->Go();
-                    *countL = 0L;
-                    *skipped = 0L;
-                    return false;
-                }
-            }
+                  if (m_archiver->CanReplaceFiles() == true)
+                      confirmBufStr = str (S_OVERWRITE_CONFIRM);
+                  else
+                      confirmBufStr = str (S_APPEND_CONFIRM);
+                  
+                  confirmBufStr.ReplaceAll ("\t", "    ");
+                  confirmBufStr.ReplaceAll ("%s1", hashEntry->m_clvItem->GetColumnContentText (2));
+                  confirmBufStr.ReplaceAll ("%z1", hashEntry->m_clvItem->GetColumnContentText (3));
+                  confirmBufStr.ReplaceAll ("%d1", existingTimeBuf);
+                  confirmBufStr.ReplaceAll ("%s2", nameBuf);
+                  confirmBufStr.ReplaceAll ("%z2", StringFromBytes(size).String());
+                  confirmBufStr.ReplaceAll ("%d2", dateTimeBuf);
+                  
+                  BAlert *confAlert = new BAlert ("Confirm", confirmBufStr.String(), str (S_CANCEL),
+                                           str (S_SKIP), 
+                                           m_archiver->CanReplaceFiles() ? str (S_REPLACE) : str (S_APPEND),
+                                           B_WIDTH_AS_USUAL,
+                                           B_EVEN_SPACING, B_INFO_ALERT);
+                  confAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
+                  confAlert->AddToSubset (this);
+                  int32 buttonIndex = confAlert->Go();
+                  if (buttonIndex == 0L)
+                      return false;
+                  else if (buttonIndex == 1L)
+                  {
+                      refsMessage->RemoveData ("refs", i);
+                      *skipped = *skipped + 1;
+                      continue;
+                  }
+               }
+               
+               if (showError == true)
+               {
+                  confirmBufStr.ReplaceAll ("%s", nameBuf);
+                  
+                  BAlert *errAlert = new BAlert ("Error", confirmBufStr.String(), str (S_OK), NULL, NULL,
+                                        B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
+                  errAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
+                  errAlert->AddToSubset (this);
+                  errAlert->Go();
+                  *countL = 0L;
+                  *skipped = 0L;
+                  return false;
+               }
+           }
         }
     
     return true;
@@ -3385,42 +3385,42 @@ void MainWindow::SetupAddPanel ()
     if (m_addPanel == NULL)
     {
         m_addPanel = new BFilePanel (B_OPEN_PANEL, new BMessenger (this), 0,
-                                    B_DIRECTORY_NODE | B_FILE_NODE | B_SYMLINK_NODE, true, 
-                                    new BMessage (M_ADD));
+                                B_DIRECTORY_NODE | B_FILE_NODE | B_SYMLINK_NODE, true, 
+                                new BMessage (M_ADD));
         m_addPanel->SetButtonLabel (B_DEFAULT_BUTTON, str (S_ADD_BUTTON));
         m_addPanel->Window()->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
         m_addPanel->Window()->AddToSubset (this);
         
         const char *addDirPath = _prefs_paths.FindString (kPfDefAddPath);
         if (addDirPath)
-            m_addPanel->SetPanelDirectory (addDirPath);
+           m_addPanel->SetPanelDirectory (addDirPath);
         
         if (m_archiver && m_archiver->SettingsMenu() && m_createMode == true)
         {
-            m_addPanelMenuBar = (BMenuBar*)m_addPanel->Window()->FindView ("MenuBar");
-            m_addPanelMenuBar->AddItem (m_archiver->SettingsMenu());
-            
-            // It seems BMenu::SetTargetForItems() does NOT descent into sub-menus, but unfortunately
-            // we need to do this as we are adding this BMenu to BFilePanel which won't handle
-            // the menuitem's message (which would be BZR_MENUITEM_SELECTED)
-            SetTargetForMenuRecursive (m_archiver->SettingsMenu(), this);
+           m_addPanelMenuBar = (BMenuBar*)m_addPanel->Window()->FindView ("MenuBar");
+           m_addPanelMenuBar->AddItem (m_archiver->SettingsMenu());
+           
+           // It seems BMenu::SetTargetForItems() does NOT descent into sub-menus, but unfortunately
+           // we need to do this as we are adding this BMenu to BFilePanel which won't handle
+           // the menuitem's message (which would be BZR_MENUITEM_SELECTED)
+           SetTargetForMenuRecursive (m_archiver->SettingsMenu(), this);
         }
 
         if (m_archiver && m_archiver->SupportsPassword() && m_addPanel->Window()->LockLooper())
         {
-            BButton *button = (BButton*)m_addPanel->Window()->FindView ("cancel button");
-            BTextControl *pwdText = new BTextControl (BRect (10, button->Frame().top + 2,
-                                            10 + 150, 0), "pwdText",
-                                            str (S_PASSWORD_PROMPT), NULL, NULL,
-                                            B_FOLLOW_LEFT | B_FOLLOW_BOTTOM, B_WILL_DRAW);
-            m_addPanel->Window()->ChildAt(0)->AddChild (pwdText);
-            pwdText->SetDivider (pwdText->StringWidth (pwdText->Label()) + 1);
-            pwdText->TextView()->HideTyping (true);
-            pwdText->SetText (m_archiver->Password().String());
-            pwdText->TextView()->DisallowChar (B_ESCAPE);
-            pwdText->TextView()->DisallowChar (B_INSERT);
-            pwdText->ResizeToPreferred();
-            m_addPanel->Window()->UnlockLooper();
+           BButton *button = (BButton*)m_addPanel->Window()->FindView ("cancel button");
+           BTextControl *pwdText = new BTextControl (BRect (10, button->Frame().top + 2,
+                                        10 + 150, 0), "pwdText",
+                                        str (S_PASSWORD_PROMPT), NULL, NULL,
+                                        B_FOLLOW_LEFT | B_FOLLOW_BOTTOM, B_WILL_DRAW);
+           m_addPanel->Window()->ChildAt(0)->AddChild (pwdText);
+           pwdText->SetDivider (pwdText->StringWidth (pwdText->Label()) + 1);
+           pwdText->TextView()->HideTyping (true);
+           pwdText->SetText (m_archiver->Password().String());
+           pwdText->TextView()->DisallowChar (B_ESCAPE);
+           pwdText->TextView()->DisallowChar (B_INSERT);
+           pwdText->ResizeToPreferred();
+           m_addPanel->Window()->UnlockLooper();
         }
     }
 
@@ -3480,16 +3480,16 @@ void MainWindow::AddNewFolder ()
     if (addingAtRoot == false)
     {
         if (selectedItem->IsSuperItem() == false)
-            parentPath = selectedItem->m_dirPath.String();
+           parentPath = selectedItem->m_dirPath.String();
         else
-            parentPath = selectedItem->m_fullPath.String();
+           parentPath = selectedItem->m_fullPath.String();
     }
     else
         parentPath = str (S_ROOT);
     
     createDirStr.ReplaceAll ("%s", parentPath);
     InputAlert *dirAlert = new InputAlert (createDirStr.String(), str (S_DIRECTORY_NAME), "", false,
-                                str (S_CANCEL), str (S_OK));
+                             str (S_CANCEL), str (S_OK));
     dirAlert->SetDefaultButton (dirAlert->ButtonAt (1L));
     dirAlert->ButtonAt(1L)->SetLabel (str (S_CREATE));
     dirAlert->TextControl()->TextView()->DisallowChar (':');
@@ -3503,60 +3503,60 @@ void MainWindow::AddNewFolder ()
     int32 buttonIndex;
     const char *folderName;
     if (msg.FindInt32 (kButtonIndex, &buttonIndex) == B_OK &&
-            msg.FindString (kInputText, &folderName) == B_OK)
+           msg.FindString (kInputText, &folderName) == B_OK)
     {
         if (buttonIndex == 1L)
         {
-            m_statusWnd = new StatusWindow (str (S_CREATING_FOLDER), this,
-                                str (S_PLEASE_WAIT), NULL);
-            
-            MakeTempDirectory();
-            BString mkdirPath = m_tempDirPath;
-            mkdirPath << "/";
-            BString folderPath;
-            if (addingAtRoot == false)
-            {
-                mkdirPath << parentPath << "/";
-                folderPath << parentPath << "/";
-            }
-            folderPath << folderName;
-            mkdirPath << folderName;
-            
-            // Make sure folderPath is unique
-            HashEntry *hashEntry = m_archiver->Table()->Find (folderPath.String());
-            if (hashEntry)    // uh-oh a folder with the same path exists, cancel this operation with
-            {                // an error
-                m_statusWnd->PostMessage (M_CLOSE);
-                BAlert *errAlert = new BAlert ("Error", str (S_FOLDER_ALREADY_EXISTS), str (S_OK));
-                errAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
-                errAlert->AddToSubset (this);
-                errAlert->Go();
-                return;
-            }
-            
-            m_logTextView->AddText (str (S_CREATING_FOLDER), true, false, false);
-            m_logTextView->AddText (" ", false, false, false);
+           m_statusWnd = new StatusWindow (str (S_CREATING_FOLDER), this,
+                             str (S_PLEASE_WAIT), NULL);
+           
+           MakeTempDirectory();
+           BString mkdirPath = m_tempDirPath;
+           mkdirPath << "/";
+           BString folderPath;
+           if (addingAtRoot == false)
+           {
+               mkdirPath << parentPath << "/";
+               folderPath << parentPath << "/";
+           }
+           folderPath << folderName;
+           mkdirPath << folderName;
+           
+           // Make sure folderPath is unique
+           HashEntry *hashEntry = m_archiver->Table()->Find (folderPath.String());
+           if (hashEntry)    // uh-oh a folder with the same path exists, cancel this operation with
+           {               // an error
+               m_statusWnd->PostMessage (M_CLOSE);
+               BAlert *errAlert = new BAlert ("Error", str (S_FOLDER_ALREADY_EXISTS), str (S_OK));
+               errAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
+               errAlert->AddToSubset (this);
+               errAlert->Go();
+               return;
+           }
+           
+           m_logTextView->AddText (str (S_CREATING_FOLDER), true, false, false);
+           m_logTextView->AddText (" ", false, false, false);
 
-            create_directory (mkdirPath.String(), 0777);
-            BEntry dirEntry (mkdirPath.String(), false);
-            entry_ref dirRef;
-            dirEntry.GetRef (&dirRef);
-            
-            BMessage addMsg;
-            addMsg.AddString (kPath, folderPath.String());
-            BMessage newlyAddedPaths;
+           create_directory (mkdirPath.String(), 0777);
+           BEntry dirEntry (mkdirPath.String(), false);
+           entry_ref dirRef;
+           dirEntry.GetRef (&dirRef);
+           
+           BMessage addMsg;
+           addMsg.AddString (kPath, folderPath.String());
+           BMessage newlyAddedPaths;
 
-            UpdateIfNeeded();
-            status_t result = m_archiver->Add (false, m_tempDirPath, &addMsg, &newlyAddedPaths, NULL, NULL);
-            UpdateIfNeeded();
+           UpdateIfNeeded();
+           status_t result = m_archiver->Add (false, m_tempDirPath, &addMsg, &newlyAddedPaths, NULL, NULL);
+           UpdateIfNeeded();
 
-            BMessage *msg = new BMessage (M_ADD_DONE);
-            msg->AddRef ("refs", &dirRef);
-            msg->AddPointer (kSuperItem, (void*)selectedItem);
-            msg->AddInt32 (kResult, result);
-            msg->AddMessage (kFileList, &newlyAddedPaths);
-            PostMessage (msg);
-            m_statusWnd->PostMessage (M_CLOSE);
+           BMessage *msg = new BMessage (M_ADD_DONE);
+           msg->AddRef ("refs", &dirRef);
+           msg->AddPointer (kSuperItem, (void*)selectedItem);
+           msg->AddInt32 (kResult, result);
+           msg->AddMessage (kFileList, &newlyAddedPaths);
+           PostMessage (msg);
+           m_statusWnd->PostMessage (M_CLOSE);
         }
     }
 }
@@ -3670,7 +3670,7 @@ BMenu* MainWindow::LoadArchiverFromArchive (entry_ref *ref)
         
         BArchivable *arkMenu = instantiate_object (&msg);
         if (arkMenu)
-            menu = cast_as (arkMenu, BMenu);
+           menu = cast_as (arkMenu, BMenu);
 
         delete[] msgBuf;
     }
@@ -3843,39 +3843,39 @@ int32 MainWindow::_viewer (void *arg)
     for (int32 i = --count; i >= 0; i--)
         if (message->FindString (kPath, i, &entryPath) == B_OK)
         {
-            if (*cancel == true)
-                break;
-                
-            BMessage msg ('msg_');
-            msg.AddString (kPath, entryPath);
-            
-            if (wnd->LockLooper())
-            {
-                wnd->m_logTextView->AddText (str (S_VIEWING), true);
-                wnd->m_logTextView->AddText (entryPath, false, false, false);
-                wnd->UnlockLooper();
-            }
-            
-            status_t result = ark->Extract (&tempDirRef, &msg, NULL, cancel);
-            bool fileWasExtracted = false;
-            if (*cancel == false && result == BZR_DONE)
-            {
-                fileWasExtracted = OpenEntry (tempPath, entryPath,
-                                        message->what == M_ACTIONS_OPEN_WITH ? true : false);
-            }
-            
-            // Possibly a password error, report it to the MainWindow
-            if (fileWasExtracted == false && ark->SupportsPassword() == true && result == BZR_PASSWORD_ERROR)
-            {
-                BMessage errorMsg (M_EXTRACT_DONE);
-                errorMsg.AddInt32 (kResult, BZR_PASSWORD_ERROR);
-                errorMsg.AddBool (kFailOnNull, true);
-                if (wnd->LockLooper())
-                {
-                    wnd->ExtractDone (&errorMsg);
-                    wnd->UnlockLooper();
-                }
-            }
+           if (*cancel == true)
+               break;
+               
+           BMessage msg ('msg_');
+           msg.AddString (kPath, entryPath);
+           
+           if (wnd->LockLooper())
+           {
+               wnd->m_logTextView->AddText (str (S_VIEWING), true);
+               wnd->m_logTextView->AddText (entryPath, false, false, false);
+               wnd->UnlockLooper();
+           }
+           
+           status_t result = ark->Extract (&tempDirRef, &msg, NULL, cancel);
+           bool fileWasExtracted = false;
+           if (*cancel == false && result == BZR_DONE)
+           {
+               fileWasExtracted = OpenEntry (tempPath, entryPath,
+                                    message->what == M_ACTIONS_OPEN_WITH ? true : false);
+           }
+           
+           // Possibly a password error, report it to the MainWindow
+           if (fileWasExtracted == false && ark->SupportsPassword() == true && result == BZR_PASSWORD_ERROR)
+           {
+               BMessage errorMsg (M_EXTRACT_DONE);
+               errorMsg.AddInt32 (kResult, BZR_PASSWORD_ERROR);
+               errorMsg.AddBool (kFailOnNull, true);
+               if (wnd->LockLooper())
+               {
+                  wnd->ExtractDone (&errorMsg);
+                  wnd->UnlockLooper();
+               }
+           }
         }
         
     delete message;
@@ -3913,16 +3913,16 @@ int32 MainWindow::_counter (void *arg)
     for (int32 i = --count; i >= 0; i--)
         if (message->FindRef ("refs", i, &ref) == B_OK)
         {
-            BEntry entry (&ref, false);        // Do NOT traverse links
-            if (entry.IsDirectory() == true)
-                GetDirectoryInfo (&entry, fileCount, folderCount, totalSize, cancel);
-            else
-            {
-                off_t size;
-                entry.GetSize (&size);
-                totalSize += size;
-                fileCount++;
-            }
+           BEntry entry (&ref, false);        // Do NOT traverse links
+           if (entry.IsDirectory() == true)
+               GetDirectoryInfo (&entry, fileCount, folderCount, totalSize, cancel);
+           else
+           {
+               off_t size;
+               entry.GetSize (&size);
+               totalSize += size;
+               fileCount++;
+           }
         }
     
     // Remove the following fields from message as they will be re-add (when message is re-used)
@@ -3933,9 +3933,9 @@ int32 MainWindow::_counter (void *arg)
     // Don't delete message here as it doesn't belong to us - it is passed
     // from MessageReceived()'s M_ADD segment which doesn't create the message it simply
     // passes the argument in MessageReceived()
-    message->what = M_COUNT_COMPLETE;                    // See we are reusing the message
-    message->AddInt32 (kFiles, fileCount);                // Add the critical fields as that is what
-    message->AddInt32 (kFolders, folderCount);            // we are here for in the first place
+    message->what = M_COUNT_COMPLETE;                  // See we are reusing the message
+    message->AddInt32 (kFiles, fileCount);               // Add the critical fields as that is what
+    message->AddInt32 (kFolders, folderCount);           // we are here for in the first place
     message->AddInt64 (kSize, totalSize);
     statusWnd->PostMessage (M_CLOSE);
     if (*cancel == false)
@@ -3977,19 +3977,19 @@ int32 MainWindow::_copier (void *arg)
     for (int32 i = --count; i >= 0; i--)
         if (msg->FindRef ("refs", i, &ref) == B_OK)
         {
-            if (cancel && *cancel) break;
-            
-            BEntry entry (&ref, false);        // Do NOT TRAVERSE LINKS
-            if (entry.IsDirectory() == true)
-                result = CopyDirectory (&entry, &destDir, &messenger, cancel);
-            else
-                result = CopyFile (&entry, &destDir, &messenger, cancel);
-            
-            // Make message have new relative paths as THOSE are the refs that will
-            // be added to the archive as they are copied now to a temp dir
-            BString relPath = dirInArchive;
-            relPath << '/' << ref.name;
-            msg->AddString (kPath, relPath.String());
+           if (cancel && *cancel) break;
+           
+           BEntry entry (&ref, false);        // Do NOT TRAVERSE LINKS
+           if (entry.IsDirectory() == true)
+               result = CopyDirectory (&entry, &destDir, &messenger, cancel);
+           else
+               result = CopyFile (&entry, &destDir, &messenger, cancel);
+           
+           // Make message have new relative paths as THOSE are the refs that will
+           // be added to the archive as they are copied now to a temp dir
+           BString relPath = dirInArchive;
+           relPath << '/' << ref.name;
+           msg->AddString (kPath, relPath.String());
         }
     
     messenger.SendMessage (M_CLOSE);
@@ -4187,7 +4187,7 @@ void MainWindow::EditComment (bool failIfNoComment)
         m_archiver->GetComment (commentStr);
         
         if (failIfNoComment == false || (commentStr && strlen (commentStr) > 0L))
-            new CommentWindow (this, Title(), commentStr, (BFont*)be_fixed_font);
+           new CommentWindow (this, Title(), commentStr, (BFont*)be_fixed_font);
 
         delete[] commentStr;
     }
@@ -4211,7 +4211,7 @@ void MainWindow::EmptyListViewIfNeeded ()
     {
         int32 count = m_listView->FullListCountItems();
         for (int32 i = 0; i < count; i++)
-            delete m_listView->RemoveItem (0L);
+           delete m_listView->RemoveItem (0L);
     }
 }
 
@@ -4221,7 +4221,7 @@ void MainWindow::ShowArkPathError () const
 {
     m_logTextView->AddText (str (S_ARCHIVE_PATH_ERROR), true, true, true);
     BAlert *errAlert = new BAlert ("Error", str (S_ARCHIVE_PATH_ERROR_LONG), str (S_OK), NULL, NULL,
-                                B_WIDTH_AS_USUAL, B_STOP_ALERT);
+                             B_WIDTH_AS_USUAL, B_STOP_ALERT);
     errAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
     errAlert->AddToSubset ((BWindow*)this);
     errAlert->Go();
@@ -4234,7 +4234,7 @@ void MainWindow::ShowOpNotSupported () const
 {
     m_logTextView->AddText (str (S_OP_FAILED), true, false, false);
     BAlert *errAlert = new BAlert ("Cannot Operate", str (S_NOT_SUPPORTED), str (S_OK), NULL, NULL,
-                            B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
+                         B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
     errAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
     errAlert->AddToSubset ((BWindow*)this);
     errAlert->Go();
@@ -4245,7 +4245,7 @@ void MainWindow::ShowOpNotSupported () const
 void MainWindow::ShowReadOnlyError () const
 {
     BAlert *errAlert = new BAlert ("Cannot Operate", str (S_READ_ONLY_ERROR), str (S_OK), NULL, NULL,
-                            B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
+                         B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
     errAlert->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
     errAlert->AddToSubset ((BWindow*)this);
     errAlert->Go();
@@ -4277,8 +4277,8 @@ bool MainWindow::CanWriteArchive () const
         status_t err = volume.SetTo (m_archiveRef.device);
         if (err == B_OK && volume.IsReadOnly() == true)
         {
-            ShowReadOnlyError ();
-            return false;
+           ShowReadOnlyError ();
+           return false;
         }
     }
     
@@ -4328,22 +4328,22 @@ void MainWindow::AddFavouriteExtractPaths (BMenu *menu) const
         const char *foundPath (NULL);
         while (favPathMsg.FindString (kPath, i++, &foundPath) == B_OK)
         {
-            BMessage *msg = new BMessage (M_RECENT_EXTRACT_ITEM);
-            msg->AddBool (kDynamic, true);    // dynamic prevents it from going to recent-extract-paths
-            menu->AddItem (new BMenuItem (foundPath, msg), addIndex++);
-            addedCount++;
-            
-            if (genPath == true && archiveName.Length() > 0)
-            {
-                BString bufStr = foundPath;
-                bufStr << '/' << archiveName;
-                menu->AddItem (new BMenuItem (bufStr.String(), new BMessage (*msg)), addIndex++);
-                addedCount++;
-            }
+           BMessage *msg = new BMessage (M_RECENT_EXTRACT_ITEM);
+           msg->AddBool (kDynamic, true);    // dynamic prevents it from going to recent-extract-paths
+           menu->AddItem (new BMenuItem (foundPath, msg), addIndex++);
+           addedCount++;
+           
+           if (genPath == true && archiveName.Length() > 0)
+           {
+               BString bufStr = foundPath;
+               bufStr << '/' << archiveName;
+               menu->AddItem (new BMenuItem (bufStr.String(), new BMessage (*msg)), addIndex++);
+               addedCount++;
+           }
         }
         
         if (addedCount > 0 && menu->CountItems() > addedCount)
-            menu->AddItem (new BSeparatorItem(), addedCount);
+           menu->AddItem (new BSeparatorItem(), addedCount);
     }
 }
 
@@ -4364,9 +4364,9 @@ BString MainWindow::StrippedArchiveName () const
 //    {
 //        int32 found = archiveName.FindLast (".");
 //        if (found > 0)
-//            archiveName.Remove (found, archiveName.Length() - found);
+//           archiveName.Remove (found, archiveName.Length() - found);
 //        else
-//            break;
+//           break;
 //    }
     
     // New from 0.05
@@ -4376,7 +4376,7 @@ BString MainWindow::StrippedArchiveName () const
     BMessage msg;
     const char *buf = NULL;
     buf = reinterpret_cast<const char*>(be_app->AppResources()->LoadResource (B_MESSAGE_TYPE,
-                                                                    "BEOS:FILE_TYPES", &size));
+                                                             "BEOS:FILE_TYPES", &size));
     msg.Unflatten (buf);
     
     type_code type;
@@ -4394,33 +4394,33 @@ BString MainWindow::StrippedArchiveName () const
     {
         if (msg.FindString (name, i, &mimeTypeStr) == B_OK)
         {
-            BMimeType mimeType (mimeTypeStr.String());
-            BMessage fileExtensions;
-            mimeType.GetFileExtensions (&fileExtensions);
-            
-            uint32 k = 0;
-            BString extension;
-            bool foundExt = false;
-            for (;;)
-            {
-                if (fileExtensions.FindString ("extensions", k++, &extension) != B_OK)
-                    break;
-                
-                if (extension.ByteAt(0) != '.')
-                    extension.Prepend ('.', 1L);
-                
-                found = archiveName.IFindLast (extension);
-                if (found > 1)
-                {
-                    archiveName.Remove (found, extension.Length());
-                    //archiveName.RemoveLast (extension);
-                    foundExt = true;
-                    break;
-                }
-            }
+           BMimeType mimeType (mimeTypeStr.String());
+           BMessage fileExtensions;
+           mimeType.GetFileExtensions (&fileExtensions);
+           
+           uint32 k = 0;
+           BString extension;
+           bool foundExt = false;
+           for (;;)
+           {
+               if (fileExtensions.FindString ("extensions", k++, &extension) != B_OK)
+                  break;
+               
+               if (extension.ByteAt(0) != '.')
+                  extension.Prepend ('.', 1L);
+               
+               found = archiveName.IFindLast (extension);
+               if (found > 1)
+               {
+                  archiveName.Remove (found, extension.Length());
+                  //archiveName.RemoveLast (extension);
+                  foundExt = true;
+                  break;
+               }
+           }
 
-            if (foundExt == true)
-                break;
+           if (foundExt == true)
+               break;
         }
     }
     
@@ -4429,18 +4429,18 @@ BString MainWindow::StrippedArchiveName () const
     int32 extraExtCount = 5;
     BString extraExts [] =
     {
-        ".pkg",            // 0
-        ".jar",            // 1
-        ".tgz",            // 2
-        ".tbz",            // 3
-        ".tbz2"            // 4
+        ".pkg",           // 0
+        ".jar",           // 1
+        ".tgz",           // 2
+        ".tbz",           // 3
+        ".tbz2"           // 4
     };
     
     for (int32 i = 0; i < extraExtCount; i++)
     {
         found = archiveName.IFindLast (extraExts[i]);
         if (found > 1)
-            archiveName.Remove (found, extraExts[i].Length());
+           archiveName.Remove (found, extraExts[i].Length());
     }
     
     return archiveName;

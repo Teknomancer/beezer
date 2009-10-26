@@ -24,28 +24,28 @@ BevelView::BevelView (BRect frame, const char *name, BevelType bevelMode, uint32
     switch (m_bevelType)
     {
         case btDeep: case btInset:
-            m_darkEdge1 = tint_color (backColor, B_DARKEN_2_TINT);
-            m_darkEdge2 = tint_color (backColor, B_DARKEN_3_TINT);
-            m_lightEdge = K_WHITE_COLOR;
-            m_edgeThickness = m_bevelType == btInset ? btInsetThickness : btDeepThickness;
-            break;
+           m_darkEdge1 = tint_color (backColor, B_DARKEN_2_TINT);
+           m_darkEdge2 = tint_color (backColor, B_DARKEN_3_TINT);
+           m_lightEdge = K_WHITE_COLOR;
+           m_edgeThickness = m_bevelType == btInset ? btInsetThickness : btDeepThickness;
+           break;
 
         case btOutset:
-            m_darkEdge1 = K_WHITE_COLOR;
-            m_darkEdge2 = tint_color (backColor, B_DARKEN_3_TINT);
-            m_lightEdge = tint_color (backColor, B_DARKEN_2_TINT);
-            m_edgeThickness = btOutsetThickness;
-            break;
+           m_darkEdge1 = K_WHITE_COLOR;
+           m_darkEdge2 = tint_color (backColor, B_DARKEN_3_TINT);
+           m_lightEdge = tint_color (backColor, B_DARKEN_2_TINT);
+           m_edgeThickness = btOutsetThickness;
+           break;
         
         case btBulge:
-            m_lightEdge = tint_color (backColor, B_DARKEN_3_TINT);
-            m_darkEdge2 = tint_color (backColor, B_DARKEN_2_TINT);
-            m_darkEdge1 = tint_color (backColor, B_LIGHTEN_1_TINT);
-            m_edgeThickness = btBulgeThickness;
-            break;
+           m_lightEdge = tint_color (backColor, B_DARKEN_3_TINT);
+           m_darkEdge2 = tint_color (backColor, B_DARKEN_2_TINT);
+           m_darkEdge1 = tint_color (backColor, B_LIGHTEN_1_TINT);
+           m_edgeThickness = btBulgeThickness;
+           break;
         
         case btNoBevel:
-            break;
+           break;
     }
     
     m_cachedRect = Bounds();
@@ -59,35 +59,35 @@ void BevelView::Draw (BRect updateRect)
     switch (m_bevelType)
     {
         case btNoBevel:
-            break;
+           break;
         
         case btDeep: case btBulge:
         {
-            SetHighColor (m_darkEdge2);
-            StrokeRect (BRect (m_cachedRect.left + 1, m_cachedRect.top + 1, m_cachedRect.right - 1,
-                            m_cachedRect.bottom - 1));
-            
-            BeginLineArray (4L);
-            AddLine (m_cachedRect.LeftTop(), m_cachedRect.RightTop(), m_darkEdge1);
-            AddLine (m_cachedRect.LeftTop(), m_cachedRect.LeftBottom(), m_darkEdge1);
-            
-            AddLine (m_cachedRect.RightTop(), m_cachedRect.RightBottom(), m_lightEdge);
-            AddLine (m_cachedRect.RightBottom(), m_cachedRect.LeftBottom(), m_lightEdge);
-            EndLineArray ();
-            break;
+           SetHighColor (m_darkEdge2);
+           StrokeRect (BRect (m_cachedRect.left + 1, m_cachedRect.top + 1, m_cachedRect.right - 1,
+                         m_cachedRect.bottom - 1));
+           
+           BeginLineArray (4L);
+           AddLine (m_cachedRect.LeftTop(), m_cachedRect.RightTop(), m_darkEdge1);
+           AddLine (m_cachedRect.LeftTop(), m_cachedRect.LeftBottom(), m_darkEdge1);
+           
+           AddLine (m_cachedRect.RightTop(), m_cachedRect.RightBottom(), m_lightEdge);
+           AddLine (m_cachedRect.RightBottom(), m_cachedRect.LeftBottom(), m_lightEdge);
+           EndLineArray ();
+           break;
         }
         
         case btInset: case btOutset:
         {
-            rgb_color c = m_lightEdge;
-            c.red += 30; c.green += 30; c.blue += 30;
-            SetHighColor (m_bevelType == btInset ? m_lightEdge : c);
-            StrokeRect (Bounds());
-            
-            SetHighColor (m_darkEdge1);
-            StrokeLine (m_cachedRect.LeftTop(), m_cachedRect.RightTop());
-            StrokeLine (m_cachedRect.LeftTop(), m_cachedRect.LeftBottom());
-            break;
+           rgb_color c = m_lightEdge;
+           c.red += 30; c.green += 30; c.blue += 30;
+           SetHighColor (m_bevelType == btInset ? m_lightEdge : c);
+           StrokeRect (Bounds());
+           
+           SetHighColor (m_darkEdge1);
+           StrokeLine (m_cachedRect.LeftTop(), m_cachedRect.RightTop());
+           StrokeLine (m_cachedRect.LeftTop(), m_cachedRect.LeftBottom());
+           break;
         }    
     }
     

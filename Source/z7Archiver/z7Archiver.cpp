@@ -69,32 +69,32 @@ status_t z7Archiver::ReadOpen (FILE *fp)
 {
     uint16 len = B_PATH_NAME_LENGTH + 500;
     char lineString[len],
-            attrStr[25], sizeStr[25], packedStr[20], dayStr[5],
-            monthStr[5], yearStr[8], hourStr[5], minuteStr[5], secondStr[5], dateStr[90],
-            pathStr[B_PATH_NAME_LENGTH + 1];
+           attrStr[25], sizeStr[25], packedStr[20], dayStr[5],
+           monthStr[5], yearStr[8], hourStr[5], minuteStr[5], secondStr[5], dateStr[90],
+           pathStr[B_PATH_NAME_LENGTH + 1];
     uint32 lineCount = 0;
 
     while (fgets (lineString, len, fp) && !feof (fp))
     {
         // skip first 8 lines
         if (lineCount++ < 8)
-            continue;
+           continue;
 
         // list ends with "----" line, and last line contains sums, so break on first line with "-" as first char.
         if (lineString[0] == '-')
-            break;
+           break;
         
         lineString[strlen (lineString) - 1] = '\0';
         packedStr[0] = 0;
 
         sscanf (lineString, 
-                "%[0-9]-%[0-9]-%[0-9] %[0-9]:%[0-9]:%[0-9] %[^ ] %[0-9] %[0-9]", yearStr, monthStr, dayStr,
-                hourStr, minuteStr, secondStr, attrStr, sizeStr, packedStr);
+               "%[0-9]-%[0-9]-%[0-9] %[0-9]:%[0-9]:%[0-9] %[^ ] %[0-9] %[0-9]", yearStr, monthStr, dayStr,
+               hourStr, minuteStr, secondStr, attrStr, sizeStr, packedStr);
 
         // packed size is not there if file is in solid block with others, only first from block has packed
         // size which shows size for whole block.
         if (!strcmp (packedStr, ""))
-            strcpy (packedStr, "0");
+           strcpy (packedStr, "0");
 
         // file name always starts from 53rd char
         strncpy(pathStr, lineString+53, B_PATH_NAME_LENGTH);
@@ -106,16 +106,16 @@ status_t z7Archiver::ReadOpen (FILE *fp)
         // Check if it's directory
         if (strstr(attrStr, "D") != NULL)
         {
-            // Beezer's window will not show empty directory if it doesn't have "/" at the and of name :(
-            strcpy (pathStr + strlen (pathStr), "/");
+           // Beezer's window will not show empty directory if it doesn't have "/" at the and of name :(
+           strcpy (pathStr + strlen (pathStr), "/");
 
-            m_entriesList.AddItem (new ArchiveEntry (true, pathStr, sizeStr, packedStr, dateStr, timeValue,
-                                            "", ""));
+           m_entriesList.AddItem (new ArchiveEntry (true, pathStr, sizeStr, packedStr, dateStr, timeValue,
+                                        "", ""));
         }
         else
         {
-            m_entriesList.AddItem (new ArchiveEntry (false, pathStr, sizeStr, packedStr, dateStr, timeValue,
-                                            "", ""));
+           m_entriesList.AddItem (new ArchiveEntry (false, pathStr, sizeStr, packedStr, dateStr, timeValue,
+                                        "", ""));
         }
     }
 
@@ -158,7 +158,7 @@ status_t z7Archiver::Open (entry_ref *ref, BMessage *fileList)
 //=============================================================================================================//
 
 status_t z7Archiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger *progress,
-                        volatile bool *cancel)
+                      volatile bool *cancel)
 {
     BEntry dirEntry;
     entry_ref dirRef;
@@ -168,7 +168,7 @@ status_t z7Archiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger
     if (progress)        // Perform output directory checking only when a messenger is passed
     {
         if (dirEntry.Exists() == false || dirEntry.IsDirectory() == false)
-            return BZR_EXTRACT_DIR_INIT_ERROR;
+           return BZR_EXTRACT_DIR_INIT_ERROR;
     }
 
     BPath dirPath (refToDir);
@@ -182,7 +182,7 @@ status_t z7Archiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger
         uint32 type;
         message->GetInfo (kPath, &type, &count);
         if (type != B_STRING_TYPE)
-            return BZR_UNKNOWN;
+           return BZR_UNKNOWN;
     }
     
     // Setup argv, fill with selection names if needed
@@ -194,13 +194,13 @@ status_t z7Archiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger
     if (progress)    // Only enable extract options when user is NOT viewing
     {
         if (m_settingsMenu->FindItem (kNoOverwrite)->IsMarked())
-            m_pipeMgr << "-aos";
+           m_pipeMgr << "-aos";
         else if (m_settingsMenu->FindItem (kRenameExisting)->IsMarked())
-            m_pipeMgr << "-aot";
+           m_pipeMgr << "-aot";
         else if (m_settingsMenu->FindItem (kRenameExtracted)->IsMarked())
-            m_pipeMgr << "-aou";
+           m_pipeMgr << "-aou";
         else
-            m_pipeMgr << "-aoa";
+           m_pipeMgr << "-aoa";
     }
     else
         m_pipeMgr << "-aoa";
@@ -218,7 +218,7 @@ status_t z7Archiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger
     {
         const char *pathString = NULL;
         if (message->FindString (kPath, i, &pathString) == B_OK)
-            m_pipeMgr << SupressWildcards (pathString);
+           m_pipeMgr << SupressWildcards (pathString);
     }
 
     FILE *out;
@@ -226,7 +226,7 @@ status_t z7Archiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
     
     if (tid == B_ERROR || tid == B_NO_MEMORY)
-        return B_ERROR;            // Handle 7zip unloadable error here
+        return B_ERROR;           // Handle 7zip unloadable error here
 
     if (progress)
         resume_thread (tid);
@@ -274,7 +274,7 @@ status_t z7Archiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool 
     while (fgets (lineString, 927, fp))
     {
         if (cancel && *cancel == true)
-            return BZR_CANCEL_ARCHIVER;
+           return BZR_CANCEL_ARCHIVER;
 
         lineString[strlen (lineString) - 1] = '\0';
         buf = lineString; 
@@ -282,26 +282,26 @@ status_t z7Archiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool 
 
         if (found == 0)
         {
-            updateMessage.RemoveName ("error");
-            buf.ReplaceFirst("Extracting  ", "");
-            if ((found = buf.FindLast("     ")) > 0)
-            {
-                updateMessage.AddString ("error", buf.String()+found+5);
-                buf.Truncate (found);
-                exitCode = BZR_ERRSTREAM_FOUND;
-            }
-            
-            updateMessage.RemoveName ("text");
-            updateMessage.AddString ("text", LeafFromPath (buf.String()));
-            progress->SendMessage (&updateMessage, &reply);
+           updateMessage.RemoveName ("error");
+           buf.ReplaceFirst("Extracting  ", "");
+           if ((found = buf.FindLast("     ")) > 0)
+           {
+               updateMessage.AddString ("error", buf.String()+found+5);
+               buf.Truncate (found);
+               exitCode = BZR_ERRSTREAM_FOUND;
+           }
+           
+           updateMessage.RemoveName ("text");
+           updateMessage.AddString ("text", LeafFromPath (buf.String()));
+           progress->SendMessage (&updateMessage, &reply);
         }
         else if ((found = buf.FindFirst ("No files to process")) == 0)
         {
-            updateMessage.RemoveName ("error");
-            updateMessage.AddString ("error", "Files not found");
-            updateMessage.RemoveName ("text");
-            progress->SendMessage (&updateMessage, &reply);
-            exitCode = BZR_ERROR;
+           updateMessage.RemoveName ("error");
+           updateMessage.AddString ("error", "Files not found");
+           updateMessage.RemoveName ("text");
+           progress->SendMessage (&updateMessage, &reply);
+           exitCode = BZR_ERROR;
         }
     }
 
@@ -324,7 +324,7 @@ status_t z7Archiver::Test (char *&outputStr, BMessenger *progress, volatile bool
     m_pipeMgr << m_7zPath << "t";
     
     // 0.07: Added password input while testing, also
-    //         Added "-bd" flag to disable percentage display in output
+    //        Added "-bd" flag to disable percentage display in output
     BString combo = Password ();
     if (combo != "")
         combo.Prepend ("-p");
@@ -384,8 +384,8 @@ status_t z7Archiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress,
     {
         if (cancel && *cancel == true)
         {
-            exitCode = BZR_CANCEL_ARCHIVER;
-            break;
+           exitCode = BZR_CANCEL_ARCHIVER;
+           break;
         }
         
         lineString[strlen (lineString) - 1] = '\0';
@@ -395,39 +395,39 @@ status_t z7Archiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress,
         // Skip blank lines
         if (strlen (lineString) > 1)
         {
-            char *testingStr = lineString;
-            testingStr += CountCharsInFront (testingStr, ' ');
-            
-            if (strncmp (testingStr, "Testing", 7) == 0)
-            {
-                BString pathStr = testingStr;
-                pathStr.Remove (0, 12);        // Removes "Testing     "
-                
-                // Trim right side spaces as this is only a test operation
-                while (pathStr[pathStr.Length() - 1] == ' ')     // Trim right hand side spaces
-                    pathStr.RemoveLast (" ");
-                
-                updateMessage.RemoveName ("text");
-                updateMessage.AddString ("text", FinalPathComponent (pathStr.String()));
-                progress->SendMessage (&updateMessage, &reply);
-            }
-            else if (strncmp (testingStr, "Processing archive:", 19) == 0)        // test process started
-                startedActualTest = true;
-            else if (strncmp (testingStr, "Everything is Ok", 16) == 0 && errFlag == false)
-            {
-                 // Important we check this before error, error should be the last to be checked                
-                 exitCode = BZR_DONE;
-            }
-            else if (startedActualTest == true)
-            {
-                // Check for empty archive warning, in which case it isn't an error, so skip setting errFlag
-                if (strncmp (testingStr, "No files to process", 19) != 0)
-                {
-                    // most possibly an error as test has started and it isn't one of the above lines    
-                    errFlag = true;
-                    exitCode = BZR_ERRSTREAM_FOUND;
-                }
-            }
+           char *testingStr = lineString;
+           testingStr += CountCharsInFront (testingStr, ' ');
+           
+           if (strncmp (testingStr, "Testing", 7) == 0)
+           {
+               BString pathStr = testingStr;
+               pathStr.Remove (0, 12);        // Removes "Testing     "
+               
+               // Trim right side spaces as this is only a test operation
+               while (pathStr[pathStr.Length() - 1] == ' ')     // Trim right hand side spaces
+                  pathStr.RemoveLast (" ");
+               
+               updateMessage.RemoveName ("text");
+               updateMessage.AddString ("text", FinalPathComponent (pathStr.String()));
+               progress->SendMessage (&updateMessage, &reply);
+           }
+           else if (strncmp (testingStr, "Processing archive:", 19) == 0)        // test process started
+               startedActualTest = true;
+           else if (strncmp (testingStr, "Everything is Ok", 16) == 0 && errFlag == false)
+           {
+                // Important we check this before error, error should be the last to be checked               
+                exitCode = BZR_DONE;
+           }
+           else if (startedActualTest == true)
+           {
+               // Check for empty archive warning, in which case it isn't an error, so skip setting errFlag
+               if (strncmp (testingStr, "No files to process", 19) != 0)
+               {
+                  // most possibly an error as test has started and it isn't one of the above lines    
+                  errFlag = true;
+                  exitCode = BZR_ERRSTREAM_FOUND;
+               }
+           }
         }
     }
     
@@ -475,14 +475,14 @@ bool z7Archiver::SupportsPassword () const
 //=============================================================================================================//
 
 status_t z7Archiver::Add (bool createMode, const char *relativePath, BMessage *message, BMessage *addedPaths,
-                        BMessenger *progress, volatile bool *cancel)
+                      BMessenger *progress, volatile bool *cancel)
 {
     // Don't check if archive exists in createMode, otherwise check
     if (createMode == false)
     {
-         BEntry archiveEntry (&m_archiveRef, true);
+        BEntry archiveEntry (&m_archiveRef, true);
         if (archiveEntry.Exists() == false)
-            return BZR_ARCHIVE_PATH_INIT_ERROR;
+           return BZR_ARCHIVE_PATH_INIT_ERROR;
     }
 
     m_pipeMgr.FlushArgs();
@@ -523,7 +523,7 @@ status_t z7Archiver::Add (bool createMode, const char *relativePath, BMessage *m
     {
         const char *pathString = NULL;
         if (message->FindString (kPath, i, &pathString) == B_OK)
-            m_pipeMgr << pathString;
+           m_pipeMgr << pathString;
     }
 
     // 7z[a] outputs everything to stderr! so 7zip worker redirects everything to stdout
@@ -574,28 +574,28 @@ status_t z7Archiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progre
     {
         if (cancel && *cancel == true)
         {
-            exitCode = BZR_CANCEL_ARCHIVER;
-            break;
+           exitCode = BZR_CANCEL_ARCHIVER;
+           break;
         }
 
         lineString[strlen (lineString) - 1] = '\0';
         if (strncmp (lineString, "Compressing  ", 13) == 0)
         {
-            BString filePath = lineString + 13;
-            const char *fileName = FinalPathComponent (filePath.String());
+           BString filePath = lineString + 13;
+           const char *fileName = FinalPathComponent (filePath.String());
 
-            // Don't update progress bar for folders
-            if (fileName[strlen(fileName)-1] != '/' && progress)
-            {
-                updateMessage.RemoveName ("text");
-                updateMessage.AddString ("text", fileName);
-                progress->SendMessage (&updateMessage, &reply);
-            }
-            
-            addedPaths->AddString (kPath, filePath.String());
+           // Don't update progress bar for folders
+           if (fileName[strlen(fileName)-1] != '/' && progress)
+           {
+               updateMessage.RemoveName ("text");
+               updateMessage.AddString ("text", fileName);
+               progress->SendMessage (&updateMessage, &reply);
+           }
+           
+           addedPaths->AddString (kPath, filePath.String());
         }
         else if (strncmp (lineString, "Everything is Ok", 16) == 0)
-            noError = true;
+           noError = true;
     }
     
     if (noError == false)
@@ -610,84 +610,84 @@ status_t z7Archiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progre
 //        int c;
 //        while (1)
 //        {
-//            c = fgetc (fp);
-//            if (c == EOF || c == '\r' || c == '\n')
-//            {
-//                readingPercent = 0;
-//                break;
-//            }
-//            else if (c == '')
-//            {
-//                readingPercent++;
-//                if (readingPercent == 1 && currentFileName.Length() < 1)
-//                    break;
-//            }
-//            else if (c == '%' && readingPercent > 0)
-//            {
-//                readingPercent = 0;
-//                break;
-//            }
-//            else
-//                buf << (char)c;
+//           c = fgetc (fp);
+//           if (c == EOF || c == '\r' || c == '\n')
+//           {
+//               readingPercent = 0;
+//               break;
+//           }
+//           else if (c == '')
+//           {
+//               readingPercent++;
+//               if (readingPercent == 1 && currentFileName.Length() < 1)
+//                  break;
+//           }
+//           else if (c == '%' && readingPercent > 0)
+//           {
+//               readingPercent = 0;
+//               break;
+//           }
+//           else
+//               buf << (char)c;
 //        }
 //
 //        if (c == EOF)
-//            break;
+//           break;
 //        
 //        if (cancel && *cancel == true)
 //        {
-//            exitCode = BZR_CANCEL_ARCHIVER;
-//            break;
+//           exitCode = BZR_CANCEL_ARCHIVER;
+//           break;
 //        }
 //
 //        if (c == '\r')
-//            continue;
+//           continue;
 //        else if (c == '' && readingPercent == 1 && currentFileName.Length() < 1)
 //        {
-//            int32 found = buf.FindFirst ("Compressing");
-//            if (found == 0)
-//            {
-//                buf.ReplaceFirst ("Compressing  ", "");
-//                // TODO: again problem with spaces... p7zip puts space chars between file name and  staring percents
-//                //        since it's just for reading progress output we can leave those spaces for now.
-//                //        When p7zip will fix that, we can add better checking here ;)
-//                currentFileName = buf;
-//                
-//                // TODO: uncomment this when Beezer will let for partial updates (ie. 25%, 33%...).
-//                //updateMessage.RemoveName ("text");
-//                //updateMessage.AddString ("text", LeafFromPath (buf.String()));
-//                //updateMessage.ReplaceFloat("delta", 0.1);
-//                //progress->SendMessage (&updateMessage, &reply);
-//            }
+//           int32 found = buf.FindFirst ("Compressing");
+//           if (found == 0)
+//           {
+//               buf.ReplaceFirst ("Compressing  ", "");
+//               // TODO: again problem with spaces... p7zip puts space chars between file name and  staring percents
+//               //        since it's just for reading progress output we can leave those spaces for now.
+//               //        When p7zip will fix that, we can add better checking here ;)
+//               currentFileName = buf;
+//               
+//               // TODO: uncomment this when Beezer will let for partial updates (ie. 25%, 33%...).
+//               //updateMessage.RemoveName ("text");
+//               //updateMessage.AddString ("text", LeafFromPath (buf.String()));
+//               //updateMessage.ReplaceFloat("delta", 0.1);
+//               //progress->SendMessage (&updateMessage, &reply);
+//           }
 //        }
 //        else if (c == '%')
 //        {
-//            int percent = atoi(buf.String());
-//            if (percent > 0)
-//            {
-//                // TODO: uncomment this when Beezer will let for partial updates (ie. 25%, 33%...).
-//                //updateMessage.ReplaceFloat("delta", percent / 100);
-//                //progress->SendMessage (&updateMessage, &reply);
-//            }
+//           int percent = atoi(buf.String());
+//           if (percent > 0)
+//           {
+//               // TODO: uncomment this when Beezer will let for partial updates (ie. 25%, 33%...).
+//               //updateMessage.ReplaceFloat("delta", percent / 100);
+//               //progress->SendMessage (&updateMessage, &reply);
+//           }
 //        }
 //        else if (c == '\n' && currentFileName.Length() > 0)
 //        {
-//            // TODO: comment out this when Beezer will let for partial updates (ie. 25%, 33%...)?
-//            updateMessage.RemoveName ("text");
-//            updateMessage.AddString ("text", LeafFromPath (currentFileName.String()));
+//           // TODO: comment out this when Beezer will let for partial updates (ie. 25%, 33%...)?
+//           updateMessage.RemoveName ("text");
+//           updateMessage.AddString ("text", LeafFromPath (currentFileName.String()));
 //
-//            // TODO: uncomment this when Beezer will let for partial updates (ie. 25%, 33%...).
-//            //updateMessage.ReplaceFloat("delta", 1.0);
-//            progress->SendMessage (&updateMessage, &reply);
-//            addedPaths->AddString (kPath, currentFileName.String());
-//            currentFileName = "";
+//           // TODO: uncomment this when Beezer will let for partial updates (ie. 25%, 33%...).
+//           //updateMessage.ReplaceFloat("delta", 1.0);
+//           progress->SendMessage (&updateMessage, &reply);
+//           addedPaths->AddString (kPath, currentFileName.String());
+//           currentFileName = "";
 //        }
 //        else
 //        {
-//            int32 found = buf.FindFirst("Error:");
-//            if (found == 0) {
-//                exitCode = BZR_ERRSTREAM_FOUND;
-//            }
+//           int32 found = buf.FindFirst("Error:");
+//           if (found == 0) {
+//               exitCode = BZR_ERRSTREAM_FOUND;
+//           }
 //        }
 //    }
 
@@ -697,7 +697,7 @@ status_t z7Archiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progre
 //=============================================================================================================//
 
 status_t z7Archiver::Delete (char *&outputStr, BMessage *message, BMessenger *progress,
-                        volatile bool *cancel)
+                      volatile bool *cancel)
 {
     // WARNING! 7z currently can't delete/update specific files in solid block, and will return
     //    error when trying to delete such file
@@ -716,7 +716,7 @@ status_t z7Archiver::Delete (char *&outputStr, BMessage *message, BMessenger *pr
         uint32 type;
         message->GetInfo (kPath, &type, &count);
         if (type != B_STRING_TYPE)
-            return BZR_UNKNOWN;
+           return BZR_UNKNOWN;
     }
 
     m_pipeMgr.FlushArgs();
@@ -727,7 +727,7 @@ status_t z7Archiver::Delete (char *&outputStr, BMessage *message, BMessenger *pr
     {
         const char *pathString = NULL;
         if (message->FindString (kPath, i, &pathString) == B_OK)
-            m_pipeMgr << SupressWildcardSet (pathString);
+           m_pipeMgr << SupressWildcardSet (pathString);
     }
     
     // 7z outputs everything to stderr!
@@ -765,7 +765,7 @@ status_t z7Archiver::Delete (char *&outputStr, BMessage *message, BMessenger *pr
 //=============================================================================================================//
 
 status_t z7Archiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progress,
-                        volatile bool *cancel)
+                      volatile bool *cancel)
 {
     status_t exitCode = B_ERROR;
     BString fullOutputStr;
@@ -780,16 +780,16 @@ status_t z7Archiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progres
     while (fgets (lineString, len - 1, fp))
     {
         if (cancel && *cancel == true)
-            return BZR_CANCEL_ARCHIVER;
+           return BZR_CANCEL_ARCHIVER;
 
         lineString[strlen (lineString) - 1] = '\0';
         fullOutputStr << lineString << "\n";
 
         if (strstr (lineString, "Everything is Ok") == lineString)
-            exitCode = BZR_DONE;
+           exitCode = BZR_DONE;
 
         if (strstr (lineString, "Error:") == lineString)
-            exitCode = BZR_ERRSTREAM_FOUND;
+           exitCode = BZR_ERRSTREAM_FOUND;
     }
 
     outputStr = new char[fullOutputStr.Length() + 1];
@@ -800,7 +800,7 @@ status_t z7Archiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progres
 //=============================================================================================================//
 
 status_t z7Archiver::Create (BPath *archivePath, const char *relPath, BMessage *fileList, BMessage *addedPaths,
-                                BMessenger *progress, volatile bool *cancel)
+                             BMessenger *progress, volatile bool *cancel)
 {
     // true=>normalize path, which means everything otherthan the leaf must exist,
     // meaning we have everything ready and only need to create the leaf (by add)
@@ -813,7 +813,7 @@ status_t z7Archiver::Create (BPath *archivePath, const char *relPath, BMessage *
     {
         BEntry tempEntry (m_archivePath.Path(), true);
         if (tempEntry.Exists())
-            tempEntry.GetRef (&m_archiveRef);
+           tempEntry.GetRef (&m_archiveRef);
         
         SetMimeType();
     }

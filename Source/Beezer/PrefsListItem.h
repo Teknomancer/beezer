@@ -19,17 +19,17 @@ class PrefsListItem : public BStringItem
         virtual ~PrefsListItem ();
         
         // Inherited hooks
-        virtual void         DrawItem (BView *owner, BRect frame, bool complete = false);
+        virtual void        DrawItem (BView *owner, BRect frame, bool complete = false);
         virtual float        FontHeight () const;
         
     private:
         // Private members
-        float                m_fontDelta;
-        bool                 m_makeBold;
-        const char          *m_label;
-        BBitmap             *m_bitmap;
-        rgb_color            m_selBackColor,
-                             m_selTextColor;
+        float               m_fontDelta;
+        bool                m_makeBold;
+        const char         *m_label;
+        BBitmap            *m_bitmap;
+        rgb_color           m_selBackColor,
+                          m_selTextColor;
 };
 
 #endif    /* _PREFS_LIST_ITEM_H */

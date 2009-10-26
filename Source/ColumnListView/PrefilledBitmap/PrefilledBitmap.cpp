@@ -34,9 +34,9 @@ PrefilledBitmap::PrefilledBitmap(BRect bounds, color_space space, const void *da
     if(length == 0)
     {
         if(space == B_CMAP8)
-            length = ((int32(bounds.right-bounds.left+1)+3)&0xFFFFFFFC)*int32(bounds.bottom-bounds.top+1);
+           length = ((int32(bounds.right-bounds.left+1)+3)&0xFFFFFFFC)*int32(bounds.bottom-bounds.top+1);
         else if(space == B_RGB32)
-            length = int32(bounds.right-bounds.left+1)*int32(bounds.bottom-bounds.top+1)*3;
+           length = int32(bounds.right-bounds.left+1)*int32(bounds.bottom-bounds.top+1)*3;
     }
     SetBits(data, length, 0, space);
 }

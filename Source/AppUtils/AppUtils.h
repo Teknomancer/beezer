@@ -21,13 +21,13 @@ extern BLocker        _apputils_locker;
 
 // Global functions (these should never access data/resources defined outside them)
 extern BString        StringFromBytes (int64 bytes);
-extern int32          CountCharsInFront (char *str, char whatChar);
-extern int32          LastOccurrence (const char *buffer, char whatChar);
-extern char          *Extension (const char *fileName, int extLen);
-extern char          *ParentPath (const char *pathStr, bool truncateSlash);
+extern int32         CountCharsInFront (char *str, char whatChar);
+extern int32         LastOccurrence (const char *buffer, char whatChar);
+extern char         *Extension (const char *fileName, int extLen);
+extern char         *ParentPath (const char *pathStr, bool truncateSlash);
 extern const char    *LeafFromPath (const char *path);
 extern const char    *FinalPathComponent (const char *path);
-extern bool           StrEndsWith (char *str, char *end);
+extern bool          StrEndsWith (char *str, char *end);
 extern BString        SupressWildcards (const char *str);
 extern BString        SupressWildcardSet (const char *str);
 

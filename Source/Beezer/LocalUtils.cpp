@@ -60,13 +60,13 @@ bool OpenEntry (const char *tempDirPath, const char *entryPath, bool openWith)
         // Now viewing archives from Beezer when Beezer is preferred app will work
         if (result == B_BAD_VALUE)
         {
-            entry_ref appRef;
-            be_roster->FindApp (&ref, &appRef);
-            team_id appID = be_roster->TeamFor (&appRef);
-            BMessage openMsg (B_REFS_RECEIVED);
-            openMsg.AddRef ("refs", &ref);
-            if (be_roster->IsRunning (&appRef))
-                BMessenger (NULL,appID).SendMessage (&openMsg);
+           entry_ref appRef;
+           be_roster->FindApp (&ref, &appRef);
+           team_id appID = be_roster->TeamFor (&appRef);
+           BMessage openMsg (B_REFS_RECEIVED);
+           openMsg.AddRef ("refs", &ref);
+           if (be_roster->IsRunning (&appRef))
+               BMessenger (NULL,appID).SendMessage (&openMsg);
         }
     }
     else
@@ -85,19 +85,19 @@ bool TrackerOpenWith (entry_ref *ref)
     {
         if (entry.IsDirectory() == false)
         {
-             // Update mime-type of the entry (sometimes mime isn't correct for newly extracted entries
-            // in which case the Open-With operation will produce only the generic list of apps like
-            // DiskProbe etc. -- Here we force updating of the mime-type which seems to work fine
-            BPath pathOfEntry;
-            entry.GetPath (&pathOfEntry);
-            update_mime_info (pathOfEntry.Path(), true, true, true);
-            
-            BMessage trakMsg (B_REFS_RECEIVED);
-            trakMsg.AddInt32 ("launchUsingSelector", 1L);
-            trakMsg.AddRef ("refs", ref);
-            
-            if (be_roster->IsRunning (K_TRACKER_SIGNATURE))
-                BMessenger(K_TRACKER_SIGNATURE).SendMessage (&trakMsg);
+            // Update mime-type of the entry (sometimes mime isn't correct for newly extracted entries
+           // in which case the Open-With operation will produce only the generic list of apps like
+           // DiskProbe etc. -- Here we force updating of the mime-type which seems to work fine
+           BPath pathOfEntry;
+           entry.GetPath (&pathOfEntry);
+           update_mime_info (pathOfEntry.Path(), true, true, true);
+           
+           BMessage trakMsg (B_REFS_RECEIVED);
+           trakMsg.AddInt32 ("launchUsingSelector", 1L);
+           trakMsg.AddRef ("refs", ref);
+           
+           if (be_roster->IsRunning (K_TRACKER_SIGNATURE))
+               BMessenger(K_TRACKER_SIGNATURE).SendMessage (&trakMsg);
         }
     }
     else
@@ -117,7 +117,7 @@ void TrackerOpenFolder (entry_ref *refToDir)
         trakMsg.AddRef ("refs", refToDir);
         
         if (be_roster->IsRunning (K_TRACKER_SIGNATURE))
-            BMessenger(K_TRACKER_SIGNATURE).SendMessage (&trakMsg);
+           BMessenger(K_TRACKER_SIGNATURE).SendMessage (&trakMsg);
     }
 }
 
@@ -137,18 +137,18 @@ BString CommaFormatString (off_t num)
     {
         uint32 charsTillComma = length % 3;
         if (charsTillComma == 0)
-            charsTillComma = 3;
+           charsTillComma = 3;
 
         uint32 numberIndex = 0;
 
         while (numStr[numberIndex])
         {
-            bytes += numStr[numberIndex++];
-            if (--charsTillComma == 0 && numStr[numberIndex])
-            {
-                bytes += ',';
-                charsTillComma = 3;
-            }
+           bytes += numStr[numberIndex++];
+           if (--charsTillComma == 0 && numStr[numberIndex])
+           {
+               bytes += ',';
+               charsTillComma = 3;
+           }
         }
     }
     else
@@ -203,15 +203,15 @@ int64 BytesFromString (char *text)
 
     char *buffer = new char[strlen (text) + 1];
     strcpy (buffer, text);
-    val = strtod (buffer, &end);            // Bytes
+    val = strtod (buffer, &end);           // Bytes
 
-    if (strstr (buffer, "KB"))                // KB
+    if (strstr (buffer, "KB"))               // KB
         val *= kKBSize;
-    else if (strstr (buffer, "MB"))            // MB
+    else if (strstr (buffer, "MB"))           // MB
         val *= kMBSize;
-    else if (strstr (buffer, "GB"))            // GB
+    else if (strstr (buffer, "GB"))           // GB
         val *= kGBSize;
-    else if (strstr (buffer, "TB"))            // TB
+    else if (strstr (buffer, "TB"))           // TB
         val *= kTBSize;
 
     delete[] buffer;
@@ -234,15 +234,15 @@ BString LocaleStringFromBytes (int64 v)
     {
         char buf[50];
         if (v > (1024LL * 1024LL * 1024LL * 1024LL))
-            sprintf (buf, "%.2f %s", ((double)v) / (1024LL * 1024LL * 1024LL * 1024LL), str (S_PREFIX_TB));
+           sprintf (buf, "%.2f %s", ((double)v) / (1024LL * 1024LL * 1024LL * 1024LL), str (S_PREFIX_TB));
         else if (v > (1024LL * 1024LL * 1024LL))
-            sprintf(buf, "%.2f %s", ((double)v)/(1024LL * 1024LL * 1024LL), str (S_PREFIX_GB));
+           sprintf(buf, "%.2f %s", ((double)v)/(1024LL * 1024LL * 1024LL), str (S_PREFIX_GB));
         else if (v > (1024LL * 1024LL))
-            sprintf(buf, "%.2f %s", ((double)v) / (1024LL * 1024LL), str (S_PREFIX_MB));
+           sprintf(buf, "%.2f %s", ((double)v) / (1024LL * 1024LL), str (S_PREFIX_MB));
         else if (v > (1024LL))
-            sprintf(buf, "%.2f %s", ((double)v) / 1024LL, str (S_PREFIX_KB));
+           sprintf(buf, "%.2f %s", ((double)v) / 1024LL, str (S_PREFIX_KB));
         else
-            sprintf(buf, "%Li %s", v, str (S_PREFIX_BYTES));
+           sprintf(buf, "%Li %s", v, str (S_PREFIX_BYTES));
         
         str = buf;
     }
@@ -278,7 +278,7 @@ BString LocaleStringFromBytes (int64 v)
 //    {
 //        sprintf (buffer, "%Ld bytes", value);
 //        if (view->StringWidth (buffer) > width)
-//            sprintf (buffer, "%Ld B", value);
+//           sprintf (buffer, "%Ld B", value);
 //    }
 //    else
 //    {
@@ -286,49 +286,49 @@ BString LocaleStringFromBytes (int64 v)
 //        float floatValue;
 //        if (value >= kTBSize)
 //        {
-//            suffix = "TB";
-//            floatValue = (float)value / kTBSize;
+//           suffix = "TB";
+//           floatValue = (float)value / kTBSize;
 //        }
 //        else if (value >= kGBSize)
 //        {
-//            suffix = "GB";
-//            floatValue = (float)value / kGBSize;
+//           suffix = "GB";
+//           floatValue = (float)value / kGBSize;
 //        }
 //        else if (value >= kMBSize)
 //        {
-//            suffix = "MB";
-//            floatValue = (float)value / kMBSize;
+//           suffix = "MB";
+//           floatValue = (float)value / kMBSize;
 //        }
 //        else
 //        {
-//            suffix = "KB";
-//            floatValue = (float)value / kKBSize;
+//           suffix = "KB";
+//           floatValue = (float)value / kKBSize;
 //        }
 //
 //        for (int32 index = 0; ; index++)
 //        {
-//            if (!kSizeFormats[index])
-//                break;
+//           if (!kSizeFormats[index])
+//               break;
 //
-//            sprintf (buffer, kSizeFormats[index], floatValue, suffix);
+//           sprintf (buffer, kSizeFormats[index], floatValue, suffix);
 //
-////            // strip off an insignificant zero so we don't get readings such as 1.00
-////            char *period = 0;
-////            for (char *tmp = buffer; *tmp; tmp++)
-////                if (*tmp == '.')
-////                    period = tmp;
-////            
-////            // move the rest of the string over the insignificant zero
-////            if (period && period[1] && period[2] == '0')
-////                for (char *tmp = &period[2]; *tmp; tmp++)
-////                    *tmp = tmp[1];
-//            
-//            float resultWidth = view->StringWidth (buffer);
-//            if (resultWidth <= width)
-//            {
-//                *result = buffer;
-//                return resultWidth;
-//            }
+////           // strip off an insignificant zero so we don't get readings such as 1.00
+////           char *period = 0;
+////           for (char *tmp = buffer; *tmp; tmp++)
+////               if (*tmp == '.')
+////                  period = tmp;
+////           
+////           // move the rest of the string over the insignificant zero
+////           if (period && period[1] && period[2] == '0')
+////               for (char *tmp = &period[2]; *tmp; tmp++)
+////                  *tmp = tmp[1];
+//           
+//           float resultWidth = view->StringWidth (buffer);
+//           if (resultWidth <= width)
+//           {
+//               *result = buffer;
+//               return resultWidth;
+//           }
 //        }
 //    }
 //}
@@ -349,7 +349,7 @@ void SetTargetForMenuRecursive (BMenu *menu, BHandler *target)
         item->SetTarget (target);
         BMenu *subMenu = item->Submenu();
         if (subMenu)
-            SetTargetForMenuRecursive (subMenu, target);
+           SetTargetForMenuRecursive (subMenu, target);
     }
 }
 

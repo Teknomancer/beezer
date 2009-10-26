@@ -67,7 +67,7 @@ status_t BZipArchiver::Open (entry_ref *ref, BMessage *fileList)
     BString destPath = InitTarFilePath (ref->name);
     BString cmd;
     cmd << "\"" << m_bzipPath << "\"" << " -c -d \"" << m_archivePath.Path() << "\" > " << "\"" <<
-            m_tarFilePath << "\"";
+           m_tarFilePath << "\"";
     
     m_pipeMgr.FlushArgs();
     m_pipeMgr << "/bin/sh" << "-c" << cmd.String();
@@ -117,7 +117,7 @@ status_t BZipArchiver::Open (entry_ref *ref, BMessage *fileList)
         off_t size;
         BEntry deflatedEntry (destPath.String(), false);
         if (deflatedEntry.Exists() == false)
-            return BZR_ERRSTREAM_FOUND;
+           return BZR_ERRSTREAM_FOUND;
         
         deflatedEntry.GetSize (&size);
         sprintf (sizeStr, "%Ld", size);
@@ -125,7 +125,7 @@ status_t BZipArchiver::Open (entry_ref *ref, BMessage *fileList)
         strcpy (pathStr, tempPath.Leaf());
         
         m_entriesList.AddItem (new ArchiveEntry (false, tempPath.Leaf(), sizeStr, "-", dateStr, modTime,
-                                    "-", "-"));
+                                "-", "-"));
     }
     
     
@@ -135,30 +135,30 @@ status_t BZipArchiver::Open (entry_ref *ref, BMessage *fileList)
 //=============================================================================================================//
 
 status_t BZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger *progress,
-                        volatile bool *cancel)
+                      volatile bool *cancel)
 {
     if (m_tarArk == false)
     {
         BPath destPath (refToDir);
         if (strcmp (destPath.Path(), TempDirectoryPath()) == 0)
-            return BZR_DONE;        // as we already have unpacked it in temp, don't repeat
+           return BZR_DONE;        // as we already have unpacked it in temp, don't repeat
         else
         {
-            BString destFilePath = destPath.Path();
-            destFilePath << '/' << OutputFileName (m_archivePath.Leaf());
-            
-            BString cmd;
-            cmd << "\"" << m_bzipPath << "\"" << " -c -d \"" << m_archivePath.Path() << "\" > " << "\"" <<
-            destFilePath.String() << "\"";
-            
-            m_pipeMgr.FlushArgs();
-            m_pipeMgr << "/bin/sh" << "-c" << cmd.String();
-            m_pipeMgr.Pipe();
-                    
-            if (progress)
-                SendProgressMessage (progress);
+           BString destFilePath = destPath.Path();
+           destFilePath << '/' << OutputFileName (m_archivePath.Leaf());
+           
+           BString cmd;
+           cmd << "\"" << m_bzipPath << "\"" << " -c -d \"" << m_archivePath.Path() << "\" > " << "\"" <<
+           destFilePath.String() << "\"";
+           
+           m_pipeMgr.FlushArgs();
+           m_pipeMgr << "/bin/sh" << "-c" << cmd.String();
+           m_pipeMgr.Pipe();
+                  
+           if (progress)
+               SendProgressMessage (progress);
 
-            return BZR_DONE;
+           return BZR_DONE;
         }
     }
     else
@@ -221,7 +221,7 @@ status_t BZipArchiver::Test (char *&outputStr, BMessenger *progress, volatile bo
 //=============================================================================================================//
 
 status_t BZipArchiver::Add (bool createMode, const char *relativePath, BMessage *message, BMessage *addedPaths,
-                        BMessenger *progress, volatile bool *cancel)
+                      BMessenger *progress, volatile bool *cancel)
 {
     if (m_tarArk == true)
     {
@@ -239,7 +239,7 @@ status_t BZipArchiver::Add (bool createMode, const char *relativePath, BMessage 
 //=============================================================================================================//
 
 status_t BZipArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *progress,
-                        volatile bool *cancel)
+                      volatile bool *cancel)
 {
     if (m_tarArk == true)
     {
@@ -257,7 +257,7 @@ status_t BZipArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *
 //=============================================================================================================//
 
 status_t BZipArchiver::Create (BPath *archivePath, const char *relPath, BMessage *fileList, BMessage *addedPaths,
-                                BMessenger *progress, volatile bool *cancel)
+                             BMessenger *progress, volatile bool *cancel)
 {
     // true=>normalize path, which means everything otherthan the leaf must exist,
     // meaning we have everything ready and only need to create the leaf (by add)
@@ -275,7 +275,7 @@ status_t BZipArchiver::Create (BPath *archivePath, const char *relPath, BMessage
     {
         BEntry tempEntry (m_archivePath.Path(), true);
         if (tempEntry.Exists())
-            tempEntry.GetRef (&m_archiveRef);
+           tempEntry.GetRef (&m_archiveRef);
     }
 
     return result;
@@ -376,7 +376,7 @@ void BZipArchiver::CompressFromTemp ()
     // Re-compress file, from .tar in temp to gzip
     BString cmd;
     cmd << "\"" << m_bzipPath << "\"" << " -c " << level << "\"" << m_tarFilePath << "\" > " << "\"" <<
-            m_archivePath.Path() << "\"";
+           m_archivePath.Path() << "\"";
 
     m_pipeMgr.FlushArgs();
     m_pipeMgr << "/bin/sh" << "-c" << cmd.String();

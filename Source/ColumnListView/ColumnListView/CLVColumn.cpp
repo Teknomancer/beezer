@@ -63,13 +63,13 @@ CLVColumn::CLVColumn(const char* label,float width,uint32 flags,float min_width)
         strcpy((char*)fLabel,label);
         if(CLV_HEADER_TRUNCATE)
         {
-            int32 truncated_text_length = strlen(label)+3;
-            fTruncatedText = new char[truncated_text_length];
-            fTruncatedText[0] = 0;
-            fCachedRect.Set(-1,-1,-1,-1);        
+           int32 truncated_text_length = strlen(label)+3;
+           fTruncatedText = new char[truncated_text_length];
+           fTruncatedText[0] = 0;
+           fCachedRect.Set(-1,-1,-1,-1);        
         }
         else
-            fTruncatedText = NULL;
+           fTruncatedText = NULL;
     }
     else
     {
@@ -120,103 +120,103 @@ void CLVColumn::SetWidth(float width)
         fWidth = width;
         if(IsShown() && fParent)
         {
-            //Figure out the area after this column to scroll
-            BRect ColumnViewBounds = fParent->fColumnLabelView->Bounds();
-            BRect MainViewBounds = fParent->Bounds();
-            BRect SourceArea = ColumnViewBounds;
-            float Delta = width-OldWidth;
-            if(!(fFlags&CLV_RIGHT_JUSTIFIED))
-                SourceArea.left = fColumnEnd+1.0;
-            else
-            {
-                if(Delta >= 0)
-                    SourceArea.left = fColumnBegin;
-                else
-                    SourceArea.left = (fColumnBegin-Delta)+1;
-            }
-            BRect DestArea = SourceArea;
-            DestArea.left += Delta;
-            DestArea.right += Delta;
-            float LimitShift;
-            if(DestArea.right > ColumnViewBounds.right)
-            {
-                LimitShift = DestArea.right-ColumnViewBounds.right;
-                DestArea.right -= LimitShift;
-                SourceArea.right -= LimitShift;
-            }
-            if(DestArea.left < ColumnViewBounds.left)
-            {
-                LimitShift = ColumnViewBounds.left - DestArea.left;
-                DestArea.left += LimitShift;
-                SourceArea.left += LimitShift;
-            }
+           //Figure out the area after this column to scroll
+           BRect ColumnViewBounds = fParent->fColumnLabelView->Bounds();
+           BRect MainViewBounds = fParent->Bounds();
+           BRect SourceArea = ColumnViewBounds;
+           float Delta = width-OldWidth;
+           if(!(fFlags&CLV_RIGHT_JUSTIFIED))
+               SourceArea.left = fColumnEnd+1.0;
+           else
+           {
+               if(Delta >= 0)
+                  SourceArea.left = fColumnBegin;
+               else
+                  SourceArea.left = (fColumnBegin-Delta)+1;
+           }
+           BRect DestArea = SourceArea;
+           DestArea.left += Delta;
+           DestArea.right += Delta;
+           float LimitShift;
+           if(DestArea.right > ColumnViewBounds.right)
+           {
+               LimitShift = DestArea.right-ColumnViewBounds.right;
+               DestArea.right -= LimitShift;
+               SourceArea.right -= LimitShift;
+           }
+           if(DestArea.left < ColumnViewBounds.left)
+           {
+               LimitShift = ColumnViewBounds.left - DestArea.left;
+               DestArea.left += LimitShift;
+               SourceArea.left += LimitShift;
+           }
 
-            //Scroll the area that is being shifted
-            BWindow* ParentWindow = fParent->Window();
-            if(ParentWindow)
-                ParentWindow->UpdateIfNeeded();
-            fParent->fColumnLabelView->CopyBits(SourceArea,DestArea);
-            SourceArea.top = MainViewBounds.top;
-            SourceArea.bottom = MainViewBounds.bottom;
-            DestArea.top = MainViewBounds.top;
-            DestArea.bottom = MainViewBounds.bottom;
-            fParent->CopyBits(SourceArea,DestArea);
+           //Scroll the area that is being shifted
+           BWindow* ParentWindow = fParent->Window();
+           if(ParentWindow)
+               ParentWindow->UpdateIfNeeded();
+           fParent->fColumnLabelView->CopyBits(SourceArea,DestArea);
+           SourceArea.top = MainViewBounds.top;
+           SourceArea.bottom = MainViewBounds.bottom;
+           DestArea.top = MainViewBounds.top;
+           DestArea.bottom = MainViewBounds.bottom;
+           fParent->CopyBits(SourceArea,DestArea);
 
-            //Invalidate the region that got revealed
-            DestArea = ColumnViewBounds;
-            if(width > OldWidth)
-            {
-                if(!(fFlags&CLV_RIGHT_JUSTIFIED))
-                {
-                    DestArea.left = fColumnEnd+1.0;
-                    DestArea.right = fColumnEnd+Delta;
-                }
-                else
-                {
-                    DestArea.left = fColumnBegin;
-                    DestArea.right = fColumnBegin+Delta;
-                }                
-            }
-            else
-            {
-                DestArea.left = ColumnViewBounds.right+Delta+1.0;
-                DestArea.right = ColumnViewBounds.right;
-            }
-            fParent->fColumnLabelView->Invalidate(DestArea);
-            DestArea.top = MainViewBounds.top;
-            DestArea.bottom = MainViewBounds.bottom;
-            fParent->Invalidate(DestArea);
+           //Invalidate the region that got revealed
+           DestArea = ColumnViewBounds;
+           if(width > OldWidth)
+           {
+               if(!(fFlags&CLV_RIGHT_JUSTIFIED))
+               {
+                  DestArea.left = fColumnEnd+1.0;
+                  DestArea.right = fColumnEnd+Delta;
+               }
+               else
+               {
+                  DestArea.left = fColumnBegin;
+                  DestArea.right = fColumnBegin+Delta;
+               }               
+           }
+           else
+           {
+               DestArea.left = ColumnViewBounds.right+Delta+1.0;
+               DestArea.right = ColumnViewBounds.right;
+           }
+           fParent->fColumnLabelView->Invalidate(DestArea);
+           DestArea.top = MainViewBounds.top;
+           DestArea.bottom = MainViewBounds.bottom;
+           fParent->Invalidate(DestArea);
 
-            if(fFlags & CLV_HEADER_TRUNCATE)
-            {
-                //Do truncation of label
-                BRect invalid_region = TruncateText(width);
-                if(fCachedRect != BRect(-1,-1,-1,-1))
-                    fCachedRect.right += Delta;
-                if(invalid_region != BRect(-1,-1,-1,-1))
-                {
-                    if(!(fFlags&CLV_RIGHT_JUSTIFIED))
-                        GetHeaderView()->Invalidate(invalid_region);
-                    else
-                        GetHeaderView()->Invalidate(fCachedRect);
-                }
-            }
+           if(fFlags & CLV_HEADER_TRUNCATE)
+           {
+               //Do truncation of label
+               BRect invalid_region = TruncateText(width);
+               if(fCachedRect != BRect(-1,-1,-1,-1))
+                  fCachedRect.right += Delta;
+               if(invalid_region != BRect(-1,-1,-1,-1))
+               {
+                  if(!(fFlags&CLV_RIGHT_JUSTIFIED))
+                      GetHeaderView()->Invalidate(invalid_region);
+                  else
+                      GetHeaderView()->Invalidate(fCachedRect);
+               }
+           }
 
-            //Invalidate the old or new resize handle as necessary
-            DestArea = ColumnViewBounds;
-            if(width > OldWidth)
-                DestArea.left = fColumnEnd;
-            else
-                DestArea.left = fColumnEnd + Delta;
-            DestArea.right = DestArea.left;
-            fParent->fColumnLabelView->Invalidate(DestArea);
-            
-            //Update the column sizes, positions and group positions
-            fParent->UpdateColumnSizesDataRectSizeScrollBars(false);
-            fParent->fColumnLabelView->UpdateDragGroups();
+           //Invalidate the old or new resize handle as necessary
+           DestArea = ColumnViewBounds;
+           if(width > OldWidth)
+               DestArea.left = fColumnEnd;
+           else
+               DestArea.left = fColumnEnd + Delta;
+           DestArea.right = DestArea.left;
+           fParent->fColumnLabelView->Invalidate(DestArea);
+           
+           //Update the column sizes, positions and group positions
+           fParent->UpdateColumnSizesDataRectSizeScrollBars(false);
+           fParent->fColumnLabelView->UpdateDragGroups();
         }
         if(fParent)
-            fParent->ColumnWidthChanged(fParent->fColumnList.IndexOf(this),fWidth);
+           fParent->ColumnWidthChanged(fParent->fColumnList.IndexOf(this),fWidth);
     }
 }
 
@@ -241,19 +241,19 @@ BRect CLVColumn::TruncateText(float column_width)
         invalid = fCachedRect;
         if(invalid != BRect(-1,-1,-1,-1))
         {
-            //Figure out which region just got changed
-            int32 cmppos;
-            int32 cmplen = strlen(new_text);
-            char remember = 0;
-            for(cmppos = 0; cmppos <= cmplen; cmppos++)
-                if(new_text[cmppos] != fTruncatedText[cmppos])
-                {
-                    remember = new_text[cmppos];
-                    new_text[cmppos] = 0;
-                    break;
-                }
-            invalid.left += 8 + be_plain_font->StringWidth(new_text);
-            new_text[cmppos] = remember;
+           //Figure out which region just got changed
+           int32 cmppos;
+           int32 cmplen = strlen(new_text);
+           char remember = 0;
+           for(cmppos = 0; cmppos <= cmplen; cmppos++)
+               if(new_text[cmppos] != fTruncatedText[cmppos])
+               {
+                  remember = new_text[cmppos];
+                  new_text[cmppos] = 0;
+                  break;
+               }
+           invalid.left += 8 + be_plain_font->StringWidth(new_text);
+           new_text[cmppos] = remember;
         }
         //Remember the new truncated text
         strcpy(fTruncatedText,new_text);
@@ -270,13 +270,13 @@ void GetTruncatedString(const char* full_string, char* truncated, float width, i
     while(choppos >= -2 && font->StringWidth(truncated) > width)
     {
         while(choppos > 0 && truncated[choppos-1] == ' ')
-            choppos--;
+           choppos--;
         if(choppos > 0 || (choppos == 0 && truncated[0] == ' '))
-            truncated[choppos] = '.';
+           truncated[choppos] = '.';
         if(choppos > -1)
-            truncated[choppos+1] = '.';
+           truncated[choppos+1] = '.';
         if(choppos > -2)
-            truncated[choppos+2] = '.';
+           truncated[choppos+2] = '.';
         truncated[choppos+3] = 0;
         choppos--;
     }
@@ -308,29 +308,29 @@ void CLVColumn::SetShown(bool Shown)
     if(shown != Shown)
     {
         if(Shown)
-            fFlags &= 0xFFFFFFFF^CLV_HIDDEN;
+           fFlags &= 0xFFFFFFFF^CLV_HIDDEN;
         else
-            fFlags |= CLV_HIDDEN;
+           fFlags |= CLV_HIDDEN;
         if(fParent)
         {
-            float UpdateLeft = fColumnBegin;
-            fParent->UpdateColumnSizesDataRectSizeScrollBars();
-            fParent->fColumnLabelView->UpdateDragGroups();
-            if(Shown)
-                UpdateLeft = fColumnBegin;
-            BRect Area = fParent->fColumnLabelView->Bounds();
-            Area.left = UpdateLeft;
-            fParent->fColumnLabelView->Invalidate(Area);
-            Area = fParent->Bounds();
-            Area.left = UpdateLeft;
-            fParent->Invalidate(Area);
-            if(fFlags & CLV_EXPANDER)
-            {
-                if(!Shown)
-                    fParent->fExpanderColumn = -1;
-                else
-                    fParent->fExpanderColumn = fParent->IndexOfColumn(this);
-            }
+           float UpdateLeft = fColumnBegin;
+           fParent->UpdateColumnSizesDataRectSizeScrollBars();
+           fParent->fColumnLabelView->UpdateDragGroups();
+           if(Shown)
+               UpdateLeft = fColumnBegin;
+           BRect Area = fParent->fColumnLabelView->Bounds();
+           Area.left = UpdateLeft;
+           fParent->fColumnLabelView->Invalidate(Area);
+           Area = fParent->Bounds();
+           Area.left = UpdateLeft;
+           fParent->Invalidate(Area);
+           if(fFlags & CLV_EXPANDER)
+           {
+               if(!Shown)
+                  fParent->fExpanderColumn = -1;
+               else
+                  fParent->fExpanderColumn = fParent->IndexOfColumn(this);
+           }
         }
     }
 }
@@ -383,8 +383,8 @@ void CLVColumn::DrawColumnHeader(BView* view, BRect header_rect, bool sort_key, 
     {
         if(fCachedRect == BRect(-1,-1,-1,-1))
         {
-            //Have never drawn it before
-            TruncateText(header_rect.right-header_rect.left);
+           //Have never drawn it before
+           TruncateText(header_rect.right-header_rect.left);
         }
         label = fTruncatedText;
     }
@@ -394,21 +394,21 @@ void CLVColumn::DrawColumnHeader(BView* view, BRect header_rect, bool sort_key, 
     if(label)
     {
         if(focus)
-            view->SetHighColor(BeFocusBlue);
+           view->SetHighColor(BeFocusBlue);
         else
-            view->SetHighColor(Black);
+           view->SetHighColor(Black);
     
         //Draw the label
         view->SetDrawingMode(B_OP_OVER);
         BPoint text_point;
         if(!(fFlags&CLV_RIGHT_JUSTIFIED))
-            text_point.Set(header_rect.left+8.0,header_rect.top+1.0+font_ascent);
+           text_point.Set(header_rect.left+8.0,header_rect.top+1.0+font_ascent);
         else
         {
-            BFont label_font;
-            view->GetFont(&label_font);
-            float string_width = label_font.StringWidth(label);
-            text_point.Set(header_rect.right-8.0-string_width,header_rect.top+1.0+font_ascent);            
+           BFont label_font;
+           view->GetFont(&label_font);
+           float string_width = label_font.StringWidth(label);
+           text_point.Set(header_rect.right-8.0-string_width,header_rect.top+1.0+font_ascent);           
         }
         view->DrawString(label,text_point);
         view->SetDrawingMode(B_OP_COPY);
@@ -416,9 +416,9 @@ void CLVColumn::DrawColumnHeader(BView* view, BRect header_rect, bool sort_key, 
         //Underline if this is a selected sort column
         if(sort_key)
         {
-            float Width = view->StringWidth(label);
-            view->StrokeLine(BPoint(text_point.x-1,text_point.y+2.0),
-                BPoint(text_point.x-1+Width,text_point.y+2.0));
+           float Width = view->StringWidth(label);
+           view->StrokeLine(BPoint(text_point.x-1,text_point.y+2.0),
+               BPoint(text_point.x-1+Width,text_point.y+2.0));
         }
         fCachedRect = header_rect;
     }

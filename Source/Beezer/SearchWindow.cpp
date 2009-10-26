@@ -41,12 +41,12 @@
 //=============================================================================================================//
 
 SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, BubbleHelper *bubbleHelper,
-                const BEntry *entry, const BList *columnList, const Archiver *ark)
+               const BEntry *entry, const BList *columnList, const Archiver *ark)
     : BWindow (BRect (30, 30, 440, 312), str (S_SEARCH_WINDOW_TITLE), B_TITLED_WINDOW,
         B_ASYNCHRONOUS_CONTROLS | B_NOT_V_RESIZABLE | B_NOT_ZOOMABLE, B_CURRENT_WORKSPACE),
-            m_callerWindow (callerWindow),
-            m_loadMessage (loadMessage),
-            m_helper (bubbleHelper)
+           m_callerWindow (callerWindow),
+           m_loadMessage (loadMessage),
+           m_helper (bubbleHelper)
 {
     SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
     AddToSubset (callerWindow);
@@ -93,19 +93,19 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
     m_backView = new BevelView (Bounds(), "SearchWindow:BackView", btOutset, B_WILL_DRAW, B_FOLLOW_ALL_SIDES);
     m_backView->SetViewColor (K_BACKGROUND_COLOR);
     AddChild (m_backView);
-            
+           
     BBitmap *searchBmp = ResBitmap ("Img:SearchArchive");
 
     BevelView *sepView1 = new BevelView (BRect (-1, searchBmp->Bounds().Height() + 4 * K_MARGIN,
-                                    Bounds().right - 1.0, searchBmp->Bounds().Height() + 4 * K_MARGIN + 1),
-                                    "SearchWindow:SepView1", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+                                Bounds().right - 1.0, searchBmp->Bounds().Height() + 4 * K_MARGIN + 1),
+                                "SearchWindow:SepView1", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     m_backView->AddChild (sepView1);
     
     // Add icon view, make it hold the search picture
     StaticBitmapView *searchBmpView = new StaticBitmapView (BRect (K_MARGIN * 5, K_MARGIN * 2,
-                                searchBmp->Bounds().Width() + K_MARGIN * 5,
-                                searchBmp->Bounds().Height() + K_MARGIN * 2), "SearchWindow:searchBmpView",
-                                searchBmp);
+                             searchBmp->Bounds().Width() + K_MARGIN * 5,
+                             searchBmp->Bounds().Height() + K_MARGIN * 2), "SearchWindow:searchBmpView",
+                             searchBmp);
     searchBmpView->SetViewColor (m_backView->ViewColor());
     AddChild (searchBmpView);
     
@@ -113,9 +113,9 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
     char buf[B_FILE_NAME_LENGTH];
     entry->GetName (buf);
     BStringView *fileNameStr = new BStringView (BRect (searchBmpView->Frame().right + K_MARGIN * 3,
-                                        searchBmpView->Frame().top, Bounds().right - 1,
-                                        searchBmpView->Frame().top + totalFontHeight),
-                                        "SearchWindow:FileNameView", buf, B_FOLLOW_LEFT, B_WILL_DRAW);
+                                    searchBmpView->Frame().top, Bounds().right - 1,
+                                    searchBmpView->Frame().top + totalFontHeight),
+                                    "SearchWindow:FileNameView", buf, B_FOLLOW_LEFT, B_WILL_DRAW);
     fileNameStr->SetFont (&font);
     m_backView->AddChild (fileNameStr);
     fileNameStr->MoveTo (fileNameStr->Frame().left,
@@ -146,8 +146,8 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
         columnMenu->ItemAt(m_tmpList.IndexOf (column))->SetMarked (true);
     
     m_columnField = new BMenuField (BRect (marginLeft, sepView1->Frame().bottom + marginTop - 1,
-                            Bounds().Width() - marginLeft, 0), "SearchWindow:ColumnField",
-                            str (S_SEARCH_COLUMN), columnMenu);
+                         Bounds().Width() - marginLeft, 0), "SearchWindow:ColumnField",
+                         str (S_SEARCH_COLUMN), columnMenu);
      m_backView->AddChild (m_columnField);
     m_columnField->SetDivider (m_backView->StringWidth (m_columnField->Label()) + 10.0);
     m_columnField->ResizeToPreferred();
@@ -164,10 +164,10 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
     matchMenu->ItemAt(exprType)->SetMarked (true);
 
     m_matchField = new BMenuField (BRect (
-                            m_backView->StringWidth (columnMenu->ItemAt(0L)->Label()) + 
-                            m_backView->StringWidth (m_columnField->Label()) + 50 + 2 * marginLeft,
-                            sepView1->Frame().bottom + marginTop - 1, Bounds().Width() - marginLeft, 0),
-                            "SearchWindow:MatchField", NULL, matchMenu);
+                         m_backView->StringWidth (columnMenu->ItemAt(0L)->Label()) + 
+                         m_backView->StringWidth (m_columnField->Label()) + 50 + 2 * marginLeft,
+                         sepView1->Frame().bottom + marginTop - 1, Bounds().Width() - marginLeft, 0),
+                         "SearchWindow:MatchField", NULL, matchMenu);
     m_backView->AddChild (m_matchField);
     m_matchField->SetDivider (m_backView->StringWidth (m_matchField->Label()) + 10.0);
     m_matchField->ResizeToPreferred();
@@ -175,8 +175,8 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
     // Setup the 'search for' text control
     // removed label - str (S_SEARCH_FOR), add it when needed as people thot "Find:" was not needed
     m_searchTextControl = new BTextControl (BRect (marginLeft, m_matchField->Frame().bottom + vGap,
-                                Bounds().right - marginLeft - 2, 0), "SearchWindow:SearchTextControl",
-                                "", searchText, NULL, B_FOLLOW_LEFT_RIGHT);
+                             Bounds().right - marginLeft - 2, 0), "SearchWindow:SearchTextControl",
+                             "", searchText, NULL, B_FOLLOW_LEFT_RIGHT);
     m_backView->AddChild (m_searchTextControl);
     m_searchTextControl->SetDivider (m_backView->StringWidth (m_searchTextControl->Label()));
     m_searchTextControl->MakeFocus (true);
@@ -196,16 +196,16 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
 
     // Setup the scope group box
     BBox *scopeBox = new BBox (BRect (marginLeft, m_searchTextControl->Frame().bottom + 2 * vGap, 0, 0),
-                            "SearchWindow:ScopeBox", B_FOLLOW_LEFT, B_WILL_DRAW);
+                         "SearchWindow:ScopeBox", B_FOLLOW_LEFT, B_WILL_DRAW);
     scopeBox->SetLabel (str (S_SEARCH_SCOPE));
     scopeBox->SetFont (be_plain_font);
     m_backView->AddChild (scopeBox);
     
     // Draw the radio buttons inside the group box (co-ordinates are relative to the group box)
     m_allEntriesOpt = new BRadioButton (BRect (marginLeft/2, normFontHeight + vGap/2,
-                            marginLeft/2 + m_backView->StringWidth (str (S_SEARCH_ALL_ENTRIES)) +
-                            25.0, 0), "SearchWindow:AllEntriesOpt", str (S_SEARCH_ALL_ENTRIES),
-                            new BMessage (M_ALL_ENTRIES));
+                         marginLeft/2 + m_backView->StringWidth (str (S_SEARCH_ALL_ENTRIES)) +
+                         25.0, 0), "SearchWindow:AllEntriesOpt", str (S_SEARCH_ALL_ENTRIES),
+                         new BMessage (M_ALL_ENTRIES));
     scopeBox->AddChild (m_allEntriesOpt);
     m_allEntriesOpt->ResizeToPreferred();
     m_allEntriesOpt->SetValue (allFiles == true ? B_CONTROL_ON : B_CONTROL_OFF);
@@ -213,10 +213,10 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
         m_allEntriesOpt->Invoke ();
 
     m_visibleEntriesOpt = new BRadioButton (BRect (m_allEntriesOpt->Frame().left, m_allEntriesOpt->Frame().bottom,
-                                m_allEntriesOpt->Frame().left +
-                                m_backView->StringWidth (str (S_SEARCH_VISIBLE_ENTRIES)) + 25.0, 0),
-                                "SearchWindow:VisibleEntriesOpt", str (S_SEARCH_VISIBLE_ENTRIES),
-                                new BMessage (M_VISIBLE_ENTRIES));
+                             m_allEntriesOpt->Frame().left +
+                             m_backView->StringWidth (str (S_SEARCH_VISIBLE_ENTRIES)) + 25.0, 0),
+                             "SearchWindow:VisibleEntriesOpt", str (S_SEARCH_VISIBLE_ENTRIES),
+                             new BMessage (M_VISIBLE_ENTRIES));
     scopeBox->AddChild (m_visibleEntriesOpt);
     m_visibleEntriesOpt->ResizeToPreferred();
     m_visibleEntriesOpt->SetValue (allFiles == false ? B_CONTROL_ON : B_CONTROL_OFF);
@@ -224,10 +224,10 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
         m_visibleEntriesOpt->Invoke ();
 
     m_selEntriesOpt = new BRadioButton (BRect (m_visibleEntriesOpt->Frame().left, m_visibleEntriesOpt->Frame().bottom,
-                            m_visibleEntriesOpt->Frame().left +
-                            m_backView->StringWidth (str (S_SEARCH_SELECTED_ENTRIES)) + 25.0, 0),
-                            "SearchWindow:SelectedEntriesOpt", str (S_SEARCH_SELECTED_ENTRIES),
-                            new BMessage (M_SELECTED_ENTRIES));
+                         m_visibleEntriesOpt->Frame().left +
+                         m_backView->StringWidth (str (S_SEARCH_SELECTED_ENTRIES)) + 25.0, 0),
+                         "SearchWindow:SelectedEntriesOpt", str (S_SEARCH_SELECTED_ENTRIES),
+                         new BMessage (M_SELECTED_ENTRIES));
     scopeBox->AddChild (m_selEntriesOpt);
     m_selEntriesOpt->ResizeToPreferred();
     m_selEntriesOpt->SetValue (searchSelection == true ? B_CONTROL_ON : B_CONTROL_OFF);
@@ -243,26 +243,26 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
     
     // Setup the scoping options group box
     BBox *optionsBox = new BBox (BRect (scopeBox->Frame().right + marginLeft, scopeBox->Frame().top, 0, 0),
-                            "SearchWindow:OptionsBox");
+                         "SearchWindow:OptionsBox");
     optionsBox->SetLabel (str (S_SEARCH_OPTIONS));
     optionsBox->SetFont (be_plain_font);
     m_backView->AddChild (optionsBox);
     
     // Draw the checkboxes for the (All, Visible) scope
     m_addToSelChk = new BCheckBox (BRect (marginLeft / 2, normFontHeight -1 + vGap / 2, 0, 0),
-                        "SearchWindow:AddSelChk", str (S_SEARCH_ADD_TO_SELECTION), NULL);
+                      "SearchWindow:AddSelChk", str (S_SEARCH_ADD_TO_SELECTION), NULL);
     optionsBox->AddChild (m_addToSelChk);
     m_addToSelChk->ResizeToPreferred();
     m_addToSelChk->SetValue (addToSelection == true ? B_CONTROL_ON : B_CONTROL_OFF);
     
     m_ignoreCaseChk = new BCheckBox (BRect (m_addToSelChk->Frame().left, m_addToSelChk->Frame().bottom-1,
-                                    0, 0), "SearchWindow:IgnoreCaseChk", str (S_SEARCH_IGNORE_CASE), NULL);
+                                0, 0), "SearchWindow:IgnoreCaseChk", str (S_SEARCH_IGNORE_CASE), NULL);
     optionsBox->AddChild (m_ignoreCaseChk);
     m_ignoreCaseChk->ResizeToPreferred();
     m_ignoreCaseChk->SetValue (ignoreCase == true ? B_CONTROL_ON : B_CONTROL_OFF);
     
     m_invertChk = new BCheckBox (BRect (m_ignoreCaseChk->Frame().left, m_ignoreCaseChk->Frame().bottom-1,
-                                    0, 0), "SearchWindow:InvertChk", str (S_SEARCH_INVERT), NULL);
+                                0, 0), "SearchWindow:InvertChk", str (S_SEARCH_INVERT), NULL);
     optionsBox->AddChild (m_invertChk);
     m_invertChk->ResizeToPreferred();
     m_invertChk->SetValue (invertSearch == true ? B_CONTROL_ON : B_CONTROL_OFF);
@@ -277,17 +277,17 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
     
     // Render the search button
     m_searchBtn = new BButton (BRect (Bounds().right - marginLeft - K_BUTTON_WIDTH - 4,
-                                optionsBox->Frame().bottom + 2 * vGap, Bounds().right - marginLeft - 4,
-                                optionsBox->Frame().bottom + 2 * vGap + K_BUTTON_HEIGHT),
-                                "SearchWindow:SearchBtn", str (S_SEARCH), new BMessage (M_SEARCH_CLICKED),
-                                B_FOLLOW_RIGHT);
+                             optionsBox->Frame().bottom + 2 * vGap, Bounds().right - marginLeft - 4,
+                             optionsBox->Frame().bottom + 2 * vGap + K_BUTTON_HEIGHT),
+                             "SearchWindow:SearchBtn", str (S_SEARCH), new BMessage (M_SEARCH_CLICKED),
+                             B_FOLLOW_RIGHT);
     m_searchBtn->MakeDefault (true);
     m_searchBtn->SetEnabled (searchText ? true : false);
     m_backView->AddChild (m_searchBtn);
     
     // Render the close after search button
     m_persistentChk = new BCheckBox (BRect (marginLeft, m_searchBtn->Frame().top + normFontHeight / 2,
-                        0, 0), "SearchWindow:CloseChk", str (S_SEARCH_PERSISTENT), NULL);
+                      0, 0), "SearchWindow:CloseChk", str (S_SEARCH_PERSISTENT), NULL);
     m_backView->AddChild (m_persistentChk);
     m_persistentChk->ResizeToPreferred();
     m_persistentChk->SetValue (persistent == true ? B_CONTROL_ON : B_CONTROL_OFF);
@@ -334,60 +334,60 @@ void SearchWindow::MessageReceived (BMessage *message)
     {
         case M_SEARCH_TEXT_MODIFIED:
         {
-            m_searchBtn->SetEnabled (strlen (m_searchTextControl->Text()) > 0L ? true : false);
-            break;
+           m_searchBtn->SetEnabled (strlen (m_searchTextControl->Text()) > 0L ? true : false);
+           break;
         }
 
         case M_ALL_ENTRIES: case M_VISIBLE_ENTRIES:
         {
-            if (strcmp (m_addToSelChk->Label(), str (S_SEARCH_ADD_TO_SELECTION)) != 0)
-            {
-                m_helper->SetHelp (m_addToSelChk, const_cast<char*>(str (S_SEARCH_ADD_TO_SELECTION_BH)));
-                m_addToSelChk->SetLabel (str (S_SEARCH_ADD_TO_SELECTION));
-                m_addToSelChk->ResizeToPreferred();
-            }
+           if (strcmp (m_addToSelChk->Label(), str (S_SEARCH_ADD_TO_SELECTION)) != 0)
+           {
+               m_helper->SetHelp (m_addToSelChk, const_cast<char*>(str (S_SEARCH_ADD_TO_SELECTION_BH)));
+               m_addToSelChk->SetLabel (str (S_SEARCH_ADD_TO_SELECTION));
+               m_addToSelChk->ResizeToPreferred();
+           }
 
-            break;
+           break;
         }
         
         case M_SELECTED_ENTRIES:
         {
-            if (strcmp (m_addToSelChk->Label(), str (S_SEARCH_DESELECT_UNMATCHED_ENTRIES)) != 0)
-            {
-                m_helper->SetHelp (m_addToSelChk,
-                                const_cast<char*>(str (S_SEARCH_DESELECT_UNMATCHED_ENTRIES_BH)));
-                m_addToSelChk->SetLabel (str (S_SEARCH_DESELECT_UNMATCHED_ENTRIES));
-                m_addToSelChk->ResizeToPreferred();
-            }
-            
-            break;
+           if (strcmp (m_addToSelChk->Label(), str (S_SEARCH_DESELECT_UNMATCHED_ENTRIES)) != 0)
+           {
+               m_helper->SetHelp (m_addToSelChk,
+                             const_cast<char*>(str (S_SEARCH_DESELECT_UNMATCHED_ENTRIES_BH)));
+               m_addToSelChk->SetLabel (str (S_SEARCH_DESELECT_UNMATCHED_ENTRIES));
+               m_addToSelChk->ResizeToPreferred();
+           }
+           
+           break;
         }
         
         case M_SEARCH_CLICKED:
         {
-            const char *searchText = m_searchTextControl->Text();
-            if (!searchText || strlen (searchText) == 0L)
-            {
-                // Shouldn't really come here
-                m_searchBtn->SetEnabled (false);
-                break;
-            }
-            
-            BMessage msg;
-            GetSettings (msg, M_SEARCH);
-            bool persistent = msg.FindBool (kPersistent);
-            if (!persistent)
-                Hide();
+           const char *searchText = m_searchTextControl->Text();
+           if (!searchText || strlen (searchText) == 0L)
+           {
+               // Shouldn't really come here
+               m_searchBtn->SetEnabled (false);
+               break;
+           }
+           
+           BMessage msg;
+           GetSettings (msg, M_SEARCH);
+           bool persistent = msg.FindBool (kPersistent);
+           if (!persistent)
+               Hide();
     
-            m_callerWindow->PostMessage (&msg);
+           m_callerWindow->PostMessage (&msg);
     
-            if (!persistent)
-                Quit();
-            
-            break;
+           if (!persistent)
+               Quit();
+           
+           break;
         }
     }
-            
+           
     BWindow::MessageReceived (message);
 }
 

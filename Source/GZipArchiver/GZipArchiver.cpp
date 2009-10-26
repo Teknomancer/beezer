@@ -64,9 +64,9 @@ status_t GZipArchiver::ReadOpen (FILE *fp)
 {
     uint16 len = B_PATH_NAME_LENGTH + 500;
     char lineString[len],
-            sizeStr[15], methodStr[15], packedStr[15], ratioStr[10], dayStr[5],
-            monthStr[5], hourStr[5], minuteStr[5], dateStr[80], crcStr[15],
-            pathStr[B_PATH_NAME_LENGTH + 1];
+           sizeStr[15], methodStr[15], packedStr[15], ratioStr[10], dayStr[5],
+           monthStr[5], hourStr[5], minuteStr[5], dateStr[80], crcStr[15],
+           pathStr[B_PATH_NAME_LENGTH + 1];
     
     // Skip first header line
     fgets (lineString, len, fp);
@@ -76,9 +76,9 @@ status_t GZipArchiver::ReadOpen (FILE *fp)
         lineString[strlen (lineString) - 1] = '\0';
         
         sscanf (lineString,
-            "%[^ ] %[^ ] %[^ ] %[^ ] %[0-9]:%[0-9] %[0-9] %[0-9] %[^ ]%[^\n]",
-            methodStr, crcStr, monthStr, dayStr, hourStr, minuteStr, packedStr, sizeStr, ratioStr,
-            pathStr);
+           "%[^ ] %[^ ] %[^ ] %[^ ] %[0-9]:%[0-9] %[0-9] %[0-9] %[^ ]%[^\n]",
+           methodStr, crcStr, monthStr, dayStr, hourStr, minuteStr, packedStr, sizeStr, ratioStr,
+           pathStr);
     
         BString pathString = pathStr;
         pathString.Remove (0, 1);
@@ -97,13 +97,13 @@ status_t GZipArchiver::ReadOpen (FILE *fp)
         uint16 pathLength = pathString.Length() - 1;
         if (pathString[pathLength] == '/')
         {
-            m_entriesList.AddItem (new ArchiveEntry (true, pathString.String(), sizeStr, packedStr, dateStr,
-                                        modTime, methodStr, crcStr));
+           m_entriesList.AddItem (new ArchiveEntry (true, pathString.String(), sizeStr, packedStr, dateStr,
+                                    modTime, methodStr, crcStr));
         }
         else
         {
-            m_entriesList.AddItem (new ArchiveEntry (false, pathString.String(), sizeStr, packedStr, dateStr,
-                                        modTime, methodStr,crcStr));
+           m_entriesList.AddItem (new ArchiveEntry (false, pathString.String(), sizeStr, packedStr, dateStr,
+                                    modTime, methodStr,crcStr));
         }
     }
 
@@ -121,7 +121,7 @@ status_t GZipArchiver::Open (entry_ref *ref, BMessage *fileList)
     BString destPath = InitTarFilePath (ref->name);
     BString cmd;
     cmd << "\"" << m_gzipPath << "\"" << " -c -d \"" << m_archivePath.Path() << "\" > " << "\"" <<
-            m_tarFilePath << "\"";
+           m_tarFilePath << "\"";
     
     m_pipeMgr.FlushArgs();
     m_pipeMgr << "/bin/sh" << "-c" << cmd.String();
@@ -143,7 +143,7 @@ status_t GZipArchiver::Open (entry_ref *ref, BMessage *fileList)
     
     m_tarArk = false;
     if (strcmp (mimeBuf, "application/tar") == 0 || strcmp (mimeBuf, "application/x-tar") == 0 ||
-            isTarExtension == true)
+           isTarExtension == true)
     {
         m_tarArk = true;
         BEntry destEntry (destPath.String(), false);
@@ -171,7 +171,7 @@ status_t GZipArchiver::Open (entry_ref *ref, BMessage *fileList)
         thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
         
         if (tid == B_ERROR || tid == B_NO_MEMORY)
-            return B_ERROR;        // Handle unloadable error here
+           return B_ERROR;        // Handle unloadable error here
     
         status_t exitCode;
         resume_thread (tid);
@@ -198,30 +198,30 @@ status_t GZipArchiver::Open (entry_ref *ref, BMessage *fileList)
 //=============================================================================================================//
 
 status_t GZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger *progress,
-                        volatile bool *cancel)
+                      volatile bool *cancel)
 {
     if (m_tarArk == false)
     {
         BPath destPath (refToDir);
         if (strcmp (destPath.Path(), TempDirectoryPath()) == 0)
-            return BZR_DONE;        // as we already have unpacked it in temp, don't repeat
+           return BZR_DONE;        // as we already have unpacked it in temp, don't repeat
         else
         {
-            BString destFilePath = destPath.Path();
-            destFilePath << '/' << OutputFileName (m_archivePath.Leaf());
-            
-            BString cmd;
-            cmd << "\"" << m_gzipPath << "\"" << " -c -d \"" << m_archivePath.Path() << "\" > " << "\"" <<
-            destFilePath.String() << "\"";
-            
-            m_pipeMgr.FlushArgs();
-            m_pipeMgr << "/bin/sh" << "-c" << cmd.String();
-            m_pipeMgr.Pipe();
-                    
-            if (progress)
-                SendProgressMessage (progress);
+           BString destFilePath = destPath.Path();
+           destFilePath << '/' << OutputFileName (m_archivePath.Leaf());
+           
+           BString cmd;
+           cmd << "\"" << m_gzipPath << "\"" << " -c -d \"" << m_archivePath.Path() << "\" > " << "\"" <<
+           destFilePath.String() << "\"";
+           
+           m_pipeMgr.FlushArgs();
+           m_pipeMgr << "/bin/sh" << "-c" << cmd.String();
+           m_pipeMgr.Pipe();
+                  
+           if (progress)
+               SendProgressMessage (progress);
 
-            return BZR_DONE;
+           return BZR_DONE;
         }
     }
     else
@@ -284,7 +284,7 @@ status_t GZipArchiver::Test (char *&outputStr, BMessenger *progress, volatile bo
 //=============================================================================================================//
 
 status_t GZipArchiver::Add (bool createMode, const char *relativePath, BMessage *message, BMessage *addedPaths,
-                        BMessenger *progress, volatile bool *cancel)
+                      BMessenger *progress, volatile bool *cancel)
 {
     if (m_tarArk == true)
     {
@@ -302,7 +302,7 @@ status_t GZipArchiver::Add (bool createMode, const char *relativePath, BMessage 
 //=============================================================================================================//
 
 status_t GZipArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *progress,
-                        volatile bool *cancel)
+                      volatile bool *cancel)
 {
     if (m_tarArk == true)
     {
@@ -320,7 +320,7 @@ status_t GZipArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *
 //=============================================================================================================//
 
 status_t GZipArchiver::Create (BPath *archivePath, const char *relPath, BMessage *fileList, BMessage *addedPaths,
-                                BMessenger *progress, volatile bool *cancel)
+                             BMessenger *progress, volatile bool *cancel)
 {
     // true=>normalize path, which means everything otherthan the leaf must exist,
     // meaning we have everything ready and only need to create the leaf (by add)
@@ -338,7 +338,7 @@ status_t GZipArchiver::Create (BPath *archivePath, const char *relPath, BMessage
     {
         BEntry tempEntry (m_archivePath.Path(), true);
         if (tempEntry.Exists())
-            tempEntry.GetRef (&m_archiveRef);
+           tempEntry.GetRef (&m_archiveRef);
     }
 
     return result;
@@ -430,7 +430,7 @@ void GZipArchiver::CompressFromTemp ()
     // Re-compress file, from .tar in temp to gzip
     BString cmd;
     cmd << "\"" << m_gzipPath << "\"" << " -c " << level << "\"" << m_tarFilePath << "\" > " << "\"" <<
-            m_archivePath.Path() << "\"";
+           m_archivePath.Path() << "\"";
 
     m_pipeMgr.FlushArgs();
     m_pipeMgr << "/bin/sh" << "-c" << cmd.String();

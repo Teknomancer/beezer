@@ -75,17 +75,17 @@ status_t TarArchiver::ReadOpen (FILE *fp)
 {
     uint16 len = B_PATH_NAME_LENGTH + 500;
     char lineString[len],
-            permStr[15], ownerStr[100], sizeStr[15],
-            dayStr[5], monthStr[5], yearStr[8], hourStr[5], minuteStr[5], dateStr[80],
-            pathStr[2 * B_PATH_NAME_LENGTH + 10];
+           permStr[15], ownerStr[100], sizeStr[15],
+           dayStr[5], monthStr[5], yearStr[8], hourStr[5], minuteStr[5], dateStr[80],
+           pathStr[2 * B_PATH_NAME_LENGTH + 10];
     
     while (fgets (lineString, len, fp))
     {
         lineString[strlen (lineString) - 1] = '\0';
         
         sscanf (lineString,
-            "%[^ ] %[^ ] %[0-9] %[0-9]-%[0-9]-%[0-9] %[0-9]:%[0-9]%[^\n]",
-            permStr, ownerStr, sizeStr, yearStr, monthStr, dayStr, hourStr, minuteStr, pathStr);
+           "%[^ ] %[^ ] %[0-9] %[0-9]-%[0-9]-%[0-9] %[0-9]:%[0-9]%[^\n]",
+           permStr, ownerStr, sizeStr, yearStr, monthStr, dayStr, hourStr, minuteStr, pathStr);
         
         struct tm timeStruct; time_t timeValue;
         MakeTime (&timeStruct, &timeValue, dayStr, monthStr, yearStr, hourStr, minuteStr, "00");
@@ -98,23 +98,23 @@ status_t TarArchiver::ReadOpen (FILE *fp)
         // Handle linked files/folder by tar
         if (permStr[0] == 'l')
         {
-            BString fullPath = pathString;
-            uint16 foundIndex = fullPath.FindLast (" -> ");
-            fullPath.Remove (foundIndex, fullPath.Length() - foundIndex);
-            pathString = fullPath.String();
+           BString fullPath = pathString;
+           uint16 foundIndex = fullPath.FindLast (" -> ");
+           fullPath.Remove (foundIndex, fullPath.Length() - foundIndex);
+           pathString = fullPath.String();
         }
         
         // Check to see if last char of pathStr = '/' add it as folder, else as a file
         uint16 pathLength = pathString.Length() - 1;
         if (pathString[pathLength] == '/' || permStr[0] == 'd')
         {
-            m_entriesList.AddItem (new ArchiveEntry (true, pathString.String(), sizeStr, sizeStr, dateStr,
-                                    timeValue, "-", "-"));
+           m_entriesList.AddItem (new ArchiveEntry (true, pathString.String(), sizeStr, sizeStr, dateStr,
+                                timeValue, "-", "-"));
         }
         else
         {
-            m_entriesList.AddItem (new ArchiveEntry (false, pathString.String(), sizeStr, sizeStr, dateStr,
-                                    timeValue, "-", "-"));
+           m_entriesList.AddItem (new ArchiveEntry (false, pathString.String(), sizeStr, sizeStr, dateStr,
+                                timeValue, "-", "-"));
         }
     }
 
@@ -165,7 +165,7 @@ status_t TarArchiver::Open (entry_ref *ref, BMessage *fileList)
 //=============================================================================================================//
 
 status_t TarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger *progress,
-                        volatile bool *cancel)
+                      volatile bool *cancel)
 {
     BEntry dirEntry;
     entry_ref dirRef;
@@ -175,7 +175,7 @@ status_t TarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     if (progress)        // Perform output directory checking only when a messenger is passed
     {
         if (dirEntry.Exists() == false || dirEntry.IsDirectory() == false)
-            return BZR_EXTRACT_DIR_INIT_ERROR;
+           return BZR_EXTRACT_DIR_INIT_ERROR;
     }
 
     BPath dirPath (refToDir);
@@ -189,7 +189,7 @@ status_t TarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         uint32 type;
         message->GetInfo (kPath, &type, &count);
         if (type != B_STRING_TYPE)
-            return BZR_UNKNOWN;
+           return BZR_UNKNOWN;
     }
     
     // Setup argv, fill with selection names if needed
@@ -202,7 +202,7 @@ status_t TarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     {
         const char *pathString = NULL;
         if (message->FindString (kPath, i, &pathString) == B_OK)
-            m_pipeMgr << SupressWildcards (pathString);
+           m_pipeMgr << SupressWildcards (pathString);
     }
     
     FILE *out;
@@ -210,7 +210,7 @@ status_t TarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
     
     if (tid == B_ERROR || tid == B_NO_MEMORY)
-        return B_ERROR;            // Handle unloadable error here
+        return B_ERROR;           // Handle unloadable error here
 
     if (progress)
         resume_thread (tid);
@@ -255,16 +255,16 @@ status_t TarArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool
     while (fgets (lineString, 998, fp))
     {
         if (cancel && *cancel == true)
-            return BZR_CANCEL_ARCHIVER;
+           return BZR_CANCEL_ARCHIVER;
         
         int32 len = strlen (lineString);
         lineString[--len] = '\0';
         if (len >= 1 && lineString[len - 1] != '/')
         {
-            updateMessage.RemoveName ("text");
-            updateMessage.AddString ("text", LeafFromPath (lineString));
+           updateMessage.RemoveName ("text");
+           updateMessage.AddString ("text", LeafFromPath (lineString));
 
-            progress->SendMessage (&updateMessage, &reply);
+           progress->SendMessage (&updateMessage, &reply);
         }
     }
 
@@ -281,14 +281,14 @@ status_t TarArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
 //=============================================================================================================//
 
 status_t TarArchiver::Add (bool createMode, const char *relativePath, BMessage *message, BMessage *addedPaths,
-                        BMessenger *progress, volatile bool *cancel)
+                      BMessenger *progress, volatile bool *cancel)
 {
     // Don't check if archive exists in createMode, otherwise check
     if (createMode == false)
     {
-         BEntry archiveEntry (&m_archiveRef, true);
+        BEntry archiveEntry (&m_archiveRef, true);
         if (archiveEntry.Exists() == false)
-            return BZR_ARCHIVE_PATH_INIT_ERROR;
+           return BZR_ARCHIVE_PATH_INIT_ERROR;
     }
 
     m_pipeMgr.FlushArgs();
@@ -305,7 +305,7 @@ status_t TarArchiver::Add (bool createMode, const char *relativePath, BMessage *
     {
         const char *pathString = NULL;
         if (message->FindString (kPath, i, &pathString) == B_OK)
-            m_pipeMgr << pathString;
+           m_pipeMgr << pathString;
     }
 
     FILE *out, *err;
@@ -358,8 +358,8 @@ status_t TarArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
     {
         if (cancel && *cancel == true)
         {
-            exitCode = BZR_CANCEL_ARCHIVER;
-            break;
+           exitCode = BZR_CANCEL_ARCHIVER;
+           break;
         }
 
         lineString[strlen (lineString) - 1] = '\0';
@@ -368,9 +368,9 @@ status_t TarArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
         // Don't update progress bar for folders
         if (fileName[strlen(fileName)-1] != '/' && progress)
         {
-            updateMessage.RemoveName ("text");
-            updateMessage.AddString ("text", fileName);
-            progress->SendMessage (&updateMessage, &reply);
+           updateMessage.RemoveName ("text");
+           updateMessage.AddString ("text", fileName);
+           progress->SendMessage (&updateMessage, &reply);
         }
         
         addedPaths->AddString (kPath, lineString);
@@ -382,7 +382,7 @@ status_t TarArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
 //=============================================================================================================//
 
 status_t TarArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *progress,
-                        volatile bool *cancel)
+                      volatile bool *cancel)
 {
     // Setup deleting process
     BEntry archiveEntry (&m_archiveRef, true);
@@ -398,7 +398,7 @@ status_t TarArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
         uint32 type;
         message->GetInfo (kPath, &type, &count);
         if (type != B_STRING_TYPE)
-            return BZR_UNKNOWN;
+           return BZR_UNKNOWN;
     }
 
     m_pipeMgr.FlushArgs();
@@ -409,7 +409,7 @@ status_t TarArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
     {
         const char *pathString = NULL;
         if (message->FindString (kPath, i, &pathString) == B_OK)
-            m_pipeMgr << SupressWildcards (pathString);
+           m_pipeMgr << SupressWildcards (pathString);
     }
     
     FILE *out, *err;
@@ -450,7 +450,7 @@ status_t TarArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
 //=============================================================================================================//
 
 status_t TarArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progress,
-                        volatile bool *cancel)
+                      volatile bool *cancel)
 {
     char lineString[999];
     while (!feof (fp) && fgets (lineString, 998, fp))
@@ -462,7 +462,7 @@ status_t TarArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progre
 //=============================================================================================================//
 
 status_t TarArchiver::Create (BPath *archivePath, const char *relPath, BMessage *fileList, BMessage *addedPaths,
-                                BMessenger *progress, volatile bool *cancel)
+                             BMessenger *progress, volatile bool *cancel)
 {
     // true=>normalize path, which means everything otherthan the leaf must exist,
     // meaning we have everything ready and only need to create the leaf (by add)
@@ -475,7 +475,7 @@ status_t TarArchiver::Create (BPath *archivePath, const char *relPath, BMessage 
     {
         BEntry tempEntry (m_archivePath.Path(), true);
         if (tempEntry.Exists())
-            tempEntry.GetRef (&m_archiveRef);
+           tempEntry.GetRef (&m_archiveRef);
     }
 
     return result;
