@@ -18,15 +18,15 @@ class PipeMgr
         void                FlushArgs ();
         status_t            AddArg (const char *argv);
         void                Pipe () const;
-        thread_id            Pipe (int *outdes) const;
-        thread_id            Pipe (int *outdes, int *errdes) const;
+        thread_id           Pipe (int *outdes) const;
+        thread_id           Pipe (int *outdes, int *errdes) const;
         void                PrintToStream () const;
         
         // Custom operators
-        PipeMgr& operator    << (const char *arg);
-        PipeMgr& operator    << (BString arg);
+        PipeMgr& operator   << (const char *arg);
+        PipeMgr& operator   << (BString arg);
         
     protected:
         // Protected members
-        BList                m_argList;
+        BList               m_argList;
 };

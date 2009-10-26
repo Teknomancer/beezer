@@ -33,23 +33,23 @@ class BZipArchiver : public TarArchiver
         
         status_t            ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progress, volatile bool *cancel);
         status_t            Add (bool createMode, const char *relPath, BMessage *list, BMessage *addedPaths,
-                                BMessenger *progress, volatile bool *cancel);
+                                 BMessenger *progress, volatile bool *cancel);
     
         status_t            Create (BPath *archivePath, const char *relPath, BMessage *fileList,
-                                BMessage *addedPaths, BMessenger *progress, volatile bool *cancel);
+                                    BMessage *addedPaths, BMessenger *progress, volatile bool *cancel);
     
         status_t            Delete (char *&outputStr, BMessage *list, BMessenger *progress, volatile bool *cancel);
         status_t            ReadDelete (FILE *fp, char *&outputStr,    BMessenger *progress, volatile bool *cancel);
         
         bool                CanAddFiles () const;
         bool                NeedsTempDirectory () const;
-        BList                HiddenColumns (BList *columns) const;
-        BString                OutputFileName (const char *fullFileName) const;
+        BList               HiddenColumns (BList *columns) const;
+        BString             OutputFileName (const char *fullFileName) const;
         
     private:
         // Private helper functions
         void                CompressFromTemp ();
-        BString                InitTarFilePath (char *fileName);
+        BString             InitTarFilePath (char *fileName);
         void                SendProgressMessage (BMessenger *progress) const;
         
         char                m_bzipPath[B_PATH_NAME_LENGTH];

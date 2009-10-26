@@ -8,7 +8,7 @@
 #define _ARJ_STRINGS_H
 
 const char
-    *const kCompressionLevel =            "Compression Level",
+    *const kCompressionLevel =          "Compression Level",
     *const kLevel0 =                    "0 (None)",
     *const kLevel1 =                    "4 (Fastest)", 
     *const kLevel2 =                    "3",
@@ -20,7 +20,7 @@ const char
     
     *const kExtracting =                "While Extracting",
     *const kUpdate =                    "Update files (new and newer)",
-    *const kFreshen =                    "Freshen existing files",
-    *const kMultiVolume =                "Enable multiple volumes";
+    *const kFreshen =                   "Freshen existing files",
+    *const kMultiVolume =               "Enable multiple volumes";
 
 #endif /* _ARJ_STRINGS_H */

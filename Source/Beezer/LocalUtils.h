@@ -20,10 +20,10 @@ class BHandler;
 bool                OpenEntry (const char *tempDirPath, const char *entryPath, bool openWith);
 bool                TrackerOpenWith (entry_ref *ref);
 void                TrackerOpenFolder (entry_ref *refToDir);
-BString                CommaFormatString (off_t num);
-BString                LocaleStringFromBytes (int64 val);
-BBitmap                *ResBitmap (const char *name, uint32 type = 'BBMP');
-int64                BytesFromString (char *text);
+BString             CommaFormatString (off_t num);
+BString             LocaleStringFromBytes (int64 val);
+BBitmap            *ResBitmap (const char *name, uint32 type = 'BBMP');
+int64               BytesFromString (char *text);
 void                SetTargetForMenuRecursive (BMenu *menu, BHandler *target);
 
 #endif /* _LOCAL_UTILS_H */

@@ -12,8 +12,8 @@
 #include "Archiver.h"
 
 #define BZR_UNARK                        "unzip"
-#define BZR_ARK                            "zip"
-#define BZR_ZIPNOTE                        "zipnote"
+#define BZR_ARK                          "zip"
+#define BZR_ZIPNOTE                      "zipnote"
 
 class BMessenger;
 

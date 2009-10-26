@@ -69,15 +69,15 @@ class SplitPane : public BView
         void                StoreBarPosition ();        // By Ram
 
         uint                GetAlignment () const;
-        BPoint                GetBarPosition () const;
-        BPoint                GetBarThickness () const;
-        BPoint                GetJump () const;
-        BPoint                GetViewInsetBy () const;
-        BPoint                GetMinSizeOne () const;
-        BPoint                GetMinSizeTwo () const;
+        BPoint              GetBarPosition () const;
+        BPoint              GetBarThickness () const;
+        BPoint              GetJump () const;
+        BPoint              GetViewInsetBy () const;
+        BPoint              GetMinSizeOne () const;
+        BPoint              GetMinSizeTwo () const;
         void                GetState (BMessage &writeTo) const;
         void                GetResizeViewOne (bool &returnWhileInVertAlign, bool &returnWhileInHorizAlign) const;
-        BView*                ViewAt (int32 num);            // By Ram
+        BView*              ViewAt (int32 num);            // By Ram
         void                RestoreBarPosition ();        // By Ram
         
     private:
@@ -86,9 +86,9 @@ class SplitPane : public BView
         void                Update ();
         
         // Private members
-        BView                *PaneOne,
-                            *PaneTwo;
-        BPoint                vertpos,          // added by Ram; stores bar position in vertical mode
+        BView              *PaneOne,
+                           *PaneTwo;
+        BPoint              vertpos,          // added by Ram; stores bar position in vertical mode
                             horizpos,        // added by Ram; stores bar position in horizontal mode
                             storedvpos,        // The above 2 are used to store/restore while toggling splitter
                             storedhpos;        // added by Ram; used by StoreBarPosition() it saves the bar
@@ -97,16 +97,16 @@ class SplitPane : public BView
         uint storedalign;                    // stores the alignment to be used while restoring
         bool                Draggin,
                             attached;
-        BPoint                here,
+        BPoint              here,
                             prevSize;
-        BWindow                *WinOne,
-                            *WinTwo;
+        BWindow            *WinOne,
+                           *WinTwo;
         
         // State info members
         bool                VOneDetachable,
                             VTwoDetachable;
         uint                align;
-        BPoint                pos,
+        BPoint              pos,
                             thickness,
                             jump,
                             pad,

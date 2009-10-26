@@ -12,11 +12,11 @@ class ArchiveEntry
     public:
         ArchiveEntry ();
         ArchiveEntry (bool dir, const char *pathStr, const char *sizeStr, const char *packedStr,
-                    const char *dateStr, time_t timeValue, const char *methodStr, const char *crcStr);
+                      const char *dateStr, time_t timeValue, const char *methodStr, const char *crcStr);
         ~ArchiveEntry ();
         
-        bool                m_isDir;
-        time_t                m_timeValue;
+        bool                 m_isDir;
+        time_t               m_timeValue;
         char                *m_nameStr,
                             *m_pathStr,
                             *m_sizeStr,

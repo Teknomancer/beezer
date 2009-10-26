@@ -18,21 +18,21 @@ class CommentWindow : public BWindow
 {
     public:
         CommentWindow (BWindow *callerWindow, const char *archiveName,
-                const char *commentText, BFont *displayFont = NULL);
+                       const char *commentText, BFont *displayFont = NULL);
         
         // Inherited hooks
-        virtual bool        QuitRequested ();
-        virtual void        MessageReceived (BMessage *message);
+        virtual bool         QuitRequested ();
+        virtual void         MessageReceived (BMessage *message);
         
     private:
         // Private members
-        const char            *m_commentText;
+        const char          *m_commentText;
         
-        BevelView            *m_backView;
-        BTextView            *m_textView;
-        BButton                *m_closeButton,
+        BevelView           *m_backView;
+        BTextView           *m_textView;
+        BButton             *m_closeButton,
                             *m_saveButton;
-        BWindow                *m_callerWindow;
+        BWindow             *m_callerWindow;
 };
 
 #endif /* _COMMENT_WINDOW_H */
