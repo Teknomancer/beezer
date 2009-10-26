@@ -1,0 +1,24 @@
+URLView 2.11
+written by William Kakes of Tall Hill Software.
+
+This class provides an underlined and clickable BStringView
+that will launch the web browser, e-mail program, or FTP client
+when clicked on.  Other features include hover-highlighting,
+right-click	menus, and drag-and-drop support.
+
+You are free to use URLView in your own programs (both
+open-source and closed-source) free of charge, but a mention
+in your read me file or your program's about box would be
+appreciated.  See http://www.tallhill.com	for current contact
+information.
+	
+URLView is provided as-is, with no warranties of any kind.  If
+you use it, you are on your own.
+
+
+Beezer (c) 2002-2006 Ramshankar.
+All Rights Reserved.
+
+Read Disclaimer.txt for more info from the Author with regard to
+this component.
+

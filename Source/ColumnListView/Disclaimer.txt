@@ -1,0 +1,37 @@
+Beezer (c) 2002 Ramshankar
+
+A note on ColumnListView
+		- Ram
+
+Many thanks to Brian Tietz for providing the Be community with this
+powerful ColumnListView class. Thanks Brian!
+
+These files were generously distributed free of cost by a 3'rd party
+developer and does not fall under the Somebody Public License. The
+Author of this program wishes to thank the 3'rd party developer
+Brian Tietz for his efforts and time.
+
+The License for the files provided by Brian Tietz (ColumnListView and
+its associated classes/files/programs) fall only  under the  license
+agreement detailed in the file "CLV License.txt".
+
+Any and all liabilities are hereby explicity, completely disclaimed.
+The responsibility is completely in the hands of the end-user. For a
+full disclaimer please read Section 6 of the Somebody Public License.
+
+Original code by Brian Tietz
+Modifications -- Ramshankar (Ram) and Jeremy Friesner (jaf).
+
+This program uses the modified version of the code as used in
+BeShare 2.05 by Jeremy Friesner. (Don't ask my why). Taken
+this as the base many, many (hard to undo) changes have
+been done.
+
+Read "libCLV.txt" please for more information....
+
+and again.. This is NOT AN ORIGINAL DISTRIBUTION from the
+Author (Brian Tietz) of the original Santa's Gift Bag.
+
+Best Regards,
+Ram.
+<v.ramshankar@gmail.com>
