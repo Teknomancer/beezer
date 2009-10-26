@@ -1,7 +1,7 @@
 /*
- *	Beezer
- *	Copyright (c) 2002 Ramshankar (aka Teknomancer)
- *	See "License.txt" for licensing info.
+ *    Beezer
+ *    Copyright (c) 2002 Ramshankar (aka Teknomancer)
+ *    See "License.txt" for licensing info.
 */
 
 #ifndef _ARCHIVER_MGR_H
@@ -14,7 +14,7 @@ class BPopUpMenu;
 #include "Archiver.h"
 #include "Beezer.h"
 
-const char * const kLoaderFunc =		"load_archiver";
+const char * const kLoaderFunc =        "load_archiver";
 
 extern BLocker _ark_locker;
 

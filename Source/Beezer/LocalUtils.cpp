@@ -1,7 +1,7 @@
 /*
- *	Beezer
- *	Copyright (c) 2002 Ramshankar (aka Teknomancer)
- *	See "License.txt" for licensing info.
+ *    Beezer
+ *    Copyright (c) 2002 Ramshankar (aka Teknomancer)
+ *    See "License.txt" for licensing info.
 */
 
 #include <String.h>
@@ -33,223 +33,223 @@ BLocker _local_utils_locker ("_local_utils_lock", true);
 
 bool OpenEntry (const char *tempDirPath, const char *entryPath, bool openWith)
 {
-	BString extractedFilePath;
-	extractedFilePath << tempDirPath << "/";
-	extractedFilePath << entryPath;
-	
-	// Construct a ref, since roster/tracker needs refs inorder to launch
-	entry_ref ref;
-	BEntry entry (extractedFilePath.String());
-	if (entry.Exists() == false)
-		return false;
-	entry.GetRef (&ref);
+    BString extractedFilePath;
+    extractedFilePath << tempDirPath << "/";
+    extractedFilePath << entryPath;
+    
+    // Construct a ref, since roster/tracker needs refs inorder to launch
+    entry_ref ref;
+    BEntry entry (extractedFilePath.String());
+    if (entry.Exists() == false)
+        return false;
+    entry.GetRef (&ref);
 
-	// Update mime-type of the entry (sometimes mime isn't correct for newly extracted entries
-	// in which case the Open-With operation will produce only the generic list of apps like
-	// DiskProbe etc. -- Here we force updating of the mime-type which seems to work fine
-	BPath pathOfEntry;
-	entry.GetPath (&pathOfEntry);
-	update_mime_info (pathOfEntry.Path(), true, true, true);
+    // Update mime-type of the entry (sometimes mime isn't correct for newly extracted entries
+    // in which case the Open-With operation will produce only the generic list of apps like
+    // DiskProbe etc. -- Here we force updating of the mime-type which seems to work fine
+    BPath pathOfEntry;
+    entry.GetPath (&pathOfEntry);
+    update_mime_info (pathOfEntry.Path(), true, true, true);
 
-	// Take appropriate action, either open/open with...
-	if (openWith == false)
-	{
-		status_t result = be_roster->Launch (&ref);
+    // Take appropriate action, either open/open with...
+    if (openWith == false)
+    {
+        status_t result = be_roster->Launch (&ref);
 
-		// 0.06 -- bugfix: Now files are opened forcefully
-		// Now viewing archives from Beezer when Beezer is preferred app will work
-		if (result == B_BAD_VALUE)
-		{
-			entry_ref appRef;
-			be_roster->FindApp (&ref, &appRef);
-			team_id appID = be_roster->TeamFor (&appRef);
-			BMessage openMsg (B_REFS_RECEIVED);
-			openMsg.AddRef ("refs", &ref);
-			if (be_roster->IsRunning (&appRef))
-				BMessenger (NULL,appID).SendMessage (&openMsg);
-		}
-	}
-	else
-		TrackerOpenWith (&ref);
-	
-	return true;
+        // 0.06 -- bugfix: Now files are opened forcefully
+        // Now viewing archives from Beezer when Beezer is preferred app will work
+        if (result == B_BAD_VALUE)
+        {
+            entry_ref appRef;
+            be_roster->FindApp (&ref, &appRef);
+            team_id appID = be_roster->TeamFor (&appRef);
+            BMessage openMsg (B_REFS_RECEIVED);
+            openMsg.AddRef ("refs", &ref);
+            if (be_roster->IsRunning (&appRef))
+                BMessenger (NULL,appID).SendMessage (&openMsg);
+        }
+    }
+    else
+        TrackerOpenWith (&ref);
+    
+    return true;
 }
 
 //=============================================================================================================//
 
 bool TrackerOpenWith (entry_ref *ref)
 {
-	// Pass message to Tracker to display the "Open With" dialog for the file
-	BEntry entry (ref, true);		// Traverse the entry if it happens to be a link
-	if (entry.Exists() == true)
-	{
-		if (entry.IsDirectory() == false)
-		{
-	 		// Update mime-type of the entry (sometimes mime isn't correct for newly extracted entries
-			// in which case the Open-With operation will produce only the generic list of apps like
-			// DiskProbe etc. -- Here we force updating of the mime-type which seems to work fine
-			BPath pathOfEntry;
-			entry.GetPath (&pathOfEntry);
-			update_mime_info (pathOfEntry.Path(), true, true, true);
-			
-			BMessage trakMsg (B_REFS_RECEIVED);
-			trakMsg.AddInt32 ("launchUsingSelector", 1L);
-			trakMsg.AddRef ("refs", ref);
-			
-			if (be_roster->IsRunning (K_TRACKER_SIGNATURE))
-				BMessenger(K_TRACKER_SIGNATURE).SendMessage (&trakMsg);
-		}
-	}
-	else
-		return false;
-	
-	return true;
+    // Pass message to Tracker to display the "Open With" dialog for the file
+    BEntry entry (ref, true);        // Traverse the entry if it happens to be a link
+    if (entry.Exists() == true)
+    {
+        if (entry.IsDirectory() == false)
+        {
+             // Update mime-type of the entry (sometimes mime isn't correct for newly extracted entries
+            // in which case the Open-With operation will produce only the generic list of apps like
+            // DiskProbe etc. -- Here we force updating of the mime-type which seems to work fine
+            BPath pathOfEntry;
+            entry.GetPath (&pathOfEntry);
+            update_mime_info (pathOfEntry.Path(), true, true, true);
+            
+            BMessage trakMsg (B_REFS_RECEIVED);
+            trakMsg.AddInt32 ("launchUsingSelector", 1L);
+            trakMsg.AddRef ("refs", ref);
+            
+            if (be_roster->IsRunning (K_TRACKER_SIGNATURE))
+                BMessenger(K_TRACKER_SIGNATURE).SendMessage (&trakMsg);
+        }
+    }
+    else
+        return false;
+    
+    return true;
 }
 
 //=============================================================================================================//
 
 void TrackerOpenFolder (entry_ref *refToDir)
 {
-	BEntry entry (refToDir);
-	if (entry.Exists() == true)
-	{
-		BMessage trakMsg (B_REFS_RECEIVED);
-		trakMsg.AddRef ("refs", refToDir);
-		
-		if (be_roster->IsRunning (K_TRACKER_SIGNATURE))
-			BMessenger(K_TRACKER_SIGNATURE).SendMessage (&trakMsg);
-	}
+    BEntry entry (refToDir);
+    if (entry.Exists() == true)
+    {
+        BMessage trakMsg (B_REFS_RECEIVED);
+        trakMsg.AddRef ("refs", refToDir);
+        
+        if (be_roster->IsRunning (K_TRACKER_SIGNATURE))
+            BMessenger(K_TRACKER_SIGNATURE).SendMessage (&trakMsg);
+    }
 }
 
 //=============================================================================================================//
 
 BString CommaFormatString (off_t num)
 {
-	// Taken from OpenTracker iirc.
-	// Eg; if num is 2500 then its "2,500" is returned
-	char numStr[256];
-	sprintf (numStr, "%Ld", num);
-	uint32 length = strlen (numStr);
+    // Taken from OpenTracker iirc.
+    // Eg; if num is 2500 then its "2,500" is returned
+    char numStr[256];
+    sprintf (numStr, "%Ld", num);
+    uint32 length = strlen (numStr);
 
-	BString bytes;
-	
-	if (length >= 4)
-	{
-		uint32 charsTillComma = length % 3;
-		if (charsTillComma == 0)
-			charsTillComma = 3;
+    BString bytes;
+    
+    if (length >= 4)
+    {
+        uint32 charsTillComma = length % 3;
+        if (charsTillComma == 0)
+            charsTillComma = 3;
 
-		uint32 numberIndex = 0;
+        uint32 numberIndex = 0;
 
-		while (numStr[numberIndex])
-		{
-			bytes += numStr[numberIndex++];
-			if (--charsTillComma == 0 && numStr[numberIndex])
-			{
-				bytes += ',';
-				charsTillComma = 3;
-			}
-		}
-	}
-	else
-		bytes = numStr;
+        while (numStr[numberIndex])
+        {
+            bytes += numStr[numberIndex++];
+            if (--charsTillComma == 0 && numStr[numberIndex])
+            {
+                bytes += ',';
+                charsTillComma = 3;
+            }
+        }
+    }
+    else
+        bytes = numStr;
 
-	return bytes;
+    return bytes;
 }
 
 //=============================================================================================================//
 
 BBitmap* ResBitmap (const char *name, uint32 type)
 {
-	BAutolock autolocker (&_local_utils_locker);
-	if (!autolocker.IsLocked())
-		return NULL;
+    BAutolock autolocker (&_local_utils_locker);
+    if (!autolocker.IsLocked())
+        return NULL;
 
-	// Only use for archived types, not raw types like PNG etc.
-	size_t bmpSize;
-	BMessage msg;
-	const char *buf = NULL;
+    // Only use for archived types, not raw types like PNG etc.
+    size_t bmpSize;
+    BMessage msg;
+    const char *buf = NULL;
 
-	buf = reinterpret_cast<const char*>(be_app->AppResources()->LoadResource (type, name, &bmpSize));
-	if (!buf)
-	{
-		BString errString;
-		errString << "error loading application resource: NAME=\"" << name << "\"";
-		debugger (errString.String());
-		return NULL;
-	}
-	
-	if (msg.Unflatten (buf) != B_OK)
-	{
-		BString errString;
-		errString << "error unflattening resource message: NAME=\"" << name << "\"";
-		debugger (errString.String());
-		return NULL;
-	}
+    buf = reinterpret_cast<const char*>(be_app->AppResources()->LoadResource (type, name, &bmpSize));
+    if (!buf)
+    {
+        BString errString;
+        errString << "error loading application resource: NAME=\"" << name << "\"";
+        debugger (errString.String());
+        return NULL;
+    }
+    
+    if (msg.Unflatten (buf) != B_OK)
+    {
+        BString errString;
+        errString << "error unflattening resource message: NAME=\"" << name << "\"";
+        debugger (errString.String());
+        return NULL;
+    }
 
-	return new BBitmap (&msg);
+    return new BBitmap (&msg);
 }
 
 //=============================================================================================================//
 
 int64 BytesFromString (char *text)
 {
-	if (!text)
-		return 0;
-	
-	// Converts string to bytes, "text" needs to be 10.2 KB or 2 MB etc.
-	char *end;
-	double val;
+    if (!text)
+        return 0;
+    
+    // Converts string to bytes, "text" needs to be 10.2 KB or 2 MB etc.
+    char *end;
+    double val;
 
-	char *buffer = new char[strlen (text) + 1];
-	strcpy (buffer, text);
-	val = strtod (buffer, &end);			// Bytes
+    char *buffer = new char[strlen (text) + 1];
+    strcpy (buffer, text);
+    val = strtod (buffer, &end);            // Bytes
 
-	if (strstr (buffer, "KB"))				// KB
-		val *= kKBSize;
-	else if (strstr (buffer, "MB"))			// MB
-		val *= kMBSize;
-	else if (strstr (buffer, "GB"))			// GB
-		val *= kGBSize;
-	else if (strstr (buffer, "TB"))			// TB
-		val *= kTBSize;
+    if (strstr (buffer, "KB"))                // KB
+        val *= kKBSize;
+    else if (strstr (buffer, "MB"))            // MB
+        val *= kMBSize;
+    else if (strstr (buffer, "GB"))            // GB
+        val *= kGBSize;
+    else if (strstr (buffer, "TB"))            // TB
+        val *= kTBSize;
 
-	delete[] buffer;
-	return (int64)val;
+    delete[] buffer;
+    return (int64)val;
 }
 
 //=============================================================================================================//
 
 BString LocaleStringFromBytes (int64 v)
 {
-	// Redundant code !! Already exists in AppUtils, but including and using AppUtils from Beezer code-base
-	// is ugly, incorrect and may lead to broken implementation when AppUtils change etc, so repeat it here
-	// later find a way to merge this function into AppUtils or LocalUtils --
+    // Redundant code !! Already exists in AppUtils, but including and using AppUtils from Beezer code-base
+    // is ugly, incorrect and may lead to broken implementation when AppUtils change etc, so repeat it here
+    // later find a way to merge this function into AppUtils or LocalUtils --
 
-	// OK this has now shifted from FileSplitterWindow to LocalUtils because it is needed in FileJoinerWindow
-	// as well, but currently this also exists in AppUtils, maybe it's better to have 2 versions of the same
-	// function for the reason mentioed above
-	BString str;
-	if (v > -1)
-	{
-		char buf[50];
-		if (v > (1024LL * 1024LL * 1024LL * 1024LL))
-			sprintf (buf, "%.2f %s", ((double)v) / (1024LL * 1024LL * 1024LL * 1024LL), str (S_PREFIX_TB));
-		else if (v > (1024LL * 1024LL * 1024LL))
-			sprintf(buf, "%.2f %s", ((double)v)/(1024LL * 1024LL * 1024LL), str (S_PREFIX_GB));
-		else if (v > (1024LL * 1024LL))
-			sprintf(buf, "%.2f %s", ((double)v) / (1024LL * 1024LL), str (S_PREFIX_MB));
-		else if (v > (1024LL))
-			sprintf(buf, "%.2f %s", ((double)v) / 1024LL, str (S_PREFIX_KB));
-		else
-			sprintf(buf, "%Li %s", v, str (S_PREFIX_BYTES));
-		
-		str = buf;
-	}
-	else
-		str = "-";
-	
-	return str;
+    // OK this has now shifted from FileSplitterWindow to LocalUtils because it is needed in FileJoinerWindow
+    // as well, but currently this also exists in AppUtils, maybe it's better to have 2 versions of the same
+    // function for the reason mentioed above
+    BString str;
+    if (v > -1)
+    {
+        char buf[50];
+        if (v > (1024LL * 1024LL * 1024LL * 1024LL))
+            sprintf (buf, "%.2f %s", ((double)v) / (1024LL * 1024LL * 1024LL * 1024LL), str (S_PREFIX_TB));
+        else if (v > (1024LL * 1024LL * 1024LL))
+            sprintf(buf, "%.2f %s", ((double)v)/(1024LL * 1024LL * 1024LL), str (S_PREFIX_GB));
+        else if (v > (1024LL * 1024LL))
+            sprintf(buf, "%.2f %s", ((double)v) / (1024LL * 1024LL), str (S_PREFIX_MB));
+        else if (v > (1024LL))
+            sprintf(buf, "%.2f %s", ((double)v) / 1024LL, str (S_PREFIX_KB));
+        else
+            sprintf(buf, "%Li %s", v, str (S_PREFIX_BYTES));
+        
+        str = buf;
+    }
+    else
+        str = "-";
+    
+    return str;
 }
 
 //=============================================================================================================//
@@ -257,100 +257,100 @@ BString LocaleStringFromBytes (int64 v)
 // Currently un-used, will use when we do dynamic column resizes
 //float TruncSizeString (BString *result, BView *view, char *text, float width)
 //{
-//	const int64 kUnknownSize = -1;
-//	const char *kSizeFormats[] =
-//	{
-//		"%.2g %s",
-//		"%.1g %s",
-//		"%.g %s",
-//		"%.g%s",
-//		0
-//	};
-//	
-//	int64 value = BytesFromString (text);
-//	char buffer[1024];
-//	if (value == kUnknownSize)
-//	{
-//		*result = "-";
-//		return view->StringWidth ("-");
-//	}
-//	else if (value < kKBSize)
-//	{
-//		sprintf (buffer, "%Ld bytes", value);
-//		if (view->StringWidth (buffer) > width)
-//			sprintf (buffer, "%Ld B", value);
-//	}
-//	else
-//	{
-//		const char *suffix;
-//		float floatValue;
-//		if (value >= kTBSize)
-//		{
-//			suffix = "TB";
-//			floatValue = (float)value / kTBSize;
-//		}
-//		else if (value >= kGBSize)
-//		{
-//			suffix = "GB";
-//			floatValue = (float)value / kGBSize;
-//		}
-//		else if (value >= kMBSize)
-//		{
-//			suffix = "MB";
-//			floatValue = (float)value / kMBSize;
-//		}
-//		else
-//		{
-//			suffix = "KB";
-//			floatValue = (float)value / kKBSize;
-//		}
+//    const int64 kUnknownSize = -1;
+//    const char *kSizeFormats[] =
+//    {
+//        "%.2g %s",
+//        "%.1g %s",
+//        "%.g %s",
+//        "%.g%s",
+//        0
+//    };
+//    
+//    int64 value = BytesFromString (text);
+//    char buffer[1024];
+//    if (value == kUnknownSize)
+//    {
+//        *result = "-";
+//        return view->StringWidth ("-");
+//    }
+//    else if (value < kKBSize)
+//    {
+//        sprintf (buffer, "%Ld bytes", value);
+//        if (view->StringWidth (buffer) > width)
+//            sprintf (buffer, "%Ld B", value);
+//    }
+//    else
+//    {
+//        const char *suffix;
+//        float floatValue;
+//        if (value >= kTBSize)
+//        {
+//            suffix = "TB";
+//            floatValue = (float)value / kTBSize;
+//        }
+//        else if (value >= kGBSize)
+//        {
+//            suffix = "GB";
+//            floatValue = (float)value / kGBSize;
+//        }
+//        else if (value >= kMBSize)
+//        {
+//            suffix = "MB";
+//            floatValue = (float)value / kMBSize;
+//        }
+//        else
+//        {
+//            suffix = "KB";
+//            floatValue = (float)value / kKBSize;
+//        }
 //
-//		for (int32 index = 0; ; index++)
-//		{
-//			if (!kSizeFormats[index])
-//				break;
+//        for (int32 index = 0; ; index++)
+//        {
+//            if (!kSizeFormats[index])
+//                break;
 //
-//			sprintf (buffer, kSizeFormats[index], floatValue, suffix);
+//            sprintf (buffer, kSizeFormats[index], floatValue, suffix);
 //
-////			// strip off an insignificant zero so we don't get readings such as 1.00
-////			char *period = 0;
-////			for (char *tmp = buffer; *tmp; tmp++)
-////				if (*tmp == '.')
-////					period = tmp;
-////			
-////			// move the rest of the string over the insignificant zero
-////			if (period && period[1] && period[2] == '0')
-////				for (char *tmp = &period[2]; *tmp; tmp++)
-////					*tmp = tmp[1];
-//			
-//			float resultWidth = view->StringWidth (buffer);
-//			if (resultWidth <= width)
-//			{
-//				*result = buffer;
-//				return resultWidth;
-//			}
-//		}
-//	}
+////            // strip off an insignificant zero so we don't get readings such as 1.00
+////            char *period = 0;
+////            for (char *tmp = buffer; *tmp; tmp++)
+////                if (*tmp == '.')
+////                    period = tmp;
+////            
+////            // move the rest of the string over the insignificant zero
+////            if (period && period[1] && period[2] == '0')
+////                for (char *tmp = &period[2]; *tmp; tmp++)
+////                    *tmp = tmp[1];
+//            
+//            float resultWidth = view->StringWidth (buffer);
+//            if (resultWidth <= width)
+//            {
+//                *result = buffer;
+//                return resultWidth;
+//            }
+//        }
+//    }
 //}
 
 //=============================================================================================================//
 
 void SetTargetForMenuRecursive (BMenu *menu, BHandler *target)
 {
-	BAutolock autolocker (&_local_utils_locker);
-	if (!autolocker.IsLocked())
-		return;
+    BAutolock autolocker (&_local_utils_locker);
+    if (!autolocker.IsLocked())
+        return;
 
-	// Recursive descent into sub-menus and set all BMenuItems under "menu" to target "target" BHandler
-	menu->SetTargetForItems (target);
-	for (int32 i = 0; i < menu->CountItems(); i++)
-	{
-		BMenuItem *item = menu->ItemAt (i);
-		item->SetTarget (target);
-		BMenu *subMenu = item->Submenu();
-		if (subMenu)
-			SetTargetForMenuRecursive (subMenu, target);
-	}
+    // Recursive descent into sub-menus and set all BMenuItems under "menu" to target "target" BHandler
+    menu->SetTargetForItems (target);
+    for (int32 i = 0; i < menu->CountItems(); i++)
+    {
+        BMenuItem *item = menu->ItemAt (i);
+        item->SetTarget (target);
+        BMenu *subMenu = item->Submenu();
+        if (subMenu)
+            SetTargetForMenuRecursive (subMenu, target);
+    }
 }
 
 //=============================================================================================================//
