@@ -16,7 +16,7 @@
     you use it, you are on your own.
 
     Original Code: William Kakes
-    Modifications: Ramshankar <ramshankar@themail.com>
+    Modifications: Ramshankar <v.ramshankar(at)gmail(dot)com>
         The alterations are mostly cosmetic in nature, i.e. the
         style of 'bracketing', indents, naming conventions have
         been changed to suit this project. The overall implementation
