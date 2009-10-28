@@ -66,8 +66,6 @@
 #include "FileJoinerWindow.h"
 #include "AddOnWindow.h"
 
-#include "BubbleHelper.h"
-
 //=============================================================================================================//
 
 Beezer::Beezer ()
@@ -83,17 +81,10 @@ Beezer::Beezer ()
         m_nWindows (0L),
         m_openFilePanel (NULL),
         m_createFilePanel (NULL),
-        m_bubbleHelper (NULL),
         m_windowMgr (new WindowMgr()),
         m_arkTypePopUp (NULL),
         m_arkTypeField (NULL)
 {
-    // Setup the bubble helper (tooltips for all you windows users)
-    // Currently bubblehelps are disabled due to a conflict between bubblehelps and ImageButton
-    //m_bubbleHelper = new BubbleHelper();
-    //m_bubbleHelper->SetDelayTime (1200000);
-    //m_bubbleHelper->EnableHelp (false);
-    
     // Let the initial rectangle be small enough to fit on 640x480 screens
     m_defaultWindowRect.Set (40, 40, 610, 440);
 
@@ -191,7 +182,7 @@ void Beezer::Quit()
 void Beezer::ReadyToRun()
 {
     if (m_nWindows == 0 && m_startupWnd == NULL && m_addOnWnd == NULL)
-        m_startupWnd = new StartupWindow (m_recentMgr, m_bubbleHelper, true);
+        m_startupWnd = new StartupWindow (m_recentMgr, NULL, true);
     
     return BApplication::ReadyToRun();
 }
@@ -541,7 +532,7 @@ void Beezer::UnRegisterWindow (bool closeApp)
            if (_prefs_misc.FindBoolDef (kPfWelcomeOnQuit, true))
            {
                if (!m_startupWnd)
-                  m_startupWnd = new StartupWindow (m_recentMgr, m_bubbleHelper, false);
+                  m_startupWnd = new StartupWindow (m_recentMgr, NULL, false);
                else
                   m_startupWnd->Show();
            }
@@ -627,7 +618,7 @@ MainWindow* Beezer::CreateWindow (entry_ref *ref)
         m_startupWnd->Unlock();
     }
 
-    MainWindow *wndPtr = new MainWindow (m_newWindowRect, m_bubbleHelper, m_windowMgr, m_recentMgr,
+    MainWindow *wndPtr = new MainWindow (m_newWindowRect, NULL, m_windowMgr, m_recentMgr,
                                 m_extractMgr, m_ruleMgr);
     m_windowMgr->AddWindow (wndPtr);
     if (ref)
