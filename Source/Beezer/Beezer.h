@@ -75,10 +75,10 @@ class Beezer : public BApplication
         // Public members
         BString             m_settingsPathStr;
         BDirectory          m_addonsDir,
-                          m_docsDir,
-                          m_settingsDir,
-                          m_binDir,
-                          m_stubDir;
+                            m_docsDir,
+                            m_settingsDir,
+                            m_binDir,
+                            m_stubDir;
 
     private:
         // Private members
@@ -92,31 +92,30 @@ class Beezer : public BApplication
         int8                RegisterFileTypes () const;
         
         AboutWindow        *m_aboutWnd;
-        AuthorWindow        *m_authorWnd;
-        StartupWindow       *m_startupWnd;
+        AuthorWindow       *m_authorWnd;
+        StartupWindow      *m_startupWnd;
         PrefsWindow        *m_prefsWnd;
-        FileSplitterWindow  *m_splitWnd;
-        FileJoinerWindow    *m_joinWnd;
+        FileSplitterWindow *m_splitWnd;
+        FileJoinerWindow   *m_joinWnd;
         AddOnWindow        *m_addOnWnd;
         
         uint32              m_nextWindowID,
-                          m_nWindows;
+                            m_nWindows;
         BRect               m_defaultWindowRect,
-                          m_newWindowRect;
+                            m_newWindowRect;
         BFilePanel         *m_openFilePanel,
-                         *m_createFilePanel;
-        BubbleHelper        *m_bubbleHelper;
+                           *m_createFilePanel;
         WindowMgr          *m_windowMgr;
         RecentMgr          *m_recentMgr,
-                         *m_extractMgr,
-                         *m_splitFilesMgr,
-                         *m_splitDirsMgr;
+                           *m_extractMgr,
+                           *m_splitFilesMgr,
+                           *m_splitDirsMgr;
         RuleMgr            *m_ruleMgr;
         BPopUpMen          *m_arkTypePopUp;
         BMenu              *m_toolsMenu;
         BMenuField         *m_arkTypeField;
         BList               m_arkTypes,
-                          m_arkExtensions;
+                            m_arkExtensions;
 };
 
 #endif /* _BEEZER_H */
