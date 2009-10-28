@@ -16,7 +16,7 @@
     you use it, you are on your own.
     
     Original Code: William Kakes
-    Modifications: Ramshankar <v.ramshankar@gmail.com>
+    Modifications: Ramshankar <v.ramhankar(at)gmail(dot)com>
 */
 
 
