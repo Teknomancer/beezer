@@ -118,6 +118,7 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
            fileCount = actionMessage->FindInt32 (kCount);
            actionMessage->FindString (kProgressAction, &strOfStrView);
            actionMessage->FindString (kPreparing, &prepareString);
+           break;
         }
     }
 
