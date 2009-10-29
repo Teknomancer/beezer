@@ -29,24 +29,24 @@
 #ifndef _APP_CONSTANTS_H
 #define _APP_CONSTANTS_H
 
-#define K_APP_TITLE                         "Beezer"
-#define K_APP_AUTHOR                        "Ramshankar"
-#define K_APP_AUTHOR_MAIL                    "(v.ramshankar@gmail.com)"
-#define K_APP_AUTHOR_MAIL_1                  "v.ramshankar@gmail.com"
-#define K_APP_AUTHOR_MAIL_URL_1               "mailto:v.ramshankar@gmail.com"
-#define K_APP_AUTHOR_MAIL_2                  "ramthemad@yahoo.co.in"
-#define K_APP_AUTHOR_MAIL_URL_2               "mailto:ramthemad@yahoo.co.in"
-#define K_APP_WEBSITE                        "www.geocities.com/ram_beos"
-#define K_APP_WEBSITE_URL                    "http://www.geocities.com/ram_beos"
-#define K_APP_AUTHOR_BESHARE_NICK             "Teknomancer"
+#define K_APP_TITLE                          "Beezer"
+#define K_APP_AUTHOR                         "Ramshankar"
+#define K_APP_AUTHOR_MAIL                    "(v.ramshankar (at) gmail.com)"
+#define K_APP_AUTHOR_MAIL_1                  "v.ramshankar (at) gmail.com"
+#define K_APP_AUTHOR_MAIL_URL_1              "mailto:v.ramshankar (at) gmail.com"
+#define K_APP_AUTHOR_MAIL_2                  "--"
+#define K_APP_AUTHOR_MAIL_URL_2              "mailto:--"
+#define K_APP_WEBSITE                        "sites.google.com/site/appbeezer"
+#define K_APP_WEBSITE_URL                    "http://sites.google.com/site/appbeezer"
+#define K_APP_AUTHOR_BESHARE_NICK            "Teknomancer"
 #define K_APP_AUTHOR_COUNTRY                 "India"
-#define K_APP_AUTHOR_OCCUPATION               "Student"
+#define K_APP_AUTHOR_OCCUPATION              "Student"
 #define K_APP_AUTHOR_AGE                     "NN"
 
 #define K_APP_COMPILE_STRING                 "__compiled_on__"
 
 #define K_COMPILED_TIME_FILE                 "_bzr_ctstamp.txt"
-#define K_RULE_FILE                         "_bzr_rules.txt"
+#define K_RULE_FILE                          "_bzr_rules.txt"
 #define K_STUB_JOINER_FILE                   "stub_joiner"
 #define K_ARK_DIR_NAME                       "add-ons/"
 #define K_BIN_DIR_NAME                       "workers/"
@@ -93,6 +93,6 @@
 #endif
 
 #define K_BARBERPOLE_PULSERATE                100000
-#define K_PROGRESS_DELAY                     70000
+#define K_PROGRESS_DELAY                      70000
 
 #endif /* _APP_CONSTANTS_H */
