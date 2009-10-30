@@ -30,7 +30,7 @@
 #define _GZIP_STRINGS_H
 
 const char
-    *const kCompressionLevel =         "Compression Level",
+    *const kCompressionLevel =        "Compression Level",
     *const kLevel1 =                  "1 (Fastest)",
     *const kLevel2 =                  "2",
     *const kLevel3 =                  "3",
