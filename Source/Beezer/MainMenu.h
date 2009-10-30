@@ -51,22 +51,22 @@ class MainMenu : public BMenuBar
         
         // Public members
         BMenu              *m_fileMenu,
-                         *m_recentMenu,
-                         *m_extractPathsMenu,
-                         *m_extractSelPathsMenu,
-                         *m_editMenu,
-                         *m_selectAllMenu,
-                         *m_actionsMenu,
-                         *m_columnsSubMenu,
-                         *m_sortBySubMenu,
-                         *m_sortOrderSubMenu,
-                         *m_foldingMenu,
-                         *m_toolsMenu,
-                         *m_windowsMenu,
-                         *m_settingsMenu;
+                           *m_recentMenu,
+                           *m_extractPathsMenu,
+                           *m_extractSelPathsMenu,
+                           *m_editMenu,
+                           *m_selectAllMenu,
+                           *m_actionsMenu,
+                           *m_columnsSubMenu,
+                           *m_sortBySubMenu,
+                           *m_sortOrderSubMenu,
+                           *m_foldingMenu,
+                           *m_toolsMenu,
+                           *m_windowsMenu,
+                           *m_settingsMenu;
         BPopUpMenu         *m_archiveContextMenu,
-                         *m_logContextMenu;
-        BitmapMenuItem      *m_systemMenu;
+                           *m_logContextMenu;
+        BitmapMenuItem     *m_systemMenu;
 };
 
 //=============================================================================================================//

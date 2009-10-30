@@ -52,7 +52,7 @@ class LogWindow : public BWindow
         BevelView          *m_backView;
         BTextView          *m_textView;
         BButton            *m_closeButton;
-        BetterScrollView    *m_scrollView;
+        BetterScrollView   *m_scrollView;
         float               m_maxLineWidth;
 };
 

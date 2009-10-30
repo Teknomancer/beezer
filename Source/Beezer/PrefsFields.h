@@ -35,7 +35,7 @@
 // constants (as compilers can't pick them up)
 
 const char
-    *const kPfRecentPath =                "pfRecent",                  // Recentpaths
+    *const kPfRecentPath =               "pfRecent",                  // Recentpaths
     
     *const kPfOpen =                     "pfOpen",                  // Extract
     *const kPfClose =                    "pfClose",
@@ -45,48 +45,48 @@ const char
     *const kPfStoreUI =                  "pfStoreUI",               // State
     *const kPfStoreArk =                 "pfStoreArk",
     *const kPfRestoreUI =                "pfRestoreUI",
-    *const kPfRestoreArk =                "pfRestoreArk",
+    *const kPfRestoreArk =               "pfRestoreArk",
     
     *const kPfSearchWnd =                "pfSearchWnd",               // Windows
-    *const kPfSearchWndFrame =            "pfSearchWndFrame",
-    *const kPfCommentWnd =                "pfCommentWnd",
-    *const kPfCommentWndFrame =           "pfCommentWndFrame",
+    *const kPfSearchWndFrame =           "pfSearchWndFrame",
+    *const kPfCommentWnd =               "pfCommentWnd",
+    *const kPfCommentWndFrame =          "pfCommentWndFrame",
     *const kPfLogWnd =                   "pfLogWnd",
-    *const kPfLogWndFrame =               "pfLogWndFrame",
-    *const kPfArkInfoWnd =                "pfArkInfoWnd",
-    *const kPfArkInfoWndFrame =           "pfArkInfoWndFrame",
-    *const kPfWelcomeWnd =                "pfWelcomeWnd",
-    *const kPfWelcomeWndFrame =           "pfWelcomeWndFrame",
+    *const kPfLogWndFrame =              "pfLogWndFrame",
+    *const kPfArkInfoWnd =               "pfArkInfoWnd",
+    *const kPfArkInfoWndFrame =          "pfArkInfoWndFrame",
+    *const kPfWelcomeWnd =               "pfWelcomeWnd",
+    *const kPfWelcomeWndFrame =          "pfWelcomeWndFrame",
     *const kPfPrefsWnd =                 "pfPrefsWnd",
-    *const kPfPrefsWndFrame =             "pfPrefsWndFrame",
+    *const kPfPrefsWndFrame =            "pfPrefsWndFrame",
     
-    *const kPfDefOpenPath =               "pfDefOpenPath",           // Paths
-    *const kPfDefAddPath =                "pfDefAddPath",
-    *const kPfDefExtractPath =            "pfDefExtractPath",
+    *const kPfDefOpenPath =              "pfDefOpenPath",           // Paths
+    *const kPfDefAddPath =               "pfDefAddPath",
+    *const kPfDefExtractPath =           "pfDefExtractPath",
     *const kPfUseArkDir =                "pfUseArkDir",
-    *const kPfFavPathsMsg =               "pfFavPathsMsg",
+    *const kPfFavPathsMsg =              "pfFavPathsMsg",
     *const kPfGenPath =                  "pfGenPath",
     
-    *const kPfShowPathInRecent =          "pfShowPath",               // Recent
-    *const kPfNumRecentArk =              "pfnArchives",
-    *const kPfNumRecentExt =              "pfnExtracts",
+    *const kPfShowPathInRecent =         "pfShowPath",               // Recent
+    *const kPfNumRecentArk =             "pfnArchives",
+    *const kPfNumRecentExt =             "pfnExtracts",
     
-    *const kPfReplaceFiles =              "pfReplace",               // Add
-    *const kPfWarnBeforeAdd =             "pfWarn",
-    *const kPfWarnAmount =                "pfWarnMB",
-    *const kPfSortAfterAdd =              "pfSortAfterAdd",
-    *const kPfConfirmDropAdd =            "pfConfirmDropAdd",
-    
-    *const kPfFullLengthBars =            "pfFullLengthBars",           // Interface
+    *const kPfReplaceFiles =             "pfReplace",               // Add
+    *const kPfWarnBeforeAdd =            "pfWarn",
+    *const kPfWarnAmount =               "pfWarnMB",
+    *const kPfSortAfterAdd =             "pfSortAfterAdd",
+    *const kPfConfirmDropAdd =           "pfConfirmDropAdd",
+   
+    *const kPfFullLengthBars =           "pfFullLengthBars",           // Interface
     *const kPfActFore =                  "pfActFore",
     *const kPfActBack =                  "pfActBack",
-    *const kPfColorIndex =                "pfColIndex",
+    *const kPfColorIndex =               "pfColIndex",
     
-    *const kPfPrefPanelIndex =            "pfPanelIndex",               // Miscellaneous
+    *const kPfPrefPanelIndex =           "pfPanelIndex",               // Miscellaneous
     *const kPfStartup =                  "pfStartupAction",
-    *const kPfWelcomeOnQuit =             "pfWelcomeOnQuit",
-    *const kPfShowCommentOnOpen =         "pfShowCommentOpen",
-    *const kPfMimeOnStartup =             "pfRegMimeStartup",
-    *const kPfDefaultArk =                "pfDefaultArk";
+    *const kPfWelcomeOnQuit =            "pfWelcomeOnQuit",
+    *const kPfShowCommentOnOpen =        "pfShowCommentOpen",
+    *const kPfMimeOnStartup =            "pfRegMimeStartup",
+    *const kPfDefaultArk =               "pfDefaultArk";
 
 #endif /* _PREFS_FIELDS_H */
