@@ -37,6 +37,7 @@
 HashEntry::HashEntry ()
 {
     m_pathStr = NULL;
+    
     m_clvItem = NULL;
     m_next = NULL;
 }
