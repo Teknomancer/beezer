@@ -48,11 +48,11 @@ class RecentMgr;
 #define M_SELECT_JOIN_FOLDER             'sldr'
 #define M_JOIN_FILE_SELECTED             'jfsl'
 #define M_JOIN_FOLDER_SELECTED           'jfsd'
-#define M_UPDATE_DATA                   'updd'
+#define M_UPDATE_DATA                    'updd'
 #define M_SEPARATOR_CHANGED              'spch'
-#define M_CALC_COMPLETE                 'calc'
-#define M_REFRESH_INFO                  'reff'
-#define M_JOIN_NOW                      'join'
+#define M_CALC_COMPLETE                  'calc'
+#define M_REFRESH_INFO                   'reff'
+#define M_JOIN_NOW                       'join'
 #define M_OPERATION_COMPLETE             'opcc'
 
 class FileJoinerWindow : public BWindow
@@ -76,44 +76,44 @@ class FileJoinerWindow : public BWindow
         void                UpdateRecentMenus ();
         void                RefreshInfo ();
         void                GetDirectoryInfo (BEntry *srcDir, int32 &fileCount,
-                                          off_t &totalSize, volatile bool *cancel);
+                                              off_t &totalSize, volatile bool *cancel);
         void                DeleteChunks (const char *firstChunkPathStr, const char *separator);
         void                ToggleWindowHeight (bool expand);
         
         // Private members
         BevelView          *m_backView,
-                         *m_innerView;
+                           *m_innerView;
         BStringView        *m_descStr,
-                         *m_descStr2,
-                         *m_piecesStr,
-                         *m_sizeStr;
-        BTextControl        *m_filePathView,
-                         *m_folderPathView,
-                         *m_separatorView;
+                           *m_descStr2,
+                           *m_piecesStr,
+                           *m_sizeStr;
+        BTextControl       *m_filePathView,
+                           *m_folderPathView,
+                           *m_separatorView;
         BMenu              *m_folderMenu;
         BMenuField         *m_folderField;
         BButton            *m_selectFileBtn,
-                         *m_selectFolderBtn,
-                         *m_joinBtn,
-                         *m_refreshBtn;
+                           *m_selectFolderBtn,
+                           *m_joinBtn,
+                           *m_refreshBtn;
         BFilePanel         *m_filePanel;
-        SelectDirPanel      *m_dirPanel;
+        SelectDirPanel     *m_dirPanel;
         BCheckBox          *m_openChk,
-                         *m_deleteChk,
-                         *m_closeChk;
+                           *m_deleteChk,
+                           *m_closeChk;
         bool                m_calcSize,
-                          m_joinInProgress,
-                          m_quitNow;
+                            m_joinInProgress,
+                            m_quitNow;
         thread_id           m_thread;
-        volatile bool        m_cancel;
+        volatile bool       m_cancel;
         BString             m_separatorStr,
-                          m_chunkPathStr,
-                          m_dirPathStr;
+                            m_chunkPathStr,
+                            m_dirPathStr;
         uint16              m_noOfPieces;
         off_t               m_totalSize;
         BStatusBar         *m_statusBar;
         float               m_hideProgress,
-                          m_showProgress;
+                            m_showProgress;
 
         BMessenger         *m_messenger;
         RecentMgr          *m_recentSplitDirs;    // yes split is used for both !
