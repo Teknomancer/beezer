@@ -37,9 +37,9 @@ class ArchiveEntry
                     const char *dateStr, time_t timeValue, const char *methodStr, const char *crcStr);
         ~ArchiveEntry ();
         
-        bool                m_isDir;
-        time_t              m_timeValue;
-        char               *m_nameStr,
+        bool              m_isDir;
+        time_t            m_timeValue;
+        char             *m_nameStr,
                          *m_pathStr,
                          *m_sizeStr,
                          *m_packedStr,
