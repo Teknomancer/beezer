@@ -42,7 +42,7 @@
 #endif
 
 #define kInputText        "input_field"
-#define kButtonIndex    "button_index"
+#define kButtonIndex      "button_index"
 
 enum
 {
@@ -56,21 +56,21 @@ class InputAlert : public BAlert
 {
     public:
         InputAlert (const char *title, const char *text, const char *initialText, bool hideTyping,
-               const char *button1, const char *button2 = NULL, const char *button3 = NULL,
-               button_width width = B_WIDTH_AS_USUAL, alert_type type = B_INFO_ALERT);
+                    const char *button1, const char *button2 = NULL, const char *button3 = NULL,
+                    button_width width = B_WIDTH_AS_USUAL, alert_type type = B_INFO_ALERT);
         InputAlert (const char *title, const char *text, const char *initialText, bool hideTyping,
-               const char *button1, const char *button2, const char *button3, button_width width,
-               button_spacing spacing, alert_type type = B_INFO_ALERT);
+                    const char *button1, const char *button2, const char *button3, button_width width,
+                    button_spacing spacing, alert_type type = B_INFO_ALERT);
         
         // Inherited hooks
         void                MessageReceived (BMessage *message);
         
         // Additional hooks
         BMessage            GetInput (BWindow *window);
-        BTextControl        *TextControl () const;
+        BTextControl       *TextControl () const;
         
         // Static constants
-        static const uint32  kInputMessage = 'inpt';
+        static const uint32 kInputMessage = 'inpt';
         
     private:
         // Private hooks
@@ -78,11 +78,11 @@ class InputAlert : public BAlert
                              bool hideTyping);
         
         // Private members
-        BTextControl        *m_inputBox;
+        BTextControl       *m_inputBox;
         BStringView        *m_bytesView;
         BButton            *m_farRightButton;
         BString             m_inputText;
-        volatile bool        m_isQuitting;
+        volatile bool       m_isQuitting;
         int32               m_buttonIndex;
 };
 
