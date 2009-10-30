@@ -40,7 +40,7 @@ class LogTextView : public BTextView
     public:
         LogTextView (BRect frame, const char *name, uint32 resizeMask, uint32 flags = B_WILL_DRAW);
         LogTextView (BRect frame, const char *name, const BFont *initialFont,
-               const rgb_color *initialColor, uint32 resizeMask, uint32 flags);
+                     const rgb_color *initialColor, uint32 resizeMask, uint32 flags);
         
         // Inherited hooks
         virtual void        MakeFocus (bool focused = true);
@@ -50,14 +50,14 @@ class LogTextView : public BTextView
         void                Copy ();
         void                SetContextMenu (BPopUpMenu *contextMenu);
         void                AddText (const char *text, bool newLine = true,
-                             bool capitalFirstLetter = false, bool trimLeadingSpaces = true);
+                                     bool capitalFirstLetter = false, bool trimLeadingSpaces = true);
 
     private:
         // Private hooks
         void                InitSelf ();
         
         // Private members
-        BPopUpMenu          *m_contextMenu;
+        BPopUpMenu         *m_contextMenu;
 };
 
 #endif /* _LOG_TEXT_VIEW_H */
