@@ -52,11 +52,11 @@ const char *const kPfSpecialField = "beezer_special_field_magix!";
 
 //=============================================================================================================//
 
-BeezerListView::BeezerListView (BRect frame, CLVContainerView **containerView, const char *name = NULL,
-                  uint32 resizingMode = B_FOLLOW_LEFT, uint32 flags = B_WILL_DRAW,
-                  list_view_type type = B_SINGLE_SELECTION_LIST, bool hierarchical = false,
-                  bool horizontalScroll = true, bool verticalScroll = true, bool scrollViewCorner = true,
-                  border_style borderStyle = B_NO_BORDER, const BFont *labelFont = be_plain_font)
+BeezerListView::BeezerListView (BRect frame, CLVContainerView **containerView, const char *name,
+                  uint32 resizingMode, uint32 flags,
+                  list_view_type type, bool hierarchical,
+                  bool horizontalScroll, bool verticalScroll, bool scrollViewCorner,
+                  border_style borderStyle, const BFont *labelFont)
     : ColumnListView (frame, containerView, name, resizingMode, flags, type, hierarchical, horizontalScroll,
                   verticalScroll, scrollViewCorner, borderStyle, labelFont)
 {

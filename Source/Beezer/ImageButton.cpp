@@ -34,6 +34,8 @@
 #include <MenuItem.h>
 #include <Debug.h>
 
+#include <string.h>
+
 #include "ImageButton.h"
 #include "UIConstants.h"
 

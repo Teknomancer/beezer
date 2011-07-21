@@ -55,7 +55,7 @@
 //=============================================================================================================//
 
 CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, const char *commentText,
-                  BFont *displayFont = NULL)
+                  BFont *displayFont)
     : BWindow (BRect (0, 0, 590, 290), str (S_COMMENT_WINDOW_TITLE), B_TITLED_WINDOW,
         B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE)
 {

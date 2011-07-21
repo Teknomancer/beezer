@@ -40,6 +40,7 @@
 #include <Menu.h>
 #include <MenuItem.h>
 #include <Handler.h>
+#include <Mime.h>
 
 #include <stdio.h>
 #include <stdlib.h>

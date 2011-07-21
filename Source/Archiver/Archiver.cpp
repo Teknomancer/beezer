@@ -33,6 +33,7 @@
 #include <Window.h>
 #include <Directory.h>
 #include <Menu.h>
+#include <File.h>
 
 #include <string.h>
 #include <stdlib.h>

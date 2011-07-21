@@ -41,7 +41,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <malloc.h>
-#include <fstream.h>
+#include <fstream>
 
 #include "GZipArchiver.h"
 #include "GZipStrings.h"
