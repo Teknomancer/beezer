@@ -41,7 +41,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <malloc.h>
-#include <fstream.h>
+#include <fstream>
 
 #include "ZipArchiver.h"
 #include "ZipStrings.h"
@@ -530,7 +530,7 @@ status_t ZipArchiver::SetComment (char *commentStr, const char *tempDirPath)
     outputString << uniqueIDLine << "\n" << commentStr;
     
     // Write the new comment file back to the temp file
-    fstream fileStream (tempFilePath.String(), ios::out);
+    std::fstream fileStream (tempFilePath.String(), std::ios::out);
     if (fileStream != NULL)
         fileStream << outputString.String();
     

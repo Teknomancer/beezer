@@ -40,7 +40,7 @@
 
 //=============================================================================================================//
 
-LogTextView::LogTextView (BRect frame, const char *name, uint32 resizeMask, uint32 flags = B_WILL_DRAW)
+LogTextView::LogTextView (BRect frame, const char *name, uint32 resizeMask, uint32 flags)
     : BTextView (frame, name, kInternalTextRect, resizeMask, flags)
 {
     InitSelf();

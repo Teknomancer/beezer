@@ -111,7 +111,7 @@ class Beezer : public BApplication
                            *m_splitFilesMgr,
                            *m_splitDirsMgr;
         RuleMgr            *m_ruleMgr;
-        BPopUpMen          *m_arkTypePopUp;
+        BPopUpMenu         *m_arkTypePopUp;
         BMenu              *m_toolsMenu;
         BMenuField         *m_arkTypeField;
         BList               m_arkTypes,

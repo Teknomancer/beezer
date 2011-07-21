@@ -28,9 +28,9 @@
 #include <NodeInfo.h>
 #include <Path.h>
 #include <Roster.h>
+#include <Clipboard.h>
 
 #include <unistd.h>
-#include <printf.h>
 
 #include "URLView.h"
 

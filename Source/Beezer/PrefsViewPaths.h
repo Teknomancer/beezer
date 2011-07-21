@@ -33,6 +33,7 @@
 
 class BTextControl;
 class BRadioButton;
+class BFilePanel;
 
 class ImageButton;
 

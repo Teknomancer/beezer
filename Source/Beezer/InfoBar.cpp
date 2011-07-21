@@ -30,6 +30,8 @@
 #include <Message.h>
 #include <Bitmap.h>
 
+#include <string.h>
+
 #include "InfoBar.h"
 #include "BarberPole.h"
 #include "ImageButton.h"
@@ -49,8 +51,8 @@ InfoBar::InfoBar (BRect frame, BList *slotPositions, const char *name, rgb_color
         m_finalSep (NULL),
         m_finalSepEdge (NULL),
         m_isHidden (false),
-        m_horizGap ((int32)const_cast<float>(mk_horizSpacing)),
-        m_vertGap ((int32)const_cast<float>(mk_vertSpacing)),
+        m_horizGap ((int32)static_cast<float>(mk_horizSpacing)),
+        m_vertGap ((int32)static_cast<float>(mk_vertSpacing)),
         m_filesTotal (0L),
         m_totalBytes (0),
         m_backColor (backColor)

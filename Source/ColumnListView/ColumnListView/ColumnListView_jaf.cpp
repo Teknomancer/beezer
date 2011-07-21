@@ -34,7 +34,7 @@
 //**** PROJECT HEADER FILES
 //******************************************************************************************************
 #include "Debug.h"
-#include "ColumnListView.h"
+#include "ColumnListView_jaf.h"
 #include "CLVColumnLabelView.h"
 #include "CLVColumn.h"
 #include "CLVListItem.h"

@@ -32,7 +32,7 @@
 #include <Path.h>
 #include <NodeInfo.h>
 
-#include <fstream.h>
+#include <fstream>
 
 #include "RuleMgr.h"
 
@@ -78,7 +78,7 @@ void RuleMgr::ReadRules (const char *dir, const char *ruleFile)
     fullPath << '/' << ruleFile;
     fullPath.ReplaceAll ("//", "/");    // Incase of missing dirs etc
     
-    fstream f (fullPath.String(), ios::in);
+    std::fstream f (fullPath.String(), std::ios::in);
     if (!f)
         return;
     

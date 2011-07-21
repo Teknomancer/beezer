@@ -37,6 +37,7 @@
 #include <Button.h>
 #include <MenuItem.h>
 #include <TextControl.h>
+#include <MimeType.h>
 #include <be/add-ons/tracker/TrackerAddOn.h>
 
 #include <fs_attr.h>

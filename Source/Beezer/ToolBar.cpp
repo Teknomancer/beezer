@@ -48,8 +48,8 @@ ToolBar::ToolBar (BRect frame, const char *name, rgb_color backColor)
         m_ptToDraw (mk_Border, mk_Border),
         m_nButtons (0),
         m_nSeparators (0L),
-        m_horizGap ((int32)const_cast<float>(mk_horizSpacing)),
-        m_vertGap ((int32)const_cast<float>(mk_vertSpacing)),
+        m_horizGap ((int32)static_cast<float>(mk_horizSpacing)),
+        m_vertGap ((int32)static_cast<float>(mk_vertSpacing)),
         m_backColor (backColor)
 {
 }
