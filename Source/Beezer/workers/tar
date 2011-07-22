@@ -1,1 +1,2 @@
-/boot/beos/bin/tar
+#!/bin/sh
+/boot/common/bin/tar "$@"

@@ -1,1 +1,2 @@
-/boot/Projects/Beezer/Source/z7Archiver/7zip
+#!/bin/sh
+/boot/common/bin/7za "$@"

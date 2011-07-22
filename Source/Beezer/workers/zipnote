@@ -1,1 +1,2 @@
-/boot/beos/bin/zipnote
+#!/bin/sh
+/bin/zipnote "$@"
