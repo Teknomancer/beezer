@@ -1,1 +1,2 @@
-/boot/beos/bin/gzip
+#!/bin/sh
+/bin/gzip "$@"

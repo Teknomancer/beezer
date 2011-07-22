@@ -1,1 +1,2 @@
-/boot/home/config/bin/lha
+#!/bin/sh
+/boot/common/bin/lha "$@"

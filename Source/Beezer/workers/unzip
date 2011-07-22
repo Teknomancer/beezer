@@ -1,1 +1,2 @@
-/boot/beos/bin/unzip
+#!/bin/sh
+/bin/unzip "$@"

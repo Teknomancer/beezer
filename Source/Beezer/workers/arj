@@ -1,1 +1,2 @@
-/boot/home/config/bin/arj
+#!/bin/sh
+/boot/common/bin/arj "$@"

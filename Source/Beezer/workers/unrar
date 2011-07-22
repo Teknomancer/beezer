@@ -1,1 +1,2 @@
-/boot/home/config/bin/unrar
+#!/bin/sh
+/bin/unrar "$@"
