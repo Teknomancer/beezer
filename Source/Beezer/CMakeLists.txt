@@ -77,3 +77,11 @@ add_executable(Beezer
 )
 
 target_link_libraries(Beezer "be" "tracker" "translation" CLV)
+
+add_custom_command(TARGET Beezer POST_BUILD
+					COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/workers ${BEEZER_BUILD_DIR}/workers
+					COMMENT "Copying workers to build directory")
+
+add_custom_command(TARGET Beezer POST_BUILD
+					COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/settings ${BEEZER_BUILD_DIR}/settings
+					COMMENT "Copying settings to build directory")
