@@ -29,10 +29,14 @@
 #ifndef _JOINER_H
 #define _JOINER_H
 
-#ifdef _JOINER_BUILD
-    #define _JOINER_IMPEXP __declspec (dllexport)
+#if __GNUC__ > 2
+    #define _JOINER_IMPEXP
 #else
-    #define _JOINER_IMPEXP __declspec (dllimport)
+    #ifdef _JOINER_BUILD
+        #define _JOINER_IMPEXP __declspec (dllexport)
+    #else
+        #define _JOINER_IMPEXP __declspec (dllimport)
+    #endif
 #endif
 
 class BMessenger;
