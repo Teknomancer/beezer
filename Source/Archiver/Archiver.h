@@ -29,10 +29,14 @@
 #ifndef _ARCHIVER_H
 #define _ARCHIVER_H
 
-#ifdef _BZR_BUILD
-#define _BZR_IMPEXP __declspec (dllexport)
+#if __GNUC__ > 2
+    #define _BZR_IMPEXP
 #else
-#define _BZR_IMPEXP __declspec (dllimport)
+    #ifdef _BZR_BUILD
+        #define _BZR_IMPEXP __declspec (dllexport)
+    #else
+        #define _BZR_IMPEXP __declspec (dllimport)
+    #endif
 #endif
 
 #include <List.h>

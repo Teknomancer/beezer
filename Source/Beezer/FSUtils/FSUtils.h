@@ -29,10 +29,14 @@
 #ifndef _FS_UTILS_H
 #define _FS_UTILS_H
 
-#if _FS_BUILD
-    #define _FS_IMPEXP __declspec (dllexport)
+#if __GNUC__ > 2
+    #define _FS_IMPEXP
 #else
-    #define _FS_IMPEXP __declspec (dllimport)
+    #if _FS_BUILD
+        #define _FS_IMPEXP __declspec (dllexport)
+    #else
+        #define _FS_IMPEXP __declspec (dllimport)
+    #endif
 #endif
 
 class BMessenger;
