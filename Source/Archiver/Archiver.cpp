@@ -739,8 +739,8 @@ void Archiver::LoadSettingsMenu ()
 
 //=============================================================================================================//
 
-void Archiver::MakeTime (struct tm *timeStruct, time_t *timeValue, char *day, char *month, char *year,
-                  char *hour, char *min, char *sec)
+void Archiver::MakeTime (struct tm *timeStruct, time_t *timeValue, const char *day, const char *month,
+                  const char *year, const char *hour, const char *min, const char *sec)
 {
     // Zero-initialize time structure
     memset ((void*)timeStruct, 0, sizeof (*timeStruct));

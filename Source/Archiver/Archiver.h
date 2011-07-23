@@ -123,8 +123,8 @@ class Archiver
         // Protected functions
         void                TerminateThread (thread_id tid) const;
         void                FormatDate (char *dateStr, size_t bufSize, struct tm *timeStruct);
-        void                MakeTime (struct tm *timeStruct, time_t *timeValue, char *day, char *month,
-                                   char *year, char *hour, char *min, char *sec);
+        void                MakeTime (struct tm *timeStruct, time_t *timeValue, const char *day, const char *month,
+                                   const char *year, const char *hour, const char *min, const char *sec);
         
         // Protected members
         const char         *m_typeStr,
