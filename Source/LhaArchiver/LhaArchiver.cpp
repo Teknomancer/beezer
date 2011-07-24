@@ -704,6 +704,8 @@ int8 LhaArchiver::MonthStrToNum (const char *month) const
     if (strcasecmp (month, "Oct") == 0) return 10;
     if (strcasecmp (month, "Nov") == 0) return 11;
     if (strcasecmp (month, "Dec") == 0) return 12;
+
+	return 1;
 }
 
 //=============================================================================================================//

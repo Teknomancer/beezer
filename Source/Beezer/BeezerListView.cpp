@@ -1441,7 +1441,9 @@ void BeezerListView::SetState (BMessage *msg)
     
     // Restore width AND visibility of columns
     for (int8 i = 0; i < nColumns; i++)
+    {
         if (msg->FindFloat (kColumnWidth, i, &width) == B_OK)
+        {
            if (width > 0)
                ColumnAt(i)->SetWidth (width);
            else
@@ -1449,6 +1451,8 @@ void BeezerListView::SetState (BMessage *msg)
                ColumnAt(i)->SetShown (false);
                ColumnAt(i)->SetWidth (-width);
            }
+        }
+    }
 
     // Restore order of columns
     int32 *displayOrder = new int32[nColumns];
