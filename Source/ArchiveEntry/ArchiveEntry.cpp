@@ -46,6 +46,7 @@ ArchiveEntry::ArchiveEntry()
 
 ArchiveEntry::ArchiveEntry (bool dir, const char *pathStr, const char *sizeStr, const char *packedStr,
                   const char *dateStr, time_t timeValue, const char *methodStr, const char *crcStr)
+    : m_dirStr(NULL)
 {
     m_isDir = dir;
     m_nameStr = strdup (LeafFromPath (pathStr));        // Never call FinalPathComponent here - only use
@@ -53,10 +54,13 @@ ArchiveEntry::ArchiveEntry (bool dir, const char *pathStr, const char *sizeStr, 
     
     // Get path of parent directory
     int32 len = strlen(pathStr) - strlen(m_nameStr);
-    m_dirStr = (char*)malloc((len +1) * sizeof(char));
-    strncpy (m_dirStr, pathStr, len);
-    m_dirStr[len] = 0;
-    
+    if (len > 0)
+    {
+        m_dirStr = (char*)malloc((len +1) * sizeof(char));
+        strncpy (m_dirStr, pathStr, len);
+        m_dirStr[len] = 0;
+    }
+
     m_dateStr = strdup (dateStr);
     m_timeValue = timeValue;
     m_sizeStr = strdup (sizeStr);

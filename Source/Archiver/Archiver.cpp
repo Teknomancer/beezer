@@ -250,7 +250,8 @@ void Archiver::FillLists (BList *files, BList *dirs)
     for (; i < entryCount; i++)
     {
         ArchiveEntry *entry = reinterpret_cast<ArchiveEntry*>(m_entriesList.ItemAtFast (i));
-        AddDirPathToTable (&dirList, entry->m_dirStr);
+        if (entry->m_dirStr != NULL)
+            AddDirPathToTable (&dirList, entry->m_dirStr);
 
         // Don't call with folder items to filepath table function
         if (entry->m_isDir == false)
@@ -258,7 +259,8 @@ void Archiver::FillLists (BList *files, BList *dirs)
            HashEntry *item = AddFilePathToTable (&fileList, entry->m_pathStr);
            
            // Get rid of trailing slash
-           entry->m_dirStr[strlen(entry->m_dirStr) - 1] = '\0';
+           if (entry->m_dirStr != NULL)
+               entry->m_dirStr[strlen(entry->m_dirStr) - 1] = '\0';
         
            // Check for folders without any files, in which case ArchiveEntry will exist but will have its
            // fileName as "" (not NULL but "")
