@@ -465,9 +465,9 @@ bool RegExString::MatchesBracketExpression(const char *string, const char *patte
                if (IsGlyph (start) || IsGlyph (stop))
                   return false;               // Not a valid range!
                
-               if (islower (start) && islower (stop)    
-                  || isupper (start) && isupper (stop)
-                  || isdigit (start) && isdigit (stop))
+               if ((islower (start) && islower (stop))   
+                  || (isupper (start) && isupper (stop))
+                  || (isdigit (start) && isdigit (stop)))
                       match = start <= testChar && testChar <= stop;
                else
                   return false;

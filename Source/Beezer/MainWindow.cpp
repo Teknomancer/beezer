@@ -2508,7 +2508,7 @@ void MainWindow::ExtractDone (BMessage *message)
         }
     }
 
-    if (result == BZR_DONE || result == BZR_CANCEL_ARCHIVER && m_dragExtract == true)
+    if ((result == BZR_DONE || result == BZR_CANCEL_ARCHIVER) && m_dragExtract == true)
     {
         if (_prefs_extract.FindBoolDef (kPfDrag, true) == false)
         {
@@ -4026,6 +4026,8 @@ int32 MainWindow::_copier (void *arg)
     msg->what = M_READY_TO_ADD;
     msg->AddInt32 (kResult, result);
     wnd->PostMessage (msg);
+
+	return B_OK;
 }
 
 //=============================================================================================================//
