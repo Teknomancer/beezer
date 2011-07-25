@@ -56,7 +56,7 @@ ArchiveEntry::ArchiveEntry (bool dir, const char *pathStr, const char *sizeStr, 
     int32 len = strlen(pathStr) - strlen(m_nameStr);
     if (len > 0)
     {
-        m_dirStr = (char*)malloc((len +1) * sizeof(char));
+        m_dirStr = (char*)malloc (len +1);
         strncpy (m_dirStr, pathStr, len);
         m_dirStr[len] = 0;
     }
@@ -72,7 +72,7 @@ ArchiveEntry::ArchiveEntry (bool dir, const char *pathStr, const char *sizeStr, 
     else if (ratio < 0)
         ratio = 0;
     
-    m_ratioStr = (char*)malloc (8 * sizeof(char));
+    m_ratioStr = (char*)malloc (8);
     sprintf (m_ratioStr, "%.1f%%", ratio);
     
     if (methodStr)

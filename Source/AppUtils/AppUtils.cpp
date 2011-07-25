@@ -177,13 +177,13 @@ char *ParentPath (const char *pathStr, bool truncateSlash)
     char *parent = NULL;
     if (parentLen > 0)
     {
-        parent = (char*)malloc ((parentLen + 1) * sizeof(char));
+        parent = (char*)malloc (parentLen + 1);
         if (pathStr[parentLen-1] == '/' && truncateSlash == true)
            parentLen--;
         strncpy (parent, pathStr, parentLen);
     }
     else
-        parent = (char*)malloc (1 * sizeof(char));
+        parent = (char*)malloc (1);
     
     parent[parentLen] = 0;
     return parent;
