@@ -85,3 +85,5 @@ add_custom_command(TARGET Beezer POST_BUILD
 add_custom_command(TARGET Beezer POST_BUILD
 					COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/settings ${BEEZER_BUILD_DIR}/settings
 					COMMENT "Copying settings to build directory")
+
+add_subdirectory(TrackerAddOn)
