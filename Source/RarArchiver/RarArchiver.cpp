@@ -64,9 +64,9 @@ RarArchiver::RarArchiver (const char *binPath)
     // The list of supported mimetypes by this add-on, note the first (index 0) mime-type
     // in the list will be the one that will be used while creating files using this add-on
     m_passwordRequired = false;
+    m_mimeList.AddItem (strdup ("application/x-rar"));
     m_mimeList.AddItem (strdup ("application/x-rar-compressed"));
     m_mimeList.AddItem (strdup ("application/rar"));
-    m_mimeList.AddItem (strdup ("application/x-rar"));
     SetArchiveType ("rar");
     SetArchiveExtension (".rar");
 

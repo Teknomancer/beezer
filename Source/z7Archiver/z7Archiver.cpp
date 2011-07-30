@@ -67,6 +67,7 @@ z7Archiver::z7Archiver (const char *binPath)
 {
     // The list of supported mimetypes by this add-on, note the first (index 0) mime-type
     // in the list will be the one that will be used while creating files using this add-on
+    m_mimeList.AddItem (strdup ("application/x-7z-compressed"));
     m_mimeList.AddItem (strdup ("application/x-7zip-compressed"));
     m_mimeList.AddItem (strdup ("application/x-7zip"));
     m_mimeList.AddItem (strdup ("application/7zip"));
