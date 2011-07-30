@@ -24,8 +24,11 @@ application/x-lharc=.lha
 application/x-lzh=.lzh
 
 application/x-rar-compressed=.rar
+application/x-rar=.rar
 
 application/x-7zip-compressed=.7z
 application/x-7zip-compressed=.7zip
+application/x-7z-compressed=.7z
+application/x-7z-compressed=.7zip
 
 application/x-arj-compressed=.arj
