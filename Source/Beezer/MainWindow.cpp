@@ -1656,8 +1656,6 @@ void MainWindow::AddListView ()
                          Bounds().bottom - B_H_SCROLL_BAR_HEIGHT), &m_listContainer,
                          "MainWindow:ListView", B_FOLLOW_ALL_SIDES, B_WILL_DRAW | B_FRAME_EVENTS |
                          B_NAVIGABLE, B_MULTIPLE_SELECTION_LIST, true, true, true, true, B_NO_BORDER);
-    // Small UI hack -- only for this app
-    m_listContainer->ChildAt(0)->MoveBy (0,-1);
     
     // Set up the ColumnListView columns, first one is the expander column. Next column holds the icon
     m_listView->AddColumn (new CLVColumn (NULL, 20.0, CLV_EXPANDER | CLV_LOCK_AT_BEGINNING | CLV_NOT_MOVABLE));
