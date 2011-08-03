@@ -104,7 +104,7 @@ status_t z7Archiver::ReadOpen (FILE *fp)
     while (fgets (lineString, len, fp) && !feof (fp))
     {
         // skip first 8 lines
-        if (lineCount++ < 8)
+        if (lineCount++ < 17)
            continue;
 
         // list ends with "----" line, and last line contains sums, so break on first line with "-" as first char.
@@ -444,6 +444,9 @@ status_t z7Archiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress,
            {
                 // Important we check this before error, error should be the last to be checked               
                 exitCode = BZR_DONE;
+                // Set startedActualTest to false after we've found this string
+                // Newer versions of 7za have output after this
+                startedActualTest = false;
            }
            else if (startedActualTest == true)
            {
