@@ -537,7 +537,7 @@ status_t z7Archiver::Add (bool createMode, const char *relativePath, BMessage *m
     // Also files inside solid blocks do not show compressed size.
     // Of course using -msoff will not help with handling solid blocks in archives made by other apps.
     if (m_settingsMenu->FindItem(kUseSolidBlocks)->IsMarked() == false)
-        m_pipeMgr << "-msoff";
+        m_pipeMgr << "-ms=off";
 
     // 0.07: Added "-bd" switch to prevent percentage display in output
     m_pipeMgr << "-bd" << m_archivePath.Path();
