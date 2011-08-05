@@ -66,6 +66,7 @@
 #include "FileSplitterWindow.h"
 #include "FileJoinerWindow.h"
 #include "AddOnWindow.h"
+#include "BubbleHelper.h"
 
 //=============================================================================================================//
 
@@ -84,7 +85,8 @@ Beezer::Beezer ()
         m_createFilePanel (NULL),
         m_windowMgr (new WindowMgr()),
         m_arkTypePopUp (NULL),
-        m_arkTypeField (NULL)
+        m_arkTypeField (NULL),
+        m_bubbleHelper (new BubbleHelper())
 {
     // Let the initial rectangle be small enough to fit on 640x480 screens
     m_defaultWindowRect.Set (40, 40, 610, 440);
@@ -156,6 +158,7 @@ Beezer::~Beezer ()
     delete m_splitDirsMgr;
     delete m_windowMgr;
     delete m_ruleMgr;
+    delete m_bubbleHelper;
 
     if (m_arkTypePopUp != NULL)
     {
@@ -183,7 +186,7 @@ void Beezer::Quit()
 void Beezer::ReadyToRun()
 {
     if (m_nWindows == 0 && m_startupWnd == NULL && m_addOnWnd == NULL)
-        m_startupWnd = new StartupWindow (m_recentMgr, NULL, true);
+        m_startupWnd = new StartupWindow (m_recentMgr, m_bubbleHelper, true);
     
     return BApplication::ReadyToRun();
 }
@@ -619,7 +622,7 @@ MainWindow* Beezer::CreateWindow (entry_ref *ref)
         m_startupWnd->Unlock();
     }
 
-    MainWindow *wndPtr = new MainWindow (m_newWindowRect, NULL, m_windowMgr, m_recentMgr,
+    MainWindow *wndPtr = new MainWindow (m_newWindowRect, m_bubbleHelper, m_windowMgr, m_recentMgr,
                                 m_extractMgr, m_ruleMgr);
     m_windowMgr->AddWindow (wndPtr);
     if (ref)
