@@ -35,6 +35,7 @@
 #include <fstream>
 
 #include "RuleMgr.h"
+#include "RuleDefaults.h"
 
 //=============================================================================================================//
 
@@ -50,15 +51,27 @@ MimeRule::MimeRule (const char *mime, const char *extension)
 
 int32 RuleMgr::m_runCount = 0;
 
-RuleMgr::RuleMgr (const char *dir, const char *ruleFile)
+RuleMgr::RuleMgr (BDirectory *ruleDir, const char *ruleFile)
 {
     // You only need one instance per application
     if (atomic_add (&m_runCount, 1) == 0)
         m_ruleList = new BList (10L);
     else
         debugger ("only one RuleMgr instance allowed/necessary");
-    
-    ReadRules (dir, ruleFile);
+
+    BEntry rulesEntry(ruleDir, ruleFile);
+    // If we can't find our rules file then create a default one
+    if (!rulesEntry.Exists())
+    {
+        BFile defaultRulesFile(&rulesEntry, B_WRITE_ONLY | B_CREATE_FILE);
+        if (defaultRulesFile.InitCheck() != B_OK)
+            return;
+
+        defaultRulesFile.Write(kDefaultRules, strlen(kDefaultRules));
+        defaultRulesFile.Unset();
+    }
+
+    ReadRules (&rulesEntry);
 }
 
 //=============================================================================================================//
@@ -70,15 +83,13 @@ RuleMgr::~RuleMgr ()
 
 //=============================================================================================================//
 
-void RuleMgr::ReadRules (const char *dir, const char *ruleFile)
+void RuleMgr::ReadRules (BEntry* rulesEntry)
 {
     int32 len = B_MIME_TYPE_LENGTH+30;    // we don't care for extensions more than 30 characters long ;-P
     char buffer[len];
-    BString fullPath = dir;
-    fullPath << '/' << ruleFile;
-    fullPath.ReplaceAll ("//", "/");    // Incase of missing dirs etc
+    BPath rulePath(rulesEntry);
     
-    std::fstream f (fullPath.String(), std::ios::in);
+    std::fstream f (rulePath.Path(), std::ios::in);
     if (!f)
         return;
     

@@ -51,7 +51,7 @@
 #define K_ARK_DIR_NAME                       "add-ons/"
 #define K_BIN_DIR_NAME                       "workers/"
 #define K_DOC_DIR_NAME                       "docs/"
-#define K_SETTINGS_DIR_NAME                  "settings/"
+#define K_SETTINGS_DIR_NAME                  "Beezer"
 #define K_STUB_DIR_NAME                      "stubs/"
 #ifdef B_ZETA_VERSION
     #define K_LANG_DIR_NAME                  "languages/"

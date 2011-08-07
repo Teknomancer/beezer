@@ -45,7 +45,7 @@ class MimeRule
 class RuleMgr
 {
     public:
-        RuleMgr (const char *dir, const char *ruleFile);
+        RuleMgr (BDirectory *ruleDir, const char *ruleFile);
         ~RuleMgr ();
         
         // Public hooks
@@ -53,7 +53,7 @@ class RuleMgr
 
     private:
         // Private hooks
-        void               ReadRules (const char *dir, const char *ruleFile);
+        void               ReadRules (BEntry* rulesEntry);
 
         // Private members
         BList             *m_ruleList;

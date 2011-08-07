@@ -119,7 +119,7 @@ Beezer::Beezer ()
     m_splitFilesMgr->SetCommand (M_RECENT_SPLIT_FILE);
     m_splitDirsMgr->SetCommand (M_RECENT_SPLIT_DIR);
     
-    m_ruleMgr = new RuleMgr (m_settingsPathStr.String(), K_RULE_FILE);
+    m_ruleMgr = new RuleMgr (&m_settingsDir, K_RULE_FILE);
     
     if (_prefs_misc.FindBoolDef (kPfMimeOnStartup, false))
         RegisterFileTypes();
@@ -683,20 +683,23 @@ inline void Beezer::InitPaths ()
     if (docsPath.Append (K_DOC_DIR_NAME) == B_OK)
         m_docsDir.SetTo (docsPath.Path());
     
-    BPath settingsPath (&appEntry);
-    m_settingsPathStr = settingsPath.Path();
-    m_settingsPathStr << "/" << K_SETTINGS_DIR_NAME;
+    BPath settingsPath;
+    find_directory(B_USER_SETTINGS_DIRECTORY, &settingsPath);
+    m_settingsDir.SetTo (settingsPath.Path());
+    // Create our settings directory if it doesn't exist
+    if (!m_settingsDir.Contains(K_SETTINGS_DIR_NAME))
+        m_settingsDir.CreateDirectory(K_SETTINGS_DIR_NAME, NULL);
     if (settingsPath.Append (K_SETTINGS_DIR_NAME) == B_OK)
         m_settingsDir.SetTo (settingsPath.Path());
-        
+    m_settingsPathStr = settingsPath.Path();
+
     BPath binDirPath (&appEntry);
     if (binDirPath.Append (K_BIN_DIR_NAME) == B_OK)
         m_binDir.SetTo (binDirPath.Path());
     else
     {
-        char binDir[B_PATH_NAME_LENGTH];
-        find_directory (B_BEOS_BIN_DIRECTORY, (dev_t)NULL, false, binDir, B_PATH_NAME_LENGTH);
-        m_binDir.SetTo (binDir);
+        find_directory (B_SYSTEM_BIN_DIRECTORY, &binDirPath);
+        m_binDir.SetTo (binDirPath.Path());
     }
     
     BPath stubDirPath (&appEntry);
@@ -806,7 +809,7 @@ const char* Beezer::CompileTimeString (bool writeToResIfNeeded) const
     if (writeToResIfNeeded == true)
     {
         BString ctFileStr = m_settingsPathStr.String();
-        ctFileStr << K_COMPILED_TIME_FILE;
+        ctFileStr << "/" << K_COMPILED_TIME_FILE;
         BFile ctFile (ctFileStr.String(), B_READ_WRITE);
         if (ctFile.InitCheck() == B_OK)
         {
