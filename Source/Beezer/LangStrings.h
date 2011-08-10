@@ -32,13 +32,7 @@
 #include <Debug.h>
 #include <InterfaceDefs.h>
 
-#ifdef B_ZETA_VERSION
-    #include <Locale.h>
-    extern const char* _X (const char *key, int keyindex);
-    #define str(X) _X (# X, X)
-#else
-    #define str(X) strR5(X)
-#endif
+#define str(X) strR5(X)
 
 extern const char *strR5 (int whichString, int whichLanguage = -1);
 extern void SetLanguage (int whichLanguage);

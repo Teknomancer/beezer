@@ -4404,11 +4404,7 @@ BString MainWindow::StrippedArchiveName () const
     type_code type;
     int32 found (-1), count;
 
-    #ifdef B_ZETA_VERSION
-        const char *name;
-    #else
-        char *name;
-    #endif
+    char *name;
     msg.GetInfo (B_STRING_TYPE, 0L, &name, &type, &count);
 
     BString mimeTypeStr;

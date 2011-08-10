@@ -666,15 +666,6 @@ inline void Beezer::InitPaths ()
     BEntry appEntry (&appInfo.ref);
     appEntry.GetParent (&appEntry);
 
-#ifdef B_ZETA_VERSION
-    BPath langDirPath (&appEntry);
-    if (langDirPath.Append (K_LANG_DIR_NAME, true) == B_OK)
-    {
-        langDirPath.Append (K_APP_TITLE, false);
-        be_locale.LoadLanguageFile (langDirPath.Path());
-    }
-#endif
-
     BPath addonsDirPath (&appEntry);
     if (addonsDirPath.Append (K_ARK_DIR_NAME) == B_OK)
         m_addonsDir.SetTo (addonsDirPath.Path());
@@ -796,10 +787,6 @@ const char* Beezer::CompileTimeString (bool writeToResIfNeeded) const
     compileTimeStr.ReplaceFirst ("12nd", "12th");
     compileTimeStr.ReplaceFirst ("13rd", "13th");
     compileTimeStr.ReplaceFirst ("11st", "11th");
-
-    #ifdef B_ZETA_VERSION
-        compileTimeStr.Remove (0, 2);
-    #endif
 
     while (compileTimeStr.ByteAt (0) == ' ')
            compileTimeStr.Remove (0, 1);

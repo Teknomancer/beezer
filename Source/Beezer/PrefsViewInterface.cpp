@@ -29,13 +29,7 @@
 #include <String.h>
 #include <CheckBox.h>
 #include <Debug.h>
-
-#ifdef B_ZETA_VERSION
-#include <interface/StringView.h>
-#else
 #include <StringView.h>
-#endif
-
 #include <PopUpMenu.h>
 #include <MenuField.h>
 #include <MenuItem.h>

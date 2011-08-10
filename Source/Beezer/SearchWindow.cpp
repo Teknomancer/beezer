@@ -30,13 +30,7 @@
 #include <Screen.h>
 #include <String.h>
 #include <Bitmap.h>
-
-#ifdef B_ZETA_VERSION
-#include <interface/StringView.h>
-#else
 #include <StringView.h>
-#endif
-
 #include <Entry.h>
 #include <PopUpMenu.h>
 #include <MenuField.h>

@@ -207,20 +207,12 @@ FileSplitterWindow::FileSplitterWindow (RecentMgr *files, RecentMgr *dirs)
     m_sizeField->SetDivider (m_filePathView->Frame().left - K_MARGIN - 1);
     m_innerView->AddChild (m_sizeField);
 
-    #ifdef B_ZETA_VERSION
-        m_sizeField->MoveBy (0, 2);
-    #endif
-
     m_customSizeView = new BTextControl (BRect (K_MARGIN, m_sizeField->Frame().bottom + K_MARGIN - 1,
                          K_MARGIN + 182, 0), "FileSplitterWindow:CustomSizeView", str (S_CUSTOM_SIZE_PROMPT),
                          NULL, NULL, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
     m_customSizeView->SetDivider (m_sizeField->Divider() - 2);
     m_customSizeView->SetModificationMessage (new BMessage (M_UPDATE_DATA));
     m_innerView->AddChild (m_customSizeView);
-
-    #ifdef B_ZETA_VERSION
-        m_customSizeView->MoveBy (0, 2);
-    #endif
 
     // !! IMPORTANT !! Order is very critical, if the order below changes, the change must also be reflected
     // in "UpdateData()" function
@@ -235,10 +227,6 @@ FileSplitterWindow::FileSplitterWindow (RecentMgr *files, RecentMgr *dirs)
                       "FileSplitterWindow:PrefixView", NULL, (BMenu*)m_prefixPopUp,
                       B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
     m_innerView->AddChild (m_prefixField);
-
-    #ifdef B_ZETA_VERSION
-        m_prefixField->MoveBy (0, 2);
-    #endif
     
     float maxPrefixWidth = 0.0f;
     for (int32 i = 0; i < m_sizePopUp->CountItems(); i++)

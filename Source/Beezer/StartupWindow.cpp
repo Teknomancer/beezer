@@ -27,12 +27,8 @@
  */
 
 
-#ifdef B_ZETA_VERSION
-#include <interface/StringView.h>
-#else
-#include <StringView.h>
-#endif
 
+#include <StringView.h>
 #include <Screen.h>
 #include <Bitmap.h>
 #include <Message.h>
