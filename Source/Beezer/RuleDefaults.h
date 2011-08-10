@@ -35,6 +35,11 @@ application/x-7zip-compressed=.7zip\n\
 application/x-7z-compressed=.7z\n\
 application/x-7z-compressed=.7zip\n\
 \n\
+application/x-xz=.xz\n\
+application/x-xz=.xzip\n\
+application/x-xz=.txz\n\
+application/x-xz=.tar.xz\n\
+\n\
 application/x-arj-compressed=.arj\n\
 ";
 

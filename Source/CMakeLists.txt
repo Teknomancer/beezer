@@ -40,6 +40,7 @@ add_subdirectory(GZipArchiver)
 add_subdirectory(LhaArchiver)
 add_subdirectory(RarArchiver)
 add_subdirectory(TarArchiver)
+add_subdirectory(XzArchiver)
 add_subdirectory(ZipArchiver)
 add_subdirectory(z7Archiver)
 

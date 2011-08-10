@@ -2263,6 +2263,7 @@ resource file_types message {
 	"types" = "application/x-lharc",
 	"types" = "application/x-rar-compressed",
 	"types" = "application/x-rar",
+	"types" = "application/x-xz",
 	"types" = "application/x-7zip-compressed",
 	"types" = "application/x-7z-compressed",
 	"types" = "application/x-arj-compressed"
