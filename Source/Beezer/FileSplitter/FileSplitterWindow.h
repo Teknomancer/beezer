@@ -32,7 +32,7 @@
 #include <Window.h>
 #include <String.h>
 
-class BStringView;           // Zeta needs such pre-declares to compiler
+class BStringView;
 class BCheckBox;
 class BTextControl;
 class BStatusBar;

@@ -31,12 +31,7 @@
 #include <Button.h>
 #include <Screen.h>
 #include <Bitmap.h>
-
-#ifdef B_ZETA_VERSION
-#include <interface/StringView.h>
-#else
 #include <StringView.h>
-#endif
 
 #include <string.h>
 

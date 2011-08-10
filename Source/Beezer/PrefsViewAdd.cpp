@@ -32,12 +32,7 @@
 #include <MenuField.h>
 #include <PopUpMenu.h>
 #include <MenuItem.h>
-
-#ifdef B_ZETA_VERSION
-#include <interface/StringView.h>
-#else
 #include <StringView.h>
-#endif
 
 #include <stdlib.h>
 

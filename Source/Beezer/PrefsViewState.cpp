@@ -28,12 +28,7 @@
 
 #include <String.h>
 #include <CheckBox.h>
-
-#ifdef B_ZETA_VERSION
-#include <interface/StringView.h>
-#else
 #include <StringView.h>
-#endif
 
 #include "PrefsViewState.h"
 #include "LangStrings.h"

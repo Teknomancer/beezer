@@ -53,12 +53,7 @@ const float
         K_TOOLBAR_WIDTH =            44,
         K_INFOBAR_HEIGHT =           25,
         K_BUTTON_HEIGHT =            25,
-#ifdef B_ZETA_VERSION
-        K_BUTTON_WIDTH =             90,
-#else
         K_BUTTON_WIDTH =             76,
-#endif
-    
         K_PROGRESSBAR_HEIGHT =        15;
 
 #endif /* _UI_CONSTANTS_H */

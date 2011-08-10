@@ -34,12 +34,7 @@
 #include <TextControl.h>
 #include <String.h>
 #include <Button.h>
-
-#ifdef B_ZETA_VERSION
-#include <interface/StringView.h>
-#else
 #include <StringView.h>
-#endif
 
 #define kInputText        "input_field"
 #define kButtonIndex      "button_index"

@@ -32,9 +32,6 @@
 static int _language = LANG_ENGLISH;
 
 const char* strR5 (int whichLang, int language);
-#ifdef B_ZETA_VERSION
-    const char* _X (const char *key, int keyindex);
-#endif
 
 static const char * _englishStrings [NUM_STRINGS] =
 {
@@ -662,18 +659,5 @@ const char* strR5 (int whichLang, int language)
 
     return ((base) && (whichLang >= 0) && (whichLang < NUM_STRINGS)) ? base[whichLang] : NULL;
 }
-
-//=============================================================================================================//
-
-#ifdef B_ZETA_VERSION
-const char* _X (const char *key, int keyindex)
-{
-    BString result = _T (key);
-    if (result == key)
-        return strR5 (keyindex);
-    else
-        return _T (key);
-}
-#endif
 
 //=============================================================================================================//

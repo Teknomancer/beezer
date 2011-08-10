@@ -99,13 +99,8 @@ void LogTextView::AddText (const char *text, bool newLine, bool capitalizeFirstL
     BString outText = text;
     outText.RemoveAll ("\n");
 
-    #ifdef B_ZETA_VERSION
-        if (capitalizeFirstLetter == true)
-           outText.ReplaceFirst (outText[0], toupper(outText[0]));
-    #else
-        if (capitalizeFirstLetter == true)
-           outText[0] = toupper(outText[0]);
-    #endif
+    if (capitalizeFirstLetter == true)
+       outText[0] = toupper(outText[0]);
     
     Insert (textLen, outText.String(), byteLenOfText);
     ScrollToSelection();

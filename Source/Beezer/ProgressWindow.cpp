@@ -29,13 +29,7 @@
 #include <Screen.h>
 #include <StatusBar.h>
 #include <Messenger.h>
-
-#ifdef B_ZETA_VERSION
-#include <interface/StringView.h>
-#else
 #include <StringView.h>
-#endif
-
 #include <Resources.h>
 #include <Bitmap.h>
 #include <Application.h>

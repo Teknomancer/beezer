@@ -31,12 +31,7 @@
 #include <Mime.h>
 #include <PopUpMenu.h>
 #include <String.h>
-
-#ifdef B_ZETA_VERSION
-#include <interface/StringView.h>
-#else
 #include <StringView.h>
-#endif
 
 // This is the link's mouse cursor (a replica of NetPositive's link cursor).
 const uint8 url_cursor[] =

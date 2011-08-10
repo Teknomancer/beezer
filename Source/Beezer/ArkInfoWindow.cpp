@@ -33,13 +33,7 @@
 #include <Entry.h>
 #include <Bitmap.h>
 #include <Path.h>
-
-#ifdef B_ZETA_VERSION
-#include <interface/StringView.h>
-#else
 #include <StringView.h>
-#endif
-
 #include <Screen.h>
 #include <StatusBar.h>
 #include <String.h>

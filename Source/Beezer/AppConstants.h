@@ -53,9 +53,6 @@
 #define K_DOC_DIR_NAME                       "docs/"
 #define K_SETTINGS_DIR_NAME                  "Beezer"
 #define K_STUB_DIR_NAME                      "stubs/"
-#ifdef B_ZETA_VERSION
-    #define K_LANG_DIR_NAME                  "languages/"
-#endif
 
 #define K_SETTINGS_MAINWINDOW                "mainwindow_settings"
 #define K_SETTINGS_COLORS                    "colors_settings"
@@ -79,17 +76,9 @@
 #define K_SEPARATOR_ATTRIBUTE                "bzr:sep"
 
 #ifdef __INTEL__
-    #ifdef B_ZETA_VERSION
-        #define K_APP_VERSION                "0.09 (Zeta-x86)"
-    #else
-        #define K_APP_VERSION                "0.09 (x86)"
-    #endif
+    #define K_APP_VERSION                "0.09 (x86)"
 #else
-    #ifdef B_ZETA_VERSION
-        #define K_APP_VERSION                "0.09 (Zeta-ppc)"
-    #else
-        #define K_APP_VERSION                "0.09 (ppc)"
-    #endif
+    #define K_APP_VERSION                "0.09 (ppc)"
 #endif
 
 #define K_BARBERPOLE_PULSERATE                100000

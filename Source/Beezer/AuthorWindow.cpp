@@ -27,13 +27,7 @@
  */
 
 #include <Application.h>
-
-#ifdef B_ZETA_VERSION
-#include <interface/StringView.h>
-#else
 #include <StringView.h>
-#endif
-
 #include <Screen.h>
 #include <String.h>
 #include <Button.h>

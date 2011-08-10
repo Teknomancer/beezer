@@ -217,9 +217,7 @@ AddOnWindow::AddOnWindow (BMessage *refsMessage)
         BBitmap *bmp = BTranslationUtils::GetBitmap ('PNG ', "Img:Background");
         m_backViewAlt->SetViewBitmap (bmp);
         dropStr->SetViewBitmap (bmp);
-        #ifndef B_ZETA_VERSION
         shadowStr->SetViewBitmap (bmp);
-        #endif
         delete bmp;
         
         // Resize window

@@ -153,13 +153,6 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
     formatStr.ReplaceAll ("$S_LEGAL_MUMBO_JUMBO$", str (S_ABOUT_LEGAL_MUMBO_JUMBO));
     formatStr.ReplaceAll ("$S_DISCLAIMER$", str (S_ABOUT_DISCLAIMER));
     formatStr.ReplaceAll ("$S_SPECIAL_THANKS$", str (S_ABOUT_SPECIAL_THANKS));
-#ifdef B_ZETA_VERSION
-    formatStr.ReplaceAll ("$PAGE_GAP$", m_lineFeeds.String());
-    formatStr.ReplaceAll ("$K_APP_VERSION$", K_APP_VERSION);
-    formatStr.ReplaceAll ("$K_APP_AUTHOR$", K_APP_AUTHOR);
-    formatStr.ReplaceAll ("$K_APP_AUTHOR_MAIL$", K_APP_AUTHOR_MAIL);
-    formatStr.ReplaceAll ("$PAGE_END$", "\n\n\n\n\n");
-#endif
 
     m_creditsText = strdup (formatStr.String());
     
