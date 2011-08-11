@@ -1,6 +1,16 @@
 >> Beezer <<
 A detailed history of Beezer...
 
+• Version 1.00
+> Added support for xz archives
+> Removed obsolete ZETA code
+> Migrate settings folder to be more consistent with Haiku standards
+> Statically link tar archiver into gzip, bzip2 and variants
+> Added BubbleHelp tooltips
+> Fixed reading and testing of 7z files for latest 7z binaries
+> Compiled and built under Haiku natively using CMake, abandoned legacy BeIDE projects
+
+
 • Version 0.09
 > Made file extension stripping in Extract context menu case insensitive.
 > Added extract without full path option when extracting through drag 'n drop. This works
