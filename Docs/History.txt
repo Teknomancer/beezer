@@ -4,10 +4,11 @@ A detailed history of Beezer...
 • Version 1.00
 > Added support for xz archives
 > Removed obsolete ZETA code
-> Migrate settings folder to be more consistent with Haiku standards
+> Migrate settings folder to B_USER_SETTINGS_DIRECTORY, to be more consistent with Haiku standards
 > Statically link tar archiver into gzip, bzip2 and variants
 > Added BubbleHelp tooltips
-> Fixed reading and testing of 7z files for latest 7z binaries
+> Bug Fix: Fixed reading and testing of 7z files for latest 7z binaries
+> Bug Fix: Minor UI fixes for Haiku
 > Compiled and built under Haiku natively using CMake, abandoned legacy BeIDE projects
 
 
