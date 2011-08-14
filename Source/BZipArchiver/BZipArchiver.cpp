@@ -346,8 +346,8 @@ BString BZipArchiver::OutputFileName (const char *fullFileName) const
     // if the filename ends with one of the extensions in extns[], otherwise it returns the full filename
     BString outputFileName = fullFileName;
 
-    int8 extnsCount = 4;
-    const char *extns[] = { ".bz2", ".bz", };
+    int8 extnsCount = 2;
+    const char *extns[] = { ".bz2", ".bz" };
     
     int32 found = -1;
     for (int32 i = 0; i < extnsCount && found <= 0; i++)
@@ -355,13 +355,13 @@ BString BZipArchiver::OutputFileName (const char *fullFileName) const
 
     if (found > 0)
         outputFileName.Truncate (found);
-        
+
     else if ((found = outputFileName.IFindLast (".tbz")) > 0)    // special case
     {
         outputFileName.Truncate (found);
         outputFileName += ".tar";
     }
-    
+
     return outputFileName;
 }    
 

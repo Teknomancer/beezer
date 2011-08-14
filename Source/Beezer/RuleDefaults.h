@@ -51,6 +51,8 @@ application/x-gzip=.tgz\n\
 application/x-gzip=.gz\n\
 \n\
 application/x-bzip2=.bz2\n\
+application/x-bzip2=.tbz\n\
+application/x-bzip2=.tar.bz2\n\
 \n\
 application/x-lharc=.lha\n\
 application/x-lzh=.lzh\n\
