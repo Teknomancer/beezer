@@ -40,6 +40,7 @@
  *
  *    Beezer
  *    Copyright (c) 2002 Ramshankar (aka Teknomancer)
+ *    Copyright (c) 2011, Chris Roberts
  *    See "License.txt" for licensing info.
  *
  *    Changes to this code is marked as such
