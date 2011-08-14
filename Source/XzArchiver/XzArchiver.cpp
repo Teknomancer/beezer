@@ -406,7 +406,7 @@ BString XzArchiver::OutputFileName (const char *fullFileName) const
     // if the filename ends with one of the extensions in extns[], otherwise it returns the full filename
     BString outputFileName = fullFileName;
 
-    int8 extnsCount = 4;
+    int8 extnsCount = 2;
     const char *extns[] = { ".xz", ".xzip" };
     
     int32 found = -1;
