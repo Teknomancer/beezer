@@ -1143,7 +1143,7 @@ void MainWindow::MessageReceived (BMessage *message)
            break;
         }
 
-        case M_FILE_NEW: case M_FILE_OPEN: case M_FILE_ABOUT: case M_FILE_DEVELOPER_INFO:
+        case M_FILE_NEW: case M_FILE_OPEN: case M_FILE_ABOUT:
         case M_EDIT_PREFERENCES: case M_FILE_HELP:
         {
            be_app_messenger.SendMessage (message);

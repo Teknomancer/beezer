@@ -143,7 +143,6 @@ const uint32
     M_FILE_DELETE =                 'fldl',
     M_FILE_HELP =                   'flhl',
     M_FILE_ABOUT =                  'flab',
-    M_FILE_DEVELOPER_INFO =          'fldi',
     M_FILE_QUIT =                   'flqt',
     
     M_EDIT_COPY =                   'edcp',

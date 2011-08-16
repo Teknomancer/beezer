@@ -19,7 +19,6 @@ add_executable(Beezer
 		ArchiveRep.cpp
 		ArchiverMgr.cpp
 		ArkInfoWindow.cpp
-		AuthorWindow.cpp
 		BarberPole.cpp
 		Beezer.cpp
 		BeezerListView.cpp

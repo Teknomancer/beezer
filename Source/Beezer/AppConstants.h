@@ -32,17 +32,12 @@
 
 #define K_APP_TITLE                          "Beezer"
 #define K_APP_AUTHOR                         "Ramshankar"
-#define K_APP_AUTHOR_MAIL                    "(v.ramshankar (at) gmail.com)"
-#define K_APP_AUTHOR_MAIL_1                  "v.ramshankar (at) gmail.com"
-#define K_APP_AUTHOR_MAIL_URL_1              "mailto:v.ramshankar (at) gmail.com"
-#define K_APP_AUTHOR_MAIL_2                  "--"
-#define K_APP_AUTHOR_MAIL_URL_2              "mailto:--"
+#define K_APP_AUTHOR_MAIL                    "<v.ramshankar(at)gmail.com>"
+#define K_APP_AUTHOR_2						 "Chris Roberts"
+#define K_APP_AUTHOR_2_MAIL					 "<mail>"	// @todo
+
 #define K_APP_WEBSITE                        "sites.google.com/site/appbeezer"
 #define K_APP_WEBSITE_URL                    "http://sites.google.com/site/appbeezer"
-#define K_APP_AUTHOR_BESHARE_NICK            "Teknomancer"
-#define K_APP_AUTHOR_COUNTRY                 "India"
-#define K_APP_AUTHOR_OCCUPATION              "Student"
-#define K_APP_AUTHOR_AGE                     "NN"
 
 #define K_APP_COMPILE_STRING                 "__compiled_on__"
 

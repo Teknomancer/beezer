@@ -37,7 +37,6 @@
 
 class MainWindow;
 class AboutWindow;
-class AuthorWindow;
 class StartupWindow;
 class PrefsWindow;
 class FileSplitterWindow;
@@ -91,7 +90,6 @@ class Beezer : public BApplication
         int8                RegisterFileTypes () const;
         
         AboutWindow        *m_aboutWnd;
-        AuthorWindow       *m_authorWnd;
         StartupWindow      *m_startupWnd;
         PrefsWindow        *m_prefsWnd;
         FileSplitterWindow *m_splitWnd;

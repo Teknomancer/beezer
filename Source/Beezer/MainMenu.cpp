@@ -148,7 +148,6 @@ MainMenu::MainMenu (BRect frame)
     systemMenu->AddItem (new BMenuItem (str (S_HELP), new BMessage (M_FILE_HELP)));
     systemMenu->AddSeparatorItem();
     systemMenu->AddItem (new BMenuItem (strBuf.String(), new BMessage (M_FILE_ABOUT)));
-    systemMenu->AddItem (new BMenuItem (str (S_DEVELOPER_INFO), new BMessage (M_FILE_DEVELOPER_INFO)));
 
     systemMenu->AddSeparatorItem();
     systemMenu->AddItem (new BMenuItem (str (S_QUIT), new BMessage (M_FILE_QUIT), 'Q'));
