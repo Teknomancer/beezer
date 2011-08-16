@@ -40,7 +40,7 @@ class BMessenger;
 class BZipArchiver : public TarArchiver
 {
     public:
-        BZipArchiver (const char *binPath);
+        BZipArchiver ();
         
         // Overridables
         void               BuildDefaultMenu ();

@@ -51,9 +51,9 @@
 //=============================================================================================================//
 
 #ifndef STATIC_LIB_BUILD
-    Archiver *load_archiver (const char *binPath)
+    Archiver *load_archiver ()
     {
-        return new TarArchiver (binPath);
+        return new TarArchiver ();
     }
 #endif
 
@@ -61,7 +61,7 @@
 //=============================================================================================================//
 //=============================================================================================================//
 
-TarArchiver::TarArchiver (const char *binPath)
+TarArchiver::TarArchiver ()
 {
     // The list of supported mimetypes by this add-on, note the first (index 0) mime-type
     // in the list will be the one that will be used while creating files using this add-on
@@ -71,7 +71,7 @@ TarArchiver::TarArchiver (const char *binPath)
     SetArchiveExtension (".tar");
     
     m_error = BZR_DONE;
-    if (IsBinaryFound (m_tarPath, binPath, BZR_TAR) == false)
+    if (IsBinaryFound (m_tarPath, BZR_TAR) == false)
     {
         m_error = BZR_BINARY_MISSING;
         return;
@@ -80,12 +80,12 @@ TarArchiver::TarArchiver (const char *binPath)
 
 //=============================================================================================================//
 
-TarArchiver::TarArchiver (const char *binPath, bool isBeingDerived)
+TarArchiver::TarArchiver (bool isBeingDerived)
 {
     // This extra constructor is used by derived add-ons, here we
     // don't add file-types and extensions
     m_error = BZR_DONE;
-    if (IsBinaryFound (m_tarPath, binPath, BZR_TAR) == false)
+    if (IsBinaryFound (m_tarPath, BZR_TAR) == false)
     {
         m_error = BZR_BINARY_MISSING;
         return;

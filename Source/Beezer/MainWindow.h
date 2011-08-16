@@ -201,8 +201,7 @@ class MainWindow : public BWindow
         BFilePanel         *m_addPanel;
         Archiver           *m_archiver;
         SplitPane          *m_splitPane;
-        BEntry              m_archiveEntry,
-                            m_binDirEntry;
+        BEntry              m_archiveEntry;
         entry_ref           m_archiveRef;
         bool                m_logHidden,
                             m_badArchive,

@@ -106,7 +106,7 @@ class Archiver
         // Helper functions
         virtual status_t     ReadErrStream (FILE *fp, const char *escapeLine = NULL);
         virtual void        ReadStream (FILE *fp, BString &str) const;
-        bool                IsBinaryFound (char *path, const char *binDir, const char *binaryFileName) const;
+        bool                IsBinaryFound (char *path, const char *binaryFileName) const;
         
         // Abstract functions
         virtual status_t     Open (entry_ref *ref, BMessage *fileList = NULL) = 0;
@@ -170,6 +170,6 @@ class Archiver
         int8                m_foldingLevel;
 };
 
-extern "C" _BZR_IMPEXP Archiver* load_archiver (const char *binPath);
+extern "C" _BZR_IMPEXP Archiver* load_archiver ();
 
 #endif /* _ARCHIVER_H */

@@ -77,7 +77,6 @@ class Beezer : public BApplication
         BDirectory          m_addonsDir,
                             m_docsDir,
                             m_settingsDir,
-                            m_binDir,
                             m_stubDir;
 
     private:

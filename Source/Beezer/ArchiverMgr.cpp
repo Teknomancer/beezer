@@ -63,12 +63,6 @@ Archiver* ArchiverForMime (const char *mimeType)
     BDirectory *archiversDir = &(_bzr()->m_addonsDir);
     archiversDir->Rewind();
     
-    BEntry binDirEntry;
-    BPath binDirPath;
-    (_bzr()->m_binDir).GetEntry (&binDirEntry);
-    binDirEntry.GetPath (&binDirPath);
-    const char *binPath = binDirPath.Path();
-    
     // Load/Unload all the add-ons and check which archiver supports the type
     BEntry entry;
     while (archiversDir->GetNextEntry (&entry, true) == B_OK)
@@ -80,10 +74,10 @@ Archiver* ArchiverForMime (const char *mimeType)
         if (addonID > 0L)
         {
            // Archiver loaded successfully, now check if it supports the mimetype
-           Archiver *(*load_archiver)(const char*);
+           Archiver *(*load_archiver)();
            if (get_image_symbol (addonID, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
            {
-               Archiver *ark = (*load_archiver)(binPath);
+               Archiver *ark = (*load_archiver)();
 
                BList *mimeList = ark->MimeTypeList();
                int32 supportedMimeCount = mimeList->CountItems();
@@ -118,12 +112,6 @@ BList ArchiversInstalled (BList *extensionStrings)
     BDirectory *archiversDir = &(_bzr()->m_addonsDir);
     archiversDir->Rewind();
     
-    BEntry binDirEntry;
-    BPath binDirPath;
-    (_bzr()->m_binDir).GetEntry (&binDirEntry);
-    binDirEntry.GetPath (&binDirPath);
-    const char *binPath = binDirPath.Path();
-    
     // Load/Unload all the add-ons and check which archiver supports the type
     BEntry entry;
     while (archiversDir->GetNextEntry (&entry, true) == B_OK)
@@ -135,10 +123,10 @@ BList ArchiversInstalled (BList *extensionStrings)
         if (addonID > 0L)
         {
            // Archiver loaded successfully, now check if it supports the mimetype
-           Archiver *(*load_archiver)(const char*);
+           Archiver *(*load_archiver)();
            if (get_image_symbol (addonID, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
            {
-               Archiver *ark = (*load_archiver)(binPath);
+               Archiver *ark = (*load_archiver)();
                installedArkList.AddItem ((void*)strdup (ark->ArchiveType()));
                if (extensionStrings)
                   extensionStrings->AddItem ((void*)strdup (ark->ArchiveExtension()));
@@ -167,12 +155,6 @@ Archiver* ArchiverForType (const char *archiverType)
     BDirectory *archiversDir = &(_bzr()->m_addonsDir);
     archiversDir->Rewind();
     
-    BEntry binDirEntry;
-    BPath binDirPath;
-    (_bzr()->m_binDir).GetEntry (&binDirEntry);
-    binDirEntry.GetPath (&binDirPath);
-    const char *binPath = binDirPath.Path();
-    
     // Load/Unload all the add-ons and check which archiver supports the type
     BEntry entry;
     while (archiversDir->GetNextEntry (&entry, true) == B_OK)
@@ -184,10 +166,10 @@ Archiver* ArchiverForType (const char *archiverType)
         if (addonID > 0L)
         {
            // Archiver loaded successfully, now check if it supports the mimetype
-           Archiver *(*load_archiver)(const char*);
+           Archiver *(*load_archiver)();
            if (get_image_symbol (addonID, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
            {
-               Archiver *ark = (*load_archiver)(binPath);
+               Archiver *ark = (*load_archiver)();
                if (strcmp (ark->ArchiveType(), archiverType) == 0)
                   return ark;
            }

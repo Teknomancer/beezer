@@ -38,14 +38,14 @@
 
 #include "Archiver.h"
 
-#define BZR_ARK                         "7zip"
+#define BZR_ARK                         "7za"
 
 class BMessenger;
 
 class z7Archiver : public Archiver
 {
     public:
-        z7Archiver (const char *binPath);
+        z7Archiver ();
         
         // Overridables
         void               BuildDefaultMenu ();

@@ -40,7 +40,7 @@ class BMessenger;
 class ArjArchiver : public Archiver
 {
     public:
-        ArjArchiver (const char *binPath);
+        ArjArchiver ();
         
         // Overridables
         void                BuildDefaultMenu ();

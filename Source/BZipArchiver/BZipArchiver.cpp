@@ -51,17 +51,17 @@
 
 //=============================================================================================================//
 
-Archiver *load_archiver (const char *binPath)
+Archiver *load_archiver ()
 {
-    return new BZipArchiver (binPath);
+    return new BZipArchiver ();
 }
 
 //=============================================================================================================//
 //=============================================================================================================//
 //=============================================================================================================//
 
-BZipArchiver::BZipArchiver (const char *binPath)
-    : TarArchiver (binPath, true)
+BZipArchiver::BZipArchiver ()
+    : TarArchiver (true)
 {
     // The list of supported mimetypes by this add-on, note the first (index 0) mime-type
     // in the list will be the one that will be used while creating files using this add-on
@@ -72,7 +72,7 @@ BZipArchiver::BZipArchiver (const char *binPath)
     SetArchiveExtension (".tar.bz2");
 
     m_error = BZR_DONE;
-    if (IsBinaryFound (m_bzipPath, binPath, BZR_ARK) == false)
+    if (IsBinaryFound (m_bzipPath, BZR_ARK) == false)
     {
         m_error = BZR_BINARY_MISSING;
         return;
