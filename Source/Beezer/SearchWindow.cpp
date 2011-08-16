@@ -107,7 +107,7 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
     float totalFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
 
     // Render controls
-    m_backView = new BevelView (Bounds(), "SearchWindow:BackView", btOutset, B_WILL_DRAW, B_FOLLOW_ALL_SIDES);
+    m_backView = new BevelView (Bounds(), "SearchWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_backView->SetViewColor (K_BACKGROUND_COLOR);
     AddChild (m_backView);
            
