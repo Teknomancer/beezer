@@ -58,7 +58,7 @@
 
 StartupWindow::StartupWindow (RecentMgr *recentMgr, BubbleHelper *helper, bool startup)
     : BWindow (BRect (10, 10, 0, 100), K_APP_TITLE, B_TITLED_WINDOW,
-        B_NOT_V_RESIZABLE | B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE),
+        B_NOT_V_RESIZABLE | B_NOT_ZOOMABLE | B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE),
     m_recentMgr (recentMgr),
     m_bubbleHelper (helper)
 {
