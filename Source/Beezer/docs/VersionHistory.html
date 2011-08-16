@@ -19,6 +19,32 @@
 
 <P>A list of important changes that have come accross Beezer.</P>
 
+<P><B>Version 0.99</B>
+<UL type=disc>
+<LI>Enhanced path checking for worker binaries
+<LI>Added support for xz archives
+<LI>Removed obsolete ZETA code
+<LI>Migrate settings folder to B_USER_SETTINGS_DIRECTORY, to be more consistent with Haiku standards
+<LI>Statically link tar archiver into gzip, bzip2 and variants
+<LI>Added BubbleHelp tooltips
+<LI>Bug Fix: Fixed reading and testing of 7z files for latest 7z binaries
+<LI>Bug Fix: Minor UI fixes for Haiku
+<LI>Compiled and built under Haiku natively using CMake, abandoned legacy BeIDE projects
+</UL></P>
+
+<LI>Made file extension stripping in Extract context menu case insensitive
+<LI>Included an option for extracting without full path during drag 'n drop extraction
+<LI>Fixed a minor bug when reporting info about unavailable operation in the log
+<LI>Made hidden unavailable columns for ARJ archives, namely CRC &amp; Method
+<LI>Included default archive window settings to Preferences' Interface panel
+<LI>Fixed a bug in ARJ' s extract process by removing the recurse option while extracting
+<LI>Fixed a bug while adding files to Rar archives by ignoring warning issued by Rar when it couldn't get hold of a file's permission
+<LI>New QuickCreate Tracker Add-on available for Beezer, this is a hack of sorts in that Bezeer is invoked to do the creation process in one step...
+<LI>Some 'interfacial' changes to Preferences window :)
+</UL></P>
+
+
+
 <P><B>Version 0.09 - (Released)</B>
 <UL type=disc>
 <LI>Made file extension stripping in Extract context menu case insensitive
