@@ -51,16 +51,16 @@
 
 //=============================================================================================================//
 
-Archiver *load_archiver (const char *binPath)
+Archiver *load_archiver ()
 {
-    return new LhaArchiver (binPath);
+    return new LhaArchiver ();
 }
 
 //=============================================================================================================//
 //=============================================================================================================//
 //=============================================================================================================//
 
-LhaArchiver::LhaArchiver (const char *binPath)
+LhaArchiver::LhaArchiver ()
 {
     // The list of supported mimetypes by this add-on, note the first (index 0) mime-type
     // in the list will be the one that will be used while creating files using this add-on
@@ -73,7 +73,7 @@ LhaArchiver::LhaArchiver (const char *binPath)
 
     m_error = BZR_DONE;
     // Detect lha binary
-    if (IsBinaryFound (m_lhaPath, binPath, BZR_ARK) == false)
+    if (IsBinaryFound (m_lhaPath, BZR_ARK) == false)
     {
         m_error = BZR_BINARY_MISSING;
         return;

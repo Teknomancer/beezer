@@ -51,16 +51,16 @@
 
 //=============================================================================================================//
 
-Archiver *load_archiver (const char *binPath)
+Archiver *load_archiver ()
 {
-    return new ArjArchiver (binPath);
+    return new ArjArchiver ();
 }
 
 //=============================================================================================================//
 //=============================================================================================================//
 //=============================================================================================================//
 
-ArjArchiver::ArjArchiver (const char *binPath)
+ArjArchiver::ArjArchiver ()
 {
     // The list of supported mimetypes by this add-on, note the first (index 0) mime-type
     // in the list will be the one that will be used while creating files using this add-on
@@ -72,7 +72,7 @@ ArjArchiver::ArjArchiver (const char *binPath)
 
     m_error = BZR_DONE;
     // Detect arj binary
-    if (IsBinaryFound (m_arjPath, binPath, BZR_ARK) == false)
+    if (IsBinaryFound (m_arjPath, BZR_ARK) == false)
     {
         m_error = BZR_BINARY_MISSING;
         return;

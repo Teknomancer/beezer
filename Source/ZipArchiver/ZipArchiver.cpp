@@ -51,16 +51,16 @@
 
 //=============================================================================================================//
 
-Archiver *load_archiver (const char *binPath)
+Archiver *load_archiver ()
 {
-    return new ZipArchiver (binPath);
+    return new ZipArchiver ();
 }
 
 //=============================================================================================================//
 //=============================================================================================================//
 //=============================================================================================================//
 
-ZipArchiver::ZipArchiver (const char *binPath)
+ZipArchiver::ZipArchiver ()
 {
     // The list of supported mimetypes by this add-on, note the first (index 0) mime-type
     // in the list will be the one that will be used while creating files using this add-on
@@ -72,15 +72,15 @@ ZipArchiver::ZipArchiver (const char *binPath)
 
     m_error = BZR_DONE;
     // Detect zip, unzip binary
-    if (IsBinaryFound (m_unzipPath, binPath, BZR_UNARK) == false ||
-           IsBinaryFound (m_zipPath, binPath, BZR_ARK) == false)
+    if (IsBinaryFound (m_unzipPath, BZR_UNARK) == false ||
+           IsBinaryFound (m_zipPath, BZR_ARK) == false)
     {
         m_error = BZR_BINARY_MISSING;
         return;
     }
     
     // Detect zipnote binary (optional)
-    if (IsBinaryFound (m_zipnotePath, binPath, BZR_ZIPNOTE) == false)
+    if (IsBinaryFound (m_zipnotePath, BZR_ZIPNOTE) == false)
     {
         m_error = BZR_OPTIONAL_BINARY_MISSING;
         m_zipnotePath[0] = '\0';

@@ -40,7 +40,7 @@ class BMessenger;
 class LhaArchiver : public Archiver
 {
     public:
-        LhaArchiver (const char *binPath);
+        LhaArchiver ();
         
         // Overridables
         void               BuildDefaultMenu ();

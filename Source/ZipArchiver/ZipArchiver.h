@@ -42,7 +42,7 @@ class BMessenger;
 class ZipArchiver : public Archiver
 {
     public:
-        ZipArchiver (const char *binPath);
+        ZipArchiver ();
         
         // Overridables
         void               BuildDefaultMenu ();

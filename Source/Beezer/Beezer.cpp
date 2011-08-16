@@ -685,15 +685,6 @@ inline void Beezer::InitPaths ()
         m_settingsDir.SetTo (settingsPath.Path());
     m_settingsPathStr = settingsPath.Path();
 
-    BPath binDirPath (&appEntry);
-    if (binDirPath.Append (K_BIN_DIR_NAME) == B_OK)
-        m_binDir.SetTo (binDirPath.Path());
-    else
-    {
-        find_directory (B_SYSTEM_BIN_DIRECTORY, &binDirPath);
-        m_binDir.SetTo (binDirPath.Path());
-    }
-    
     BPath stubDirPath (&appEntry);
     if (stubDirPath.Append (K_STUB_DIR_NAME) == B_OK)
         m_stubDir.SetTo (stubDirPath.Path());

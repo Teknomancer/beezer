@@ -128,9 +128,6 @@ MainWindow::MainWindow (BRect frame, BubbleHelper *bubbleHelper, WindowMgr *wind
     m_criticalSection (false),
     m_addPanelMenuBar (NULL)
 {
-    // Initialize entry of "Binaries" folder
-    (_bzr()->m_binDir).GetEntry (&m_binDirEntry);
-
     // Setup the background view and the menu, add to window
     m_backView = new BView (Bounds(), "MainWindow:BackView", B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_backView->SetViewColor (K_BACKGROUND_COLOR);

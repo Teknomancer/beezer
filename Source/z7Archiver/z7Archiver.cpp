@@ -55,16 +55,16 @@
 
 //=============================================================================================================//
 
-Archiver *load_archiver (const char *binPath)
+Archiver *load_archiver ()
 {
-    return new z7Archiver (binPath);
+    return new z7Archiver ();
 }
 
 //=============================================================================================================//
 //=============================================================================================================//
 //=============================================================================================================//
 
-z7Archiver::z7Archiver (const char *binPath)
+z7Archiver::z7Archiver ()
 {
     // The list of supported mimetypes by this add-on, note the first (index 0) mime-type
     // in the list will be the one that will be used while creating files using this add-on
@@ -77,14 +77,7 @@ z7Archiver::z7Archiver (const char *binPath)
 
     m_error = BZR_DONE;
     // Detect 7z binary
-    if (IsBinaryFound (m_7zPath, binPath, BZR_ARK) == false)
-    {
-        m_error = BZR_BINARY_MISSING;
-        return;
-    }
-    
-    // Checking 7zip script return value so we know if 7z and/or 7za REALLY exist
-    if (system(m_7zPath) < 0)
+    if (IsBinaryFound (m_7zPath, BZR_ARK) == false)
     {
         m_error = BZR_BINARY_MISSING;
         return;

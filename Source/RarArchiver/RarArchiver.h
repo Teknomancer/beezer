@@ -41,7 +41,7 @@ class BMessenger;
 class RarArchiver : public Archiver
 {
     public:
-        RarArchiver (const char *binPath);
+        RarArchiver ();
         
         // Overridables
         void               BuildDefaultMenu ();

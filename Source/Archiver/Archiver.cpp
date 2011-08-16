@@ -35,6 +35,8 @@
 #include <Directory.h>
 #include <Menu.h>
 #include <File.h>
+#include <FindDirectory.h>
+#include <Application.h>
 
 #include <string.h>
 #include <stdlib.h>
@@ -47,6 +49,7 @@
 #include "ArchiveEntry.h"
 #include "ListSorter.h"
 #include "MsgConstants.h"
+#include "AppConstants.h"
 
 //=============================================================================================================//
 
@@ -619,18 +622,51 @@ status_t Archiver::SetComment (char *commentStr, const char *tempDirPath)
 
 //=============================================================================================================//
 
-bool Archiver::IsBinaryFound (char *filePath, const char *dirPath, const char *fileName) const
+bool Archiver::IsBinaryFound (char *filePath, const char *fileName) const
 {
     // Check if the given fileName exists in the given dir, if so copy the full path of fileName to filePath
-    strcpy (filePath, dirPath);
-    strcat (filePath, "/");
-    strcat (filePath, fileName);
-    BEntry entry (filePath, true);
-    bool exists = entry.Exists();
-    if (!exists)
-        filePath = '\0';
+    // Path priority  <appdir>/workers -> B_SYSTEM_BIN_DIRECTORY -> B_COMMON_BIN_DIRECTORY
+    BPath binPath;
+    app_info appInfo;
+    be_app->GetAppInfo (&appInfo);    
+    BEntry appEntry (&appInfo.ref);
+    appEntry.GetParent (&appEntry);
+    binPath.SetTo(&appEntry);
+    binPath.Append(K_BIN_DIR_NAME, true);
+    binPath.Append(fileName, true);
+    BEntry workersEntry(binPath.Path(), true);
+    if (workersEntry.Exists())
+    {
+        strcpy(filePath, binPath.Path());
+        return true;
+    }
 
-    return exists;
+    if (find_directory(B_SYSTEM_BIN_DIRECTORY, &binPath) == B_OK)
+    {
+        binPath.Append(fileName);
+        BEntry entry(binPath.Path(), true);
+        if (entry.Exists())
+        {
+            strcpy(filePath, binPath.Path());
+            return true;
+        }
+    }
+
+    if (find_directory(B_COMMON_BIN_DIRECTORY, &binPath) == B_OK)
+    {
+        binPath.Append(fileName);
+        BEntry entry(binPath.Path(), true);
+        if (entry.Exists())
+        {
+            strcpy(filePath, binPath.Path());
+            return true;
+        }
+    }
+
+    // TODO full search of $PATH
+
+    filePath = '\0';
+    return false;
 }
 
 //=============================================================================================================//

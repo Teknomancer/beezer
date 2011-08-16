@@ -40,8 +40,8 @@ class BMessenger;
 class TarArchiver : public Archiver
 {
     public:
-        TarArchiver (const char *binPath);
-        TarArchiver (const char *binPath, bool isBeingDerived);
+        TarArchiver ();
+        TarArchiver (bool isBeingDerived);
         
         // Abstract Implementations & overridables
         status_t           Open (entry_ref *ref, BMessage *fileList);

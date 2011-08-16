@@ -51,16 +51,16 @@
 
 //=============================================================================================================//
 
-Archiver *load_archiver (const char *binPath)
+Archiver *load_archiver ()
 {
-    return new RarArchiver (binPath);
+    return new RarArchiver ();
 }
 
 //=============================================================================================================//
 //=============================================================================================================//
 //=============================================================================================================//
 
-RarArchiver::RarArchiver (const char *binPath)
+RarArchiver::RarArchiver ()
 {
     // The list of supported mimetypes by this add-on, note the first (index 0) mime-type
     // in the list will be the one that will be used while creating files using this add-on
@@ -74,8 +74,8 @@ RarArchiver::RarArchiver (const char *binPath)
     m_error = BZR_DONE;
 
     // Detect rar binary
-    if (IsBinaryFound (m_rarPath, binPath, BZR_ARK) == false
-        || IsBinaryFound (m_unrarPath, binPath, BZR_UNARK) == false)
+    if (IsBinaryFound (m_rarPath, BZR_ARK) == false
+        || IsBinaryFound (m_unrarPath, BZR_UNARK) == false)
     {
         m_error = BZR_BINARY_MISSING;
         return;
