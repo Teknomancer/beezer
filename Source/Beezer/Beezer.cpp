@@ -51,7 +51,6 @@
 #include "AppConstants.h"
 #include "MainWindow.h"
 #include "AboutWindow.h"
-#include "AuthorWindow.h"
 #include "MsgConstants.h"
 #include "StartupWindow.h"
 #include "AppUtils.h"
@@ -74,7 +73,6 @@
 Beezer::Beezer ()
     : BApplication (K_APP_SIGNATURE),
         m_aboutWnd (NULL),
-        m_authorWnd (NULL),
         m_startupWnd (NULL),
         m_prefsWnd (NULL),
         m_splitWnd (NULL),
@@ -307,21 +305,6 @@ void Beezer::MessageReceived (BMessage *message)
            break;
         }
     
-        case M_FILE_DEVELOPER_INFO:
-        {
-           if (m_authorWnd == NULL)
-               m_authorWnd = new AuthorWindow();
-           else
-               m_authorWnd->Activate();
-           break;
-        }
-        
-        case M_CLOSE_AUTHOR:
-        {
-           m_authorWnd = NULL;
-           break;
-        }
-        
         case M_CLOSE_STARTUP:
         {
            m_startupWnd = NULL;
