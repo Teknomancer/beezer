@@ -840,7 +840,7 @@ void ZipArchiver::BuildDefaultMenu ()
     ratioMenu->AddItem (new BMenuItem (kLevel8, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel9, NULL));
     
-    ratioMenu->FindItem (kLevel6)->SetMarked (true);
+    ratioMenu->FindItem (kLevel9)->SetMarked (true);
 
     // Build the "While adding" sub-menu
     addMenu = new BMenu (kAdding);

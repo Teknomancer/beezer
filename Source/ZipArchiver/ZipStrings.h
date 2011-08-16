@@ -37,10 +37,10 @@ const char
     *const kLevel3 =                  "3",
     *const kLevel4 =                  "4",
     *const kLevel5 =                  "5",
-    *const kLevel6 =                  "6 (Default)",
+    *const kLevel6 =                  "6",
     *const kLevel7 =                  "7",
     *const kLevel8 =                  "8",
-    *const kLevel9 =                  "9 (Best)",
+    *const kLevel9 =                  "9 (Best, default)",
 
     *const kAdding =                  "While Adding",
     *const kArchiveAttribs =          "Add attributes",
