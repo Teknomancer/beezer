@@ -30,7 +30,6 @@
 #include <TextView.h>
 #include <ScrollView.h>
 #include <Button.h>
-#include <Screen.h>
 #include <Bitmap.h>
 #include <StringView.h>
 
@@ -149,8 +148,8 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
                          fileNameStr->Frame().right + K_MARGIN * 5);
     SetSizeLimits (rightLimit, maxH, m_saveButton->Frame().Height() + 2 * K_MARGIN + 50, maxV);
 
-    BRect screen_rect (BScreen().Frame());
-    MoveTo (screen_rect.Width() / 2 - Frame().Width() / 2, screen_rect.Height() / 2 - Frame().Height() / 2);
+    // Center our window on screen
+    CenterOnScreen();
 
     m_textView->MakeFocus (true);
     free ((char*)m_commentText);

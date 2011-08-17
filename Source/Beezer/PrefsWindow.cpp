@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -27,7 +28,6 @@
  */
 
 #include <Application.h>
-#include <Screen.h>
 #include <ListView.h>
 #include <TextView.h>
 #include <ScrollView.h>
@@ -101,8 +101,7 @@ PrefsWindow::PrefsWindow ()
     }
 
     // Center window on-screen & set the constraints
-    BRect screen_rect (BScreen().Frame());
-    MoveTo (screen_rect.Width() / 2 - Frame().Width() / 2, screen_rect.Height() / 2 - Frame().Height() / 2);
+    CenterOnScreen();
 
     // Restore from prefs
     BRect frame;

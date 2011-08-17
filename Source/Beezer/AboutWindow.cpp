@@ -31,7 +31,6 @@
 #include <TranslationUtils.h>
 #include <Bitmap.h>
 #include <Message.h>
-#include <Screen.h>
 #include <Alert.h>
 #include <Application.h>
 
@@ -203,8 +202,7 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
         }
 
     // Center window on-screen
-    BRect screen_rect (BScreen().Frame());
-    MoveTo (screen_rect.Width() / 2 - Frame().Width() / 2, screen_rect.Height() / 2 - Frame().Height() / 2);
+    CenterOnScreen();
 
     // Spawn & resume the scroller thread now
     m_textView->Show();

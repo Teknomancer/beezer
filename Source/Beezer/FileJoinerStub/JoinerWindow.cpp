@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -28,7 +29,6 @@
 
 #include <View.h>
 #include <Application.h>
-#include <Screen.h>
 #include <StatusBar.h>
 #include <Button.h>
 #include <CheckBox.h>
@@ -81,8 +81,7 @@ JoinerWindow::JoinerWindow ()
     ResizeTo (Frame().Width(), m_cancelBtn->Frame().bottom + 2 * K_MARGIN);
 
     // Center window on-screen
-    BRect screen_rect (BScreen().Frame());
-    MoveTo (screen_rect.Width() / 2 - Frame().Width() / 2, screen_rect.Height() / 2 - Frame().Height() / 2);
+    CenterOnScreen();
 
     // Constrain window size
     float minWidth = 350;

@@ -27,7 +27,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Screen.h>
 #include <Application.h>
 #include <TextControl.h>
 #include <Alert.h>
@@ -266,8 +265,7 @@ AddOnWindow::AddOnWindow (BMessage *refsMessage)
     m_backViewMain->ResizeTo (m_backViewMain->Frame().Width(), m_helpBtn->Frame().top - K_MARGIN);
 
     // Center window on-screen
-    BRect screen_rect (BScreen().Frame());
-    MoveTo (screen_rect.Width() / 2 - Frame().Width() / 2, screen_rect.Height() / 2 - Frame().Height() / 2);
+    CenterOnScreen();
 
     // Constrain the size of the window
     float minH, maxH, minV, maxV;

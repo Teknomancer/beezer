@@ -29,7 +29,6 @@
 
 #include <View.h>
 #include <Application.h>
-#include <Screen.h>
 #include <Resources.h>
 #include <Bitmap.h>
 #include <Alert.h>
@@ -153,10 +152,7 @@ MainWindow::MainWindow (BRect frame, BubbleHelper *bubbleHelper, WindowMgr *wind
 
     // Center window on-screen if its the first window
     if (m_windowMgr->CountWindows() == 0)
-    {
-        BRect screenRect = BScreen().Frame();
-        MoveTo (screenRect.Width() / 2 - Frame().Width() / 2, screenRect.Height() / 2 - Frame().Height() / 2);
-    }
+        CenterOnScreen();
 
     // Constrain the width and height of the window
     float minH, maxH, minV, maxV;
