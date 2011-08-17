@@ -105,6 +105,7 @@ MainWindow::MainWindow (BRect frame, BubbleHelper *bubbleHelper, WindowMgr *wind
     m_logHidden (false),
     m_badArchive (false),
     m_createMode (false),
+    m_addStarted (false),
     m_dragExtract (false),
     m_archiversDir (NULL),
     m_tempDir (NULL),
@@ -767,7 +768,8 @@ void MainWindow::MessageReceived (BMessage *message)
            // NOTE: do NOT add check here to see if the archive exists or not because it need not
            // (eg: while creating archives)    -- bugfix 0.05
 
-           SetupAddPanel();        
+           SetupAddPanel();
+           m_addStarted = false;
            m_addPanel->Show();
            break;
         }
@@ -776,17 +778,14 @@ void MainWindow::MessageReceived (BMessage *message)
         {
            int32 oldWhat;
            message->FindInt32 ("old_what", &oldWhat);
-           if ((uint32)oldWhat == M_ADD && m_createMode == true && message->HasBool (kFailOnNull) == B_OK)
+           if ((uint32)oldWhat == M_ADD && m_createMode == true && m_addStarted == false)
                PostMessage (M_FILE_CLOSE);
            break;
         }
            
         case M_ADD:
         {
-           // The B_CANCEL will get called even AFTER the user clicks the Add button, to let
-           // B_CANCEL know that Add was clicked (and not plain cancel button) we add a bool argument to the
-           // addPanel's message (notice B_CANCEL above, does a HasBool check)
-
+           m_addStarted = true;
            if (CanWriteArchive() == false)        // We need to check here too: because dropped files come here
                break;                         // and NOT through "M_ACTIONS_ADD", hence this check again.
 
@@ -796,12 +795,8 @@ void MainWindow::MessageReceived (BMessage *message)
            // NOTE: do NOT add check here to see if the archive exists or not because it need not
            // (eg: while creating archives)    -- bugfix 0.05
            
-           BMessage *uglyMessage = new BMessage (M_ADD);
-           uglyMessage->AddBool (kFailOnNull, true);
-           
            if (m_addPanel)    // If we get from a drag-drop operation (there would not be a filepanel)
            {
-               m_addPanel->SetMessage (uglyMessage);
                BTextControl *pwdText = (BTextControl*)m_addPanel->Window()->FindView ("pwdText");
                if (m_archiver->SupportsPassword() && pwdText)
                   m_archiver->SetPassword (pwdText->Text());
