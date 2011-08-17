@@ -206,6 +206,7 @@ class MainWindow : public BWindow
         bool                m_logHidden,
                             m_badArchive,
                             m_createMode,
+                            m_addStarted,
                             m_dragExtract;
         BDirectory         *m_archiversDir,
                            *m_tempDir;
