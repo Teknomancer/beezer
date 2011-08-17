@@ -27,7 +27,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Screen.h>
 #include <Menu.h>
 #include <MenuField.h>
 #include <TextControl.h>
@@ -361,8 +360,7 @@ FileSplitterWindow::FileSplitterWindow (RecentMgr *files, RecentMgr *dirs)
     ResizeTo (Frame().Width(), m_hideProgress);
 
     // Center window on-screen
-    BRect screen_rect (BScreen().Frame());
-    MoveTo (screen_rect.Width() / 2 - Frame().Width() / 2, screen_rect.Height() / 2 - Frame().Height() / 2);
+    CenterOnScreen();
 
     // Calculatate maximum desc label size
     float maxLabelLen = MAX (m_descStr->StringWidth (m_descStr->Text()),

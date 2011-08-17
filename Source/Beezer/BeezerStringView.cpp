@@ -29,7 +29,6 @@
 #include <Clipboard.h>
 #include <Bitmap.h>
 #include <Window.h>
-#include <Screen.h>
 
 #include <malloc.h>
 #include <string.h>

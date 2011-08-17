@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,7 +30,6 @@
 #include <TextView.h>
 #include <ScrollView.h>
 #include <Button.h>
-#include <Screen.h>
 
 #include "LogWindow.h"
 #include "BevelView.h"
@@ -93,8 +93,7 @@ LogWindow::LogWindow (BWindow *callerWindow, const char *title, const char *logT
            m_closeButton->Frame().Height() + 2 * K_MARGIN + 50, maxV);
 
     // Center window on-screen
-    BRect screen_rect (BScreen().Frame());
-    MoveTo (screen_rect.Width() / 2 - Frame().Width() / 2, screen_rect.Height() / 2 - Frame().Height() / 2);
+    CenterOnScreen();
 
     // Load from prefs if it allows
     BRect frame;

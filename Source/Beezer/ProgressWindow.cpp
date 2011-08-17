@@ -27,7 +27,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Screen.h>
 #include <StatusBar.h>
 #include <Messenger.h>
 #include <StringView.h>
@@ -163,8 +162,7 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
     m_backView->AddChild (m_barberPole);
 
     // Center window on-screen & set the constraints
-    BRect screen_rect (BScreen().Frame());
-    MoveTo (screen_rect.Width() / 2 - Frame().Width() / 2, screen_rect.Height() / 2 - Frame().Height() / 2);
+    CenterOnScreen();
 
     float minH, maxH, minV, maxV;
     GetSizeLimits (&minH, &maxH, &minV, &maxV);
