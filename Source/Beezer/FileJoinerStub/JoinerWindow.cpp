@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -61,7 +61,7 @@ JoinerWindow::JoinerWindow ()
     m_backView = new BevelView (Bounds(), "JoinerWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_backView->SetViewColor (K_BACKGROUND_COLOR);
     AddChild (m_backView);
-    
+
     m_statusBar = new BStatusBar (BRect (2 * K_MARGIN, 2 * K_MARGIN, Bounds().right - 2 * K_MARGIN, 0),
                          "JoinerWindow:StatusBar", str (S_JOINING_FILE), NULL);
     m_statusBar->ResizeToPreferred();
@@ -77,13 +77,13 @@ JoinerWindow::JoinerWindow ()
                          "JoinerWindow:CancelBtn", str (S_CANCEL), new BMessage (M_CANCEL),
                          B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
     m_backView->AddChild (m_cancelBtn);
-    
+
     ResizeTo (Frame().Width(), m_cancelBtn->Frame().bottom + 2 * K_MARGIN);
-    
+
     // Center window on-screen
     BRect screen_rect (BScreen().Frame());
     MoveTo (screen_rect.Width() / 2 - Frame().Width() / 2, screen_rect.Height() / 2 - Frame().Height() / 2);
-    
+
     // Constrain window size
     float minWidth = 350;
     float minH, maxH, minV, maxV;
@@ -91,11 +91,11 @@ JoinerWindow::JoinerWindow ()
     SetSizeLimits (minWidth, maxH, minV, maxV);
     if (Frame().Width() < minWidth)
         ResizeTo (minWidth, Frame().Height());
-    
+
     m_cancel = false;
     m_joinInProgress = false;
     m_messenger = new BMessenger (this);
-    
+
     status_t result = ReadSelf();
     if (result == BZR_DONE)
         Show();
@@ -130,27 +130,27 @@ void JoinerWindow::MessageReceived (BMessage *message)
                                     B_WIDTH_AS_USUAL, B_STOP_ALERT);
                alert->Go();
            }
-           
+
            snooze (100000);
            PostMessage (B_QUIT_REQUESTED);
            break;
         }
-        
+
         case M_CANCEL:
         {
            m_cancel = true;
            break;
         }
-               
+
         case BZR_UPDATE_PROGRESS:
         {
            char percentStr [100];
            float delta = message->FindFloat ("delta");
            int8 percent = (int8)ceil(100 * ((m_statusBar->CurrentValue() + delta) / m_statusBar->MaxValue()));
            sprintf (percentStr, "%d%%", percent);
-           
+
            BString text = message->FindString ("text");
-           
+
            m_statusBar->Update (delta, text.String(), percentStr);
            message->SendReply ('DUMB');
            break;
@@ -174,11 +174,11 @@ status_t JoinerWindow::ReadSelf ()
     char *buf = (char*)res->LoadResource (B_STRING_TYPE, K_FILENAME_ATTRIBUTE, &readSize);
     buf[readSize] = '\0';
     BString fileName = buf;
-    
+
     char *buf2 = (char*)res->LoadResource (B_STRING_TYPE, K_SEPARATOR_ATTRIBUTE, &readSize);
     buf2[readSize] = '\0';
     m_separatorStr = buf2;
-    
+
     // Why bother when the user deliberately messes up his resources :) nah, i'm thinking giving detailed
     // error messages will further increase the executable file size which I want to avoid
     if (fileName.Length() <= 0 || m_separatorStr.Length() <= 0)
@@ -186,22 +186,22 @@ status_t JoinerWindow::ReadSelf ()
         PostMessage (B_QUIT_REQUESTED);
         return BZR_ERROR;
     }
-        
+
     // Now read self (resources)
     BEntry appEntry;
     app_info appInfo;
-    
+
     be_app->GetAppInfo (&appInfo);
     appEntry.SetTo (&(appInfo.ref), true);
-    
+
     appEntry.GetParent (&appEntry);
     BPath outputDirPath;
     appEntry.GetPath (&outputDirPath);
-    
+
     m_dirPathStr = outputDirPath.Path();
     m_chunkPathStr = m_dirPathStr;
     m_chunkPathStr << "/" << fileName;
-    
+
     m_statusBar->Update (0, str (S_COMPUTING));
     // Call findchunks to find out the total size of the joined file to assign to the
     // progress bar
@@ -210,7 +210,7 @@ status_t JoinerWindow::ReadSelf ()
     FindChunks (m_chunkPathStr.String(), m_separatorStr.String(), fileCount, totalSize, &m_cancel);
     m_statusBar->SetMaxValue (totalSize);
     m_statusBar->Update (0, str (S_JOINING_FILE));
-    
+
     // Now we have all we want to start the join process, then what're we waiting for :)
     m_thread = spawn_thread (_joiner, "_joiner", B_NORMAL_PRIORITY, (void*)this);
     m_joinInProgress = true;

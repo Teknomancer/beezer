@@ -97,10 +97,10 @@ bool RegExString::Matches (const char *string, bool caseSensitivity,
     {
         case kStartsWith:
            return StartsWith(string, caseSensitivity);
-           
+
         case kEndsWith:
            return EndsWith(string, caseSensitivity);
-    
+
         case kContains:
            return Contains(string, caseSensitivity);
 
@@ -122,15 +122,15 @@ bool RegExString::MatchesRegExp (const char *pattern, bool caseSensitivity) cons
 {
     BString patternString (pattern);
     BString textString (String());
-    
+
     if (caseSensitivity == false)
     {
         patternString.ToLower();
         textString.ToLower();
     }
-    
+
     RegExp expression (patternString);
-    
+
     if (expression.InitCheck() != B_OK)
         return false;
 
@@ -157,7 +157,7 @@ bool RegExString::EndsWith (const char *string, bool caseSensitivity) const
     int32 foundIndexPos = Length() - (int32)strlen (string);
     if (foundIndexPos < 0)
         return false;
-    
+
     if (caseSensitivity)
         return FindLast (string) == foundIndexPos;
     else
@@ -170,7 +170,7 @@ bool RegExString::StartsWith (const char *string, bool caseSensitivity) const
 {
     if (caseSensitivity)
         return FindFirst (string) == 0;
-    else 
+    else
         return IFindFirst (string) == 0;
 }
 
@@ -211,21 +211,21 @@ int32 RegExString::FindFirst (const char *string, int32 fromOffset) const
 {
     if (!string)
         return -1;
-    
+
     int32 length = Length ();
     uint32 stringLength = strlen (string);
-    
+
     // The following two checks are required to be compatible with BString:
     if (length <= 0)
         return -1;
-    
+
     if (stringLength == 0)
         return fromOffset;
-    
+
     int32 stop = length - static_cast<int32>(stringLength);
     int32 start = MAX (0, MIN (fromOffset, stop));
     int32 position = -1;
-    
+
     for (int32 i = start; i <= stop; i++)
         if (string[0] == ByteAt(i))
            // This check is to avoid mute str*cmp() calls. Performance.
@@ -234,7 +234,7 @@ int32 RegExString::FindFirst (const char *string, int32 fromOffset) const
                position = i;
                break;
            }
-               
+
     return position;
 }
 
@@ -281,21 +281,21 @@ int32 RegExString::FindLast (const char *string, int32 beforeOffset) const
 {
     if (!string)
         return -1;
-    
+
     int32 length = Length();
     uint32 stringLength = strlen(string);
-    
+
     // The following two checks are required to be compatible with BString
     if (length <= 0)
         return -1;
-        
+
     if (stringLength == 0)
         return beforeOffset;
-    
-    int32 start = MIN (beforeOffset, length - static_cast<int32>(stringLength));    
+
+    int32 start = MIN (beforeOffset, length - static_cast<int32>(stringLength));
     int32 stop = 0;
     int32 position = -1;
-    
+
     for (int32 i = start; i >= stop; i--)
         if (string[0] == ByteAt(i))
            // This check is to avoid mute str*cmp() calls. Performance.
@@ -304,7 +304,7 @@ int32 RegExString::FindLast (const char *string, int32 beforeOffset) const
                position = i;
                break;
            }
-               
+
     return position;
 }
 
@@ -351,21 +351,21 @@ int32 RegExString::IFindFirst (const char *string, int32 fromOffset) const
 {
     if (!string)
         return -1;
-    
+
     int32 length = Length();
     uint32 stringLength = strlen(string);
-    
+
     // The following two checks are required to be compatible with BString:
     if (length <= 0)
         return -1;
-        
+
     if (stringLength == 0)
         return fromOffset;
-    
-    int32 stop = length - static_cast<int32>(stringLength);    
+
+    int32 stop = length - static_cast<int32>(stringLength);
     int32 start = MAX (0, MIN(fromOffset, stop));
     int32 position = -1;
-        
+
     for (int32 i = start; i <= stop; i++)
         if (tolower(string[0]) == tolower(ByteAt(i)))
            // This check is to avoid mute str*cmp() calls. Performance.
@@ -373,7 +373,7 @@ int32 RegExString::IFindFirst (const char *string, int32 fromOffset) const
                position = i;
                break;
            }
-               
+
     return position;
 }
 
@@ -404,21 +404,21 @@ int32 RegExString::IFindLast(const char *string, int32 beforeOffset) const
 {
     if (!string)
         return -1;
-    
+
     int32 length = Length();
     uint32 stringLength = strlen(string);
-    
+
     // The following two checks are required to be compatible with BString:
     if (length <= 0)
         return -1;
-        
+
     if (stringLength == 0)
         return beforeOffset;
-    
-    int32 start = MIN (beforeOffset, length - static_cast<int32>(stringLength));    
+
+    int32 start = MIN (beforeOffset, length - static_cast<int32>(stringLength));
     int32 stop = 0;
     int32 position = -1;
-    
+
     for (int32 i = start; i >= stop; i--)
         if (tolower(string[0]) == tolower(ByteAt(i)))
            // This check is to avoid mute str*cmp() calls. Performance.
@@ -427,7 +427,7 @@ int32 RegExString::IFindLast(const char *string, int32 beforeOffset) const
                position = i;
                break;
            }
-               
+
     return position;
 }
 
@@ -441,7 +441,7 @@ bool RegExString::MatchesBracketExpression(const char *string, const char *patte
     bool caseSensitivity) const
 {
     bool GlyphMatch = IsStartOfGlyph (string[0]);
-    
+
     if (IsInsideGlyph (string[0]))
         return false;
 
@@ -450,10 +450,10 @@ bool RegExString::MatchesBracketExpression(const char *string, const char *patte
 
     bool inverse = *pattern == '^' || *pattern == '!';
     // We allow both ^ and ! as a initial inverting character.
-    
+
     if (inverse)
-        pattern++;    
-           
+        pattern++;
+
     while (!match && *pattern != ']' && *pattern != '\0')
     {
         switch (*pattern)
@@ -462,11 +462,11 @@ bool RegExString::MatchesBracketExpression(const char *string, const char *patte
            {
                char start = ConditionalToLower (*(pattern - 1), caseSensitivity),
                   stop = ConditionalToLower (*(pattern + 1), caseSensitivity);
-               
+
                if (IsGlyph (start) || IsGlyph (stop))
                   return false;               // Not a valid range!
-               
-               if ((islower (start) && islower (stop))   
+
+               if ((islower (start) && islower (stop))
                   || (isupper (start) && isupper (stop))
                   || (isdigit (start) && isdigit (stop)))
                       match = start <= testChar && testChar <= stop;
@@ -474,7 +474,7 @@ bool RegExString::MatchesBracketExpression(const char *string, const char *patte
                   return false;
            }
            break;
-           
+
            default:
                if (GlyphMatch)
                   match = UTF8CharsAreEqual (string, pattern);
@@ -482,20 +482,20 @@ bool RegExString::MatchesBracketExpression(const char *string, const char *patte
                   match = CharsAreEqual (testChar, *pattern, caseSensitivity);
                break;
         }
-        
+
         if (!match)
         {
            pattern++;
            if (IsInsideGlyph (pattern[0]))
                pattern = MoveToEndOfGlyph (pattern);
         }
-    } 
+    }
 
     // Consider an unmatched bracket a failure
     // (i.e. when detecting a '\0' instead of a ']'.)
     if (*pattern == '\0')
         return false;
-    
+
     return (match ^ inverse) != 0;
 }
 
@@ -512,10 +512,10 @@ bool RegExString::StringMatchesPattern (const char *string, const char *pattern,
     const char *sStorage[kWildCardMaximum];
 
     int32 patternLevel = 0;
-    
+
     if (string == NULL || pattern == NULL)
         return false;
-    
+
     while (*pattern != '\0')
     {
         switch (*pattern)
@@ -528,7 +528,7 @@ bool RegExString::StringMatchesPattern (const char *string, const char *pattern,
                   string = MoveToEndOfGlyph (string);
                break;
            }
-               
+
            case '*':
            {
                // Collapse any ** and *? constructions:
@@ -542,10 +542,10 @@ bool RegExString::StringMatchesPattern (const char *string, const char *pattern,
                          string = MoveToEndOfGlyph (string);
                   }
                }
-               
+
                if (*pattern == '\0')                  // An ending * matches all strings.
                   return true;
-               
+
                bool match = false;
                const char *pBefore = pattern - 1;
 
@@ -555,15 +555,15 @@ bool RegExString::StringMatchesPattern (const char *string, const char *pattern,
 
                   while (!match && *string != '\0')
                       match = MatchesBracketExpression (string++, pattern, caseSensitivity);
-           
+
                   // Skip the rest of the bracket:
                   while (*pattern != ']' && *pattern != '\0')
                       pattern++;
-    
+
                   // Failure if no closing bracket;
                   if (*pattern == '\0')
                       return false;
-                  
+
                }
                else
                {
@@ -576,7 +576,7 @@ bool RegExString::StringMatchesPattern (const char *string, const char *pattern,
                          match = CharsAreEqual(*string++, *pattern, caseSensitivity);
                   }
                }
-    
+
                if (!match)
                       return false;
                else
@@ -592,11 +592,11 @@ bool RegExString::StringMatchesPattern (const char *string, const char *pattern,
                       pattern = MoveToEndOfGlyph (pattern);
                }
            }
-           break;           
-    
+           break;
+
            case '[':
                pattern++;
-               
+
                if (!MatchesBracketExpression (string, pattern, caseSensitivity))
                   if (patternLevel > 0)
                   {
@@ -610,18 +610,18 @@ bool RegExString::StringMatchesPattern (const char *string, const char *pattern,
                   // Skip the rest of the bracket:
                   while (*pattern != ']' && *pattern != '\0')
                       pattern++;
-    
+
                   // Failure if no closing bracket;
                   if (*pattern == '\0')
                       return false;
-                  
+
                   string++;
                   if (IsInsideGlyph (string[0]))
                       string = MoveToEndOfGlyph (string);
                   pattern++;
                }
                break;
-               
+
            default:
            {
                bool equal = false;
@@ -629,7 +629,7 @@ bool RegExString::StringMatchesPattern (const char *string, const char *pattern,
                   equal = UTF8CharsAreEqual (string, pattern);
                else
                   equal = CharsAreEqual (*string, *pattern, caseSensitivity);
-               
+
                if (equal)
                {
                   pattern++;
@@ -644,19 +644,19 @@ bool RegExString::StringMatchesPattern (const char *string, const char *pattern,
                   pattern = pStorage[--patternLevel];
                   string = sStorage[patternLevel];
                }
-               else 
+               else
                   return false;
            }
-           break;        
+           break;
         }
-    
+
         if (*pattern == '\0' && *string != '\0' && patternLevel > 0)
         {
            pattern = pStorage[--patternLevel];
            string = sStorage[patternLevel];
         }
     }
-    
+
     return *string == '\0' && *pattern == '\0';
 }
 
@@ -666,18 +666,18 @@ bool RegExString::UTF8CharsAreEqual (const char *string1, const char *string2) c
 {
     const char *s1 = string1;
     const char *s2 = string2;
-    
+
     if (IsStartOfGlyph (*s1) && *s1 == *s2)
     {
         s1++;
         s2++;
-        
+
         while (IsInsideGlyph (*s1) && *s1 == *s2)
         {
            s1++;
            s2++;
         }
-        
+
         return !IsInsideGlyph(*s1) && !IsInsideGlyph(*s2) && *(s1 - 1) == *(s2 - 1);
     }
     else
@@ -691,7 +691,7 @@ const char *RegExString::MoveToEndOfGlyph (const char *string) const
     const char *ptr = string;
     while (IsInsideGlyph (*ptr))
         ptr++;
-        
+
     return ptr;
 }
 

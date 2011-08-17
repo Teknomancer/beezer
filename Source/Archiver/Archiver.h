@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -66,7 +66,7 @@ class Archiver
         void                SetSettingsDirectoryPath (const char *path);
         void                SetIconList (BList *list);
         void                SetFoldingLevel (int8 level);
-        
+
         status_t            InitCheck () const;
         HashTable          *Table () const;
         BList              *MimeTypeList () const;
@@ -86,7 +86,7 @@ class Archiver
         const char         *TempDirectoryPath () const;
         void                SetPassword (const char *password);
         BString             Password() const;
-        
+
         // Optionally-overridable functions
         virtual void        BuildDefaultMenu ();
         virtual BList        HiddenColumns (BList *columnList) const;
@@ -102,12 +102,12 @@ class Archiver
         virtual bool        NeedsTempDirectory () const;
         virtual status_t     GetComment (char *&commentStr);
         virtual status_t     SetComment (char *commentStr, const char *tempDirPath);
-        
+
         // Helper functions
         virtual status_t     ReadErrStream (FILE *fp, const char *escapeLine = NULL);
         virtual void        ReadStream (FILE *fp, BString &str) const;
         bool                IsBinaryFound (char *path, const char *binaryFileName) const;
-        
+
         // Abstract functions
         virtual status_t     Open (entry_ref *ref, BMessage *fileList = NULL) = 0;
         virtual status_t     Test (char *&output, BMessenger *progressMsngr, volatile bool *cancel) = 0;
@@ -118,14 +118,14 @@ class Archiver
         virtual status_t     Delete (char *&output, BMessage *files, BMessenger *progress, volatile bool *cancel) = 0;
         virtual status_t     Extract (entry_ref *destDir, BMessage *fileList, BMessenger *progressMsngr,
                                   volatile bool *cancel) = 0;
-        
+
     protected:
         // Protected functions
         void                TerminateThread (thread_id tid) const;
         void                FormatDate (char *dateStr, size_t bufSize, struct tm *timeStruct);
         void                MakeTime (struct tm *timeStruct, time_t *timeValue, const char *day, const char *month,
                                    const char *year, const char *hour, const char *min, const char *sec);
-        
+
         // Protected members
         const char         *m_typeStr,
                          *m_extensionStr,
@@ -141,7 +141,7 @@ class Archiver
         BMessage            m_errorDetails;
         BMenu              *m_settingsMenu;
         PipeMgr             m_pipeMgr;
-        
+
     private:
         // Private functions
         static int          CompareHashEntries (const void *a, const void *b);
@@ -149,7 +149,7 @@ class Archiver
         HashEntry          *AddFilePathToTable (BList *fileList, const char *path);
         void                ResetCache ();
         BBitmap            *BitmapForExtension (const char *str) const;
-        
+
         // Private members
         HashTable          *m_hashTable;
         BString             m_password;

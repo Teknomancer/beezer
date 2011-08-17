@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -69,7 +69,7 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
     font_height fntHt;
     font.GetHeight (&fntHt);
     float totalFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
-    
+
     BRect bounds (Bounds());
     m_backView = new BevelView (bounds, "ProgressWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_backView->SetViewColor (K_BACKGROUND_COLOR);
@@ -88,7 +88,7 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
            actionMessage->FindString (kPreparing, &prepareString);
            break;
         }
-        
+
         case M_ACTIONS_DELETE:
         {
            actionIcon = ResBitmap ("Img:DeleteStatus");
@@ -97,7 +97,7 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
            actionMessage->FindString (kPreparing, &prepareString);
            break;
         }
-        
+
         case M_ACTIONS_TEST:
         {
            actionIcon = ResBitmap ("Img:TestStatus");
@@ -106,7 +106,7 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
            actionMessage->FindString (kPreparing, &prepareString);
            break;
         }
-        
+
         case M_ACTIONS_ADD:
         {
            actionIcon = ResBitmap ("Img:AddStatus");
@@ -122,7 +122,7 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
                                     "ProgressWindow:iconView", actionIcon);
     iconView->SetViewColor (m_backView->ViewColor());
     AddChild (iconView);
-    
+
     BStringView *strView = new BStringView (BRect (iconView->Frame().right + totalFontHeight,
                              K_MARGIN + 3.0, iconView->Frame().right + totalFontHeight +
                              font.StringWidth (strOfStrView) + font.StringWidth ("W"),
@@ -132,7 +132,7 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
     strView->SetHighColor (K_STARTUP_MAIN_HEADING);
     strView->SetLowColor (strView->ViewColor());
     m_backView->AddChild (strView);
-    
+
     m_statusBar = new BStatusBar (BRect (strView->Frame().left + 3 * K_MARGIN,
                          strView->Frame().bottom + K_MARGIN, bounds.right - 2 * K_MARGIN, 0),
                          "ProgressWindow:StatusBar", NULL, NULL);
@@ -143,12 +143,12 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
     m_statusBar->SetMaxValue (fileCount);
     m_fileCount = fileCount;
     m_backView->AddChild (m_statusBar);
-    
+
     BevelView *edgeView = new BevelView (BRect (-1, m_statusBar->Frame().bottom + 2 * K_MARGIN,
                              bounds.right - 1, m_statusBar->Frame().bottom + 2 * K_MARGIN + 1.0),
                              "ProgressWindow:EdgeView", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     m_backView->AddChild (edgeView);
-    
+
     m_cancelButton = new BButton (BRect (bounds.right - K_BUTTON_WIDTH - 2 * K_MARGIN,
                          edgeView->Frame().bottom + K_MARGIN, bounds.right - 2 * K_MARGIN,
                          edgeView->Frame().bottom + K_MARGIN + K_BUTTON_HEIGHT),
@@ -157,11 +157,11 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
     m_backView->AddChild (m_cancelButton);
     ResizeTo (Frame().Width(), m_cancelButton->Frame().bottom + K_MARGIN);
     m_backView->ResizeBy(0, K_MARGIN);
-    
+
     m_barberPole = new BarberPole (BRect (strView->Frame().left, m_statusBar->Frame().bottom - 30, 0,
                       m_statusBar->Frame().bottom - 3), "ProgressWindow::BarberPole");
     m_backView->AddChild (m_barberPole);
-    
+
     // Center window on-screen & set the constraints
     BRect screen_rect (BScreen().Frame());
     MoveTo (screen_rect.Width() / 2 - Frame().Width() / 2, screen_rect.Height() / 2 - Frame().Height() / 2);
@@ -207,14 +207,14 @@ void ProgressWindow::MessageReceived (BMessage *message)
            message->SendReply ('repl');
            break;
         }
-        
+
         case M_STOP_OPERATION:
         {
            m_barberPole->SetValue (false, false);
            m_cancel = true;
            break;
         }
-        
+
         case M_CLOSE:
         {
            // The below fills the status bar fully - for example, gzip tests only 1 file
@@ -229,14 +229,14 @@ void ProgressWindow::MessageReceived (BMessage *message)
                   m_statusBar->Update (maxValue - currentValue);
                snooze (65000);
            }
-           
+
            // Added minor time delay so that window doesn't close before progress bar updates
            snooze (90000);
            m_barberPole->SetValue (false, false);
            Quit();
            break;
         }
-        
+
         default:
         {
            BWindow::MessageReceived (message);

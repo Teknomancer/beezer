@@ -2,7 +2,7 @@
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -33,8 +33,8 @@
 #define K_APP_TITLE                          "Beezer"
 #define K_APP_AUTHOR                         "Ramshankar"
 #define K_APP_AUTHOR_MAIL                    "<v.ramshankar(at)gmail.com>"
-#define K_APP_AUTHOR_2						 "Chris Roberts"
-#define K_APP_AUTHOR_2_MAIL					 "<mail>"	// @todo
+#define K_APP_AUTHOR_2                       "Chris Roberts"
+#define K_APP_AUTHOR_2_MAIL                  "<mail>"   // @todo
 
 #define K_APP_WEBSITE                        "sites.google.com/site/appbeezer"
 #define K_APP_WEBSITE_URL                    "http://sites.google.com/site/appbeezer"

@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -104,11 +104,11 @@ status_t z7Archiver::ReadOpen (FILE *fp)
         // list ends with "----" line, and last line contains sums, so break on first line with "-" as first char.
         if (lineString[0] == '-')
            break;
-        
+
         lineString[strlen (lineString) - 1] = '\0';
         packedStr[0] = 0;
 
-        sscanf (lineString, 
+        sscanf (lineString,
                "%[0-9]-%[0-9]-%[0-9] %[0-9]:%[0-9]:%[0-9] %[^ ] %[0-9] %[0-9]", yearStr, monthStr, dayStr,
                hourStr, minuteStr, secondStr, attrStr, sizeStr, packedStr);
 
@@ -123,7 +123,7 @@ status_t z7Archiver::ReadOpen (FILE *fp)
         struct tm timeStruct; time_t timeValue;
         MakeTime (&timeStruct, &timeValue, dayStr, monthStr, yearStr, hourStr, minuteStr, secondStr);
         FormatDate (dateStr, 60, &timeStruct);
-        
+
         // Check if it's directory
         if (strstr(attrStr, "D") != NULL)
         {
@@ -149,14 +149,14 @@ status_t z7Archiver::Open (entry_ref *ref, BMessage *fileList)
 {
     m_archiveRef = *ref;
     m_archivePath.SetTo (ref);
-    
+
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_7zPath << "l" << m_archivePath.Path();
-    
+
     FILE *out;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;        // Handle 7zip unloadable error here
 
@@ -169,7 +169,7 @@ status_t z7Archiver::Open (entry_ref *ref, BMessage *fileList)
     out = fdopen (outdes[0], "r");
     exitCode = ReadOpen (out);
     fclose (out);
-    
+
     close (outdes[0]);
     close (errdes[0]);
 
@@ -183,7 +183,7 @@ status_t z7Archiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger
 {
     BEntry dirEntry;
     entry_ref dirRef;
-    
+
     dirEntry.SetTo (refToDir);
     status_t exitCode = BZR_DONE;
     if (progress)        // Perform output directory checking only when a messenger is passed
@@ -205,7 +205,7 @@ status_t z7Archiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger
         if (type != B_STRING_TYPE)
            return BZR_UNKNOWN;
     }
-    
+
     // Setup argv, fill with selection names if needed
     m_pipeMgr.FlushArgs();
     BString combo("-o");
@@ -225,7 +225,7 @@ status_t z7Archiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger
     }
     else
         m_pipeMgr << "-aoa";
-    
+
     combo = Password ();
     if (combo != "")
         combo.Prepend ("-p");
@@ -245,7 +245,7 @@ status_t z7Archiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger
     FILE *out;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;           // Handle 7zip unloadable error here
 
@@ -256,7 +256,7 @@ status_t z7Archiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger
         status_t exitCode;
         wait_for_thread (tid, &exitCode);
     }
-    
+
     close (errdes[1]);
     close (outdes[1]);
 
@@ -266,7 +266,7 @@ status_t z7Archiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger
         exitCode = ReadExtract (out, progress, cancel);
         fclose (out);
     }
-    
+
     close (outdes[0]);
     close (errdes[0]);
 
@@ -287,7 +287,7 @@ status_t z7Archiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool 
     // Reads output of 7zip while extracting files and updates progress window (thru messenger)
     char lineString[928];
     BString buf;
-    
+
     // Prepare message to update the progress bar
     BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
     updateMessage.AddFloat ("delta", 1.0f);
@@ -298,7 +298,7 @@ status_t z7Archiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool 
            return BZR_CANCEL_ARCHIVER;
 
         lineString[strlen (lineString) - 1] = '\0';
-        buf = lineString; 
+        buf = lineString;
         int32 found = buf.FindFirst ("Extracting");
 
         if (found == 0)
@@ -311,7 +311,7 @@ status_t z7Archiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool 
                buf.Truncate (found);
                exitCode = BZR_ERRSTREAM_FOUND;
            }
-           
+
            updateMessage.RemoveName ("text");
            updateMessage.AddString ("text", LeafFromPath (buf.String()));
            progress->SendMessage (&updateMessage, &reply);
@@ -343,7 +343,7 @@ status_t z7Archiver::Test (char *&outputStr, BMessenger *progress, volatile bool
 
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_7zPath << "t";
-    
+
     // 0.07: Added password input while testing, also
     //        Added "-bd" flag to disable percentage display in output
     BString combo = Password ();
@@ -353,11 +353,11 @@ status_t z7Archiver::Test (char *&outputStr, BMessenger *progress, volatile bool
         combo.Prepend ("-p-");
 
     m_pipeMgr << "-bd" << combo.String() << m_archivePath.Path();
-    
+
     FILE *out;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
     {
         outputStr = NULL;        // Handle 7zip unloadable error here
@@ -365,7 +365,7 @@ status_t z7Archiver::Test (char *&outputStr, BMessenger *progress, volatile bool
     }
 
     resume_thread (tid);
-    
+
     close (outdes[1]);
     close (errdes[1]);
 
@@ -376,11 +376,11 @@ status_t z7Archiver::Test (char *&outputStr, BMessenger *progress, volatile bool
 
     close (errdes[0]);
     close (outdes[0]);
-        
+
     // Send signal to quit thread only AFTER pipes are closed
     if (exitCode == BZR_CANCEL_ARCHIVER)
         TerminateThread (tid);
-    
+
     return exitCode;
 }
 
@@ -395,12 +395,12 @@ status_t z7Archiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress,
 
     BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
     updateMessage.AddFloat ("delta", 1.0f);
-    
+
     bool startedActualTest = false;
     bool errFlag = false;
     char lineString[999];
     uint64 lineCount = 0L;
-    
+
     while (fgets (lineString, 998, fp))
     {
         if (cancel && *cancel == true)
@@ -408,26 +408,26 @@ status_t z7Archiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress,
            exitCode = BZR_CANCEL_ARCHIVER;
            break;
         }
-        
+
         lineString[strlen (lineString) - 1] = '\0';
         fullOutputStr << lineString << "\n";
         lineCount++;
-        
+
         // Skip blank lines
         if (strlen (lineString) > 1)
         {
            char *testingStr = lineString;
            testingStr += CountCharsInFront (testingStr, ' ');
-           
+
            if (strncmp (testingStr, "Testing", 7) == 0)
            {
                BString pathStr = testingStr;
                pathStr.Remove (0, 12);        // Removes "Testing     "
-               
+
                // Trim right side spaces as this is only a test operation
                while (pathStr[pathStr.Length() - 1] == ' ')     // Trim right hand side spaces
                   pathStr.RemoveLast (" ");
-               
+
                updateMessage.RemoveName ("text");
                updateMessage.AddString ("text", FinalPathComponent (pathStr.String()));
                progress->SendMessage (&updateMessage, &reply);
@@ -436,7 +436,7 @@ status_t z7Archiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress,
                startedActualTest = true;
            else if (strncmp (testingStr, "Everything is Ok", 16) == 0 && errFlag == false)
            {
-                // Important we check this before error, error should be the last to be checked               
+                // Important we check this before error, error should be the last to be checked
                 exitCode = BZR_DONE;
                 // Set startedActualTest to false after we've found this string
                 // Newer versions of 7za have output after this
@@ -447,17 +447,17 @@ status_t z7Archiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress,
                // Check for empty archive warning, in which case it isn't an error, so skip setting errFlag
                if (strncmp (testingStr, "No files to process", 19) != 0)
                {
-                  // most possibly an error as test has started and it isn't one of the above lines    
+                  // most possibly an error as test has started and it isn't one of the above lines
                   errFlag = true;
                   exitCode = BZR_ERRSTREAM_FOUND;
                }
            }
         }
     }
-    
+
     outputStr = new char[fullOutputStr.Length() + 1];
     strcpy (outputStr, fullOutputStr.String());
-    
+
     return exitCode;
 }
 
@@ -535,7 +535,7 @@ status_t z7Archiver::Add (bool createMode, const char *relativePath, BMessage *m
 
     // 0.07: Added "-bd" switch to prevent percentage display in output
     m_pipeMgr << "-bd" << m_archivePath.Path();
-    
+
     int32 count = 0L;
     uint32 type;
     message->GetInfo (kPath, &type, &count);
@@ -558,7 +558,7 @@ status_t z7Archiver::Add (bool createMode, const char *relativePath, BMessage *m
         chdir (relativePath);
 
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;        // Handle 7zip unloadable error here
 
@@ -572,12 +572,12 @@ status_t z7Archiver::Add (bool createMode, const char *relativePath, BMessage *m
 
     close (errdes[0]);
     close (outdes[0]);
-    
+
     // Send signal to quit archiver only AFTER pipes are closed
     if (exitCode == BZR_CANCEL_ARCHIVER)
         TerminateThread (tid);
-    
-    m_pipeMgr.FlushArgs();    
+
+    m_pipeMgr.FlushArgs();
     SetMimeType();
     return exitCode;
 }
@@ -593,7 +593,7 @@ status_t z7Archiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progre
 
     char lineString[999];
     bool noError = false;
-    
+
     while (fgets (lineString, 998, fp))
     {
         if (cancel && *cancel == true)
@@ -615,18 +615,18 @@ status_t z7Archiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progre
                updateMessage.AddString ("text", fileName);
                progress->SendMessage (&updateMessage, &reply);
            }
-           
+
            addedPaths->AddString (kPath, filePath.String());
         }
         else if (strncmp (lineString, "Everything is Ok", 16) == 0)
            noError = true;
     }
-    
+
     if (noError == false)
         exitCode = BZR_ERRSTREAM_FOUND;
-    
+
     return exitCode;
-    
+
 //    int readingPercent = 0;
 //    while (1)
 //    {
@@ -657,7 +657,7 @@ status_t z7Archiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progre
 //
 //        if (c == EOF)
 //           break;
-//        
+//
 //        if (cancel && *cancel == true)
 //        {
 //           exitCode = BZR_CANCEL_ARCHIVER;
@@ -676,7 +676,7 @@ status_t z7Archiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progre
 //               //        since it's just for reading progress output we can leave those spaces for now.
 //               //        When p7zip will fix that, we can add better checking here ;)
 //               currentFileName = buf;
-//               
+//
 //               // TODO: uncomment this when Beezer will let for partial updates (ie. 25%, 33%...).
 //               //updateMessage.RemoveName ("text");
 //               //updateMessage.AddString ("text", LeafFromPath (buf.String()));
@@ -725,7 +725,7 @@ status_t z7Archiver::Delete (char *&outputStr, BMessage *message, BMessenger *pr
 {
     // WARNING! 7z currently can't delete/update specific files in solid block, and will return
     //    error when trying to delete such file
-    
+
     // Setup deleting process
     BEntry archiveEntry (&m_archiveRef, true);
     if (archiveEntry.Exists() == false)
@@ -753,12 +753,12 @@ status_t z7Archiver::Delete (char *&outputStr, BMessage *message, BMessenger *pr
         if (message->FindString (kPath, i, &pathString) == B_OK)
            m_pipeMgr << SupressWildcardSet (pathString);
     }
-    
+
     // 7z outputs everything to stderr!
     FILE *out;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
     {
         outputStr = NULL;        // Handle 7zip unloadable error here
@@ -800,7 +800,7 @@ status_t z7Archiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progres
     // Prepare message to update the progress bar
     BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
     updateMessage.AddFloat ("delta", 1.0f);
-    
+
     while (fgets (lineString, len - 1, fp))
     {
         if (cancel && *cancel == true)
@@ -831,14 +831,14 @@ status_t z7Archiver::Create (BPath *archivePath, const char *relPath, BMessage *
     m_archivePath.SetTo (archivePath->Path(), NULL, true);
 
     status_t result = Add (true, relPath, fileList, addedPaths, progress, cancel);
-    
+
     // Once creating is done, set m_archiveRef to pointed to the existing archive file
     if (result == BZR_DONE)
     {
         BEntry tempEntry (m_archivePath.Path(), true);
         if (tempEntry.Exists())
            tempEntry.GetRef (&m_archiveRef);
-        
+
         SetMimeType();
     }
 
@@ -853,19 +853,19 @@ void z7Archiver::BuildDefaultMenu ()
     BMenu *addMenu;
     BMenu *extractMenu;
     BMenuItem *item;
-    
+
     m_settingsMenu = new BMenu (m_typeStr);
-    
+
     // Build the header-level sub-menu
     ratioMenu = new BMenu (kCompressionLevel);
     ratioMenu->SetRadioMode (true);
-    
+
     ratioMenu->AddItem (new BMenuItem (kLevel0, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel1, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel5, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel7, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel9, NULL));
-    
+
     ratioMenu->FindItem (kLevel5)->SetMarked (true);
 
     // Build the "While adding" sub-menu
@@ -879,18 +879,18 @@ void z7Archiver::BuildDefaultMenu ()
     item = new BMenuItem (kMultiThreaded, new BMessage (BZR_MENUITEM_SELECTED));
     item->SetMarked (true);
     addMenu->AddItem (item);
-    
+
     // Build the "While extracting" sub-menu
     extractMenu = new BMenu (kExtracting);
     extractMenu->SetRadioMode (true);
-    
+
     extractMenu->AddItem (new BMenuItem (kOverwrite, NULL));
     extractMenu->AddItem (new BMenuItem (kNoOverwrite, NULL));
     extractMenu->AddItem (new BMenuItem (kRenameExisting, NULL));
     extractMenu->AddItem (new BMenuItem (kRenameExtracted, NULL));
-    
+
     extractMenu->FindItem (kOverwrite)->SetMarked (true);
-    
+
     // Add sub-menus to settings menu
     m_settingsMenu->AddItem (ratioMenu);
     m_settingsMenu->AddItem (addMenu);

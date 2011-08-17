@@ -117,19 +117,19 @@ void CLVColumnLabelView::Draw(BRect update_rect)
            {
                //Need to draw this column
                BeginLineArray(4+2);        // +2 by Ram
-               
+
                //Top line
                Start.Set(ColumnBegin,ViewBounds.top);
                Stop.Set(ColumnEnd-1.0,ViewBounds.top);
                if(MergeWithRight && !(ThisColumn == fColumnClicked && fColumnResizing))
                   Stop.x = ColumnEnd;
                AddLine(Start,Stop,BeHighlight);
-               
+
                //Left line
                if(!MergeWithLeft)
                   AddLine(BPoint(ColumnBegin,ViewBounds.top+1.0),
                       BPoint(ColumnBegin,ViewBounds.bottom),BeHighlight);
-               
+
                //Bottom line
                Start.Set(ColumnBegin+1.0-1.0,ViewBounds.bottom); // -1.0 by Ram
                if(MergeWithLeft)
@@ -139,7 +139,7 @@ void CLVColumnLabelView::Draw(BRect update_rect)
                   Stop.x = ColumnEnd;
                AddLine(Start,Stop,BeShadow);
                AddLine(BPoint(Start.x + 1, Start.y - 1), BPoint (Stop.x + 1, Stop.y - 1), BeShadowTop); //by Ram
-               
+
                //Right line
                if(ThisColumn == fColumnClicked && fColumnResizing)
                   AddLine(BPoint(ColumnEnd,ViewBounds.top),BPoint(ColumnEnd,ViewBounds.bottom),
@@ -148,7 +148,7 @@ void CLVColumnLabelView::Draw(BRect update_rect)
                {
                   AddLine(BPoint(ColumnEnd,ViewBounds.top),BPoint(ColumnEnd,ViewBounds.bottom),
                       BeShadow);
-                      
+
                   // by Ram (AddLine)
                   AddLine(BPoint(ColumnEnd-1,ViewBounds.top+1), BPoint(ColumnEnd-1,ViewBounds.bottom-1),
                       BeShadowTop);
@@ -192,7 +192,7 @@ void CLVColumnLabelView::Draw(BRect update_rect)
            ViewBounds.bottom)))
         {
            BeginLineArray(1);
-           
+
            // top and left line commented out -- Ram
            //Top line
            //AddLine(BPoint(ColumnBegin,ViewBounds.top),BPoint(ViewBounds.right,ViewBounds.top),
@@ -326,33 +326,33 @@ void CLVColumnLabelView::MouseDown(BPoint Point)
                //Start watching the mouse
                WatchMouse = true;
            }
-           
+
            // by Ram - if user double-clicked resize column to fit maxstring width of visible items
            // Double-click detection code - quite ugly
            BMessage *msg = Window()->CurrentMessage();
            int32 clicks = msg->FindInt32 ("clicks");
            int32 button = msg->FindInt32 ("buttons");
-           
+
            static int32 previousButton = button;
            static int32 clickCount = 0;
            static BPoint previousPoint = Point;
-           
+
            if (previousButton == button && clicks > 1 && button == B_PRIMARY_MOUSE_BUTTON)
                clickCount++;
            else
                clickCount = 0L;
-           
+
            previousButton = button;
-    
+
            if (clickCount == 1L && (Point.y >= previousPoint.y - 1 && Point.y <= previousPoint.y + 1
                   && Point.x >= previousPoint.x - 1 && Point.y <= previousPoint.x + 1))
            {
                clickCount = 0L;
-               
+
                // Find the largest visible string in this column
                float maxWidth = 0;
                int32 columnIndex = fParent->IndexOfColumn (fColumnClicked);
-               
+
                for (int32 i = 0; i < fParent->CountItems(); i++)
                {
                   CLVListItem *listItem = (CLVListItem*)fParent->ItemAt(i);
@@ -360,16 +360,16 @@ void CLVColumnLabelView::MouseDown(BPoint Point)
                   float indent = 12.0;
                   if (columnIndex == 2)
                       indent += 20 * listItem->OutlineLevel();
-        
+
                   maxWidth = MAX (maxWidth, fParent->StringWidth (text) + indent);
                }
-               
+
                if (maxWidth < fColumnClicked->fMinWidth)
                {
                   maxWidth = MAX (fColumnClicked->fMinWidth,
                       fParent->StringWidth (fColumnClicked->GetLabel()) + 15.0);
                }
-               
+
                fColumnClicked->SetWidth (maxWidth);
                fParent->UpdateColumnSizesDataRectSizeScrollBars (true);
            }
@@ -581,7 +581,7 @@ void CLVColumnLabelView::MouseUp(BPoint Point)
         {
            //The column is a "sortable" column
            uint32 Modifiers;
-           Window()->CurrentMessage()->FindInt32("modifiers",(int32*)&Modifiers);        
+           Window()->CurrentMessage()->FindInt32("modifiers",(int32*)&Modifiers);
            if(!(Modifiers&B_SHIFT_KEY))
            {
                //The user wants to select it as the main sorting column
@@ -622,7 +622,7 @@ void CLVColumnLabelView::MouseUp(BPoint Point)
         Invalidate(BRect(fColumnClicked->fColumnEnd,ViewBounds.top,fColumnClicked->fColumnEnd,
            ViewBounds.bottom));
     }
-    
+
     //Unhighlight the label and forget the column
     Invalidate(BRect(fColumnClicked->fColumnBegin+1.0,ViewBounds.top+1.0,
         fColumnClicked->fColumnEnd-1.0,ViewBounds.bottom-1.0));

@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -87,19 +87,19 @@ status_t XzArchiver::ReadOpen (FILE *fp)
            sizeStr[15], methodStr[15], packedStr[15], ratioStr[10], dayStr[5],
            monthStr[5], hourStr[5], minuteStr[5], dateStr[80], crcStr[15],
            pathStr[B_PATH_NAME_LENGTH + 1];
-    
+
     // Skip first header line
     fgets (lineString, len, fp);
-    
+
     while (!feof (fp) && fgets (lineString, len, fp))
     {
         lineString[strlen (lineString) - 1] = '\0';
-        
+
         sscanf (lineString,
            "%[^ ] %[^ ] %[^ ] %[^ ] %[0-9]:%[0-9] %[0-9] %[0-9] %[^ ]%[^\n]",
            methodStr, crcStr, monthStr, dayStr, hourStr, minuteStr, packedStr, sizeStr, ratioStr,
            pathStr);
-    
+
         BString pathString = pathStr;
         pathString.Remove (0, 1);
 
@@ -112,7 +112,7 @@ status_t XzArchiver::ReadOpen (FILE *fp)
         archiveEntry.GetModificationTime (&modTime);
         localtime_r (&modTime, &mod_tm);
         FormatDate (dateStr, 60, &mod_tm);
-        
+
         // Check to see if last char of pathStr = '/' add it as folder, else as a file
         uint16 pathLength = pathString.Length() - 1;
         if (pathString[pathLength] == '/')
@@ -136,13 +136,13 @@ status_t XzArchiver::Open (entry_ref *ref, BMessage *fileList)
 {
     m_archiveRef = *ref;
     m_archivePath.SetTo (ref);
-    
+
     // We are redirecting (>) shell output to file, therefore we need to use /bin/sh -c <command>
     BString destPath = InitTarFilePath (ref->name);
     BString cmd;
     cmd << "\"" << m_xzPath << "\"" << " -c -d \"" << m_archivePath.Path() << "\" > " << "\"" <<
            m_tarFilePath << "\"";
-    
+
     m_pipeMgr.FlushArgs();
     m_pipeMgr << "/bin/sh" << "-c" << cmd.String();
     m_pipeMgr.Pipe ();
@@ -153,14 +153,14 @@ status_t XzArchiver::Open (entry_ref *ref, BMessage *fileList)
     BNodeInfo destNodeInfo (&destNode);
     char mimeBuf[B_MIME_TYPE_LENGTH];
     destNodeInfo.GetType (mimeBuf);
-    
+
     // 0.08 -- Check if extension is ".tar"
     bool isTarExtension = false;
     BString extensionStr = destPath.String();
     int32 found = extensionStr.IFindLast (".tar");
     if (found == extensionStr.Length() - 4)
         isTarExtension = true;
-    
+
     m_tarArk = false;
     if (strcmp (mimeBuf, "application/tar") == 0 || strcmp (mimeBuf, "application/x-tar") == 0 ||
            isTarExtension == true)
@@ -170,7 +170,7 @@ status_t XzArchiver::Open (entry_ref *ref, BMessage *fileList)
         entry_ref destRef;
         destEntry.GetRef (&destRef);
         status_t exitCode = TarArchiver::Open(&destRef, fileList);
-        
+
         // Reset these as TarArchiver's Open() would have changed them
         m_archivePath.SetTo (ref);
         strcpy (m_arkFilePath, m_archivePath.Path());
@@ -181,37 +181,37 @@ status_t XzArchiver::Open (entry_ref *ref, BMessage *fileList)
     {
         m_pipeMgr.FlushArgs();
         m_pipeMgr << m_xzPath << "-lv" << m_archivePath.Leaf();
-        
+
         FILE *out, *err;
         int outdes[2], errdes[2];
-        
+
         BPath parentPath;
         m_archivePath.GetParent (&parentPath);
         chdir (parentPath.Path());
         thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-        
+
         if (tid == B_ERROR || tid == B_NO_MEMORY)
            return B_ERROR;        // Handle unloadable error here
-    
+
         status_t exitCode;
         resume_thread (tid);
-        
+
         close (errdes[1]);
         close (outdes[1]);
-    
+
         out = fdopen (outdes[0], "r");
         exitCode = ReadOpen (out);
-        
+
         close (outdes[0]);
         fclose (out);
-        
+
         err = fdopen (errdes[0], "r");
         exitCode = Archiver::ReadErrStream (err, NULL);
         close (errdes[0]);
         fclose (err);
     }
-    
-    
+
+
     return BZR_DONE;
 }
 
@@ -229,15 +229,15 @@ status_t XzArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger
         {
            BString destFilePath = destPath.Path();
            destFilePath << '/' << OutputFileName (m_archivePath.Leaf());
-           
+
            BString cmd;
            cmd << "\"" << m_xzPath << "\"" << " -c -d \"" << m_archivePath.Path() << "\" > " << "\"" <<
            destFilePath.String() << "\"";
-           
+
            m_pipeMgr.FlushArgs();
            m_pipeMgr << "/bin/sh" << "-c" << cmd.String();
            m_pipeMgr.Pipe();
-                  
+
            if (progress)
                SendProgressMessage (progress);
 
@@ -267,11 +267,11 @@ status_t XzArchiver::Test (char *&outputStr, BMessenger *progress, volatile bool
 
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_xzPath << "-t" << m_archivePath.Path();
-    
+
     FILE *err;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
     {
         outputStr = NULL;        // Handle unzip unloadable error here
@@ -279,7 +279,7 @@ status_t XzArchiver::Test (char *&outputStr, BMessenger *progress, volatile bool
     }
 
     resume_thread (tid);
-    
+
     BString errorString;
     close (outdes[1]);
     close (errdes[1]);
@@ -311,7 +311,7 @@ status_t XzArchiver::Add (bool createMode, const char *relativePath, BMessage *m
         m_archivePath = m_tarFilePath;
         status_t exitCode = TarArchiver::Add (createMode, relativePath, message, addedPaths, progress, cancel);
         m_archivePath = m_arkFilePath;
-        
+
         CompressFromTemp ();
         return exitCode;
     }
@@ -329,7 +329,7 @@ status_t XzArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *pr
         m_archivePath = m_tarFilePath;
         status_t exitCode = TarArchiver::Delete (outputStr, message, progress, cancel);
         m_archivePath = m_arkFilePath;
-        
+
         CompressFromTemp();
         return exitCode;
     }
@@ -352,7 +352,7 @@ status_t XzArchiver::Create (BPath *archivePath, const char *relPath, BMessage *
     InitTarFilePath ((char*)archivePath->Leaf());
 
     status_t result = Add (true, relPath, fileList, addedPaths, progress, cancel);
-    
+
     // Once creating is done, set m_archiveRef to pointed to the existing archive file
     if (result == BZR_DONE)
     {
@@ -377,11 +377,11 @@ void XzArchiver::BuildDefaultMenu ()
 {
     BMenu *ratioMenu;
     m_settingsMenu = new BMenu (m_typeStr);
-    
+
     // Build the compression-level sub-menu
     ratioMenu = new BMenu (kCompressionLevel);
     ratioMenu->SetRadioMode (true);
-    
+
     ratioMenu->AddItem (new BMenuItem (kLevel1, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel2, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel3, NULL));
@@ -391,7 +391,7 @@ void XzArchiver::BuildDefaultMenu ()
     ratioMenu->AddItem (new BMenuItem (kLevel7, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel8, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel9, NULL));
-    
+
     ratioMenu->FindItem (kLevel6)->SetMarked (true);
 
     // Add sub-menus to settings menu
@@ -402,28 +402,28 @@ void XzArchiver::BuildDefaultMenu ()
 
 BString XzArchiver::OutputFileName (const char *fullFileName) const
 {
-    // Given a full filename (with extension) this function removes 
+    // Given a full filename (with extension) this function removes
     // if the filename ends with one of the extensions in extns[], otherwise it returns the full filename
     BString outputFileName = fullFileName;
 
     int8 extnsCount = 2;
     const char *extns[] = { ".xz", ".xzip" };
-    
+
     int32 found = -1;
     for (int32 i = 0; i < extnsCount && found <= 0; i++)
         found = outputFileName.IFindLast (extns[i]);
 
     if (found > 0)
         outputFileName.Truncate (found);
-        
+
     else if ((found = outputFileName.IFindLast (".txz")) > 0)    // special case
     {
         outputFileName.Truncate (found);
         outputFileName += ".tar";
     }
-        
+
     return outputFileName;
-}    
+}
 
 //=============================================================================================================//
 
@@ -446,7 +446,7 @@ void XzArchiver::CompressFromTemp ()
     char level[10];
     BMenu *ratioMenu = m_settingsMenu->FindItem(kLevel1)->Menu();
     sprintf (level, " -%ld ", 1 + ratioMenu->IndexOf(ratioMenu->FindMarked()));
-    
+
     // Re-compress file, from .tar in temp to xz
     BString cmd;
     cmd << "\"" << m_xzPath << "\"" << " -c " << level << "\"" << m_tarFilePath << "\" > " << "\"" <<

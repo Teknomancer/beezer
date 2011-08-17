@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -43,10 +43,10 @@ class ArkInfoWindow : public BWindow
 {
     public:
         ArkInfoWindow (BWindow *callerWindow, Archiver *archiver, BEntry *archiveEntry);
-        
+
         // Inherited hooks
         virtual bool        QuitRequested ();
-               
+
     private:
         // Private hooks
         void                FillDetails ();
@@ -55,7 +55,7 @@ class ArkInfoWindow : public BWindow
         // Private members
         BevelView          *m_backView;
         Archiver           *m_archiver;
-        
+
         BEntry             *m_entry;
         BList              *m_fileList,
                          *m_dirList;

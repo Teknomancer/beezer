@@ -74,13 +74,13 @@ class RegExString : public BString
         RegExString(const RegExString &);
         RegExString(const char *, int32 maxLength);
         ~RegExString();
-        
+
         bool               Matches (const char *, bool caseSensitivity = false,
                              RegExStringExpressionType expressionType = kGlobMatch) const;
         bool               MatchesRegExp (const char *, bool caseSensitivity = true) const;
         bool               MatchesRegExp (const RegExp &) const;
         bool               MatchesRegExp (const RegExp *) const;
-    
+
         bool               MatchesGlob (const char *, bool caseSensitivity = false) const;
         bool               EndsWith (const char *, bool caseSensitivity = false) const;
         bool               StartsWith (const char *, bool caseSensitivity = false) const;
@@ -92,19 +92,19 @@ class RegExString : public BString
         int32               FindFirst (const char *, int32 fromOffset) const;
         int32               FindFirst (char) const;
         int32               FindFirst (char, int32 fromOffset) const;
-    
+
         int32               FindLast (const BString &) const;
         int32               FindLast (const char *) const;
         int32               FindLast (const BString &, int32 beforeOffset) const;
         int32               FindLast (const char *, int32 beforeOffset) const;
         int32               FindLast (char) const;
         int32               FindLast (char, int32 beforeOffset) const;
-    
+
         int32               IFindFirst (const BString &) const;
         int32               IFindFirst (const char *) const;
         int32               IFindFirst (const BString &, int32 fromOffset) const;
         int32               IFindFirst (const char *, int32 fromOffset) const;
-    
+
         int32               IFindLast (const BString &) const;
         int32               IFindLast (const char *) const;
         int32               IFindLast (const BString &, int32 beforeOffset) const;
@@ -115,7 +115,7 @@ class RegExString : public BString
         bool               IsInsideGlyph (char) const; // Not counting start!
         bool               IsStartOfGlyph (char) const;
         const char            *MoveToEndOfGlyph (const char *) const;
-        
+
         // Functions for Glob matching:
         bool               MatchesBracketExpression (const char *string, const char *pattern,
                              bool caseSensitivity) const;
@@ -123,7 +123,7 @@ class RegExString : public BString
                              bool caseSensitivity) const;
 
         char               ConditionalToLower (char c, bool toLower) const;
-        bool               CharsAreEqual (char char1, char char2, bool toLower) const;    
+        bool               CharsAreEqual (char char1, char char2, bool toLower) const;
         bool               UTF8CharsAreEqual (const char *string1, const char *string2) const;
 };
 
@@ -133,7 +133,7 @@ inline bool RegExString::MatchesRegExp(const RegExp *expression) const
 {
     if (expression == NULL || expression->InitCheck() != B_OK)
         return false;
-               
+
     return expression->Matches (*this);
 }
 
@@ -143,8 +143,8 @@ inline bool RegExString::MatchesRegExp (const RegExp &expression) const
 {
     if (expression.InitCheck() != B_OK)
         return false;
-               
-    return expression.Matches(*this);    
+
+    return expression.Matches(*this);
 }
 
 //=============================================================================================================//
@@ -152,14 +152,14 @@ inline bool RegExString::MatchesRegExp (const RegExp &expression) const
 inline char RegExString::ConditionalToLower (char c, bool caseSensitivity) const
 {
     return caseSensitivity ? c : (char)tolower(c);
-}    
+}
 
 //=============================================================================================================//
 
 inline bool RegExString::CharsAreEqual (char char1, char char2, bool caseSensitivity) const
 {
     return ConditionalToLower(char1, caseSensitivity) == ConditionalToLower (char2, caseSensitivity);
-}     
+}
 
 //=============================================================================================================//
 

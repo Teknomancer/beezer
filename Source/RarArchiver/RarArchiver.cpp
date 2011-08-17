@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -91,19 +91,19 @@ status_t RarArchiver::ReadOpen (FILE *fp)
            sizeStr[25], methodStr[25], packedStr[25], ratioStr[15], dayStr[5], permStr[50],
            monthStr[5], yearStr[8], hourStr[5], minuteStr[5], dateStr[90], crcStr[25], versionStr[25],
            pathStr[B_PATH_NAME_LENGTH + 1];
-    
+
     do
     {
         fgets (lineString, len, fp);
     } while (!feof (fp) && (strstr (lineString, "--------" ) == NULL));
-    
+
     fgets (lineString, len, fp);
-    
+
     bool odd = true;
     while (!feof (fp) && (strstr (lineString, "--------" ) == NULL))
     {
         lineString[strlen (lineString) - 1] = '\0';
-        
+
         // Rar reports in 2 lines, first line for just the path, the next line has columnar info
         // So odd has paths and even lines have info about those paths - so read accordingly
         if (odd == true)
@@ -121,20 +121,20 @@ status_t RarArchiver::ReadOpen (FILE *fp)
                crcStr, methodStr, versionStr);
             odd = true;
         }
-        
+
         struct tm timeStruct; time_t timeValue;
         MakeTime (&timeStruct, &timeValue, dayStr, monthStr, yearStr, hourStr, minuteStr, "00");
         FormatDate (dateStr, 90, &timeStruct);
-               
+
         BString pathString = pathStr;
         if (pathString.Length() > 1)
         {
            if (pathString.ByteAt(0) == '*')
                m_passwordRequired = true;
-    
+
            pathString.Remove (0, 1);
         }
-        
+
         // Check to see if pathStr is as folder, else add it as a file
         if (strstr (permStr, "D") != NULL || permStr[0] == 'd')
         {
@@ -161,29 +161,29 @@ status_t RarArchiver::Open (entry_ref *ref, BMessage *fileList)
 {
     m_archiveRef = *ref;
     m_archivePath.SetTo (ref);
-    
+
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_unrarPath << "v" << "-c-" << m_archivePath.Path();
-    
+
     FILE *out, *err;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;        // Handle rar unloadable error here
 
     status_t exitCode;
     resume_thread (tid);
-    
+
     close (errdes[1]);
     close (outdes[1]);
 
     out = fdopen (outdes[0], "r");
     exitCode = ReadOpen (out);
-    
+
     close (outdes[0]);
     fclose (out);
-    
+
     err = fdopen (errdes[0], "r");
     exitCode = Archiver::ReadErrStream (err, "- the file header is corrupt");
     close (errdes[0]);
@@ -199,7 +199,7 @@ status_t RarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
 {
     BEntry dirEntry;
     entry_ref dirRef;
-    
+
     dirEntry.SetTo (refToDir);
     status_t exitCode = BZR_DONE;
     if (progress)        // Perform output directory checking only when a messenger is passed
@@ -221,11 +221,11 @@ status_t RarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         if (type != B_STRING_TYPE)
            return BZR_UNKNOWN;
     }
-    
+
     // Setup argv, fill with selection names if needed
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_unrarPath << "x" << "-idp" << "-c-";
-    
+
     if (progress)        // Only enable extract options when user is NOT viewing
     {
         if (m_settingsMenu->FindItem(kNoOverwrite)->IsMarked())
@@ -239,18 +239,18 @@ status_t RarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     }
     else
         m_pipeMgr << "-o+";
-        
+
     if (m_settingsMenu->FindItem(kKeepBroken)->IsMarked())
         m_pipeMgr << "-kb";
-    
+
     if (m_settingsMenu->FindItem(kProcessAttributes)->IsMarked() == false)
         m_pipeMgr << "-ee";
-    
+
     if (Password().Length() > 0)
         m_pipeMgr << ((BString)"-p" << Password());
     else
         m_pipeMgr << "-p-";
-    
+
     m_pipeMgr << m_archivePath.Path();
 
     int32 i = 0L;
@@ -268,7 +268,7 @@ status_t RarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     FILE *out, *err;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;           // Handle rar unloadable error here
 
@@ -279,7 +279,7 @@ status_t RarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         status_t exitCode;
         wait_for_thread (tid, &exitCode);
     }
-    
+
     close (errdes[1]);
     close (outdes[1]);
 
@@ -295,16 +295,16 @@ status_t RarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     Archiver::ReadStream (err, errStreamOutput);
     if (errStreamOutput.FindFirst ("Encrypted file:  CRC failed in ") > 0)
         exitCode = BZR_PASSWORD_ERROR;
-        
+
     fclose (err);
-    
+
     close (outdes[0]);
     close (errdes[0]);
 
     // Send signal to quit archiver only AFTER pipes are closed
     if (exitCode == BZR_CANCEL_ARCHIVER)
         TerminateThread (tid);
-    
+
     m_pipeMgr.FlushArgs();
     return exitCode;
 }
@@ -331,7 +331,7 @@ status_t RarArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool
            BString lineStr = lineString;
            int32 found = lineStr.FindLast ("OK");
            lineStr.Remove (found, lineStr.Length() - found);
-           
+
            const char *fileName = LeafFromPath (lineStr.String());
            if (fileName && strlen (fileName) > 0)
            {
@@ -360,18 +360,18 @@ status_t RarArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
 
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_unrarPath << "t";;
-    
+
     if (Password().Length() > 0)
         m_pipeMgr << ((BString)"-p" << Password());
     else
         m_pipeMgr << "-p-";
-    
+
     m_pipeMgr << "-idp" << m_archivePath.Path();
-    
+
     FILE *out, *err;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
     {
         outputStr = NULL;        // Handle lha unloadable error here
@@ -379,7 +379,7 @@ status_t RarArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
     }
 
     resume_thread (tid);
-    
+
     close (outdes[1]);
     out = fdopen (outdes[0], "r");
     status_t exitCode = ReadTest (out, outputStr, progress, cancel);
@@ -396,7 +396,7 @@ status_t RarArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
         close (outdes[0]);
         fclose (out);
         fclose (err);
-        
+
         if (exitCode == BZR_ERRSTREAM_FOUND)
         {
            BString outStr = outputStr;
@@ -406,11 +406,11 @@ status_t RarArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
            strcpy (outputStr, outStr.String());
         }
     }
-        
+
     // Send signal to quit thread only AFTER pipes are closed
     if (exitCode == BZR_CANCEL_ARCHIVER)
         TerminateThread (tid);
-    
+
     return exitCode;
 }
 
@@ -427,7 +427,7 @@ status_t RarArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
 
     BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
     updateMessage.AddFloat ("delta", 1.0f);
-    
+
     while (fgets (lineString, 998, fp))
     {
         if (cancel && *cancel == true)
@@ -435,17 +435,17 @@ status_t RarArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
            exitCode = BZR_CANCEL_ARCHIVER;
            break;
         }
-        
+
         lineString[strlen (lineString) - 1] = '\0';
         fullOutputStr << lineString << "\n";
         lineCount++;
-        
+
         // Skip first 4 line which contains Archive: <path of archive> | We don't need this here
         if (lineCount > 3)
         {
            char *testingStr = lineString;
            testingStr += CountCharsInFront (testingStr, ' ');
-           
+
            if (strncmp (testingStr, "Testing     ", 12) == 0)
            {
                // The format of testingStr is now "Testing   path-here    OK"
@@ -453,7 +453,7 @@ status_t RarArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
                BString pathStr = testingStr;
                if (pathStr.FindLast ("OK") < 0)
                   exitCode = BZR_ERRSTREAM_FOUND;
-               
+
                pathStr.RemoveLast ("OK");
                while (pathStr[pathStr.Length() - 1] == ' ')     // Trim right hand side spaces
                   pathStr.RemoveLast (" ");
@@ -470,7 +470,7 @@ status_t RarArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
 
     outputStr = new char[fullOutputStr.Length() + 1];
     strcpy (outputStr, fullOutputStr.String());
-    
+
     return exitCode;
 }
 
@@ -489,13 +489,13 @@ status_t RarArchiver::GetComment (char *&commentStr)
 
     BString tempFilePath = TempDirectoryPath();    // rar creates the path if its not there so we needn't bother
                                            // if it did not we would have to create it
-    
+
     tempFilePath << "/" << m_archivePath.Leaf() << "_bzr_.txt";
-    
+
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_rarPath << "cw" << "-y" << m_archivePath.Path() << tempFilePath.String();
     m_pipeMgr.Pipe();
-    
+
     BFile tempFile (tempFilePath.String(), B_READ_ONLY);
     if (tempFile.InitCheck() == B_OK)
     {
@@ -511,7 +511,7 @@ status_t RarArchiver::GetComment (char *&commentStr)
     }
     else
         commentStr = NULL;
-    
+
     return BZR_ERRSTREAM_FOUND;
 }
 
@@ -528,12 +528,12 @@ status_t RarArchiver::SetComment (char *commentStr, const char *tempDirPath)
 
     BString outputString, tempFilePath = tempDirPath;
     tempFilePath << "/" << m_archivePath.Leaf() << "_bzr_.txt";
-    
+
     BFile commentFile (tempFilePath.String(), B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE);
     if (commentStr)
         commentFile.Write (commentStr, strlen (commentStr));
     commentFile.Unset();
-    
+
     BString param = "-z";
     param << tempFilePath;
 
@@ -576,7 +576,7 @@ status_t RarArchiver::Add (bool createMode, const char *relativePath, BMessage *
     m_pipeMgr.FlushArgs();
     char level[12];
     BMenu *ratioMenu = m_settingsMenu->FindItem(kLevel0)->Menu();
-    
+
     sprintf (level, "-m%ld", ratioMenu->IndexOf(ratioMenu->FindMarked()));
     m_pipeMgr << m_rarPath << "a" << "-ol" << "-c-" << "-ow" << "-idp" << "-o+" << level;
 
@@ -584,10 +584,10 @@ status_t RarArchiver::Add (bool createMode, const char *relativePath, BMessage *
         m_pipeMgr << "-s-";
     else
         m_pipeMgr << "-s";
-    
+
     if (m_settingsMenu->FindItem(kMultimediaCompress)->IsMarked() == false)
         m_pipeMgr << "-mm";
-    
+
     if (m_settingsMenu->FindItem(kRecoveryRecord)->IsMarked())
         m_pipeMgr << "-rr";
 
@@ -596,9 +596,9 @@ status_t RarArchiver::Add (bool createMode, const char *relativePath, BMessage *
 
     if (Password().Length() > 0)
         m_pipeMgr << ((BString)"-p" << Password());
-    
+
     m_pipeMgr << m_archivePath.Path();
-    
+
     int32 count = 0L;
     uint32 type;
     message->GetInfo (kPath, &type, &count);
@@ -620,7 +620,7 @@ status_t RarArchiver::Add (bool createMode, const char *relativePath, BMessage *
         chdir (relativePath);
 
     thread_id tid = m_pipeMgr.Pipe (outdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;        // Handle rar unloadable error here
 
@@ -636,7 +636,7 @@ status_t RarArchiver::Add (bool createMode, const char *relativePath, BMessage *
     // Send signal to quit archiver only AFTER pipes are closed
     if (exitCode == BZR_CANCEL_ARCHIVER)
         TerminateThread (tid);
-    
+
     m_pipeMgr.FlushArgs();
     SetMimeType();
     return exitCode;
@@ -651,7 +651,7 @@ status_t RarArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
     char lineString[999];
     BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
     updateMessage.AddFloat ("delta", 1.0f);
-    
+
     while (fgets (lineString, 998, fp))
     {
         if (cancel && *cancel == true)
@@ -682,7 +682,7 @@ status_t RarArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
                   // Adding    ToonsAndComics/Tinyportal0_75.zip
                   // WARNING: Cannot get ToonsAndComics/Tinyportal0_75.zip owner and group
                   //  OK
-                  // This is what we are HANDLING and OVERRIDING/HACKING whatever to ignore the warning, 
+                  // This is what we are HANDLING and OVERRIDING/HACKING whatever to ignore the warning,
                   // we are now about to read the " OK" line and see if it is OK, otherwise flag error
                   fgets (lineString, 998, fp);
                   lineString[strlen (lineString) - 1] = '\0';
@@ -691,7 +691,7 @@ status_t RarArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
                       exitCode = BZR_ERRSTREAM_FOUND;           // not OK, meaning something is wrong!
                }
            }
-           
+
            const char *fileName = FinalPathComponent (filePath.String());
 
            // Don't update progress bar for folders (damn !! damn !! rar does NOT
@@ -704,17 +704,17 @@ status_t RarArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
                updateMessage.AddString ("text", fileName);
                progress->SendMessage (&updateMessage, &reply);
            }
-           
+
            addedPaths->AddString (kPath, filePath.String());
         }
         else if (strstr (lineString, "- the file header is corrupt"))
         {
-           // This will occur when a user tries to add files to a 3.x archive using 2.x rar version 
+           // This will occur when a user tries to add files to a 3.x archive using 2.x rar version
            // When the 3.x rar file is supported by password
            exitCode = BZR_ERROR;
         }
     }
-    
+
     return exitCode;
 }
 
@@ -736,14 +736,14 @@ status_t RarArchiver::Create (BPath *archivePath, const char *relPath, BMessage 
     m_archivePath.SetTo (archivePath->Path(), NULL, true);
 
     status_t result = Add (true, relPath, fileList, addedPaths, progress, cancel);
-    
+
     // Once creating is done, set m_archiveRef to pointed to the existing archive file
     if (result == BZR_DONE)
     {
         BEntry tempEntry (m_archivePath.Path(), true);
         if (tempEntry.Exists())
            tempEntry.GetRef (&m_archiveRef);
-        
+
         SetMimeType();
     }
 
@@ -758,18 +758,18 @@ void RarArchiver::BuildDefaultMenu ()
     BMenuItem *item;
 
     m_settingsMenu = new BMenu (m_typeStr);
-    
+
     // Build the compression-level sub-menu (sorry we can't avoid using english strings here)
     ratioMenu = new BMenu (kCompressionLevel);
     ratioMenu->SetRadioMode (true);
-    
+
     ratioMenu->AddItem (new BMenuItem (kLevel0, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel1, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel2, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel3, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel4, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel5, NULL));
-    
+
     ratioMenu->FindItem (kLevel3)->SetMarked (true);
 
     // Build the "While Adding" sub-menu
@@ -787,7 +787,7 @@ void RarArchiver::BuildDefaultMenu ()
     item = new BMenuItem (kRecurse, new BMessage (BZR_MENUITEM_SELECTED));
     item->SetMarked (true);
     addMenu->AddItem (item);
-    
+
     item = new BMenuItem (kMultimediaCompress, new BMessage (BZR_MENUITEM_SELECTED));
     item->SetMarked (false);
     addMenu->AddItem (item);
@@ -799,7 +799,7 @@ void RarArchiver::BuildDefaultMenu ()
     item = new BMenuItem (kAlwaysOverwrite, NULL);
     item->SetMarked (true);
     extractMenu->AddItem (item);
-    
+
     item = new BMenuItem (kNoOverwrite, NULL);
     item->SetMarked (false);
     extractMenu->AddItem (item);

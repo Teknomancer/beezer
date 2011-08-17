@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -46,7 +46,7 @@ const char
     *const kArchiveAttribs =           "Add attributes",
     *const kUseSolidBlocks =           "Use solid blocks",
     *const kMultiThreaded =            "Use multi-threading (for multi CPU PCs)",
-    
+
     *const kExtracting =               "While Extracting",
     *const kExtractAttribs =           "Extract attributes",
 

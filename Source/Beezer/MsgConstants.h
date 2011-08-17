@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -34,7 +34,7 @@
 // both by Beezer & Archiver (add-ons) use Shared.h
 
 // IMPORTANT NOTE:: Everytime you add a new constant to this file,
-// make sure it is NOT already defined by doing a text search. It 
+// make sure it is NOT already defined by doing a text search. It
 // would be extremely difficult to trace bugs arising from duplicate
 // constants (as compilers can't pick them up)
 
@@ -89,11 +89,11 @@ const char *const kSuperItem =               "sitem",
     *const kListItem =                      "list_item",
     *const kBytes =                        "sel_bytes",
     *const kArchivePath =                   "archive_path",
-    
+
     // Drag and drop constants
     *const kFieldFull =                     "bzr:full",
     *const kDropClipping =                  "bzr-will_magically_disappear",
-    
+
     // Save constant fields (as small as possible to reduce size while storing)
     *const kToolBar =                       "tb",
     *const kInfoBar =                       "ib",
@@ -102,7 +102,7 @@ const char *const kSuperItem =               "sitem",
     *const kWindowSize =                    "ws",
     *const kFolding =                       "fd",
     *const kListViewState =                 "ls",
-    
+
     *const kColumnWidth =                   "cw",
     *const kColumnOrder =                   "co",
     *const kSortKey =                       "sk",
@@ -144,7 +144,7 @@ const uint32
     M_FILE_HELP =                   'flhl',
     M_FILE_ABOUT =                  'flab',
     M_FILE_QUIT =                   'flqt',
-    
+
     M_EDIT_COPY =                   'edcp',
     M_EDIT_SELECT_ALL =              'edsa',
     M_EDIT_SELECT_ALL_DIRS =         'edad',
@@ -158,7 +158,7 @@ const uint32
     M_EDIT_COLLAPSE_ALL =            'edca',
     M_EDIT_COLLAPSE_SELECTED =        'edcs',
     M_EDIT_PREFERENCES =             'edpf',
-    
+
     M_ACTIONS_EXTRACT =              'acxt',
     M_ACTIONS_EXTRACT_TO =           'actt',
     M_ACTIONS_EXTRACT_SELECTED =      'acxs',
@@ -172,13 +172,13 @@ const uint32
     M_ACTIONS_DELETE =               'acdl',
     M_ACTIONS_RENAME =               'acrn',
     M_ACTIONS_CREATE_FOLDER =        'acmk',
-    
+
     M_TOOLS_LIST =                  'tlls',
     M_TOOLS_FILE_SPLITTER =          'tlfs',
     M_CLOSE_FILE_SPLITTER =          'clsp',
     M_TOOLS_FILE_JOINER =            'tlfj',
     M_CLOSE_FILE_JOINER =            'clfj',
-    
+
     M_TOGGLE_LOG =                  'lgtg',
     M_TOGGLE_TOOLBAR =               'tgtb',
     M_TOGGLE_INFOBAR =               'tgib',
@@ -201,16 +201,16 @@ const uint32
     M_SORT_NONE =                   'sorn',
     M_SORT_ASCENDING =               'sora',
     M_SORT_DESCENDING =              'sord',
-    
-    M_SAVE_AS_DEFAULT =              'sadf',    
+
+    M_SAVE_AS_DEFAULT =              'sadf',
     M_SAVE_ARK_AS_DEFAULT =          'saad',
     M_SAVE_TO_ARCHIVE =              'stoa',
     M_SAVE_ARK_TO_ARCHIVE =          'sata',
-    
+
     M_SELECTION_CHANGED =            'slch',
     M_TOOLBAR_TOGGLED =              'tbtg',
     M_INFOBAR_TOGGLED =              'ibtg',
-    
+
     M_UNREG_WINDOW =                'unrw',
     M_OPEN_REQUESTED =               'oprq',
     M_OPEN_PART_TWO =                'opp2',
@@ -232,32 +232,32 @@ const uint32
     M_EXTRACT_DIR_INIT_ERROR =        'exir',
     M_ARCHIVE_PATH_INIT_ERROR =       'apir',
     M_TEST_DONE =                   'tsdn',
-    
+
     M_CONTEXT_COPY =                'cxcp',
     M_CONTEXT_SELECT =               'cxsl',
     M_CONTEXT_DESELECT =             'cxds',
-    
+
     M_LOG_CONTEXT_CLEAR =            'lccl',
     M_LOG_CONTEXT_COPY =             'lccp',
     M_LOG_CONTEXT_SAVE =             'lcsv',
-    
+
     M_SAVE_COMMENT =                'svcm',
-        
+
     M_DROP_MESSAGE =                'drmg',
     M_RECENT_ITEM =                 'rick',
     M_RECENT_EXTRACT_ITEM =          'reim',
-    
+
     M_RECENT_SPLIT_FILE =            'rcsf',
     M_RECENT_SPLIT_DIR =             'rcsd',
-    
+
     M_SELECTION_ADDED =              'sela',
     M_REGISTER_TYPES =               'regt',
-    
+
     M_UPDATE_INTERFACE =             'upif',
-    
+
     M_ADDON_HELP =                  'ahlp',
     M_ADDON_CREATE =                'adca',
-    
+
     M_PREFS_HELP =                  'pffh';
 
 #endif /* _MSG_CONSTANTS_H */

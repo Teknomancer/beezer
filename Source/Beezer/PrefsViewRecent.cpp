@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -58,10 +58,10 @@ void PrefsViewRecent::Render ()
     arkStrView->SetFont (&m_sectionFont);
     arkStrView->ResizeToPreferred();
     arkStrView->SetLowColor (ViewColor());
-                         
+
     float strW = StringWidth (str (S_PREFS_RECENT_NUMARK));
     strW += 6;
-    
+
     m_recentArkView = new BTextControl (BRect (3 * m_margin, arkStrView->Frame().bottom + m_vGap + 2,
                              3 * m_margin + strW + StringWidth("WWW"), 0),
                              "PrefsViewRecent:recentArkView", str (S_PREFS_RECENT_NUMARK), NULL, NULL,
@@ -113,20 +113,20 @@ void PrefsViewRecent::Save ()
 void PrefsViewRecent::Load ()
 {
     m_showPathChk->SetValue (_prefs_recent.FindBoolDef (kPfShowPathInRecent, false));
-    
+
     int8 num = 0;
     BString buf;
-    
+
     if (_prefs_recent.FindInt8 (kPfNumRecentArk, &num) != B_OK)
         num = 10;
-    
+
     buf << num;
     m_recentArkView->SetText (buf.String());
     buf = "";
-    
+
     if (_prefs_recent.FindInt8 (kPfNumRecentExt, &num) != B_OK)
         num = 5;
-    
+
     buf << num;
     m_recentExtView->SetText (buf.String());
 }

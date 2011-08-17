@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -43,10 +43,10 @@ class ProgressWindow : public BWindow
         ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
                       BMessenger *&messenger, volatile bool *&cancel);
         virtual ~ProgressWindow ();
-        
+
         // Inherited hooks
         virtual void        MessageReceived (BMessage *message);
-        
+
     protected:
         // Protected members
         BevelView          *m_backView;

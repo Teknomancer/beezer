@@ -6,7 +6,7 @@
 
 // Conclusion:
 // The one thing that _can_ be done is to do the archive
-// looping process outside the Window's thread while 
+// looping process outside the Window's thread while
 // implementing in the zip program.
 
 #include <string.h>
@@ -29,7 +29,7 @@ int main (int argc, char *argv[])
         cout << "Not enough arguments..." << endl << endl;
         cout << "Give zip file path" << endl;
         cout.flush ();
-        
+
         return -1;
     }
 
@@ -40,7 +40,7 @@ int main (int argc, char *argv[])
 
 
     double startTime = system_time();
-        
+
     char data[768];
 
     int32 lineNum = 0;
@@ -53,7 +53,7 @@ int main (int argc, char *argv[])
     {
         //lineNum ++;
         data[strlen (data) - 1] = '\0';
-               
+
         if (lineNum > 3)
         {
            temp = data;
@@ -66,7 +66,7 @@ int main (int argc, char *argv[])
                int32 length = strlen (lenString) +  2;
                temp += length;
                i++;
-               
+
                if (i == 4)
                {
                   lenString = strtok (temp, "\n");
@@ -75,7 +75,7 @@ int main (int argc, char *argv[])
                }
            }
         }
-        
+
 //        if (lineNum == 60)
 //        {
 //           BMessage msg;
@@ -85,18 +85,18 @@ int main (int argc, char *argv[])
 //           resume_thread (tID);
 //        }
     }
-    
+
 //    status_t result;
 //    wait_for_thread (tID, &result);
 
     double endTime = system_time();
     cout.flush();
-    
+
     cout << endl << endl;
     cout << "Time Taken: " << (endTime - startTime) / 1000000.0;
     cout << " seconds" << endl;
     cout.flush();
-    
+
     return 0;
 }
 
@@ -113,10 +113,10 @@ int32 ThreadOne (void *arg)
 {
     BMessage *message (reinterpret_cast<BMessage*>(arg));
     FILE *pFile;
-    
+
     if (message->FindPointer ("pFile", reinterpret_cast<void**>(&pFile)) != B_OK)
         return B_ERROR;
-    
+
     char data[768];
     char *lenString;
     char *temp;
@@ -125,7 +125,7 @@ int32 ThreadOne (void *arg)
     while (fgets (data, 768, fp))
     {
         data[strlen (data) - 1] = '\0';
-               
+
         temp = data;
         temp [strlen(temp)] = '\0';
         temp += SkipSpaces (temp, 0);
@@ -136,7 +136,7 @@ int32 ThreadOne (void *arg)
            int32 length = strlen (lenString) +  2;
            temp += length;
            i++;
-           
+
            if (i == 4)
            {
                lenString = strtok (temp, "\n");

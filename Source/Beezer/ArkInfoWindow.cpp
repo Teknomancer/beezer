@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -62,7 +62,7 @@ ArkInfoWindow::ArkInfoWindow (BWindow *callerWindow, Archiver *archiver, BEntry 
     m_entry (entry)
 {
     m_archiver->GetLists (m_fileList, m_dirList);
-    
+
     // We could get the calling window by using LooperForThread() but that would not indicate to the caller
     // we are getting a pointer to his window
     if (callerWindow)
@@ -80,19 +80,19 @@ ArkInfoWindow::ArkInfoWindow (BWindow *callerWindow, Archiver *archiver, BEntry 
 
     font.GetHeight (&fntHt);
     float normFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
-    
+
     font.SetFace (B_BOLD_FACE);
     font.GetHeight (&fntHt);
     float totalFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
-    
-    
+
+
     BBitmap *infoBmp = ResBitmap ("Img:ArchiveInfo");
-    
+
     BevelView *sepView1 = new BevelView (BRect (-1, infoBmp->Bounds().Height() + 4 * K_MARGIN,
                                 Bounds().right - 1.0, infoBmp->Bounds().Height() + 4 * K_MARGIN + 1),
                                 "ArkInfoWindow:SepView1", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     m_backView->AddChild (sepView1);
-    
+
     StaticBitmapView *infoBmpView = new StaticBitmapView (BRect (K_MARGIN * 5, K_MARGIN * 2,
                          infoBmp->Bounds().Width() + K_MARGIN * 5, infoBmp->Bounds().Height() + K_MARGIN * 2),
                                     "ArkInfoWindow:iconView", infoBmp);
@@ -109,14 +109,14 @@ ArkInfoWindow::ArkInfoWindow (BWindow *callerWindow, Archiver *archiver, BEntry 
     m_fileNameStr->MoveTo (m_fileNameStr->Frame().left,
         (infoBmpView->Frame().Height() / 2 - totalFontHeight / 2) + totalFontHeight / 2 + 1);
     m_fileNameStr->ResizeToPreferred ();
-    
-    
+
+
     // Calculate the maximum width of left-side labels, and declare margin widths
     float marginLeft = 6 * K_MARGIN;
     float marginTop = 2 * K_MARGIN;
     float marginMid = 15;        // Width between right-end of left labels and left-end of right labels
     float vGap = 4;
-    
+
     int descStringsCount = 8;
     BString descStrings[] =
     {
@@ -131,11 +131,11 @@ ArkInfoWindow::ArkInfoWindow (BWindow *callerWindow, Archiver *archiver, BEntry 
         str (S_CREATED),
         str (S_MODIFIED)
     };
-    
+
     float maxWidth = m_backView->StringWidth (descStrings[0].String());
     for (int32 i = 1; i <= descStringsCount; i++)
         maxWidth = MAX (maxWidth, m_backView->StringWidth (descStrings[i].String()));
-    
+
     float dividerWidth = maxWidth + marginLeft + 2;
 
 
@@ -157,7 +157,7 @@ ArkInfoWindow::ArkInfoWindow (BWindow *callerWindow, Archiver *archiver, BEntry 
                                         B_FOLLOW_LEFT, B_WILL_DRAW);
     m_backView->AddChild (compressedSizeStr);
     compressedSizeStr->SetAlignment (B_ALIGN_RIGHT);
-    
+
     m_compressedSizeStr = new BStringView (BRect (dividerWidth + marginMid, compressedSizeStr->Frame().top,
                                 0, compressedSizeStr->Frame().bottom), "ArkInfoWindow:CompressedSizeStr",
                                 "0 MB (0 bytes)", B_FOLLOW_LEFT, B_WILL_DRAW);
@@ -182,19 +182,19 @@ ArkInfoWindow::ArkInfoWindow (BWindow *callerWindow, Archiver *archiver, BEntry 
                                     B_FOLLOW_LEFT, B_WILL_DRAW);
     m_backView->AddChild (fileCountStr);
     fileCountStr->SetAlignment (B_ALIGN_RIGHT);
-    
+
     m_fileCountStr = new BStringView (BRect (dividerWidth + marginMid, fileCountStr->Frame().top, 0,
                                 fileCountStr->Frame().bottom), "ArkInfoWindow:FileCountStr", "0",
                                 B_FOLLOW_LEFT, B_WILL_DRAW);
     m_backView->AddChild (m_fileCountStr);
-    
+
     BStringView *folderCountStr = new BStringView (BRect (marginLeft, fileCountStr->Frame().bottom + vGap,
                                     dividerWidth, fileCountStr->Frame().bottom + vGap + normFontHeight),
                                     "ArkInfoWindow:_FolderCountStr", str (S_NUMBER_OF_FOLDERS),
                                     B_FOLLOW_LEFT, B_WILL_DRAW);
     m_backView->AddChild (folderCountStr);
     folderCountStr->SetAlignment (B_ALIGN_RIGHT);
-    
+
     m_folderCountStr = new BStringView (BRect (dividerWidth + marginMid, folderCountStr->Frame().top, 0,
                                 folderCountStr->Frame().bottom), "ArkInfoWindow:FolderCountStr", "0",
                                 B_FOLLOW_LEFT, B_WILL_DRAW);
@@ -224,7 +224,7 @@ ArkInfoWindow::ArkInfoWindow (BWindow *callerWindow, Archiver *archiver, BEntry 
                                     "ArkInfoWindow:_TypeStr", str (S_TYPE), B_FOLLOW_LEFT, B_WILL_DRAW);
     m_backView->AddChild (typeStr);
     typeStr->SetAlignment (B_ALIGN_RIGHT);
-    
+
     m_typeStr = new BStringView (BRect (dividerWidth + marginMid, typeStr->Frame().top, 0,
                                 typeStr->Frame().bottom), "ArkInfoWindow:TypeStr", "-",
                                 B_FOLLOW_LEFT, B_WILL_DRAW);
@@ -235,7 +235,7 @@ ArkInfoWindow::ArkInfoWindow (BWindow *callerWindow, Archiver *archiver, BEntry 
                                     "ArkInfoWindow:_PathStr", str (S_PATH), B_FOLLOW_LEFT, B_WILL_DRAW);
     m_backView->AddChild (pathStr);
     pathStr->SetAlignment (B_ALIGN_RIGHT);
-    
+
     m_pathStr = new BStringView (BRect (dividerWidth + marginMid, pathStr->Frame().top, 0,
                                 pathStr->Frame().bottom), "ArkInfoWindow:PathStr", "/boot",
                                 B_FOLLOW_LEFT, B_WILL_DRAW);
@@ -247,20 +247,20 @@ ArkInfoWindow::ArkInfoWindow (BWindow *callerWindow, Archiver *archiver, BEntry 
                                     B_WILL_DRAW);
     m_backView->AddChild (createdStr);
     createdStr->SetAlignment (B_ALIGN_RIGHT);
-    
+
     m_createdStr = new BStringView (BRect (dividerWidth + marginMid, createdStr->Frame().top,
                                 0, createdStr->Frame().bottom), "ArkInfoWindow:CreatedStr",
                                 "Thursday, 19 June 2003, 03:10:03 PM", B_FOLLOW_LEFT, B_WILL_DRAW);
     m_backView->AddChild (m_createdStr);
     m_createdStr->ResizeToPreferred();
-    
+
     BStringView *modifiedStr = new BStringView (BRect (marginLeft, createdStr->Frame().bottom + vGap,
                                     dividerWidth, createdStr->Frame().bottom + vGap + normFontHeight),
                                     "ArkInfoWindow:_ModifiedStr", str (S_MODIFIED), B_FOLLOW_LEFT,
                                     B_WILL_DRAW);
     m_backView->AddChild (modifiedStr);
     modifiedStr->SetAlignment (B_ALIGN_RIGHT);
-    
+
     m_modifiedStr = new BStringView (BRect (dividerWidth + marginMid, modifiedStr->Frame().top, 0,
                                 modifiedStr->Frame().bottom), "ArkInfoWindow:ModifiedStr",
                                 "Friday, 29 July 2003, 01:10:23 PM", B_FOLLOW_LEFT, B_WILL_DRAW);
@@ -281,14 +281,14 @@ ArkInfoWindow::ArkInfoWindow (BWindow *callerWindow, Archiver *archiver, BEntry 
     float minH, maxH, minV, maxV;
     GetSizeLimits (&minH, &maxH, &minV, &maxV);
     SetSizeLimits (Bounds().Width(), maxH, Bounds().Height(), maxV);
-    
+
     // Restore position from prefs (not size)
     BPoint pt;
     if (_prefs_windows.FindBoolDef (kPfArkInfoWnd, true))
         if (_prefs_windows.FindPoint (kPfArkInfoWndFrame, &pt) == B_OK)
            MoveTo (pt);
 
-    Show();    
+    Show();
 }
 
 //=============================================================================================================//
@@ -328,15 +328,15 @@ void ArkInfoWindow::AutoSizeWindow (float cornerMargin, float midMargin, float l
         m_createdStr->Text(),
         m_modifiedStr->Text()
     };
-    
+
     float maxRWidth = m_backView->StringWidth (descRStrings[0].String());
     for (int32 i = 1; i <= descRStringsCount; i++)
         maxRWidth = MAX (maxRWidth, m_backView->StringWidth (descRStrings[i].String()));
-    
+
     maxRWidth += 2 * cornerMargin + midMargin + leftSideMaxWidth;
 
     // Make sure window accomodates the filename string (which will be in bold so will usually
-    // be longer than plain font)    
+    // be longer than plain font)
     maxRWidth = MAX (maxRWidth, m_fileNameStr->Frame().right + cornerMargin + 1);
     ResizeTo (maxRWidth, Frame().Height());
 }
@@ -353,7 +353,7 @@ void ArkInfoWindow::FillDetails ()
            B_EVEN_SPACING, B_STOP_ALERT))->Go();
         PostMessage (B_QUIT_REQUESTED);
     }
-    
+
     m_entry->GetName (nameBuf);
     m_fileNameStr->SetText (nameBuf);
     m_fileNameStr->ResizeToPreferred();
@@ -361,43 +361,43 @@ void ArkInfoWindow::FillDetails ()
     BString buf;
     buf = ""; buf << m_dirList->CountItems();
     m_folderCountStr->SetText (buf.String());
-    
+
     buf = ""; buf << m_fileList->CountItems();
     m_fileCountStr->SetText (buf.String());
 
     buf = ""; buf << m_fileList->CountItems() + m_dirList->CountItems();
     m_totalCountStr->SetText (buf.String());
-    
+
     buf = ""; buf << m_archiver->ArchiveType() << " " << str (S_ARCHIVE);
     m_typeStr->SetText (buf.String());
-    
+
     BEntry parent; BPath parentPath;
     m_entry->GetParent (&parent);
     parent.GetPath (&parentPath);
     m_pathStr->SetText (parentPath.Path());
-    
+
     time_t modTime, crTime;
     tm mod_tm, cr_tm;
     m_entry->GetModificationTime (&modTime);
     m_entry->GetCreationTime (&crTime);
     localtime_r (&modTime, &mod_tm);
     localtime_r (&crTime, &cr_tm);
-    
+
     char dateTimeBuf[256];
     strftime (dateTimeBuf, 256, "%A, %B %d %Y, %I:%M:%S %p", &mod_tm);
     m_modifiedStr->SetText (dateTimeBuf);
-    
+
     strftime (dateTimeBuf, 256, "%A, %B %d %Y, %I:%M:%S %p", &cr_tm);
     m_createdStr->SetText (dateTimeBuf);
-    
+
     off_t compressedSize;
     m_entry->GetSize (&compressedSize);
     buf = StringFromBytes (compressedSize);
     if (compressedSize >= 1024LL)
         buf << " (" << CommaFormatString (compressedSize) << " bytes)";
-    
+
     m_compressedSizeStr->SetText (buf.String());
-    
+
     // Compute the inflated size from archive entries
     int32 count = m_fileList->CountItems();
     off_t originalSize = 0L;
@@ -407,28 +407,28 @@ void ArkInfoWindow::FillDetails ()
         if (item)
            originalSize += item->m_length;
     }
-    
+
     buf = StringFromBytes (originalSize);
     if (originalSize >= 1024LL)
         buf << " (" << CommaFormatString (originalSize) << " bytes)";
-        
+
     m_originalSizeStr->SetText (buf.String());
 
     // Compute compression ratio
     float ratio;
     ratio = (100 * (originalSize - compressedSize) / (double)originalSize);
-    
+
     if (ratio < 0)        // For pure .tar files we cannot compute ratio at all, if so don't report -ve
         buf = "n/a";
     else
     {
         char ratioBuf[10];
         sprintf (ratioBuf, "%.1f", ratio);
-        
+
         buf = "";
         buf << ratioBuf << "%";
     }
-    
+
     m_compressRatioBar->Update (ratio, NULL, buf.String());
 }
 

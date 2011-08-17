@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -97,33 +97,33 @@ void PrefsViewMisc::Render ()
     m_commentChk = new BCheckBox (BRect (m_margin, 2 * m_quitPopUp->Frame().Height(), 0, 0),
                       "PrefsViewMisc:commentChk", str (S_PREFS_MISC_COMMENTS), NULL, B_FOLLOW_LEFT,
                       B_WILL_DRAW | B_NAVIGABLE);
-    m_commentChk->ResizeToPreferred();    
+    m_commentChk->ResizeToPreferred();
 
     buf = str (S_PREFS_MISC_MIME);
     buf.ReplaceAll ("%s", K_APP_TITLE);
     m_mimeChk = new BCheckBox (BRect (m_margin, m_commentChk->Frame().bottom + m_vGap, 0, 0),
                       "PrefsViewMisc:mimeChk", buf.String(), NULL, B_FOLLOW_LEFT,
                       B_WILL_DRAW | B_NAVIGABLE);
-    m_mimeChk->ResizeToPreferred();    
-    
+    m_mimeChk->ResizeToPreferred();
+
     float btnWidth = MAX (K_BUTTON_WIDTH, StringWidth (str (S_PREFS_MISC_MIMENOW)) + 22);
     m_mimeBtn = new BButton (BRect (5 * m_margin, m_mimeChk->Frame().bottom + m_vGap + 2,
                       5 * m_margin + btnWidth, m_mimeChk->Frame().bottom + m_vGap + 2 + K_BUTTON_HEIGHT),
                       "PrefsViewMisc:mimeBtn", str (S_PREFS_MISC_MIMENOW), new BMessage (M_REGISTER_TYPES),
                       B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
-    
+
     m_arkTypePopUp = new BPopUpMenu ("");
     m_arkTypeField = new BMenuField (BRect (m_margin, m_mimeBtn->Frame().bottom + 2 * m_margin,
                          Frame().Width(), 0), "PrefsViewMisc:arkTypeField", str (S_PREFS_MISC_DEFARK),
                          (BMenu*)m_arkTypePopUp, B_FOLLOW_LEFT, B_WILL_DRAW);
     m_arkTypeField->SetDivider (be_plain_font->StringWidth (str (S_PREFS_MISC_DEFARK)) + 5);
-    
+
     m_arkTypes = ArchiversInstalled (NULL);
     for (int32 i = 0; i < m_arkTypes.CountItems(); i++)
         m_arkTypePopUp->AddItem (new BMenuItem ((const char*)m_arkTypes.ItemAtFast(i), NULL));
-    
+
     m_arkTypePopUp->ResizeToPreferred();
-    
+
     AddChild (m_quitField);
     AddChild (m_startupField);
     AddChild (m_commentChk);
@@ -141,11 +141,11 @@ void PrefsViewMisc::Save ()
     _prefs_misc.SetInt8 (kPfStartup, m_startupPopUp->IndexOf (m_startupPopUp->FindMarked()));
     _prefs_misc.SetBool (kPfShowCommentOnOpen, IsChecked (m_commentChk));
     _prefs_misc.SetBool (kPfMimeOnStartup, IsChecked (m_mimeChk));
-    
+
     BMenuItem *item = m_arkTypePopUp->FindMarked();
     if (item)
         _prefs_misc.SetString (kPfDefaultArk, item->Label());
-    
+
     _prefs_misc.WritePrefs();
 }
 
@@ -157,25 +157,25 @@ void PrefsViewMisc::Load ()
         m_quitPopUp->ItemAt(0)->SetMarked (true);
     else
         m_quitPopUp->ItemAt(1)->SetMarked (true);
-    
+
     int8 startupAction = _prefs_misc.FindInt8Def (kPfStartup, 0);
     m_startupPopUp->ItemAt(startupAction)->SetMarked (true);
-    
+
     m_commentChk->SetValue (_prefs_misc.FindBoolDef (kPfShowCommentOnOpen, true));
     m_mimeChk->SetValue (_prefs_misc.FindBoolDef (kPfMimeOnStartup, false));
-    
+
     BString arkType;
     BMenuItem *item = NULL;
     status_t wasFound = _prefs_misc.FindString (kPfDefaultArk, &arkType);
     if (wasFound == B_OK)
         item = m_arkTypePopUp->FindItem (arkType.String());
-    
+
     if (wasFound != B_OK || item == NULL)
     {
         if (m_arkTypePopUp->CountItems() > 0)
            item = m_arkTypePopUp->ItemAt(m_arkTypePopUp->CountItems() - 1);
     }
-    
+
     if (item)
         item->SetMarked (true);
 }
@@ -199,7 +199,7 @@ void PrefsViewMisc::MessageReceived (BMessage *message)
            be_app->PostMessage (message);
            break;
         }
-        
+
         default:
            PrefsView::MessageReceived (message);
            break;

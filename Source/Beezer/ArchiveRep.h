@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -42,7 +42,7 @@ class ArchiveRep
     public:
         ArchiveRep ();
         virtual ~ArchiveRep ();
-        
+
         // Additional Hooks
         Archiver           *Ark () const;
         thread_id           ThreadID () const;
@@ -54,21 +54,21 @@ class ArchiveRep
         virtual status_t     Test (BMessage *message);
         virtual status_t     Count (BMessage *message);
         virtual status_t     Create (BMessage *message);
-        
+
     protected:
         // Protected hooks
         const char         *MakeTempDirectory ();
-    
+
         // Protected hooks (thread)
         static int32        _opener (void *arg);
         static int32        _tester (void *arg);
         static int32        _counter (void *arg);
         static int32        _adder (void *arg);
-        
+
     private:
         // Private hooks
         void                CleanMessage (BMessage *message);
-        
+
         // Private members
         Archiver           *m_archiver;
         BPath               m_archivePath;

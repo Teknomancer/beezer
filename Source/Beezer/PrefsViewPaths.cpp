@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -82,7 +82,7 @@ PrefsViewPaths::~PrefsViewPaths()
     delete m_messenger;
     if (m_openPanel)
         delete m_openPanel;
-    
+
     delete m_addBmp;
     delete m_removeBmp;
 }
@@ -96,84 +96,84 @@ void PrefsViewPaths::Render ()
     defaultStrView->SetFont (&m_sectionFont);
     defaultStrView->ResizeToPreferred();
     defaultStrView->SetLowColor (ViewColor());
-    
+
     int8 dividerStrCount = 3;
     BString dividerStrings[] = {
         str (S_PREFS_PATHS_OPEN),
         str (S_PREFS_PATHS_ADD),
         str (S_PREFS_PATHS_EXTRACT)
     };
-    
+
     float divider = -1;
     for (int8 i = 0; i < dividerStrCount - 1; i++)
         divider = MAX (StringWidth (dividerStrings[i].String()), StringWidth (dividerStrings[i+1].String()));
-    
+
     divider += 8;
-    
-    m_openPathView = new BTextControl (BRect (3 * m_margin, defaultStrView->Frame().bottom + m_vGap + 6, 
+
+    m_openPathView = new BTextControl (BRect (3 * m_margin, defaultStrView->Frame().bottom + m_vGap + 6,
                   Bounds().right - (2 * m_margin) - K_BUTTON_WIDTH, 0), "PrefsViewPaths:openPathView",
                   str (S_PREFS_PATHS_OPEN), NULL, NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP,
                   B_WILL_DRAW | B_NAVIGABLE);
     m_openPathView->SetDivider (divider);
     m_openPathView->SetAlignment (B_ALIGN_RIGHT, B_ALIGN_LEFT);
     m_openPathView->TextView()->DisallowChar (B_INSERT);
-    
+
     BString buttonText = str (S_PREFS_PATHS_SELECT); buttonText << "...";
     m_openPathBtn = new BButton (BRect (m_openPathView->Frame().right + m_margin, m_openPathView->Frame().top - 4,
                          m_openPathView->Frame().right + m_margin + K_BUTTON_WIDTH,
                          m_openPathView->Frame().top - 4 + K_BUTTON_HEIGHT), "PrefsViewPaths:openPathBtn",
                          buttonText.String(), new BMessage (M_SELECT_OPEN_PATH),
                          B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
-    
+
     m_addPathView = new BTextControl (BRect (3 * m_margin, m_openPathView->Frame().bottom + m_vGap + 6,
                   m_openPathView->Frame().right, 0), "PrefsViewPaths:addPathView", str (S_PREFS_PATHS_ADD),
                   NULL, NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
     m_addPathView->SetDivider (divider);
     m_addPathView->SetAlignment (B_ALIGN_RIGHT, B_ALIGN_LEFT);
     m_addPathView->TextView()->DisallowChar (B_INSERT);
-    
+
     m_addPathBtn = new BButton (BRect (m_addPathView->Frame().right + m_margin, m_addPathView->Frame().top - 4,
                          m_addPathView->Frame().right + m_margin + K_BUTTON_WIDTH,
                          m_addPathView->Frame().top - 4 + K_BUTTON_HEIGHT), "PrefsViewPaths:addPathBtn",
                          buttonText.String(), new BMessage (M_SELECT_ADD_PATH),
                          B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
-    
+
     BStringView *extractStrView = new BStringView (BRect (m_addPathView->Frame().left,
                                 m_addPathView->Frame().bottom + 2 * m_vGap + 10,
                                 m_addPathView->Frame().left + StringWidth (str (S_PREFS_PATHS_EXTRACT)), 0),
                                 "PrefsViewPaths:extractStrView", str (S_PREFS_PATHS_EXTRACT),
                                 B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
     extractStrView->ResizeToPreferred();
-    
+
     m_arkDirOpt = new BRadioButton (BRect (extractStrView->Frame().left + 3 * m_margin,
                          extractStrView->Frame().bottom + m_vGap, 0, 0), "PrefsViewPaths:arkDirOpt",
                          str (S_PREFS_PATHS_ARKDIR), new BMessage (M_ARK_DIR), B_FOLLOW_LEFT | B_FOLLOW_TOP,
                          B_WILL_DRAW | B_NAVIGABLE);
     m_arkDirOpt->ResizeToPreferred();
-    
+
     m_useDirOpt = new BRadioButton (BRect (m_arkDirOpt->Frame().left, m_arkDirOpt->Frame().bottom + m_vGap + 1,
                          0, 0), "PrefsViewPaths:useDirOpt", str (S_PREFS_PATHS_USEDIR),
                          new BMessage (M_USE_DIR), B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
     m_useDirOpt->ResizeToPreferred();
     m_useDirOpt->SetValue (B_CONTROL_ON);
-    
+
     float strW = m_useDirOpt->Frame().right;
     strW = MAX (m_useDirOpt->Frame().right + 4, 3 * m_margin + divider);
-        
+
     m_extractPathView = new BTextControl (BRect (strW, m_arkDirOpt->Frame().bottom + m_vGap,
                              m_addPathView->Frame().right, 0), "PrefsViewPaths:extractPathView", NULL,
                              NULL, NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
     m_extractPathView->SetAlignment (B_ALIGN_RIGHT, B_ALIGN_LEFT);
     m_extractPathView->TextView()->DisallowChar (B_INSERT);
-    
+
     m_extractPathBtn = new BButton (BRect (m_extractPathView->Frame().right + m_margin,
                              m_extractPathView->Frame().top - 4,
                              m_extractPathView->Frame().right + m_margin + K_BUTTON_WIDTH,
-                             m_extractPathView->Frame().top - 4 + K_BUTTON_HEIGHT), 
+                             m_extractPathView->Frame().top - 4 + K_BUTTON_HEIGHT),
                              "PrefsViewPaths:extractPathBtn", buttonText.String(),
                              new BMessage (M_SELECT_EXTRACT_PATH), B_FOLLOW_LEFT | B_FOLLOW_TOP,
                              B_WILL_DRAW | B_NAVIGABLE);
-    
+
     BStringView *favStrView = new BStringView (BRect (defaultStrView->Frame().left,
                                     m_extractPathView->Frame().bottom + m_margin + m_vGap + 8, 0, 0),
                                     "PrefsViewPaths:favStrView", str (S_PREFS_PATHS_FAVOURITE),
@@ -186,8 +186,8 @@ void PrefsViewPaths::Render ()
                       "PrefsViewPaths:genChk", str (S_PREFS_PATHS_GENERATE), NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP,
                       B_WILL_DRAW | B_NAVIGABLE);
     m_genChk->ResizeToPreferred();
-    
-    m_favListView = new BListView (BRect (5  * m_margin, favStrView->Frame().bottom + m_vGap + m_margin, 
+
+    m_favListView = new BListView (BRect (5  * m_margin, favStrView->Frame().bottom + m_vGap + m_margin,
                   m_openPathView->Frame().right - B_V_SCROLL_BAR_WIDTH - m_margin,
                   Bounds().bottom - m_margin - B_H_SCROLL_BAR_HEIGHT - m_genChk->Frame().Height() - 6),
                   "PrefsViewPaths:favListView", B_SINGLE_SELECTION_LIST, B_FOLLOW_LEFT,
@@ -201,17 +201,17 @@ void PrefsViewPaths::Render ()
 
     m_addBmp = ResBitmap ("Img:PlusSign");
     m_removeBmp = ResBitmap ("Img:MinusSign");
-    
+
     m_addBtn = new ImageButton (BRect (m_scrollView->Frame().right + m_margin, m_scrollView->Frame().top + 1,
                   m_scrollView->Frame().right + 20, m_scrollView->Frame().top + 21), "PrefsViewPaths:addBnt",
                   NULL, m_addBmp, NULL, new BMessage (M_ADD_CLICKED), false, ViewColor(),
                   kBelowIcon, true, true, true, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
 
     m_removeBtn = new ImageButton (BRect (m_addBtn->Frame().left, m_addBtn->Frame().bottom + 2 * m_margin - 3,
-                  m_addBtn->Frame().right, m_addBtn->Frame().bottom + m_margin + 21), 
+                  m_addBtn->Frame().right, m_addBtn->Frame().bottom + m_margin + 21),
                   "PrefsViewPaths:removeBtn", NULL, m_removeBmp, NULL, new BMessage (M_REMOVE_CLICKED), false,
                   ViewColor(), kBelowIcon, true, true, true, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
-    
+
     AddChild (defaultStrView);
     AddChild (m_openPathView);
     AddChild (m_openPathBtn);
@@ -242,7 +242,7 @@ void PrefsViewPaths::Save ()
     BMessage favPathMsg ('fav!');
     for (int32 i = 0; i < m_favListView->CountItems(); i++)
         favPathMsg.AddString (kPath, ((PrefsListItem*)m_favListView->ItemAt(i))->Text());
-    
+
     _prefs_paths.SetMessage (kPfFavPathsMsg, &favPathMsg);
     _prefs_paths.SetBool (kPfGenPath, IsChecked (m_genChk));
     _prefs_paths.WritePrefs();
@@ -255,13 +255,13 @@ void PrefsViewPaths::Load ()
     const char *foundPath;
     if (_prefs_paths.FindString (kPfDefOpenPath, &foundPath) == B_OK)
         m_openPathView->SetText (foundPath);
-    
+
     if (_prefs_paths.FindString (kPfDefAddPath, &foundPath) == B_OK)
         m_addPathView->SetText (foundPath);
-    
+
     if (_prefs_paths.FindString (kPfDefExtractPath, &foundPath) == B_OK)
         m_extractPathView->SetText (foundPath);
-        
+
     bool useArkDir;
     if (_prefs_paths.FindBool (kPfUseArkDir, &useArkDir) == B_OK)
     {
@@ -273,7 +273,7 @@ void PrefsViewPaths::Load ()
         // m_useDirOpt->Invoke()won't work because SetTarget() in AttchdToWnd() would not yet have been exec
         ToggleExtractPathView (!useArkDir);
     }
-    
+
     BMessage favPathMsg;
     if (_prefs_paths.FindMessage (kPfFavPathsMsg, &favPathMsg) == B_OK)
     {
@@ -282,7 +282,7 @@ void PrefsViewPaths::Load ()
         while (favPathMsg.FindString (kPath, i++, &foundPath) == B_OK)
            m_favListView->AddItem (new PrefsListItem (foundPath, NULL, false));
     }
-    
+
     m_genChk->SetValue (_prefs_paths.FindBoolDef (kPfGenPath, true));
 }
 
@@ -320,7 +320,7 @@ void PrefsViewPaths::MessageReceived (BMessage *message)
                m_message = new BMessage (M_PATH_SELECTED);
            else
                m_message->RemoveName (kTextCtrlPtr);
-           
+
            BString panelWindowTitle;
            if (message->what == M_SELECT_OPEN_PATH)
            {
@@ -342,13 +342,13 @@ void PrefsViewPaths::MessageReceived (BMessage *message)
                m_message->AddPointer (kListCtrlPtr, m_favListView);
                panelWindowTitle = str (S_PREFS_PATHS_FAV_TITLE);
            }
-           
+
            m_openPanel->Window()->SetTitle (panelWindowTitle.String());
            m_openPanel->SetMessage (m_message);
            m_openPanel->Show();
            break;
         }
-        
+
         case M_PATH_SELECTED:
         {
            BTextControl *textControl (NULL);
@@ -357,7 +357,7 @@ void PrefsViewPaths::MessageReceived (BMessage *message)
            message->FindRef ("refs", &ref);
            message->FindPointer (kTextCtrlPtr, reinterpret_cast<void**>(&textControl));
            message->FindPointer (kListCtrlPtr, reinterpret_cast<void**>(&listControl));
-           
+
            BPath pathOfRef (&ref);
            if (textControl)
                textControl->SetText (pathOfRef.Path());
@@ -382,8 +382,8 @@ void PrefsViewPaths::MessageReceived (BMessage *message)
                       break;
                   }
                }
-               
-               // Add only paths that are already not present 
+
+               // Add only paths that are already not present
                if (isUnique)
                {
                   int32 selIndex = listControl->CurrentSelection (0L);
@@ -393,23 +393,23 @@ void PrefsViewPaths::MessageReceived (BMessage *message)
                       listControl->AddItem (new PrefsListItem (pathOfRef.Path(), NULL, false));
                }
            }
-           
+
            break;
         }
-        
+
 
         case M_USE_DIR:
         {
            ToggleExtractPathView (true);
            break;
         }
-        
+
         case M_ARK_DIR:
         {
            ToggleExtractPathView (false);
            break;
         }
-        
+
         case M_REMOVE_CLICKED:
         {
            int32 selIndex = m_favListView->CurrentSelection (0L);
@@ -421,10 +421,10 @@ void PrefsViewPaths::MessageReceived (BMessage *message)
                else if (m_favListView->CountItems() > 0)
                   m_favListView->Select (m_favListView->CountItems() - 1, false);
            }
-           
+
            break;
         }
-        
+
         default:
            PrefsView::MessageReceived (message);
            break;

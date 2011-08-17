@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -36,7 +36,7 @@ class MimeRule
 {
     public:
         MimeRule (const char *mime, const char *extension);
-        
+
         // Public members
         BString            m_mime,
                          m_extension;
@@ -47,7 +47,7 @@ class RuleMgr
     public:
         RuleMgr (BDirectory *ruleDir, const char *ruleFile);
         ~RuleMgr ();
-        
+
         // Public hooks
         char               *ValidateFileType (BPath *filePath) const;
 
@@ -57,7 +57,7 @@ class RuleMgr
 
         // Private members
         BList             *m_ruleList;
-        
+
         static int32        m_runCount;
 };
 

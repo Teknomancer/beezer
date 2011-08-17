@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -80,14 +80,14 @@ thread_id PipeMgr::Pipe (int *outdes, int *errdes) const
     close (STDERR_FILENO);
     dup2 (outdes[1], STDOUT_FILENO);
     dup2 (errdes[1], STDERR_FILENO);
-    
+
     // Construct the argv vector
     int32 argc = m_argList.CountItems();
     const char **argv = (const char**)malloc ((argc + 1) * sizeof(char*));
     for (int32 i = 0; i < argc; i++)
         argv[i] = (const char*)m_argList.ItemAtFast(i);
     argv[argc] = NULL;
-    
+
     // Load the app image...
     thread_id appThread = load_image ((int)argc, argv, const_cast<const char**>(environ));
 

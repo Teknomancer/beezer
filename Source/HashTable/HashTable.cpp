@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -37,7 +37,7 @@
 HashEntry::HashEntry ()
 {
     m_pathStr = NULL;
-    
+
     m_clvItem = NULL;
     m_next = NULL;
 }
@@ -103,13 +103,13 @@ void HashTable::DeleteTable ()
         {
            // Don't simply delete element as we will lose it's m_next field, store m_next then delete
            HashEntry *next = element->m_next;
-           
+
            // Reset cached entries
-           ResetCache (element);    
+           ResetCache (element);
            delete element;
            element = next;
         }
-    
+
     m_itemCount = 0L;
     delete[] m_table;
 }
@@ -147,13 +147,13 @@ HashEntry* HashTable::ForceInsert (const char *str, bool copyInput)
     }
     else
         bucket->m_pathStr = str;
-    
+
     m_lastAddedEntry = bucket;
 
     bucket->m_next = m_table[hashValue];
-    m_table[hashValue] = bucket;    
+    m_table[hashValue] = bucket;
     m_itemCount++;
-    
+
     return bucket;
 }
 
@@ -181,7 +181,7 @@ HashEntry* HashTable::LookUp (const char *str, bool insert, bool *wasFound, bool
     // "str" is not found, if insert is needed then add it to the table
     if (insert == false)
         return NULL;
-    
+
     return ForceInsert (str, copyInput);
 }
 
@@ -204,7 +204,7 @@ int32 HashTable::FindUnder (BMessage *message, const char *fieldName, const char
            {
                BString buf = element->m_pathStr;
                buf.ReplaceAll ("*", "\\*");
-               // Don't add filenames - this is because tar will get stuck up when there are 
+               // Don't add filenames - this is because tar will get stuck up when there are
                // duplicate entries (same filenames) as samenames must be supplied to tar only
                // once
                //message->AddString (fieldName, buf.String());
@@ -214,7 +214,7 @@ int32 HashTable::FindUnder (BMessage *message, const char *fieldName, const char
                else
                   fileList->AddItem ((void*)element->m_clvItem);
            }
-           
+
            element = element->m_next;
         }
     return count;
@@ -239,7 +239,7 @@ HashEntry* HashTable::Find (const char *str)
     if (m_lastFoundEntry)
         if (strcmp (m_lastFoundEntry->m_pathStr, str) == 0)
            return m_lastFoundEntry;
-    
+
     // Cache result of current find, return what is found
     m_lastFoundEntry = LookUp (const_cast<char*>(str), false, NULL, false);
     return m_lastFoundEntry;
@@ -277,12 +277,12 @@ bool HashTable::Delete (char *str)
                prevElement->m_next = targetElement->m_next;
            else
                m_table[hashValue] = targetElement->m_next;
-           
+
            // Reset cached entries -- very important
            ResetCache (targetElement);
            delete targetElement;
            targetElement = NULL;
-           
+
            m_itemCount--;
            return true;
         }

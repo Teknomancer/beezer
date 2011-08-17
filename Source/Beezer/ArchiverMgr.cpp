@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -57,12 +57,12 @@ Archiver* ArchiverForMime (const char *mimeType)
     BAutolock autoLocker (_ark_locker);
     if (autoLocker.IsLocked() == false)
         return NULL;
-    
+
     // Get the Archiver dir and the path of the Binaries dir (both from _bzr())
     // Bug Fix: we dont ask the Window to pass these details to us anymore
     BDirectory *archiversDir = &(_bzr()->m_addonsDir);
     archiversDir->Rewind();
-    
+
     // Load/Unload all the add-ons and check which archiver supports the type
     BEntry entry;
     while (archiversDir->GetNextEntry (&entry, true) == B_OK)
@@ -93,7 +93,7 @@ Archiver* ArchiverForMime (const char *mimeType)
            unload_add_on (addonID);
         }
     }
-    
+
     return NULL;
 }
 
@@ -106,12 +106,12 @@ BList ArchiversInstalled (BList *extensionStrings)
     BAutolock autoLocker (_ark_locker);
     if (autoLocker.IsLocked() == false)
         return installedArkList;
-    
+
     // Get the Archiver dir and the path of the Binaries dir (both from _bzr())
     // Bug Fix: we dont ask the Window to pass these details to us anymore
     BDirectory *archiversDir = &(_bzr()->m_addonsDir);
     archiversDir->Rewind();
-    
+
     // Load/Unload all the add-ons and check which archiver supports the type
     BEntry entry;
     while (archiversDir->GetNextEntry (&entry, true) == B_OK)
@@ -135,7 +135,7 @@ BList ArchiversInstalled (BList *extensionStrings)
            unload_add_on (addonID);
         }
     }
-    
+
     return installedArkList;
 }
 
@@ -144,17 +144,17 @@ BList ArchiversInstalled (BList *extensionStrings)
 Archiver* ArchiverForType (const char *archiverType)
 {
     // Finds an archiver given its name (archiverType and name is the same, eg: zip, tar etc)
-    
+
     // Operate in a critical section as we access global data like BDirectory of be_app
     BAutolock autoLocker (_ark_locker);
     if (autoLocker.IsLocked() == false)
         return NULL;
-    
+
     // Get the Archiver dir and the path of the Binaries dir (both from _bzr())
     // Bug Fix: we dont ask the Window to pass these details to us anymore
     BDirectory *archiversDir = &(_bzr()->m_addonsDir);
     archiversDir->Rewind();
-    
+
     // Load/Unload all the add-ons and check which archiver supports the type
     BEntry entry;
     while (archiversDir->GetNextEntry (&entry, true) == B_OK)
@@ -219,7 +219,7 @@ Archiver* NewArchiver (const char *name, bool popupErrors, status_t *returnCode)
         *returnCode = B_ERROR;
         return ark;
     }
-    
+
     status_t result = ark->InitCheck();
     switch (result)
     {
@@ -232,7 +232,7 @@ Archiver* NewArchiver (const char *name, bool popupErrors, status_t *returnCode)
            }
            break;
         }
-        
+
         case BZR_OPTIONAL_BINARY_MISSING:
         {
            if (popupErrors)
@@ -243,9 +243,9 @@ Archiver* NewArchiver (const char *name, bool popupErrors, status_t *returnCode)
            break;
         }
     }
-    
+
     *returnCode = result;
-    return ark;    
+    return ark;
 }
 
 //=============================================================================================================//

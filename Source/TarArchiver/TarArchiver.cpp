@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -69,7 +69,7 @@ TarArchiver::TarArchiver ()
     m_mimeList.AddItem (strdup ("application/x-tar"));
     SetArchiveType ("tar");
     SetArchiveExtension (".tar");
-    
+
     m_error = BZR_DONE;
     if (IsBinaryFound (m_tarPath, BZR_TAR) == false)
     {
@@ -101,23 +101,23 @@ status_t TarArchiver::ReadOpen (FILE *fp)
            permStr[15], ownerStr[100], sizeStr[15],
            dayStr[5], monthStr[5], yearStr[8], hourStr[5], minuteStr[5], dateStr[80],
            pathStr[2 * B_PATH_NAME_LENGTH + 10];
-    
+
     while (fgets (lineString, len, fp))
     {
         lineString[strlen (lineString) - 1] = '\0';
-        
+
         sscanf (lineString,
            "%[^ ] %[^ ] %[0-9] %[0-9]-%[0-9]-%[0-9] %[0-9]:%[0-9]%[^\n]",
            permStr, ownerStr, sizeStr, yearStr, monthStr, dayStr, hourStr, minuteStr, pathStr);
-        
+
         struct tm timeStruct; time_t timeValue;
         MakeTime (&timeStruct, &timeValue, dayStr, monthStr, yearStr, hourStr, minuteStr, "00");
         FormatDate (dateStr, 60, &timeStruct);
-        
+
         // Bugfix workaround for files/folders with space before them
         BString pathString = pathStr;
         pathString.Remove (0, 1);
-        
+
         // Handle linked files/folder by tar
         if (permStr[0] == 'l')
         {
@@ -126,7 +126,7 @@ status_t TarArchiver::ReadOpen (FILE *fp)
            fullPath.Remove (foundIndex, fullPath.Length() - foundIndex);
            pathString = fullPath.String();
         }
-        
+
         // Check to see if last char of pathStr = '/' add it as folder, else as a file
         uint16 pathLength = pathString.Length() - 1;
         if (pathString[pathLength] == '/' || permStr[0] == 'd')
@@ -150,10 +150,10 @@ status_t TarArchiver::Open (entry_ref *ref, BMessage *fileList)
 {
     m_archiveRef = *ref;
     m_archivePath.SetTo (ref);
-    
+
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_tarPath << "-tv" << "-f" << m_archivePath.Path();
-    
+
     // Currently, we don't list individual files specified in fileList. This is
     // because while deleting files from tar, it doesn't report the deleted files thus
     // the entire archive is reloaded after deleting, so specific files are skipped
@@ -161,22 +161,22 @@ status_t TarArchiver::Open (entry_ref *ref, BMessage *fileList)
     FILE *out, *err;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;        // Handle unloadable error here
 
     status_t exitCode;
     resume_thread (tid);
-    
+
     close (errdes[1]);
     close (outdes[1]);
 
     out = fdopen (outdes[0], "r");
     exitCode = ReadOpen (out);
-    
+
     close (outdes[0]);
     fclose (out);
-    
+
     err = fdopen (errdes[0], "r");
     exitCode = Archiver::ReadErrStream (err, NULL);
     close (errdes[0]);
@@ -192,7 +192,7 @@ status_t TarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
 {
     BEntry dirEntry;
     entry_ref dirRef;
-    
+
     dirEntry.SetTo (refToDir);
     status_t exitCode = BZR_DONE;
     if (progress)        // Perform output directory checking only when a messenger is passed
@@ -214,12 +214,12 @@ status_t TarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         if (type != B_STRING_TYPE)
            return BZR_UNKNOWN;
     }
-    
+
     // Setup argv, fill with selection names if needed
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_tarPath << "-xpv" << "-f";
     m_pipeMgr << m_archivePath.Path() << "-C" << dirPath.Path();
-    
+
     int32 i = 0L;
     for (; i < count; i ++)
     {
@@ -227,11 +227,11 @@ status_t TarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         if (message->FindString (kPath, i, &pathString) == B_OK)
            m_pipeMgr << SupressWildcards (pathString);
     }
-    
+
     FILE *out;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;           // Handle unloadable error here
 
@@ -242,7 +242,7 @@ status_t TarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         status_t exitCode;
         wait_for_thread (tid, &exitCode);
     }
-    
+
     close (errdes[1]);
     close (outdes[1]);
 
@@ -252,14 +252,14 @@ status_t TarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         exitCode = ReadExtract (out, progress, cancel);
         fclose (out);
     }
-    
+
     close (outdes[0]);
     close (errdes[0]);
 
     // Send signal to quit archiver only AFTER pipes are closed
     if (exitCode == BZR_CANCEL_ARCHIVER)
         TerminateThread (tid);
-    
+
     m_pipeMgr.FlushArgs();
     return exitCode;
 }
@@ -279,7 +279,7 @@ status_t TarArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool
     {
         if (cancel && *cancel == true)
            return BZR_CANCEL_ARCHIVER;
-        
+
         int32 len = strlen (lineString);
         lineString[--len] = '\0';
         if (len >= 1 && lineString[len - 1] != '/')
@@ -316,7 +316,7 @@ status_t TarArchiver::Add (bool createMode, const char *relativePath, BMessage *
 
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_tarPath << "-pv" << "-f" << m_archivePath.Path() << "-r";
-    
+
     int32 count = 0L;
     uint32 type;
     message->GetInfo (kPath, &type, &count);
@@ -338,7 +338,7 @@ status_t TarArchiver::Add (bool createMode, const char *relativePath, BMessage *
         chdir (relativePath);
 
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;        // Handle unloadable error here
 
@@ -362,8 +362,8 @@ status_t TarArchiver::Add (bool createMode, const char *relativePath, BMessage *
     // Send signal to quit archiver only AFTER pipes are closed
     if (exitCode == BZR_CANCEL_ARCHIVER)
         TerminateThread (tid);
-    
-    m_pipeMgr.FlushArgs();    
+
+    m_pipeMgr.FlushArgs();
     return exitCode;
 }
 
@@ -376,7 +376,7 @@ status_t TarArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
     char lineString[999];
     BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
     updateMessage.AddFloat ("delta", 1.0f);
-    
+
     while (fgets (lineString, 998, fp))
     {
         if (cancel && *cancel == true)
@@ -395,10 +395,10 @@ status_t TarArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
            updateMessage.AddString ("text", fileName);
            progress->SendMessage (&updateMessage, &reply);
         }
-        
+
         addedPaths->AddString (kPath, lineString);
     }
-    
+
     return exitCode;
 }
 
@@ -426,7 +426,7 @@ status_t TarArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
 
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_tarPath << "-pv" << "-f" << m_archivePath.Path() << "--delete";
-    
+
     int32 i = 0L;
     for (; i < count; i ++)
     {
@@ -434,19 +434,19 @@ status_t TarArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
         if (message->FindString (kPath, i, &pathString) == B_OK)
            m_pipeMgr << SupressWildcards (pathString);
     }
-    
+
     FILE *out, *err;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
     {
         outputStr = NULL;        // Handle unloadable error here
         return B_ERROR;
     }
-    
+
     resume_thread (tid);
-    
+
     close (errdes[1]);
     close (outdes[1]);
 
@@ -492,7 +492,7 @@ status_t TarArchiver::Create (BPath *archivePath, const char *relPath, BMessage 
     m_archivePath.SetTo (archivePath->Path(), NULL, true);
 
     status_t result = Add (true, relPath, fileList, addedPaths, progress, cancel);
-    
+
     // Once creating is done, set m_archiveRef to pointed to the existing archive file
     if (result == BZR_DONE)
     {
@@ -515,8 +515,8 @@ BList TarArchiver::HiddenColumns (BList *columns) const
 
     // Now list has 0-packed 1-ratio 2-path 3-date 4-method 5-crc
     availList.RemoveItems (2, 2);    // Remove 2 and 3
-    
-    // Now list has 0-packed 1-ratio 2-method 3-crc <-- these columns are to be hidden        
+
+    // Now list has 0-packed 1-ratio 2-method 3-crc <-- these columns are to be hidden
     return availList;
 }
 

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -69,12 +69,12 @@ BString StringFromBytes (int64 v)
            sprintf(buf, "%.2f KB", ((double)v) / 1024LL);
         else
            sprintf(buf, "%Li bytes", v);
-        
+
         str = buf;
     }
     else
         str = "-";
-    
+
     return str;
 }
 
@@ -103,7 +103,7 @@ int32 CountCharsInFront (char *str, char whatChar)
     int32 count = 0;
     while (str[count] == ' ')
         count++;
-    
+
     return count;
 }
 
@@ -136,13 +136,13 @@ const char* FinalPathComponent (const char *path)
     // making copy of the path that is being returned, then manipulating it, we avoid that
     // for sake of speed.
     int32 len = strlen (path);
-    
+
     if (path[len-1] == '/') len--;
-    
+
     while (len > 0)
         if (path[--len] == '/')
            break;
-    
+
     const char *leafStr = path;
     leafStr += len > 0 ? ++len : len;
 
@@ -155,11 +155,11 @@ const char* LeafFromPath (const char *path)
 {
     // Return the filename (pointer to where filename starts rather) from a full path string
     int32 len = strlen (path);
-    
+
     while (len > 0)
         if (path[--len] == '/')
            break;
-    
+
     const char *leafStr = path;
     leafStr += len > 0 ? ++len : len;        // Workaround for no slashes ie root directory
 
@@ -184,7 +184,7 @@ char *ParentPath (const char *pathStr, bool truncateSlash)
     }
     else
         parent = (char*)malloc (1);
-    
+
     parent[parentLen] = 0;
     return parent;
 }
@@ -204,12 +204,12 @@ char *Extension (const char *fileName, int extLen)
            dotEncountered = true;
            break;
         }
-    
+
     if (len >= 0 && dotEncountered == true)
         len++;
     else
         return NULL;
-        
+
     int32 i = 0L;
     for (; i < extLen; i++, len++)
         m[i] = tolower (fileName[len]);

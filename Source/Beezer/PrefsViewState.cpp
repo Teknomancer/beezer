@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -55,7 +55,7 @@ void PrefsViewState::Render ()
     storeStrView->SetFont (&m_sectionFont);
     storeStrView->ResizeToPreferred();
     storeStrView->SetLowColor (ViewColor());
-                         
+
     m_storeUIChk = new BCheckBox (BRect (3 * m_margin, storeStrView->Frame().bottom + m_vGap, 0, 0),
                          "PrefsViewState:storeUIChk", str (S_PREFS_STATE_UI), NULL);
     m_storeUIChk->ResizeToPreferred();
@@ -69,7 +69,7 @@ void PrefsViewState::Render ()
     restoreStrView->SetFont (&m_sectionFont);
     restoreStrView->ResizeToPreferred();
     restoreStrView->SetLowColor (ViewColor());
-                  
+
     m_restoreUIChk = new BCheckBox (BRect (3 * m_margin, restoreStrView->Frame().bottom + m_vGap, 0, 0),
                              "PrefsViewState:restoreUIChk", str (S_PREFS_STATE_UI), NULL);
     m_restoreUIChk->ResizeToPreferred();

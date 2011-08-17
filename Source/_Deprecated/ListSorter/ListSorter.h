@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -38,12 +38,12 @@ class ListSorter
     public:
         ListSorter (BList *listToSort, CompareFunc func);
         virtual ~ListSorter ();
-        
+
     private:
         // Private hooks
         void               QuickSort (unsigned long *list, int32 n);
         virtual void        SwapItems (unsigned long *list, int32 i, int32 j);
-        
+
         // Private members
         BList               *m_sortList;
         CompareFunc           m_compareFunc;

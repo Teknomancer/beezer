@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -85,13 +85,13 @@ status_t BZipArchiver::Open (entry_ref *ref, BMessage *fileList)
 {
     m_archiveRef = *ref;
     m_archivePath.SetTo (ref);
-    
+
     // We are redirecting (>) shell output to file, therefore we need to use /bin/sh -c <command>
     BString destPath = InitTarFilePath (ref->name);
     BString cmd;
     cmd << "\"" << m_bzipPath << "\"" << " -c -d \"" << m_archivePath.Path() << "\" > " << "\"" <<
            m_tarFilePath << "\"";
-    
+
     m_pipeMgr.FlushArgs();
     m_pipeMgr << "/bin/sh" << "-c" << cmd.String();
     m_pipeMgr.Pipe ();
@@ -109,7 +109,7 @@ status_t BZipArchiver::Open (entry_ref *ref, BMessage *fileList)
     int32 found = extensionStr.IFindLast (".tar");
     if (found == extensionStr.Length() - 4)
         isTarExtension = true;
-    
+
     m_tarArk = false;
     if (strcmp (mimeBuf, "application/tar") == 0 || strcmp (mimeBuf, "application/x-tar") == 0 ||
         isTarExtension == true)
@@ -119,7 +119,7 @@ status_t BZipArchiver::Open (entry_ref *ref, BMessage *fileList)
         entry_ref destRef;
         destEntry.GetRef (&destRef);
         status_t exitCode = TarArchiver::Open(&destRef, fileList);
-        
+
         // Reset these as TarArchiver's Open() would have changed them
         m_archivePath.SetTo (ref);
         strcpy (m_arkFilePath, m_archivePath.Path());
@@ -136,22 +136,22 @@ status_t BZipArchiver::Open (entry_ref *ref, BMessage *fileList)
         archiveEntry.GetModificationTime (&modTime);
         localtime_r (&modTime, &mod_tm);
         FormatDate (dateStr, 60, &mod_tm);
-        
+
         off_t size;
         BEntry deflatedEntry (destPath.String(), false);
         if (deflatedEntry.Exists() == false)
            return BZR_ERRSTREAM_FOUND;
-        
+
         deflatedEntry.GetSize (&size);
         sprintf (sizeStr, "%Ld", size);
         BPath tempPath (destPath.String());
         strcpy (pathStr, tempPath.Leaf());
-        
+
         m_entriesList.AddItem (new ArchiveEntry (false, tempPath.Leaf(), sizeStr, "-", dateStr, modTime,
                                 "-", "-"));
     }
-    
-    
+
+
     return BZR_DONE;
 }
 
@@ -169,15 +169,15 @@ status_t BZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMesseng
         {
            BString destFilePath = destPath.Path();
            destFilePath << '/' << OutputFileName (m_archivePath.Leaf());
-           
+
            BString cmd;
            cmd << "\"" << m_bzipPath << "\"" << " -c -d \"" << m_archivePath.Path() << "\" > " << "\"" <<
            destFilePath.String() << "\"";
-           
+
            m_pipeMgr.FlushArgs();
            m_pipeMgr << "/bin/sh" << "-c" << cmd.String();
            m_pipeMgr.Pipe();
-                  
+
            if (progress)
                SendProgressMessage (progress);
 
@@ -207,11 +207,11 @@ status_t BZipArchiver::Test (char *&outputStr, BMessenger *progress, volatile bo
 
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_bzipPath << "-t" << m_archivePath.Path();
-    
+
     FILE *err;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
     {
         outputStr = NULL;        // Handle unzip unloadable error here
@@ -219,7 +219,7 @@ status_t BZipArchiver::Test (char *&outputStr, BMessenger *progress, volatile bo
     }
 
     resume_thread (tid);
-    
+
     BString errorString;
     close (outdes[1]);
     close (errdes[1]);
@@ -251,7 +251,7 @@ status_t BZipArchiver::Add (bool createMode, const char *relativePath, BMessage 
         m_archivePath = m_tarFilePath;
         status_t exitCode = TarArchiver::Add (createMode, relativePath, message, addedPaths, progress, cancel);
         m_archivePath = m_arkFilePath;
-        
+
         CompressFromTemp ();
         return exitCode;
     }
@@ -269,7 +269,7 @@ status_t BZipArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *
         m_archivePath = m_tarFilePath;
         status_t exitCode = TarArchiver::Delete (outputStr, message, progress, cancel);
         m_archivePath = m_arkFilePath;
-        
+
         CompressFromTemp();
         return exitCode;
     }
@@ -292,7 +292,7 @@ status_t BZipArchiver::Create (BPath *archivePath, const char *relPath, BMessage
     InitTarFilePath ((char*)archivePath->Leaf());
 
     status_t result = Add (true, relPath, fileList, addedPaths, progress, cancel);
-    
+
     // Once creating is done, set m_archiveRef to pointed to the existing archive file
     if (result == BZR_DONE)
     {
@@ -317,11 +317,11 @@ void BZipArchiver::BuildDefaultMenu ()
 {
     BMenu *ratioMenu;
     m_settingsMenu = new BMenu (m_typeStr);
-    
+
     // Build the compression-level sub-menu
     ratioMenu = new BMenu (kCompressionLevel);
     ratioMenu->SetRadioMode (true);
-    
+
     ratioMenu->AddItem (new BMenuItem (kLevel1, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel2, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel3, NULL));
@@ -331,7 +331,7 @@ void BZipArchiver::BuildDefaultMenu ()
     ratioMenu->AddItem (new BMenuItem (kLevel7, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel8, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel9, NULL));
-    
+
     ratioMenu->FindItem (kLevel6)->SetMarked (true);
 
     // Add sub-menus to settings menu
@@ -342,13 +342,13 @@ void BZipArchiver::BuildDefaultMenu ()
 
 BString BZipArchiver::OutputFileName (const char *fullFileName) const
 {
-    // Given a full filename (with extension) this function removes 
+    // Given a full filename (with extension) this function removes
     // if the filename ends with one of the extensions in extns[], otherwise it returns the full filename
     BString outputFileName = fullFileName;
 
     int8 extnsCount = 2;
     const char *extns[] = { ".bz2", ".bz" };
-    
+
     int32 found = -1;
     for (int32 i = 0; i < extnsCount && found <= 0; i++)
         found = outputFileName.IFindLast (extns[i]);
@@ -363,7 +363,7 @@ BString BZipArchiver::OutputFileName (const char *fullFileName) const
     }
 
     return outputFileName;
-}    
+}
 
 //=============================================================================================================//
 
@@ -378,11 +378,11 @@ BList BZipArchiver::HiddenColumns (BList *columns) const
         // Indices are: 0-name 1-size 2-packed 3-ratio 4-path 5-date 6-method 7-crc
         BList availList (*columns);
         availList.RemoveItems (0, 2);    // Remove 0 and 1
-    
+
         // Now list has 0-packed 1-ratio 2-path 3-date 4-method 5-crc
         availList.RemoveItems (3, 1);    // Remove 3 we don't want to hide date
-        
-        // Now list has 0-packed 1-ratio 2-path 3-method 4-crc <-- these columns are to be hidden        
+
+        // Now list has 0-packed 1-ratio 2-path 3-method 4-crc <-- these columns are to be hidden
         return availList;
     }
 }
@@ -395,7 +395,7 @@ void BZipArchiver::CompressFromTemp ()
     char level[10];
     BMenu *ratioMenu = m_settingsMenu->FindItem(kLevel1)->Menu();
     sprintf (level, " -%ld ", 1 + ratioMenu->IndexOf(ratioMenu->FindMarked()));
-    
+
     // Re-compress file, from .tar in temp to gzip
     BString cmd;
     cmd << "\"" << m_bzipPath << "\"" << " -c " << level << "\"" << m_tarFilePath << "\" > " << "\"" <<

@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -65,7 +65,7 @@ void PrefsViewInterface::Render ()
                          str (S_PREFS_INTERFACE_FULLBARS), NULL);
     m_fullLengthBarsChk->ResizeToPreferred();
 
-    BStringView *colorStrView = new BStringView (BRect (m_margin, m_fullLengthBarsChk->Frame().bottom + 
+    BStringView *colorStrView = new BStringView (BRect (m_margin, m_fullLengthBarsChk->Frame().bottom +
                                     m_margin + 2 * m_vGap, 0, 0), NULL, str (S_PREFS_INTERFACE_COLORS));
     colorStrView->SetFont (&m_sectionFont);
     colorStrView->ResizeToPreferred();
@@ -75,13 +75,13 @@ void PrefsViewInterface::Render ()
                                 3 * m_margin + 30, colorStrView->Frame().bottom + m_margin + 30),
                                 "PrefsViewInterface:outerView", btDeep, B_FOLLOW_LEFT, B_WILL_DRAW);
     float boundary = outerView->EdgeThickness();
-    
+
     m_colorWell = new BView (BRect (boundary, boundary, outerView->Frame().Width() - boundary,
                              outerView->Frame().Height() - boundary), "PrefsViewInterface:colorWell",
                              B_FOLLOW_LEFT, B_WILL_DRAW);
     outerView->AddChild (m_colorWell);
     m_colorWell->SetViewColor (0,0,0,255);
-    
+
     m_colorPopUp = new BPopUpMenu ("");
     m_colorField = new BMenuField (BRect (outerView->Frame().right + 3 * m_margin,
                          outerView->Frame().top + 2, Frame().Width(), 0),
@@ -90,13 +90,13 @@ void PrefsViewInterface::Render ()
     m_colorPopUp->AddItem (new BMenuItem (str (S_PREFS_INTERFACE_ACTFORE), new BMessage (M_ITEM_CHANGE)));
     m_colorPopUp->AddItem (new BMenuItem (str (S_PREFS_INTERFACE_ACTBACK), new BMessage (M_ITEM_CHANGE)));
     m_colorPopUp->ResizeToPreferred();
-    
+
     m_colorControl = new BColorControl (BPoint (3 * m_margin,
                          MAX (m_colorPopUp->Frame().bottom, outerView->Frame().bottom) + m_margin + 2),
                          B_CELLS_32x8, 8, "PrefsViewInteface:colorControl", new BMessage (M_COLOR_CHANGE));
 
 
-    BStringView *defStrView = new BStringView (BRect (m_margin, m_colorControl->Frame().bottom + 
+    BStringView *defStrView = new BStringView (BRect (m_margin, m_colorControl->Frame().bottom +
                                     2*m_margin + 2 * m_vGap, 0, 0), NULL, str (S_PREFS_INTERFACE_DEFAULTS));
     defStrView->SetFont (&m_sectionFont);
     defStrView->ResizeToPreferred();
@@ -129,7 +129,7 @@ void PrefsViewInterface::Render ()
                          m_toolbarChk->Frame().top, Bounds().right - m_margin, 0),
                          "PrefsViewInterface:foldingField", str (S_PREFS_INTERFACE_FOLDING),
                          (BMenu*)m_foldingPopUp, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
-    float div = m_foldingField->StringWidth (m_foldingField->Label()) + 10;                      
+    float div = m_foldingField->StringWidth (m_foldingField->Label()) + 10;
     m_foldingField->SetDivider (div);
 
     font_height fntHt;
@@ -177,7 +177,7 @@ void PrefsViewInterface::Save ()
     msg.AddBool (kInfoBar, IsChecked (m_infobarChk));
     msg.AddBool (kSplitter, IsChecked (m_actionLogChk));
     msg.AddInt8 (kFolding, m_foldingPopUp->IndexOf (m_foldingPopUp->FindMarked()));
-    
+
     // Re-write message (using a NEW FILE and erase older one)
     // Don't worry all the settings have been retreived in "msg" (using above Unflatten) so other settings
     // like window position and size are still retained!
@@ -190,24 +190,24 @@ void PrefsViewInterface::Save ()
 void PrefsViewInterface::Load ()
 {
     m_fullLengthBarsChk->SetValue (_prefs_interface.FindBoolDef (kPfFullLengthBars, false));
-    
+
     m_colorPopUp->ItemAt(_prefs_interface.FindInt16Def (kPfColorIndex, 0))->SetMarked (true);
     m_actFore = _prefs_interface.FindColorDef (kPfActFore, K_ACTIVE_FORE_COLOR);
     m_actBack = _prefs_interface.FindColorDef (kPfActBack, K_ACTIVE_SELECT_COLOR);
     UpdateColorControl (m_colorPopUp->FindMarked());
-    
+
     // Load MainWindow settings file to retrieve the appropriate settings (semi-hack!)
     BMessage msg;
     BString path = _bzr()->m_settingsPathStr;
     path << "/" << K_SETTINGS_MAINWINDOW;
 
     BFile file (path.String(), B_READ_ONLY);
-    
+
     // restore defaults or load from file
     msg.Unflatten (&file);        // may fail (if settings file is missing)
 
     m_toolbarChk->SetValue (FindBoolDef (&msg, kToolBar, true));
-    m_infobarChk->SetValue (FindBoolDef (&msg, kInfoBar, true));    
+    m_infobarChk->SetValue (FindBoolDef (&msg, kInfoBar, true));
     m_actionLogChk->SetValue (FindBoolDef (&msg, kSplitter, true));
 
     // Restore folding level if present or else the default one
@@ -239,17 +239,17 @@ void PrefsViewInterface::MessageReceived (BMessage *message)
            BMenuItem *item = m_colorPopUp->FindMarked();
            if (!item)
                break;
-               
+
            BString itemText = item->Label();
            if (itemText == str (S_PREFS_INTERFACE_ACTFORE))
                m_actFore = m_colorControl->ValueAsColor();
            else if (itemText == str (S_PREFS_INTERFACE_ACTBACK))
                m_actBack = m_colorControl->ValueAsColor();
-           
+
            UpdateColorWell();
            break;
         }
-        
+
         case M_ITEM_CHANGE:
         {
            BMenuItem *item = NULL;
@@ -260,7 +260,7 @@ void PrefsViewInterface::MessageReceived (BMessage *message)
            break;
         }
     }
-    
+
     return PrefsView::MessageReceived (message);
 }
 
@@ -281,7 +281,7 @@ void PrefsViewInterface::UpdateColorControl (BMenuItem *item)
         m_colorControl->SetValue (m_actFore);
     else if (itemText == str (S_PREFS_INTERFACE_ACTBACK))
         m_colorControl->SetValue (m_actBack);
-    
+
     UpdateColorWell();
 }
 

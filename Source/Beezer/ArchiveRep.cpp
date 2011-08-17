@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -55,7 +55,7 @@ ArchiveRep::~ArchiveRep()
 {
     if (m_archiver)
         delete m_archiver;
-        
+
     if (m_tempDir)
     {
         RemoveDirectory (m_tempDir);
@@ -93,7 +93,7 @@ status_t ArchiveRep::InitArchiver (entry_ref *ref, char *mimeString)
     {
         m_archivePath.SetTo (ref);
         m_archiveEntry.SetTo (ref);
-        
+
         if (!mimeString)
         {
            update_mime_info (m_archivePath.Path(), false, true, false);
@@ -108,10 +108,10 @@ status_t ArchiveRep::InitArchiver (entry_ref *ref, char *mimeString)
     {
         strcpy (type, mimeString);
     }
-    
+
     status_t errCode = BZR_ERROR;
-    m_archiver = ArchiverForMime (type);    
-    
+    m_archiver = ArchiverForMime (type);
+
     if (m_archiver == NULL)        // Handle unsupported types
         return errCode;
 
@@ -127,7 +127,7 @@ status_t ArchiveRep::InitArchiver (entry_ref *ref, char *mimeString)
 
         m_archiver->LoadSettingsMenu();
     }
-    
+
     return errCode;
 }
 
@@ -137,7 +137,7 @@ const char* ArchiveRep::MakeTempDirectory ()
 {
     if (m_tempDir == NULL)
         m_tempDirPath = strdup (CreateTempDirectory (NULL, &m_tempDir, true).String());
-    
+
     return m_tempDirPath;
 }
 
@@ -240,7 +240,7 @@ int32 ArchiveRep::_opener (void *arg)
 
     status_t result = ark->Open (&ref);
     delete msg;
-    
+
     BMessage backMessage (M_OPEN_PART_TWO);
     backMessage.AddInt32 (kResult, result);
     looper->PostMessage (&backMessage);
@@ -262,16 +262,16 @@ int32 ArchiveRep::_tester (void *arg)
     msg->FindPointer (kArchiverPtr, reinterpret_cast<void**>(&ark));
     msg->FindPointer (kCancel, (void**)&cancel);
     msg->FindMessenger (kProgressMessenger, &messenger);
-    
+
     char *outputStr = NULL;
     status_t result = ark->Test (outputStr, &messenger, cancel);
-    
+
     messenger.SendMessage (M_CLOSE);
     BMessage backMessage (M_TEST_DONE);
     backMessage.AddInt32 (kResult, result);
     if (outputStr)
         backMessage.AddString (kText, outputStr);
-    
+
     delete msg;
     looper->PostMessage (&backMessage);
 
@@ -286,12 +286,12 @@ int32 ArchiveRep::_counter (void *arg)
     BLooper *looper (NULL);
     BWindow *statusWnd (NULL);
     volatile bool *cancel;
-    
+
     BMessage *message = reinterpret_cast<BMessage*>(arg);
     message->FindPointer (kLooperPtr, reinterpret_cast<void**>(&looper));
     message->FindPointer (kCancel, (void**)&cancel);
     message->FindPointer (kStatusPtr, reinterpret_cast<void**>(&statusWnd));
-    
+
     uint32 type;
     int32 count;
     entry_ref ref;
@@ -315,12 +315,12 @@ int32 ArchiveRep::_counter (void *arg)
                fileCount++;
            }
         }
-    
+
     // Remove the following fields from message as they will be re-add (when message is re-used)
     // and that time the Add... WILL fail unless we remove it
     message->RemoveName (kLooperPtr);
     message->RemoveName (kCancel);
-    
+
     // Don't delete message here as it doesn't belong to us! SPECIAL CASE
     message->what = M_COUNT_COMPLETE;                  // See we are reusing the message
     message->AddInt32 (kFiles, fileCount);               // Add the critical fields as that is what
@@ -328,10 +328,10 @@ int32 ArchiveRep::_counter (void *arg)
     message->AddInt64 (kSize, totalSize);
     if (statusWnd)
         statusWnd->PostMessage (M_CLOSE);
-    
+
     if (*cancel == false)
         looper->PostMessage (message);
-    
+
     return BZR_DONE;
 }
 
@@ -350,25 +350,25 @@ int32 ArchiveRep::_adder (void *arg)
     const char *relativePath (NULL);
     const char *archivePath (NULL);
     bool createMode;
-    
+
     msg->FindPointer (kArchiverPtr, reinterpret_cast<void**>(&ark));
     msg->FindPointer (kLooperPtr, reinterpret_cast<void**>(&looper));
     msg->FindMessenger (kProgressMessenger, &messenger);
     msg->FindPointer (kCancel, (void**)&cancel);
     msg->FindString (kLaunchDir, &relativePath);
     msg->FindString (kArchivePath, &archivePath);
-    
+
     BPath path (archivePath);
-    
+
     if (msg->FindBool (kCreateMode, &createMode) != B_OK)
         createMode = false;
-    
+
     BMessage newlyAddedPaths;
     if (createMode == true)
         result = ark->Create (&path, relativePath, msg, &newlyAddedPaths, &messenger, cancel);
     else
         result = ark->Add (false, relativePath, msg, &newlyAddedPaths, &messenger, cancel);
-    
+
     msg->what = M_ADD_DONE;
     msg->RemoveName (kResult);
     msg->AddInt32 (kResult, result);

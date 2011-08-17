@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -65,7 +65,7 @@ bool WindowMgr::AddWindow (BWindow *wnd)
     if (autolocker.IsLocked())
         if (m_windowList->HasItem (reinterpret_cast<void*>(wnd)) == false)
            return m_windowList->AddItem (reinterpret_cast<void*>(wnd));
-    
+
     return false;
 }
 
@@ -75,7 +75,7 @@ bool WindowMgr::RemoveWindow (BWindow *wnd)
 {
     BAutolock autolocker (_wnd_locker);
     bool result = false;
-    
+
     if (autolocker.IsLocked())
     {
         result = m_windowList->RemoveItem (reinterpret_cast<void*>(wnd));
@@ -123,14 +123,14 @@ void WindowMgr::UpdateFrom (BWindow *sourceWnd, BMessage *message, bool updateBe
     int32 winCount = m_windowList->CountItems();
     BWindow *destWnd = NULL;
     message->AddPointer (kWindowList, reinterpret_cast<void**>(&m_windowList));
-    
+
     for (int32 i = 0; i < winCount; i++)
     {
         destWnd = reinterpret_cast<BWindow*>(m_windowList->ItemAtFast(i));
         if (destWnd != NULL && sourceWnd != destWnd)
            destWnd->PostMessage (message);
     }
-    
+
     if (updateBeApp)
         be_app->PostMessage (message);
 }

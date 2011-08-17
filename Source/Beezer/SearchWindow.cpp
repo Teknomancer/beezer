@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -101,7 +101,7 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
 
     font.GetHeight (&fntHt);
     float normFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
-    
+
     font.SetFace (B_BOLD_FACE);
     font.GetHeight (&fntHt);
     float totalFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
@@ -110,14 +110,14 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
     m_backView = new BevelView (Bounds(), "SearchWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_backView->SetViewColor (K_BACKGROUND_COLOR);
     AddChild (m_backView);
-           
+
     BBitmap *searchBmp = ResBitmap ("Img:SearchArchive");
 
     BevelView *sepView1 = new BevelView (BRect (-1, searchBmp->Bounds().Height() + 4 * K_MARGIN,
                                 Bounds().right - 1.0, searchBmp->Bounds().Height() + 4 * K_MARGIN + 1),
                                 "SearchWindow:SepView1", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     m_backView->AddChild (sepView1);
-    
+
     // Add icon view, make it hold the search picture
     StaticBitmapView *searchBmpView = new StaticBitmapView (BRect (K_MARGIN * 5, K_MARGIN * 2,
                              searchBmp->Bounds().Width() + K_MARGIN * 5,
@@ -125,7 +125,7 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
                              searchBmp);
     searchBmpView->SetViewColor (m_backView->ViewColor());
     AddChild (searchBmpView);
-    
+
     // Add the file name string view (align it vertically with the icon view)
     char buf[B_FILE_NAME_LENGTH];
     entry->GetName (buf);
@@ -161,7 +161,7 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
         columnMenu->ItemAt(0L)->SetMarked (true);
     else
         columnMenu->ItemAt(m_tmpList.IndexOf (column))->SetMarked (true);
-    
+
     m_columnField = new BMenuField (BRect (marginLeft, sepView1->Frame().bottom + marginTop - 1,
                          Bounds().Width() - marginLeft, 0), "SearchWindow:ColumnField",
                          str (S_SEARCH_COLUMN), columnMenu);
@@ -169,7 +169,7 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
     m_columnField->SetDivider (m_backView->StringWidth (m_columnField->Label()) + 10.0);
     m_columnField->ResizeToPreferred();
 
-    // Setup the match type and the match type menu    
+    // Setup the match type and the match type menu
     BMenu *matchMenu = new BPopUpMenu ("");
     matchMenu->AddItem (new BMenuItem (str (S_SEARCH_STARTS_WITH), NULL));
     matchMenu->AddItem (new BMenuItem (str (S_SEARCH_ENDS_WITH), NULL));
@@ -181,14 +181,14 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
     matchMenu->ItemAt(exprType)->SetMarked (true);
 
     m_matchField = new BMenuField (BRect (
-                         m_backView->StringWidth (columnMenu->ItemAt(0L)->Label()) + 
+                         m_backView->StringWidth (columnMenu->ItemAt(0L)->Label()) +
                          m_backView->StringWidth (m_columnField->Label()) + 50 + 2 * marginLeft,
                          sepView1->Frame().bottom + marginTop - 1, Bounds().Width() - marginLeft, 0),
                          "SearchWindow:MatchField", NULL, matchMenu);
     m_backView->AddChild (m_matchField);
     m_matchField->SetDivider (m_backView->StringWidth (m_matchField->Label()) + 10.0);
     m_matchField->ResizeToPreferred();
-    
+
     // Setup the 'search for' text control
     // removed label - str (S_SEARCH_FOR), add it when needed as people thot "Find:" was not needed
     m_searchTextControl = new BTextControl (BRect (marginLeft, m_matchField->Frame().bottom + vGap,
@@ -199,7 +199,7 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
     m_searchTextControl->MakeFocus (true);
     m_searchTextControl->SetModificationMessage (new BMessage (M_SEARCH_TEXT_MODIFIED));
     BTextView *textView = m_searchTextControl->TextView();
-    
+
     // Disallow the below meta keys as they aren't valid search text characters
     textView->DisallowChar (B_ESCAPE);
     textView->DisallowChar (B_INSERT);
@@ -217,7 +217,7 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
     scopeBox->SetLabel (str (S_SEARCH_SCOPE));
     scopeBox->SetFont (be_plain_font);
     m_backView->AddChild (scopeBox);
-    
+
     // Draw the radio buttons inside the group box (co-ordinates are relative to the group box)
     m_allEntriesOpt = new BRadioButton (BRect (marginLeft/2, normFontHeight + vGap/2,
                          marginLeft/2 + m_backView->StringWidth (str (S_SEARCH_ALL_ENTRIES)) +
@@ -250,48 +250,48 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
     m_selEntriesOpt->SetValue (searchSelection == true ? B_CONTROL_ON : B_CONTROL_OFF);
     if (searchSelection)
         m_selEntriesOpt->Invoke ();
-        
+
     // Dynamically size the scope box (auto-fit)
     float maxWidth = m_selEntriesOpt->Frame().Width();
     maxWidth = MAX (maxWidth, m_visibleEntriesOpt->Frame().Width());
     maxWidth = MAX (maxWidth, m_allEntriesOpt->Frame().Width());
-    
+
     scopeBox->ResizeTo (maxWidth + marginLeft + 2, m_selEntriesOpt->Frame().bottom + vGap);
-    
+
     // Setup the scoping options group box
     BBox *optionsBox = new BBox (BRect (scopeBox->Frame().right + marginLeft, scopeBox->Frame().top, 0, 0),
                          "SearchWindow:OptionsBox");
     optionsBox->SetLabel (str (S_SEARCH_OPTIONS));
     optionsBox->SetFont (be_plain_font);
     m_backView->AddChild (optionsBox);
-    
+
     // Draw the checkboxes for the (All, Visible) scope
     m_addToSelChk = new BCheckBox (BRect (marginLeft / 2, normFontHeight -1 + vGap / 2, 0, 0),
                       "SearchWindow:AddSelChk", str (S_SEARCH_ADD_TO_SELECTION), NULL);
     optionsBox->AddChild (m_addToSelChk);
     m_addToSelChk->ResizeToPreferred();
     m_addToSelChk->SetValue (addToSelection == true ? B_CONTROL_ON : B_CONTROL_OFF);
-    
+
     m_ignoreCaseChk = new BCheckBox (BRect (m_addToSelChk->Frame().left, m_addToSelChk->Frame().bottom-1,
                                 0, 0), "SearchWindow:IgnoreCaseChk", str (S_SEARCH_IGNORE_CASE), NULL);
     optionsBox->AddChild (m_ignoreCaseChk);
     m_ignoreCaseChk->ResizeToPreferred();
     m_ignoreCaseChk->SetValue (ignoreCase == true ? B_CONTROL_ON : B_CONTROL_OFF);
-    
+
     m_invertChk = new BCheckBox (BRect (m_ignoreCaseChk->Frame().left, m_ignoreCaseChk->Frame().bottom-1,
                                 0, 0), "SearchWindow:InvertChk", str (S_SEARCH_INVERT), NULL);
     optionsBox->AddChild (m_invertChk);
     m_invertChk->ResizeToPreferred();
     m_invertChk->SetValue (invertSearch == true ? B_CONTROL_ON : B_CONTROL_OFF);
-    
+
     // Dynamically size the group box (auto-fit)
     maxWidth = m_addToSelChk->Frame().Width();
     maxWidth = MAX (maxWidth, m_ignoreCaseChk->Frame().Width());
     maxWidth = MAX (maxWidth, m_invertChk->Frame().Width());
     maxWidth = MAX (maxWidth, m_backView->StringWidth (str (S_SEARCH_DESELECT_UNMATCHED_ENTRIES)) + 21.0);
-    
+
     optionsBox->ResizeTo (maxWidth + marginLeft + 2, m_invertChk->Frame().bottom + vGap);
-    
+
     // Render the search button
     m_searchBtn = new BButton (BRect (Bounds().right - marginLeft - K_BUTTON_WIDTH - 4,
                              optionsBox->Frame().bottom + 2 * vGap, Bounds().right - marginLeft - 4,
@@ -301,7 +301,7 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
     m_searchBtn->MakeDefault (true);
     m_searchBtn->SetEnabled (searchText ? true : false);
     m_backView->AddChild (m_searchBtn);
-    
+
     // Render the close after search button
     m_persistentChk = new BCheckBox (BRect (marginLeft, m_searchBtn->Frame().top + normFontHeight / 2,
                       0, 0), "SearchWindow:CloseChk", str (S_SEARCH_PERSISTENT), NULL);
@@ -309,25 +309,25 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
     m_persistentChk->ResizeToPreferred();
     m_persistentChk->SetValue (persistent == true ? B_CONTROL_ON : B_CONTROL_OFF);
 
-        
+
     // Resize the window, then set contraints
     ResizeTo (optionsBox->Frame().right + marginLeft + 2, m_searchBtn->Frame().bottom + vGap + 2);
 
     float minH, maxH, minV, maxV;
     GetSizeLimits (&minH, &maxH, &minV, &maxV);
     SetSizeLimits (Bounds().Width(), maxH, Bounds().Height(), maxV);
-        
+
     // Center window on-screen
     BRect screen_rect (BScreen().Frame());
     MoveTo (screen_rect.Width() / 2 - Frame().Width() / 2, screen_rect.Height() / 2 - Frame().Height() / 2);
-    
+
     // Move according to the previous position (if any)
     if (windowrect.left > 0)
     {
         MoveTo (windowrect.LeftTop());
         ResizeTo (windowrect.Width(), windowrect.Height());
     }
-    
+
     // Assign bubble helps
     SetBubbleHelps();
 }
@@ -338,7 +338,7 @@ void SearchWindow::Quit ()
 {
     BMessage msg;
     GetSettings (msg, M_SEARCH_CLOSED);
-    
+
     m_callerWindow->PostMessage (&msg);
     BWindow::Quit();
 }
@@ -366,7 +366,7 @@ void SearchWindow::MessageReceived (BMessage *message)
 
            break;
         }
-        
+
         case M_SELECTED_ENTRIES:
         {
            if (strcmp (m_addToSelChk->Label(), str (S_SEARCH_DESELECT_UNMATCHED_ENTRIES)) != 0)
@@ -376,10 +376,10 @@ void SearchWindow::MessageReceived (BMessage *message)
                m_addToSelChk->SetLabel (str (S_SEARCH_DESELECT_UNMATCHED_ENTRIES));
                m_addToSelChk->ResizeToPreferred();
            }
-           
+
            break;
         }
-        
+
         case M_SEARCH_CLICKED:
         {
            const char *searchText = m_searchTextControl->Text();
@@ -389,22 +389,22 @@ void SearchWindow::MessageReceived (BMessage *message)
                m_searchBtn->SetEnabled (false);
                break;
            }
-           
+
            BMessage msg;
            GetSettings (msg, M_SEARCH);
            bool persistent = msg.FindBool (kPersistent);
            if (!persistent)
                Hide();
-    
+
            m_callerWindow->PostMessage (&msg);
-    
+
            if (!persistent)
                Quit();
-           
+
            break;
         }
     }
-           
+
     BWindow::MessageReceived (message);
 }
 
@@ -421,7 +421,7 @@ int32 SearchWindow::ExpressionType () const
 
     if (index < kStartsWith || index > kRegexpMatch)
         return kNone;
-    
+
     RegExStringExpressionType typeArray[] =
     {    kStartsWith,
         kEndsWith,
@@ -429,7 +429,7 @@ int32 SearchWindow::ExpressionType () const
         kGlobMatch,
         kRegexpMatch
     };
-    
+
     return typeArray[index];
 }
 

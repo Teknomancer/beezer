@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -67,7 +67,7 @@ const char* GetLanguageName (int whichLang, bool native)
     switch (whichLang)
     {
         case LANG_ENGLISH: return strR5 (S_ENGLISH, native ? LANG_ENGLISH : _language);
-        
+
         default: debugger ("bad language index!"); return 0;
     }
 }

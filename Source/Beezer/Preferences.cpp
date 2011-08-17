@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -80,7 +80,7 @@ void Preferences::FreePathString ()
 {
     if (m_prefsPathStr)
         free ((char*)m_prefsPathStr);
-    
+
     m_prefsPathStr = NULL;
 }
 
@@ -90,7 +90,7 @@ void Preferences::Init (const char *dir, const char *file)
 {
     BString locationStr = dir;
     locationStr << '/' << file;
-    locationStr.ReplaceAll ("//", "/");        // BugFix: Incase of invalid paths 
+    locationStr.ReplaceAll ("//", "/");        // BugFix: Incase of invalid paths
     SetLocation (locationStr.String());
     ReadPrefs();
 }
@@ -125,7 +125,7 @@ void Preferences::WritePrefs ()
         BEntry settingsDirEntry (settingsDirPath.Path(), true);
         if (settingsDirEntry.Exists() == false)
            create_directory (settingsDirPath.Path(), 0777);
-        
+
         BFile file (m_prefsPathStr, B_CREATE_FILE | B_ERASE_FILE | B_WRITE_ONLY);
         if (file.InitCheck() == B_OK)
            Flatten (&file);
@@ -220,7 +220,7 @@ status_t Preferences::SetString (const char *name, const char *s)
 {
     if (HasString (name) == true)
         return ReplaceString (name, 0, s);
-    
+
     return AddString (name, s);
 }
 
@@ -260,7 +260,7 @@ status_t Preferences::SetColor (const char *name, rgb_color &col)
 {
     RemoveName (name);
     return AddInt32 (name, (((uint32)col.red) << 24) | (((uint32)col.green) << 16)
-               | (((uint32)col.blue) << 8)    | (((uint32)col.alpha) << 0)); 
+               | (((uint32)col.blue) << 8)    | (((uint32)col.alpha) << 0));
 }
 
 //=============================================================================================================//

@@ -1,7 +1,7 @@
 /*
     URLView 2.11
     written by William Kakes of Tall Hill Software.
-    
+
     This class provides an underlined and clickable BStringView
     that will launch the web browser, e-mail program, or FTP client
     when clicked on.  Other features include hover-highlighting,
@@ -11,7 +11,7 @@
     and closed-source) free of charge, but a mention in your read me
     file or your program's about box would be appreciated.  See
     http://www.tallhill.com    for current contact information.
-    
+
     URLView is provided as-is, with no warranties of any kind.  If
     you use it, you are on your own.
 
@@ -36,14 +36,14 @@
 
 // This is the link's mouse cursor (a replica of NetPositive's link cursor).
 const uint8 url_cursor[] =
-{   
+{
     16, 1, 1, 2,
     // This is the cursor data.
     0x00, 0x00,    0x38, 0x00,    0x24, 0x00,    0x24, 0x00,
     0x13, 0xe0,    0x12, 0x5c,    0x09, 0x2a,    0x08, 0x01,
     0x3c, 0x21,    0x4c, 0x71,    0x42, 0x71,    0x30, 0xf9,
     0x0c, 0xf9,    0x02, 0x00,    0x01, 0x00,    0x00, 0x00,
-    
+
     // This is the cursor mask.
     0x00, 0x00,    0x38, 0x00,    0x3c, 0x00,    0x3c, 0x00,
     0x1f, 0xe0,    0x1f, 0xfc,    0x0f, 0xfe,    0x0f, 0xff,
@@ -62,8 +62,8 @@ class URLView : public BStringView
         URLView (BRect frame, const char *name, const char *label, const char *url,
                 uint32 resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP, uint32 flags = B_WILL_DRAW );
         ~URLView ();
-        
-        // Inherited hooks                      
+
+        // Inherited hooks
         virtual void        AttachedToWindow ();
         virtual void        Draw (BRect updateRect);
         virtual void        MessageReceived (BMessage *message);
@@ -71,7 +71,7 @@ class URLView : public BStringView
         virtual void        MouseMoved (BPoint point, uint32 transit, const BMessage *message);
         virtual void        MouseUp (BPoint point);
         virtual void        WindowActivated (bool active);
-        
+
         // Additional hooks
         virtual void        AddAttribute (const char *name, const char *value);
         virtual bool        IsEnabled ();
@@ -89,7 +89,7 @@ class URLView : public BStringView
         virtual void        SetIconSize (icon_size iconSize);
         virtual void        SetUnderlineThickness (int thickness);
         virtual void        SetURL (const char *url);
-        
+
     private:
         // Private hooks
         void               CopyToClipboard();
@@ -107,7 +107,7 @@ class URLView : public BStringView
         void               LaunchURL ();
         void               Redraw ();
         void               WriteAttributes (int fd);
-    
+
         BString           *m_url;
         rgb_color          m_foreColor;
         rgb_color          m_clickColor;
@@ -125,7 +125,7 @@ class URLView : public BStringView
         const BCursor      *m_linkCursor;
         BPoint             m_dragOffset;
         BList             *m_attributes;
-        
+
         typedef struct kp
         {
            BString        *key;

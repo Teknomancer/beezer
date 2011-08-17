@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -45,7 +45,7 @@ const char
     *const kAdding =                  "While Adding",
     *const kArchiveAttribs =          "Add attributes",
     *const kDirRecurse =              "Recurse into folders",
-    
+
     *const kExtracting =              "While Extracting",
     *const kDirExtract =              "Extract folders",
     *const kExtractAttribs =          "Extract attributes",

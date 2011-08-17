@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -128,7 +128,7 @@ void InfoBar::UpdateBytesDisplay (uint32 selectedBytes, uint32 totalBytes, bool 
 {
     if (setTotalBytes == true)
         m_totalBytes = totalBytes;
-    
+
     int8 percent = m_totalBytes > 0 ? (int8)(selectedBytes / (float)m_totalBytes * 100) : 0;
     char buf[strlen (str (S_INFOBAR_BYTES)) + 50];
     sprintf (buf, "%s%ld %s %Ld (%d%%)", str (S_INFOBAR_BYTES), selectedBytes, str (S_OF), m_totalBytes, percent);
@@ -163,7 +163,7 @@ void InfoBar::Draw (BRect updateRect)
     StrokeRect (rect);
 
     RenderEdges ();
-    
+
     BView::Draw (updateRect);
 }
 
@@ -184,7 +184,7 @@ inline void InfoBar::RenderEdges ()
         rightLimit = m_finalX - 2;
     else
         rightLimit = bounds.right;
-        
+
     // Draw the dark borders first
     AddLine (BPoint (0, bounds.bottom), BPoint (bounds.right, bounds.bottom), midColDark);
     AddLine (BPoint (0, bounds.bottom - 1), BPoint (rightLimit, bounds.bottom - 1), midCol);
@@ -192,7 +192,7 @@ inline void InfoBar::RenderEdges ()
     // Draw the light edges
     AddLine (BPoint (0, 0), BPoint (0, bounds.bottom - 1), m_lightEdge);
     AddLine (BPoint (0, 0), BPoint (rightLimit, 0), m_lightEdge);
-    
+
     EndLineArray();
 }
 
@@ -205,10 +205,10 @@ void InfoBar::MouseDown (BPoint point)
     BMessage *message = Window()->CurrentMessage();
     if (message->FindInt32 ("buttons", &button) != B_OK)
         return;
-    
+
     if (button == B_SECONDARY_MOUSE_BUTTON)
         Toggle();
-    
+
     BView::MouseDown (point);
 }
 
@@ -218,7 +218,7 @@ void InfoBar::Toggle ()
 {
     static float unHiddenHeight = Frame().Height() - m_vertGap;
     int32 separatorCount = m_separatorList.CountItems();
-        
+
     if (!m_isHidden)
     {
         m_barberPole->Hide();
@@ -262,7 +262,7 @@ void InfoBar::AddSeparatorItem (float x, bool finalSeparator)
                                 B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
         sepViewEdge1->SetViewColor (midCol);
         x++;
-        
+
         BView *sepView = new BView (BRect (x, 0, x, Bounds().bottom - 1), "InfoBar:Separator",
                              B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
         sepView->SetViewColor (m_darkEdge2);
@@ -277,10 +277,10 @@ void InfoBar::AddSeparatorItem (float x, bool finalSeparator)
            AddChild (sepViewEdge2);
            m_separatorList.AddItem ((void*)sepViewEdge2);
         }
-        
+
         AddChild (sepViewEdge1);
         AddChild (sepView);
-        
+
         if (finalSeparator)
         {
            m_finalSepEdge = sepViewEdge1;
@@ -297,7 +297,7 @@ void InfoBar::AddSeparatorItem (float x, bool finalSeparator)
         m_separatorList.AddItem ((void*)sepView);
         m_separatorList.AddItem ((void*)sepViewEdge1);
     }
-    
+
     x ++;
     if (finalSeparator)
         m_finalX = x;
@@ -334,7 +334,7 @@ void InfoBar::Redraw ()
     // Called when preferences have changed
     if (m_finalSepEdge == NULL || m_finalSep == NULL)
         return;
-    
+
     // If full length bars are needed by user then hide the final separators
     if (_prefs_interface.FindBoolDef (kPfFullLengthBars, false) == true)
     {

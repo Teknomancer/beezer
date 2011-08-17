@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -94,32 +94,32 @@ Beezer::Beezer ()
     BScreen screenRect;
     if (screenRect.Frame().Width() > 641 && screenRect.Frame().Height() > 481)
         m_defaultWindowRect.Set (0, 0, 710, 500);
-    
+
     m_newWindowRect = m_defaultWindowRect;
-    
+
     // Very important, critically ordered!
     InitPaths();
     InitPrefs();
     CompileTimeString (true);
     _glob_bitmap_pool = new BitmapPool();
-    
+
     // Load preferences, recents and all that stuff
     int8 numArk, numExt;
     if (_prefs_recent.FindInt8 (kPfNumRecentArk, &numArk) != B_OK) numArk = 10;
     if (_prefs_recent.FindInt8 (kPfNumRecentExt, &numExt) != B_OK) numExt = 5;
-    
+
     m_recentMgr = new RecentMgr (numArk, &_prefs_recent_archives, ritFile,
                       _prefs_recent.FindBoolDef (kPfShowPathInRecent, false));
     m_extractMgr = new RecentMgr (numExt, &_prefs_recent_extract, ritFolder, true);
     m_extractMgr->SetCommand (M_RECENT_EXTRACT_ITEM);
-    
+
     m_splitFilesMgr = new RecentMgr (5, &_prefs_recent_splitfiles, ritFile, true);
     m_splitDirsMgr = new RecentMgr (5, &_prefs_recent_splitdirs, ritFolder, true);
     m_splitFilesMgr->SetCommand (M_RECENT_SPLIT_FILE);
     m_splitDirsMgr->SetCommand (M_RECENT_SPLIT_DIR);
-    
+
     m_ruleMgr = new RuleMgr (&m_settingsDir, K_RULE_FILE);
-    
+
     if (_prefs_misc.FindBoolDef (kPfMimeOnStartup, false))
         RegisterFileTypes();
 
@@ -130,7 +130,7 @@ Beezer::Beezer ()
 
     buf = str (S_FILE_JOINER_TITLE); buf << B_UTF8_ELLIPSIS;
     m_toolsMenu->AddItem (new BMenuItem (buf.String(), new BMessage (M_TOOLS_FILE_JOINER)));
-    
+
     // Start the message loop
     Run();
 }
@@ -148,7 +148,7 @@ Beezer::~Beezer ()
         if (arkTypeString)
            free ((char*)arkTypeString);
     }
-    
+
     delete m_toolsMenu;
     delete _glob_bitmap_pool;
     delete m_recentMgr;
@@ -164,7 +164,7 @@ Beezer::~Beezer ()
         delete m_arkTypePopUp;
         m_arkTypePopUp = NULL;
     }
-    
+
     for (int32 i = 0; i < m_arkExtensions.CountItems(); i++)
         free ((char*)m_arkExtensions.ItemAtFast(i));
 }
@@ -186,7 +186,7 @@ void Beezer::ReadyToRun()
 {
     if (m_nWindows == 0 && m_startupWnd == NULL && m_addOnWnd == NULL)
         m_startupWnd = new StartupWindow (m_recentMgr, m_bubbleHelper, true);
-    
+
     return BApplication::ReadyToRun();
 }
 
@@ -201,27 +201,27 @@ void Beezer::MessageReceived (BMessage *message)
            ShowCreateFilePanel();
            break;
         }
-        
+
         case M_FILE_ABOUT:
         {
            if (m_aboutWnd == NULL)
                m_aboutWnd = new AboutWindow (CompileTimeString (false));
            else
                m_aboutWnd->Activate();
-               
+
            break;
         }
-        
+
         case M_LAUNCH_TRACKER_ADDON:
         {
            if (m_addOnWnd == NULL)
                m_addOnWnd = new AddOnWindow (message);
            else
                m_addOnWnd->Activate();
-               
+
            break;
         }
-        
+
         case M_CLOSE_ADDON:
         {
            m_addOnWnd = NULL;
@@ -229,7 +229,7 @@ void Beezer::MessageReceived (BMessage *message)
                PostMessage (B_QUIT_REQUESTED);
            break;
         }
-        
+
         case M_CLOSE_ABOUT:
         {
            m_aboutWnd = NULL;
@@ -244,13 +244,13 @@ void Beezer::MessageReceived (BMessage *message)
                m_prefsWnd->Activate();
            break;
         }
-        
+
         case B_CANCEL:
         {
            // 0.05 bug fix ("calling IsHidden without locking the window") error
            if (m_startupWnd)
                m_startupWnd->LockLooper();
-           
+
            // 0.04 bugfix:: added check for m_startupWnd
            if (m_nWindows == 0 && (m_startupWnd == NULL || m_startupWnd->IsHidden()))
                be_app_messenger.SendMessage (B_QUIT_REQUESTED);
@@ -260,7 +260,7 @@ void Beezer::MessageReceived (BMessage *message)
 
            break;
         }
-        
+
         case M_REGISTER_TYPES:
         {
            int8 regCount = RegisterFileTypes();
@@ -283,66 +283,66 @@ void Beezer::MessageReceived (BMessage *message)
                a->Go();
                delete[] buf;
            }
-                      
+
            break;
         }
-        
+
         case M_CLOSE_PREFS:
         {
            int8 numArk, numExt;
            if (_prefs_recent.FindInt8 (kPfNumRecentArk, &numArk) != B_OK) numArk = 10;
            if (_prefs_recent.FindInt8 (kPfNumRecentExt, &numExt) != B_OK) numExt = 5;
-           
+
            m_recentMgr->SetMaxPaths (numArk);
            m_recentMgr->SetShowFullPath (_prefs_recent.FindBoolDef (kPfShowPathInRecent, false));
            m_extractMgr->SetMaxPaths (numExt);
-           
+
            // Update extract path menu
            m_windowMgr->UpdateFrom (NULL, new BMessage (M_UPDATE_RECENT), false);
            m_windowMgr->UpdateFrom (NULL, new BMessage (M_UPDATE_INTERFACE), false);
-           
+
            m_prefsWnd = NULL;
            break;
         }
-    
+
         case M_CLOSE_STARTUP:
         {
            m_startupWnd = NULL;
            if (m_nWindows == 0)
                be_app_messenger.SendMessage (B_QUIT_REQUESTED);
-           
+
            break;
         }
-        
+
         case M_UNREG_WINDOW:
         {
            UnRegisterWindow (false);
            break;
         }
-               
+
         case M_FILE_OPEN:
         {
            bool firstTime = false;
            if (m_openFilePanel == NULL)
                firstTime = true;
-           
+
            CreateFilePanel (m_openFilePanel, B_OPEN_PANEL);
            m_openFilePanel->Window()->SetTitle (str (S_OPEN_PANEL_TITLE));
-           
+
            const char *openDirPath = _prefs_paths.FindString (kPfDefOpenPath);
            if (firstTime && openDirPath)
                m_openFilePanel->SetPanelDirectory (openDirPath);
-           
+
            m_openFilePanel->Show();
            break;
         }
-        
+
         case M_RECENT_ITEM:
         {
            RefsReceived (message);
            break;
         }
-        
+
         case M_UPDATE_RECENT:
         {
            // this isn't needed as we can StartUpWindow always builds it menu since it is in control
@@ -354,31 +354,31 @@ void Beezer::MessageReceived (BMessage *message)
            // made, this is completely useless for the time being -- but its better implemented this way
            break;
         }
-        
+
         case M_CREATE_REQUESTED:
         {
            BMenuItem *arkType = m_arkTypePopUp->FindMarked();
            if (!arkType)
                break;
-           
+
            status_t result;
            Archiver *ark = NewArchiver (arkType->Label(), true, &result);
            if (!ark)
                break;
-               
+
            if (result == BZR_BINARY_MISSING)
                break;
-           
+
            message->AddPointer (kArchiverPtr, ark);
            RegisterWindow()->PostMessage (message);
            break;
         }
-        
+
         case M_ARK_TYPE_SELECTED:
         {
            if (!m_createFilePanel)
                break;
-           
+
            const char *newExtStr = message->FindString (kText);
            if (m_createFilePanel->Window()->LockLooper())
            {
@@ -386,9 +386,9 @@ void Beezer::MessageReceived (BMessage *message)
                                                          ->FindView ("text view"))->TextView();
                int32 start, end;
                fileNameView->GetSelection (&start, &end);
-               
+
                BString existingName = fileNameView->Text();
-               
+
                for (int32 i = 0; i < m_arkExtensions.CountItems(); i++)
                   if (existingName.FindFirst ((char*)m_arkExtensions.ItemAtFast (i)) >= 0L
                       && existingName != newExtStr)
@@ -401,18 +401,18 @@ void Beezer::MessageReceived (BMessage *message)
                          if (newExtension == (char*)m_arkExtensions.ItemAtFast(i))
                              newExtension = newExtStr;
                       #endif
-                      
+
                       fileNameView->SetText (newExtension.String());
                       fileNameView->Select (start, end);
                       break;
                   }
-                  
+
                m_createFilePanel->Window()->UnlockLooper();
            }
-           
+
            break;
         }
-        
+
         case M_TOOLS_FILE_SPLITTER:
         {
            if (m_splitWnd == NULL)
@@ -429,13 +429,13 @@ void Beezer::MessageReceived (BMessage *message)
 
            break;
         }
-        
+
         case M_CLOSE_FILE_SPLITTER:
         {
            m_splitWnd = NULL;
            break;
         }
-        
+
 
         case M_TOOLS_FILE_JOINER:
         {
@@ -446,16 +446,16 @@ void Beezer::MessageReceived (BMessage *message)
            }
            else
                m_joinWnd->Activate ();
-               
+
            break;
         }
-        
+
         case M_CLOSE_FILE_JOINER:
         {
            m_joinWnd = NULL;
            break;
         }
-        
+
         case M_FILE_HELP: case M_ADDON_HELP: case M_PREFS_HELP:
         {
            BPath helpFilePath (&m_docsDir, "Index.html");
@@ -474,7 +474,7 @@ void Beezer::MessageReceived (BMessage *message)
            }
            break;
         }
-        
+
         default:
            return BApplication::MessageReceived (message);
     }
@@ -537,7 +537,7 @@ void Beezer::RefsReceived (BMessage *message)
     uint32 type;
     int32 count;
     entry_ref ref;
-    
+
     message->GetInfo ("refs", &type, &count);
     if (type != B_REF_TYPE)
         return;
@@ -585,7 +585,7 @@ MainWindow* Beezer::WindowForRef (entry_ref *ref)
                return wndPtr;
         }
     }
-    
+
     return NULL;
 }
 
@@ -613,19 +613,19 @@ MainWindow* Beezer::CreateWindow (entry_ref *ref)
         wndPtr->LoadSettingsFromArchive (ref);
     else
         wndPtr->LoadDefaultSettings();    // in case of creating an archive
-    
+
     wndPtr->Show();
-        
+
     if (ref)
     {
         // It is important we get a synchronous reply till the window has completed its
         // critical section
         BMessage msg (M_OPEN_REQUESTED), reply;
         msg.AddRef (kRef, ref);
-        
+
         BMessenger messenger (wndPtr);
         messenger.SendMessage (&msg, &reply);
-        
+
         // Later get from prefs if we must show comments when archive loads
         if (_prefs_misc.FindBoolDef (kPfShowCommentOnOpen, true) && reply.HasBool (kFailOnNull) == false)
         {
@@ -635,7 +635,7 @@ MainWindow* Beezer::CreateWindow (entry_ref *ref)
            messenger.SendMessage (&msg, &reply);
         }
     }
-    
+
     return wndPtr;
 }
 
@@ -646,7 +646,7 @@ inline void Beezer::InitPaths ()
     // Initialize paths (maybe we can get folder names from prefs someday)
     app_info appInfo;
     be_app->GetAppInfo (&appInfo);
-    
+
     BEntry appEntry (&appInfo.ref);
     appEntry.GetParent (&appEntry);
 
@@ -657,7 +657,7 @@ inline void Beezer::InitPaths ()
     BPath docsPath (&appEntry);
     if (docsPath.Append (K_DOC_DIR_NAME) == B_OK)
         m_docsDir.SetTo (docsPath.Path());
-    
+
     BPath settingsPath;
     find_directory(B_USER_SETTINGS_DIRECTORY, &settingsPath);
     m_settingsDir.SetTo (settingsPath.Path());
@@ -701,7 +701,7 @@ const char* Beezer::CompileTimeString (bool writeToResIfNeeded) const
     bool expand_month = true;
     bool strip_seconds = false;
     bool twelve_hour = true;
-    
+
     const char *buildTime = __TIME__;
     const char *buildDate = __DATE__;
 
@@ -710,7 +710,7 @@ const char* Beezer::CompileTimeString (bool writeToResIfNeeded) const
     for (; i < 3; i++)
         month[i] = buildDate[i];
     month[i] = '\0';
-    
+
     if (expand_month)
     {
         if (strcmp (month, "Jan") == 0)           sprintf (month, "%s", "January ");
@@ -726,12 +726,12 @@ const char* Beezer::CompileTimeString (bool writeToResIfNeeded) const
         else if (strcmp (month, "Nov") == 0)    sprintf (month, "%s", "November ");
         else if (strcmp (month, "Dec") == 0)    sprintf (month, "%s", "December ");
     }
-    
+
     char *timestr = new char[12];
     strcpy (timestr, buildTime);
     if (strip_seconds)
         timestr[5] = '\0';
-    
+
     if (twelve_hour)
     {
         for (int i = 0; i < 2; i++)
@@ -746,7 +746,7 @@ const char* Beezer::CompileTimeString (bool writeToResIfNeeded) const
         else
            strcat (timestr, " AM");
     }
-    
+
     BString compileTimeStr = buildDate + 3;
     switch (*(buildDate + 5))
     {
@@ -788,10 +788,10 @@ const char* Beezer::CompileTimeString (bool writeToResIfNeeded) const
            ctFile.SetTo (ctFileStr.String(), B_WRITE_ONLY | B_CREATE_FILE);
            WriteToCTFile (&ctFile, &compileTimeStr);
         }
-           
+
         ctFile.Unset();
     }
-    
+
     return strdup (compileTimeStr.String());
 }
 
@@ -813,21 +813,21 @@ void Beezer::ShowCreateFilePanel ()
     CreateFilePanel (m_createFilePanel, B_SAVE_PANEL);
     BWindow *panelWnd = m_createFilePanel->Window();
     panelWnd->SetTitle (str (S_CREATE_PANEL_TITLE));
-    
+
     if (m_arkTypeField == NULL && panelWnd->LockLooper())
     {
         m_createFilePanel->SetButtonLabel (B_DEFAULT_BUTTON, str (S_CREATE));
-        
+
         BView *backView = panelWnd->ChildAt (0L);
         BButton *saveBtn = (BButton*)panelWnd->FindView ("default button");
         saveBtn->SetLabel (str (S_CREATE));
         BTextControl *textField = (BTextControl*)panelWnd->FindView ("text view");
         textField->ResizeBy (-20, 0);
         textField->TextView()->DisallowChar ('*');
-        
+
         if (m_arkTypePopUp)
            delete m_arkTypePopUp;
-        
+
         m_arkTypes = ArchiversInstalled (&m_arkExtensions);
         m_arkTypePopUp = BuildArchiveTypesMenu (this, &m_arkExtensions);
         m_arkTypeField = new BMenuField (BRect (textField->Frame().right + K_MARGIN,
@@ -835,7 +835,7 @@ void Beezer::ShowCreateFilePanel ()
                              "Beezer:arkTypeField", str (S_ARCHIVE_TYPE), (BMenu*)m_arkTypePopUp,
                              B_FOLLOW_BOTTOM, B_WILL_DRAW);
         m_arkTypeField->SetDivider (be_plain_font->StringWidth (str (S_ARCHIVE_TYPE)) + 5);
-        
+
         if (m_arkTypes.CountItems() > 0)
         {
            // Restore default archiver from prefs or set it to the LAST archiver on the list
@@ -844,16 +844,16 @@ void Beezer::ShowCreateFilePanel ()
            status_t wasFound = _prefs_misc.FindString (kPfDefaultArk, &arkType);
            if (wasFound == B_OK)
                item = m_arkTypePopUp->FindItem (arkType.String());
-           
+
            if (wasFound != B_OK || item == NULL)
                item = m_arkTypePopUp->ItemAt (m_arkTypePopUp->CountItems() - 1);
-           
+
            item->SetMarked (true);
            textField->SetText ((char*)m_arkExtensions.ItemAtFast(m_arkTypePopUp->IndexOf (item)));
         }
-        
+
         backView->AddChild (m_arkTypeField);
-        
+
         if (strlen(textField->Text()) == 0)
            saveBtn->SetEnabled (false);
 
@@ -861,7 +861,7 @@ void Beezer::ShowCreateFilePanel ()
         m_createFilePanel->SetMessage (new BMessage (M_CREATE_REQUESTED));
         m_createFilePanel->SetTarget (this);
     }
-    
+
     m_createFilePanel->Show();
 }
 
@@ -872,23 +872,23 @@ int8 Beezer::RegisterFileTypes () const
     const BString fileTypeFieldName = "BEOS:FILE_TYPES";
     app_info appInfo;
     be_app->GetAppInfo (&appInfo);
-    
+
     BNode appNode (&appInfo.ref);
     BMessage attrMsg;
     attr_info attrInfo;
     appNode.GetAttrInfo (fileTypeFieldName.String(), &attrInfo);
-    
+
     // This BMallocIO thing was suggested by mmu_man - many thanks to him!
     BMallocIO mio;
     mio.SetSize (attrInfo.size);
 
     appNode.ReadAttr (fileTypeFieldName.String(), B_MESSAGE_TYPE, 0, (void*)mio.Buffer(), attrInfo.size);
     attrMsg.Unflatten (&mio);
-    
+
     uint32 type;
     int32 count;
     BString mimeTypeStr;
-    
+
     attrMsg.GetInfo ("types", &type, &count);
     if (type != B_STRING_TYPE)
         return -1;
@@ -907,17 +907,17 @@ int8 Beezer::RegisterFileTypes () const
            {
                entry_ref ref;
                be_roster->FindApp (currentPreferredApp, &ref);
-               
+
                BString buf;
                if (!mimeType.IsInstalled())
                   buf = str (S_INSTALL_MIMETYPE);
                else
                   buf = str (S_MAKE_APP_PREFERRED);
-               
+
                buf.ReplaceAll ("%s", K_APP_TITLE);
                buf.ReplaceAll ("%o", ref.name);
                buf.ReplaceAll ("%t", mimeTypeStr.String());
-               
+
                int32 index = 2L;
                if (skipFurtherAlerts == false)
                {
@@ -927,25 +927,25 @@ int8 Beezer::RegisterFileTypes () const
                   confAlert->SetDefaultButton (confAlert->ButtonAt (1L));
                   index = confAlert->Go();
                }
-               
+
                alreadyAssociated = false;
                if (index == 2L)
                {
                   skipFurtherAlerts = true;
                   index = 1L;
                }
-               
+
                if (index == 1L)
                {
                   if (!mimeType.IsInstalled())
                       mimeType.Install();
-                  
+
                   mimeType.SetPreferredApp (K_APP_SIGNATURE, B_OPEN);
                   regCount++;
                }
            }
         }
-    
+
     if (alreadyAssociated)
         return 0L;
     else if (regCount != 0)
@@ -962,7 +962,7 @@ BMenu* Beezer::BuildToolsMenu () const
     // neither do BMenuItems
     BMessage toolsMenuMsg;
     m_toolsMenu->Archive (&toolsMenuMsg, true);
-    
+
     return new BMenu (&toolsMenuMsg);
 }
 

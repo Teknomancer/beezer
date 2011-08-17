@@ -2,7 +2,7 @@
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -47,7 +47,7 @@ enum LanguageNames
 };
 
 
-// NOTE:: 
+// NOTE::
 // If you add any new language strings please add which version of the code has it been added
 // in, notice that 0.06 upwards these labels are present as 0.04, 0.05 had same labels and Zeta 0.04
 // language file is as per that order
@@ -430,10 +430,10 @@ enum LanguageStrings
         S_PREFS_MISC_STARTUP,
         S_PREFS_MISC_CREATE,
         S_PREFS_MISC_OPEN,
-        
+
     S_TOOLBAR_TOOLS,                  // 0.07 starts here
     S_TOOLS,
-    S_BUBBLEHELP_TOOLS,    
+    S_BUBBLEHELP_TOOLS,
     S_FILE_SPLITTER_TITLE,               // Splitter strings
     S_FILE_SPLITTER_DESC,
     S_FILE_SPLITTER_DESC2,
@@ -479,7 +479,7 @@ enum LanguageStrings
     S_CLOSE_AFTER_SPLIT,
     S_STUB_DIR_NOT_FOUND,
     S_STUB_NAME,
-    
+
     S_FILE_JOINER_TITLE,                      // Joiner strings
     S_FILE_JOINER_DESC,
     S_FILE_JOINER_DESC2,
@@ -499,7 +499,7 @@ enum LanguageStrings
     S_JOIN_ERROR,
     S_FORCE_JOIN_CLOSE_WARNING,
     S_CLOSE_AFTER_JOIN,
-    
+
     S_PREFS_EXTRACT_DRAG_PATH,                      // 0.09 starts here
     S_TA_TITLE,                                    // TA - Tracker Addon stuff
     S_TA_ARCHIVE_NAME,
@@ -517,7 +517,7 @@ enum LanguageStrings
     S_TA_SETTINGS,
     S_TA_PASSWORD,
     S_FORCE_ADDON_CLOSE_WARNING,
-    
+
     S_PREFS_INTERFACE_DEFAULTS,                      // 0.09 preference::interface!!
     S_PREFS_INTERFACE_TOOLBAR,
     S_PREFS_INTERFACE_INFOBAR,

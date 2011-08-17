@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -43,13 +43,13 @@ const char
     *const kMultimediaCompress =      "Multimedia compression",
     *const kRecoveryRecord =          "Add recovery record",
     *const kRecurse =                 "Recurse into folders",
-    
+
     *const kExtracting =              "While Extracting",
     *const kAlwaysOverwrite =         "Always overwrite (Default)",
     *const kNoOverwrite =             "Never overwrite existing files",
     *const kUpdate =                  "Update files, create if needed",
     *const kFreshen =                 "Freshen existing files, create none",
-    
+
     *const kOtherOptions =            "Other Options",
     *const kKeepBroken =              "Keep broken extracted files",
     *const kProcessAttributes =       "Process attributes";

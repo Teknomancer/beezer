@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -62,7 +62,7 @@ void LogTextView::InitSelf ()
 {
     // Initialise members
     m_contextMenu = NULL;
-    
+
     // Initialise methods
     MakeEditable (false);
     SetWordWrap (false);
@@ -86,27 +86,27 @@ void LogTextView::AddText (const char *text, bool newLine, bool capitalizeFirstL
         Insert (textLen, "\n", 1);
         textLen++;
     }
-    
+
     // Count trailing newline character if any
     int32 byteLenOfText = strlen (text);
     if (text[byteLenOfText - 1] == '\n')
         byteLenOfText--;
-    
+
     // Skip all leading spaces
     if (trimLeadingSpaces == true)
         while (*text == ' ')
            text++;
-    
+
     BString outText = text;
     outText.RemoveAll ("\n");
 
     if (capitalizeFirstLetter == true)
        outText[0] = toupper(outText[0]);
-    
+
     Insert (textLen, outText.String(), byteLenOfText);
     ScrollToSelection();
 }
-    
+
 //=============================================================================================================//
 
 void LogTextView::MouseDown (BPoint point)
@@ -119,7 +119,7 @@ void LogTextView::MouseDown (BPoint point)
     {
         BPoint screenPt = point;
         BRect openRect (point.x - 2, point.y - 2, point.x + 2, point.y + 2);
-        
+
         ConvertToScreen (&screenPt);
         ConvertToScreen (&openRect);
 
@@ -143,7 +143,7 @@ void LogTextView::Copy ()
     {
         const char *text = Text();
         uint32 len = strlen (text);
-        
+
         if (len > 0L)
         {
            // Now copy the buffer to the clipboard
@@ -167,7 +167,7 @@ void LogTextView::Copy ()
         // Now remove the selection (if there was any)
         if (selStart != selEnd)
            Select (selEnd, selEnd);
-    }    
+    }
 }
 
 //=============================================================================================================//

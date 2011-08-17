@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -45,7 +45,7 @@ class ListEntry : public CLVEasyItem
         ListEntry (uint32 level, bool superitem, bool expanded, BBitmap* icon, char* text0, char* text1,
                  char* text2, char *text3, char *text4, char *text5, char *text6, char *text7,
                  const char *dirPath, const char *fullPath, int32 length, int32 packed, time_t timeValue);
-        
+
         // Public hooks
         void               Update (ListEntry *newItem);
 

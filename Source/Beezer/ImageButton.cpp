@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -71,17 +71,17 @@ ImageButton::ImageButton (BRect frame, const char *name, const char *text, BBitm
     }
     else
         m_buttonText = NULL;
-    
+
     m_marginWidth = 5;
     m_marginHeight = 4;
-    
+
     BFont font (be_plain_font);
     font.SetSize (font.Size() > 10.0 ? 10 : font.Size());
     font_height fontHeight;
     font.GetHeight (&fontHeight);
     SetFont (&font);
     m_fontPlacement = fontHeight.ascent + fontHeight.descent - 1;
-    
+
     // Calculate the tinted colours for our edges
     m_lightEdge = K_WHITE_COLOR;
     m_lightEdge2 = m_backColor; m_lightEdge2.red -= 40; m_lightEdge2.green -= 40; m_lightEdge2.blue -= 40;
@@ -105,7 +105,7 @@ void ImageButton::SetContextMenu (BPopUpMenu *menu)
 {
     if (m_contextMenu)
         delete m_contextMenu;
-    
+
     m_contextMenu = menu;
     m_popUpMenu = true;
     Invalidate ();
@@ -116,13 +116,13 @@ void ImageButton::SetContextMenu (BPopUpMenu *menu)
 void ImageButton::Draw (BRect updateRect)
 {
     SetViewColor (B_TRANSPARENT_COLOR);
-    
+
     if (m_isPushed && m_mouseInside == true)
     {
         PushButton (updateRect);
         return BView::Draw (updateRect);
     }
-    
+
     // Erase everything & redraw borders
     MovePenTo (0, 0);
     SetHighColor (m_backColor);
@@ -132,7 +132,7 @@ void ImageButton::Draw (BRect updateRect)
         DrawOutsideEdge (updateRect);
         DrawShinyEdge (updateRect, false);
     }
-    
+
     // Draw the picture & render the text on its left, check for 'activeness'
     // and for missing data as well (in case we have NULL bmps or text)
     SetDrawingMode (B_OP_ALPHA);
@@ -149,7 +149,7 @@ void ImageButton::Draw (BRect updateRect)
                MovePenBy (-kContextWidth / 2.0, 0);
         }
     }
-    
+
     if (m_isEnabled)
     {
         if (m_clickBitmap)
@@ -164,7 +164,7 @@ void ImageButton::Draw (BRect updateRect)
         else if (m_clickBitmap)
            DrawBitmapAsync (m_clickBitmap);
     }
-    
+
     SetDrawingMode (B_OP_COPY);
     if (m_textPosition == kRightOfIcon)
     {
@@ -184,7 +184,7 @@ void ImageButton::Draw (BRect updateRect)
         if (m_popUpMenu)
            MovePenBy (-kContextWidth/2.0,0);
     }
-    
+
     // SetHighColor (foreground) and LowColor (to background color) for proper anti-aliasing
     SetLowColor (m_backColor);
     if (m_isEnabled == false)
@@ -196,17 +196,17 @@ void ImageButton::Draw (BRect updateRect)
            DrawString (m_buttonText);
         MovePenTo (origPt);
     }
-    
+
     SetHighColor (m_isEnabled == true ? K_BLACK_COLOR : tint_color (m_backColor, B_DISABLED_LABEL_TINT));
     if (m_buttonText)
         DrawString (m_buttonText);
-    
+
     if (m_popUpMenu)
     {
         BRect bounds (Bounds());
         DrawContextMenuTriangle (BPoint (bounds.right- kContextWidth + 1, bounds.bottom / 2.0 - 5));
     }
-    
+
     BView::Draw (updateRect);
 }
 
@@ -217,7 +217,7 @@ void ImageButton::DrawContextMenuTriangle (BPoint topLeftPoint)
     // Draws the down-pointing triangle
     rgb_color slightlyDarker = m_darkEdge1;
     slightlyDarker.red -= 30; slightlyDarker.green -= 30; slightlyDarker.blue -= 30;
-    
+
     SetHighColor (slightlyDarker);
     BPoint topRightPoint = topLeftPoint;
     topRightPoint.x += 8;
@@ -250,9 +250,9 @@ void ImageButton::DrawContextMenuTriangle (BPoint topLeftPoint)
 
 void ImageButton::MouseMoved (BPoint point, uint32 status, const BMessage *dragInfo)
 {
-    // Handle the mouse -- Don't alter this unless you know what you are doing    
+    // Handle the mouse -- Don't alter this unless you know what you are doing
     int32 buttons = Window()->CurrentMessage()->FindInt32 ("buttons");
-    
+
     switch (status)
     {
         case B_ENTERED_VIEW:
@@ -273,16 +273,16 @@ void ImageButton::MouseMoved (BPoint point, uint32 status, const BMessage *dragI
                   else
                       rect.right = rect.right - kContextWidth - 4;
                }
-               
+
                if (rect.Contains (point))
                   Invalidate (rect);
            }
            else if (m_hoverHighlight == true && buttons == 0 && m_borders == true)
                HighlightNow (false);
-           
+
            break;
         }
-        
+
         case B_INSIDE_VIEW:
         {
            if (!Window()->IsActive())
@@ -292,10 +292,10 @@ void ImageButton::MouseMoved (BPoint point, uint32 status, const BMessage *dragI
                HighlightNow (false);
 
            m_mouseInside = true;
-           
+
            break;
         }
-        
+
         case B_EXITED_VIEW:
         {
            m_mouseInside = false;
@@ -348,7 +348,7 @@ void ImageButton::DrawShinyEdge (BRect bounds, bool isPressing)
     // Draw the four edges. isPressing determines which colour goes to which edge (to give pressed effect)
     if (m_borders == false)
         return;
-    
+
     if (isPressing == false)
     {
         int8 lineCount = 4L;
@@ -360,11 +360,11 @@ void ImageButton::DrawShinyEdge (BRect bounds, bool isPressing)
         AddLine (BPoint (1, 1), BPoint (1, bounds.bottom - 1), m_lightEdge);
         AddLine (BPoint (2, bounds.bottom - 1), BPoint (bounds.right - 1, bounds.bottom - 1), m_lightEdge2);
         AddLine (BPoint (bounds.right - 1 , 1), BPoint (bounds.right - 1, bounds.bottom - 1), m_lightEdge2);
-    
+
         // Draw popup menu separator line
         if (m_popUpMenu == true)
         {
-           BPoint sepPtTop (bounds.right - kContextWidth - 3, bounds.top + 1); 
+           BPoint sepPtTop (bounds.right - kContextWidth - 3, bounds.top + 1);
            BPoint sepPtBtm (bounds.right - kContextWidth - 3, bounds.bottom - 1);
            AddLine (sepPtTop, sepPtBtm, m_lightEdge2);
            sepPtTop.y-=1;
@@ -384,11 +384,11 @@ void ImageButton::DrawShinyEdge (BRect bounds, bool isPressing)
         AddLine (BPoint (1, 1), BPoint (1, bounds.bottom - 1), m_darkEdge2);
         AddLine (BPoint (1, bounds.bottom), BPoint (bounds.right, bounds.bottom), m_lightEdge);
         AddLine (BPoint (bounds.right, 1), BPoint (bounds.right, bounds.bottom - 1), m_lightEdge);
-        
+
         AddLine (BPoint (2, bounds.bottom - 1), BPoint (bounds.right - 1, bounds.bottom - 1), m_backColor);
         AddLine (BPoint (bounds.right - 1 , 1), BPoint (bounds.right - 1, bounds.bottom - 1), m_backColor);
     }
-        
+
     EndLineArray();
 }
 
@@ -412,7 +412,7 @@ void ImageButton::MouseDown (BPoint point)
     }
     else
         bounds = Bounds();
-    
+
     if (bounds.Contains (point) == true && m_isClickable == true && m_isEnabled == true)
     {
         m_isPushed = true;
@@ -421,7 +421,7 @@ void ImageButton::MouseDown (BPoint point)
         if (m_drawingTriangle && m_contextMenu)
         {
            // Bug-fix: now clicking several times in the triangle region doesn't show context menu
-           // again and again - this happened because of SetMouseEventMask which sends us mouseDOWNs 
+           // again and again - this happened because of SetMouseEventMask which sends us mouseDOWNs
            // even though we try and ignore it in ShowContextMenu()
            BPoint curPoint; uint32 buttons;
            GetMouse (&curPoint, &buttons, false);    // Important that current state of mouse is here
@@ -429,7 +429,7 @@ void ImageButton::MouseDown (BPoint point)
                ShowContextMenu (point);
         }
     }
-    
+
     return;
 }
 
@@ -439,7 +439,7 @@ void ImageButton::MouseUp (BPoint point)
 {
     if (m_isEnabled == false || Window()->IsActive() == false)
         return;
-    
+
     BRect bounds (Bounds());
     if (bounds.Contains (point) == false)
     {
@@ -448,7 +448,7 @@ void ImageButton::MouseUp (BPoint point)
         Invalidate ();
         return;
     }
-    
+
     if (m_popUpMenu && m_borders && m_firstClick == false && m_isPushed == true)
     {
         BRect triBounds = bounds;
@@ -463,7 +463,7 @@ void ImageButton::MouseUp (BPoint point)
            }
            return;
         }
-        
+
         if (m_drawingTriangle == true)
         {
            m_drawingTriangle = false;
@@ -472,7 +472,7 @@ void ImageButton::MouseUp (BPoint point)
            return;
         }
     }
-    
+
     Draw (bounds);
     DrawOutsideEdge (bounds);
     DrawShinyEdge (bounds, false);
@@ -511,7 +511,7 @@ void ImageButton::PushButton (BRect rect)
     // Give a pushed button effect
     if (m_firstClick == true || m_isEnabled == false || m_isClickable == false)
         return;
-    
+
     BRect bounds (rect);
     DrawOutsideEdge (bounds);
     DrawShinyEdge (bounds, true);
@@ -547,17 +547,17 @@ void ImageButton::PushButton (BRect rect)
            MovePenTo (m_marginWidth + 1, m_marginHeight + 1);
         else
            MovePenTo (bounds.Width() / 2.0 - 10.0 + 1, m_marginHeight + 1);
-        
+
         if (m_popUpMenu)
            MovePenBy (1, 0);
     }
-    
+
     if (m_clickBitmap)
         DrawBitmapAsync (m_clickBitmap);
     else if (m_disabledBitmap)
         DrawBitmapAsync (m_disabledBitmap);
-    
-    SetDrawingMode (B_OP_COPY);    
+
+    SetDrawingMode (B_OP_COPY);
     SetHighColor (K_BLACK_COLOR);
     SetLowColor (m_backColor);
     if (m_textPosition == kRightOfIcon)
@@ -575,14 +575,14 @@ void ImageButton::PushButton (BRect rect)
            MovePenTo (viewWidth / 2.0 - strWidth / 2.0 + 1, 20 + m_marginHeight + 1 + m_fontPlacement);
         else
            MovePenTo (viewWidth / 2.0 - strWidth / 2.0 + 1, m_marginHeight + 1 + m_fontPlacement);
-        
+
         if (m_popUpMenu)
            MovePenBy (1, 0);
     }
-    
+
     if (m_buttonText)
         DrawString (m_buttonText);
-        
+
     // Darkening the pushed down button (only when borders are on)
     if (m_borders)
     {
@@ -605,11 +605,11 @@ void ImageButton::GetPreferredSize (float *width, float *height)
            *height = m_marginHeight + 20 + m_marginHeight - 1;
         else
            *height = 2 * m_marginHeight + m_fontPlacement + 2;
-        
+
         *width = m_marginWidth + 20 + m_marginWidth - 1;
         return;
     }
-    
+
     // Calculate the height of the view, leave width as it is
     if (m_textPosition == kRightOfIcon)
     {
@@ -617,7 +617,7 @@ void ImageButton::GetPreferredSize (float *width, float *height)
            *height = m_marginHeight + 20 + m_marginHeight - 1;
         else
            *height = 2 * m_marginHeight + m_fontPlacement + 2;
-        
+
         *width = 2 * m_marginWidth + 20 + m_marginWidth + StringWidth (m_buttonText);
         return;
     }
@@ -628,14 +628,14 @@ void ImageButton::GetPreferredSize (float *width, float *height)
         else
            *height = 2 * m_marginHeight + m_fontPlacement + 2;
     }
-    
+
     if (m_borders == false)
         *height -= 4;
-    
+
     *width = Bounds().Width();
     if (m_popUpMenu)
         *width += kContextWidth;
-    
+
     if (m_buttonText)
         if (StringWidth (m_buttonText) > *width)
            *width += (StringWidth (m_buttonText) - *width) + 2 * m_marginWidth;
@@ -665,7 +665,7 @@ status_t ImageButton::SetMargin (float width, float height)
         else
            retVal = B_ERROR;
     }
-    
+
     if (height != -1)
     {
         if (height > 0 && height <= 10)
@@ -673,7 +673,7 @@ status_t ImageButton::SetMargin (float width, float height)
         else
            retVal = B_ERROR;
     }
-    
+
     Invalidate ();
     return retVal;
 }
@@ -747,12 +747,12 @@ void ImageButton::WindowActivated (bool state)
     BPoint pt;
     uint32 buttons;
     GetMouse (&pt, &buttons, false);
-    
+
     if (Bounds().Contains (pt) && state == true)
         m_mouseInside = true;
     else
         m_mouseInside = false;
-    
+
     Invalidate ();
 
     BView::WindowActivated (state);
@@ -795,7 +795,7 @@ void ImageButton::ShowContextMenu (BPoint point)
 {
     if (m_contextMenu == NULL)
         return;
-    
+
     point.x = 1;
     point.y = Bounds().Height() + 1;
     BPoint screenPt = point;
@@ -807,7 +807,7 @@ void ImageButton::ShowContextMenu (BPoint point)
     // Thank god Be, Inc. gave the BRect argument in Go() of BPopUpMenu class :)
     BRect ignoreClickRect (point.x, point.y - Bounds().Height() - 1, point.x + Bounds().Width(),
            point.y + Bounds().Height());
-    
+
     ConvertToScreen (&screenPt);
     ConvertToScreen (&ignoreClickRect);
 

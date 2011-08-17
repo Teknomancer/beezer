@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -82,12 +82,12 @@ ListEntry::ListEntry (uint32 level, bool superitem, bool expanded, BBitmap *icon
 
     m_length = length;
     m_packed = packed;
-    
+
     if (text3)
         m_ratio = (int8)atoi(text3);
     else
         m_ratio = 0;
-    
+
     m_dirPath = dirPath;
     m_fullPath = fullPath;
     m_added = false;
@@ -101,7 +101,7 @@ void ListEntry::Update (ListEntry *newItem)
     // Never ever replace file with folder
     if (newItem->IsSuperItem() == true)
         return;
-    
+
     // Possible update fields: are size, packed, ratio, date, method, crc - i.e. 3, 4, 5, 7, 8, 9
     const char *size = newItem->GetColumnContentText (3);
     const char *packed = newItem->GetColumnContentText (4);

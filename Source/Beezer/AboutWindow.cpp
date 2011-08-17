@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -94,7 +94,7 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
 {
     SetFeel (B_MODAL_APP_WINDOW_FEEL);
     SetLook (B_MODAL_WINDOW_LOOK);
-        
+
     // Create the BBitmap objects and set its data with error checking
     BBitmap *titleBmp = BTranslationUtils::GetBitmap ('PNG ', "Img:AboutBox");
     if (titleBmp == NULL)
@@ -106,12 +106,12 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
         Show();
         return;
     }
-    
+
     BRect bounds (Bounds());
     m_backView = new BView (bounds, "AboutWindow:BackView", B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     AddChild (m_backView);
     m_backView->SetViewBitmap (titleBmp);
-    
+
     delete titleBmp;
 
     m_textView = new MarqueeView (BRect (15, 130, bounds.right - 15, bounds.bottom - 45),
@@ -125,7 +125,7 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
     m_textView->SetViewColor (m_backView->ViewColor());
     m_textView->SetFontAndColor (be_plain_font, B_FONT_ALL, &K_BLACK_COLOR);
     m_textView->Hide();
-    
+
     // Calculate no of '\n's to leave to make the text go to the bottom, calculate the no. of lines
     font_height fntHt;
     m_textView->GetFontHeight (&fntHt);
@@ -156,7 +156,7 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
     formatStr.ReplaceAll ("$S_SPECIAL_THANKS$", str (S_ABOUT_SPECIAL_THANKS));
 
     m_creditsText = strdup (formatStr.String());
-    
+
     m_textView->SetText (m_lineFeeds.String());
     m_textView->Insert (m_lineFeeds.Length(), m_creditsText, strlen (m_creditsText));
 
@@ -193,7 +193,7 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
            m_textView->SetFontAndColor (strt, strt + strlen(subHeadings[i].String()),
                          be_plain_font, B_FONT_ALL, &K_ABOUT_SUB_HEADING);
         }
-    
+
     // Search and color main headings
     for (int32 i = 0; i < nMainHeadings; i++)
         if ((strt = temp.FindFirst (mainHeadings[i].String())) != B_ERROR)
@@ -202,7 +202,7 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
                          be_plain_font, B_FONT_ALL, &K_ABOUT_MAIN_HEADING);
         }
 
-    // Center window on-screen    
+    // Center window on-screen
     BRect screen_rect (BScreen().Frame());
     MoveTo (screen_rect.Width() / 2 - Frame().Width() / 2, screen_rect.Height() / 2 - Frame().Height() / 2);
 
@@ -212,7 +212,7 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
 
     Show();
     resume_thread (m_scrollThreadID);
-}    
+}
 
 //=============================================================================================================//
 
@@ -236,7 +236,7 @@ void AboutWindow::DispatchMessage (BMessage *message, BHandler *handler)
            break;
         }
     }
-           
+
     BWindow::DispatchMessage (message, handler);
 }
 
@@ -271,14 +271,14 @@ int32 AboutWindow::_scroller (void *data)
            vw->ScrollBy (0, 1);
         else
            return 0;
-        
+
         if (vw->Bounds().bottom > ptY)
            vw->ScrollTo (0, 0);
-        
+
         wnd->Unlock();
         snooze (K_SCROLL_DELAY);
     }
-    
+
     return 0;
 }
 

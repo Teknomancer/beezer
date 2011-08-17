@@ -26,7 +26,7 @@
  */
 
 //*** DESCRIPTION ***
-//Useful until be implements BBitmap::BBitmap(BRect bounds, color_space space, const void *data, 
+//Useful until be implements BBitmap::BBitmap(BRect bounds, color_space space, const void *data,
 //                                          bool acceptsViews, bool needsContiguousMemory)
 //or something like it...
 

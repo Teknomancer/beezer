@@ -71,7 +71,7 @@ CLVEasyItem::CLVEasyItem(uint32 level, bool superitem, bool expanded, float minh
 : CLVListItem(level,superitem,expanded,minheight)
 {
     text_offset = 0.0;
-    full_line_select = fullLineSelect;    // Ram    
+    full_line_select = fullLineSelect;    // Ram
 }
 
 
@@ -243,13 +243,13 @@ void CLVEasyItem::DrawItemColumn(BView *owner, BRect item_column_rect, int32 col
         color = ((ColumnListView*)owner)->ItemSelectColor();
     else
         color = owner->ViewColor();
-        
+
     owner->SetLowColor(color);
     owner->SetDrawingMode(B_OP_COPY);
 
     // Ram added support for full_line_select == false
     if (full_line_select == true)
-    {    
+    {
         if (selected || complete)
         {
            owner->SetHighColor(color);
@@ -257,17 +257,17 @@ void CLVEasyItem::DrawItemColumn(BView *owner, BRect item_column_rect, int32 col
         }
     }
     else    // Else part by Ram
-    {    
+    {
         if((selected || complete) && (column_index == 2))
         {
            owner->SetHighColor (color);
-    
+
            BRect rect = item_column_rect;
            rect.left += 2.0;
            rect.top += text_offset - ceil (FontAttributes.ascent);
            rect.bottom -= ((text_offset - ceil(FontAttributes.ascent)) / 2.0);
            rect.right = rect.left + owner->StringWidth((char*)m_column_content.ItemAt(2)) + 6.0;
-    
+
            owner->FillRect(rect);
         }
         else if (complete && (column_index == 0))
@@ -276,8 +276,8 @@ void CLVEasyItem::DrawItemColumn(BView *owner, BRect item_column_rect, int32 col
            owner->SetHighColor (owner->ViewColor());
            owner->FillRect (item_column_rect);
         }
-    }    
-    
+    }
+
     if(column_index == -1)
         return;
 
@@ -322,7 +322,7 @@ void CLVEasyItem::DrawItemColumn(BView *owner, BRect item_column_rect, int32 col
                owner->SetLowColor (owner->ViewColor());
            }
         }
-           
+
         if(type == CLVColTruncateText)
         {
            if(needs_truncation)
@@ -355,9 +355,9 @@ void CLVEasyItem::DrawItemColumn(BView *owner, BRect item_column_rect, int32 col
                float string_width = font.StringWidth(text);
                //draw_point.Set(item_column_rect.right-2.0-string_width,item_column_rect.top+text_offset);
                // Ram
-               draw_point.Set(item_column_rect.right-6.0-string_width,item_column_rect.top+text_offset);               
+               draw_point.Set(item_column_rect.right-6.0-string_width,item_column_rect.top+text_offset);
            }
-           
+
            owner->DrawString(text,draw_point);
         }
     }
@@ -406,7 +406,7 @@ int CLVEasyItem::CompareItems(const CLVListItem *a_Item1, const CLVListItem *a_I
     if(Item1 == NULL || Item2 == NULL || Item1->m_column_types.CountItems() <= KeyColumn ||
         Item2->m_column_types.CountItems() <= KeyColumn)
         return 0;
-    
+
     int32 type1 = ((int32)Item1->m_column_types.ItemAt(KeyColumn)) & CLVColTypesMask;
     int32 type2 = ((int32)Item2->m_column_types.ItemAt(KeyColumn)) & CLVColTypesMask;
 
@@ -427,7 +427,7 @@ int CLVEasyItem::CompareItems(const CLVListItem *a_Item1, const CLVListItem *a_I
         text2 = (const char*)Item2->m_column_content.ItemAt(KeyColumn);
     else if(type2 == CLVColTruncateUserText || type2 == CLVColUserText)
         text2 = Item2->GetUserText(KeyColumn,-1);
-    
+
     return strcasecmp(text1,text2);
 }
 
@@ -477,7 +477,7 @@ void CLVEasyItem::ColumnWidthChanged(int32 column_index, float column_width, Col
     BRect* cached_rect = (BRect*)m_cached_rects.ItemAt(column_index);
     if(cached_rect == NULL || *cached_rect == BRect(-1,-1,-1,-1))
         return;
-    float width_delta = column_width-(cached_rect->right-cached_rect->left);        
+    float width_delta = column_width-(cached_rect->right-cached_rect->left);
     cached_rect->right += width_delta;
 
     int num_columns = m_cached_rects.CountItems();

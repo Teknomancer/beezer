@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -98,7 +98,7 @@ void ToolBar::Draw (BRect updateRect)
     SetHighColor (ViewColor());
     StrokeRect (rect);
     RenderEdges ();
-    
+
     _inherited::Draw (updateRect);
 }
 
@@ -120,7 +120,7 @@ inline void ToolBar::RenderEdges ()
         rightLimit = m_ptToDraw.x - 3;
     else
         rightLimit = bounds.right;
-    
+
     // Draw the dark borders first
     AddLine (BPoint (0, bounds.bottom), BPoint (bounds.right, bounds.bottom), midColDark);
     AddLine (BPoint (0, bounds.bottom - 1), BPoint (rightLimit, bounds.bottom - 1), midCol);
@@ -128,7 +128,7 @@ inline void ToolBar::RenderEdges ()
     // Draw the light edges
     AddLine (BPoint (0, 0), BPoint (0, bounds.bottom - 1), m_lightEdge);
     AddLine (BPoint (0, 0), BPoint (rightLimit, 0), m_lightEdge);
-    
+
     EndLineArray();
 }
 
@@ -138,7 +138,7 @@ float ToolBar::AddSeparatorItem (bool finalSeparator)
 {
     rgb_color midCol = m_darkEdge1;
     midCol.red += 20; midCol.green += 20; midCol.blue += 20;
-    
+
     float xPt = m_ptToDraw.x;
     for (int32 i = 0L; i < 1; i++)
     {
@@ -146,7 +146,7 @@ float ToolBar::AddSeparatorItem (bool finalSeparator)
                              "Toolbar:Separator", B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
         sepViewEdge1->SetViewColor (midCol);
         m_ptToDraw.x++;
-        
+
         BView *sepView = new BView (BRect (m_ptToDraw.x, 0, m_ptToDraw.x, Bounds().bottom - 1),
                              "ToolBar:Separator", B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
         sepView->SetViewColor (m_darkEdge2);
@@ -161,10 +161,10 @@ float ToolBar::AddSeparatorItem (bool finalSeparator)
            AddChild (sepViewEdge2);
            m_separatorList.AddItem ((void*)sepViewEdge2);
         }
-        
+
         AddChild (sepViewEdge1);
         AddChild (sepView);
-        
+
         if (finalSeparator)
         {
            m_finalSepEdge = sepViewEdge1;
@@ -177,11 +177,11 @@ float ToolBar::AddSeparatorItem (bool finalSeparator)
                m_finalSep->Hide();
            }
         }
-        
+
         m_separatorList.AddItem ((void*)sepView);
         m_separatorList.AddItem ((void*)sepViewEdge1);
     }
-    
+
     m_ptToDraw.x ++;
     return xPt;        // Return the floating-point x co-ordinate
 }
@@ -203,10 +203,10 @@ void ToolBar::MouseDown (BPoint point)
     BMessage *message = Window()->CurrentMessage();
     if (message->FindInt32 ("buttons", &button) != B_OK)
         return;
-    
+
     if (button == B_SECONDARY_MOUSE_BUTTON)
         Toggle();
-    
+
     _inherited::MouseDown (point);
 }
 
@@ -217,25 +217,25 @@ void ToolBar::Toggle ()
     static float unHiddenHeight = Frame().Height() - m_vertGap;
     int32 buttonCount = m_buttonList.CountItems();
     int32 seperatorCount = m_separatorList.CountItems();
-    
+
     if (!m_isHidden)
     {
         for (int32 i = 0L; i < buttonCount; i++)
            ((ImageButton*)m_buttonList.ItemAtFast(i))->Hide();
-        
+
         for (int32 i = 0L; i < seperatorCount; i++)
            ((BView*)m_separatorList.ItemAtFast(i))->Hide();
-        
+
         ResizeBy (0, -unHiddenHeight);
     }
     else
     {
         for (int32 i = 0L; i < buttonCount; i++)
            ((ImageButton*)m_buttonList.ItemAtFast(i))->Show();
-        
+
         for (int32 i = 0L; i < seperatorCount; i++)
            ((BView*)m_separatorList.ItemAtFast(i))->Show();
-    
+
         ResizeBy (0, unHiddenHeight);
     }
 
@@ -262,7 +262,7 @@ void ToolBar::SetEnabled (bool enable)
 {
     if (m_isEnabled == enable)
         return;
-    
+
     m_isEnabled = enable;
     int32 buttonCount = m_buttonList.CountItems();
     for (int32 i = 0L; i < buttonCount; i++)
@@ -293,7 +293,7 @@ void ToolBar::Redraw ()
     // Called when preferences have changed
     if (m_finalSepEdge == NULL || m_finalSep == NULL)
         return;
-    
+
     // If full length bars are needed by user then hide the final separators
     if (_prefs_interface.FindBoolDef (kPfFullLengthBars, false) == true)
     {

@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -84,7 +84,7 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
                                 Bounds().right - 1.0, commentBmp->Bounds().Height() + 4 * K_MARGIN + 1),
                                 "CommentWindow:SepView1", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     m_backView->AddChild (sepView1);
-    
+
     // Add icon view, make it hold the picture
     StaticBitmapView *commentBmpView = new StaticBitmapView (BRect (K_MARGIN * 5, K_MARGIN * 2,
                              commentBmp->Bounds().Width() + K_MARGIN * 5,
@@ -92,7 +92,7 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
                              commentBmp);
     commentBmpView->SetViewColor (m_backView->ViewColor());
     AddChild (commentBmpView);
-    
+
     // Add the file name string view (align it vertically with the icon view)
     BStringView *fileNameStr = new BStringView (BRect (commentBmpView->Frame().right + K_MARGIN * 3,
                                     commentBmpView->Frame().top, Bounds().right - 1,
@@ -108,11 +108,11 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
                       bounds.right - K_MARGIN - B_V_SCROLL_BAR_WIDTH,
                       bounds.bottom - 2 * K_MARGIN - K_BUTTON_HEIGHT - B_H_SCROLL_BAR_HEIGHT),
                       "CommentWindow:TextView", BRect (2, 2, 100000, 0), B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
-    
+
     BetterScrollView *scrollView = new BetterScrollView ("CommentWindow:ScrollView", m_textView,
                                 B_FOLLOW_ALL_SIDES,    B_WILL_DRAW, true, true, true, B_PLAIN_BORDER);
     m_backView->AddChild (scrollView);
-    
+
     m_textView->SetWordWrap (false);
     m_textView->SetText (m_commentText);
     m_textView->DisallowChar (B_INSERT);
@@ -125,13 +125,13 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
     m_textView->DisallowChar (B_HOME);
     m_textView->DisallowChar (B_END);
     m_textView->SetMaxBytes (32768L);
-    
+
     if (displayFont != NULL)
         m_textView->SetFontAndColor (displayFont);
-    
+
     m_saveButton = new BButton (BRect (bounds.right - K_MARGIN - K_BUTTON_WIDTH,
                          bounds.bottom - K_MARGIN - K_BUTTON_HEIGHT, bounds.right - K_MARGIN,
-                         bounds.bottom - K_MARGIN), "CommentWindow:SaveButton", 
+                         bounds.bottom - K_MARGIN), "CommentWindow:SaveButton",
                          str (S_COMMENT_WINDOW_SAVE), new BMessage (M_SAVE_COMMENT),
                          B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW);
     m_backView->AddChild (m_saveButton);
@@ -148,13 +148,13 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
     float rightLimit = MAX (m_saveButton->Frame().Width() + m_closeButton->Frame().Width() + 3 * K_MARGIN,
                          fileNameStr->Frame().right + K_MARGIN * 5);
     SetSizeLimits (rightLimit, maxH, m_saveButton->Frame().Height() + 2 * K_MARGIN + 50, maxV);
-    
+
     BRect screen_rect (BScreen().Frame());
     MoveTo (screen_rect.Width() / 2 - Frame().Width() / 2, screen_rect.Height() / 2 - Frame().Height() / 2);
-    
+
     m_textView->MakeFocus (true);
     free ((char*)m_commentText);
-    
+
     // Load from prefs the window dimensions
     BRect frame;
     if (_prefs_windows.FindBoolDef (kPfCommentWnd, true))
@@ -163,7 +163,7 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
            MoveTo (frame.LeftTop());
            ResizeTo (frame.Width(), frame.Height());
         }
-    
+
     Show();
 }
 
@@ -190,12 +190,12 @@ void CommentWindow::MessageReceived (BMessage *message)
            const char *commentStr = m_textView->Text();
            if (commentStr && strlen (commentStr) > 0L)
                message->AddString (kCommentContent, commentStr);
-           
+
            m_callerWindow->PostMessage (message);
            m_closeButton->Invoke();
            break;
         }
-        
+
         default:
            BWindow::MessageReceived (message);
            break;

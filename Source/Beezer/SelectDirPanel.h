@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -39,7 +39,7 @@ class SelectDirPanel : public BFilePanel
                       bool allow_multiple_selection = true, BMessage *message = 0, BRefFilter * = 0,
                       bool modal = false, bool hide_when_done = true);
         ~SelectDirPanel ();
-        
+
         // Inherited hooks
         virtual void        SelectionChanged();
         void               Refresh();
@@ -52,7 +52,7 @@ class SelectDirPanel : public BFilePanel
     protected:
         // Protected hooks
         void               SendMessage (const BMessenger *target, BMessage *message);
-        
+
     private:
         // Private members
         BString            m_buttonLabel,

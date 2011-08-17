@@ -148,7 +148,7 @@ ColumnListView::~ColumnListView()
         if(Item)
            delete Item;
     }
-        
+
     //Remove and delete the container view if necessary
     if(!fScrollView->IsBeingDestroyed)
     {
@@ -158,7 +158,7 @@ ColumnListView::~ColumnListView()
 }
 
 
-CLVContainerView* ColumnListView::CreateContainer(bool horizontal, bool vertical, bool scroll_view_corner, 
+CLVContainerView* ColumnListView::CreateContainer(bool horizontal, bool vertical, bool scroll_view_corner,
     border_style border, uint32 ResizingMode, uint32 flags)
 {
     return new CLVContainerView(this,ResizingMode,flags,horizontal,vertical,scroll_view_corner,border);
@@ -445,7 +445,7 @@ bool ColumnListView::RemoveColumn(CLVColumn* Column)
     int32 ColumnIndex = fSortKeyList.IndexOf(Column);
     if(ColumnIndex >= 0)
         fSortKeyList.RemoveItem(ColumnIndex);
-        
+
     if(Column->fFlags & CLV_EXPANDER)
         fExpanderColumn = -1;
 
@@ -652,7 +652,7 @@ void ColumnListView::DisplayOrderChanged(const int32* order)
                   item = (CLVListItem*)fFullItemList.ItemAt(item_index);
                else
                   item = (CLVListItem*)ItemAt(item_index);
-               int32 DisplayIndex = IndexOf(item);    
+               int32 DisplayIndex = IndexOf(item);
                if(DisplayIndex >= 0 && ThisColumn->IsShown())
                {
                   BRect ThisColumnRect = ItemFrame(DisplayIndex);
@@ -675,7 +675,7 @@ void ColumnListView::DisplayOrderChanged(const int32* order)
                              ThisColumnRect.right = PushMax;
                       }
                   }
-               
+
                   if(ThisColumnRect.right >= ThisColumnRect.left)
                       item->FrameChanged(column,ThisColumnRect,this);
                   else
@@ -848,7 +848,7 @@ void ColumnListView::SetSorting(int32 NumberOfKeys, int32* SortKeys, CLVSortMode
            SetSortKey(SortKeys[0], false);
         else
            AddSortKey(SortKeys[Counter]);
-        
+
         SetSortMode(SortKeys[Counter],SortModes[Counter]);
     }
 
@@ -1152,7 +1152,7 @@ bool ColumnListView::AddItemPrivate(CLVListItem* item, int32 fullListIndex)
                //SuperItem itself isn't showing
                Visible = false;
         }
-        
+
         //Add the item to the full list
         if(!fFullItemList.AddItem(item,fullListIndex))
            return false;
@@ -1172,7 +1172,7 @@ bool ColumnListView::AddItemPrivate(CLVListItem* item, int32 fullListIndex)
                   else
                       PreviousItemPos--;
                }
-               
+
                //Add the item after the previous item, or first on the list
                bool Result;
                if(PreviousItemPos >= 0)
@@ -1641,7 +1641,7 @@ int ColumnListView::PlainBListSortFunc(BListItem** a_item1, BListItem** a_item2)
            CLVColumn* Column = (CLVColumn*)SortingContext->fSortKeyList.ItemAt(SortIteration);
            CompareResult = SortingContext->fCompare(item1,item2, &(SortingContext->fColumnList),
                              SortingContext->fColumnList.IndexOf(Column));
-                             
+
            if(Column->fSortMode == Descending)
                CompareResult = 0-CompareResult;
         }
@@ -1728,7 +1728,7 @@ void ColumnListView::SortListArray (CLVListItem** SortArray, int32 NumberOfItems
     if(fCompare == NULL)
         //No sorting function
         return;
-    
+
     Window()->Lock();        // Ram
 
     // Let the QuickSort work only when there are atleast 2 differing items in the column
@@ -1755,10 +1755,10 @@ void ColumnListView::QuickSort (CLVListItem **SortArray, int32 n)
     // ColumnListView now uses the hyper-fast QuickSort to do its sorting -- Ram
     if (n <= 1)
         return;
-    
+
     CLVListItem *pivot;
     int32 last = 0;
-    
+
     SwapItems (SortArray, 0, n / 2);
     pivot = SortArray[0];
 
@@ -1771,7 +1771,7 @@ void ColumnListView::QuickSort (CLVListItem **SortArray, int32 n)
         {
            CLVColumn* Column = (CLVColumn*)fSortKeyList.ItemAt(SortIteration);
            CompareResult = fCompare (SortArray[Counter1], pivot, &fColumnList, fColumnList.IndexOf(Column));
-           
+
            //if (CompareResult > 0)
            //    CompareResult = 1;
            //else if (CompareResult < 0)
@@ -1783,16 +1783,16 @@ void ColumnListView::QuickSort (CLVListItem **SortArray, int32 n)
         if (CompareResult < 0)
            SwapItems (SortArray, Counter1, ++last);
     }
-    
+
     SwapItems (SortArray, 0L, last);
-    
+
     QuickSort (SortArray, last);
     QuickSort (SortArray + last + 1, n - last - 1);
 }
 
 inline void ColumnListView::SwapItems (CLVListItem **list, int32 i, int32 j)
 {
-    CLVListItem *item = list[i];        // By Ram -- QuickSort's Swapping function 
+    CLVListItem *item = list[i];        // By Ram -- QuickSort's Swapping function
     list[i] = list[j];
     list[j] = item;
 }

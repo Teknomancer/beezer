@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -36,7 +36,7 @@ class ArchiveEntry
         ArchiveEntry (bool dir, const char *pathStr, const char *sizeStr, const char *packedStr,
                     const char *dateStr, time_t timeValue, const char *methodStr, const char *crcStr);
         ~ArchiveEntry ();
-        
+
         bool              m_isDir;
         time_t            m_timeValue;
         char             *m_nameStr,

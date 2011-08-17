@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -89,15 +89,15 @@ void RuleMgr::ReadRules (BEntry* rulesEntry)
     int32 len = B_MIME_TYPE_LENGTH+30;    // we don't care for extensions more than 30 characters long ;-P
     char buffer[len];
     BPath rulePath(rulesEntry);
-    
+
     std::fstream f (rulePath.Path(), std::ios::in);
     if (!f)
         return;
-    
+
     while (!f.eof())
     {
         f.getline (buffer, len, '\n');
-        
+
         // skip comments and blank lines
         if (buffer[0] == '#' || buffer[0] == '\0')
            continue;
@@ -106,7 +106,7 @@ void RuleMgr::ReadRules (BEntry* rulesEntry)
         BString mime, extension;
         int32 equalIndex = tempBuf.FindFirst ('=');
         int32 lineLen = tempBuf.Length();
-        
+
         if (equalIndex > 0 && equalIndex < lineLen)
         {
            // abcd=defg           assume "abcd" is mimetype and "defg" is extension
@@ -117,7 +117,7 @@ void RuleMgr::ReadRules (BEntry* rulesEntry)
            m_ruleList->AddItem (new MimeRule (mime.String(), extension.String()));
         }
     }
-    
+
     f.close();
 }
 
@@ -141,7 +141,7 @@ char* RuleMgr::ValidateFileType (BPath *filePath) const
         // xyz.zip           .zip
         // 0123457           0123
         //    (len7)           (len4)
-        
+
         // Check if extension matches
         if (foundIndex > 0 && foundIndex == fileName.Length() - rule->m_extension.Length())
         {
@@ -159,7 +159,7 @@ char* RuleMgr::ValidateFileType (BPath *filePath) const
         for (int32 i = 0; i < m_ruleList->CountItems(); i++)
         {
            MimeRule *rule = (MimeRule*)m_ruleList->ItemAtFast(i);
-    
+
            // Like say a .zip named "test" without any extension but with correct mime
            if (strcmp (rule->m_mime.String(), type) == 0)
            {
@@ -168,14 +168,14 @@ char* RuleMgr::ValidateFileType (BPath *filePath) const
            }
         }
     }
-        
+
     // No rules matched the extension for the mime type,
     // remove mime type and ask BeOS to set the correct type
     // This will also take place in case the rules file could not be opened (deleted,renamed or moved etc)
     // as CountItems() would be zero, the loop wouldn't have entered
     status_t result = nodeInfo.SetType ("application/octet-stream");
     update_mime_info (filePath->Path(), false, true, true);
-    
+
     if (result != B_OK && extensionIndex >= 0L)
     {
         // If extension matched but not mime type return a mime type from the rule's list
@@ -183,7 +183,7 @@ char* RuleMgr::ValidateFileType (BPath *filePath) const
         strcpy (mime, ((MimeRule*)m_ruleList->ItemAtFast (extensionIndex))->m_mime.String());
         return mime;
     }
-    
+
     // If no mime-type or extension matched, return NULL
     return NULL;
 }

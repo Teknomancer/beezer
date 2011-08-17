@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -41,11 +41,11 @@ class LogTextView : public BTextView
         LogTextView (BRect frame, const char *name, uint32 resizeMask, uint32 flags = B_WILL_DRAW);
         LogTextView (BRect frame, const char *name, const BFont *initialFont,
                      const rgb_color *initialColor, uint32 resizeMask, uint32 flags);
-        
+
         // Inherited hooks
         virtual void        MakeFocus (bool focused = true);
         virtual void        MouseDown (BPoint point);
-        
+
         // Additional hooks
         void                Copy ();
         void                SetContextMenu (BPopUpMenu *contextMenu);
@@ -55,7 +55,7 @@ class LogTextView : public BTextView
     private:
         // Private hooks
         void                InitSelf ();
-        
+
         // Private members
         BPopUpMenu         *m_contextMenu;
 };

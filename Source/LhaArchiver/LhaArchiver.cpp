@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -89,7 +89,7 @@ status_t LhaArchiver::ReadOpen (FILE *fp)
            permStr[25], sizeStr[25], uidgidStr[20], methodStr[25], packedStr[25], ratioStr[15], dayStr[5],
            monthStr[5], yearStr[8], hourStr[5], minuteStr[5], secondStr[5], dateStr[90], crcStr[25],
            pathStr[B_PATH_NAME_LENGTH + 1];
-    
+
     // Lha doesn't report the time for files (only date) hence we use the modification time of the
     // archive along with the corresponding date reported by lha
     time_t modTime;
@@ -100,21 +100,21 @@ status_t LhaArchiver::ReadOpen (FILE *fp)
     sprintf (hourStr, "%d", mod_tm.tm_hour);
     sprintf (minuteStr, "%d", mod_tm.tm_min);
     sprintf (secondStr, "%d", mod_tm.tm_sec);
-    
+
     do
     {
         fgets (lineString, len, fp);
     } while (!feof (fp) && (strstr (lineString, "----------" ) == NULL));
-    
+
     fgets (lineString, len, fp);
-    
+
     while (!feof (fp) && (strstr (lineString, "----------" ) == NULL))
     {
         lineString[strlen (lineString) - 1] = '\0';
-        
+
         if (strncmp (lineString, "[generic]", 9) == 0)
         {
-           sscanf (lineString, 
+           sscanf (lineString,
                "%[^ ] %[0-9] %[0-9] %[^ ] %[^ ] %[^ ] %[^ ] %[^ ] %[^ ]%[^\n]", permStr, packedStr, sizeStr,
                ratioStr, methodStr, crcStr, monthStr, dayStr, yearStr, pathStr);
         }
@@ -129,7 +129,7 @@ status_t LhaArchiver::ReadOpen (FILE *fp)
         // Workaround bug fix for files/folder with space before them
         BString pathString = pathStr;
         pathString.Remove (0, 1);
-        
+
         BString monthStrCorrect;
         monthStrCorrect << MonthStrToNum (monthStr);
 
@@ -142,7 +142,7 @@ status_t LhaArchiver::ReadOpen (FILE *fp)
         MakeTime (&timeStruct, &timeValue, dayStr, (char*)monthStrCorrect.String(), yearStr, hourStr,
                   minuteStr, secondStr);
         FormatDate (dateStr, 60, &timeStruct);
-        
+
         // Check to see if last char of pathStr = '/' add it as folder, else as a file
         uint16 pathLength = pathString.Length() - 1;
         if (pathString[pathLength] == '/' || permStr[0] == 'd')
@@ -155,7 +155,7 @@ status_t LhaArchiver::ReadOpen (FILE *fp)
            m_entriesList.AddItem (new ArchiveEntry (false, pathString.String(), sizeStr, packedStr, dateStr,
                                         timeValue, methodStr,crcStr));
         }
-        
+
         fgets (lineString, len, fp);
     }
 
@@ -168,29 +168,29 @@ status_t LhaArchiver::Open (entry_ref *ref, BMessage *fileList)
 {
     m_archiveRef = *ref;
     m_archivePath.SetTo (ref);
-    
+
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_lhaPath << "-v" << m_archivePath.Path();
-        
+
     FILE *out, *err;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;        // Handle lha unloadable error here
 
     status_t exitCode;
     resume_thread (tid);
-    
+
     close (errdes[1]);
     close (outdes[1]);
 
     out = fdopen (outdes[0], "r");
     exitCode = ReadOpen (out);
-    
+
     close (outdes[0]);
     fclose (out);
-    
+
     err = fdopen (errdes[0], "r");
     exitCode = Archiver::ReadErrStream (err, ":  zipfile is empty");
     close (errdes[0]);
@@ -206,7 +206,7 @@ status_t LhaArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
 {
     BEntry dirEntry;
     entry_ref dirRef;
-    
+
     dirEntry.SetTo (refToDir);
     status_t exitCode = BZR_DONE;
     if (progress)        // Perform output directory checking only when a messenger is passed
@@ -228,10 +228,10 @@ status_t LhaArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         if (type != B_STRING_TYPE)
            return BZR_UNKNOWN;
     }
-    
+
     // Setup argv, fill with selection names if needed
     BString comboArg = "-xfw="; comboArg << dirPath.Path();
-    
+
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_lhaPath << comboArg.String() << m_archivePath.Path();
 
@@ -242,11 +242,11 @@ status_t LhaArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         if (message->FindString (kPath, i, &pathString) == B_OK)
            m_pipeMgr << SupressWildcards (pathString);
     }
-    
+
     FILE *out;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;           // Handle lha unloadable error here
 
@@ -257,7 +257,7 @@ status_t LhaArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         status_t exitCode;
         wait_for_thread (tid, &exitCode);
     }
-    
+
     close (errdes[1]);
     close (outdes[1]);
 
@@ -267,14 +267,14 @@ status_t LhaArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         exitCode = ReadExtract (out, progress, cancel);
         fclose (out);
     }
-    
+
     close (outdes[0]);
     close (errdes[0]);
 
     // Send signal to quit archiver only AFTER pipes are closed
     if (exitCode == BZR_CANCEL_ARCHIVER)
         TerminateThread (tid);
-    
+
     m_pipeMgr.FlushArgs();
     return exitCode;
 }
@@ -286,7 +286,7 @@ status_t LhaArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool
     // Reads output of lha while extracting files and updates progress window (thru messenger)
     char lineString[928];
     BString buf;
-    
+
     // Prepare message to update the progress bar
     BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
     updateMessage.AddFloat ("delta", 1.0f);
@@ -295,11 +295,11 @@ status_t LhaArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool
     {
         if (cancel && *cancel == true)
            return BZR_CANCEL_ARCHIVER;
-        
+
         lineString[strlen (lineString) - 1] = '\0';
-        buf = lineString; 
+        buf = lineString;
         int32 found = buf.FindLast ("- Melting  :");
-        
+
         // Don't report making of directories (only files)
         if (found > 0)
         {
@@ -327,11 +327,11 @@ status_t LhaArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
 
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_lhaPath << "-t" << m_archivePath.Path();
-    
+
     FILE *out, *err;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
     {
         outputStr = NULL;        // Handle lha unloadable error here
@@ -339,7 +339,7 @@ status_t LhaArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
     }
 
     resume_thread (tid);
-    
+
     close (outdes[1]);
     out = fdopen (outdes[0], "r");
     status_t exitCode = ReadTest (out, outputStr, progress, cancel);
@@ -351,12 +351,12 @@ status_t LhaArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
         Archiver::ReadStream(err, errStreamContent);
         if (errStreamContent.Length() > 0)
            exitCode = BZR_ERRSTREAM_FOUND;
-           
+
         close (errdes[0]);
         close (outdes[0]);
         fclose (out);
         fclose (err);
-    
+
         if (exitCode == BZR_ERRSTREAM_FOUND)
         {
            BString outStr = outputStr;
@@ -366,11 +366,11 @@ status_t LhaArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
            strcpy (outputStr, outStr.String());
         }
     }
-        
+
     // Send signal to quit thread only AFTER pipes are closed
     if (exitCode == BZR_CANCEL_ARCHIVER)
         TerminateThread (tid);
-    
+
     return exitCode;
 }
 
@@ -385,7 +385,7 @@ status_t LhaArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
 
     BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
     updateMessage.AddFloat ("delta", 1.0f);
-    
+
     while (1)
     {
         BString buf;
@@ -399,20 +399,20 @@ status_t LhaArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
         }
         if (c == EOF)
            break;
-        
+
         if (cancel && *cancel == true)
         {
            exitCode = BZR_CANCEL_ARCHIVER;
            break;
         }
-        
+
         if (c == '\r')
            continue;
         else if (c == '\n')
         {
            fullOutputStr << buf.String() << "\n";
            int32 found = buf.FindLast ("- Tested");
-    
+
            if (found > 0)
            {
                buf.Truncate (found - 1);
@@ -425,7 +425,7 @@ status_t LhaArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
 
     outputStr = new char[fullOutputStr.Length() + 1];
     strcpy (outputStr, fullOutputStr.String());
-    
+
     return exitCode;
 }
 
@@ -433,7 +433,7 @@ status_t LhaArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
 
 bool LhaArchiver::SupportsFolderEntity () const
 {
-    // This means lha binary will not delete entire folders given the folder name, we need to be 
+    // This means lha binary will not delete entire folders given the folder name, we need to be
     // passed either a wildcard like folder/* or each entry inside the folder
     return false;
 }
@@ -457,7 +457,7 @@ status_t LhaArchiver::Add (bool createMode, const char *relativePath, BMessage *
     m_pipeMgr.FlushArgs();
     char level[10];
     BMenu *ratioMenu = m_settingsMenu->FindItem(kLevel0)->Menu();
-    
+
     BString buf = "-a";
     if (m_settingsMenu->FindItem(kGenericArk)->IsMarked() == true)
         buf << "g";
@@ -465,7 +465,7 @@ status_t LhaArchiver::Add (bool createMode, const char *relativePath, BMessage *
     sprintf (level, "%ld", ratioMenu->IndexOf(ratioMenu->FindMarked()));
     buf << level;
     m_pipeMgr << m_lhaPath << buf.String() << m_archivePath.Path();
-    
+
     int32 count = 0L;
     uint32 type;
     message->GetInfo (kPath, &type, &count);
@@ -487,7 +487,7 @@ status_t LhaArchiver::Add (bool createMode, const char *relativePath, BMessage *
         chdir (relativePath);
 
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;        // Handle lha unloadable error here
 
@@ -507,12 +507,12 @@ status_t LhaArchiver::Add (bool createMode, const char *relativePath, BMessage *
     }
     close (outdes[0]);
     fclose (out);
-    
+
     // Send signal to quit archiver only AFTER pipes are closed
     if (exitCode == BZR_CANCEL_ARCHIVER)
         TerminateThread (tid);
-    
-    m_pipeMgr.FlushArgs();    
+
+    m_pipeMgr.FlushArgs();
     SetMimeType();
     return exitCode;
 }
@@ -525,7 +525,7 @@ status_t LhaArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
     status_t exitCode = BZR_DONE;
     BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
     updateMessage.AddFloat ("delta", 1.0f);
-    
+
     while (1)
     {
         BString buf;
@@ -539,13 +539,13 @@ status_t LhaArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
         }
         if (c == EOF)
            break;
-        
+
         if (cancel && *cancel == true)
         {
            exitCode = BZR_CANCEL_ARCHIVER;
            break;
         }
-        
+
         if (c == '\r')
            continue;
         else if (c == '\n')
@@ -561,7 +561,7 @@ status_t LhaArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
            }
         }
     }
-    
+
     return exitCode;
 }
 
@@ -589,7 +589,7 @@ status_t LhaArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
 
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_lhaPath << "-d" << m_archivePath.Path();
-    
+
     int32 i = 0L;
     for (; i < count; i ++)
     {
@@ -598,19 +598,19 @@ status_t LhaArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
            m_pipeMgr << SupressWildcardSet (pathString);
         // Use SupressWildcardSet (which does not supress * character as lha needs * to delete folders fully)
     }
-    
+
     FILE *out, *err;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
     {
         outputStr = NULL;        // Handle lha unloadable error here
         return B_ERROR;
     }
-    
+
     resume_thread (tid);
-    
+
     close (errdes[1]);
     close (outdes[1]);
 
@@ -646,12 +646,12 @@ status_t LhaArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progre
     // Prepare message to update the progress bar
     BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
     updateMessage.AddFloat ("delta", 1.0f);
-    
+
     while (fgets (lineString, len - 1, fp))
     {
         if (cancel && *cancel == true)
            return BZR_CANCEL_ARCHIVER;
-        
+
         lineString[strlen (lineString) - 1] = '\0';
         if (strncmp (lineString, "delete ", 7) == 0)
         {
@@ -674,14 +674,14 @@ status_t LhaArchiver::Create (BPath *archivePath, const char *relPath, BMessage 
     m_archivePath.SetTo (archivePath->Path(), NULL, true);
 
     status_t result = Add (true, relPath, fileList, addedPaths, progress, cancel);
-    
+
     // Once creating is done, set m_archiveRef to pointed to the existing archive file
     if (result == BZR_DONE)
     {
         BEntry tempEntry (m_archivePath.Path(), true);
         if (tempEntry.Exists())
            tempEntry.GetRef (&m_archiveRef);
-        
+
         SetMimeType();
     }
 
@@ -706,7 +706,7 @@ int8 LhaArchiver::MonthStrToNum (const char *month) const
     if (strcasecmp (month, "Nov") == 0) return 11;
     if (strcasecmp (month, "Dec") == 0) return 12;
 
-	return 1;
+    return 1;
 }
 
 //=============================================================================================================//
@@ -716,17 +716,17 @@ void LhaArchiver::BuildDefaultMenu ()
     BMenu *ratioMenu;
     BMenu *otherMenu;
     BMenuItem *item;
-    
+
     m_settingsMenu = new BMenu (m_typeStr);
-    
+
     // Build the header-level sub-menu
     ratioMenu = new BMenu (kHeaderLevel);
     ratioMenu->SetRadioMode (true);
-    
+
     ratioMenu->AddItem (new BMenuItem (kLevel0, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel1, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel2, NULL));
-    
+
     ratioMenu->FindItem (kLevel2)->SetMarked (true);
 
     // Build the "Other options" sub-menu

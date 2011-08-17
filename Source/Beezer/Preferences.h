@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -39,7 +39,7 @@ class Preferences : public BMessage
         Preferences ();
         Preferences (const char *dir, const char *file);
         ~Preferences ();
-    
+
         // Additional hooks
         virtual void        Init (const char *dir, const char *file);
         virtual void        WritePrefs ();
@@ -60,7 +60,7 @@ class Preferences : public BMessage
         status_t            SetMessage (const char *name, const BMessage *message);
         status_t            SetColor (const char *name, rgb_color &color);
         status_t            SetFlat (const char *name, const BFlattenable *obj);
-        
+
         bool                FindBoolDef (const char *name, bool defaultValue);
         int8                FindInt8Def (const char *name, int8 defaultValue);
         int16               FindInt16Def (const char *name, int16 defaultValue);
@@ -69,7 +69,7 @@ class Preferences : public BMessage
     private:
         // Private hooks
         void                FreePathString ();
-        
+
         // Private members
         const char         *m_prefsPathStr;
 };

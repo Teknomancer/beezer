@@ -33,7 +33,7 @@
 
 float GetStringsMaxWidth(const char** strings, int32 num_strings, const BFont* font,
     float* string_widths)
-//Fills the stringsWidths array with the width of each individual string in the array using 
+//Fills the stringsWidths array with the width of each individual string in the array using
 //BFont::GetStringWidths(), then finds the longest string width in the array and returns that width.
 //If a string_widths array is provided, it fills it in with the length of each string.
 {
