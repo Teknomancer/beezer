@@ -156,6 +156,7 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
                          new BMessage (M_STOP_OPERATION), B_FOLLOW_RIGHT, B_WILL_DRAW);
     m_backView->AddChild (m_cancelButton);
     ResizeTo (Frame().Width(), m_cancelButton->Frame().bottom + K_MARGIN);
+    m_backView->ResizeBy(0, K_MARGIN);
     
     m_barberPole = new BarberPole (BRect (strView->Frame().left, m_statusBar->Frame().bottom - 30, 0,
                       m_statusBar->Frame().bottom - 3), "ProgressWindow::BarberPole");
