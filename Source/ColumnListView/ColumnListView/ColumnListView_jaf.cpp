@@ -141,7 +141,7 @@ ColumnListView::~ColumnListView()
         if(Item)
            delete Item;
     }
-        
+
     //Remove and delete the container view if necessary
     if(!fScrollView->IsBeingDestroyed)
     {
@@ -151,7 +151,7 @@ ColumnListView::~ColumnListView()
 }
 
 
-CLVContainerView* ColumnListView::CreateContainer(bool horizontal, bool vertical, bool scroll_view_corner, 
+CLVContainerView* ColumnListView::CreateContainer(bool horizontal, bool vertical, bool scroll_view_corner,
     border_style border, uint32 ResizingMode, uint32 flags)
 {
     return new CLVContainerView(this,ResizingMode,flags,horizontal,vertical,scroll_view_corner,border);
@@ -434,7 +434,7 @@ bool ColumnListView::RemoveColumn(CLVColumn* Column)
     int32 ColumnIndex = fSortKeyList.IndexOf(Column);
     if(ColumnIndex >= 0)
         fSortKeyList.RemoveItem(ColumnIndex);
-        
+
     if(Column->fFlags & CLV_EXPANDER)
         fExpanderColumn = -1;
 
@@ -641,7 +641,7 @@ void ColumnListView::DisplayOrderChanged(const int32* order)
                   item = (CLVListItem*)fFullItemList.ItemAt(item_index);
                else
                   item = (CLVListItem*)ItemAt(item_index);
-               int32 DisplayIndex = IndexOf(item);    
+               int32 DisplayIndex = IndexOf(item);
                if(DisplayIndex >= 0 && ThisColumn->IsShown())
                {
                   BRect ThisColumnRect = ItemFrame(DisplayIndex);
@@ -664,7 +664,7 @@ void ColumnListView::DisplayOrderChanged(const int32* order)
                              ThisColumnRect.right = PushMax;
                       }
                   }
-               
+
                   if(ThisColumnRect.right >= ThisColumnRect.left)
                       item->FrameChanged(column,ThisColumnRect,this);
                   else
@@ -1682,7 +1682,7 @@ int ColumnListView::QuickSortCompareItems(const CLVListItem * item1, const CLVLi
         int32 ret = fCompare(item1, item2, fColumnList.IndexOf(Column));
         if (Column->fSortMode == Descending) ret = -ret;
         if (ret) return ret;
-    }    
+    }
     return 0;
 }
 

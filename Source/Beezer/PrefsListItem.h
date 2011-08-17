@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -39,11 +39,11 @@ class PrefsListItem : public BStringItem
     public:
         PrefsListItem (const char *text, BBitmap *bmp, bool makeBold = true);
         virtual ~PrefsListItem ();
-        
+
         // Inherited hooks
         virtual void        DrawItem (BView *owner, BRect frame, bool complete = false);
         virtual float        FontHeight () const;
-        
+
     private:
         // Private members
         float               m_fontDelta;

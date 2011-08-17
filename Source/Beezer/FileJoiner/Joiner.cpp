@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -55,22 +55,22 @@ status_t JoinFile (const char *firstChunkPathStr, const char *outputDir, const c
     int32 index = firstChunkPath.FindLast ('/');
     BString dirString;
     firstChunkPath.CopyInto (dirString, 0, index);
-    
+
     int32 index2 = firstChunkPath.FindLast (separator);
     if (index2 <= 0 || index2 < index)
         return BZR_ERROR;
-    
+
     BString baseName;
     firstChunkPath.CopyInto (baseName, index + 1, index2 - 1 - index);
-    
+
     BString numberString;
     firstChunkPath.CopyInto (numberString, index2 + strlen(separator), firstChunkPath.Length() - index2);
-    
+
     int8 width = numberString.Length();
-    
+
     BString curFileName = baseName;
     curFileName << separator << numberString;
-    
+
     // Initialize output file
     BString outputFilePath = outputDir;
     outputFilePath << "/" << baseName;
@@ -86,12 +86,12 @@ status_t JoinFile (const char *firstChunkPathStr, const char *outputDir, const c
     StatStruct srcStat;
     BFile srcFile (firstChunkPathStr, B_READ_ONLY);
     srcFile.GetStat (&srcStat);
-    
+
     const size_t kMinBufferSize = 1024 * 128;
-    const size_t kMaxBufferSize = 1024 * 1024; 
-    
+    const size_t kMaxBufferSize = 1024 * 1024;
+
     size_t bufSize = kMinBufferSize;
-    
+
     if (bufSize < srcStat.st_size)
     {
         // File is bigger than buffer size; find an optimal buffer size for copying
@@ -104,7 +104,7 @@ status_t JoinFile (const char *firstChunkPathStr, const char *outputDir, const c
         if (bufSize < kMinBufferSize)               // at least kMinBufferSize
            bufSize = kMinBufferSize;
         else if (bufSize > kMaxBufferSize)           // no more than kMaxBufferSize
-           bufSize = kMaxBufferSize; 
+           bufSize = kMaxBufferSize;
     }
 
     BDirectory dir (dirString.String());
@@ -128,14 +128,14 @@ status_t JoinFile (const char *firstChunkPathStr, const char *outputDir, const c
 
                return BZR_CANCEL;
            }
-           
+
            ssize_t bytes = srcFile.Read (buffer, bufSize);
            if (bytes > 0)
            {
                ssize_t updateBytes = 0;
                if (bytes > 32 * 1024)
                   updateBytes = bytes / 2;
-               
+
                ssize_t result = destFile.WriteAt (writePosition, buffer, (size_t)bytes);
 
                if (progress)
@@ -148,28 +148,28 @@ status_t JoinFile (const char *firstChunkPathStr, const char *outputDir, const c
 
                if (result != bytes)
                   return B_ERROR;
-                  
+
                writePosition += bytes;
            }
            else
                break;
         }
-        
+
         start++;
         char buf[B_PATH_NAME_LENGTH];
         sprintf (buf, "%s%s%0*d", baseName.String(), separator, width, start);
         curFileName = buf;
-        
+
         srcFile.Unset();
         BString nextFilePath = outputDir;
         nextFilePath << "/" << curFileName;
         srcFile.SetTo (nextFilePath.String(), B_READ_ONLY);
     }
-    
+
     // Copy attributes from first chunk to joint file
     BFile firstChunkFile (firstChunkPathStr, B_READ_ONLY);
     JoinCopyAttributes (&firstChunkFile, &destFile, buffer, bufSize);
-    
+
     destFile.Unset();
     return BZR_DONE;
 }
@@ -188,7 +188,7 @@ void JoinCopyAttributes (BNode *srcNode, BNode *destNode, void *buffer, size_t b
 
         ssize_t bytes;
         ssize_t numToRead = (ssize_t)info.size;
-        
+
         for (off_t offset = 0; numToRead > 0; offset += bytes)
         {
            size_t chunkSize = (size_t)numToRead;
@@ -196,9 +196,9 @@ void JoinCopyAttributes (BNode *srcNode, BNode *destNode, void *buffer, size_t b
                chunkSize = bufSize;
 
            bytes = srcNode->ReadAttr (name, info.type, offset, buffer, chunkSize);
-           if (bytes <= 0) 
+           if (bytes <= 0)
                break;
-           
+
            destNode->WriteAttr (name, info.type, offset, buffer, (size_t)bytes);
            numToRead -= bytes;
         }
@@ -214,22 +214,22 @@ void FindChunks (const char *firstChunkPathStr, const char *separator, int32 &fi
     int32 index = firstChunkPath.FindLast ('/');
     BString dirString;
     firstChunkPath.CopyInto (dirString, 0, index);
-    
+
     int32 index2 = firstChunkPath.FindLast (separator);
     if (index2 <= 0 || index2 < index)
         return;
-    
+
     BString baseName;
     firstChunkPath.CopyInto (baseName, index + 1, index2 - 1 - index);
-    
+
     BString numberString;
     firstChunkPath.CopyInto (numberString, index2 + strlen(separator), firstChunkPath.Length() - index2);
-    
+
     int8 width = numberString.Length();
-    
+
     BString curFileName = baseName;
     curFileName << separator << numberString;
-    
+
     BDirectory dir (dirString.String());
     BEntry chunkEntry;
     off_t size;
@@ -240,11 +240,11 @@ void FindChunks (const char *firstChunkPathStr, const char *separator, int32 &fi
     {
         if (cancel && *cancel == true)
            break;
-        
+
         fileCount++;
         chunkEntry.GetSize (&size);
         totalSize += size;
-        
+
         start++;
         char buf[B_PATH_NAME_LENGTH];
         sprintf (buf, "%s%s%0*d", baseName.String(), separator, width, start);

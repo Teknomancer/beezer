@@ -19,7 +19,7 @@ ListSorter::ListSorter (BList *list, CompareFunc func)
 {
     m_sortList = list;
     m_compareFunc = func;
-    
+
     int32 nItems = m_sortList->CountItems();
     unsigned long *ptrOfList = (unsigned long*)m_sortList->Items();
 
@@ -50,14 +50,14 @@ void ListSorter::QuickSort (unsigned long *list, int32 n)
     SwapItems (list, 0L, n / 2);
     unsigned long pivot = list[0];
     int32 i = 1, last = 0;
-    
+
     pivot = list[0];
     HashEntry *pvt = reinterpret_cast<HashEntry*>(pivot);
-    
+
     for (; i < n; ++i)
         if (strcasecmp (((HashEntry*)list[i])->m_pathStr, pvt->m_pathStr) < 0)
            SwapItems (list, ++last, i);
-    
+
     SwapItems (list, 0L, last);
 
     QuickSort (list, last);

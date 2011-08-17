@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -73,4 +73,4 @@ application/x-xz=.tar.xz\n\
 application/x-arj-compressed=.arj\n\
 ";
 
-#endif	// _RULEDEFAULTS_H_
+#endif  // _RULEDEFAULTS_H_

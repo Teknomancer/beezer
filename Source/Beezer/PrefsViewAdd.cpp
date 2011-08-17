@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -69,22 +69,22 @@ void PrefsViewAdd::Render ()
                          B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
     m_replaceField->ResizeToPreferred();
     m_replaceField->SetDivider (StringWidth (m_replaceField->Label()) + StringWidth ("W"));
-    
+
     font_height fntHt;
     be_plain_font->GetHeight (&fntHt);
-    
+
     m_warnMBChk = new BCheckBox (BRect (m_margin, 3 * m_margin + fntHt.ascent + fntHt.descent + m_vGap + 4, 0, 0),
                       "PrefsViewAdd:warnMBChk", str (S_PREFS_ADD_WARNMB), new BMessage (M_WARN), B_FOLLOW_LEFT,
                       B_WILL_DRAW | B_NAVIGABLE);
     m_warnMBChk->ResizeToPreferred();
-    
+
     m_mbView = new BTextControl (BRect (m_warnMBChk->Frame().right, m_warnMBChk->Frame().top - 2,
                   m_warnMBChk->Frame().right + StringWidth ("88888") + 4, 0), "PrefsViewAdd:mbView",
                   NULL, NULL, NULL, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
     m_mbView->TextView()->DisallowChar (B_INSERT);
     m_mbView->TextView()->SetMaxBytes (4);
     m_mbView->SetDivider (0);
-    
+
     BStringView *mbStrView = new BStringView (BRect (m_mbView->Frame().right + 4, m_warnMBChk->Frame().top + 1,
                              0,0),"PrefsViewAdd:mbStrView", str (S_PREFS_ADD_MB), B_FOLLOW_LEFT, B_WILL_DRAW);
     mbStrView->ResizeToPreferred();
@@ -98,7 +98,7 @@ void PrefsViewAdd::Render ()
                       "PrefsViewAdd:sortChk", str (S_PREFS_ADD_SORT), NULL, B_FOLLOW_LEFT,
                       B_WILL_DRAW | B_NAVIGABLE);
     m_sortChk->ResizeToPreferred();
-    
+
     AddChild (m_replaceField);
     AddChild (m_warnMBChk);
     AddChild (m_mbView);
@@ -133,12 +133,12 @@ void PrefsViewAdd::Save ()
 void PrefsViewAdd::Load ()
 {
     m_replaceMenu->ItemAt (_prefs_add.FindInt8Def (kPfReplaceFiles, 1))->SetMarked (true);
-    
+
     bool warn = _prefs_add.FindBoolDef (kPfWarnBeforeAdd, true);
     m_warnMBChk->SetValue (warn);
     if (!warn)
         ToggleMBView (false);
-    
+
     BString buf;
     int16 mbSize = _prefs_add.FindInt16Def (kPfWarnAmount, 100);
     buf << mbSize;
@@ -153,13 +153,13 @@ void PrefsViewAdd::Load ()
 void PrefsViewAdd::MessageReceived (BMessage *message)
 {
     switch (message->what)
-    {        
+    {
         case M_WARN:
         {
            ToggleMBView (m_warnMBChk->Value() == B_CONTROL_ON ? true : false);
            break;
         }
-        
+
         default:
            PrefsView::MessageReceived (message);
            break;

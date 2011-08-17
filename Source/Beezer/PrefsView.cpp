@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -45,8 +45,8 @@ PrefsView::PrefsView (BRect frame, const char *title, const char *description)
     m_descriptionStr = strdup (description);
     m_titleStr = strdup (title);
     m_bitmap = NULL;
-    
-    // For use in inherited classes - to provide consistency among them we give these 
+
+    // For use in inherited classes - to provide consistency among them we give these
     // member functions which they are supposed to use when needed
     m_margin = K_MARGIN + 2;
     m_vGap = 1;
@@ -68,7 +68,7 @@ PrefsView::~PrefsView ()
 
     if (m_titleStr)
         free ((char*)m_titleStr);
-        
+
     DeleteBitmap();
 }
 

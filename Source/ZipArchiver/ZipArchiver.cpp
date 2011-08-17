@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -78,7 +78,7 @@ ZipArchiver::ZipArchiver ()
         m_error = BZR_BINARY_MISSING;
         return;
     }
-    
+
     // Detect zipnote binary (optional)
     if (IsBinaryFound (m_zipnotePath, BZR_ZIPNOTE) == false)
     {
@@ -96,27 +96,27 @@ status_t ZipArchiver::ReadOpen (FILE *fp)
            sizeStr[25], methodStr[25], packedStr[25], ratioStr[15], dayStr[5],
            monthStr[5], yearStr[8], hourStr[5], minuteStr[5], dateStr[90], crcStr[25],
            pathStr[B_PATH_NAME_LENGTH + 1];
-    
+
     do
     {
         fgets (lineString, len, fp);
     } while (!feof (fp) && (strstr (lineString, "--------" ) == NULL));
-    
+
     fgets (lineString, len, fp);
-    
+
     while (!feof (fp) && (strstr (lineString, "--------" ) == NULL))
     {
         lineString[strlen (lineString) - 1] = '\0';
-        
+
         sscanf (lineString,
            " %[0-9]  %[^ ] %[0-9]  %[^ ]  %[0-9]-%[0-9]-%[0-9] %[0-9]:%[0-9]  %[^ ]%[^\n]",
            sizeStr, methodStr, packedStr, ratioStr, monthStr, dayStr, yearStr, hourStr, minuteStr, crcStr,
            pathStr);
-        
+
         // Workaround bug fix, for paths with space before
         BString pathString = pathStr;
         pathString.Remove (0, 2);
-        
+
         struct tm timeStruct; time_t timeValue;
         MakeTime (&timeStruct, &timeValue, dayStr, monthStr, yearStr, hourStr, minuteStr, "00");
         FormatDate (dateStr, 60, &timeStruct);
@@ -133,7 +133,7 @@ status_t ZipArchiver::ReadOpen (FILE *fp)
            m_entriesList.AddItem (new ArchiveEntry (false, pathString.String(), sizeStr, packedStr, dateStr,
                                         timeValue, methodStr,crcStr));
         }
-        
+
         fgets (lineString, len, fp);
     }
 
@@ -146,41 +146,41 @@ status_t ZipArchiver::Open (entry_ref *ref, BMessage *fileList)
 {
     m_archiveRef = *ref;
     m_archivePath.SetTo (ref);
-    
+
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_unzipPath << "-v" << "-q" << m_archivePath.Path();
-    
+
     if (fileList)
     {
         uint32 type;
         int32 count;
-        const char *path;        
+        const char *path;
         fileList->GetInfo (kPath, &type, &count);
 
         for (int32 i = --count; i >= 0; i--)
            if (fileList->FindString (kPath, i, &path) == B_OK)
                m_pipeMgr << SupressWildcards (path);
     }
-    
+
     FILE *out, *err;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;        // Handle unzip unloadable error here
 
     status_t exitCode;
     resume_thread (tid);
-    
+
     close (errdes[1]);
     close (outdes[1]);
 
     out = fdopen (outdes[0], "r");
     exitCode = ReadOpen (out);
-    
+
     close (outdes[0]);
     fclose (out);
-    
+
     err = fdopen (errdes[0], "r");
     exitCode = Archiver::ReadErrStream (err, ":  zipfile is empty");
     close (errdes[0]);
@@ -196,7 +196,7 @@ status_t ZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
 {
     BEntry dirEntry;
     entry_ref dirRef;
-    
+
     dirEntry.SetTo (refToDir);
     status_t exitCode = BZR_DONE;
     if (progress)        // Perform output directory checking only when a messenger is passed
@@ -218,7 +218,7 @@ status_t ZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         if (type != B_STRING_TYPE)
            return BZR_UNKNOWN;
     }
-    
+
     // Setup argv, fill with selection names if needed
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_unzipPath;
@@ -226,11 +226,11 @@ status_t ZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         m_pipeMgr << "-o";
     else
         m_pipeMgr << "-Jo";
-    
+
     // For normal quick-extraction i.e. with no Progressbar don't junk directories
     if (m_settingsMenu->FindItem(kDirExtract)->IsMarked() == false && progress != NULL)
         m_pipeMgr << "-j";
-    
+
     if (progress)    // Use extract options only when user is NOT viewing
     {
         if (m_settingsMenu->FindItem(kNoOverwrite)->IsMarked() == true)
@@ -240,9 +240,9 @@ status_t ZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         else if (m_settingsMenu->FindItem(kUpdateOnly)->IsMarked() == true)
            m_pipeMgr << "-f";
     }
-    
+
     m_pipeMgr << m_archivePath.Path() << "-d" << dirPath.Path();
-    
+
     int32 i = 0L;
     for (; i < count; i ++)
     {
@@ -250,11 +250,11 @@ status_t ZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         if (message->FindString (kPath, i, &pathString) == B_OK)
            m_pipeMgr << SupressWildcards (pathString);
     }
-    
+
     FILE *out;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;           // Handle unzip unloadable error here
 
@@ -265,7 +265,7 @@ status_t ZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         status_t exitCode;
         wait_for_thread (tid, &exitCode);
     }
-    
+
     close (errdes[1]);
     close (outdes[1]);
 
@@ -275,14 +275,14 @@ status_t ZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         exitCode = ReadExtract (out, progress, cancel);
         fclose (out);
     }
-    
+
     close (outdes[0]);
     close (errdes[0]);
 
     // Send signal to quit archiver only AFTER pipes are closed
     if (exitCode == BZR_CANCEL_ARCHIVER)
         TerminateThread (tid);
-    
+
     m_pipeMgr.FlushArgs();
     return exitCode;
 }
@@ -302,13 +302,13 @@ status_t ZipArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool
     {
         if (cancel && *cancel == true)
            return BZR_CANCEL_ARCHIVER;
-        
+
         // The following -2 is because we somehow get 2 characters extra after filename
         lineString[strlen (lineString) - 3] = '\0';
-        
+
         // Later must handle "error" and "file #no: error at offset" strings in unzip output
         if (strncmp (lineString, "  inflating:", 12) == 0 ||
-           strncmp (lineString, " extracting:", 12) == 0 || 
+           strncmp (lineString, " extracting:", 12) == 0 ||
            strncmp (lineString, "    linking:", 12) == 0)
         {
            updateMessage.RemoveName ("text");
@@ -335,11 +335,11 @@ status_t ZipArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
 
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_unzipPath << "-t" << m_archivePath.Path();
-    
+
     FILE *out;
     int outdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
     {
         outputStr = NULL;        // Handle unzip unloadable error here
@@ -347,7 +347,7 @@ status_t ZipArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
     }
 
     resume_thread (tid);
-    
+
     close (outdes[1]);
     out = fdopen (outdes[0], "r");
     status_t exitCode = ReadTest (out, outputStr, progress, cancel);
@@ -357,7 +357,7 @@ status_t ZipArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
     // Send signal to quit thread only AFTER pipes are closed
     if (exitCode == BZR_CANCEL_ARCHIVER)
         TerminateThread (tid);
-    
+
     return exitCode;
 }
 
@@ -375,7 +375,7 @@ status_t ZipArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
     BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
     updateMessage.AddFloat ("delta", 1.0f);
     bool errFlag = false;
-    
+
     while (fgets (lineString, 998, fp))
     {
         if (cancel && *cancel == true)
@@ -383,17 +383,17 @@ status_t ZipArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
            exitCode = BZR_CANCEL_ARCHIVER;
            break;
         }
-        
+
         lineString[strlen (lineString) - 1] = '\0';
         fullOutputStr << lineString << "\n";
         lineCount++;
-        
+
         // Skip first line which contains Archive: <path of archive> | We don't need this here
         if (lineCount > 0)
         {
            char *testingStr = lineString;
            testingStr += CountCharsInFront (testingStr, ' ');
-           
+
            if (strncmp (testingStr, "testing:", 8) == 0)
            {
                // The format of testingStr is now "testing: path-here    OK"
@@ -433,7 +433,7 @@ status_t ZipArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
                   continue;
                }
                else
-               {    
+               {
                   // uh oh! something wrong - set error found flag to true
                   errFlag = true;
                   exitCode = BZR_ERRSTREAM_FOUND;
@@ -444,7 +444,7 @@ status_t ZipArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
 
     outputStr = new char[fullOutputStr.Length() + 1];
     strcpy (outputStr, fullOutputStr.String());
-    
+
     return exitCode;
 }
 
@@ -467,7 +467,7 @@ status_t ZipArchiver::GetComment (char *&commentStr)
     FILE *out;
     int outdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
     {
         commentStr = NULL;        // Handle unzip unloadable error here
@@ -481,10 +481,10 @@ status_t ZipArchiver::GetComment (char *&commentStr)
     ReadStream (out, commentString);
     close (outdes[0]);
     fclose (out);
-    
+
     commentStr = new char [commentString.Length() + 1];
     strcpy (commentStr, commentString.String());
-    
+
     return BZR_DONE;
 }
 
@@ -505,11 +505,11 @@ status_t ZipArchiver::SetComment (char *commentStr, const char *tempDirPath)
 
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_zipnotePath << m_archivePath.Path();
-    
+
     FILE *out;
     int outdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;        // Handle unzip unloadable error here
 
@@ -521,28 +521,28 @@ status_t ZipArchiver::SetComment (char *commentStr, const char *tempDirPath)
     ReadStream (out, outputString);
     close (outdes[0]);
     fclose (out);
-    
+
     // Replace outputString (current comment) with new comment
     const char *uniqueIDLine = "@ (zip file comment below this line)";
     int32 index = outputString.FindLast (uniqueIDLine);
     if (index)
         outputString.Remove (index, outputString.Length() - index);
-        
+
     outputString << uniqueIDLine << "\n" << commentStr;
-    
+
     // Write the new comment file back to the temp file
     std::fstream fileStream (tempFilePath.String(), std::ios::out);
     if (fileStream != NULL)
         fileStream << outputString.String();
-    
+
     fileStream.close();
-    
+
     // Make zipnote write to the zipfile from the temp file -- we use system() function
     // because zipnote reads from stdin ie using "<" character thus piping won't work
     BString commandStr = m_zipnotePath;
     commandStr << " -w \"" << m_archivePath.Path() << "\"" << " < " << "\"" << tempFilePath.String() << "\"";
     system (commandStr.String());
-    
+
     return BZR_DONE;
 }
 
@@ -559,7 +559,7 @@ bool ZipArchiver::SupportsComment () const
 
 bool ZipArchiver::SupportsFolderEntity () const
 {
-    // This means zip binary will not delete entire folders given the folder name, we need to be 
+    // This means zip binary will not delete entire folders given the folder name, we need to be
     // passed either a wildcard like folder/* or each entry inside the folder
     return false;
 }
@@ -580,14 +580,14 @@ status_t ZipArchiver::Add (bool createMode, const char *relativePath, BMessage *
     m_pipeMgr.FlushArgs();
     char level[10];
     BMenu *ratioMenu = m_settingsMenu->FindItem(kLevel0)->Menu();
-    
+
     sprintf (level, "-%ld", ratioMenu->IndexOf(ratioMenu->FindMarked()));
     m_pipeMgr << m_zipPath << "-y" << level;
     if (m_settingsMenu->FindItem(kDirRecurse)->IsMarked() == true)
         m_pipeMgr << "-r";
 
     m_pipeMgr << m_archivePath.Path();
-    
+
     int32 count = 0L;
     uint32 type;
     message->GetInfo (kPath, &type, &count);
@@ -609,7 +609,7 @@ status_t ZipArchiver::Add (bool createMode, const char *relativePath, BMessage *
         chdir (relativePath);
 
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;        // Handle zip unloadable error here
 
@@ -633,8 +633,8 @@ status_t ZipArchiver::Add (bool createMode, const char *relativePath, BMessage *
     // Send signal to quit archiver only AFTER pipes are closed
     if (exitCode == BZR_CANCEL_ARCHIVER)
         TerminateThread (tid);
-    
-    m_pipeMgr.FlushArgs();    
+
+    m_pipeMgr.FlushArgs();
     return exitCode;
 }
 
@@ -647,7 +647,7 @@ status_t ZipArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
     char lineString[999];
     BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
     updateMessage.AddFloat ("delta", 1.0f);
-    
+
     while (fgets (lineString, 998, fp))
     {
         if (cancel && *cancel == true)
@@ -655,7 +655,7 @@ status_t ZipArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
            exitCode = BZR_CANCEL_ARCHIVER;
            break;
         }
-        
+
 
         lineString[strlen (lineString) - 1] = '\0';
         if (strncmp (lineString, "  adding:", 9) == 0 || strncmp (lineString, "updating:", 9) == 0)
@@ -664,7 +664,7 @@ status_t ZipArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
            int32 openBraceIndex = filePath.FindLast ('(');
            if (openBraceIndex != B_ERROR)
                filePath.Remove (openBraceIndex - 1, filePath.Length() - openBraceIndex + 1);
-           
+
            const char *fileName = FinalPathComponent (filePath.String());
 
            // Don't update progress bar for folders
@@ -674,11 +674,11 @@ status_t ZipArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
                updateMessage.AddString ("text", fileName);
                progress->SendMessage (&updateMessage, &reply);
            }
-           
+
            addedPaths->AddString (kPath, filePath.String());
         }
     }
-    
+
     return exitCode;
 }
 
@@ -706,7 +706,7 @@ status_t ZipArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
 
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_zipPath << m_archivePath.Path() << "-d";
-    
+
     int32 i = 0L;
     for (; i < count; i ++)
     {
@@ -715,19 +715,19 @@ status_t ZipArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
            m_pipeMgr << SupressWildcardSet (pathString);
         // Use SupressWildcardSet (which does not supress * character as zip needs * to delete folders fully)
     }
-    
+
     FILE *out, *err;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
     {
         outputStr = NULL;        // Handle unzip unloadable error here
         return B_ERROR;
     }
-    
+
     resume_thread (tid);
-    
+
     close (errdes[1]);
     close (outdes[1]);
 
@@ -744,7 +744,7 @@ status_t ZipArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
                || errContent.FindFirst ("zip warning: couldn't write complete file type") >= 0))
                   exitCode = BZR_ERRSTREAM_FOUND;
         }
-        
+
         close (errdes[0]);
         fclose (err);
     }
@@ -770,15 +770,15 @@ status_t ZipArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progre
     // Prepare message to update the progress bar
     BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
     updateMessage.AddFloat ("delta", 1.0f);
-    
+
     while (fgets (lineString, 998, fp))
     {
         if (cancel && *cancel == true)
            return BZR_CANCEL_ARCHIVER;
-        
+
         lineString[strlen (lineString) - 1] = '\0';
         fullStr.Append (lineString);
-        
+
         // Later must handle "error" and "file #no: error at offset" strings in unzip output. We shall
         // do this as soon as we get an erroraneous zip file. If we code this now, we can't test it
         if (strncmp (lineString, "deleting:", 9) == 0)
@@ -802,7 +802,7 @@ status_t ZipArchiver::Create (BPath *archivePath, const char *relPath, BMessage 
     m_archivePath.SetTo (archivePath->Path(), NULL, true);
 
     status_t result = Add (true, relPath, fileList, addedPaths, progress, cancel);
-    
+
     // Once creating is done, set m_archiveRef to pointed to the existing archive file
     if (result == BZR_DONE)
     {
@@ -824,11 +824,11 @@ void ZipArchiver::BuildDefaultMenu ()
     BMenuItem *item;
 
     m_settingsMenu = new BMenu (m_typeStr);
-    
+
     // Build the compression-level sub-menu (sorry we can't avoid using english strings here)
     ratioMenu = new BMenu (kCompressionLevel);
     ratioMenu->SetRadioMode (true);
-    
+
     ratioMenu->AddItem (new BMenuItem (kLevel0, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel1, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel2, NULL));
@@ -839,7 +839,7 @@ void ZipArchiver::BuildDefaultMenu ()
     ratioMenu->AddItem (new BMenuItem (kLevel7, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel8, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel9, NULL));
-    
+
     ratioMenu->FindItem (kLevel9)->SetMarked (true);
 
     // Build the "While adding" sub-menu
@@ -853,11 +853,11 @@ void ZipArchiver::BuildDefaultMenu ()
     item = new BMenuItem (kDirRecurse, new BMessage (BZR_MENUITEM_SELECTED));
     item->SetMarked (true);
     addMenu->AddItem (item);
-    
+
     // Build the extract sub-menu
     extractMenu = new BMenu (kExtracting);
     extractMenu->SetRadioMode (false);
-    
+
     item = new BMenuItem (kExtractAttribs, new BMessage (BZR_MENUITEM_SELECTED));
     item->SetMarked (true);
     extractMenu->AddItem (item);
@@ -873,11 +873,11 @@ void ZipArchiver::BuildDefaultMenu ()
     item = new BMenuItem (kUpdate, new BMessage (BZR_MENUITEM_SELECTED));
     item->SetMarked (false);
     extractMenu->AddItem (item);
-    
+
     item = new BMenuItem (kUpdateOnly, new BMessage (BZR_MENUITEM_SELECTED));
     item->SetMarked (false);
     extractMenu->AddItem (item);
-    
+
     // Add sub-menus to settings menu
     m_settingsMenu->AddItem (ratioMenu);
     m_settingsMenu->AddItem (addMenu);

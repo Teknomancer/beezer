@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -35,7 +35,7 @@ class PipeMgr
     public:
         PipeMgr ();
         virtual ~PipeMgr ();
-        
+
         // Additional hooks
         void               FlushArgs ();
         status_t           AddArg (const char *argv);
@@ -43,11 +43,11 @@ class PipeMgr
         thread_id          Pipe (int *outdes) const;
         thread_id          Pipe (int *outdes, int *errdes) const;
         void               PrintToStream () const;
-        
+
         // Custom operators
         PipeMgr& operator   << (const char *arg);
         PipeMgr& operator   << (BString arg);
-        
+
     protected:
         // Protected members
         BList              m_argList;

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -45,7 +45,7 @@ class BeezerListView : public ColumnListView
                       bool horizontalScroll = true, bool verticalScroll = true, bool scrollViewCorner = true,
                       border_style borderStyle = B_NO_BORDER, const BFont *labelFont = be_plain_font);
         virtual ~BeezerListView ();
-        
+
         // Inherited hooks
         virtual void        MakeFocus (bool focused = true);
         virtual void        KeyDown (const char *bytes, int32 numBytes);
@@ -79,13 +79,13 @@ class BeezerListView : public ColumnListView
         void                CountSelectionDumb (int32 &subItems, int32 &superItems);
         void                CopyToClipboard (char columnSeparator);
         bool                HasSelection () const;
-        
+
         // Static functions
         static int          SortFunction (const CLVListItem *a, const CLVListItem *b, BList *columnList,
                                        int32 sortKey);
         static int          SortAsPerName (const char *name1, const char *name2, BList *columnList,
                                         int32 sortKey);
-           
+
     private:
         // Private hooks
         void                UpdateWindow () const;

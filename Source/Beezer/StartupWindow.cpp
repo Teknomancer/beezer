@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -65,7 +65,7 @@ StartupWindow::StartupWindow (RecentMgr *recentMgr, BubbleHelper *helper, bool s
     m_backView = new BevelView (Bounds(), "StartupWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_backView->SetViewColor (K_TOOLBAR_BACK_COLOR);
     AddChild (m_backView);
-    
+
     float width, height;
     m_headingView = new BeezerStringView (BRect (1, 1, Bounds().right - 1, 25), "StartupWindow:HeadingView",
                          str (S_WELCOME_TO), B_FOLLOW_H_CENTER, B_WILL_DRAW);
@@ -95,9 +95,9 @@ StartupWindow::StartupWindow (RecentMgr *recentMgr, BubbleHelper *helper, bool s
 
     BRect buttonRect (gapBetweenBtns, sepViewDarkEdge->Frame().bottom + 5, K_TOOLBAR_WIDTH + gapBetweenBtns, 0);
     backColor = K_TOOLBAR_BACK_COLOR;
-    
+
     BitmapPool *_bmps = _glob_bitmap_pool;
-    
+
     m_createBtn = new ImageButton (buttonRect, "StartupWindow:New", str (S_TOOLBAR_NEW),
                          _bmps->m_tbarNewBmp, NULL, new BMessage (M_FILE_NEW), false, backColor, kBelowIcon,
                          false, true, true, B_FOLLOW_H_CENTER);
@@ -115,13 +115,13 @@ StartupWindow::StartupWindow (RecentMgr *recentMgr, BubbleHelper *helper, bool s
                          backColor, kBelowIcon, false, true, true, B_FOLLOW_H_CENTER);
     m_openRecentBtn->MoveBy (m_openBtn->Frame().right + gapBetweenBtns, 0);
     m_openRecentBtn->ResizeToPreferred();
-    
+
     m_toolsBtn = new ImageButton (buttonRect, "StartupWindow:Tools", str (S_TOOLBAR_TOOLS),
                          _bmps->m_tbarToolsBmp, NULL, new BMessage (M_TOOLS_LIST), false,
                          backColor, kBelowIcon, false, true, true, B_FOLLOW_H_CENTER);
     m_toolsBtn->MoveBy (m_openRecentBtn->Frame().right + gapBetweenBtns, 0);
     m_toolsBtn->ResizeToPreferred();
-    
+
     m_prefsBtn = new ImageButton (buttonRect, "StartupWindow:Prefs", str (S_TOOLBAR_PREFS),
                          _bmps->m_tbarPrefsBmp, NULL, new BMessage (M_EDIT_PREFERENCES), false, backColor,
                          kBelowIcon,    false, true, true, B_FOLLOW_H_CENTER);
@@ -137,7 +137,7 @@ StartupWindow::StartupWindow (RecentMgr *recentMgr, BubbleHelper *helper, bool s
     m_backView->AddChild (m_openRecentBtn);
     m_backView->AddChild (m_toolsBtn);
     m_backView->AddChild (m_prefsBtn);
-    
+
     // Setup the bubblehelps
     m_bubbleHelper->SetHelp (m_createBtn, const_cast<char*>(str (S_BUBBLEHELP_NEW)));
     m_bubbleHelper->SetHelp (m_openBtn, const_cast<char*>(str (S_BUBBLEHELP_OPEN)));
@@ -171,10 +171,10 @@ StartupWindow::StartupWindow (RecentMgr *recentMgr, BubbleHelper *helper, bool s
            MoveTo (frame.LeftTop());
            ResizeTo (frame.Width(), frame.Height());
         }
-    
+
     m_recentMenu = NULL;
     m_toolsMenu = NULL;
-    
+
     int8 startupAction = _prefs_misc.FindInt8Def (kPfStartup, 0);
     if (startupAction == 0 || startup == false)
         Show();
@@ -190,7 +190,7 @@ bool StartupWindow::QuitRequested()
 {
     if (_prefs_windows.FindBoolDef (kPfWelcomeWnd, true))
         _prefs_windows.SetRect (kPfWelcomeWndFrame, Frame());
-    
+
     return BWindow::QuitRequested();
 }
 
@@ -213,14 +213,14 @@ void StartupWindow::MessageReceived (BMessage *message)
            be_app_messenger.SendMessage (message);
            break;
         }
-        
+
         case B_SIMPLE_DATA:
         {
            message->what = B_REFS_RECEIVED;
            be_app_messenger.SendMessage (message);
            break;
         }
-        
+
         case M_FILE_OPEN_RECENT:
         {
            if (m_recentMenu)
@@ -228,16 +228,16 @@ void StartupWindow::MessageReceived (BMessage *message)
                delete m_recentMenu;
                m_recentMenu = NULL;
            }
-               
+
            m_recentMenu = m_recentMgr->BuildPopUpMenu (NULL, "refs", be_app);
-           
+
            BPoint point (m_openRecentBtn->Frame().left, m_openRecentBtn->Frame().bottom + 4);
            BPoint screenPt = point;
            BRect ignoreClickRect (m_openRecentBtn->Frame());
-           
+
            ConvertToScreen (&screenPt);
            ConvertToScreen (&ignoreClickRect);
-        
+
            m_recentMenu->SetAsyncAutoDestruct (true);
            m_recentMenu->Go (screenPt, true, true, ignoreClickRect, false);
            break;
@@ -250,14 +250,14 @@ void StartupWindow::MessageReceived (BMessage *message)
                delete m_toolsMenu;
                m_toolsMenu = NULL;
            }
-           
+
            m_toolsMenu = _bzr()->BuildToolsPopUpMenu ();
            m_toolsMenu->SetTargetForItems (be_app);        // send-directly to be_app object ;)
-           
+
            BPoint point (m_toolsBtn->Frame().left, m_toolsBtn->Frame().bottom + 4);
            BPoint screenPt = point;
            BRect ignoreClickRect (m_toolsBtn->Frame());
-           
+
            ConvertToScreen (&screenPt);
            ConvertToScreen (&ignoreClickRect);
 
@@ -265,7 +265,7 @@ void StartupWindow::MessageReceived (BMessage *message)
            m_toolsMenu->Go (screenPt, true, true, ignoreClickRect, false);
            break;
         }
-        
+
         case M_UPDATE_RECENT:
         {
            // this isn't needed as we can always call BuildPopUpMenu() not a big deal, but i have
@@ -275,7 +275,7 @@ void StartupWindow::MessageReceived (BMessage *message)
            // If this need to be implemented also see  Beezer::MessageReceived()'s M_UPDATE_RECENT case.
            break;
         }
-        
+
         default:
            BWindow::MessageReceived (message);
     }

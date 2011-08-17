@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -30,7 +30,7 @@
 #define _SHARED_H
 
 // IMPORTANT NOTE:: Everytime you add a new constant to this file,
-// make sure it is NOT already defined by doing a text search. It 
+// make sure it is NOT already defined by doing a text search. It
 // would be extremely difficult to trace bugs arising from duplicate
 // constants (as compilers can't pick them up)
 

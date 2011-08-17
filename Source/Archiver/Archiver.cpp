@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -62,7 +62,7 @@ Archiver::Archiver ()
     m_tempDirPath = NULL;
     m_foldingLevel = 3;
     m_passwordRequired = false;
-    
+
     m_typeStr = strdup ("");
     m_extensionStr = strdup ("");
 }
@@ -75,23 +75,23 @@ Archiver::~Archiver ()
     // i.e. it never removes it from its Settings Menu so it will be deleted automatically
     // If the window relinquishes the menu from the Settings menu then we will need to delete
     // it, but this is not the case as one-window-one-addon ONLY is what main app follows
-    
+
     free ((char*)m_typeStr);
     free ((char*)m_extensionStr);
     free ((char*)m_settingsDirectoryPath);
     if (m_tempDirPath != NULL)
         free ((char*)m_tempDirPath);
-    
+
     int32 entryCount = m_entriesList.CountItems();
     for (int32 i = 0; i < entryCount; i++)
         delete reinterpret_cast<ArchiveEntry*>(m_entriesList.ItemAtFast (i));
-    
+
     delete m_hashTable;
-    
+
     int32 mimeCount = m_mimeList.CountItems();
     for (int32 i = 0; i < mimeCount; i++)
         free (reinterpret_cast<char*>(m_mimeList.ItemAtFast (i)));
-    
+
     ResetCache();
 }
 
@@ -190,7 +190,7 @@ BMessage* Archiver::ErrorMessage () const
 void Archiver::SetIconList (BList *list)
 {
     m_iconList = list;
-    
+
     // Store named pointer variables - for convienience and quick reference
     m_folderBmp = (BBitmap*)m_iconList->ItemAtFast (0L);
     m_binaryBmp = (BBitmap*)m_iconList->ItemAtFast (1L);
@@ -227,7 +227,7 @@ void Archiver::FillLists (BList *files, BList *dirs)
 {
     // Reset cache before filling our lists - bug fixed
     ResetCache();
-    
+
     // Dynamically size hash table for improved performance
     int32 entryCount = m_entriesList.CountItems();
     if (!m_hashTable)
@@ -236,10 +236,10 @@ void Archiver::FillLists (BList *files, BList *dirs)
         if (!m_hashTable)
            debugger ("couldn't alloc hash table");
     }
-    
+
     BList fileList, dirList;
     int32 i = 0L;
-    
+
     // First time opening, CountItems() will be zero, thereby we won't delete and reallocate hash
     // table
     if (CanPartiallyOpen() == false && m_hashTable->CountItems() > 0)
@@ -249,7 +249,7 @@ void Archiver::FillLists (BList *files, BList *dirs)
         m_fileList.MakeEmpty();
         m_folderList.MakeEmpty();
     }
-    
+
     // Create the file items in our list
     for (; i < entryCount; i++)
     {
@@ -261,11 +261,11 @@ void Archiver::FillLists (BList *files, BList *dirs)
         if (entry->m_isDir == false)
         {
            HashEntry *item = AddFilePathToTable (&fileList, entry->m_pathStr);
-           
+
            // Get rid of trailing slash
            if (entry->m_dirStr != NULL)
                entry->m_dirStr[strlen(entry->m_dirStr) - 1] = '\0';
-        
+
            // Check for folders without any files, in which case ArchiveEntry will exist but will have its
            // fileName as "" (not NULL but "")
            BBitmap *icon = BitmapForExtension (entry->m_nameStr);
@@ -287,26 +287,26 @@ void Archiver::FillLists (BList *files, BList *dirs)
                ListEntry *existingEntry = existingItem->m_clvItem;
                if (existingEntry && existingEntry->IsSuperItem() == false)
                   existingItem->m_clvItem->Update (listItem);
-               
+
                // Now if existingEntry is NULL that means there exists a folder and file with the same
                // name in the archive, we don't handle such an odd situation
-               
+
                delete listItem;
            }
         }
-           
+
         delete entry;
     }
 
     m_entriesList.MakeEmpty();
-    
+
     // Create folder items also add to hash table for quick finding & uniqueness
     int32 uniqueDirCount = dirList.CountItems();
     for (i = 0L; i < uniqueDirCount; i++)
     {
         HashEntry *item = reinterpret_cast<HashEntry*>(dirList.ItemAtFast(i));
         const char *dirPath = item->m_pathStr;
-        
+
         if (item->m_clvItem != NULL)
            continue;
 
@@ -327,7 +327,7 @@ void Archiver::FillLists (BList *files, BList *dirs)
         item->m_clvItem = itemEntry;
         free ((char*)parentDirPath);
     }
-        
+
     if (files) files->AddList (&fileList);
     if (dirs) dirs->AddList (&dirList);
 
@@ -351,17 +351,17 @@ void Archiver::AddDirPathToTable (BList *dirList, const char *path)
     // Check with previous path (For consecutive files of same folder - quick check and exit)
     if (m_cachedPath != NULL && strcmp (m_cachedPath, path) == 0)
         return;
-    
+
     // Make sure "path" is unique
     if (m_hashTable->IsFound (path) == true)
         return;
-    
+
     // Store the full-path of the dir in the cache, so that files in consecutive directories get
     // a significant speed boost as we won't enter the loop below (the check at the beginning of this
     // function will make sure of that)
     ResetCache();
     m_cachedPath = strdup (path);
-    
+
     // Break folders from the path, add each folder to the hash table.
     // e.g. bebook/art/deskbar/ will be added as 3 items: bebook, bebook/art, bebook/art/deskbar
     int32 len = strlen (path);
@@ -373,7 +373,7 @@ void Archiver::AddDirPathToTable (BList *dirList, const char *path)
         char *t = new char[i+1];
         strncpy (t, path, i);
         t[i] = '\0';
-        
+
         bool insertFailed;
         m_hashTable->Insert (t, &insertFailed, false);
         if (insertFailed == false)
@@ -397,7 +397,7 @@ HashEntry *Archiver::AddFilePathToTable (BList *fileList, const char *path)
            {
                HashEntry *addedItem = m_hashTable->LastAddedEntry();
                fileList->AddItem ((void*)addedItem);
-    
+
                return addedItem;
            }
         }
@@ -408,7 +408,7 @@ HashEntry *Archiver::AddFilePathToTable (BList *fileList, const char *path)
            return addedItem;
         }
     }
-    
+
     return NULL;
 }
 
@@ -447,7 +447,7 @@ BBitmap* Archiver::BitmapForExtension (const char *str) const
 
         delete[] extn;
     }
-    
+
     return icon;
 }
 
@@ -458,7 +458,7 @@ status_t Archiver::ReadErrStream (FILE *fp, const char *escapeSeq)
     // Read entire stream into a BString, check for errors
     BString fullErrorString;
     ReadStream (fp, fullErrorString);
-    
+
     if ((fullErrorString.Length() > 0L))
     {
         // An option string to escape ("Empty archive warning" lines etc. can be passed here)
@@ -470,7 +470,7 @@ status_t Archiver::ReadErrStream (FILE *fp, const char *escapeSeq)
         m_errorDetails.AddString (kErrorString, fullErrorString.String());
         return BZR_ERRSTREAM_FOUND;
     }
-    
+
     return BZR_DONE;
 }
 
@@ -482,7 +482,7 @@ void Archiver::ReadStream (FILE *fp, BString &str) const
     while (!feof (fp))
     {
         unsigned char c = fgetc (fp);
-        
+
         // Check for end of pipe, else append
         if (c != 255)
            str << (char)c;
@@ -555,7 +555,7 @@ bool Archiver::CanPartiallyOpen () const
 
 bool Archiver::NeedsTempDirectory () const
 {
-    // For archivers like tar.gzip it will set this to true, so that the main app 
+    // For archivers like tar.gzip it will set this to true, so that the main app
     // will create and pass the path of the temporary directory which is needed by
     // gzip as it works on a temp dir unlike zip
     return false;
@@ -628,7 +628,7 @@ bool Archiver::IsBinaryFound (char *filePath, const char *fileName) const
     // Path priority  <appdir>/workers -> B_SYSTEM_BIN_DIRECTORY -> B_COMMON_BIN_DIRECTORY
     BPath binPath;
     app_info appInfo;
-    be_app->GetAppInfo (&appInfo);    
+    be_app->GetAppInfo (&appInfo);
     BEntry appEntry (&appInfo.ref);
     appEntry.GetParent (&appEntry);
     binPath.SetTo(&appEntry);
@@ -675,7 +675,7 @@ void Archiver::SetSettingsDirectoryPath (const char *path)
 {
     if (m_settingsDirectoryPath != NULL)
         free ((char*)m_settingsDirectoryPath);
-    
+
     m_settingsDirectoryPath = strdup (path);
 }
 
@@ -708,41 +708,41 @@ void Archiver::SaveSettingsMenu ()
 {
     if (!m_settingsMenu)
         return;
-    
+
     // Make sure our settings folder exists!
     // Now when the app launches if there is NO folder our m_settingsDirectoryPath
     // would be NULL in which case don't bother creating/saving
     if (m_settingsDirectoryPath == NULL)
         return;
-    
+
     BDirectory settingsDirectory (m_settingsDirectoryPath);
     //create_directory (m_settingsDirectoryPath, 0777);
     if (settingsDirectory.InitCheck() != B_OK)
         return;
-    
+
     BMessage settingsMsg;
     BString settingsFilePath;
     BFile settingsFile;
-    
+
     // Remove the first 3 items which will be "Save as Defaults", "Save to archive" and separator item
     // Then save the rest of the items,
     BMenuItem *item0 = m_settingsMenu->RemoveItem (0L);
     BMenuItem *item1 = m_settingsMenu->RemoveItem (0L);
     BMenuItem *item2 = m_settingsMenu->RemoveItem (0L);
-    
+
     m_settingsMenu->Archive (&settingsMsg, true);
-    
+
     // Restore menu to its original form
     m_settingsMenu->AddItem (item0, 0);
     m_settingsMenu->AddItem (item1, 1);
     m_settingsMenu->AddItem (item2, 2);
-        
+
     BString temp = m_typeStr;
     temp.ToLower();        // Use lowercase filenames :)
-    
+
     settingsFilePath = m_settingsDirectoryPath;
     settingsFilePath << "/" << temp.String() << "_settings";
-    
+
     // Setup the file for writing the settings onto
     settingsFile.SetTo (settingsFilePath.String(), B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE);
 
@@ -758,16 +758,16 @@ void Archiver::LoadSettingsMenu ()
     BString settingsFilePath;
     BString temp = m_typeStr;
     temp.ToLower();           // Use lowercase filenames :)
-    
+
     settingsFilePath = m_settingsDirectoryPath;
     settingsFilePath << "/" << temp.String() << "_settings";
-    
+
     BFile settingsFile;
     if (settingsFile.SetTo (settingsFilePath.String(), B_READ_ONLY) == B_OK)
     {
         BMessage settingsMsg;
         settingsMsg.Unflatten (&settingsFile);
-    
+
         m_settingsMenu = new BMenu (&settingsMsg);
         if (m_settingsMenu == NULL)
            BuildDefaultMenu();
@@ -783,15 +783,15 @@ void Archiver::MakeTime (struct tm *timeStruct, time_t *timeValue, const char *d
 {
     // Zero-initialize time structure
     memset ((void*)timeStruct, 0, sizeof (*timeStruct));
-        
+
     int16 numYear = atoi (year);
     int8 numMonth = atoi (month) - 1;
     if (numYear > 999)               // Convert long year to short (as tm requires short year)
         numYear = numYear % 100;
-    
+
     if (numYear < 70)
         numYear += 100;
-    
+
     // Set the fields we have
     timeStruct->tm_sec = atoi (sec);
     timeStruct->tm_min = atoi(min);
@@ -799,7 +799,7 @@ void Archiver::MakeTime (struct tm *timeStruct, time_t *timeValue, const char *d
     timeStruct->tm_mon = numMonth;
     timeStruct->tm_year = numYear;
     timeStruct->tm_mday = atoi(day);
-    
+
     *timeValue = mktime (timeStruct);
 }
 

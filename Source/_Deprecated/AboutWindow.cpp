@@ -72,7 +72,7 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
     SetFeel (B_MODAL_APP_WINDOW_FEEL);
 
     m_heightOfExpandedWindow = 255;
-    
+
     // Create the BBitmap objects and set its data with error checking
     BBitmap *titleBmp = BTranslationUtils::GetBitmap ('PNG ', "Img:AboutTitle");
     m_separatorBmp = BTranslationUtils::GetBitmap ('PNG ', "Img:AboutSeparator");
@@ -85,22 +85,22 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
         Show();
         return;
     }
-    
+
     BRect bounds (Bounds());
     m_backView = new BView (bounds, "AboutWindow:BackView", B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_backView->SetViewColor (K_WHITE_COLOR);
     AddChild (m_backView);
-    
+
     m_titleView = new BView (BRect (0, 0, bounds.right, 100), "AboutWindow:TitleView", B_FOLLOW_LEFT,
                       B_WILL_DRAW);
     m_backView->AddChild (m_titleView);
     m_titleView->SetViewBitmap (titleBmp);
-    
+
     m_separatorView = new BView (BRect (0, bounds.bottom - 30, bounds.right, bounds.bottom - 10),
                       "AboutWindow:SeparatorView", B_FOLLOW_BOTTOM, B_WILL_DRAW);
     m_backView->AddChild (m_separatorView);
     m_separatorView->SetViewBitmap (m_separatorBmp);
-    
+
     delete titleBmp;
 
     m_textView = new MarqueeView (BRect (5, m_titleView->Frame().bottom - 4,
@@ -116,7 +116,7 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
     m_textView->SetViewColor (m_backView->ViewColor());
     m_textView->SetFontAndColor (be_plain_font, B_FONT_ALL, &K_BLACK_COLOR);
     m_textView->Hide();
-    
+
     // Calculate no of '\n's to leave to make the text go to the bottom, calculate the no. of lines
     font_height fntHt;
     m_textView->GetFontHeight (&fntHt);
@@ -144,7 +144,7 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
     formatStr.ReplaceAll ("$S_DISCLAIMER$", str (S_ABOUT_DISCLAIMER));
     formatStr.ReplaceAll ("$S_SPECIAL_THANKS$", str (S_ABOUT_SPECIAL_THANKS));
     m_creditsText = strdup (formatStr.String());
-    
+
     m_textView->SetText (m_lineFeeds.String());
     m_textView->Insert (m_lineFeeds.Length(), m_creditsText, strlen (m_creditsText));
 
@@ -179,7 +179,7 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
            m_textView->SetFontAndColor (strt, strt + strlen(subHeadings[i].String()),
                          be_plain_font, B_FONT_ALL, &K_ABOUT_SUB_HEADING);
         }
-    
+
     // Search and color main headings
     for (int32 i = 0; i < nMainHeadings; i++)
         if ((strt = temp.FindFirst (mainHeadings[i].String())) != B_ERROR)
@@ -187,14 +187,14 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
            m_textView->SetFontAndColor (strt, strt + strlen(mainHeadings[i].String()),
                          be_plain_font, B_FONT_ALL, &K_ABOUT_MAIN_HEADING);
         }
-    
+
     BRect screen_rect (BScreen().Frame());
     MoveTo (screen_rect.Width() / 2 - Frame().Width() / 2, screen_rect.Height() / 2 - Frame().Height() / 2);
     MoveBy (0, -Frame().Height() / 2);
 
     Show();
     PostMessage (M_ANIMATE_SLIDE);
-}    
+}
 
 //=============================================================================================================//
 
@@ -223,15 +223,15 @@ void AboutWindow::DispatchMessage (BMessage *message, BHandler *handler)
 
            // We don't need to have a copy of this anymore (the BView has it)
            delete m_separatorBmp;
-           
+
            // Spawn & resume the scroller thread now
            m_textView->Show();
            m_scrollThreadID = spawn_thread (_scroller, "Magic_Scroll", B_NORMAL_PRIORITY, (void*)this);
            resume_thread (m_scrollThreadID);
-           
+
            break;
         }
-        
+
         case B_KEY_DOWN: case B_MOUSE_DOWN:
         {
            // According to BeBook its ok to call Quit() from message loop as it shuts down the message
@@ -240,7 +240,7 @@ void AboutWindow::DispatchMessage (BMessage *message, BHandler *handler)
            break;
         }
     }
-           
+
     BWindow::DispatchMessage (message, handler);
 }
 
@@ -275,14 +275,14 @@ int32 AboutWindow::_scroller (void *data)
            vw->ScrollBy (0, 1);
         else
            return 0;
-        
+
         if (vw->Bounds().bottom > ptY)
            vw->ScrollTo (0, 0);
-        
+
         wnd->Unlock();
         snooze (K_SCROLL_DELAY);
     }
-    
+
     return 0;
 }
 

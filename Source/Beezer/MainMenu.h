@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -41,14 +41,14 @@ class MainMenu : public BMenuBar
     public:
         MainMenu (BRect frame);
         virtual ~MainMenu ();
-        
+
         // Public hooks
         void                SetRecentMenu (BMenu *menu);
         void                SetExtractPathsMenu (BMenu *menu);
         void                SetExtractSelPathsMenu (BMenu *menu);
         BMenu              *RecentMenu () const;
         BMenu              *ExtractPathsMenu () const;
-        
+
         // Public members
         BMenu              *m_fileMenu,
                            *m_recentMenu,

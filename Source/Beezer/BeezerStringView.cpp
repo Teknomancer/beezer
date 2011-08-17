@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -84,10 +84,10 @@ void BeezerStringView::RenderView (bool firstTime)
 {
     // Buffered draw, lock the bitmap, draw to the bitmap owned view, then render bitmap finally
     m_backBitmap->Lock();
-    
+
     BRect bounds (m_backView->Bounds());
     m_backView->SetDrawingMode (B_OP_COPY);
-    
+
     if (firstTime == true)
     {
         // Fill up the background and draw the borders -- i.e. complete redraw
@@ -96,7 +96,7 @@ void BeezerStringView::RenderView (bool firstTime)
         m_backView->FillRect (bounds);
     }
 
-    // Erase old text using backcolor 
+    // Erase old text using backcolor
     m_backView->SetFont (&m_font, B_FONT_ALL);
     if (m_oldText != NULL && firstTime == false)    // firstTime check is CRITICAL (bugfix)
     {
@@ -104,13 +104,13 @@ void BeezerStringView::RenderView (bool firstTime)
         m_backView->SetHighColor (m_backView->ViewColor());
         m_backView->DrawString (m_oldText);
     }
-    
+
     // Write new text
     m_backView->MovePenTo (3, bounds.bottom - 3);
     m_backView->SetHighColor (m_foreground);
     m_backView->DrawString (m_text);
-    
-    // Sync the view, its important we do this    
+
+    // Sync the view, its important we do this
     m_backView->Sync();
     DrawBitmap (m_backBitmap, Bounds(), Bounds());
 
@@ -124,11 +124,11 @@ void BeezerStringView::SetText (const char *text)
     // Delete the previous text if any
     if (m_oldText)
         free (m_oldText);
-    
+
     // Hold old text into m_oldText, re-allocate m_text for the new text
     m_oldText = m_text;
     m_text = strdup (text);
-    
+
     RenderView ();
 }
 
@@ -150,7 +150,7 @@ void BeezerStringView::AttachedToWindow ()
     m_backView = new BView (Bounds(), "_2x_bufview_", B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
 
     m_background = Parent() ? Parent()->ViewColor() : m_background;
-    
+
     m_backBitmap->Lock();
     m_backBitmap->AddChild (m_backView);
     m_backView->SetViewColor (m_background);
@@ -158,7 +158,7 @@ void BeezerStringView::AttachedToWindow ()
     m_backView->SetHighColor (m_foreground);
     RenderView (true);
     m_backBitmap->Unlock();
-    
+
     BView::AttachedToWindow();
 }
 
@@ -212,7 +212,7 @@ void BeezerStringView::MouseDown (BPoint point)
 {
     if (m_mouseTargetView)
         m_mouseTargetView->MouseDown (point);
-    
+
     return BView::MouseDown (point);
 }
 

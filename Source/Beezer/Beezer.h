@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -53,13 +53,13 @@ class Beezer : public BApplication
     public:
         Beezer ();
         virtual ~Beezer();
-        
+
         // Inherited hooks
         virtual void        MessageReceived (BMessage *message);
         virtual void        RefsReceived (BMessage *message);
         virtual void        ReadyToRun ();
         virtual void        Quit ();
-        
+
         // Additional hooks
         MainWindow         *RegisterWindow (entry_ref *ref = NULL);
         void                UnRegisterWindow (bool closeApp);
@@ -70,7 +70,7 @@ class Beezer : public BApplication
         MainWindow         *CreateWindow (entry_ref *ref);
         BMenu              *BuildToolsMenu () const;
         BPopUpMenu         *BuildToolsPopUpMenu () const;
-        
+
         // Public members
         BString             m_settingsPathStr;
         BDirectory          m_addonsDir,
@@ -88,14 +88,14 @@ class Beezer : public BApplication
         void                WriteToCTFile (BFile *ctFile, BString *compileTimeStr) const;
         void                ShowCreateFilePanel ();
         int8                RegisterFileTypes () const;
-        
+
         AboutWindow        *m_aboutWnd;
         StartupWindow      *m_startupWnd;
         PrefsWindow        *m_prefsWnd;
         FileSplitterWindow *m_splitWnd;
         FileJoinerWindow   *m_joinWnd;
         AddOnWindow        *m_addOnWnd;
-        
+
         uint32              m_nextWindowID,
                             m_nWindows;
         BRect               m_defaultWindowRect,

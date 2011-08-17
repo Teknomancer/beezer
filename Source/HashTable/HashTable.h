@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -49,7 +49,7 @@ class HashEntry
     public:
         HashEntry();
         ~HashEntry();
-        
+
         const char         *m_pathStr;
         ListEntry          *m_clvItem;
         HashEntry          *m_next;
@@ -60,7 +60,7 @@ class HashTable
     public:
         HashTable (int32 sizeOfTable);
         ~HashTable ();
-        
+
         void                DeleteTable ();
         bool                IsFound (const char *str);
         bool                Delete (HashEntry *entry);
@@ -75,7 +75,7 @@ class HashTable
         int32               FindUnder (BMessage *message, const char *fieldName, const char *directoryPath,
                                     BList *fileList, BList *folderList);
         static int32        OptimalSize (int32 minSize);
-        
+
     protected:
         HashEntry          *LookUp (const char *str, bool insert, bool *wasFound = NULL, bool copyInput = true);
         int32               Hash (const char *str) const;

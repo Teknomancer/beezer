@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -47,7 +47,7 @@ MainMenu::MainMenu (BRect frame)
 {
     m_recentMenu = NULL;
     m_extractPathsMenu = NULL;
-    
+
     m_fileMenu = new BMenu (str (S_FILE));
     m_fileMenu->AddItem (new BMenuItem (str (S_NEW), new BMessage (M_FILE_NEW), 'N'));
         SetRecentMenu (new BMenu (str (S_OPEN)));
@@ -70,13 +70,13 @@ MainMenu::MainMenu (BRect frame)
         BMenuItem *selectAllItem = m_editMenu->FindItem (str (S_SELECT_ALL));
         selectAllItem->SetMessage (new BMessage (M_EDIT_SELECT_ALL));
         selectAllItem->SetShortcut ('A', 0);
-    
+
     m_editMenu->AddItem (new BMenuItem (str (S_DESELECT_ALL), new BMessage (M_EDIT_DESELECT_ALL)));
     m_editMenu->AddItem (new BMenuItem (str (S_INVERT_SELECTION), new BMessage (M_EDIT_INVERT_SELECTION), 'I',
                   B_SHIFT_KEY));
     m_editMenu->AddSeparatorItem();
     m_editMenu->AddItem (new BMenuItem (str (S_EXPAND_ALL), new BMessage (M_EDIT_EXPAND_ALL)));
-    m_editMenu->AddItem (new BMenuItem (str (S_EXPAND_SELECTED), new BMessage (M_EDIT_EXPAND_SELECTED)));    
+    m_editMenu->AddItem (new BMenuItem (str (S_EXPAND_SELECTED), new BMessage (M_EDIT_EXPAND_SELECTED)));
     m_editMenu->AddItem (new BMenuItem (str (S_COLLAPSE_ALL), new BMessage (M_EDIT_COLLAPSE_ALL)));
     m_editMenu->AddItem (new BMenuItem (str (S_COLLAPSE_SELECTED), new BMessage (M_EDIT_COLLAPSE_SELECTED)));
     m_editMenu->AddSeparatorItem();
@@ -85,7 +85,7 @@ MainMenu::MainMenu (BRect frame)
     m_actionsMenu = new BMenu (str (S_ACTIONS));
     m_actionsMenu->AddItem (new BMenuItem (str (S_EXTRACT), new BMessage (M_ACTIONS_EXTRACT), 'X'));
         SetExtractPathsMenu (new BMenu (str (S_EXTRACT_TO)));
-    
+
     m_actionsMenu->AddItem (new BMenuItem (str (S_VIEW), new BMessage (M_ACTIONS_VIEW), 'V'));
     m_actionsMenu->AddItem (new BMenuItem (str (S_OPEN_WITH), new BMessage (M_ACTIONS_OPEN_WITH), 'O'));
     m_actionsMenu->AddSeparatorItem();
@@ -99,13 +99,13 @@ MainMenu::MainMenu (BRect frame)
     //m_actionsMenu->AddItem (new BMenuItem (str (S_RENAME), new BMessage (M_ACTIONS_RENAME), 'E'));
     m_actionsMenu->AddItem (new BMenuItem (str (S_CREATE_FOLDER), new BMessage (M_ACTIONS_CREATE_FOLDER), 'M'));
     m_actionsMenu->AddItem (new BMenuItem (str (S_ADD), new BMessage (M_ACTIONS_ADD), 'A', B_SHIFT_KEY));
-    
+
     m_settingsMenu = new BMenu (str (S_SETTINGS));
 
     m_settingsMenu->AddItem (new BMenuItem (str (S_SAVE_AS_DEFAULT), new BMessage (M_SAVE_AS_DEFAULT)));
     m_settingsMenu->AddItem (new BMenuItem (str (S_SAVE_TO_ARCHIVE), new BMessage (M_SAVE_TO_ARCHIVE)));
     m_settingsMenu->AddSeparatorItem();
-    
+
     m_settingsMenu->AddItem (new BMenuItem (str (S_TOOLBAR), new BMessage (M_TOGGLE_TOOLBAR)));
     m_settingsMenu->FindItem(M_TOGGLE_TOOLBAR)->SetMarked (true);
     m_settingsMenu->AddItem (new BMenuItem (str (S_INFOBAR), new BMessage (M_TOGGLE_INFOBAR)));
@@ -124,7 +124,7 @@ MainMenu::MainMenu (BRect frame)
         m_columnsSubMenu->AddItem (new BMenuItem (str (S_COLUMN_METHOD), new BMessage (M_TOGGLE_COLUMN_METHOD)));
         m_columnsSubMenu->AddItem (new BMenuItem (str (S_COLUMN_CRC), new BMessage (M_TOGGLE_COLUMN_CRC)));
         m_settingsMenu->AddItem (m_columnsSubMenu);
-        
+
         int32 columnCount = m_columnsSubMenu->CountItems();
         for (int32 i = 0; i < columnCount; i++)
            m_columnsSubMenu->ItemAt(i)->SetMarked (true);
@@ -136,15 +136,15 @@ MainMenu::MainMenu (BRect frame)
         m_foldingMenu->AddItem (new BMenuItem (str (S_SETTINGS_FOLDING_TWO), NULL));
         m_foldingMenu->AddItem (new BMenuItem (str (S_SETTINGS_FOLDING_ALL), NULL));
         m_foldingMenu->ItemAt(3)->SetMarked (true);
-        
+
         m_settingsMenu->AddItem (m_foldingMenu);
-    
+
     m_windowsMenu = new BMenu (str (S_WINDOWS));
 
     BMenu *systemMenu = new BMenu ("");
     BString strBuf = str (S_ABOUT);
     strBuf << " " << K_APP_TITLE << B_UTF8_ELLIPSIS;
-    
+
     systemMenu->AddItem (new BMenuItem (str (S_HELP), new BMessage (M_FILE_HELP)));
     systemMenu->AddSeparatorItem();
     systemMenu->AddItem (new BMenuItem (strBuf.String(), new BMessage (M_FILE_ABOUT)));
@@ -164,7 +164,7 @@ MainMenu::MainMenu (BRect frame)
     AddItem (m_toolsMenu);
     AddItem (m_settingsMenu);
     AddItem (m_windowsMenu);
-    
+
     m_archiveContextMenu = new BPopUpMenu ("_cntxt", false, false);
     m_archiveContextMenu->AddItem (new BMenuItem (str (S_CONTEXT_VIEW), new BMessage (M_ACTIONS_VIEW)));
     m_archiveContextMenu->AddItem (new BMenuItem (str (S_CONTEXT_OPEN_WITH), new BMessage (M_ACTIONS_OPEN_WITH)));
@@ -175,7 +175,7 @@ MainMenu::MainMenu (BRect frame)
     m_archiveContextMenu->AddSeparatorItem();
     m_archiveContextMenu->AddItem (new BMenuItem (str (S_CONTEXT_SELECT), new BMessage (M_CONTEXT_SELECT)));
     m_archiveContextMenu->AddItem (new BMenuItem (str (S_CONTEXT_DESELECT), new BMessage (M_CONTEXT_DESELECT)));
-    
+
     m_logContextMenu = new BPopUpMenu ("_cntxt", false, false);
     m_logContextMenu->AddItem (new BMenuItem (str (S_LOG_CONTEXT_CLEAR), new BMessage (M_LOG_CONTEXT_CLEAR)));
     m_logContextMenu->AddItem (new BMenuItem (str (S_LOG_CONTEXT_COPY), new BMessage (M_LOG_CONTEXT_COPY)));
@@ -188,7 +188,7 @@ MainMenu::~MainMenu ()
 {
     delete m_archiveContextMenu;
     m_archiveContextMenu = NULL;
-    
+
     delete m_logContextMenu;
     m_logContextMenu = NULL;
 }
@@ -200,13 +200,13 @@ void MainMenu::SetRecentMenu (BMenu *menu)
     if (m_recentMenu != NULL)
         if (m_fileMenu->RemoveItem (m_recentMenu))
            delete m_recentMenu;
-    
+
     m_recentMenu = menu;
     m_fileMenu->AddItem (m_recentMenu, 1);
     BMenuItem *openItem = m_fileMenu->FindItem (str (S_OPEN));
     openItem->SetMessage (new BMessage (M_FILE_OPEN));
     openItem->SetShortcut ('O', 0);
-    
+
 }
 
 //=============================================================================================================//
@@ -223,7 +223,7 @@ void MainMenu::SetExtractPathsMenu (BMenu *menu)
     if (m_extractPathsMenu != NULL)
         if (m_actionsMenu->RemoveItem (m_extractPathsMenu))
            delete m_extractPathsMenu;
-    
+
     m_extractPathsMenu = menu;
     m_actionsMenu->AddItem (m_extractPathsMenu, 1);
     BMenuItem *extractItem = m_actionsMenu->FindItem (str (S_EXTRACT_TO));
@@ -243,7 +243,7 @@ void MainMenu::SetExtractSelPathsMenu (BMenu *menu)
     if (m_extractSelPathsMenu != NULL)
         if (m_actionsMenu->RemoveItem (m_extractSelPathsMenu))
            delete m_extractSelPathsMenu;
-    
+
     m_extractSelPathsMenu = menu;
     m_actionsMenu->AddItem (m_extractSelPathsMenu, 2);
     menu->Superitem()->SetLabel (str (S_EXTRACT_SELECTED));

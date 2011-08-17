@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -69,7 +69,7 @@ PrefsWindow::PrefsWindow ()
     m_panelList.AddItem ((void*)new PrefsViewRecent (m_panelFrame));
     m_panelList.AddItem ((void*)new PrefsViewInterface (m_panelFrame));
     m_panelList.AddItem ((void*)new PrefsViewMisc (m_panelFrame));
-    
+
     for (int32 i = 0; i < m_panelList.CountItems(); i++)
     {
         PrefsView *prefPanel = (PrefsView*)m_panelList.ItemAtFast(i);
@@ -78,7 +78,7 @@ PrefsWindow::PrefsWindow ()
         prefPanel->Hide();
         PrefsListItem *listItem = new PrefsListItem (prefPanel->Title(), prefPanel->Bitmap());
         m_listView->AddItem (listItem);
-    
+
         if (prefPanel->Bitmap())
         {
            listItem->SetHeight
@@ -87,7 +87,7 @@ PrefsWindow::PrefsWindow ()
         else
            listItem->SetHeight (listItem->Height() + 6);
     }
-    
+
     // Critical order
     m_listView->SetSelectionMessage (new BMessage (M_PREFS_PANEL_SELECTED));
     m_listView->SetTarget (this);
@@ -99,7 +99,7 @@ PrefsWindow::PrefsWindow ()
         m_listView->Select (_prefs_misc.FindInt8Def (kPfPrefPanelIndex, 0), false);
         m_listView->ScrollToSelection();
     }
-    
+
     // Center window on-screen & set the constraints
     BRect screen_rect (BScreen().Frame());
     MoveTo (screen_rect.Width() / 2 - Frame().Width() / 2, screen_rect.Height() / 2 - Frame().Height() / 2);
@@ -109,7 +109,7 @@ PrefsWindow::PrefsWindow ()
     if (_prefs_windows.FindBoolDef (kPfPrefsWnd, true))
         if (_prefs_windows.FindRect (kPfPrefsWndFrame, &frame) == B_OK)
            MoveTo (frame.LeftTop());
-    
+
     Show();
 }
 
@@ -121,7 +121,7 @@ void PrefsWindow::Quit()
 
     if (_prefs_windows.FindBoolDef (kPfPrefsWnd, true))
         _prefs_windows.SetRect (kPfPrefsWndFrame, Frame());
-    
+
     be_app_messenger.SendMessage (M_CLOSE_PREFS);
     return BWindow::Quit();
 }
@@ -149,7 +149,7 @@ void PrefsWindow::MessageReceived (BMessage *message)
            }
            break;
         }
-        
+
         case M_SAVE_PREFS:
         {
            for (int32 i = 0; i < m_panelList.CountItems(); i++)
@@ -159,19 +159,19 @@ void PrefsWindow::MessageReceived (BMessage *message)
            Quit();
            break;
         }
-        
+
         case M_PREFS_HELP:
         {
            be_app_messenger.SendMessage (message);
            break;
         }
-        
+
         case M_REVERT:
         {
            m_currentPanel->Load();
            break;
         }
-        
+
         default:
            return BWindow::MessageReceived (message);
     }
@@ -195,7 +195,7 @@ void PrefsWindow::SetActivePanel (PrefsView *activePanel)
         m_descTextView->SetFontAndColor (tlen, tlen+dlen+1, be_plain_font, B_FONT_ALL,
                                 &(K_BLACK_COLOR));
     }
-    
+
     m_currentPanel->Show();
 }
 
@@ -206,7 +206,7 @@ void PrefsWindow::AddControls ()
     m_backView = new BevelView (Bounds(), "PrefsWindow:backView", btOutset, B_FOLLOW_ALL_SIDES);
     m_backView->SetViewColor (K_BACKGROUND_COLOR);
     AddChild (m_backView);
-    
+
     float margin = K_MARGIN + 2;
     float maxWidth = 110+20;
     font_height fntHt, boldFntHt;
@@ -214,24 +214,24 @@ void PrefsWindow::AddControls ()
     be_bold_font->GetHeight (&boldFntHt);
     float totalHeight = fntHt.ascent + fntHt.descent + fntHt.leading + boldFntHt.ascent +
                boldFntHt.descent + boldFntHt.leading + 8;
-    
+
     m_listView = new BListView (BRect (margin, margin, maxWidth,
                   Bounds().bottom - margin), "PrefsWindow:listView",
                   B_SINGLE_SELECTION_LIST, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
-    
+
     BScrollView *scrollView = new BScrollView ("PrefsWindow:scrollView", m_listView, B_FOLLOW_LEFT,
                              B_WILL_DRAW, false, true, B_FANCY_BORDER);
     m_backView->AddChild (scrollView);
     m_listView->TargetedByScrollView (scrollView);
-    
+
     BevelView *descViewDecor = new BevelView (BRect (scrollView->Frame().right + margin, margin,
                          Bounds().right - margin, margin + totalHeight + btDeepThickness),
                          "PrefsWindow:descViewDecor", btDeep, B_FOLLOW_LEFT);
     m_backView->AddChild (descViewDecor);
-    
+
     float border = descViewDecor->EdgeThickness();
     m_descTextView = new BTextView (BRect (border, border, descViewDecor->Frame().Width() - border,
-                      descViewDecor->Frame().Height() - border), "PrefsWindow:descTextView", 
+                      descViewDecor->Frame().Height() - border), "PrefsWindow:descTextView",
                       BRect (2, 2, descViewDecor->Frame().Width() - 2 * border - 4, 0), B_FOLLOW_LEFT,
                       B_WILL_DRAW);
     m_descTextView->SetViewColor (255, 252, 232, 255);
@@ -239,7 +239,7 @@ void PrefsWindow::AddControls ()
     m_descTextView->MakeEditable (false);
     m_descTextView->MakeSelectable (false);
     descViewDecor->AddChild (m_descTextView);
-    
+
     m_panelFrame.Set (scrollView->Frame().right + margin, descViewDecor->Frame().bottom + margin,
                       Bounds().right - margin, scrollView->Frame().bottom - K_BUTTON_HEIGHT - margin);
 
@@ -248,7 +248,7 @@ void PrefsWindow::AddControls ()
                              scrollView->Frame().right + margin + K_BUTTON_WIDTH, Bounds().bottom - margin),
                              "PrefsWindow:discardBtn", str (S_PREFS_DISCARD), new BMessage (B_QUIT_REQUESTED),
                              B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
-    
+
     BButton *saveBtn = new BButton (BRect (discardBtn->Frame().right + margin, discardBtn->Frame().top,
                              discardBtn->Frame().right + margin + K_BUTTON_WIDTH, discardBtn->Frame().bottom),
                              "PrefsWindow:saveBtn", str (S_PREFS_SAVE), new BMessage (M_SAVE_PREFS),

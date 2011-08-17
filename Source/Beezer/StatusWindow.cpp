@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -61,7 +61,7 @@ StatusWindow::StatusWindow (const char *title, BWindow *callerWindow, const char
     font_height fntHt;
     font.GetHeight (&fntHt);
     float totalFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
-    
+
     BRect bounds (Bounds());
     m_backView = new BevelView (bounds, "StatusWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_backView->SetViewColor (K_BACKGROUND_COLOR);
@@ -74,7 +74,7 @@ StatusWindow::StatusWindow (const char *title, BWindow *callerWindow, const char
                                     "StatusWindow:iconView", icon);
     iconView->SetViewColor (m_backView->ViewColor());
     AddChild (iconView);
-    
+
     float width, height;
     BStringView *titleStrView = new BStringView (BRect (iconView->Frame().right + 4 * K_MARGIN,
                              K_MARGIN + 3.0, iconView->Frame().right + 4 * K_MARGIN +
@@ -88,7 +88,7 @@ StatusWindow::StatusWindow (const char *title, BWindow *callerWindow, const char
     titleStrView->GetPreferredSize (&width, &height);
     titleStrView->ResizeTo (width, titleStrView->Frame().Height());
     m_backView->AddChild (titleStrView);
-    
+
     m_barberPole = new BarberPole (BRect (titleStrView->Frame().left + 1.0,
                                 titleStrView->Frame().bottom + K_MARGIN / 2.0,
                                 0, iconView->Frame().bottom), "StatusWindow::BarberPole");
@@ -114,7 +114,7 @@ StatusWindow::StatusWindow (const char *title, BWindow *callerWindow, const char
                                 bounds.right - 1, textLabel->Frame().bottom + 2 * K_MARGIN + 1.0),
                                 "StatusWindow:EdgeView", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
         m_backView->AddChild (edgeView);
-    
+
         BButton *cancelButton = new BButton (BRect (bounds.right - K_BUTTON_WIDTH - 2 * K_MARGIN,
                              edgeView->Frame().bottom + K_MARGIN, bounds.right - 2 * K_MARGIN,
                              edgeView->Frame().bottom + K_MARGIN + K_BUTTON_HEIGHT),
@@ -125,7 +125,7 @@ StatusWindow::StatusWindow (const char *title, BWindow *callerWindow, const char
     }
     else
         ResizeTo (Frame().Width(), textLabel->Frame().bottom + 2 * K_MARGIN + 4);
-    
+
     BRect screen_rect (BScreen().Frame());
     MoveTo (screen_rect.Width() / 2 - Frame().Width() / 2, screen_rect.Height() / 2 - Frame().Height() / 2);
 
@@ -153,7 +153,7 @@ void StatusWindow::MessageReceived (BMessage *message)
                *m_cancel = true;
            break;
         }
-        
+
         case M_CLOSE:
         {
            snooze (70000);
@@ -161,7 +161,7 @@ void StatusWindow::MessageReceived (BMessage *message)
            Quit();
            break;
         }
-        
+
         default:
         {
            BWindow::MessageReceived (message);

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -37,7 +37,7 @@ class BitmapPool
     public:
         BitmapPool ();
         ~BitmapPool ();
-        
+
         BList               m_iconList;
         BBitmap            *m_folderBmp,
                          *m_executableBmp,
@@ -67,7 +67,7 @@ class BitmapPool
                          *m_tbarDeleteBmp,
                          *m_smallAppIcon,
                          *m_largeAppIcon;
-    
+
     private:
         static int32        m_runCount;
 };

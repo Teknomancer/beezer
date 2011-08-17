@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -40,7 +40,7 @@ class WindowMgr
     public:
         WindowMgr ();
         ~WindowMgr ();
-        
+
         // Public hooks
         bool               AddWindow (BWindow *wnd);
         bool               RemoveWindow (BWindow *wnd);
@@ -52,7 +52,7 @@ class WindowMgr
     private:
         // Private members
         BList             *m_windowList;
-        
+
         static int32        m_runCount;
 };
 

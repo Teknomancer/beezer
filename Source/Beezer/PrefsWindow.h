@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -45,11 +45,11 @@ class PrefsWindow : public BWindow
 {
     public:
         PrefsWindow ();
-        
+
         // Inherited hooks
         virtual void        Quit ();
         virtual void        MessageReceived (BMessage *message);
-        
+
     private:
         // Private hooks
         void                AddControls ();

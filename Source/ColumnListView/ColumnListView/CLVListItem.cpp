@@ -63,7 +63,7 @@ BRect CLVListItem::ItemColumnFrame(int32 column_index, ColumnListView* owner)
     if(!ThisColumn->IsShown())
         return BRect(-1,-1,-1,-1);
 
-    int32 DisplayIndex = owner->IndexOf(this);    
+    int32 DisplayIndex = owner->IndexOf(this);
     BRect itemRect;
     if(DisplayIndex >= 0)
         itemRect = owner->ItemFrame(DisplayIndex);

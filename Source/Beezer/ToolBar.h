@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -38,12 +38,12 @@ class ToolBar : public BView
     public:
         ToolBar (BRect frame, const char *name, rgb_color backColor);
         virtual ~ToolBar ();
-        
+
         // Inherited hooks
         virtual void        AttachedToWindow ();
         virtual void        Draw (BRect updateRect);
         virtual void        MouseDown (BPoint point);
-        
+
         // Additional hooks
         virtual void        Redraw ();
         virtual void        AddItem (ImageButton *button);
@@ -59,7 +59,7 @@ class ToolBar : public BView
         static const float  mk_vertSpacing = 3;
         static const float  mk_horizSpacing = 2;
         static const float  mk_Border = 2;
-        
+
     protected:
         // Protected members
         virtual void        RenderEdges ();
@@ -81,7 +81,7 @@ class ToolBar : public BView
                          m_darkEdge1,
                          m_darkEdge2,
                          m_darkEdge3;
-        
+
         typedef BView       _inherited;
 };
 

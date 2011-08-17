@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -54,7 +54,7 @@ SelectDirPanel::SelectDirPanel (file_panel_mode mode, BMessenger *target, const 
     // Tweak the default button (turn it off) so <ENTER> doesn't select the folder, instead
     // enters the folder in the BFilePanel's list
     ((BButton*)Window()->FindView ("default button"))->MakeDefault (false);
-    
+
     Window()->ChildAt(0L)->AddChild (m_curDirBtn);
     Window()->UnlockLooper();
     UpdateButton();
@@ -123,7 +123,7 @@ void SelectDirPanel::SetMessage (BMessage *msg)
     BMessage *curDirMsg = new BMessage (*msg);
     m_curDirBtn->SetMessage (curDirMsg);
     UpdateButton ();
-    
+
     BFilePanel::SetMessage (msg);
 }
 
@@ -137,7 +137,7 @@ void SelectDirPanel::SendMessage (const BMessenger *target, BMessage *message)
     entry_ref ref;
     message->FindRef ("refs", &ref);
     BEntry entry (&ref, true);
-    
+
     if (entry.IsDirectory() == true)
         return BFilePanel::SendMessage (target, message);
 }

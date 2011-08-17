@@ -113,7 +113,7 @@ class ColumnListView : public BListView
            //DisplayOrderChanged(false).
         void GetDisplayOrder(int32* order) const;
            //Fills a caller-provided array with the display order of the columns in the same format
-           //as used in calling SetDisplayOrder.  The order pointer should point to an array 
+           //as used in calling SetDisplayOrder.  The order pointer should point to an array
            //int32 order[n] where n is the number of columns in the ColumnListView.
         virtual void ColumnWidthChanged(int32 ColumnIndex, float NewWidth);
         virtual void DisplayOrderChanged(const int32* order);
@@ -126,7 +126,7 @@ class ColumnListView : public BListView
            //Override this to filter the modes
         int32 GetSorting(int32* SortKeys, CLVSortMode* SortModes) const;
            //Returns the number of used sort keys, and fills the provided arrays with the sort keys
-           //by column index and sort modes, in priority order.  The pointers should point to an array 
+           //by column index and sort modes, in priority order.  The pointers should point to an array
            //int32 SortKeys[n], and an array CLVSortMode SortModes[n] where n is the number of sortable
            //columns in the ColumnListView.  Note: sorting will only occur if the key column is shown.
         void SetSorting(int32 NumberOfKeys, int32* SortKeys, CLVSortMode* SortModes);
@@ -165,7 +165,7 @@ class ColumnListView : public BListView
            if(fWindowActive) return fSelectedItemColorWindowActive;
            return fSelectedItemColorWindowInactive;
         }
-        
+
         //BView overrides
         virtual void FrameResized(float Width, float Height);
         virtual void ScrollTo(BPoint point);
@@ -177,7 +177,7 @@ class ColumnListView : public BListView
         //List functions
         virtual bool AddUnder(BListItem* item, BListItem* superitem);
         virtual bool AddUnderFast(BListItem* item, BListItem* superitem); // Ram
-        
+
         virtual bool AddItem(BListItem* item, int32 fullListIndex);
         virtual bool AddItem(BListItem* item);
         virtual bool AddItemFastHierarchical (BListItem* a_item);           // Ram

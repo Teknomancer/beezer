@@ -6,13 +6,13 @@
     is given.
 
     Usage:
-	- Add the file BubbleHelper.cpp to your project
-	- #include "BubbleHelper.h" in your files where needed
+    - Add the file BubbleHelper.cpp to your project
+    - #include "BubbleHelper.h" in your files where needed
     - Create a single instance of BubbleHelper (it will serve your entire
       application). It is safe to create one on the stack or as a global.
     - Call SetHelp(view,text) for each view to which you wish to attach a text.
     - Use SetHelp(view,NULL) to remove text from a view.
-    
+
     This could be implemented as a BMessageFilter as well, but that means using
     one bubblehelp-instance for each window to which you wish to add help-bubbles.
     Using a single looping thread for everything turned out to be the most practical
@@ -71,9 +71,9 @@ BubbleHelper::~BubbleHelper()
         // dispose of window
         if(locked)
         {
-	        textwin->PostMessage(B_QUIT_REQUESTED);
-    	    textwin->Unlock();
-    	}
+            textwin->PostMessage(B_QUIT_REQUESTED);
+            textwin->Unlock();
+        }
     }
     if(helplist)
     {
@@ -127,7 +127,7 @@ char *BubbleHelper::GetHelp(BView *view)
 {
     int i=0;
     helppair *pair;
-    
+
     // This could be sped up by sorting the list and
     // doing a binary search.
     // Right now this is left as an exercise for the
@@ -219,7 +219,7 @@ void BubbleHelper::Helper()
                                 textview->GetMouse(&where2,&buttons);
                                 textview->ConvertToScreen(&where2);
                             } while(!buttons && where2==where && (displaycounter++<displaytime));
-                        
+
                             HideBubble();
                             do
                             {
@@ -297,7 +297,7 @@ BView *BubbleHelper::FindView(BPoint where)
 void BubbleHelper::DisplayHelp(char *text, BPoint where)
 {
     textview->SetText(text);
-    
+
     float height=textview->TextHeight(0,2E6)+4;
     float width=0;
     int numlines=textview->CountLines();
@@ -307,7 +307,7 @@ void BubbleHelper::DisplayHelp(char *text, BPoint where)
             width=linewidth;
     textwin->ResizeTo(width+4,height);
     textview->SetTextRect(BRect(2,2,width+2,height+2));
-    
+
     BScreen screen;
     BPoint dest=where+BPoint(0,20);
     BRect screenframe=screen.Frame();

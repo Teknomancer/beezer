@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -53,7 +53,7 @@ int main ()
     str << "This must be placed in:\n";
     str << "/boot/home/config/add-ons/Tracker\n\n";
     str << "To use this add-on choose the files you with to archive, right-click them and choose this add-on…";
-    
+
     str.Prepend ("alert \"");
     str.Append ("\"");
     system (str.String());

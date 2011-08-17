@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -66,22 +66,22 @@ class MainWindow : public BWindow
         MainWindow (BRect frame, BubbleHelper *bubbleHelper, WindowMgr *windowMgr, RecentMgr *recentMgr,
                RecentMgr *extractMgr, RuleMgr *ruleMgr);
         ~MainWindow ();
-        
+
         // Inherited hooks
         virtual void        Quit ();
         virtual bool        QuitRequested();
         virtual void        Show ();
         virtual void        MessageReceived (BMessage *message);
         virtual void        FrameResized (float newWidth, float newHeight);
-        
-        // Public hooks        
+
+        // Public hooks
         void                LoadSettingsFromArchive (entry_ref *ref);
         void                LoadDefaultSettings ();
 
         // Pubilc members
         BPath               m_archivePath;        // used from thread while creating archives
         LogTextView        *m_logTextView;
-        
+
     private:
         // Friends who can access private things
         friend class        Beezer;
@@ -95,7 +95,7 @@ class MainWindow : public BWindow
         static int32        _counter (void *arg);
         static int32        _viewer (void *arg);
         static int32        _opener (void *arg);
-        
+
         // Private hooks
         void                SaveSettingsAsDefaults () const;
         void                SaveSettingsToArchive (BMessage *message);
@@ -170,7 +170,7 @@ class MainWindow : public BWindow
                                             BList *fileList = NULL, BList *dirList = NULL, bool skipFiles = false);
         bool                ConfirmAddOperation (const char *addingUnderDirPath, BMessage *refsMessage,
                                              int32 *count, int32 *skipped);
-    
+
         // Private members
         BView              *m_backView;
         BevelView          *m_outputBackView;

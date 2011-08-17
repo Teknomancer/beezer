@@ -1,9 +1,9 @@
 /*
  * SplitPane (C)
  *
- * SplitPane is a useful UI component. It allows the 
+ * SplitPane is a useful UI component. It allows the
  * use to ajust two view Horizontally or Vertically so
- * that they are a desired size. This type of Pane 
+ * that they are a desired size. This type of Pane
  * shows up most comonly in Mail/News Readers.
  *
  * Author  YNOP (ynop@acm.org)
@@ -36,10 +36,10 @@ SplitPane::SplitPane (BRect frame, BView *one, BView *two,uint32 Mode)
     //SetViewColor(B_TRANSPARENT_32_BIT); // go tran so we have control over drawing
     BRect b;
     b = Bounds();
-    
+
     PaneOne = one;
     PaneTwo = two;
-    
+
     prevSize.Set (0.0f,0.0f);                       // used for resizing when resizeOne(X|Y) is true --jaf
     resizeOneX = resizeOneY = false;
     align = B_VERTICAL;                             // Most people use it this way
@@ -55,14 +55,14 @@ SplitPane::SplitPane (BRect frame, BView *one, BView *two,uint32 Mode)
     alignlocked = false;                         // free alignment
     Draggin = false;
     attached = false;
-    
+
     vertpos.Set (-1, -1);                         // nothing is stored yet
     horizpos.Set (-1, -1);                         // nothing is stored yet
-    
+
     WinOne = NULL;
     WinTwo = NULL;
     //   ConfigWindow = NULL;
-    
+
     AddChild (one);
     AddChild (two);
 }
@@ -95,21 +95,21 @@ void SplitPane::FrameResized (float w, float h)
 void SplitPane::Draw (BRect updateRect)
 {
     SetHighColor(160,160,160);
-    
+
     if (align == B_VERTICAL)
     {
         SetHighColor(145,145,145);
         FillRect(BRect(pos.x,Bounds().top+pad.x+1,pos.x,Bounds().bottom-pad.x-1));
-        
+
         SetHighColor(255,255,255);
         FillRect(BRect(pos.x+1,Bounds().top+pad.x+1,pos.x+2,Bounds().bottom-pad.x-1));
-        
+
         SetHighColor(216,216,216);
         FillRect(BRect(pos.x+2,Bounds().top+pad.x+1,pos.x+thickness.x-2,Bounds().bottom-pad.x-1));
-        
+
         SetHighColor(145,145,145);
         FillRect(BRect(pos.x+thickness.x-2,Bounds().top+pad.x+1,pos.x+thickness.x-2,Bounds().bottom-pad.x-1));
-        
+
         SetHighColor(96,96,96);
         FillRect(BRect(pos.x+thickness.x-1,Bounds().top+pad.x+1,pos.x+thickness.x-1,Bounds().bottom-pad.x-1));
 
@@ -134,13 +134,13 @@ void SplitPane::Draw (BRect updateRect)
 
         SetHighColor(Parent()->ViewColor());
         FillRect(BRect(Bounds().left+pad.y+1,pos.y+2,Bounds().right-pad.y-1,pos.y+thickness.y-2));
-        
+
         SetHighColor(145,145,145);
         FillRect(BRect(Bounds().left+pad.y+1,pos.y+thickness.y-2,Bounds().right-pad.y-1,pos.y+thickness.y-2));
-        
+
         SetHighColor(96,96,96);
         FillRect(BRect(Bounds().left+pad.y+1,pos.y+thickness.y-1,Bounds().right-pad.y-1,pos.y+thickness.y-1)); // 96
-        
+
         // Ram -- draw a gripper
         rgb_color lite = { 245, 245, 245, 255}, dark = { 118, 118, 118, 255 };
         float y = (pos.y + pos.y + thickness.y) / 2.0 - 1;
@@ -159,12 +159,12 @@ void SplitPane::Draw (BRect updateRect)
 void SplitPane::Update ()
 {
     Window()->Lock();
-    
+
     if (align == B_VERTICAL)
     {
         if ((resizeOneX) && (prevSize.x > 0))
            pos.x += Bounds().Width()-prevSize.x;
-        
+
         PaneOne->SetResizingMode ((resizeOneX ? B_FOLLOW_LEFT_RIGHT : B_FOLLOW_LEFT) | B_FOLLOW_TOP_BOTTOM);
         PaneTwo->SetResizingMode ((resizeOneX ? B_FOLLOW_RIGHT : B_FOLLOW_LEFT_RIGHT) | B_FOLLOW_TOP_BOTTOM);
 
@@ -175,7 +175,7 @@ void SplitPane::Update ()
         if(pos.x < MinSizeOne.x)
            if(!poslocked)
                pos.x = MinSizeOne.x;
-        
+
         vertpos = pos;
     }
     else
@@ -193,13 +193,13 @@ void SplitPane::Update ()
         if (pos.y < MinSizeOne.y)
            if(!poslocked)
                pos.y = MinSizeOne.y;
-        
+
         horizpos = pos;
     }
-    
+
     // store our new size so we can do a diff next time we're called
     prevSize = BPoint (Bounds().Width(), Bounds().Height());
-    
+
     if (PaneOne)
     {
         if (!WinOne)
@@ -216,7 +216,7 @@ void SplitPane::Update ()
            }
         }
     }
-    
+
     if (PaneTwo)
     {
         if (!WinTwo)
@@ -235,7 +235,7 @@ void SplitPane::Update ()
            }
         }
     }
-    
+
     Window()->Unlock();
 }
 
@@ -252,7 +252,7 @@ void SplitPane::MouseDown (BPoint where)
         currentMsg->FindInt32("buttons", (int32*)&buttons);
         currentMsg->FindInt32("modifiers", (int32*)&modifiers);
         currentMsg->FindInt32("clicks", (int32*)&clicks);
-        
+
         if (buttons & B_SECONDARY_MOUSE_BUTTON)
         {
            if (!alignlocked)
@@ -262,16 +262,16 @@ void SplitPane::MouseDown (BPoint where)
                   case B_VERTICAL: align = B_HORIZONTAL; break;
                   case B_HORIZONTAL: align = B_VERTICAL; break;
                }
-               
+
                Update();
                Invalidate();
-               
+
                // ONLY FOR THIS APP WE NEED THE BELOW LINE -- BUG FIX -- Don't Implement for other apps
                // Unless needed -- Ram (Custom bug fix/workaround for project)
                Window()->FrameResized (Window()->Bounds().Width(), Window()->Bounds().Height());
            }
         }
-        
+
         if ((buttons & B_PRIMARY_MOUSE_BUTTON) && (!Draggin) && (IsInDraggerBounds(where)))
         {
            if (!poslocked)
@@ -279,7 +279,7 @@ void SplitPane::MouseDown (BPoint where)
                Draggin = true; // this is so we can drag
                here = where;
            }
-           
+
            SetMouseEventMask (B_POINTER_EVENTS,B_LOCK_WINDOW_FOCUS);
         }
     }
@@ -323,7 +323,7 @@ void SplitPane::MouseMoved (BPoint where, uint32 info, const BMessage *message)
                minVal = MinSizeOne.x;
                break;
         }
-        
+
         switch (align)
         {
            case B_HORIZONTAL:
@@ -336,22 +336,22 @@ void SplitPane::MouseMoved (BPoint where, uint32 info, const BMessage *message)
                   pos.x = MinSizeOne.x;
                break;
         }
-        
+
         if (align == B_VERTICAL)
         {
            if (pos.x > (Bounds().Width() - thickness.x - MinSizeTwo.x))
                pos.x = (Bounds().Width() - thickness.x - MinSizeTwo.x + 1);
-           
+
            vertpos = pos;
         }
         else
         {
            if (pos.y > (Bounds().Height() - thickness.y - MinSizeTwo.y))
                pos.y = (Bounds().Height() - thickness.y - MinSizeTwo.y + 1);
-           
+
            horizpos = pos;
         }
-        
+
         Update();
         Invalidate();
     }
@@ -408,7 +408,7 @@ void SplitPane::SetBarPosition (BPoint p)
 
 BPoint SplitPane::GetBarPosition () const
 {
-    return pos; 
+    return pos;
 }
 
 //=============================================================================================================//
@@ -442,7 +442,7 @@ void SplitPane::SetJump (BPoint j)
 
 BPoint SplitPane::GetJump () const
 {
-    return jump;   
+    return jump;
 }
 
 //=============================================================================================================//
@@ -452,7 +452,7 @@ bool SplitPane::HasViewOne () const
     if (PaneOne)
         return true;
 
-    return false;   
+    return false;
 }
 
 //=============================================================================================================//
@@ -469,7 +469,7 @@ bool SplitPane::HasViewTwo () const
 
 void SplitPane::SetViewOneDetachable (bool b)
 {
-    VOneDetachable = b;    
+    VOneDetachable = b;
 }
 
 //=============================================================================================================//
@@ -611,7 +611,7 @@ void SplitPane::GetState (BMessage& state) const
     state.AddBool ("2d", VTwoDetachable);
     state.AddInt32 ("an", align);
     state.AddPoint ("ps", pos);
-    state.AddPoint ("th", thickness);   
+    state.AddPoint ("th", thickness);
     state.AddPoint ("jm", jump);
     state.AddPoint ("pd", pad);
     state.AddPoint ("m1", MinSizeOne);
@@ -628,7 +628,7 @@ void SplitPane::SetState (BMessage *state)
 {
     BPoint pt;
     int32 i;
-    
+
     if (state->FindBool ("1d", &VOneDetachable) != B_NO_ERROR)
         VOneDetachable = false;
 
@@ -652,10 +652,10 @@ void SplitPane::SetState (BMessage *state)
 
     if (state->FindPoint ("m1", &pt) == B_NO_ERROR)
         MinSizeOne = pt;
-    
+
     if (state->FindPoint ("m2", &pt) == B_NO_ERROR)
         MinSizeTwo = pt;
-    
+
     if (state->FindBool ("pl", &poslocked) != B_NO_ERROR)
         poslocked = false;
 
@@ -685,9 +685,9 @@ void SplitPane::MessageReceived (BMessage *msg)
     switch (msg->what)
     {
         case SPLITPANE_STATE:
-           SetState (msg);   
+           SetState (msg);
            break;
-    
+
         default:
            BView::MessageReceived (msg);
            break;
@@ -703,7 +703,7 @@ BView* SplitPane::ViewAt (int32 num)
         return PaneOne;
     else if (num == 2L)
         return PaneTwo;
-    
+
     return NULL;
 }
 
@@ -717,10 +717,10 @@ void SplitPane::RestoreBarPosition ()
            pos = storedvpos;
         else
            pos = storedhpos;
-        
+
         if (attached)
            Update();
-        
+
         Invalidate();
     }
 }

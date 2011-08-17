@@ -2,7 +2,7 @@
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -61,19 +61,19 @@ class FileSplitterWindow : public BWindow
     public:
         FileSplitterWindow (RecentMgr *files, RecentMgr *dirs);
         virtual ~FileSplitterWindow ();
-        
+
         // Inherited hooks
         virtual void        MessageReceived (BMessage *message);
         virtual void        Quit ();
         virtual bool        QuitRequested ();
-        
+
     private:
         // Private hooks
         void                ToggleWindowHeight (bool expand);
         void                UpdateData ();
         void                UpdateRecentMenus ();
         void                CreateSelfJoiner ();
-        
+
         // Thread functions
         static int32        _splitter (void *data);
 
@@ -105,17 +105,17 @@ class FileSplitterWindow : public BWindow
                          *m_openDirChk,
                          *m_closeChk;
         BStatusBar         *m_statusBar;
-        
+
         SelectDirPanel      *m_dirPanel;
         BFilePanel         *m_filePanel;
-        
+
         float               m_hideProgress,
                           m_showProgress;
 
         BEntry              m_fileEntry;
         BDirectory          m_destDir;
         BString             m_firstChunkName;
-        
+
         uint64              m_fragmentSize;
         uint16              m_fragmentCount;
         char               *m_sepString;
@@ -124,7 +124,7 @@ class FileSplitterWindow : public BWindow
                           m_quitNow;
         BMessenger         *m_messenger;
         thread_id           m_thread;
-        
+
         RecentMgr          *m_recentSplitFiles,
                          *m_recentSplitDirs;
 };

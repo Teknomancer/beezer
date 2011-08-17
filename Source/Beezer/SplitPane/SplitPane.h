@@ -1,9 +1,9 @@
 /*
  * SplitPane (C)
  *
- * SplitPane is a useful UI component. It allows the 
+ * SplitPane is a useful UI component. It allows the
  * use to ajust two view Horizontally or Vertaclly so
- * that they are a desired size. This type of Pane 
+ * that they are a desired size. This type of Pane
  * shows up most comonly in Mail/News Readers.
  *
  * Author  YNOP (ynop@acm.org)
@@ -25,7 +25,7 @@
 #define SPLITPANE_STATE 'spst'
 
 // jaf: All BPoint arguments represent the value to use when in    B_VERTICAL alignment followed by
-//        the value to use when in B_HORIZONTAL alignment. 
+//        the value to use when in B_HORIZONTAL alignment.
 // ram: Reformated/aligned this header file to suit the rest of my project.
 
 class SplitPane : public BView
@@ -79,12 +79,12 @@ class SplitPane : public BView
         void               GetResizeViewOne (bool &returnWhileInVertAlign, bool &returnWhileInHorizAlign) const;
         BView*             ViewAt (int32 num);           // By Ram
         void               RestoreBarPosition ();        // By Ram
-        
+
     private:
         // Private hooks
         bool               IsInDraggerBounds (BPoint pt) const;
         void               Update ();
-        
+
         // Private members
         BView             *PaneOne,
                         *PaneTwo;
@@ -101,7 +101,7 @@ class SplitPane : public BView
                          prevSize;
         BWindow           *WinOne,
                         *WinTwo;
-        
+
         // State info members
         bool               VOneDetachable,
                          VTwoDetachable;

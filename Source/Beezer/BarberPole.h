@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -43,19 +43,19 @@ class BarberPole : public BevelView
         void                GetPreferredSize (float *width, float *height);
         void                AttachedToWindow ();
         float               Width () const;
-        
+
     private:
         // Private inherited hooks
         void                Draw (BRect updateRect);
         void                Pulse ();
-        
+
         // Data members
         BBitmap            *m_poleImage;
         float               m_imageHeight,
                           m_edgeThickness,
                           m_y;
         bool                m_animate;
-        
+
         typedef BevelView    _inherited;
 };
 

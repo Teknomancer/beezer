@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -40,10 +40,10 @@ class StatusWindow : public BWindow
     public:
         StatusWindow (const char *title, BWindow *callerWindow, const char *text, volatile bool *cancel,
                     bool showWindow = true);
-    
+
         // Inherited hooks
         virtual void        MessageReceived (BMessage *message);
-        
+
     private:
         BevelView         *m_backView;
         BarberPole        *m_barberPole;

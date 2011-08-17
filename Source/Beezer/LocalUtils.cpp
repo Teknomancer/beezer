@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -60,7 +60,7 @@ bool OpenEntry (const char *tempDirPath, const char *entryPath, bool openWith)
     BString extractedFilePath;
     extractedFilePath << tempDirPath << "/";
     extractedFilePath << entryPath;
-    
+
     // Construct a ref, since roster/tracker needs refs inorder to launch
     entry_ref ref;
     BEntry entry (extractedFilePath.String());
@@ -95,7 +95,7 @@ bool OpenEntry (const char *tempDirPath, const char *entryPath, bool openWith)
     }
     else
         TrackerOpenWith (&ref);
-    
+
     return true;
 }
 
@@ -115,18 +115,18 @@ bool TrackerOpenWith (entry_ref *ref)
            BPath pathOfEntry;
            entry.GetPath (&pathOfEntry);
            update_mime_info (pathOfEntry.Path(), true, true, true);
-           
+
            BMessage trakMsg (B_REFS_RECEIVED);
            trakMsg.AddInt32 ("launchUsingSelector", 1L);
            trakMsg.AddRef ("refs", ref);
-           
+
            if (be_roster->IsRunning (K_TRACKER_SIGNATURE))
                BMessenger(K_TRACKER_SIGNATURE).SendMessage (&trakMsg);
         }
     }
     else
         return false;
-    
+
     return true;
 }
 
@@ -139,7 +139,7 @@ void TrackerOpenFolder (entry_ref *refToDir)
     {
         BMessage trakMsg (B_REFS_RECEIVED);
         trakMsg.AddRef ("refs", refToDir);
-        
+
         if (be_roster->IsRunning (K_TRACKER_SIGNATURE))
            BMessenger(K_TRACKER_SIGNATURE).SendMessage (&trakMsg);
     }
@@ -156,7 +156,7 @@ BString CommaFormatString (off_t num)
     uint32 length = strlen (numStr);
 
     BString bytes;
-    
+
     if (length >= 4)
     {
         uint32 charsTillComma = length % 3;
@@ -202,7 +202,7 @@ BBitmap* ResBitmap (const char *name, uint32 type)
         debugger (errString.String());
         return NULL;
     }
-    
+
     if (msg.Unflatten (buf) != B_OK)
     {
         BString errString;
@@ -220,7 +220,7 @@ int64 BytesFromString (char *text)
 {
     if (!text)
         return 0;
-    
+
     // Converts string to bytes, "text" needs to be 10.2 KB or 2 MB etc.
     char *end;
     double val;
@@ -267,12 +267,12 @@ BString LocaleStringFromBytes (int64 v)
            sprintf(buf, "%.2f %s", ((double)v) / 1024LL, str (S_PREFIX_KB));
         else
            sprintf(buf, "%Li %s", v, str (S_PREFIX_BYTES));
-        
+
         str = buf;
     }
     else
         str = "-";
-    
+
     return str;
 }
 
@@ -290,7 +290,7 @@ BString LocaleStringFromBytes (int64 v)
 //        "%.g%s",
 //        0
 //    };
-//    
+//
 //    int64 value = BytesFromString (text);
 //    char buffer[1024];
 //    if (value == kUnknownSize)
@@ -341,12 +341,12 @@ BString LocaleStringFromBytes (int64 v)
 ////           for (char *tmp = buffer; *tmp; tmp++)
 ////               if (*tmp == '.')
 ////                  period = tmp;
-////           
+////
 ////           // move the rest of the string over the insignificant zero
 ////           if (period && period[1] && period[2] == '0')
 ////               for (char *tmp = &period[2]; *tmp; tmp++)
 ////                  *tmp = tmp[1];
-//           
+//
 //           float resultWidth = view->StringWidth (buffer);
 //           if (resultWidth <= width)
 //           {

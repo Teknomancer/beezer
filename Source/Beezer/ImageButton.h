@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -48,7 +48,7 @@ class ImageButton : public BView
                      bool hoverHighlight = true, uint32 resizeMask = B_FOLLOW_LEFT | B_FOLLOW_TOP,
                      uint32 flags = B_WILL_DRAW);
         virtual ~ImageButton ();
-        
+
         // Inherited hooks
         virtual void        Draw (BRect updateRect);
         virtual void        MouseMoved (BPoint point, uint32 status, const BMessage *dragInfo);
@@ -72,7 +72,7 @@ class ImageButton : public BView
         virtual bool        IsClickable () const;
         virtual status_t    SetMargin (float width, float height);
         virtual void        GetMargin (float *width, float *height);
-        
+
     protected:
         // Protected hooks
         virtual void        DrawOutsideEdge (BRect rect);

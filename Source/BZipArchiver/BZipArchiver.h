@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -41,39 +41,39 @@ class BZipArchiver : public TarArchiver
 {
     public:
         BZipArchiver ();
-        
+
         // Overridables
         void               BuildDefaultMenu ();
-        
+
         // Abstract Implementations & overridables
         status_t           Open (entry_ref *ref, BMessage *fileList);
 
         status_t           ReadExtract (FILE *fp, BMessenger *progress, volatile bool *cancel);
         status_t           Extract (entry_ref *dir, BMessage *list, BMessenger *progress, volatile bool *cancel);
-        
+
         status_t           Test (char *&outputStr, BMessenger *progress, volatile bool *cancel);
-        
+
         status_t           ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progress, volatile bool *cancel);
         status_t           Add (bool createMode, const char *relPath, BMessage *list, BMessage *addedPaths,
                               BMessenger *progress, volatile bool *cancel);
-    
+
         status_t           Create (BPath *archivePath, const char *relPath, BMessage *fileList,
                                 BMessage *addedPaths, BMessenger *progress, volatile bool *cancel);
-    
+
         status_t           Delete (char *&outputStr, BMessage *list, BMessenger *progress, volatile bool *cancel);
         status_t           ReadDelete (FILE *fp, char *&outputStr,    BMessenger *progress, volatile bool *cancel);
-        
+
         bool               CanAddFiles () const;
         bool               NeedsTempDirectory () const;
         BList              HiddenColumns (BList *columns) const;
         BString            OutputFileName (const char *fullFileName) const;
-        
+
     private:
         // Private helper functions
         void               CompressFromTemp ();
         BString            InitTarFilePath (char *fileName);
         void               SendProgressMessage (BMessenger *progress) const;
-        
+
         char               m_bzipPath[B_PATH_NAME_LENGTH];
         char               m_tarFilePath[B_PATH_NAME_LENGTH];
         char               m_arkFilePath[B_PATH_NAME_LENGTH];

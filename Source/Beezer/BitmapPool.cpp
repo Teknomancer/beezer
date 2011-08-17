@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -41,26 +41,26 @@ int32 BitmapPool::m_runCount = 0;
 
 BitmapPool::BitmapPool ()
 {
-    // The purpose of this BitmapPool is to maintain a global list of bitmap images, inorder 
+    // The purpose of this BitmapPool is to maintain a global list of bitmap images, inorder
     // to avoid bitmap redundancy i.e. holding multiple copies of bitmaps for, say, each window.
     // Now all bitmaps are allocated on the heap - once - and only one copy is present in memory at any time
     // for an instance of the application. The application is not intended for multiple launches...
     // and thus we won't take effort to create "area"s in memory and try sharing, a waste of time
-    
+
     // The BitmapPool object is a global object referenced through "_glob_bitmap_pool" pointer.
     // _glob_bitmap_pool is created on heap by Beezer.cpp and freed by the same. Other clases/files
     // simply access (but don't modify) the bitmaps from _glob_bitmap_pool
-    
+
     // The reason why we alloc bitmaps here is because IF we make AppUtils (globally)
     // make these allocs the app crashes as BBitmap requires be_app to be running BEFORE use of BBitmap
     // whereas AppUtils is a seperate class initialized before be_app, it is also used in Archiver
-    
+
     if (atomic_add (&m_runCount, 1) != 0)
     {
         debugger ("only one BitmapPool instance allowed/necessary");
         return;
     }
-    
+
     m_folderBmp = ResBitmap ("Img:Folder");
     m_executableBmp = ResBitmap ("Img:Executable");
     m_htmlBmp = ResBitmap ("Img:HTML");
@@ -83,7 +83,7 @@ BitmapPool::BitmapPool ()
     m_iconList.AddItem ((void*)m_packageBmp);
     m_iconList.AddItem ((void*)m_pdfBmp);
     m_iconList.AddItem ((void*)m_imageBmp);
-    
+
     m_tbarNewBmp = ResBitmap ("Img:New");
     m_tbarOpenBmp = ResBitmap ("Img:Open");
     m_tbarOpenRecentBmp = ResBitmap ("Img:OpenRecent");
@@ -109,7 +109,7 @@ BitmapPool::BitmapPool ()
     m_smallAppIcon = new BBitmap (BRect (0, 0, 15, 15), B_CMAP8);
     m_smallAppIcon->SetBits (buf, 16*16, 0, B_CMAP8);
     delete[] buf;
-    
+
     buf = reinterpret_cast<const char*>(be_app->AppResources()->LoadResource ('ICON', "BEOS:L:STD_ICON", &size));
     m_largeAppIcon = new BBitmap (BRect (0, 0, 31, 31), B_CMAP8);
     m_largeAppIcon->SetBits (buf, 32*32, 0, B_CMAP8);
@@ -131,7 +131,7 @@ BitmapPool::~BitmapPool ()
     delete m_imageBmp;
     delete m_pdfBmp;
     delete m_sourceBmp;
-    
+
     delete m_tbarNewBmp;
     delete m_tbarOpenBmp;
     delete m_tbarOpenRecentBmp;
@@ -148,7 +148,7 @@ BitmapPool::~BitmapPool ()
     delete m_tbarAddBmp;
     delete m_tbarDeleteDisabledBmp;
     delete m_tbarDeleteBmp;
-    
+
     delete m_smallAppIcon;
     delete m_largeAppIcon;
 }

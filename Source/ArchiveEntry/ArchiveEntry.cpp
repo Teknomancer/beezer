@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -52,7 +52,7 @@ ArchiveEntry::ArchiveEntry (bool dir, const char *pathStr, const char *sizeStr, 
     m_isDir = dir;
     m_nameStr = strdup (LeafFromPath (pathStr));        // Never call FinalPathComponent here - only use
     m_pathStr = strdup (pathStr);                      // LeafFromPath() bug fixed
-    
+
     // Get path of parent directory
     int32 len = strlen(pathStr) - strlen(m_nameStr);
     if (len > 0)
@@ -72,15 +72,15 @@ ArchiveEntry::ArchiveEntry (bool dir, const char *pathStr, const char *sizeStr, 
         ratio /= atof (sizeStr);
     else if (ratio < 0)
         ratio = 0;
-    
+
     m_ratioStr = (char*)malloc (8);
     sprintf (m_ratioStr, "%.1f%%", ratio);
-    
+
     if (methodStr)
         m_methodStr = strdup (methodStr);
     else
         m_methodStr = NULL;
-    
+
     if (crcStr)
         m_crcStr = strdup (crcStr);
     else

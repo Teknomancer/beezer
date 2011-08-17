@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -88,27 +88,27 @@ status_t ArjArchiver::ReadOpen (FILE *fp)
            sizeStr[25], packedStr[25], ratioStr[15], dayStr[5], permStr[50],
            monthStr[5], yearStr[8], hourStr[5], minuteStr[5], secondStr[5], dateStr[90], guaStr[25],
            bpmgsStr[20], osStr[30], osStr2[15], pathStr[B_PATH_NAME_LENGTH + 1];
-    
+
     do
     {
         fgets (lineString, len, fp);
     } while (!feof (fp) && (strstr (lineString, "--------" ) == NULL));
-    
+
     fgets (lineString, len, fp);
-    
+
     while (!feof (fp) && (strstr (lineString, "--------" ) == NULL))
     {
         lineString[strlen (lineString) - 1] = '\0';
-        
+
         // Arj reports in 4 lines, first line for just the path, the next line has columnar info
         sscanf (lineString,    "%[^ ] %[^\n]", fileCount, pathStr);
         fgets (lineString, len, fp);
         sscanf (lineString,
            " %[0-9] %[^ ] %[0-9] %[0-9] %[^ ] %[0-9]-%[0-9]-%[0-9] %[0-9]:%[0-9]:%[0-9] %[^ ] %[^ ] %[^\n]",
-           revisionStr, osStr, 
+           revisionStr, osStr,
            sizeStr, packedStr, ratioStr, yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr,
            permStr, guaStr, bpmgsStr);
-        
+
         // Possible host OS strings from code of ARJ port from 3dEyes -- thanks to him for giving me this info!
         // static char *host_os_names[]={"MS-DOS", "PRIMOS", "UNIX", "AMIGA", "MAC-OS",
         //                  "OS/2", "APPLE GS", "ATARI ST", "NEXT", "VAX VMS", "WIN95", "WIN32", NULL};
@@ -121,17 +121,17 @@ status_t ArjArchiver::ReadOpen (FILE *fp)
                revisionStr, osStr2, osStr2,
                sizeStr, packedStr, ratioStr, yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr,
                permStr, guaStr, bpmgsStr);
-           
+
            strcat (osStr, " ");
            strcat (osStr, osStr2);
         }
-        
+
         struct tm timeStruct; time_t timeValue;
         MakeTime (&timeStruct, &timeValue, dayStr, monthStr, yearStr, hourStr, minuteStr, "00");
         FormatDate (dateStr, 90, &timeStruct);
-               
+
         BString pathString = pathStr;
-        
+
         // Check to see if pathStr is as folder, else add it as a file
         if (strstr (permStr, "D") != NULL || permStr[0] == 'd')
         {
@@ -145,7 +145,7 @@ status_t ArjArchiver::ReadOpen (FILE *fp)
            m_entriesList.AddItem (new ArchiveEntry (false, pathString.String(), sizeStr, packedStr, dateStr,
                                     timeValue, "-", "-"));
         }
-        
+
         fgets (lineString, len, fp);
         fgets (lineString, len, fp);
         fgets (lineString, len, fp);
@@ -160,29 +160,29 @@ status_t ArjArchiver::Open (entry_ref *ref, BMessage *fileList)
 {
     m_archiveRef = *ref;
     m_archivePath.SetTo (ref);
-    
+
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_arjPath << "v" << m_archivePath.Path();
-    
+
     FILE *out, *err;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;        // Handle arj unloadable error here
 
     status_t exitCode;
     resume_thread (tid);
-    
+
     close (errdes[1]);
     close (outdes[1]);
 
     out = fdopen (outdes[0], "r");
     exitCode = ReadOpen (out);
-    
+
     close (outdes[0]);
     fclose (out);
-    
+
     err = fdopen (errdes[0], "r");
     exitCode = Archiver::ReadErrStream (err);
     close (errdes[0]);
@@ -198,7 +198,7 @@ status_t ArjArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
 {
     BEntry dirEntry;
     entry_ref dirRef;
-    
+
     dirEntry.SetTo (refToDir);
     status_t exitCode = BZR_DONE;
     if (progress)        // Perform output directory checking only when a messenger is passed
@@ -220,11 +220,11 @@ status_t ArjArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         if (type != B_STRING_TYPE)
            return BZR_UNKNOWN;
     }
-    
+
     // Setup argv, fill with selection names if needed
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_arjPath << "x" << "-y" << "-i";
-    
+
     // For quick-extraction (that is - viewing etc) don't process the below switches
     if (progress)
     {
@@ -233,7 +233,7 @@ status_t ArjArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         else if (m_settingsMenu->FindItem (kFreshen)->IsMarked() == true)
            m_pipeMgr << "-f";
     }
-        
+
     if (m_settingsMenu->FindItem (kMultiVolume)->IsMarked() == true)
            m_pipeMgr << "-v";
 
@@ -246,11 +246,11 @@ status_t ArjArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         if (message->FindString (kPath, i, &pathString) == B_OK)
            m_pipeMgr << SupressWildcards (pathString);
     }
-    
+
     FILE *out;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;           // Handle arj unloadable error here
 
@@ -261,7 +261,7 @@ status_t ArjArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         status_t exitCode;
         wait_for_thread (tid, &exitCode);
     }
-    
+
     close (errdes[1]);
     close (outdes[1]);
 
@@ -271,14 +271,14 @@ status_t ArjArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
         exitCode = ReadExtract (out, progress, cancel);
         fclose (out);
     }
-    
+
     close (outdes[0]);
     close (errdes[0]);
 
     // Send signal to quit archiver only AFTER pipes are closed
     if (exitCode == BZR_CANCEL_ARCHIVER)
         TerminateThread (tid);
-    
+
     m_pipeMgr.FlushArgs();
     return exitCode;
 }
@@ -290,18 +290,18 @@ status_t ArjArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool
     // Reads output of arj while extracting files and updates progress window (thru messenger)
     char lineString[928];
     BString buf;
-    
+
     // Prepare message to update the progress bar
     BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
     updateMessage.AddFloat ("delta", 1.0f);
-    
+
     while (fgets (lineString, 727, fp))
     {
         if (cancel && *cancel == true)
            return BZR_CANCEL_ARCHIVER;
-        
+
         lineString[strlen (lineString) - 1] = '\0';
-        
+
         // Later must handle "error" and "file #no: error at offset" strings in unzip output
         // Line format is as follows:
         // Extracting pictures/Batio.jpg        to /boot/home/temp/ax/pictures/Batio.jpg  OK
@@ -314,7 +314,7 @@ status_t ArjArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool
            int32 index = lineStr.FindLast ("OK");
            if (index > 0)
                lineStr.Remove (index, lineStr.Length() - index);
-           
+
            index = lineStr.FindLast ("to /");
            if (index > 0)
                lineStr.Remove (index, lineStr.Length() - index);
@@ -347,11 +347,11 @@ status_t ArjArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
 
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_arjPath << "t" << "-i" << m_archivePath.Path();
-    
+
     FILE *out, *err;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
     {
         outputStr = NULL;        // Handle arj unloadable error here
@@ -359,7 +359,7 @@ status_t ArjArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
     }
 
     resume_thread (tid);
-    
+
     close (outdes[1]);
     out = fdopen (outdes[0], "r");
     status_t exitCode = ReadTest (out, outputStr, progress, cancel);
@@ -371,12 +371,12 @@ status_t ArjArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
         Archiver::ReadStream(err, errStreamContent);
         if (errStreamContent.Length() > 0)
            exitCode = BZR_ERRSTREAM_FOUND;
-           
+
         close (errdes[0]);
         close (outdes[0]);
         fclose (out);
         fclose (err);
-    
+
         if (exitCode == BZR_ERRSTREAM_FOUND)
         {
            BString outStr = outputStr;
@@ -386,11 +386,11 @@ status_t ArjArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
            strcpy (outputStr, outStr.String());
         }
     }
-        
+
     // Send signal to quit thread only AFTER pipes are closed
     if (exitCode == BZR_CANCEL_ARCHIVER)
         TerminateThread (tid);
-    
+
     return exitCode;
 }
 
@@ -407,7 +407,7 @@ status_t ArjArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
 
     BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
     updateMessage.AddFloat ("delta", 1.0f);
-    
+
     while (fgets (lineString, 998, fp))
     {
         if (cancel && *cancel == true)
@@ -415,17 +415,17 @@ status_t ArjArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
            exitCode = BZR_CANCEL_ARCHIVER;
            break;
         }
-        
+
         lineString[strlen (lineString) - 1] = '\0';
         fullOutputStr << lineString << "\n";
         lineCount++;
-        
+
         // Skip first 4 line which contains Archive: <path of archive> | We don't need this here
         if (lineCount > 3)
         {
            char *testingStr = lineString;
            testingStr += CountCharsInFront (testingStr, ' ');
-           
+
            if (strncmp (testingStr, "Testing ", 8) == 0)
            {
                // The format of testingStr is now "Testing path-here    OK"
@@ -433,7 +433,7 @@ status_t ArjArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
                BString pathStr = testingStr;
                if (pathStr.FindLast ("OK") < 0)
                   exitCode = BZR_ERRSTREAM_FOUND;
-               
+
                pathStr.RemoveLast ("OK");
                while (pathStr[pathStr.Length() - 1] == ' ')     // Trim right hand side spaces
                   pathStr.RemoveLast (" ");
@@ -450,7 +450,7 @@ status_t ArjArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
 
     outputStr = new char[fullOutputStr.Length() + 1];
     strcpy (outputStr, fullOutputStr.String());
-    
+
     return exitCode;
 }
 
@@ -479,7 +479,7 @@ status_t ArjArchiver::Add (bool createMode, const char *relativePath, BMessage *
     // deleted, (arj binary) deletes the archive itself
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_arjPath << "a" << "-i";
-    
+
     // Add addtime options
     BMenu *ratioMenu = m_settingsMenu->FindItem (kLevel0)->Menu();
     BString level = ratioMenu->FindMarked ()->Label();
@@ -495,12 +495,12 @@ status_t ArjArchiver::Add (bool createMode, const char *relativePath, BMessage *
         level = "-m1";
 
     m_pipeMgr << level.String();
-    
+
     if (m_settingsMenu->FindItem (kDirRecurse)->IsMarked())
         m_pipeMgr << "-r";
-    
+
     m_pipeMgr << m_archivePath.Path();
-    
+
     int32 count = 0L;
     uint32 type;
     message->GetInfo (kPath, &type, &count);
@@ -520,9 +520,9 @@ status_t ArjArchiver::Add (bool createMode, const char *relativePath, BMessage *
 
     if (relativePath)
         chdir (relativePath);
-    
+
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;        // Handle arj unloadable error here
 
@@ -542,12 +542,12 @@ status_t ArjArchiver::Add (bool createMode, const char *relativePath, BMessage *
     }
     close (outdes[0]);
     fclose (out);
-    
+
     // Send signal to quit archiver only AFTER pipes are closed
     if (exitCode == BZR_CANCEL_ARCHIVER)
         TerminateThread (tid);
-    
-    m_pipeMgr.FlushArgs();    
+
+    m_pipeMgr.FlushArgs();
     SetMimeType();
     return exitCode;
 }
@@ -561,7 +561,7 @@ status_t ArjArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
     BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
     updateMessage.AddFloat ("delta", 1.0f);
     char lineString[999];
-    
+
     while (fgets (lineString, 998, fp))
     {
         if (cancel && *cancel == true)
@@ -579,10 +579,10 @@ status_t ArjArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
                filePath.Remove (index - 5, 6);
            else
                exitCode = BZR_ERRSTREAM_FOUND;
-           
+
            while (filePath[filePath.Length() - 1] == ' ')     // Trim right hand side spaces
                   filePath.RemoveLast (" ");
-    
+
            const char *fileName = FinalPathComponent (filePath.String());
 
            // Don't update progress bar for folders
@@ -592,11 +592,11 @@ status_t ArjArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
                updateMessage.AddString ("text", fileName);
                progress->SendMessage (&updateMessage, &reply);
            }
-           
+
            addedPaths->AddString (kPath, filePath.String());
         }
     }
-    
+
     return exitCode;
 }
 
@@ -625,7 +625,7 @@ status_t ArjArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
     m_pipeMgr.FlushArgs();
     // Added -i, -y switches 0.06
     m_pipeMgr << m_arjPath << "d" << "-i" << "-y" << m_archivePath.Path();
-    
+
     int32 i = 0L;
     for (; i < count; i ++)
     {
@@ -634,19 +634,19 @@ status_t ArjArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
            m_pipeMgr << SupressWildcardSet (pathString);
         // Use SupressWildcardSet (which does not supress * character as arj needs * to delete folders fully)
     }
-    
+
     FILE *out, *err;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe (outdes, errdes);
-    
+
     if (tid == B_ERROR || tid == B_NO_MEMORY)
     {
         outputStr = NULL;        // Handle arj unloadable error here
         return B_ERROR;
     }
-    
+
     resume_thread (tid);
-    
+
     close (errdes[1]);
     close (outdes[1]);
 
@@ -682,12 +682,12 @@ status_t ArjArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progre
     // Prepare message to update the progress bar
     BMessage updateMessage (BZR_UPDATE_PROGRESS), reply ('DUMB');
     updateMessage.AddFloat ("delta", 1.0f);
-    
+
     while (fgets (lineString, len - 1, fp))
     {
         if (cancel && *cancel == true)
            return BZR_CANCEL_ARCHIVER;
-        
+
         lineString[strlen (lineString) - 1] = '\0';
         if (strncmp (lineString, "Deleting ", 9) == 0)
         {
@@ -710,14 +710,14 @@ status_t ArjArchiver::Create (BPath *archivePath, const char *relPath, BMessage 
     m_archivePath.SetTo (archivePath->Path(), NULL, true);
 
     status_t result = Add (true, relPath, fileList, addedPaths, progress, cancel);
-    
+
     // Once creating is done, set m_archiveRef to pointed to the existing archive file
     if (result == BZR_DONE)
     {
         BEntry tempEntry (m_archivePath.Path(), true);
         if (tempEntry.Exists())
            tempEntry.GetRef (&m_archiveRef);
-        
+
         SetMimeType();
     }
 
@@ -737,13 +737,13 @@ void ArjArchiver::BuildDefaultMenu ()
     // Build the compression-level sub-menu (sorry we can't avoid using english strings here)
     ratioMenu = new BMenu (kCompressionLevel);
     ratioMenu->SetRadioMode (true);
-    
+
     ratioMenu->AddItem (new BMenuItem (kLevel0, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel1, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel2, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel3, NULL));
     ratioMenu->AddItem (new BMenuItem (kLevel4, NULL));
-    
+
     ratioMenu->FindItem (kLevel4)->SetMarked (true);
 
     // Build the "While adding" sub-menu
@@ -753,11 +753,11 @@ void ArjArchiver::BuildDefaultMenu ()
     item = new BMenuItem (kDirRecurse, new BMessage (BZR_MENUITEM_SELECTED));
     item->SetMarked (true);
     addMenu->AddItem (item);
-    
+
     // Build the extract sub-menu
     extractMenu = new BMenu (kExtracting);
     extractMenu->SetRadioMode (false);
-    
+
     extractMenu->AddItem (new BMenuItem (kUpdate, new BMessage (BZR_MENUITEM_SELECTED)));
     extractMenu->AddItem (new BMenuItem (kFreshen, new BMessage (BZR_MENUITEM_SELECTED)));
     item = new BMenuItem (kMultiVolume, new BMessage (BZR_MENUITEM_SELECTED));
@@ -801,7 +801,7 @@ BList ArjArchiver::HiddenColumns (BList *columns) const
     BList availList (*columns);
     availList.RemoveItems (0, 6);    // Remove 0..5
 
-    // Now list has 0-method 1-crc <-- these columns are to be hidden        
+    // Now list has 0-method 1-crc <-- these columns are to be hidden
     return availList;
 }
 

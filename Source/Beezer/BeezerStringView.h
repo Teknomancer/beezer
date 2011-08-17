@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -39,7 +39,7 @@ class BeezerStringView : public BView
         BeezerStringView (BRect frame, const char *name, const char *label, uint32 rmask = B_FOLLOW_LEFT,
                         uint32 flags = B_WILL_DRAW);
         virtual ~BeezerStringView ();
-        
+
         // Inherited hooks
         virtual void        MouseDown (BPoint point);
         virtual void        Draw (BRect frame);
@@ -49,16 +49,16 @@ class BeezerStringView : public BView
         virtual void        SetHighColor (rgb_color a_color);
         virtual void        SetHighColor (uchar r, uchar g, uchar b, uchar a = 255);
         virtual void        SetFont (const BFont *font, uint32 mask = B_FONT_ALL);
-        
+
         // Additional hooks
         virtual void        SetText (const char *text);
         virtual const char  *Text () const;
         virtual void        SendMouseEventsTo (BView *targetView);
-        
+
     protected:
         // Protected hooks
         virtual void        RenderView (bool firstTime = false);
-        
+
         // Data members
         BView              *m_backView,
                          *m_mouseTargetView;

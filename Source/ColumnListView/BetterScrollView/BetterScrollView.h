@@ -26,7 +26,7 @@
  */
 
 //Conventions:
-//    Global constants (declared with const) and #defines - all uppercase letters with words separated 
+//    Global constants (declared with const) and #defines - all uppercase letters with words separated
 //        by underscores.
 //        (E.G., #define MY_DEFINE 5).
 //        (E.G., const int MY_CONSTANT = 5;).

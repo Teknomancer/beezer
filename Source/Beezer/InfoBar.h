@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -41,12 +41,12 @@ class InfoBar : public BView
     public:
         InfoBar (BRect frame, BList *slotPositions, const char *name, rgb_color backColor);
         virtual ~InfoBar ();
-           
+
         // Inherited hooks
         virtual void        Draw (BRect updateRect);
         virtual void        AttachedToWindow ();
         virtual void        MouseDown (BPoint point);
-        
+
         // Additional hooks
         virtual void        Redraw ();
         virtual void        UpdateFilesDisplay (int32 selectedCount, int32 totalCount, bool setTotalCount);
@@ -65,7 +65,7 @@ class InfoBar : public BView
         // Protected members
         void                RenderEdges ();
         void                AddSeparatorItem (float wherex, bool finalSeparator);
-        
+
         BView              *m_finalSep,
                            *m_finalSepEdge;
         BeezerStringView   *m_filesStr,

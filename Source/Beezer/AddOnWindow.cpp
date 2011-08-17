@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -72,8 +72,8 @@ AddOnWindow::AddOnWindow (BMessage *refsMessage)
     m_backView->SetViewColor (K_BACKGROUND_COLOR);
 
     // backViewMain will hold all controls that are to be shown when files/folders are really selected
-    // otherwise it will be hidden and a message like "Drop files here to archive" will be shown using 
-    // the alternate Back View    
+    // otherwise it will be hidden and a message like "Drop files here to archive" will be shown using
+    // the alternate Back View
     m_backViewMain = new BevelView (Bounds().InsetByCopy (4, 2),
                          "AddOnWindow:BackViewMain", btNoBevel, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_backView->AddChild (m_backViewMain);
@@ -105,7 +105,7 @@ AddOnWindow::AddOnWindow (BMessage *refsMessage)
     m_backViewMain->AddChild (m_arkTypeField);
     m_arkTypeField->ResizeToPreferred();
     m_arkTypeField->SetDivider (divider + 2);
-    
+
     if (m_arkTypes.CountItems() > 0)
     {
         // Restore default archiver from prefs or set it to the LAST archiver on the list
@@ -114,15 +114,15 @@ AddOnWindow::AddOnWindow (BMessage *refsMessage)
         status_t wasFound = _prefs_misc.FindString (kPfDefaultArk, &arkType);
         if (wasFound == B_OK)
            item = m_arkTypePopUp->FindItem (arkType.String());
-        
+
         if (wasFound != B_OK || item == NULL)
            item = m_arkTypePopUp->ItemAt (m_arkTypePopUp->CountItems() - 1);
-        
+
         item->SetMarked (true);
         m_fileName->SetText ((char*)m_arkExtensions.ItemAtFast (m_arkTypePopUp->IndexOf (item)));
 
         // Interface headache! Calculate maximum width of labels of each archiver listed in the
-        // ark types field, grr!! 
+        // ark types field, grr!!
         m_strWidthOfArkTypes = 0.0f;
         for (int32 i = 0; i < m_arkTypes.CountItems(); i++)
         {
@@ -146,7 +146,7 @@ AddOnWindow::AddOnWindow (BMessage *refsMessage)
     m_backViewMain->AddChild (m_password);
     m_password->TextView()->HideTyping (true);
     m_password->SetDivider (divider);
-    
+
     m_backViewMain->ResizeTo (m_backViewMain->Frame().Width(), m_password->Frame().bottom + K_MARGIN);
 
     BFont font;
@@ -176,7 +176,7 @@ AddOnWindow::AddOnWindow (BMessage *refsMessage)
     m_createBtn = new BButton (BRect (Bounds().right - K_MARGIN - 4 - K_BUTTON_WIDTH,
                       sepView2->Frame().bottom - K_MARGIN - K_BUTTON_HEIGHT-4,
                       Bounds().right - K_MARGIN - 4, sepView2->Frame().bottom - K_MARGIN - 4),
-                      "AddOnWindow:CreateBtn", str (S_TA_CREATE), new BMessage (M_ADDON_CREATE), 
+                      "AddOnWindow:CreateBtn", str (S_TA_CREATE), new BMessage (M_ADDON_CREATE),
                       B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW | B_NAVIGABLE);
     m_backView->AddChild (m_createBtn);
     m_createBtn->MakeDefault (true);
@@ -188,14 +188,14 @@ AddOnWindow::AddOnWindow (BMessage *refsMessage)
     {
         m_readyMode = false;
         m_backViewMain->Hide();
-        
+
         // Add a control to ask for dropping of files
         m_backViewAlt = new BevelView (Bounds().InsetByCopy (2,2),
                              "AddOnWindow:BackViewAlt", btInset, B_FOLLOW_LEFT, B_WILL_DRAW);
         m_backViewAlt->ResizeBy (0, -(2 * K_MARGIN + K_BUTTON_HEIGHT + 4 + fontHeight + 2));
         m_backViewAlt->SetResizingMode (B_FOLLOW_ALL_SIDES);
         m_backViewAlt->SetViewColor (0, 0, 0, 255);
-        
+
         BStringView *shadowStr = new BStringView (BRect (2 * K_MARGIN, 4 * K_MARGIN, 0, 0),
                                     "AddOnWindow:DropStr", str (S_TA_PROMPT_DROP), B_FOLLOW_LEFT,
                                     B_WILL_DRAW);
@@ -212,7 +212,7 @@ AddOnWindow::AddOnWindow (BMessage *refsMessage)
         dropStr->SetHighColor (K_STARTUP_MAIN_HEADING);
         dropStr->ResizeToPreferred();
         m_backViewAlt->AddChild (dropStr);
-        
+
         m_backView->AddChild (m_backViewAlt);
 
         BBitmap *bmp = BTranslationUtils::GetBitmap ('PNG ', "Img:Background");
@@ -220,7 +220,7 @@ AddOnWindow::AddOnWindow (BMessage *refsMessage)
         dropStr->SetViewBitmap (bmp);
         shadowStr->SetViewBitmap (bmp);
         delete bmp;
-        
+
         // Resize window
         ResizeTo (MAX (350, dropStr->Frame().right + 2 * K_MARGIN + 2), Frame().Height());
     }
@@ -232,7 +232,7 @@ AddOnWindow::AddOnWindow (BMessage *refsMessage)
         statusString = str (S_TA_NOT_READY);
         m_statusColor = SC_NOT_READY;
     }
-        
+
     m_statusStr = new BStringView (BRect (K_MARGIN, Bounds().bottom - 2 - fontHeight, 0, 0),
                          "AddOnWindow:StatusStr", statusString.String(),
                          B_FOLLOW_LEFT | B_FOLLOW_BOTTOM, B_WILL_DRAW);
@@ -241,12 +241,12 @@ AddOnWindow::AddOnWindow (BMessage *refsMessage)
     m_statusStr->SetHighColor (m_statusColor);
     m_statusStr->SetFontSize (MIN (10, be_plain_font->Size() - 1));
     m_statusStr->ResizeToPreferred ();
-    
+
     m_addView = new BevelView (BRect (K_MARGIN, m_password->Frame().bottom + K_MARGIN,
                       m_backViewMain->Bounds().right - K_MARGIN, sepView->Frame().top - K_MARGIN),
                       "AddOnWindow:AddView", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     m_backViewMain->AddChild (m_addView);
-    
+
     m_barberPole = new BarberPole (BRect (K_MARGIN, K_MARGIN, 0, K_MARGIN + fontHeight + K_MARGIN),
                          "AddOnWindow:BarberPole");
     m_barberPole->ResizeToPreferred();
@@ -257,14 +257,14 @@ AddOnWindow::AddOnWindow (BMessage *refsMessage)
                              B_WILL_DRAW);
     m_addingFileStr->ResizeToPreferred();
     m_addView->AddChild (m_addingFileStr);
-    
+
     m_addView->ResizeTo (m_addView->Frame().Width(), m_barberPole->Frame().bottom + K_MARGIN);
     m_addView->Hide();
 
     ResizeTo (Frame().Width(), m_password->Frame().bottom + 3 * K_MARGIN + K_BUTTON_HEIGHT +
                m_statusStr->Frame().Height() + 8);
     m_backViewMain->ResizeTo (m_backViewMain->Frame().Width(), m_helpBtn->Frame().top - K_MARGIN);
-    
+
     // Center window on-screen
     BRect screen_rect (BScreen().Frame());
     MoveTo (screen_rect.Width() / 2 - Frame().Width() / 2, screen_rect.Height() / 2 - Frame().Height() / 2);
@@ -275,10 +275,10 @@ AddOnWindow::AddOnWindow (BMessage *refsMessage)
     w = MAX (w, Bounds().Width());
     GetSizeLimits (&minH, &maxH, &minV, &maxV);
     SetSizeLimits (w, maxH, Bounds().Height(), maxV);
-    
+
     if (m_readyMode == true)
         RefsReceived (refsMessage);
-    
+
     // Show could also be called ABOVE!!!! (when no addons are found)
     CreateArchiveRepAndMenus();
     Show();
@@ -335,21 +335,21 @@ void AddOnWindow::MessageReceived (BMessage *message)
            const char *mainText;
            if (message->FindString ("text", &mainText) != B_OK)
                mainText = "";
-           
+
            BString buf = str (S_TA_ADDING);
            buf << mainText;
            m_addingFileStr->SetText (buf.String());
            m_addingFileStr->ResizeToPreferred ();
            break;
         }
-        
+
         case M_CLOSE:
         {
            m_inProgress = false;
            Quit ();
            break;
         }
-        
+
         case M_ADDON_CREATE:
         {
            if (m_inProgress == false)
@@ -362,10 +362,10 @@ void AddOnWindow::MessageReceived (BMessage *message)
                   m_createBtn->MakeDefault (false);
                   m_cancel = false;
                   EnableControls (false);
-                  
+
                   BMessage *addMessage = new BMessage ('addd');    // no need to delete as it will be posted to
                                                              // us as M_ADD_DONE
-                  
+
                   // Pull the first ref's directory from the list of refs
                   entry_ref ref;
                   m_refsMessage.FindRef ("refs", 0, &ref);
@@ -373,7 +373,7 @@ void AddOnWindow::MessageReceived (BMessage *message)
                   entry.GetParent (&entry);        // strange, but legal
                   BPath launchDirPath;
                   entry.GetPath (&launchDirPath);
-                  
+
                   BMessenger messenger (this);
                   addMessage->AddMessenger (kProgressMessenger, messenger);
                   addMessage->AddString (kArchivePath, m_fileName->Text());
@@ -382,7 +382,7 @@ void AddOnWindow::MessageReceived (BMessage *message)
                   addMessage->AddString (kLaunchDir, launchDirPath.Path());
                   if (m_password->TextView()->TextLength() > 0)
                       m_archive->Ark()->SetPassword (m_password->Text());
-                  
+
                   uint32 type;
                   int32 count;
                   entry_ref tmpRef;
@@ -390,16 +390,16 @@ void AddOnWindow::MessageReceived (BMessage *message)
                   for (int32 i = --count; i >= 0; i--)
                       if (m_refsMessage.FindRef ("refs", i, &tmpRef) == B_OK)
                          addMessage->AddString (kPath, tmpRef.name);
-                  
+
                   // Deleting existing file if any
                   BEntry temp (m_fileName->Text());
                   if (temp.Exists())
                       temp.Remove();
-                  
+
                   ResizeBy (0, m_addView->Frame().Height());
                   m_barberPole->SetValue (true, false);
                   m_addView->Show();
-                  
+
                   m_archive->Create (addMessage);
                }
            }
@@ -409,33 +409,33 @@ void AddOnWindow::MessageReceived (BMessage *message)
                m_inProgress = false;
                m_createBtn->MakeDefault (true);
                m_createBtn->SetLabel (str (S_TA_CREATE));
-               
+
                EnableControls (true);
                PostMessage (B_QUIT_REQUESTED);
            }
-                  
+
            break;
         }
-        
+
         case B_REFS_RECEIVED:
         {
            RefsReceived (message);
            break;
-        }    
-        
+        }
+
         case M_FILENAME_CHANGED:
         {
            ValidateData();
            break;
         }
-        
+
         case M_ADDON_HELP:
         {
            // A cry for help! we aren't very helpful but atleast we can pass on the message :)
            be_app->PostMessage (message);
            break;
         }
-        
+
         case M_ARK_TYPE_SELECTED:
         {
            ReplaceExtensionWith (message->FindString (kText));
@@ -466,7 +466,7 @@ void AddOnWindow::MessageReceived (BMessage *message)
                CreateArchiveRepAndMenus();
                PostMessage (message);
            }
-           
+
            break;
         }
 
@@ -502,13 +502,13 @@ void AddOnWindow::CreateArchiveRepAndMenus ()
         delete m_arkSettingsMenuField;
         m_arkSettingsMenuField = NULL;
     }
-    
+
     if (m_archive != NULL)
     {
         delete m_archive;
         m_archive = NULL;
     }
-    
+
     m_archive = new ArchiveRep();
     status_t result = m_archive->InitArchiver (m_arkTypePopUp->FindMarked()->Label(), true);
     if (result == BZR_DONE)
@@ -526,7 +526,7 @@ void AddOnWindow::CreateArchiveRepAndMenus ()
            m_arkSettingsMenuField->SetDivider (m_backViewMain->StringWidth (m_arkSettingsMenuField->Label()) + 10);
            SetTargetForMenuRecursive (m_archive->Ark()->SettingsMenu(), this);
         }
-        
+
         if (m_archive && m_archive->Ark()->SupportsPassword() == true)
            m_password->SetEnabled (true);
         else
@@ -549,7 +549,7 @@ bool AddOnWindow::ReplaceExtensionWith (const char *newExt)
     int32 start, end;
     BTextView *fileNameView = m_fileName->TextView();
     fileNameView->GetSelection (&start, &end);
-    
+
     BString existingName = m_fileName->Text();
     const char *newExtStr = newExt;
     bool replacedExt = false;
@@ -566,13 +566,13 @@ bool AddOnWindow::ReplaceExtensionWith (const char *newExt)
                if (newExtension == (char*)m_arkExtensions.ItemAtFast(i))
                   newExtension = newExtStr;
            #endif
-           
+
            fileNameView->SetText (newExtension.String());
            fileNameView->Select (start, end);
            replacedExt = true;
            break;
         }
-        
+
     if (replacedExt == false)
     {
         BString buf = existingName;
@@ -580,7 +580,7 @@ bool AddOnWindow::ReplaceExtensionWith (const char *newExt)
         fileNameView->SetText (buf.String());
         fileNameView->Select (start, end);
     }
-    
+
     return replacedExt;
 }
 
@@ -609,7 +609,7 @@ void AddOnWindow::ValidateData ()
 {
     if (m_inProgress)
         return;
-    
+
     bool valid = true;
     if (m_readyMode == true)
     {
@@ -618,18 +618,18 @@ void AddOnWindow::ValidateData ()
            UpdateStatus (str (S_TA_OVERWRITE));
         else
            UpdateStatus (str (S_TA_READY));
-        
+
         BString buf = m_fileName->Text();
         int32 found = buf.FindLast ('/');
         buf.Remove (found, buf.Length() - found);
-        
+
         m_archiveDirPath = buf;
         bool doubleSlash = false;
         if (m_archiveDirPath[m_archiveDirPath.Length() - 1] == '/')    // error as it is like /boot//a.zip
            doubleSlash = true;
-           
+
         BEntry dirEntry (m_archiveDirPath.String(), false);
-        
+
         if (dirEntry.Exists() == false || dirEntry.IsDirectory() == false || doubleSlash == true)
         {
            UpdateStatus (str (S_TA_DIR_MISSING));
@@ -641,7 +641,7 @@ void AddOnWindow::ValidateData ()
         valid = false;
         UpdateStatus (str (S_TA_NOT_READY));
     }
-    
+
     if (m_readyMode && valid == true)
         m_createBtn->SetEnabled (true);
     else
@@ -656,11 +656,11 @@ void AddOnWindow::RefsReceived (BMessage *message)
     uint32 type;
     int32 count;
     entry_ref ref;
-    
+
     message->GetInfo ("refs", &type, &count);
     if (type != B_REF_TYPE)
         return;
-    
+
     // Pull the first ref's directory from the list of refs
     message->FindRef ("refs", 0, &ref);
     BEntry entry (&ref, false);
@@ -668,7 +668,7 @@ void AddOnWindow::RefsReceived (BMessage *message)
     BPath path;
     entry.GetPath (&path);
     m_archiveDirPath = path.Path();
-               
+
     // OKAY get name of ref and append extension to it
     if (count == 1)
     {
@@ -687,13 +687,13 @@ void AddOnWindow::RefsReceived (BMessage *message)
         buf << "/" << "Archive";
         m_fileName->SetText (buf.String());
     }
-    
+
     BMenuItem *marked = m_arkTypePopUp->FindMarked();
     if (marked)
         ReplaceExtensionWith ((const char*)m_arkExtensions.ItemAt (m_arkTypePopUp->IndexOf (marked)));
     else
         ReplaceExtensionWith ((const char*)m_arkExtensions.ItemAt (0L));
-        
+
     m_refsMessage = *message;
         m_readyMode = true;
 }

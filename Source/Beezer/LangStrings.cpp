@@ -2,7 +2,7 @@
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -243,16 +243,16 @@ static const char * _englishStrings [NUM_STRINGS] =
         "its own license, and the gist of\n"
         "the license MAY be attached to each\n"
         "source file of this program\n\n"
-        
+
         "For third party code, the license's\n"
         "terms and conditions are explicitly\n"
         "stated and the author disclaimed of\n"
         "any and all liabilities\n\n"
-        
+
         "For the full license read the\n"
         "License section of the documentation\n\n"
         "*  *  *\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-        
+
         "$S_DISCLAIMER$\n\n"
         "Because the software is licensed\n"
         "free of charge, there is no warranty\n"
@@ -268,7 +268,7 @@ static const char * _englishStrings [NUM_STRINGS] =
         "Should the software prove defective, you\n"
         "assume the cost of all necessary\n"
         "servicing, repair or correction.\n\n"
-        
+
         "In no event will the copyright holder,\n"
         "or any other party who may modify and/or\n"
         "redistribute the software as permitted\n"
@@ -297,7 +297,7 @@ static const char * _englishStrings [NUM_STRINGS] =
         "and a big applause goes to the Be\n"
         "community (it includes me too :)\n\n*  *  *\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
         "OK...\n\nYou can close this window now :)\n\n\n\n\n",
-    
+
     "You are opening %ld files simultenously.\n"
         "Are you sure you wish to proceed?",
     "Continue",
@@ -525,7 +525,7 @@ static const char * _englishStrings [NUM_STRINGS] =
         "When %s starts: ",
         "Show create archive panel",
         "Show open archive panel",
-    
+
     "Tools",                             // 0.07 starts here
     "Tools",
     "Additional tools",
@@ -574,8 +574,8 @@ static const char * _englishStrings [NUM_STRINGS] =
     "Close window after splitting",
     "Stub directory not found, cannot create self-joining executable...",
     "_Create_%s",        // The underscore at the beginning is just to make the stub file alphabetically on top
-    
-    
+
+
     "File Joiner",                                           // Joiner strings
     "This tool lets you join several files into a single file.",
     "The order of joining is based on number suffixes in the filenames...",
@@ -595,7 +595,7 @@ static const char * _englishStrings [NUM_STRINGS] =
     "An unknown error occured while joining the files.",
     "Joining is in progress, force it to stop?",
     "Close window after joining",
-    
+
     "Extract with full path during drag 'n drop",        // 0.09 starts here
     "QuickCreate Archive",
     "Archive Name:",
@@ -613,7 +613,7 @@ static const char * _englishStrings [NUM_STRINGS] =
     "Settings: ",
     "Password: ",
     "QuickCreate Archive\n\nAdding is in progress, force it to stop?",
-    
+
     "Default Interface settings:",                  // 0.09 preferences::interface
     "Show Toolbar",
     "Show Infobar",
@@ -644,7 +644,7 @@ const char* GetLanguageName (int whichLang, bool native)
     switch (whichLang)
     {
         case LANG_ENGLISH: return strR5 (S_ENGLISH, native ? LANG_ENGLISH : _language);
-        
+
         default: debugger ("bad language index!"); return 0;
     }
 }

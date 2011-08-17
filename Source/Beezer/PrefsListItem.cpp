@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -50,10 +50,10 @@ PrefsListItem::PrefsListItem (const char *text, BBitmap *bmp, bool makeBold)
     m_bitmap = bmp;
     if (m_makeBold == false)
         m_fontDelta = 3;
-    
+
     rgb_color actFore = _prefs_interface.FindColorDef (kPfActFore, K_ACTIVE_FORE_COLOR);
     rgb_color actBack = _prefs_interface.FindColorDef (kPfActBack, K_ACTIVE_SELECT_COLOR);
-    
+
     m_selTextColor = actFore;
     m_selBackColor = actBack;
 }
@@ -76,7 +76,7 @@ void PrefsListItem::DrawItem (BView *owner, BRect frame, bool complete)
         owner->SetHighColor (color);
         owner->FillRect (frame);
         owner->SetLowColor (color);
-        
+
         // lighten top 2 lines
         owner->BeginLineArray (4);
         owner->AddLine (BPoint (frame.left, frame.top), BPoint (frame.right, frame.top),
@@ -96,7 +96,7 @@ void PrefsListItem::DrawItem (BView *owner, BRect frame, bool complete)
     }
     else
         owner->SetLowColor (owner->ViewColor());
-    
+
     if (IsEnabled())
     {
         if (IsSelected())
@@ -116,13 +116,13 @@ void PrefsListItem::DrawItem (BView *owner, BRect frame, bool complete)
     }
     else
         owner->SetHighColor (182,182,182,255);
-    
+
     if (m_bitmap)
     {
         float bmpWidth = m_bitmap->Bounds().Width();
         float bmpHeight = m_bitmap->Bounds().Height();
         float itemWidth = (frame.right - frame.left);
-        
+
         // Draw bitmap at center of item
         owner->SetDrawingMode (B_OP_ALPHA);
         owner->MovePenTo (6, frame.bottom - m_fontDelta / 2 - bmpHeight - 1);

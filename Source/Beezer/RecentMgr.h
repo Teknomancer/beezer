@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -50,7 +50,7 @@ class RecentMgr
     public:
         RecentMgr (int32 maxNumPaths, Preferences *pref, RecentItemType itemType, bool showFullPath);
         virtual ~RecentMgr ();
-        
+
         // Public hooks
         void                AddPath (const char *path);
         void                RemovePath (const char *path);
@@ -64,14 +64,14 @@ class RecentMgr
         BPopUpMenu         *BuildPopUpMenu (const char *menuName, const char *fieldName,
                                         BHandler *targetForItems);
         void                UpdateMenu (BMenu *recentMenu, const char *fieldName, BHandler *targetForItems);
-        
+
     private:
         // Private hooks
         void                FillMenu (BMenu *menu, const char *fieldName, BHandler *targetForItems);
-        
+
         // Static members
         static int32        m_maxInternalCount;
-        
+
         // Private members
         Preferences        *m_prefs;
         BList               m_paths;

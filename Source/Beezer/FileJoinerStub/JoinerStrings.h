@@ -2,7 +2,7 @@
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -46,7 +46,7 @@ enum LanguageNames
 };
 
 
-// NOTE:: 
+// NOTE::
 // If you add any new language strings please add which version of the code has it been added
 // in, notice that 0.06 upwards these labels are present as 0.04, 0.05 had same labels and Zeta 0.04
 // language file is as per that order

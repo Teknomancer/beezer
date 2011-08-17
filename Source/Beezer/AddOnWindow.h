@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -53,7 +53,7 @@ class AddOnWindow : public BWindow
 {
     public:
         AddOnWindow (BMessage *refsMessage);
-        
+
         // Inherited hooks
         virtual bool        QuitRequested ();
         virtual void        MessageReceived (BMessage *message);
@@ -67,7 +67,7 @@ class AddOnWindow : public BWindow
         void                CreateArchiveRepAndMenus ();
         void                EnableControls (bool enable);
         void                RefsReceived (BMessage *message);
-        
+
         // Private members
         BevelView          *m_backView,
                          *m_backViewMain,
@@ -88,7 +88,7 @@ class AddOnWindow : public BWindow
         BString             m_archiveDirPath;
         ArchiveRep         *m_archive;
         BMessage            m_refsMessage;
-        
+
         bool                m_readyMode,
                           m_inProgress,
                           m_quitNow;

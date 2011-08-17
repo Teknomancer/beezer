@@ -52,4 +52,3 @@ void ScrollViewCorner::Draw(BRect Update)
            BPoint(B_V_SCROLL_BAR_WIDTH,B_H_SCROLL_BAR_HEIGHT-1.0));
 }
 
-

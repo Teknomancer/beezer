@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -52,17 +52,17 @@ LogWindow::LogWindow (BWindow *callerWindow, const char *title, const char *logT
         SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
         AddToSubset (callerWindow);
     }
-    
+
     BRect bounds (Bounds());
     m_backView = new BevelView (bounds, "LogWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_backView->SetViewColor (K_BACKGROUND_COLOR);
-    AddChild (m_backView); 
+    AddChild (m_backView);
 
     m_textView = new BTextView (BRect (K_MARGIN, K_MARGIN, bounds.right - K_MARGIN - B_V_SCROLL_BAR_WIDTH,
                       bounds.bottom - 2 * K_MARGIN - K_BUTTON_HEIGHT - B_H_SCROLL_BAR_HEIGHT),
                       "LogWindow:TextView", BRect (2, 2, 100000, 0), B_FOLLOW_ALL_SIDES,
                       B_WILL_DRAW | B_FRAME_EVENTS);
-    
+
     m_scrollView = new BetterScrollView ("LogWindow:ScrollView", m_textView,
                                 B_FOLLOW_ALL_SIDES, B_WILL_DRAW, true, true, true, B_PLAIN_BORDER);
     m_backView->AddChild (m_scrollView);
@@ -79,7 +79,7 @@ LogWindow::LogWindow (BWindow *callerWindow, const char *title, const char *logT
 
     if (displayFont != NULL)
         m_textView->SetFontAndColor (displayFont);
-    
+
     m_closeButton = new BButton (BRect (bounds.right - K_MARGIN - K_BUTTON_WIDTH,
                          bounds.bottom - K_MARGIN - K_BUTTON_HEIGHT, bounds.right - K_MARGIN,
                          bounds.bottom - K_MARGIN), "LogWindow:CloseButton", str (S_LOG_WINDOW_CLOSE),
@@ -91,11 +91,11 @@ LogWindow::LogWindow (BWindow *callerWindow, const char *title, const char *logT
     GetSizeLimits (&minH, &maxH, &minV, &maxV);
     SetSizeLimits (m_closeButton->Frame().Width() + 2 * K_MARGIN, maxH,
            m_closeButton->Frame().Height() + 2 * K_MARGIN + 50, maxV);
-    
+
     // Center window on-screen
     BRect screen_rect (BScreen().Frame());
     MoveTo (screen_rect.Width() / 2 - Frame().Width() / 2, screen_rect.Height() / 2 - Frame().Height() / 2);
-    
+
     // Load from prefs if it allows
     BRect frame;
     if (_prefs_windows.FindBoolDef (kPfLogWnd, true))
@@ -104,7 +104,7 @@ LogWindow::LogWindow (BWindow *callerWindow, const char *title, const char *logT
            MoveTo (frame.LeftTop());
            ResizeTo (frame.Width(), frame.Height());
         }
-    
+
     Show();
 }
 

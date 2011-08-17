@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -37,21 +37,21 @@ class PrefsViewInterface : public PrefsView
 {
     public:
         PrefsViewInterface (BRect frame);
-        
+
         // Inherited hooks
         virtual void        MessageReceived (BMessage *message);
         virtual void        AttachedToWindow ();
-        
+
         virtual void        Render ();
         virtual void        Save ();
         virtual void        Load ();
-        
+
     private:
         // Private hooks
         void                UpdateColorWell ();
         void                UpdateColorControl (BMenuItem *item);
         bool                FindBoolDef (BMessage *msg, const char *name, bool defaultValue);
-        
+
         // Private members
         BCheckBox          *m_fullLengthBarsChk,
                          *m_toolbarChk,

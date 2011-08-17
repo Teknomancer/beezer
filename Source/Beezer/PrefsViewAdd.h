@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -46,11 +46,11 @@ class PrefsViewAdd : public PrefsView
         virtual void        Render ();
         virtual void        Save ();
         virtual void        Load ();
-    
+
     private:
         // Private hook
         void               ToggleMBView (bool enable);
-        
+
         // Private members
         BMenuField           *m_replaceField;
         BPopUpMenu           *m_replaceMenu;
