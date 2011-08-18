@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -31,17 +32,17 @@
 
 #include <Window.h>
 
-class BMenuField;
-class BTextControl;
-class BCheckBox;
 class BButton;
+class BCheckBox;
+class BMenuField;
 class BRadioButton;
+class BTextControl;
 
-class CLVColumn;
 class BubbleHelper;
+class CLVColumn;
 
-class BevelView;
 class Archiver;
+class BevelView;
 
 #define M_ALL_ENTRIES            '_all'
 #define M_VISIBLE_ENTRIES        '_vsb'

@@ -46,6 +46,10 @@
 #include <File.h>
 #include <Resources.h>
 
+#include <malloc.h>
+#include <stdio.h>
+
+#include "Beezer.h"
 #include "BevelView.h"
 #include "LangStrings.h"
 #include "FileSplitterWindow.h"

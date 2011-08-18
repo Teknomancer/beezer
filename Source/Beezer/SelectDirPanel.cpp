@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -26,10 +27,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <String.h>
-#include <Path.h>
-#include <Window.h>
 #include <Button.h>
+#include <Path.h>
+#include <String.h>
+#include <Window.h>
 
 #include "SelectDirPanel.h"
 

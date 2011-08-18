@@ -29,28 +29,28 @@
 
 #include <time.h>
 
-#include <Button.h>
 #include <Alert.h>
-#include <Entry.h>
 #include <Bitmap.h>
+#include <Button.h>
+#include <Entry.h>
+#include <List.h>
 #include <Path.h>
-#include <StringView.h>
 #include <StatusBar.h>
 #include <String.h>
-#include <List.h>
+#include <StringView.h>
 
-#include "ArkInfoWindow.h"
+#include "AppUtils.h"
 #include "Archiver.h"
-#include "HashTable.h"
-#include "UIConstants.h"
+#include "ArkInfoWindow.h"
 #include "BevelView.h"
+#include "HashTable.h"
 #include "LangStrings.h"
 #include "ListEntry.h"
 #include "LocalUtils.h"
-#include "AppUtils.h"
-#include "StaticBitmapView.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
+#include "StaticBitmapView.h"
+#include "UIConstants.h"
 
 //=============================================================================================================//
 

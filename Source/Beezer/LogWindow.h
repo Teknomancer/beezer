@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -31,8 +32,8 @@
 
 #include <Window.h>
 
-class BTextView;
 class BFont;
+class BTextView;
 
 class BevelView;
 

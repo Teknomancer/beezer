@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -26,13 +27,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Message.h>
-#include <Roster.h>
 #include <Application.h>
+#include <Bitmap.h>
+#include <Message.h>
 #include <Resources.h>
+#include <Roster.h>
 
-#include "LocalUtils.h"
 #include "BitmapPool.h"
+#include "LocalUtils.h"
 
 BitmapPool *_glob_bitmap_pool;
 int32 BitmapPool::m_runCount = 0;

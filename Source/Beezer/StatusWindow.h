@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -30,10 +31,9 @@
 #define _STATUS_WINDOW_H
 
 #include <Window.h>
-#include <Messenger.h>
 
-class BevelView;
 class BarberPole;
+class BevelView;
 
 class StatusWindow : public BWindow
 {

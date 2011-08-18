@@ -28,15 +28,15 @@
  */
 
 #include <List.h>
-#include <Window.h>
 #include <Message.h>
+#include <Window.h>
 
-#include "ToolBar.h"
-#include "UIConstants.h"
 #include "ImageButton.h"
 #include "MsgConstants.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
+#include "ToolBar.h"
+#include "UIConstants.h"
 
 //=============================================================================================================//
 

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -26,15 +27,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <String.h>
 #include <CheckBox.h>
 #include <Debug.h>
+#include <String.h>
 
-#include "PrefsViewExtract.h"
-#include "LangStrings.h"
-#include "UIConstants.h"
 #include "AppConstants.h"
+#include "LangStrings.h"
+#include "LocalUtils.h"
 #include "Preferences.h"
+#include "PrefsFields.h"
+#include "PrefsViewExtract.h"
+#include "UIConstants.h"
 
 //=============================================================================================================//
 

@@ -27,46 +27,51 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <Bitmap.h>
+#include <Button.h>
 #include <Debug.h>
+#include <FilePanel.h>
+#include <FindDirectory.h>
+#include <List.h>
+#include <MenuField.h>
+#include <MenuItem.h>
+#include <MimeType.h>
+#include <Path.h>
+#include <PopUpMenu.h>
+#include <Resources.h>
 #include <Roster.h>
 #include <Screen.h>
-#include <List.h>
-#include <FilePanel.h>
-#include <Bitmap.h>
-#include <Resources.h>
-#include <FindDirectory.h>
-#include <Button.h>
-#include <MenuItem.h>
+#include <String.h>
 #include <TextControl.h>
-#include <MimeType.h>
-#include <be/add-ons/tracker/TrackerAddOn.h>
-
 #include <fs_attr.h>
-
 #include <image.h>
+#include <os/add-ons/tracker/TrackerAddOn.h>
+
 #include <stdlib.h>
 
-#include "Alert.h"
-#include "Beezer.h"
-#include "AppConstants.h"
-#include "MainWindow.h"
 #include "AboutWindow.h"
-#include "MsgConstants.h"
-#include "StartupWindow.h"
+#include "AddOnWindow.h"
+#include "Alert.h"
+#include "AppConstants.h"
 #include "AppUtils.h"
-#include "WindowMgr.h"
-#include "BitmapPool.h"
-#include "UIConstants.h"
 #include "ArchiverMgr.h"
+#include "Beezer.h"
+#include "BitmapPool.h"
+#include "BubbleHelper.h"
+#include "FileJoinerWindow.h"
+#include "FileSplitterWindow.h"
+#include "LangStrings.h"
+#include "MainWindow.h"
+#include "MsgConstants.h"
 #include "Preferences.h"
-#include "PrefsWindow.h"
 #include "PrefsFields.h"
+#include "PrefsWindow.h"
 #include "RecentMgr.h"
 #include "RuleMgr.h"
-#include "FileSplitterWindow.h"
-#include "FileJoinerWindow.h"
-#include "AddOnWindow.h"
-#include "BubbleHelper.h"
+#include "Shared.h"
+#include "StartupWindow.h"
+#include "UIConstants.h"
+#include "WindowMgr.h"
 
 //=============================================================================================================//
 

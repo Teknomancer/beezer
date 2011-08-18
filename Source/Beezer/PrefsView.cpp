@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -26,15 +27,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <CheckBox.h>
-#include <Button.h>
 #include <Bitmap.h>
+#include <Button.h>
+#include <CheckBox.h>
 
 #include <string.h>
 #include <malloc.h>
 
-#include "PrefsView.h"
 #include "LangStrings.h"
+#include "PrefsView.h"
 #include "UIConstants.h"
 
 //=============================================================================================================//

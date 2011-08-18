@@ -27,33 +27,36 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Application.h>
-#include <TextControl.h>
 #include <Alert.h>
-#include <MenuField.h>
-#include <PopUpMenu.h>
+#include <Application.h>
+#include <Bitmap.h>
+#include <Button.h>
+#include <Debug.h>
+#include <Entry.h>
 #include <Font.h>
 #include <List.h>
+#include <MenuField.h>
 #include <MenuItem.h>
-#include <interface/StringView.h>
-#include <Button.h>
-#include <TranslationUtils.h>
-#include <Bitmap.h>
+#include <Path.h>
+#include <PopUpMenu.h>
 #include <String.h>
-#include <Debug.h>
+#include <TextControl.h>
+#include <TranslationUtils.h>
+#include <interface/StringView.h>
 
 #include "AddOnWindow.h"
-#include "BevelView.h"
 #include "AppConstants.h"
-#include "UIConstants.h"
-#include "LangStrings.h"
+#include "ArchiveRep.h"
+#include "Archiver.h"
 #include "ArchiverMgr.h"
+#include "BarberPole.h"
+#include "BevelView.h"
+#include "LangStrings.h"
+#include "LocalUtils.h"
+#include "MsgConstants.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
-#include "MsgConstants.h"
-#include "BarberPole.h"
-#include "ArchiveRep.h"
-#include "LocalUtils.h"
+#include "UIConstants.h"
 
 //=============================================================================================================//
 

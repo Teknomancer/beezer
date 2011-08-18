@@ -28,12 +28,12 @@
  */
 
 #include <Bitmap.h>
-#include <View.h>
-#include <Message.h>
-#include <Window.h>
-#include <PopUpMenu.h>
-#include <MenuItem.h>
 #include <Debug.h>
+#include <MenuItem.h>
+#include <Message.h>
+#include <PopUpMenu.h>
+#include <View.h>
+#include <Window.h>
 
 #include <string.h>
 

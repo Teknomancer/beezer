@@ -27,12 +27,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <String.h>
-#include <PopUpMenu.h>
-#include <Window.h>
-#include <Message.h>
-#include <MenuItem.h>
 #include <Clipboard.h>
+#include <MenuItem.h>
+#include <Message.h>
+#include <PopUpMenu.h>
+#include <String.h>
+#include <Window.h>
 
 #include <ctype.h>
 

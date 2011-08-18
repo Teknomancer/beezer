@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,8 +30,7 @@
 #ifndef _PREFS_LIST_ITEM_H
 #define _PREFS_LIST_ITEM_H
 
-#include <ListItem.h>
-#include <InterfaceDefs.h>
+#include <StringItem.h>
 
 class BView;
 

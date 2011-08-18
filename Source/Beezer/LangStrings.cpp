@@ -27,8 +27,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "LangStrings.h"
 #include "AppConstants.h"
+#include "LangStrings.h"
 
 static int _language = LANG_ENGLISH;
 

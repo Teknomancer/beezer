@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -26,17 +27,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <View.h>
-#include <Region.h>
 #include <Bitmap.h>
+#include <Region.h>
+#include <View.h>
 
 #include <string.h>
 #include <malloc.h>
 
-#include "PrefsListItem.h"
-#include "UIConstants.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
+#include "PrefsListItem.h"
+#include "UIConstants.h"
 
 //=============================================================================================================//
 

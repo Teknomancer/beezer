@@ -27,23 +27,27 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <String.h>
 #include <CheckBox.h>
+#include <ColorControl.h>
 #include <Debug.h>
-#include <StringView.h>
-#include <PopUpMenu.h>
+#include <File.h>
 #include <MenuField.h>
 #include <MenuItem.h>
-#include <ColorControl.h>
+#include <PopUpMenu.h>
+#include <String.h>
+#include <StringView.h>
 #include <Window.h>
 
-#include "PrefsViewInterface.h"
-#include "LangStrings.h"
-#include "UIConstants.h"
 #include "AppConstants.h"
-#include "Preferences.h"
-#include "MsgConstants.h"
 #include "ArchiverMgr.h"
+#include "Beezer.h"
+#include "LangStrings.h"
+#include "LocalUtils.h"
+#include "MsgConstants.h"
+#include "Preferences.h"
+#include "PrefsFields.h"
+#include "PrefsViewInterface.h"
+#include "UIConstants.h"
 
 #define M_COLOR_CHANGE        'clch'
 #define M_ITEM_CHANGE        'itch'

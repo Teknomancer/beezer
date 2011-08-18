@@ -27,23 +27,25 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <String.h>
-#include <CheckBox.h>
-#include <StringView.h>
-#include <TextControl.h>
-#include <Button.h>
 #include <Application.h>
-#include <PopUpMenu.h>
+#include <Button.h>
+#include <CheckBox.h>
 #include <MenuField.h>
 #include <MenuItem.h>
+#include <PopUpMenu.h>
+#include <String.h>
+#include <StringView.h>
+#include <TextControl.h>
 
-#include "PrefsViewMisc.h"
-#include "LangStrings.h"
-#include "UIConstants.h"
 #include "AppConstants.h"
-#include "Preferences.h"
-#include "MsgConstants.h"
 #include "ArchiverMgr.h"
+#include "LangStrings.h"
+#include "LocalUtils.h"
+#include "MsgConstants.h"
+#include "Preferences.h"
+#include "PrefsFields.h"
+#include "PrefsViewMisc.h"
+#include "UIConstants.h"
 
 //=============================================================================================================//
 

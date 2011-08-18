@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,8 +30,8 @@
 #ifndef _BITMAP_POOL_H
 #define _BITMAP_POOL_H
 
-#include <Bitmap.h>
-#include <List.h>
+class BBitmap;
+class BList;
 
 class BitmapPool
 {

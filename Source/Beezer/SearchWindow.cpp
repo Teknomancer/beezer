@@ -27,32 +27,32 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <List.h>
-#include <String.h>
 #include <Bitmap.h>
-#include <StringView.h>
+#include <Box.h>
+#include <Button.h>
+#include <CheckBox.h>
 #include <Entry.h>
-#include <PopUpMenu.h>
+#include <List.h>
 #include <MenuField.h>
 #include <MenuItem.h>
-#include <TextControl.h>
-#include <Box.h>
+#include <PopUpMenu.h>
 #include <RadioButton.h>
-#include <CheckBox.h>
-#include <Button.h>
+#include <String.h>
+#include <StringView.h>
+#include <TextControl.h>
 
+#include "BubbleHelper.h"
 #include "CLVColumn.h"
 #include "RegExString.h"
-#include "BubbleHelper.h"
 
-#include "SearchWindow.h"
+#include "Archiver.h"
 #include "BevelView.h"
-#include "UIConstants.h"
 #include "LangStrings.h"
 #include "LocalUtils.h"
-#include "Archiver.h"
 #include "MsgConstants.h"
+#include "SearchWindow.h"
 #include "StaticBitmapView.h"
+#include "UIConstants.h"
 
 //=============================================================================================================//
 

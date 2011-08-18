@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -26,19 +27,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Menu.h>
-#include <PopUpMenu.h>
-#include <MenuItem.h>
-#include <Resources.h>
 #include <Application.h>
+#include <Menu.h>
+#include <MenuItem.h>
+#include <PopUpMenu.h>
+#include <Resources.h>
 #include <String.h>
 
-#include "MainMenu.h"
-#include "LangStrings.h"
-#include "MsgConstants.h"
 #include "AppConstants.h"
-#include "BitmapPool.h"
 #include "ArchiverMgr.h"
+#include "Beezer.h"
+#include "BitmapMenuItem.h"
+#include "BitmapPool.h"
+#include "LangStrings.h"
+#include "MainMenu.h"
+#include "MsgConstants.h"
 
 //=============================================================================================================//
 

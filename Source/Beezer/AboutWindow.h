@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,11 +30,8 @@
 #ifndef _ABOUT_WINDOW_H
 #define _ABOUT_WINDOW_H
 
-#include <Window.h>
 #include <TextView.h>
-
-#include "AppConstants.h"
-#include "LangStrings.h"
+#include <Window.h>
 
 #define K_SCROLL_DELAY        35000
 #define M_CLOSE_ABOUT        'clab'

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -35,9 +36,9 @@ const int64    kMBSize = 1048576;
 const int64    kGBSize = 1073741824;
 const int64    kTBSize = kGBSize * kKBSize;
 
-class BString;
-class BMenu;
 class BHandler;
+class BMenu;
+class BString;
 
 bool               OpenEntry (const char *tempDirPath, const char *entryPath, bool openWith);
 bool               TrackerOpenWith (entry_ref *ref);

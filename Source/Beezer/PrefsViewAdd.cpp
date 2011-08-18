@@ -27,21 +27,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <String.h>
 #include <CheckBox.h>
-#include <TextControl.h>
 #include <MenuField.h>
-#include <PopUpMenu.h>
 #include <MenuItem.h>
+#include <PopUpMenu.h>
+#include <String.h>
 #include <StringView.h>
+#include <TextControl.h>
 
 #include <stdlib.h>
 
-#include "PrefsViewAdd.h"
-#include "LangStrings.h"
-#include "UIConstants.h"
 #include "AppConstants.h"
+#include "LangStrings.h"
+#include "LocalUtils.h"
 #include "Preferences.h"
+#include "PrefsFields.h"
+#include "PrefsViewAdd.h"
+#include "UIConstants.h"
 
 #define M_WARN               'warn'
 

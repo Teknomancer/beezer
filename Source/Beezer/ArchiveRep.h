@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -31,11 +32,11 @@
 
 #include <SupportDefs.h>
 
-#include "ArchiverMgr.h"
+class Archiver;
 
-class BPath;
 class BDirectory;
 class BEntry;
+class BPath;
 
 class ArchiveRep
 {

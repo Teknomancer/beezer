@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -27,13 +28,12 @@
  */
 
 #include <Bitmap.h>
-#include <Window.h>
 #include <Message.h>
+#include <Window.h>
 
-#include "LocalUtils.h"
-
-#include "BarberPole.h"
 #include "AppConstants.h"
+#include "BarberPole.h"
+#include "LocalUtils.h"
 
 //=============================================================================================================//
 

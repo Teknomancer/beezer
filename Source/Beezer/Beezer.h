@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -31,20 +32,23 @@
 
 #include <Application.h>
 #include <FilePanel.h>
-#include <String.h>
-#include <PopUpMenu.h>
-#include <MenuField.h>
 
-class MainWindow;
+class BDirectory;
+class BFile;
+class BMenuField;
+class BPopUpMenu;
+class BString;
+
 class AboutWindow;
-class StartupWindow;
-class PrefsWindow;
-class FileSplitterWindow;
-class FileJoinerWindow;
 class AddOnWindow;
-class WindowMgr;
+class FileJoinerWindow;
+class FileSplitterWindow;
+class MainWindow;
+class PrefsWindow;
 class RecentMgr;
 class RuleMgr;
+class StartupWindow;
+class WindowMgr;
 
 class BubbleHelper;
 

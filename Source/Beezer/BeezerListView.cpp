@@ -27,27 +27,27 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Window.h>
 #include <ClassInfo.h>
-#include <PopUpMenu.h>
-#include <MenuItem.h>
 #include <Clipboard.h>
-#include <Path.h>
 #include <Entry.h>
+#include <MenuItem.h>
+#include <Path.h>
+#include <PopUpMenu.h>
+#include <Window.h>
 
 #include <stdlib.h>
 
 #include "CLVEasyItem.h"
 
-#include "BeezerListView.h"
-#include "MsgConstants.h"
-#include "RegExString.h"
+#include "AppConstants.h"
 #include "AppUtils.h"
-#include "LocalUtils.h"
-#include "ListEntry.h"
+#include "BeezerListView.h"
 #include "BitmapPool.h"
 #include "LangStrings.h"
-#include "AppConstants.h"
+#include "ListEntry.h"
+#include "LocalUtils.h"
+#include "MsgConstants.h"
+#include "RegExString.h"
 
 const char *const kPfSpecialField = "beezer_special_field_magix!";
 

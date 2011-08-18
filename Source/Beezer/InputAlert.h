@@ -31,11 +31,10 @@
 #define _INPUT_ALERT_H
 
 #include <Alert.h>
-#include <TextView.h>
-#include <TextControl.h>
-#include <String.h>
-#include <Button.h>
-#include <StringView.h>
+
+class BString;
+class BStringView;
+class BTextControl;
 
 #define kInputText        "input_field"
 #define kButtonIndex      "button_index"

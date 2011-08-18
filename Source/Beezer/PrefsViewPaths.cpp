@@ -27,28 +27,30 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <String.h>
-#include <TextControl.h>
-#include <StringView.h>
-#include <Button.h>
-#include <FilePanel.h>
-#include <Window.h>
-#include <RadioButton.h>
-#include <ListView.h>
-#include <Bitmap.h>
 #include <Alert.h>
-#include <ScrollView.h>
+#include <Bitmap.h>
+#include <Button.h>
 #include <CheckBox.h>
+#include <FilePanel.h>
+#include <ListView.h>
+#include <Path.h>
+#include <RadioButton.h>
+#include <ScrollView.h>
+#include <String.h>
+#include <StringView.h>
+#include <TextControl.h>
+#include <Window.h>
 
-#include "PrefsViewPaths.h"
-#include "LangStrings.h"
-#include "UIConstants.h"
 #include "AppConstants.h"
-#include "Preferences.h"
-#include "PrefsListItem.h"
 #include "ImageButton.h"
+#include "LangStrings.h"
 #include "LocalUtils.h"
+#include "Preferences.h"
+#include "PrefsFields.h"
+#include "PrefsListItem.h"
+#include "PrefsViewPaths.h"
 #include "Shared.h"
+#include "UIConstants.h"
 
 #define M_PATH_SELECTED               'pths'
 #define M_SELECT_OPEN_PATH           'sopp'

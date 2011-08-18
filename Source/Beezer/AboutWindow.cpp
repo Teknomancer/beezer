@@ -27,14 +27,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <String.h>
-#include <TranslationUtils.h>
-#include <Bitmap.h>
-#include <Message.h>
 #include <Alert.h>
 #include <Application.h>
+#include <Bitmap.h>
+#include <Message.h>
+#include <String.h>
+#include <TranslationUtils.h>
+
+#include <malloc.h>
 
 #include "AboutWindow.h"
+#include "LangStrings.h"
 #include "UIConstants.h"
 
 //=============================================================================================================//

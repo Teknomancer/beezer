@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -26,14 +27,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <List.h>
-#include <Window.h>
-#include <Message.h>
-#include <Autolock.h>
 #include <Application.h>
+#include <Autolock.h>
+#include <List.h>
+#include <Message.h>
+#include <Window.h>
 
-#include "WindowMgr.h"
 #include "MsgConstants.h"
+#include "WindowMgr.h"
 
 int32 WindowMgr::m_runCount = 0;
 BLocker _wnd_locker ("_window_mgr_lock", true);

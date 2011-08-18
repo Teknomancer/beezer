@@ -28,28 +28,30 @@
  */
 
 #include <Application.h>
+#include <Bitmap.h>
+#include <Button.h>
 #include <ListView.h>
-#include <TextView.h>
 #include <ScrollView.h>
 #include <String.h>
-#include <Button.h>
+#include <TextView.h>
 
-#include "PrefsWindow.h"
-#include "PrefsListItem.h"
-#include "LangStrings.h"
 #include "BevelView.h"
-#include "UIConstants.h"
+#include "BitmapPool.h"
+#include "LangStrings.h"
 #include "MsgConstants.h"
-#include "PrefsViewExtract.h"
-#include "PrefsViewState.h"
-#include "PrefsViewWindows.h"
-#include "PrefsViewPaths.h"
-#include "PrefsViewRecent.h"
+#include "Preferences.h"
+#include "PrefsFields.h"
+#include "PrefsListItem.h"
 #include "PrefsViewAdd.h"
+#include "PrefsViewExtract.h"
 #include "PrefsViewInterface.h"
 #include "PrefsViewMisc.h"
-#include "Preferences.h"
-#include "BitmapPool.h"
+#include "PrefsViewPaths.h"
+#include "PrefsViewRecent.h"
+#include "PrefsViewState.h"
+#include "PrefsViewWindows.h"
+#include "PrefsWindow.h"
+#include "UIConstants.h"
 
 //=============================================================================================================//
 

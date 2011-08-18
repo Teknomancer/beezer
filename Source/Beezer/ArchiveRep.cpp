@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -26,20 +27,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Entry.h>
-#include <Path.h>
+#include <Alert.h>
 #include <Directory.h>
+#include <Entry.h>
 #include <Mime.h>
 #include <NodeInfo.h>
+#include <Path.h>
 #include <Window.h>
-#include <Alert.h>
 
 #include <malloc.h>
 
 #include "ArchiveRep.h"
-#include "MsgConstants.h"
+#include "Archiver.h"
+#include "ArchiverMgr.h"
+#include "Beezer.h"
 #include "BitmapPool.h"
 #include "FSUtils.h"
+#include "MsgConstants.h"
 
 //=============================================================================================================//
 

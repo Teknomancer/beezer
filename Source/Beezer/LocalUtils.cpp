@@ -27,28 +27,28 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <String.h>
-#include <Entry.h>
-#include <Path.h>
-#include <Roster.h>
-#include <Autolock.h>
-#include <Locker.h>
 #include <Application.h>
-#include <Resources.h>
+#include <Autolock.h>
 #include <Bitmap.h>
-#include <View.h>
 #include <Debug.h>
+#include <Entry.h>
+#include <Handler.h>
+#include <Locker.h>
 #include <Menu.h>
 #include <MenuItem.h>
-#include <Handler.h>
 #include <Mime.h>
+#include <Path.h>
+#include <Resources.h>
+#include <Roster.h>
+#include <String.h>
+#include <View.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "LocalUtils.h"
 #include "AppConstants.h"
 #include "LangStrings.h"
+#include "LocalUtils.h"
 #include "Shared.h"
 
 BLocker _local_utils_locker ("_local_utils_lock", true);
