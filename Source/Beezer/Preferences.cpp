@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -26,13 +27,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <String.h>
-#include <Entry.h>
+#include <Debug.h>
 #include <Directory.h>
+#include <Entry.h>
+#include <File.h>
+#include <Path.h>
+#include <String.h>
 
 #include <malloc.h>
 #include <string.h>
-#include <Debug.h>
 
 #include "Preferences.h"
 

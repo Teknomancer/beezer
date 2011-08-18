@@ -27,16 +27,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <TextView.h>
-#include <ScrollView.h>
 #include <Button.h>
+#include <ScrollView.h>
+#include <TextView.h>
 
-#include "LogWindow.h"
 #include "BevelView.h"
-#include "UIConstants.h"
 #include "LangStrings.h"
+#include "LogWindow.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
+#include "UIConstants.h"
 
 #include "BetterScrollView.h"
 

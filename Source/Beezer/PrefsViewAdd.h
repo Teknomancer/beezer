@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -33,6 +34,7 @@
 
 class BMenuField;
 class BPopUpMenu;
+class BTextControl;
 
 class PrefsViewAdd : public PrefsView
 {

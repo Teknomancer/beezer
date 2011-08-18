@@ -30,7 +30,6 @@
 #ifndef _LANG_STRINGS_H
 #define _LANG_STRINGS_H
 
-#include <Debug.h>
 #include <InterfaceDefs.h>
 
 #define str(X) strR5(X)

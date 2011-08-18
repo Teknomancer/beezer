@@ -27,15 +27,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <String.h>
 #include <CheckBox.h>
+#include <String.h>
 #include <StringView.h>
 
-#include "PrefsViewWindows.h"
-#include "LangStrings.h"
-#include "UIConstants.h"
 #include "AppConstants.h"
+#include "LangStrings.h"
+#include "LocalUtils.h"
 #include "Preferences.h"
+#include "PrefsFields.h"
+#include "PrefsViewWindows.h"
+#include "UIConstants.h"
 
 //=============================================================================================================//
 

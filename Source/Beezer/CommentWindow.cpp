@@ -27,22 +27,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <TextView.h>
-#include <ScrollView.h>
-#include <Button.h>
 #include <Bitmap.h>
+#include <Button.h>
+#include <ScrollView.h>
 #include <StringView.h>
+#include <TextView.h>
 
+#include <malloc.h>
 #include <string.h>
 
-#include "CommentWindow.h"
 #include "BevelView.h"
+#include "CommentWindow.h"
 #include "LangStrings.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
-#include "StaticBitmapView.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
+#include "StaticBitmapView.h"
 #include "UIConstants.h"
 
 #include "BetterScrollView.h"

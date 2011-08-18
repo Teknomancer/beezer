@@ -44,6 +44,7 @@
 #include <StatusBar.h>
 
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "FileJoinerWindow.h"
 #include "BevelView.h"

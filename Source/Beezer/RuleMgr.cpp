@@ -27,16 +27,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <List.h>
-#include <String.h>
 #include <Debug.h>
-#include <Path.h>
+#include <List.h>
 #include <NodeInfo.h>
+#include <Path.h>
+#include <String.h>
 
 #include <fstream>
 
-#include "RuleMgr.h"
 #include "RuleDefaults.h"
+#include "RuleMgr.h"
 
 //=============================================================================================================//
 

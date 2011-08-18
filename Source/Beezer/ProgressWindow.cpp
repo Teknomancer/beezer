@@ -27,23 +27,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <StatusBar.h>
-#include <Messenger.h>
-#include <StringView.h>
-#include <Resources.h>
-#include <Bitmap.h>
 #include <Application.h>
+#include <Bitmap.h>
 #include <Button.h>
+#include <Messenger.h>
+#include <Resources.h>
+#include <StatusBar.h>
+#include <StringView.h>
 
-#include "ProgressWindow.h"
-#include "BevelView.h"
-#include "MsgConstants.h"
 #include "AppConstants.h"
-#include "LangStrings.h"
 #include "ArchiveEntry.h"
-#include "LocalUtils.h"
 #include "Archiver.h"
 #include "BarberPole.h"
+#include "BevelView.h"
+#include "LangStrings.h"
+#include "LocalUtils.h"
+#include "MsgConstants.h"
+#include "ProgressWindow.h"
 #include "StaticBitmapView.h"
 #include "UIConstants.h"
 

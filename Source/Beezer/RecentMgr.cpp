@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -26,21 +27,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Locker.h>
 #include <Autolock.h>
-#include <Menu.h>
-#include <PopUpMenu.h>
-#include <MenuItem.h>
-#include <Entry.h>
 #include <Debug.h>
+#include <Entry.h>
+#include <Locker.h>
+#include <Menu.h>
+#include <MenuItem.h>
+#include <Path.h>
+#include <PopUpMenu.h>
 
 #include <malloc.h>
 #include <string.h>
 
+#include "MsgConstants.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
 #include "RecentMgr.h"
-#include "MsgConstants.h"
 
 BLocker _recent_locker ("_recent_mgr_lock", true);
 int32 RecentMgr::m_maxInternalCount = 99;

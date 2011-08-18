@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -26,19 +27,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Debug.h>
+#include <Alert.h>
+#include <Application.h>
 #include <Autolock.h>
+#include <Debug.h>
+#include <List.h>
+#include <MenuItem.h>
 #include <Path.h>
 #include <PopUpMenu.h>
-#include <MenuItem.h>
-#include <List.h>
-#include <Alert.h>
-
 #include <image.h>
 
+#include "Archiver.h"
 #include "ArchiverMgr.h"
-#include "MsgConstants.h"
+#include "Beezer.h"
 #include "LangStrings.h"
+#include "MsgConstants.h"
 
 BLocker _ark_locker ("_ark_mgr_lock", true);
 

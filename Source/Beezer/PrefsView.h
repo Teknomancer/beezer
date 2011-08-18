@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -30,14 +31,12 @@
 #define _PREFS_VIEW_H
 
 #include "BevelView.h"
-#include "PrefsFields.h"
-#include "LocalUtils.h"
 
 #define M_REVERT           'pfrv'
 
+class BBitmap;
 class BButton;
 class BCheckBox;
-class BBitmap;
 
 class PrefsView : public BevelView
 {

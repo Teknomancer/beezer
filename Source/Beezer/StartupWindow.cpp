@@ -28,28 +28,30 @@
  */
 
 
-
-#include <StringView.h>
-#include <Bitmap.h>
-#include <Message.h>
 #include <Application.h>
+#include <Bitmap.h>
 #include <MenuItem.h>
+#include <Message.h>
+#include <PopUpMenu.h>
+#include <String.h>
+#include <StringView.h>
 
-#include "StartupWindow.h"
-#include "LangStrings.h"
 #include "AppConstants.h"
-#include "UIConstants.h"
-#include "BevelView.h"
-#include "ImageButton.h"
-#include "ArchiverMgr.h"
 #include "AppUtils.h"
-#include "MsgConstants.h"
-#include "BitmapPool.h"
+#include "ArchiverMgr.h"
+#include "Beezer.h"
 #include "BeezerStringView.h"
-#include "RecentMgr.h"
+#include "BevelView.h"
+#include "BitmapPool.h"
+#include "FileSplitterWindow.h"
+#include "ImageButton.h"
+#include "LangStrings.h"
+#include "MsgConstants.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
-#include "FileSplitterWindow.h"
+#include "RecentMgr.h"
+#include "StartupWindow.h"
+#include "UIConstants.h"
 
 #include "BubbleHelper.h"
 

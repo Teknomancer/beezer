@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,9 +30,8 @@
 #ifndef _PREFERENCES_H
 #define _PREFERENCES_H
 
-#include <Path.h>
-#include <File.h>
 #include <GraphicsDefs.h>
+#include <Message.h>
 
 class Preferences : public BMessage
 {

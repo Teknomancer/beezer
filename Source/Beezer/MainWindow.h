@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -30,35 +31,34 @@
 #define _MAIN_WINDOW_H
 
 #include <Window.h>
-#include <String.h>
-#include <Path.h>
 
 class BFilePanel;
 class BMenu;
+class BPath;
 class BStatusBar;
 
-class MainMenu;
-class ToolBar;
-class InfoBar;
-class ImageButton;
+class Archiver;
 class BeezerListView;
 class BevelView;
-class LogTextView;
+class ImageButton;
+class InfoBar;
 class ListEntry;
-class Archiver;
-class WindowMgr;
+class LogTextView;
+class MainMenu;
+class ProgressWindow;
 class RecentMgr;
 class RuleMgr;
 class SearchWindow;
-class ProgressWindow;
-class StatusWindow;
 class SelectDirPanel;
+class StatusWindow;
+class ToolBar;
+class WindowMgr;
 
-class CLVContainerView;
+class BubbleHelper;
 class CLVColumn;
+class CLVContainerView;
 class CLVListItem;
 class SplitPane;
-class BubbleHelper;
 
 class MainWindow : public BWindow
 {

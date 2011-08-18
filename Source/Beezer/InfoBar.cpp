@@ -27,23 +27,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Window.h>
-#include <Message.h>
 #include <Bitmap.h>
+#include <Message.h>
+#include <Window.h>
 
+#include <stdio.h>
 #include <string.h>
 
-#include "InfoBar.h"
+#include "AppUtils.h"
 #include "BarberPole.h"
-#include "ImageButton.h"
-#include "MsgConstants.h"
-#include "UIConstants.h"
-#include "LangStrings.h"
 #include "BeezerStringView.h"
+#include "ImageButton.h"
+#include "InfoBar.h"
+#include "LangStrings.h"
+#include "MsgConstants.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
-
-#include "AppUtils.h"
+#include "UIConstants.h"
 
 //=============================================================================================================//
 

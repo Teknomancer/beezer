@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,12 +30,14 @@
 #ifndef _ARCHIVER_MGR_H
 #define _ARCHIVER_MGR_H
 
-class BString;
 class BList;
+class BLocker;
 class BPopUpMenu;
+class BString;
 
-#include "Archiver.h"
-#include "Beezer.h"
+class Archiver;
+class Beezer;
+
 
 const char * const kLoaderFunc =        "load_archiver";
 
