@@ -125,6 +125,8 @@ StatusWindow::StatusWindow (const char *title, BWindow *callerWindow, const char
     else
         ResizeTo (Frame().Width(), textLabel->Frame().bottom + 2 * K_MARGIN + 4);
 
+    m_backView->ResizeBy(0, K_MARGIN);
+
     // Center our window on screen
     CenterOnScreen();
 
