@@ -819,9 +819,12 @@ void ImageButton::ShowContextMenu (BPoint point)
         BMessage *msg = selectedItem->Message();
         msg->AddPointer ("source", (void*)selectedItem);
         if (!m_handler)
-           Window()->PostMessage (msg);
+            Window()->PostMessage (msg);
         else
-           m_handler->MessageReceived (msg);
+        {
+            BMessenger messenger(m_handler);
+            messenger.SendMessage(msg);
+        }
     }
     else    // else-part added :: BugFix
     {
