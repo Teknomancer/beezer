@@ -32,7 +32,7 @@
 
 #define K_APP_TITLE                          "Beezer"
 #define K_APP_AUTHOR                         "Ramshankar"
-#define K_APP_AUTHOR_MAIL                    "<v.ramshankar(at)gmail.com>"
+#define K_APP_AUTHOR_MAIL                    "<v." "ramshankar" "@gmail.com>"
 #define K_APP_AUTHOR_2                       "Chris Roberts"
 #define K_APP_AUTHOR_2_MAIL                  "<mail>"   // @todo
 
