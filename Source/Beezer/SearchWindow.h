@@ -38,7 +38,6 @@ class BMenuField;
 class BRadioButton;
 class BTextControl;
 
-class BubbleHelper;
 class CLVColumn;
 
 class Archiver;
@@ -54,7 +53,7 @@ class BevelView;
 class SearchWindow : public BWindow
 {
     public:
-        SearchWindow (BWindow *caller, BMessage *loadMessage, BubbleHelper *bubbleHelper,
+        SearchWindow (BWindow *caller, BMessage *loadMessage,
                     const BEntry *entry, const BList *columnList, const Archiver *ark);
 
         // Inherited hooks
@@ -64,7 +63,7 @@ class SearchWindow : public BWindow
         // Additional hooks
         int32               ExpressionType () const;
         CLVColumn          *Column () const;
-        void                SetBubbleHelps ();
+        void                SetToolTips ();
         void                GetSettings (BMessage &msg, uint32 msgwhat) const;
 
     private:
@@ -84,7 +83,6 @@ class SearchWindow : public BWindow
                          *m_invertChk,
                          *m_persistentChk;
         BMessage           *m_loadMessage;
-        BubbleHelper        *m_helper;
 };
 
 #endif /* _SEARCH_WINDOW_H */

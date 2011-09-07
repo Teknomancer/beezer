@@ -208,7 +208,7 @@ static const char * _englishStrings [NUM_STRINGS] =
     "[ Programming ]",
     "[ ColumnListView ]",
     "[ SplitPane ]",
-    "[ BubbleHelp ]",
+    "[ ToolTips ]",
     "[ URLView ]",
     "[ BeShare ]",
     "[ 7zip Add-on ]",

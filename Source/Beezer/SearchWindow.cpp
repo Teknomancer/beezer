@@ -41,7 +41,6 @@
 #include <StringView.h>
 #include <TextControl.h>
 
-#include "BubbleHelper.h"
 #include "CLVColumn.h"
 #include "RegExString.h"
 
@@ -56,13 +55,12 @@
 
 //=============================================================================================================//
 
-SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, BubbleHelper *bubbleHelper,
+SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage,
                const BEntry *entry, const BList *columnList, const Archiver *ark)
     : BWindow (BRect (30, 30, 440, 312), str (S_SEARCH_WINDOW_TITLE), B_TITLED_WINDOW,
         B_ASYNCHRONOUS_CONTROLS | B_NOT_V_RESIZABLE | B_NOT_ZOOMABLE, B_CURRENT_WORKSPACE),
            m_callerWindow (callerWindow),
-           m_loadMessage (loadMessage),
-           m_helper (bubbleHelper)
+           m_loadMessage (loadMessage)
 {
     SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
     AddToSubset (callerWindow);
@@ -326,8 +324,8 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage, Bubble
         ResizeTo (windowrect.Width(), windowrect.Height());
     }
 
-    // Assign bubble helps
-    SetBubbleHelps();
+    // Assign tooltips
+    SetToolTips();
 }
 
 //=============================================================================================================//
@@ -357,7 +355,7 @@ void SearchWindow::MessageReceived (BMessage *message)
         {
            if (strcmp (m_addToSelChk->Label(), str (S_SEARCH_ADD_TO_SELECTION)) != 0)
            {
-               m_helper->SetHelp (m_addToSelChk, const_cast<char*>(str (S_SEARCH_ADD_TO_SELECTION_BH)));
+               m_addToSelChk->SetToolTip(const_cast<char*>(str (S_SEARCH_ADD_TO_SELECTION_BH)));
                m_addToSelChk->SetLabel (str (S_SEARCH_ADD_TO_SELECTION));
                m_addToSelChk->ResizeToPreferred();
            }
@@ -369,8 +367,7 @@ void SearchWindow::MessageReceived (BMessage *message)
         {
            if (strcmp (m_addToSelChk->Label(), str (S_SEARCH_DESELECT_UNMATCHED_ENTRIES)) != 0)
            {
-               m_helper->SetHelp (m_addToSelChk,
-                             const_cast<char*>(str (S_SEARCH_DESELECT_UNMATCHED_ENTRIES_BH)));
+               m_addToSelChk->SetToolTip(const_cast<char*>(str (S_SEARCH_DESELECT_UNMATCHED_ENTRIES_BH)));
                m_addToSelChk->SetLabel (str (S_SEARCH_DESELECT_UNMATCHED_ENTRIES));
                m_addToSelChk->ResizeToPreferred();
            }
@@ -447,21 +444,21 @@ CLVColumn* SearchWindow::Column () const
 
 //=============================================================================================================//
 
-void SearchWindow::SetBubbleHelps ()
+void SearchWindow::SetToolTips ()
 {
-    m_helper->SetHelp (m_allEntriesOpt, const_cast<char*>(str (S_SEARCH_ALL_ENTRIES_BH)));
-    m_helper->SetHelp (m_visibleEntriesOpt, const_cast<char*>(str (S_SEARCH_VISIBLE_ENTRIES_BH)));
-    m_helper->SetHelp (m_selEntriesOpt, const_cast<char*>(str (S_SEARCH_SELECTED_ENTRIES_BH)));
+    m_allEntriesOpt->SetToolTip(const_cast<char*>(str (S_SEARCH_ALL_ENTRIES_BH)));
+    m_visibleEntriesOpt->SetToolTip(const_cast<char*>(str (S_SEARCH_VISIBLE_ENTRIES_BH)));
+    m_selEntriesOpt->SetToolTip(const_cast<char*>(str (S_SEARCH_SELECTED_ENTRIES_BH)));
 
-    m_helper->SetHelp (m_addToSelChk, const_cast<char*>(str (S_SEARCH_ADD_TO_SELECTION_BH)));
-    m_helper->SetHelp (m_ignoreCaseChk, const_cast<char*>(str (S_SEARCH_IGNORE_CASE_BH)));
-    m_helper->SetHelp (m_invertChk, const_cast<char*>(str (S_SEARCH_INVERT_BH)));
+    m_addToSelChk->SetToolTip(const_cast<char*>(str (S_SEARCH_ADD_TO_SELECTION_BH)));
+    m_ignoreCaseChk->SetToolTip(const_cast<char*>(str (S_SEARCH_IGNORE_CASE_BH)));
+    m_invertChk->SetToolTip(const_cast<char*>(str (S_SEARCH_INVERT_BH)));
 
-    m_helper->SetHelp (m_searchTextControl, const_cast<char*>(str (S_SEARCH_FOR_BH)));
-    m_helper->SetHelp (m_matchField, const_cast<char*>(str (S_SEARCH_MATCH_BH)));
-    m_helper->SetHelp (m_columnField, const_cast<char*>(str (S_SEARCH_COLUMN_BH)));
+    m_searchTextControl->SetToolTip(const_cast<char*>(str (S_SEARCH_FOR_BH)));
+    m_matchField->SetToolTip(const_cast<char*>(str (S_SEARCH_MATCH_BH)));
+    m_columnField->SetToolTip(const_cast<char*>(str (S_SEARCH_COLUMN_BH)));
 
-    m_helper->SetHelp (m_persistentChk, const_cast<char*>(str (S_SEARCH_PERSISTENT_BH)));
+    m_persistentChk->SetToolTip(const_cast<char*>(str (S_SEARCH_PERSISTENT_BH)));
 }
 
 //=============================================================================================================//

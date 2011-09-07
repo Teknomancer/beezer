@@ -57,7 +57,6 @@
 #include "ArchiverMgr.h"
 #include "Beezer.h"
 #include "BitmapPool.h"
-#include "BubbleHelper.h"
 #include "FileJoinerWindow.h"
 #include "FileSplitterWindow.h"
 #include "LangStrings.h"
@@ -89,8 +88,7 @@ Beezer::Beezer ()
         m_createFilePanel (NULL),
         m_windowMgr (new WindowMgr()),
         m_arkTypePopUp (NULL),
-        m_arkTypeField (NULL),
-        m_bubbleHelper (new BubbleHelper())
+        m_arkTypeField (NULL)
 {
     // Let the initial rectangle be small enough to fit on 640x480 screens
     m_defaultWindowRect.Set (40, 40, 610, 440);
@@ -162,7 +160,6 @@ Beezer::~Beezer ()
     delete m_splitDirsMgr;
     delete m_windowMgr;
     delete m_ruleMgr;
-    delete m_bubbleHelper;
 
     if (m_arkTypePopUp != NULL)
     {
@@ -190,7 +187,7 @@ void Beezer::Quit()
 void Beezer::ReadyToRun()
 {
     if (m_nWindows == 0 && m_startupWnd == NULL && m_addOnWnd == NULL)
-        m_startupWnd = new StartupWindow (m_recentMgr, m_bubbleHelper, true);
+        m_startupWnd = new StartupWindow (m_recentMgr, true);
 
     return BApplication::ReadyToRun();
 }
@@ -525,7 +522,7 @@ void Beezer::UnRegisterWindow (bool closeApp)
            if (_prefs_misc.FindBoolDef (kPfWelcomeOnQuit, true))
            {
                if (!m_startupWnd)
-                  m_startupWnd = new StartupWindow (m_recentMgr, NULL, false);
+                  m_startupWnd = new StartupWindow (m_recentMgr, false);
                else
                   m_startupWnd->Show();
            }
@@ -611,7 +608,7 @@ MainWindow* Beezer::CreateWindow (entry_ref *ref)
         m_startupWnd->Unlock();
     }
 
-    MainWindow *wndPtr = new MainWindow (m_newWindowRect, m_bubbleHelper, m_windowMgr, m_recentMgr,
+    MainWindow *wndPtr = new MainWindow (m_newWindowRect, m_windowMgr, m_recentMgr,
                                 m_extractMgr, m_ruleMgr);
     m_windowMgr->AddWindow (wndPtr);
     if (ref)

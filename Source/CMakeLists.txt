@@ -28,7 +28,6 @@ include_directories(
 		"${BEEZER_SOURCE_DIR}/ColumnListView/BetterScrollView"
 		"${BEEZER_SOURCE_DIR}/ColumnListView/ScrollViewCorner"
 		"${BEEZER_SOURCE_DIR}/AppUtils"
-		"${BEEZER_SOURCE_DIR}/BubbleHelper-1.2"
 		"${BEEZER_SOURCE_DIR}/_Deprecated/ListSorter"
 		)
 
