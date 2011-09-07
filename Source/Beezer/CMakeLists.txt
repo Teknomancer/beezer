@@ -61,7 +61,6 @@ add_executable(Beezer
 		../AppUtils/AppUtils.cpp
 		../Archiver/Archiver.cpp
 		../ArchiveEntry/ArchiveEntry.cpp
-		../BubbleHelper-1.2/BubbleHelper.cpp
 		../HashTable/HashTable.cpp
 		../ListEntry/ListEntry.cpp
 		../PipeMgr/PipeMgr.cpp

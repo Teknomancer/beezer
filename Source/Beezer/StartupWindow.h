@@ -40,14 +40,13 @@ class BevelView;
 class ImageButton;
 class RecentMgr;
 
-class BubbleHelper;
 
 #define M_CLOSE_STARTUP 'stcl'
 
 class StartupWindow : public BWindow
 {
     public:
-        StartupWindow (RecentMgr *recentMgr, BubbleHelper *helper, bool startup);
+        StartupWindow (RecentMgr *recentMgr, bool startup);
 
         // Inherited hooks
         virtual void        MessageReceived (BMessage *message);
@@ -64,7 +63,6 @@ class StartupWindow : public BWindow
                          *m_toolsBtn,
                          *m_prefsBtn;
         RecentMgr          *m_recentMgr;
-        BubbleHelper        *m_bubbleHelper;
         BPopUpMenu         *m_recentMenu,
                          *m_toolsMenu;
 };

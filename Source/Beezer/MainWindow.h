@@ -54,7 +54,6 @@ class StatusWindow;
 class ToolBar;
 class WindowMgr;
 
-class BubbleHelper;
 class CLVColumn;
 class CLVContainerView;
 class CLVListItem;
@@ -63,7 +62,7 @@ class SplitPane;
 class MainWindow : public BWindow
 {
     public:
-        MainWindow (BRect frame, BubbleHelper *bubbleHelper, WindowMgr *windowMgr, RecentMgr *recentMgr,
+        MainWindow (BRect frame, WindowMgr *windowMgr, RecentMgr *recentMgr,
                RecentMgr *extractMgr, RuleMgr *ruleMgr);
         ~MainWindow ();
 
@@ -186,7 +185,6 @@ class MainWindow : public BWindow
                            *m_addButton,
                            *m_deleteButton,
                            *m_extractButton;
-        BubbleHelper       *m_bubbleHelper;
         CLVContainerView   *m_listContainer;
         CLVColumn          *m_fileNameColumn,
                            *m_sizeColumn,

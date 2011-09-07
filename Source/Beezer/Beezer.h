@@ -50,7 +50,6 @@ class RuleMgr;
 class StartupWindow;
 class WindowMgr;
 
-class BubbleHelper;
 
 class Beezer : public BApplication
 {
@@ -117,7 +116,6 @@ class Beezer : public BApplication
         BMenuField         *m_arkTypeField;
         BList               m_arkTypes,
                             m_arkExtensions;
-        BubbleHelper       *m_bubbleHelper;
 };
 
 #endif /* _BEEZER_H */

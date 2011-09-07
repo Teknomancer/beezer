@@ -53,15 +53,12 @@
 #include "StartupWindow.h"
 #include "UIConstants.h"
 
-#include "BubbleHelper.h"
-
 //=============================================================================================================//
 
-StartupWindow::StartupWindow (RecentMgr *recentMgr, BubbleHelper *helper, bool startup)
+StartupWindow::StartupWindow (RecentMgr *recentMgr, bool startup)
     : BWindow (BRect (10, 10, 0, 100), K_APP_TITLE, B_TITLED_WINDOW,
         B_NOT_V_RESIZABLE | B_NOT_ZOOMABLE | B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE),
-    m_recentMgr (recentMgr),
-    m_bubbleHelper (helper)
+    m_recentMgr (recentMgr)
 {
     m_backView = new BevelView (Bounds(), "StartupWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_backView->SetViewColor (K_TOOLBAR_BACK_COLOR);
@@ -139,12 +136,12 @@ StartupWindow::StartupWindow (RecentMgr *recentMgr, BubbleHelper *helper, bool s
     m_backView->AddChild (m_toolsBtn);
     m_backView->AddChild (m_prefsBtn);
 
-    // Setup the bubblehelps
-    m_bubbleHelper->SetHelp (m_createBtn, const_cast<char*>(str (S_BUBBLEHELP_NEW)));
-    m_bubbleHelper->SetHelp (m_openBtn, const_cast<char*>(str (S_BUBBLEHELP_OPEN)));
-    m_bubbleHelper->SetHelp (m_openRecentBtn, const_cast<char*>(str (S_BUBBLEHELP_OPEN_RECENT)));
-    m_bubbleHelper->SetHelp (m_prefsBtn, const_cast<char*>(str (S_BUBBLEHELP_PREFS)));
-    m_bubbleHelper->SetHelp (m_toolsBtn, const_cast<char*>(str (S_BUBBLEHELP_TOOLS)));
+    // Setup the tooltips
+    m_createBtn->SetToolTip(const_cast<char*>(str (S_BUBBLEHELP_NEW)));
+    m_openBtn->SetToolTip(const_cast<char*>(str (S_BUBBLEHELP_OPEN)));
+    m_openRecentBtn->SetToolTip(const_cast<char*>(str (S_BUBBLEHELP_OPEN_RECENT)));
+    m_prefsBtn->SetToolTip(const_cast<char*>(str (S_BUBBLEHELP_PREFS)));
+    m_toolsBtn->SetToolTip(const_cast<char*>(str (S_BUBBLEHELP_TOOLS)));
 
     // Constrain window size
     ResizeTo (Frame().Width(), m_createBtn->Frame().bottom + 10);

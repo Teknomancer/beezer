@@ -58,7 +58,6 @@
 #include "BeezerListView.h"
 #include "BevelView.h"
 #include "BitmapPool.h"
-#include "BubbleHelper.h"
 #include "CLVColumnLabelView.h"
 #include "CLVEasyItem.h"
 #include "CommentWindow.h"
@@ -94,11 +93,10 @@
 // Note: Don't let BeIDE sort function popups if we want these pragmas to work
 #pragma mark --- Inherited Hooks ---
 
-MainWindow::MainWindow (BRect frame, BubbleHelper *bubbleHelper, WindowMgr *windowMgr, RecentMgr *recentMgr,
+MainWindow::MainWindow (BRect frame, WindowMgr *windowMgr, RecentMgr *recentMgr,
                   RecentMgr *extractMgr, RuleMgr *ruleMgr)
     : BWindow (frame, str (S_UNTITLED), B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE),
     m_searchWnd (NULL),
-    m_bubbleHelper (bubbleHelper),
     m_extractToPanel (NULL),
     m_addPanel (NULL),
     m_archiver (NULL),
@@ -1173,7 +1171,7 @@ void MainWindow::MessageReceived (BMessage *message)
                   _prefs_windows.FindMessage (kPfSearchWndFrame, m_searchSettingsMsg);
                }
 
-               m_searchWnd = new SearchWindow (this, m_searchSettingsMsg, m_bubbleHelper, &m_archiveEntry,
+               m_searchWnd = new SearchWindow (this, m_searchSettingsMsg, &m_archiveEntry,
                                 &m_columnList, m_archiver);
                m_searchWnd->Show();
            }
@@ -1575,45 +1573,45 @@ void MainWindow::AddToolBar ()
     // Construct the toolbar buttons
     m_newButton = new ImageButton (buttonRect, "MainWindow:New", str (S_TOOLBAR_NEW), _bmps->m_tbarNewBmp,
                   NULL, new BMessage (M_FILE_NEW), false, backColor, kBelowIcon);
-    m_bubbleHelper->SetHelp (m_newButton, const_cast<char*>(str (S_TOOLBAR_NEW_BH)));
+    m_newButton->SetToolTip(const_cast<char*>(str (S_TOOLBAR_NEW_BH)));
 
     m_openButton = new ImageButton (buttonRect, "MainWindow:Open", str (S_TOOLBAR_OPEN), _bmps->m_tbarOpenBmp,
                   NULL, new BMessage (M_FILE_OPEN), true, backColor, kBelowIcon);
-    m_bubbleHelper->SetHelp (m_openButton, const_cast<char*>(str (S_TOOLBAR_OPEN_BH)));
+    m_openButton->SetToolTip(const_cast<char*>(str (S_TOOLBAR_OPEN_BH)));
 
     m_closeButton = new ImageButton (buttonRect, "MainWindow:Close", str (S_TOOLBAR_CLOSE),
                   _bmps->m_tbarCloseBmp, NULL, new BMessage (M_FILE_CLOSE), false, backColor, kBelowIcon);
-    m_bubbleHelper->SetHelp (m_closeButton, const_cast<char*>(str (S_TOOLBAR_CLOSE_BH)));
+    m_closeButton->SetToolTip(const_cast<char*>(str (S_TOOLBAR_CLOSE_BH)));
 
     m_searchButton = new ImageButton (buttonRect, "MainWindow:Search", str (S_TOOLBAR_SEARCH),
                   _bmps->m_tbarSearchBmp, _bmps->m_tbarSearchDisabledBmp,
                   new BMessage (M_ACTIONS_SEARCH_ARCHIVE), false, backColor, kBelowIcon);
-    m_bubbleHelper->SetHelp (m_searchButton, const_cast<char*>(str (S_TOOLBAR_SEARCH_BH)));
+    m_searchButton->SetToolTip(const_cast<char*>(str (S_TOOLBAR_SEARCH_BH)));
 
     m_extractButton = new ImageButton (buttonRect, "MainWindow:Extact", str (S_TOOLBAR_EXTRACT),
                   _bmps->m_tbarExtractBmp, _bmps->m_tbarExtractDisabledBmp,
                   new BMessage (M_ACTIONS_EXTRACT), true, backColor, kBelowIcon);
     m_extractButton->SetEnabled (false);
-    m_bubbleHelper->SetHelp (m_extractButton, const_cast<char*>(str (S_TOOLBAR_EXTRACT_BH)));
+    m_extractButton->SetToolTip(const_cast<char*>(str (S_TOOLBAR_EXTRACT_BH)));
 
     m_viewButton = new ImageButton (buttonRect, "MainWindow:View", str (S_TOOLBAR_VIEW),
                   _bmps->m_tbarViewBmp, _bmps->m_tbarViewDisabledBmp, new BMessage (M_ACTIONS_VIEW),false,
                   backColor, kBelowIcon);
     m_viewButton->SetEnabled (false);
-    m_bubbleHelper->SetHelp (m_viewButton, const_cast<char*>(str (S_TOOLBAR_VIEW_BH)));
+    m_viewButton->SetToolTip(const_cast<char*>(str (S_TOOLBAR_VIEW_BH)));
 
     m_addButton = new ImageButton (buttonRect, "MainWindow:Add", str (S_TOOLBAR_ADD),
                   _bmps->m_tbarAddBmp, _bmps->m_tbarAddDisabledBmp, new BMessage (M_ACTIONS_ADD),false,
                   backColor, kBelowIcon);
     m_addButton->SetEnabled (false);
-    m_bubbleHelper->SetHelp (m_addButton, const_cast<char*>(str (S_TOOLBAR_ADD_BH)));
+    m_addButton->SetToolTip(const_cast<char*>(str (S_TOOLBAR_ADD_BH)));
 
     m_deleteButton = new ImageButton (buttonRect, "MainWindow:Delete", str (S_TOOLBAR_DELETE),
                   _bmps->m_tbarDeleteBmp, _bmps->m_tbarDeleteDisabledBmp,
                   new BMessage (M_ACTIONS_DELETE), false, backColor, kBelowIcon);
     m_deleteButton->SetEnabled (false);
 
-    m_bubbleHelper->SetHelp (m_deleteButton, const_cast<char*>(str (S_TOOLBAR_DELETE_BH)));
+    m_deleteButton->SetToolTip(const_cast<char*>(str (S_TOOLBAR_DELETE_BH)));
 
     // Construct the toolbar object
     float btnWidth, btnHeight;
