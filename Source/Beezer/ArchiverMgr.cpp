@@ -45,14 +45,14 @@
 
 BLocker _ark_locker ("_ark_mgr_lock", true);
 
-//=============================================================================================================//
+
 
 Beezer *_bzr ()
 {
     return (Beezer*)be_app;
 }
 
-//=============================================================================================================//
+
 
 Archiver* ArchiverForMime (const char *mimeType)
 {
@@ -100,7 +100,7 @@ Archiver* ArchiverForMime (const char *mimeType)
     return NULL;
 }
 
-//=============================================================================================================//
+
 
 BList ArchiversInstalled (BList *extensionStrings)
 {
@@ -142,7 +142,7 @@ BList ArchiversInstalled (BList *extensionStrings)
     return installedArkList;
 }
 
-//=============================================================================================================//
+
 
 Archiver* ArchiverForType (const char *archiverType)
 {
@@ -183,7 +183,7 @@ Archiver* ArchiverForType (const char *archiverType)
     return NULL;
 }
 
-//=============================================================================================================//
+
 
 BPopUpMenu* BuildArchiveTypesMenu (BHandler *targetHandler, BList *arkExtensions)
 {
@@ -207,7 +207,7 @@ BPopUpMenu* BuildArchiveTypesMenu (BHandler *targetHandler, BList *arkExtensions
     return arkTypePopUp;
 }
 
-//=============================================================================================================//
+
 
 Archiver* NewArchiver (const char *name, bool popupErrors, status_t *returnCode)
 {
@@ -251,4 +251,4 @@ Archiver* NewArchiver (const char *name, bool popupErrors, status_t *returnCode)
     return ark;
 }
 
-//=============================================================================================================//
+

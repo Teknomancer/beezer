@@ -51,7 +51,7 @@
 #include "MsgConstants.h"
 #include "AppConstants.h"
 
-//=============================================================================================================//
+
 
 Archiver::Archiver ()
 {
@@ -67,7 +67,7 @@ Archiver::Archiver ()
     m_extensionStr = strdup ("");
 }
 
-//=============================================================================================================//
+
 
 Archiver::~Archiver ()
 {
@@ -95,7 +95,7 @@ Archiver::~Archiver ()
     ResetCache();
 }
 
-//=============================================================================================================//
+
 
 inline void Archiver::ResetCache ()
 {
@@ -106,35 +106,35 @@ inline void Archiver::ResetCache ()
     }
 }
 
-//=============================================================================================================//
+
 
 status_t Archiver::InitCheck () const
 {
     return m_error;
 }
 
-//=============================================================================================================//
+
 
 void Archiver::SetFoldingLevel (int8 level)
 {
     m_foldingLevel = level;
 }
 
-//=============================================================================================================//
+
 
 void Archiver::SetTempDirectoryPath (const char *path)
 {
     m_tempDirPath = strdup (path);
 }
 
-//=============================================================================================================//
+
 
 const char* Archiver::TempDirectoryPath () const
 {
     return m_tempDirPath;
 }
 
-//=============================================================================================================//
+
 
 void Archiver::SetArchiveType (const char *type)
 {
@@ -142,14 +142,14 @@ void Archiver::SetArchiveType (const char *type)
     m_typeStr = strdup (type);
 }
 
-//=============================================================================================================//
+
 
 const char* Archiver::ArchiveType () const
 {
     return m_typeStr;
 }
 
-//=============================================================================================================//
+
 
 void Archiver::SetArchiveExtension (const char *extension)
 {
@@ -157,35 +157,35 @@ void Archiver::SetArchiveExtension (const char *extension)
     m_extensionStr = strdup (extension);
 }
 
-//=============================================================================================================//
+
 
 const char* Archiver::ArchiveExtension () const
 {
     return m_extensionStr;
 }
 
-//=============================================================================================================//
+
 
 HashTable* Archiver::Table () const
 {
     return m_hashTable;
 }
 
-//=============================================================================================================//
+
 
 BList* Archiver::MimeTypeList () const
 {
     return const_cast<BList*>(&m_mimeList);
 }
 
-//=============================================================================================================//
+
 
 BMessage* Archiver::ErrorMessage () const
 {
     return const_cast<BMessage*>(&m_errorDetails);
 }
 
-//=============================================================================================================//
+
 
 void Archiver::SetIconList (BList *list)
 {
@@ -204,7 +204,7 @@ void Archiver::SetIconList (BList *list)
     m_imageBmp = (BBitmap*)m_iconList->ItemAtFast (9L);
 }
 
-//=============================================================================================================//
+
 
 void Archiver::GetLists (BList *&fileList, BList *&folderList) const
 {
@@ -212,7 +212,7 @@ void Archiver::GetLists (BList *&fileList, BList *&folderList) const
     folderList = (BList*)&m_folderList;
 }
 
-//=============================================================================================================//
+
 
 void Archiver::TerminateThread (thread_id tid) const
 {
@@ -221,7 +221,7 @@ void Archiver::TerminateThread (thread_id tid) const
         send_signal ((pid_t)tid, SIGTERM);
 }
 
-//=============================================================================================================//
+
 
 void Archiver::FillLists (BList *files, BList *dirs)
 {
@@ -335,7 +335,7 @@ void Archiver::FillLists (BList *files, BList *dirs)
     m_folderList.AddList (&dirList);
 }
 
-//=============================================================================================================//
+
 
 inline int Archiver::CompareHashEntries (const void *a, const void *b)
 {
@@ -344,7 +344,7 @@ inline int Archiver::CompareHashEntries (const void *a, const void *b)
     return strcasecmp (x->m_pathStr, y->m_pathStr);
 }
 
-//=============================================================================================================//
+
 
 void Archiver::AddDirPathToTable (BList *dirList, const char *path)
 {
@@ -382,7 +382,7 @@ void Archiver::AddDirPathToTable (BList *dirList, const char *path)
     }
 }
 
-//=============================================================================================================//
+
 
 HashEntry *Archiver::AddFilePathToTable (BList *fileList, const char *path)
 {
@@ -412,7 +412,7 @@ HashEntry *Archiver::AddFilePathToTable (BList *fileList, const char *path)
     return NULL;
 }
 
-//=============================================================================================================//
+
 
 BBitmap* Archiver::BitmapForExtension (const char *str) const
 {
@@ -451,7 +451,7 @@ BBitmap* Archiver::BitmapForExtension (const char *str) const
     return icon;
 }
 
-//=============================================================================================================//
+
 
 status_t Archiver::ReadErrStream (FILE *fp, const char *escapeSeq)
 {
@@ -474,7 +474,7 @@ status_t Archiver::ReadErrStream (FILE *fp, const char *escapeSeq)
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 void Archiver::ReadStream (FILE *fp, BString &str) const
 {
@@ -489,7 +489,7 @@ void Archiver::ReadStream (FILE *fp, BString &str) const
     }
 }
 
-//=============================================================================================================//
+
 
 BList Archiver::HiddenColumns (BList *columns) const
 {
@@ -500,7 +500,7 @@ BList Archiver::HiddenColumns (BList *columns) const
     return retList;
 }
 
-//=============================================================================================================//
+
 
 bool Archiver::SupportsComment () const
 {
@@ -509,7 +509,7 @@ bool Archiver::SupportsComment () const
     return false;
 }
 
-//=============================================================================================================//
+
 
 bool Archiver::CanDeleteFiles () const
 {
@@ -517,7 +517,7 @@ bool Archiver::CanDeleteFiles () const
     return true;
 }
 
-//=============================================================================================================//
+
 
 bool Archiver::CanAddEmptyFolders () const
 {
@@ -525,7 +525,7 @@ bool Archiver::CanAddEmptyFolders () const
     return true;
 }
 
-//=============================================================================================================//
+
 
 bool Archiver::CanAddFiles () const
 {
@@ -533,7 +533,7 @@ bool Archiver::CanAddFiles () const
     return true;
 }
 
-//=============================================================================================================//
+
 
 bool Archiver::CanReplaceFiles () const
 {
@@ -542,7 +542,7 @@ bool Archiver::CanReplaceFiles () const
     return true;
 }
 
-//=============================================================================================================//
+
 
 bool Archiver::CanPartiallyOpen () const
 {
@@ -551,7 +551,7 @@ bool Archiver::CanPartiallyOpen () const
     return true;
 }
 
-//=============================================================================================================//
+
 
 bool Archiver::NeedsTempDirectory () const
 {
@@ -561,7 +561,7 @@ bool Archiver::NeedsTempDirectory () const
     return false;
 }
 
-//=============================================================================================================//
+
 
 bool Archiver::SupportsFolderEntity () const
 {
@@ -574,28 +574,28 @@ bool Archiver::SupportsFolderEntity () const
     return true;
 }
 
-//=============================================================================================================//
+
 
 void Archiver::SetPassword (const char *password)
 {
     m_password = password;
 }
 
-//=============================================================================================================//
+
 
 BString Archiver::Password () const
 {
     return m_password;
 }
 
-//=============================================================================================================//
+
 
 bool Archiver::SupportsPassword () const
 {
     return false;
 }
 
-//=============================================================================================================//
+
 
 bool Archiver::PasswordRequired() const
 {
@@ -605,7 +605,7 @@ bool Archiver::PasswordRequired() const
     return m_passwordRequired;
 }
 
-//=============================================================================================================//
+
 
 status_t Archiver::GetComment (char *&commentStr)
 {
@@ -613,14 +613,14 @@ status_t Archiver::GetComment (char *&commentStr)
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t Archiver::SetComment (char *commentStr, const char *tempDirPath)
 {
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 bool Archiver::IsBinaryFound (char *filePath, const char *fileName) const
 {
@@ -669,7 +669,7 @@ bool Archiver::IsBinaryFound (char *filePath, const char *fileName) const
     return false;
 }
 
-//=============================================================================================================//
+
 
 void Archiver::SetSettingsDirectoryPath (const char *path)
 {
@@ -679,14 +679,14 @@ void Archiver::SetSettingsDirectoryPath (const char *path)
     m_settingsDirectoryPath = strdup (path);
 }
 
-//=============================================================================================================//
+
 
 BMenu* Archiver::SettingsMenu () const
 {
     return m_settingsMenu;
 }
 
-//=============================================================================================================//
+
 
 void Archiver::SetSettingsMenu (BMenu *menu)
 {
@@ -695,14 +695,14 @@ void Archiver::SetSettingsMenu (BMenu *menu)
     m_settingsMenu = menu;
 }
 
-//=============================================================================================================//
+
 
 void Archiver::BuildDefaultMenu ()
 {
     // Empty implementation (i.e. m_settingsMenu will be NULL if control comes here)
 }
 
-//=============================================================================================================//
+
 
 void Archiver::SaveSettingsMenu ()
 {
@@ -750,7 +750,7 @@ void Archiver::SaveSettingsMenu ()
     settingsMsg.Flatten (&settingsFile);
 }
 
-//=============================================================================================================//
+
 
 void Archiver::LoadSettingsMenu ()
 {
@@ -776,7 +776,7 @@ void Archiver::LoadSettingsMenu ()
         BuildDefaultMenu();
 }
 
-//=============================================================================================================//
+
 
 void Archiver::MakeTime (struct tm *timeStruct, time_t *timeValue, const char *day, const char *month,
                   const char *year, const char *hour, const char *min, const char *sec)
@@ -803,11 +803,11 @@ void Archiver::MakeTime (struct tm *timeStruct, time_t *timeValue, const char *d
     *timeValue = mktime (timeStruct);
 }
 
-//=============================================================================================================//
+
 
 void Archiver::FormatDate (char *dateStr, size_t bufSize, struct tm *timeStruct)
 {
     strftime (dateStr, bufSize, "%d/%m/%Y, %I:%M %p", timeStruct);
 }
 
-//=============================================================================================================//
+

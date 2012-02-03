@@ -53,7 +53,7 @@
 #include "PrefsWindow.h"
 #include "UIConstants.h"
 
-//=============================================================================================================//
+
 
 PrefsWindow::PrefsWindow ()
     : BWindow (BRect (0, 0, 570+30, 320+100), str (S_PREFERENCES_TITLE), B_TITLED_WINDOW,
@@ -114,7 +114,7 @@ PrefsWindow::PrefsWindow ()
     Show();
 }
 
-//=============================================================================================================//
+
 
 void PrefsWindow::Quit()
 {
@@ -127,7 +127,7 @@ void PrefsWindow::Quit()
     return BWindow::Quit();
 }
 
-//=============================================================================================================//
+
 
 void PrefsWindow::MessageReceived (BMessage *message)
 {
@@ -178,7 +178,7 @@ void PrefsWindow::MessageReceived (BMessage *message)
     }
 }
 
-//=============================================================================================================//
+
 
 void PrefsWindow::SetActivePanel (PrefsView *activePanel)
 {
@@ -200,7 +200,7 @@ void PrefsWindow::SetActivePanel (PrefsView *activePanel)
     m_currentPanel->Show();
 }
 
-//=============================================================================================================//
+
 
 void PrefsWindow::AddControls ()
 {
@@ -264,4 +264,4 @@ void PrefsWindow::AddControls ()
     m_backView->AddChild (helpBtn);
 }
 
-//=============================================================================================================//
+

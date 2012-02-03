@@ -88,7 +88,7 @@
 #include "UIConstants.h"
 #include "WindowMgr.h"
 
-//=============================================================================================================//
+
 
 // Note: Don't let BeIDE sort function popups if we want these pragmas to work
 #pragma mark --- Inherited Hooks ---
@@ -160,7 +160,7 @@ MainWindow::MainWindow (BRect frame, WindowMgr *windowMgr, RecentMgr *recentMgr,
            m_mainMenu->Frame().Height() + m_toolBar->Frame().Height() + 157, maxV);
 }
 
-//=============================================================================================================//
+
 
 MainWindow::~MainWindow ()
 {
@@ -174,7 +174,7 @@ MainWindow::~MainWindow ()
     }
 }
 
-//=============================================================================================================//
+
 
 bool MainWindow::QuitRequested()
 {
@@ -184,7 +184,7 @@ bool MainWindow::QuitRequested()
     return BWindow::QuitRequested();
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::Quit ()
 {
@@ -253,7 +253,7 @@ void MainWindow::Quit ()
     return BWindow::Quit();
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::MessageReceived (BMessage *message)
 {
@@ -1491,7 +1491,7 @@ void MainWindow::MessageReceived (BMessage *message)
     }
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::Show ()
 {
@@ -1500,7 +1500,7 @@ void MainWindow::Show ()
     BWindow::Show();
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::FrameResized (float newWidth, float newHeight)
 {
@@ -1522,7 +1522,7 @@ void MainWindow::FrameResized (float newWidth, float newHeight)
     BWindow::FrameResized (newWidth, newHeight);
 }
 
-//=============================================================================================================//
+
 
 #pragma mark -
 #pragma mark --- Interface Functions ---
@@ -1540,7 +1540,7 @@ void MainWindow::AddInfoBar ()
     m_backView->AddChild (m_infoBar);
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::AddSplitterBar ()
 {
@@ -1561,7 +1561,7 @@ void MainWindow::AddSplitterBar ()
     m_backView->AddChild (m_splitPane);
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::AddToolBar ()
 {
@@ -1635,7 +1635,7 @@ void MainWindow::AddToolBar ()
     m_slotTwoX = m_toolBar->AddSeparatorItem (true);    // Remember this slot position as well
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::AddListView ()
 {
@@ -1677,7 +1677,7 @@ void MainWindow::AddListView ()
     UpdateListView (false);
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::AddLogTextView ()
 {
@@ -1701,12 +1701,12 @@ void MainWindow::AddLogTextView ()
     m_logTextView->SetContextMenu (m_mainMenu->m_logContextMenu);
 
     // Setup scrolling for the LogTextView
-    BetterScrollView *scrollView = new BetterScrollView ("MainWindow:LogScrollView", m_logTextView,
-                                B_FOLLOW_ALL_SIDES, B_WILL_DRAW, false, true, true, B_NO_BORDER);
+    BScrollView *scrollView = new BScrollView ("MainWindow:LogScrollView", m_logTextView,
+                                B_FOLLOW_ALL_SIDES, B_WILL_DRAW, false, true, B_NO_BORDER);
     insetView->AddChild (scrollView);
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::ToggleColumn (CLVColumn *col, BMessage *message)
 {
@@ -1732,7 +1732,7 @@ void MainWindow::ToggleColumn (CLVColumn *col, BMessage *message)
         item->SetMarked (!(item->IsMarked()));
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::ToggleToolBar ()
 {
@@ -1740,7 +1740,7 @@ void MainWindow::ToggleToolBar ()
     m_toolBar->Toggle();
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::ToggleInfoBar ()
 {
@@ -1748,7 +1748,7 @@ void MainWindow::ToggleInfoBar ()
     m_infoBar->Toggle();
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::ToggleActionLog ()
 {
@@ -1771,7 +1771,7 @@ void MainWindow::ToggleActionLog ()
     m_splitPane->SetBarLocked (m_logHidden);
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::AdjustColumns ()
 {
@@ -1789,7 +1789,7 @@ void MainWindow::AdjustColumns ()
     }
 }
 
-//=============================================================================================================//
+
 
 #pragma mark -
 #pragma mark --- Update Functions ---
@@ -1807,7 +1807,7 @@ void MainWindow::UpdateListView (bool invalidate)
         m_listView->Invalidate (Bounds());
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::UpdateFileSelectNeeders (bool enable)
 {
@@ -1817,7 +1817,7 @@ void MainWindow::UpdateFileSelectNeeders (bool enable)
     m_mainMenu->m_actionsMenu->FindItem(M_ACTIONS_OPEN_WITH)->SetEnabled (enable);
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::UpdateFocusNeeders (bool enable)
 {
@@ -1825,7 +1825,7 @@ void MainWindow::UpdateFocusNeeders (bool enable)
     m_mainMenu->m_editMenu->FindItem(M_EDIT_COPY)->SetEnabled (enable);
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::UpdateSelectNeeders (bool enable)
 {
@@ -1836,7 +1836,7 @@ void MainWindow::UpdateSelectNeeders (bool enable)
     m_deleteButton->SetEnabled (enable);
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::UpdateListItemNeeders (bool enable)
 {
@@ -1850,7 +1850,7 @@ void MainWindow::UpdateListItemNeeders (bool enable)
     m_mainMenu->m_editMenu->FindItem(M_EDIT_INVERT_SELECTION)->SetEnabled (enable);
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::UpdateFolderSelectNeeders (bool enable)
 {
@@ -1859,7 +1859,7 @@ void MainWindow::UpdateFolderSelectNeeders (bool enable)
     m_mainMenu->m_editMenu->FindItem(M_EDIT_COLLAPSE_SELECTED)->SetEnabled (enable);
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::UpdateValidArchiveNeeders (bool enable)
 {
@@ -1900,7 +1900,7 @@ void MainWindow::UpdateValidArchiveNeeders (bool enable)
     m_mainMenu->m_actionsMenu->FindItem(M_ACTIONS_CREATE_FOLDER)->SetEnabled (enable);
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::UpdateInfoBar (int32 count, int64 bytes) const
 {
@@ -1909,7 +1909,7 @@ void MainWindow::UpdateInfoBar (int32 count, int64 bytes) const
     m_infoBar->UpdateBytesDisplay (bytes, 0, false);
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::UpdateUIAsPerSelection ()
 {
@@ -1940,7 +1940,7 @@ void MainWindow::UpdateUIAsPerSelection ()
         UpdateFolderSelectNeeders (false);
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::UpdateWindowManager (bool isClosing)
 {
@@ -1953,7 +1953,7 @@ void MainWindow::UpdateWindowManager (bool isClosing)
     }
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::ActivateUIForValidArchive ()
 {
@@ -1969,7 +1969,7 @@ void MainWindow::ActivateUIForValidArchive ()
     m_listView->SortItems();
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::UpdateNewWindow ()
 {
@@ -1980,7 +1980,7 @@ void MainWindow::UpdateNewWindow ()
     UpdateWindowManager();
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::UpdateRecentMenu ()
 {
@@ -1988,7 +1988,7 @@ void MainWindow::UpdateRecentMenu ()
     m_openButton->SetContextMenu (m_recentMgr->BuildPopUpMenu (NULL, "refs", be_app));
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::UpdateExtractMenu ()
 {
@@ -2009,7 +2009,7 @@ void MainWindow::UpdateExtractMenu ()
     m_mainMenu->m_actionsMenu->FindItem(str (S_EXTRACT_SELECTED))->SetEnabled (enable);
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::UpdateWindowsMenu ()
 {
@@ -2035,7 +2035,7 @@ void MainWindow::UpdateWindowsMenu ()
     }
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::SetBusyState (bool on) const
 {
@@ -2048,7 +2048,7 @@ void MainWindow::SetBusyState (bool on) const
     m_infoBar->LoadIndicator()->SetValue (on, on);
 }
 
-//=============================================================================================================//
+
 
 #pragma mark -
 #pragma mark --- Delete Functions ----
@@ -2070,7 +2070,7 @@ void MainWindow::ClearDeleteLists ()
     }
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::DeleteFilesFromArchive ()
 {
@@ -2218,7 +2218,7 @@ void MainWindow::DeleteFilesFromArchive ()
     resume_thread (spawn_thread (_deletor, "_deletor", B_NORMAL_PRIORITY, (void*)threadInfo));
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::CancelDelete ()
 {
@@ -2230,7 +2230,7 @@ void MainWindow::CancelDelete ()
     m_listView->SelectionChanged();
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::DeleteDone (BMessage *message)
 {
@@ -2274,7 +2274,7 @@ void MainWindow::DeleteDone (BMessage *message)
     }
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::DeleteUpdate ()
 {
@@ -2336,7 +2336,7 @@ void MainWindow::DeleteUpdate ()
     ClearDeleteLists ();
 }
 
-//=============================================================================================================//
+
 
 #pragma mark -
 #pragma mark --- Test Functions ---
@@ -2365,7 +2365,7 @@ void MainWindow::TestArchive ()
     resume_thread (tst_id);
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::TestDone (BMessage *message)
 {
@@ -2422,7 +2422,7 @@ void MainWindow::TestDone (BMessage *message)
     }
 }
 
-//=============================================================================================================//
+
 
 #pragma mark -
 #pragma mark --- Extract Functions ---
@@ -2541,7 +2541,7 @@ void MainWindow::ExtractDone (BMessage *message)
     m_criticalSection = false;
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::ExtractArchive (entry_ref refToDir, bool fullArchive)
 {
@@ -2649,7 +2649,7 @@ void MainWindow::ExtractArchive (entry_ref refToDir, bool fullArchive)
     resume_thread (ext_id);
 }
 
-//=============================================================================================================//
+
 
 bool MainWindow::IsExtractPathValid (const char *path, bool throwAlertErrorIfAny) const
 {
@@ -2674,7 +2674,7 @@ bool MainWindow::IsExtractPathValid (const char *path, bool throwAlertErrorIfAny
     return true;
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::SetupExtractPanel (BMessage *extractMessage)
 {
@@ -2706,7 +2706,7 @@ void MainWindow::SetupExtractPanel (BMessage *extractMessage)
     m_extractToPanel->SetMessage (&msg);
 }
 
-//=============================================================================================================//
+
 
 #pragma mark -
 #pragma mark --- Open Functions ---
@@ -2759,7 +2759,7 @@ int32 MainWindow::AddFolderToMessage (ListEntry *item, BMessage *message, bool c
     return countOnlyFiles == true ? count - folderCount : count;
 }
 
-//=============================================================================================================//
+
 
 int32 MainWindow::AddFoldersFromList (int32 index, int32 *totalItems)
 {
@@ -2809,7 +2809,7 @@ int32 MainWindow::AddFoldersFromList (int32 index, int32 *totalItems)
     }
 }
 
-//=============================================================================================================//
+
 
 int32 MainWindow::AddItemsFromList (int32 index, int32 *totalItems)
 {
@@ -2865,7 +2865,7 @@ int32 MainWindow::AddItemsFromList (int32 index, int32 *totalItems)
     }
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::SetupArchiver (entry_ref *ref, char *mimeString)
 {
@@ -2942,7 +2942,7 @@ void MainWindow::SetupArchiver (entry_ref *ref, char *mimeString)
     InitArchiver();
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::InitArchiver ()
 {
@@ -2978,7 +2978,7 @@ void MainWindow::InitArchiver ()
         AddArchiverMenu ();
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::AddArchiverMenu ()
 {
@@ -2991,7 +2991,7 @@ void MainWindow::AddArchiverMenu ()
     }
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::OpenArchive ()
 {
@@ -3054,7 +3054,7 @@ void MainWindow::OpenArchive ()
     }
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::OpenArchivePartTwo (status_t result)
 {
@@ -3072,7 +3072,7 @@ void MainWindow::OpenArchivePartTwo (status_t result)
     m_criticalSection = false;
 }
 
-//=============================================================================================================//
+
 
 #pragma mark -
 #pragma mark -- Add Functions ---
@@ -3135,7 +3135,7 @@ int32 MainWindow::AddFoldersFromList (BList *folderList, int32 index)
     }
 }
 
-//=============================================================================================================//
+
 
 int32 MainWindow::AddItemsFromList (BList *fileList, int32 index)
 {
@@ -3201,7 +3201,7 @@ int32 MainWindow::AddItemsFromList (BList *fileList, int32 index)
     }
 }
 
-//=============================================================================================================//
+
 
 bool MainWindow::ConfirmAddOperation (const char *addingUnderPath, BMessage *refsMessage, int32 *countL,
                   int32 *skipped)
@@ -3386,7 +3386,7 @@ bool MainWindow::ConfirmAddOperation (const char *addingUnderPath, BMessage *ref
     return true;
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::SetupAddPanel ()
 {
@@ -3446,7 +3446,7 @@ void MainWindow::SetupAddPanel ()
     }
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::AddNewFolder ()
 {
@@ -3569,7 +3569,7 @@ void MainWindow::AddNewFolder ()
     }
 }
 
-//=============================================================================================================//
+
 
 #pragma mark -
 #pragma mark -- State Functions ---
@@ -3586,7 +3586,7 @@ void MainWindow::SaveSettingsAsDefaults () const
     msg.Flatten (&file);
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::SaveSettingsToArchive (BMessage *message)
 {
@@ -3614,7 +3614,7 @@ void MainWindow::SaveSettingsToArchive (BMessage *message)
     delete[] msgBuf;
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::SaveArchiverToArchive (BMessage *message)
 {
@@ -3655,7 +3655,7 @@ void MainWindow::SaveArchiverToArchive (BMessage *message)
     delete[] msgBuf;
 }
 
-//=============================================================================================================//
+
 
 BMenu* MainWindow::LoadArchiverFromArchive (entry_ref *ref)
 {
@@ -3686,7 +3686,7 @@ BMenu* MainWindow::LoadArchiverFromArchive (entry_ref *ref)
     return menu;
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::LoadSettingsFromArchive (entry_ref *ref)
 {
@@ -3714,7 +3714,7 @@ void MainWindow::LoadSettingsFromArchive (entry_ref *ref)
         LoadDefaultSettings ();
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::LoadDefaultSettings ()
 {
@@ -3732,7 +3732,7 @@ void MainWindow::LoadDefaultSettings ()
     SetState (&msg);
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::CacheState (BMessage **cache, BMessage *msg)
 {
@@ -3746,7 +3746,7 @@ void MainWindow::CacheState (BMessage **cache, BMessage *msg)
     *cache = new BMessage (*msg);
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::SetState (BMessage *msg)
 {
@@ -3796,7 +3796,7 @@ void MainWindow::SetState (BMessage *msg)
         (m_mainMenu->m_columnsSubMenu->ItemAt(i - 2))->SetMarked ((m_listView->ColumnAt(i))->IsShown());
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::GetState (BMessage &msg) const
 {
@@ -3816,7 +3816,7 @@ void MainWindow::GetState (BMessage &msg) const
     msg.AddMessage (kListViewState, &listMsg);
 }
 
-//=============================================================================================================//
+
 
 #pragma mark -
 #pragma mark -- Thread Functions ---
@@ -3892,7 +3892,7 @@ int32 MainWindow::_viewer (void *arg)
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 int32 MainWindow::_counter (void *arg)
 {
@@ -3952,7 +3952,7 @@ int32 MainWindow::_counter (void *arg)
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 int32 MainWindow::_copier (void *arg)
 {
@@ -4016,7 +4016,7 @@ int32 MainWindow::_copier (void *arg)
     return B_OK;
 }
 
-//=============================================================================================================//
+
 
 int32 MainWindow::_extractor (void *arg)
 {
@@ -4057,7 +4057,7 @@ int32 MainWindow::_extractor (void *arg)
     return result;
 }
 
-//=============================================================================================================//
+
 
 int32 MainWindow::_adder (void *arg)
 {
@@ -4097,7 +4097,7 @@ int32 MainWindow::_adder (void *arg)
     return result;
 }
 
-//=============================================================================================================//
+
 
 int32 MainWindow::_deletor (void *arg)
 {
@@ -4130,7 +4130,7 @@ int32 MainWindow::_deletor (void *arg)
     return result;
 }
 
-//=============================================================================================================//
+
 
 int32 MainWindow::_tester (void *arg)
 {
@@ -4161,7 +4161,7 @@ int32 MainWindow::_tester (void *arg)
     return result;
 }
 
-//=============================================================================================================//
+
 
 int32 MainWindow::_opener (void *arg)
 {
@@ -4184,7 +4184,7 @@ int32 MainWindow::_opener (void *arg)
     return result;
 }
 
-//=============================================================================================================//
+
 
 #pragma mark -
 #pragma mark --- Miscellaneous ---
@@ -4203,7 +4203,7 @@ void MainWindow::EditComment (bool failIfNoComment)
     }
 }
 
-//=============================================================================================================//
+
 
 const char* MainWindow::MakeTempDirectory ()
 {
@@ -4213,7 +4213,7 @@ const char* MainWindow::MakeTempDirectory ()
     return m_tempDirPath;
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::EmptyListViewIfNeeded ()
 {
@@ -4225,7 +4225,7 @@ void MainWindow::EmptyListViewIfNeeded ()
     }
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::ShowArkPathError () const
 {
@@ -4238,7 +4238,7 @@ void MainWindow::ShowArkPathError () const
     return;
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::ShowOpNotSupported () const
 {
@@ -4250,7 +4250,7 @@ void MainWindow::ShowOpNotSupported () const
     errAlert->Go();
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::ShowReadOnlyError () const
 {
@@ -4261,7 +4261,7 @@ void MainWindow::ShowReadOnlyError () const
     errAlert->Go();
 }
 
-//=============================================================================================================//
+
 
 bool MainWindow::CanAddFiles () const
 {
@@ -4275,7 +4275,7 @@ bool MainWindow::CanAddFiles () const
     return true;
 }
 
-//=============================================================================================================//
+
 
 bool MainWindow::CanWriteArchive () const
 {
@@ -4295,7 +4295,7 @@ bool MainWindow::CanWriteArchive () const
     return true;
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::AddDynamicExtractPaths (BMenu *menu) const
 {
@@ -4321,7 +4321,7 @@ void MainWindow::AddDynamicExtractPaths (BMenu *menu) const
         menu->AddItem (new BSeparatorItem (), addedCount);
 }
 
-//=============================================================================================================//
+
 
 void MainWindow::AddFavouriteExtractPaths (BMenu *menu) const
 {
@@ -4357,7 +4357,7 @@ void MainWindow::AddFavouriteExtractPaths (BMenu *menu) const
     }
 }
 
-//=============================================================================================================//
+
 
 BString MainWindow::StrippedArchiveName () const
 {
@@ -4452,4 +4452,4 @@ BString MainWindow::StrippedArchiveName () const
     return archiveName;
 }
 
-//=============================================================================================================//
+

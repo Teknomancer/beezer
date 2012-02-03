@@ -30,7 +30,7 @@
 
 #include "StaticBitmapView.h"
 
-//=============================================================================================================//
+
 
 StaticBitmapView::StaticBitmapView (BRect frame, const char *name, BBitmap *bmp,
                                     uint32 resizeMask, uint32 flags)
@@ -39,21 +39,21 @@ StaticBitmapView::StaticBitmapView (BRect frame, const char *name, BBitmap *bmp,
 {
 }
 
-//=============================================================================================================//
+
 
 StaticBitmapView::~StaticBitmapView ()
 {
     delete m_bitmap;
 }
 
-//=============================================================================================================//
+
 
 void StaticBitmapView::AttachedToWindow ()
 {
     SetDrawingMode (B_OP_ALPHA);
 }
 
-//=============================================================================================================//
+
 
 void StaticBitmapView::Draw (BRect updateRect)
 {
@@ -62,4 +62,4 @@ void StaticBitmapView::Draw (BRect updateRect)
     DrawBitmap (m_bitmap);
 }
 
-//=============================================================================================================//
+

@@ -619,14 +619,14 @@ static const char * _englishStrings [NUM_STRINGS] =
     "Folding: ",
 };
 
-//=============================================================================================================//
+
 
 int GetLanguage ()
 {
     return _language;
 }
 
-//=============================================================================================================//
+
 
 void SetLanguage (int whichLang)
 {
@@ -634,7 +634,7 @@ void SetLanguage (int whichLang)
         _language = whichLang;
 }
 
-//=============================================================================================================//
+
 
 const char* GetLanguageName (int whichLang, bool native)
 {
@@ -646,7 +646,7 @@ const char* GetLanguageName (int whichLang, bool native)
     }
 }
 
-//=============================================================================================================//
+
 
 const char* strR5 (int whichLang, int language)
 {
@@ -659,4 +659,4 @@ const char* strR5 (int whichLang, int language)
     return ((base) && (whichLang >= 0) && (whichLang < NUM_STRINGS)) ? base[whichLang] : NULL;
 }
 
-//=============================================================================================================//
+

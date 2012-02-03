@@ -49,16 +49,16 @@
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
 
-//=============================================================================================================//
+
 
 Archiver *load_archiver ()
 {
     return new z7Archiver ();
 }
 
-//=============================================================================================================//
-//=============================================================================================================//
-//=============================================================================================================//
+
+
+
 
 z7Archiver::z7Archiver ()
 {
@@ -80,7 +80,7 @@ z7Archiver::z7Archiver ()
     }
 }
 
-//=============================================================================================================//
+
 
 status_t z7Archiver::ReadOpen (FILE *fp)
 {
@@ -139,7 +139,7 @@ status_t z7Archiver::ReadOpen (FILE *fp)
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t z7Archiver::Open (entry_ref *ref, BMessage *fileList)
 {
@@ -172,7 +172,7 @@ status_t z7Archiver::Open (entry_ref *ref, BMessage *fileList)
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t z7Archiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger *progress,
                       volatile bool *cancel)
@@ -274,7 +274,7 @@ status_t z7Archiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t z7Archiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool *cancel)
 {
@@ -325,7 +325,7 @@ status_t z7Archiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool 
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t z7Archiver::Test (char *&outputStr, BMessenger *progress, volatile bool *cancel)
 {
@@ -380,7 +380,7 @@ status_t z7Archiver::Test (char *&outputStr, BMessenger *progress, volatile bool
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t z7Archiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress, volatile bool *cancel)
 {
@@ -457,7 +457,7 @@ status_t z7Archiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress,
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 bool z7Archiver::SupportsFolderEntity () const
 {
@@ -465,7 +465,7 @@ bool z7Archiver::SupportsFolderEntity () const
     return true;
 }
 
-//=============================================================================================================//
+
 
 bool z7Archiver::CanReplaceFiles () const
 {
@@ -475,7 +475,7 @@ bool z7Archiver::CanReplaceFiles () const
     return true;
 }
 
-//=============================================================================================================//
+
 
 bool z7Archiver::CanPartiallyOpen () const
 {
@@ -485,14 +485,14 @@ bool z7Archiver::CanPartiallyOpen () const
     return false;
 }
 
-//=============================================================================================================//
+
 
 bool z7Archiver::SupportsPassword () const
 {
     return true;
 }
 
-//=============================================================================================================//
+
 
 status_t z7Archiver::Add (bool createMode, const char *relativePath, BMessage *message, BMessage *addedPaths,
                       BMessenger *progress, volatile bool *cancel)
@@ -578,7 +578,7 @@ status_t z7Archiver::Add (bool createMode, const char *relativePath, BMessage *m
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t z7Archiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progress, volatile bool *cancel)
 {
@@ -714,7 +714,7 @@ status_t z7Archiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progre
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t z7Archiver::Delete (char *&outputStr, BMessage *message, BMessenger *progress,
                       volatile bool *cancel)
@@ -782,7 +782,7 @@ status_t z7Archiver::Delete (char *&outputStr, BMessage *message, BMessenger *pr
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t z7Archiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progress,
                       volatile bool *cancel)
@@ -817,7 +817,7 @@ status_t z7Archiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progres
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t z7Archiver::Create (BPath *archivePath, const char *relPath, BMessage *fileList, BMessage *addedPaths,
                              BMessenger *progress, volatile bool *cancel)
@@ -841,7 +841,7 @@ status_t z7Archiver::Create (BPath *archivePath, const char *relPath, BMessage *
     return result;
 }
 
-//=============================================================================================================//
+
 
 void z7Archiver::BuildDefaultMenu ()
 {
@@ -893,7 +893,7 @@ void z7Archiver::BuildDefaultMenu ()
     m_settingsMenu->AddItem (extractMenu);
 }
 
-//=============================================================================================================//
+
 
 void z7Archiver::SetMimeType ()
 {
@@ -907,4 +907,4 @@ void z7Archiver::SetMimeType ()
     }
 }
 
-//=============================================================================================================//
+

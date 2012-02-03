@@ -31,7 +31,7 @@
 #include "ListEntry.h"
 #include "ColumnListView.h"
 
-//=============================================================================================================//
+
 
 ListEntry::ListEntry (uint32 level, bool superitem, bool expanded, BBitmap *icon, const char *text0,
                const char *text1, const char *text2, const char *text3, const char *text4, const char *text5,
@@ -63,7 +63,7 @@ ListEntry::ListEntry (uint32 level, bool superitem, bool expanded, BBitmap *icon
     m_timeValue = timeValue;
 }
 
-//=============================================================================================================//
+
 
 ListEntry::ListEntry (uint32 level, bool superitem, bool expanded, BBitmap *icon, char *text0, char *text1,
                char *text2, char *text3, char *text4, char *text5, char *text6, char *text7,
@@ -94,7 +94,7 @@ ListEntry::ListEntry (uint32 level, bool superitem, bool expanded, BBitmap *icon
     m_timeValue = timeValue;
 }
 
-//=============================================================================================================//
+
 
 void ListEntry::Update (ListEntry *newItem)
 {
@@ -123,4 +123,4 @@ void ListEntry::Update (ListEntry *newItem)
     SetColumnContent (9, crc, true);
 }
 
-//=============================================================================================================//
+

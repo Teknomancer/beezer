@@ -49,16 +49,16 @@
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
 
-//=============================================================================================================//
+
 
 Archiver *load_archiver ()
 {
     return new ArjArchiver ();
 }
 
-//=============================================================================================================//
-//=============================================================================================================//
-//=============================================================================================================//
+
+
+
 
 ArjArchiver::ArjArchiver ()
 {
@@ -79,7 +79,7 @@ ArjArchiver::ArjArchiver ()
     }
 }
 
-//=============================================================================================================//
+
 
 status_t ArjArchiver::ReadOpen (FILE *fp)
 {
@@ -154,7 +154,7 @@ status_t ArjArchiver::ReadOpen (FILE *fp)
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t ArjArchiver::Open (entry_ref *ref, BMessage *fileList)
 {
@@ -191,7 +191,7 @@ status_t ArjArchiver::Open (entry_ref *ref, BMessage *fileList)
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t ArjArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger *progress,
                       volatile bool *cancel)
@@ -283,7 +283,7 @@ status_t ArjArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t ArjArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool *cancel)
 {
@@ -333,7 +333,7 @@ status_t ArjArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t ArjArchiver::Test (char *&outputStr, BMessenger *progress, volatile bool *cancel)
 {
@@ -394,7 +394,7 @@ status_t ArjArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t ArjArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress, volatile bool *cancel)
 {
@@ -454,14 +454,14 @@ status_t ArjArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 bool ArjArchiver::SupportsFolderEntity () const
 {
     return false;
 }
 
-//=============================================================================================================//
+
 
 bool ArjArchiver::CanPartiallyOpen () const
 {
@@ -470,7 +470,7 @@ bool ArjArchiver::CanPartiallyOpen () const
     return false;
 }
 
-//=============================================================================================================//
+
 
 status_t ArjArchiver::Add (bool createMode, const char *relativePath, BMessage *message, BMessage *addedPaths,
                       BMessenger *progress, volatile bool *cancel)
@@ -552,7 +552,7 @@ status_t ArjArchiver::Add (bool createMode, const char *relativePath, BMessage *
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t ArjArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progress, volatile bool *cancel)
 {
@@ -600,7 +600,7 @@ status_t ArjArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t ArjArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *progress,
                       volatile bool *cancel)
@@ -671,7 +671,7 @@ status_t ArjArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t ArjArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progress,
                       volatile bool *cancel)
@@ -700,7 +700,7 @@ status_t ArjArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progre
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t ArjArchiver::Create (BPath *archivePath, const char *relPath, BMessage *fileList, BMessage *addedPaths,
                              BMessenger *progress, volatile bool *cancel)
@@ -724,7 +724,7 @@ status_t ArjArchiver::Create (BPath *archivePath, const char *relPath, BMessage 
     return result;
 }
 
-//=============================================================================================================//
+
 
 void ArjArchiver::BuildDefaultMenu ()
 {
@@ -770,7 +770,7 @@ void ArjArchiver::BuildDefaultMenu ()
     m_settingsMenu->AddItem (extractMenu);
 }
 
-//=============================================================================================================//
+
 
 void ArjArchiver::SetMimeType ()
 {
@@ -784,7 +784,7 @@ void ArjArchiver::SetMimeType ()
     }
 }
 
-//=============================================================================================================//
+
 
 bool ArjArchiver::CanAddEmptyFolders () const
 {
@@ -792,7 +792,7 @@ bool ArjArchiver::CanAddEmptyFolders () const
     return false;
 }
 
-//=============================================================================================================//
+
 
 BList ArjArchiver::HiddenColumns (BList *columns) const
 {
@@ -805,4 +805,4 @@ BList ArjArchiver::HiddenColumns (BList *columns) const
     return availList;
 }
 
-//=============================================================================================================//
+

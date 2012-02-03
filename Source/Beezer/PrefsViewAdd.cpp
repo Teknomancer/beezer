@@ -47,7 +47,7 @@
 
 #define M_WARN               'warn'
 
-//=============================================================================================================//
+
 
 PrefsViewAdd::PrefsViewAdd (BRect frame)
     : PrefsView (frame, str (S_PREFS_TITLE_ADD), str (S_PREFS_DESC_ADD))
@@ -56,7 +56,7 @@ PrefsViewAdd::PrefsViewAdd (BRect frame)
     Render();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewAdd::Render ()
 {
@@ -110,7 +110,7 @@ void PrefsViewAdd::Render ()
     AddRevertButton();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewAdd::AttachedToWindow ()
 {
@@ -118,7 +118,7 @@ void PrefsViewAdd::AttachedToWindow ()
     return PrefsView::AttachedToWindow();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewAdd::Save ()
 {
@@ -130,7 +130,7 @@ void PrefsViewAdd::Save ()
     _prefs_state.WritePrefs();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewAdd::Load ()
 {
@@ -150,7 +150,7 @@ void PrefsViewAdd::Load ()
     m_dropChk->SetValue (_prefs_add.FindBoolDef (kPfConfirmDropAdd, true));
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewAdd::MessageReceived (BMessage *message)
 {
@@ -168,11 +168,11 @@ void PrefsViewAdd::MessageReceived (BMessage *message)
     }
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewAdd::ToggleMBView (bool enable)
 {
     m_mbView->SetEnabled (enable);
 }
 
-//=============================================================================================================//
+

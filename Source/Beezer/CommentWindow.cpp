@@ -46,9 +46,6 @@
 #include "StaticBitmapView.h"
 #include "UIConstants.h"
 
-#include "BetterScrollView.h"
-
-//=============================================================================================================//
 
 CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, const char *commentText,
                   BFont *displayFont)
@@ -109,8 +106,8 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
                       bounds.bottom - 2 * K_MARGIN - K_BUTTON_HEIGHT - B_H_SCROLL_BAR_HEIGHT),
                       "CommentWindow:TextView", BRect (2, 2, 100000, 0), B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
 
-    BetterScrollView *scrollView = new BetterScrollView ("CommentWindow:ScrollView", m_textView,
-                                B_FOLLOW_ALL_SIDES,    B_WILL_DRAW, true, true, true, B_PLAIN_BORDER);
+    BScrollView *scrollView = new BScrollView ("CommentWindow:ScrollView", m_textView,
+                                B_FOLLOW_ALL_SIDES, B_WILL_DRAW, true, true, B_PLAIN_BORDER);
     m_backView->AddChild (scrollView);
 
     m_textView->SetWordWrap (false);
@@ -167,7 +164,6 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
     Show();
 }
 
-//=============================================================================================================//
 
 bool CommentWindow::QuitRequested ()
 {
@@ -177,7 +173,6 @@ bool CommentWindow::QuitRequested ()
     return BWindow::QuitRequested();
 }
 
-//=============================================================================================================//
 
 void CommentWindow::MessageReceived (BMessage *message)
 {
@@ -201,5 +196,3 @@ void CommentWindow::MessageReceived (BMessage *message)
            break;
     }
 }
-
-//=============================================================================================================//

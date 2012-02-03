@@ -49,16 +49,16 @@
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
 
-//=============================================================================================================//
+
 
 Archiver *load_archiver ()
 {
     return new GZipArchiver ();
 }
 
-//=============================================================================================================//
-//=============================================================================================================//
-//=============================================================================================================//
+
+
+
 
 GZipArchiver::GZipArchiver ()
     : TarArchiver (true)
@@ -81,7 +81,7 @@ GZipArchiver::GZipArchiver ()
     }
 }
 
-//=============================================================================================================//
+
 
 status_t GZipArchiver::ReadOpen (FILE *fp)
 {
@@ -133,7 +133,7 @@ status_t GZipArchiver::ReadOpen (FILE *fp)
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t GZipArchiver::Open (entry_ref *ref, BMessage *fileList)
 {
@@ -218,7 +218,7 @@ status_t GZipArchiver::Open (entry_ref *ref, BMessage *fileList)
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t GZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger *progress,
                       volatile bool *cancel)
@@ -256,7 +256,7 @@ status_t GZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMesseng
     }
 }
 
-//=============================================================================================================//
+
 
 status_t GZipArchiver::Test (char *&outputStr, BMessenger *progress, volatile bool *cancel)
 {
@@ -304,7 +304,7 @@ status_t GZipArchiver::Test (char *&outputStr, BMessenger *progress, volatile bo
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t GZipArchiver::Add (bool createMode, const char *relativePath, BMessage *message, BMessage *addedPaths,
                       BMessenger *progress, volatile bool *cancel)
@@ -322,7 +322,7 @@ status_t GZipArchiver::Add (bool createMode, const char *relativePath, BMessage 
         return BZR_NOT_SUPPORTED;
 }
 
-//=============================================================================================================//
+
 
 status_t GZipArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *progress,
                       volatile bool *cancel)
@@ -340,7 +340,7 @@ status_t GZipArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *
         return BZR_NOT_SUPPORTED;
 }
 
-//=============================================================================================================//
+
 
 status_t GZipArchiver::Create (BPath *archivePath, const char *relPath, BMessage *fileList, BMessage *addedPaths,
                              BMessenger *progress, volatile bool *cancel)
@@ -367,14 +367,14 @@ status_t GZipArchiver::Create (BPath *archivePath, const char *relPath, BMessage
     return result;
 }
 
-//=============================================================================================================//
+
 
 bool GZipArchiver::NeedsTempDirectory () const
 {
     return true;
 }
 
-//=============================================================================================================//
+
 
 void GZipArchiver::BuildDefaultMenu ()
 {
@@ -401,7 +401,7 @@ void GZipArchiver::BuildDefaultMenu ()
     m_settingsMenu->AddItem (ratioMenu);
 }
 
-//=============================================================================================================//
+
 
 BString GZipArchiver::OutputFileName (const char *fullFileName) const
 {
@@ -428,7 +428,7 @@ BString GZipArchiver::OutputFileName (const char *fullFileName) const
     return outputFileName;
 }
 
-//=============================================================================================================//
+
 
 BList GZipArchiver::HiddenColumns (BList *columns) const
 {
@@ -441,7 +441,7 @@ BList GZipArchiver::HiddenColumns (BList *columns) const
     }
 }
 
-//=============================================================================================================//
+
 
 void GZipArchiver::CompressFromTemp ()
 {
@@ -460,7 +460,7 @@ void GZipArchiver::CompressFromTemp ()
     m_pipeMgr.Pipe ();
 }
 
-//=============================================================================================================//
+
 
 BString GZipArchiver::InitTarFilePath (char *leaf)
 {
@@ -470,7 +470,7 @@ BString GZipArchiver::InitTarFilePath (char *leaf)
     return destPath;
 }
 
-//=============================================================================================================//
+
 
 void GZipArchiver::SendProgressMessage (BMessenger *progress) const
 {
@@ -479,7 +479,7 @@ void GZipArchiver::SendProgressMessage (BMessenger *progress) const
     progress->SendMessage (&updateMessage, &reply);
 }
 
-//=============================================================================================================//
+
 
 bool GZipArchiver::CanAddFiles() const
 {
@@ -489,4 +489,4 @@ bool GZipArchiver::CanAddFiles() const
         return TarArchiver::CanAddFiles();
 }
 
-//=============================================================================================================//
+

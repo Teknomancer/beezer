@@ -49,16 +49,16 @@
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
 
-//=============================================================================================================//
+
 
 Archiver *load_archiver ()
 {
     return new ZipArchiver ();
 }
 
-//=============================================================================================================//
-//=============================================================================================================//
-//=============================================================================================================//
+
+
+
 
 ZipArchiver::ZipArchiver ()
 {
@@ -87,7 +87,7 @@ ZipArchiver::ZipArchiver ()
     }
 }
 
-//=============================================================================================================//
+
 
 status_t ZipArchiver::ReadOpen (FILE *fp)
 {
@@ -140,7 +140,7 @@ status_t ZipArchiver::ReadOpen (FILE *fp)
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t ZipArchiver::Open (entry_ref *ref, BMessage *fileList)
 {
@@ -189,7 +189,7 @@ status_t ZipArchiver::Open (entry_ref *ref, BMessage *fileList)
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t ZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger *progress,
                       volatile bool *cancel)
@@ -287,7 +287,7 @@ status_t ZipArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t ZipArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool *cancel)
 {
@@ -321,7 +321,7 @@ status_t ZipArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t ZipArchiver::Test (char *&outputStr, BMessenger *progress, volatile bool *cancel)
 {
@@ -361,7 +361,7 @@ status_t ZipArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t ZipArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress, volatile bool *cancel)
 {
@@ -448,7 +448,7 @@ status_t ZipArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t ZipArchiver::GetComment (char *&commentStr)
 {
@@ -488,7 +488,7 @@ status_t ZipArchiver::GetComment (char *&commentStr)
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t ZipArchiver::SetComment (char *commentStr, const char *tempDirPath)
 {
@@ -546,7 +546,7 @@ status_t ZipArchiver::SetComment (char *commentStr, const char *tempDirPath)
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 bool ZipArchiver::SupportsComment () const
 {
@@ -555,7 +555,7 @@ bool ZipArchiver::SupportsComment () const
     return strlen (m_zipnotePath) > 0 ? true : false;
 }
 
-//=============================================================================================================//
+
 
 bool ZipArchiver::SupportsFolderEntity () const
 {
@@ -564,7 +564,7 @@ bool ZipArchiver::SupportsFolderEntity () const
     return false;
 }
 
-//=============================================================================================================//
+
 
 status_t ZipArchiver::Add (bool createMode, const char *relativePath, BMessage *message, BMessage *addedPaths,
                       BMessenger *progress, volatile bool *cancel)
@@ -638,7 +638,7 @@ status_t ZipArchiver::Add (bool createMode, const char *relativePath, BMessage *
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t ZipArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progress, volatile bool *cancel)
 {
@@ -682,7 +682,7 @@ status_t ZipArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t ZipArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *progress,
                       volatile bool *cancel)
@@ -759,7 +759,7 @@ status_t ZipArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t ZipArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progress,
                       volatile bool *cancel)
@@ -792,7 +792,7 @@ status_t ZipArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progre
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t ZipArchiver::Create (BPath *archivePath, const char *relPath, BMessage *fileList, BMessage *addedPaths,
                              BMessenger *progress, volatile bool *cancel)
@@ -814,7 +814,7 @@ status_t ZipArchiver::Create (BPath *archivePath, const char *relPath, BMessage 
     return result;
 }
 
-//=============================================================================================================//
+
 
 void ZipArchiver::BuildDefaultMenu ()
 {
@@ -884,4 +884,4 @@ void ZipArchiver::BuildDefaultMenu ()
     m_settingsMenu->AddItem (extractMenu);
 }
 
-//=============================================================================================================//
+

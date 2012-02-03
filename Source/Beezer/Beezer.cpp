@@ -72,7 +72,7 @@
 #include "UIConstants.h"
 #include "WindowMgr.h"
 
-//=============================================================================================================//
+
 
 Beezer::Beezer ()
     : BApplication (K_APP_SIGNATURE),
@@ -138,7 +138,7 @@ Beezer::Beezer ()
     Run();
 }
 
-//=============================================================================================================//
+
 
 Beezer::~Beezer ()
 {
@@ -171,7 +171,7 @@ Beezer::~Beezer ()
         free ((char*)m_arkExtensions.ItemAtFast(i));
 }
 
-//=============================================================================================================//
+
 
 void Beezer::Quit()
 {
@@ -182,7 +182,7 @@ void Beezer::Quit()
     return BApplication::Quit();
 }
 
-//=============================================================================================================//
+
 
 void Beezer::ReadyToRun()
 {
@@ -192,7 +192,7 @@ void Beezer::ReadyToRun()
     return BApplication::ReadyToRun();
 }
 
-//=============================================================================================================//
+
 
 void Beezer::MessageReceived (BMessage *message)
 {
@@ -482,7 +482,7 @@ void Beezer::MessageReceived (BMessage *message)
     }
 }
 
-//=============================================================================================================//
+
 
 MainWindow* Beezer::RegisterWindow (entry_ref *ref)
 {
@@ -504,7 +504,7 @@ MainWindow* Beezer::RegisterWindow (entry_ref *ref)
     return CreateWindow (ref);
 }
 
-//=============================================================================================================//
+
 
 void Beezer::UnRegisterWindow (bool closeApp)
 {
@@ -532,7 +532,7 @@ void Beezer::UnRegisterWindow (bool closeApp)
     }
 }
 
-//=============================================================================================================//
+
 
 void Beezer::RefsReceived (BMessage *message)
 {
@@ -553,7 +553,7 @@ void Beezer::RefsReceived (BMessage *message)
         }
 }
 
-//=============================================================================================================//
+
 
 void Beezer::CreateFilePanel (BFilePanel *&panel, file_panel_mode mode)
 {
@@ -561,7 +561,7 @@ void Beezer::CreateFilePanel (BFilePanel *&panel, file_panel_mode mode)
         panel = new BFilePanel (mode, &be_app_messenger, NULL, B_FILE_NODE, true);
 }
 
-//=============================================================================================================//
+
 
 void Beezer::DeleteFilePanel (BFilePanel *&panel)
 {
@@ -571,7 +571,7 @@ void Beezer::DeleteFilePanel (BFilePanel *&panel)
     panel = NULL;
 }
 
-//=============================================================================================================//
+
 
 MainWindow* Beezer::WindowForRef (entry_ref *ref)
 {
@@ -591,7 +591,7 @@ MainWindow* Beezer::WindowForRef (entry_ref *ref)
     return NULL;
 }
 
-//=============================================================================================================//
+
 
 MainWindow* Beezer::CreateWindow (entry_ref *ref)
 {
@@ -641,7 +641,7 @@ MainWindow* Beezer::CreateWindow (entry_ref *ref)
     return wndPtr;
 }
 
-//=============================================================================================================//
+
 
 inline void Beezer::InitPaths ()
 {
@@ -675,7 +675,7 @@ inline void Beezer::InitPaths ()
         m_stubDir.SetTo (stubDirPath.Path());
 }
 
-//=============================================================================================================//
+
 
 void Beezer::InitPrefs ()
 {
@@ -696,7 +696,7 @@ void Beezer::InitPrefs ()
     _prefs_recent_splitdirs.Init (dir, K_SETTINGS_RECENT_SPLIT_DIRS);
 }
 
-//=============================================================================================================//
+
 
 const char* Beezer::CompileTimeString (bool writeToResIfNeeded) const
 {
@@ -797,7 +797,7 @@ const char* Beezer::CompileTimeString (bool writeToResIfNeeded) const
     return strdup (compileTimeStr.String());
 }
 
-//=============================================================================================================//
+
 
 void Beezer::WriteToCTFile (BFile *ctFile, BString *compileTimeStr) const
 {
@@ -808,7 +808,7 @@ void Beezer::WriteToCTFile (BFile *ctFile, BString *compileTimeStr) const
     ctFile->Write ((void*)compileTimeStr->String(), compileTimeStr->Length());
 }
 
-//=============================================================================================================//
+
 
 void Beezer::ShowCreateFilePanel ()
 {
@@ -867,7 +867,7 @@ void Beezer::ShowCreateFilePanel ()
     m_createFilePanel->Show();
 }
 
-//=============================================================================================================//
+
 
 int8 Beezer::RegisterFileTypes () const
 {
@@ -956,7 +956,7 @@ int8 Beezer::RegisterFileTypes () const
         return -1L;
 }
 
-//=============================================================================================================//
+
 
 BMenu* Beezer::BuildToolsMenu () const
 {
@@ -968,7 +968,7 @@ BMenu* Beezer::BuildToolsMenu () const
     return new BMenu (&toolsMenuMsg);
 }
 
-//=============================================================================================================//
+
 
 BPopUpMenu* Beezer::BuildToolsPopUpMenu () const
 {
@@ -980,9 +980,9 @@ BPopUpMenu* Beezer::BuildToolsPopUpMenu () const
     return new BPopUpMenu (&toolsMenuMsg);
 }
 
-//=============================================================================================================//
-//=============================================================================================================//
-//=============================================================================================================//
+
+
+
 
 int main ()
 {
@@ -991,4 +991,4 @@ int main ()
     return B_OK;
 }
 
-//=============================================================================================================//
+

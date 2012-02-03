@@ -40,7 +40,7 @@
 #include "LangStrings.h"
 #include "UIConstants.h"
 
-//=============================================================================================================//
+
 
 MarqueeView::MarqueeView (BRect frame, const char *name, BRect textRect, uint32 resizeMask,
         uint32 flags)
@@ -50,7 +50,7 @@ MarqueeView::MarqueeView (BRect frame, const char *name, BRect textRect, uint32 
     m_rightEdge = Bounds().right;
 }
 
-//=============================================================================================================//
+
 
 MarqueeView::MarqueeView (BRect frame, const char *name, BRect textRect, const BFont *initialFont,
         const rgb_color *initialColor, uint32 resizeMask, uint32 flags)
@@ -60,7 +60,7 @@ MarqueeView::MarqueeView (BRect frame, const char *name, BRect textRect, const B
     m_rightEdge = Bounds().right;
 }
 
-//=============================================================================================================//
+
 
 void MarqueeView::ScrollTo (float x, float y)
 {
@@ -69,7 +69,7 @@ void MarqueeView::ScrollTo (float x, float y)
     return BTextView::ScrollTo (x, y);
 }
 
-//=============================================================================================================//
+
 
 void MarqueeView::ScrollBy (float dh, float dv)
 {
@@ -86,9 +86,9 @@ void MarqueeView::ScrollBy (float dh, float dv)
     return BTextView::ScrollBy (dh, dv);
 }
 
-//=============================================================================================================//
-//=============================================================================================================//
-//=============================================================================================================//
+
+
+
 
 AboutWindow::AboutWindow (const char *compileTimeStr)
     : BWindow (BRect (0, 0, 319, 374), str (S_ABOUT_TITLE), B_MODAL_WINDOW,
@@ -215,7 +215,7 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
     resume_thread (m_scrollThreadID);
 }
 
-//=============================================================================================================//
+
 
 void AboutWindow::Quit ()
 {
@@ -223,7 +223,7 @@ void AboutWindow::Quit ()
     return BWindow::Quit();
 }
 
-//=============================================================================================================//
+
 
 void AboutWindow::DispatchMessage (BMessage *message, BHandler *handler)
 {
@@ -241,7 +241,7 @@ void AboutWindow::DispatchMessage (BMessage *message, BHandler *handler)
     BWindow::DispatchMessage (message, handler);
 }
 
-//=============================================================================================================//
+
 
 int32 AboutWindow::_scroller (void *data)
 {
@@ -283,4 +283,4 @@ int32 AboutWindow::_scroller (void *data)
     return 0;
 }
 
-//=============================================================================================================//
+

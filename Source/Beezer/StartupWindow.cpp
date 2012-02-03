@@ -53,7 +53,7 @@
 #include "StartupWindow.h"
 #include "UIConstants.h"
 
-//=============================================================================================================//
+
 
 StartupWindow::StartupWindow (RecentMgr *recentMgr, bool startup)
     : BWindow (BRect (10, 10, 0, 100), K_APP_TITLE, B_TITLED_WINDOW,
@@ -180,7 +180,7 @@ StartupWindow::StartupWindow (RecentMgr *recentMgr, bool startup)
         be_app_messenger.SendMessage (M_FILE_OPEN);
 }
 
-//=============================================================================================================//
+
 
 bool StartupWindow::QuitRequested()
 {
@@ -190,7 +190,7 @@ bool StartupWindow::QuitRequested()
     return BWindow::QuitRequested();
 }
 
-//=============================================================================================================//
+
 
 void StartupWindow::Quit()
 {
@@ -198,7 +198,7 @@ void StartupWindow::Quit()
     return BWindow::Quit();
 }
 
-//=============================================================================================================//
+
 
 void StartupWindow::MessageReceived (BMessage *message)
 {
@@ -277,4 +277,4 @@ void StartupWindow::MessageReceived (BMessage *message)
     }
 }
 
-//=============================================================================================================//
+

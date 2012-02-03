@@ -36,7 +36,7 @@
 
 #include "InputAlert.h"
 
-//=============================================================================================================//
+
 
 InputAlert::InputAlert (const char *title, const char *text, const char *initialText, bool hideTyping,
                const char *button1, const char *button2, const char *button3, button_width width,
@@ -46,7 +46,7 @@ InputAlert::InputAlert (const char *title, const char *text, const char *initial
     InitInputAlert (title, text, initialText, hideTyping);
 }
 
-//=============================================================================================================//
+
 
 InputAlert::InputAlert (const char *title, const char *text, const char *initialText, bool hideTyping,
                const char *button1, const char *button2, const char *button3, button_width width,
@@ -56,7 +56,7 @@ InputAlert::InputAlert (const char *title, const char *text, const char *initial
     InitInputAlert (title, text, initialText, hideTyping);
 }
 
-//=============================================================================================================//
+
 
 void InputAlert::InitInputAlert (const char *title, const char *label, const char *initialText, bool hideTyping)
 {
@@ -122,7 +122,7 @@ void InputAlert::InitInputAlert (const char *title, const char *label, const cha
     m_inputBox->MakeFocus (true);
 }
 
-//=============================================================================================================//
+
 
 BMessage InputAlert::GetInput (BWindow *window)
 {
@@ -148,7 +148,7 @@ BMessage InputAlert::GetInput (BWindow *window)
     return msg;
 }
 
-//=============================================================================================================//
+
 
 void InputAlert::MessageReceived (BMessage *message)
 {
@@ -182,7 +182,7 @@ void InputAlert::MessageReceived (BMessage *message)
     }
 }
 
-//=============================================================================================================//
+
 
 BTextControl* InputAlert::TextControl () const
 {
@@ -190,4 +190,4 @@ BTextControl* InputAlert::TextControl () const
     return m_inputBox;
 }
 
-//=============================================================================================================//
+

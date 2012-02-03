@@ -46,7 +46,7 @@
 
 typedef struct stat StatStruct;
 
-//=============================================================================================================//
+
 
 status_t JoinFile (const char *firstChunkPathStr, const char *outputDir, const char *separator,
            BMessenger *progress, volatile bool *cancel)
@@ -174,7 +174,7 @@ status_t JoinFile (const char *firstChunkPathStr, const char *outputDir, const c
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 void JoinCopyAttributes (BNode *srcNode, BNode *destNode, void *buffer, size_t bufSize)
 {
@@ -205,7 +205,7 @@ void JoinCopyAttributes (BNode *srcNode, BNode *destNode, void *buffer, size_t b
     }
 }
 
-//=============================================================================================================//
+
 
 void FindChunks (const char *firstChunkPathStr, const char *separator, int32 &fileCount,
            off_t &totalSize, volatile bool *cancel)
@@ -252,4 +252,4 @@ void FindChunks (const char *firstChunkPathStr, const char *separator, int32 &fi
     }
 }
 
-//=============================================================================================================//
+

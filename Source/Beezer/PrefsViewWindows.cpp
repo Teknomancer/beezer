@@ -39,7 +39,7 @@
 #include "PrefsViewWindows.h"
 #include "UIConstants.h"
 
-//=============================================================================================================//
+
 
 PrefsViewWindows::PrefsViewWindows (BRect frame)
     : PrefsView (frame, str (S_PREFS_TITLE_WINDOWS), str (S_PREFS_DESC_WINDOWS))
@@ -48,7 +48,7 @@ PrefsViewWindows::PrefsViewWindows (BRect frame)
     Render();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewWindows::Render ()
 {
@@ -85,7 +85,7 @@ void PrefsViewWindows::Render ()
     AddRevertButton();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewWindows::Save ()
 {
@@ -98,7 +98,7 @@ void PrefsViewWindows::Save ()
     _prefs_windows.WritePrefs();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewWindows::Load ()
 {
@@ -110,4 +110,4 @@ void PrefsViewWindows::Load ()
     m_prefsChk->SetValue (_prefs_windows.FindBoolDef (kPfPrefsWnd, true));
 }
 
-//=============================================================================================================//
+

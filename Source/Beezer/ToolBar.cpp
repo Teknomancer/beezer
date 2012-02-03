@@ -38,7 +38,7 @@
 #include "ToolBar.h"
 #include "UIConstants.h"
 
-//=============================================================================================================//
+
 
 ToolBar::ToolBar (BRect frame, const char *name, rgb_color backColor)
     : BView (frame, name, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_WILL_DRAW),
@@ -55,13 +55,13 @@ ToolBar::ToolBar (BRect frame, const char *name, rgb_color backColor)
 {
 }
 
-//=============================================================================================================//
+
 
 ToolBar::~ToolBar ()
 {
 }
 
-//=============================================================================================================//
+
 
 void ToolBar::AttachedToWindow ()
 {
@@ -73,7 +73,7 @@ void ToolBar::AttachedToWindow ()
     m_darkEdge3 = tint_color (ViewColor(), B_DARKEN_3_TINT);
 }
 
-//=============================================================================================================//
+
 
 void ToolBar::AddItem (ImageButton *button)
 {
@@ -87,7 +87,7 @@ void ToolBar::AddItem (ImageButton *button)
     }
 }
 
-//=============================================================================================================//
+
 
 void ToolBar::Draw (BRect updateRect)
 {
@@ -102,7 +102,7 @@ void ToolBar::Draw (BRect updateRect)
     _inherited::Draw (updateRect);
 }
 
-//=============================================================================================================//
+
 
 inline void ToolBar::RenderEdges ()
 {
@@ -132,7 +132,7 @@ inline void ToolBar::RenderEdges ()
     EndLineArray();
 }
 
-//=============================================================================================================//
+
 
 float ToolBar::AddSeparatorItem (bool finalSeparator)
 {
@@ -186,7 +186,7 @@ float ToolBar::AddSeparatorItem (bool finalSeparator)
     return xPt;        // Return the floating-point x co-ordinate
 }
 
-//=============================================================================================================//
+
 
 BRect ToolBar::InnerFrame ()
 {
@@ -194,7 +194,7 @@ BRect ToolBar::InnerFrame ()
     return BRect (bounds.left, bounds.top, bounds.left + m_ptToDraw.x, bounds.bottom);
 }
 
-//=============================================================================================================//
+
 
 void ToolBar::MouseDown (BPoint point)
 {
@@ -210,7 +210,7 @@ void ToolBar::MouseDown (BPoint point)
     _inherited::MouseDown (point);
 }
 
-//=============================================================================================================//
+
 
 void ToolBar::Toggle ()
 {
@@ -249,14 +249,14 @@ void ToolBar::Toggle ()
     Window()->PostMessage (&notifierMessage);
 }
 
-//=============================================================================================================//
+
 
 bool ToolBar::IsShown () const
 {
     return !m_isHidden;
 }
 
-//=============================================================================================================//
+
 
 void ToolBar::SetEnabled (bool enable)
 {
@@ -269,14 +269,14 @@ void ToolBar::SetEnabled (bool enable)
         ((ImageButton*)m_buttonList.ItemAtFast(i))->SetEnabled (m_isEnabled);
 }
 
-//=============================================================================================================//
+
 
 bool ToolBar::IsEnabled () const
 {
     return m_isEnabled;
 }
 
-//=============================================================================================================//
+
 
 float ToolBar::Height () const
 {
@@ -286,7 +286,7 @@ float ToolBar::Height () const
         return Frame().Height();
 }
 
-//=============================================================================================================//
+
 
 void ToolBar::Redraw ()
 {
@@ -309,4 +309,4 @@ void ToolBar::Redraw ()
     Invalidate ();
 }
 
-//=============================================================================================================//
+

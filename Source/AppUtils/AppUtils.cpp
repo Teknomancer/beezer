@@ -48,7 +48,7 @@
 // Global object declares
 BLocker _apputils_locker ("_app_utils_lock", true);
 
-//=============================================================================================================//
+
 
 BString StringFromBytes (int64 v)
 {
@@ -78,7 +78,7 @@ BString StringFromBytes (int64 v)
     return str;
 }
 
-//=============================================================================================================//
+
 
 int32 LastOccurrence (const char *str, char whatChar)
 {
@@ -95,7 +95,7 @@ int32 LastOccurrence (const char *str, char whatChar)
     return count;
 }
 
-//=============================================================================================================//
+
 
 int32 CountCharsInFront (char *str, char whatChar)
 {
@@ -107,7 +107,7 @@ int32 CountCharsInFront (char *str, char whatChar)
     return count;
 }
 
-//=============================================================================================================//
+
 
 bool StrEndsWith (char *str, char *end)
 {
@@ -119,7 +119,7 @@ bool StrEndsWith (char *str, char *end)
         return false;
 }
 
-//=============================================================================================================//
+
 
 const char* FinalPathComponent (const char *path)
 {
@@ -149,7 +149,7 @@ const char* FinalPathComponent (const char *path)
     return leafStr;
 }
 
-//=============================================================================================================//
+
 
 const char* LeafFromPath (const char *path)
 {
@@ -166,7 +166,7 @@ const char* LeafFromPath (const char *path)
     return leafStr;
 }
 
-//=============================================================================================================//
+
 
 char *ParentPath (const char *pathStr, bool truncateSlash)
 {
@@ -189,7 +189,7 @@ char *ParentPath (const char *pathStr, bool truncateSlash)
     return parent;
 }
 
-//=============================================================================================================//
+
 
 char *Extension (const char *fileName, int extLen)
 {
@@ -219,7 +219,7 @@ char *Extension (const char *fileName, int extLen)
     return m;
 }
 
-//=============================================================================================================//
+
 
 BString SupressWildcards (const char *str)
 {
@@ -229,7 +229,7 @@ BString SupressWildcards (const char *str)
     return s;
 }
 
-//=============================================================================================================//
+
 
 BString SupressWildcardSet (const char *str)
 {
@@ -238,4 +238,4 @@ BString SupressWildcardSet (const char *str)
     return s;
 }
 
-//=============================================================================================================//
+

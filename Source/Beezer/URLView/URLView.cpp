@@ -35,7 +35,7 @@
 
 #include "URLView.h"
 
-//=============================================================================================================//
+
 
 URLView::URLView (BRect frame, const char *name, const char *label, const char *url, uint32 resizingMode,
                   uint32 flags)
@@ -79,7 +79,7 @@ URLView::URLView (BRect frame, const char *name, const char *label, const char *
     m_attributes = new BList(14);
 }
 
-//=============================================================================================================//
+
 
 URLView::~URLView ()
 {
@@ -98,7 +98,7 @@ URLView::~URLView ()
     delete m_attributes;
 }
 
-//=============================================================================================================//
+
 
 void URLView::AttachedToWindow ()
 {
@@ -116,7 +116,7 @@ void URLView::AttachedToWindow ()
     }
 }
 
-//=============================================================================================================//
+
 
 void URLView::Draw (BRect updateRect)
 {
@@ -161,7 +161,7 @@ void URLView::Draw (BRect updateRect)
     DrawString (Text());
 }
 
-//=============================================================================================================//
+
 
 void URLView::MessageReceived (BMessage *message)
 {
@@ -191,7 +191,7 @@ void URLView::MessageReceived (BMessage *message)
     }
 }
 
-//=============================================================================================================//
+
 
 void URLView::MouseDown (BPoint point)
 {
@@ -229,7 +229,7 @@ void URLView::MouseDown (BPoint point)
     }
 }
 
-//=============================================================================================================//
+
 
 void URLView::MouseMoved (BPoint point, uint32 transit, const BMessage *message)
 {
@@ -390,7 +390,7 @@ void URLView::MouseMoved (BPoint point, uint32 transit, const BMessage *message)
     }
 }
 
-//=============================================================================================================//
+
 
 void URLView::MouseUp (BPoint point)
 {
@@ -445,7 +445,7 @@ void URLView::MouseUp (BPoint point)
     Redraw();
 }
 
-//=============================================================================================================//
+
 
 void URLView::WindowActivated (bool active)
 {
@@ -461,7 +461,7 @@ void URLView::WindowActivated (bool active)
     }
 }
 
-//=============================================================================================================//
+
 
 void URLView::AddAttribute (const char *name, const char *value)
 {
@@ -473,7 +473,7 @@ void URLView::AddAttribute (const char *name, const char *value)
     m_attributes->AddItem (newPair);
 }
 
-//=============================================================================================================//
+
 
 bool URLView::IsEnabled ()
 {
@@ -481,7 +481,7 @@ bool URLView::IsEnabled ()
     return m_enabled;
 }
 
-//=============================================================================================================//
+
 
 void URLView::SetColor (rgb_color color)
 {
@@ -496,7 +496,7 @@ void URLView::SetColor (rgb_color color)
     }
 }
 
-//=============================================================================================================//
+
 
 void URLView::SetColor (uchar red, uchar green, uchar blue, uchar alpha)
 {
@@ -509,7 +509,7 @@ void URLView::SetColor (uchar red, uchar green, uchar blue, uchar alpha)
     SetColor (color);
 }
 
-//=============================================================================================================//
+
 
 void URLView::SetClickColor (rgb_color color)
 {
@@ -517,7 +517,7 @@ void URLView::SetClickColor (rgb_color color)
     m_clickColor = color;
 }
 
-//=============================================================================================================//
+
 
 void URLView::SetClickColor (uchar red, uchar green, uchar blue, uchar alpha)
 {
@@ -530,7 +530,7 @@ void URLView::SetClickColor (uchar red, uchar green, uchar blue, uchar alpha)
     SetClickColor (color);
 }
 
-//=============================================================================================================//
+
 
 void URLView::SetDisabledColor (rgb_color color)
 {
@@ -541,7 +541,7 @@ void URLView::SetDisabledColor (rgb_color color)
     Window()->Unlock();
 }
 
-//=============================================================================================================//
+
 
 void URLView::SetDisabledColor (uchar red, uchar green, uchar blue, uchar alpha)
 {
@@ -554,7 +554,7 @@ void URLView::SetDisabledColor (uchar red, uchar green, uchar blue, uchar alpha)
     SetDisabledColor (color);
 }
 
-//=============================================================================================================//
+
 
 void URLView::SetDraggable (bool draggable)
 {
@@ -562,7 +562,7 @@ void URLView::SetDraggable (bool draggable)
     m_draggable = draggable;
 }
 
-//=============================================================================================================//
+
 
 void URLView::SetEnabled (bool enabled)
 {
@@ -585,7 +585,7 @@ void URLView::SetEnabled (bool enabled)
     }
 }
 
-//=============================================================================================================//
+
 
 void URLView::SetHoverColor (rgb_color color)
 {
@@ -593,7 +593,7 @@ void URLView::SetHoverColor (rgb_color color)
     m_hoverColor = color;
 }
 
-//=============================================================================================================//
+
 
 void URLView::SetHoverColor (uchar red, uchar green, uchar blue, uchar alpha)
 {
@@ -606,7 +606,7 @@ void URLView::SetHoverColor (uchar red, uchar green, uchar blue, uchar alpha)
     SetHoverColor (color);
 }
 
-//=============================================================================================================//
+
 
 void URLView::SetHoverEnabled (bool hover)
 {
@@ -614,7 +614,7 @@ void URLView::SetHoverEnabled (bool hover)
     m_hoverEnabled = hover;
 }
 
-//=============================================================================================================//
+
 
 void URLView::SetIconSize (icon_size iconSize)
 {
@@ -625,7 +625,7 @@ void URLView::SetIconSize (icon_size iconSize)
         m_iconSize = 32;
 }
 
-//=============================================================================================================//
+
 
 void URLView::SetUnderlineThickness (int thickness)
 {
@@ -633,7 +633,7 @@ void URLView::SetUnderlineThickness (int thickness)
     m_underlineThickness = thickness;
 }
 
-//=============================================================================================================//
+
 
 void URLView::SetURL (const char *url)
 {
@@ -656,7 +656,7 @@ void URLView::SetURL (const char *url)
         SetEnabled (false);
 }
 
-//=============================================================================================================//
+
 
 void URLView::CopyToClipboard ()
 {
@@ -680,7 +680,7 @@ void URLView::CopyToClipboard ()
     }
 }
 
-//=============================================================================================================//
+
 
 void URLView::CreateBookmark (const BString *fullName, const BString *title)
 {
@@ -710,7 +710,7 @@ void URLView::CreateBookmark (const BString *fullName, const BString *title)
     }
 }
 
-//=============================================================================================================//
+
 
 void URLView::CreatePerson (const BString *fullName, const BString *title)
 {
@@ -741,7 +741,7 @@ void URLView::CreatePerson (const BString *fullName, const BString *title)
     }
 }
 
-//=============================================================================================================//
+
 
 BPopUpMenu * URLView::CreatePopupMenu ()
 {
@@ -796,7 +796,7 @@ BPopUpMenu * URLView::CreatePopupMenu ()
     return returnMe;
 }
 
-//=============================================================================================================//
+
 
 void URLView::DoBookmarkDrag ()
 {
@@ -900,7 +900,7 @@ void URLView::DoBookmarkDrag ()
     m_draggedOut = true;
 }
 
-//=============================================================================================================//
+
 
 void URLView::DoPersonDrag()
 {
@@ -998,7 +998,7 @@ void URLView::DoPersonDrag()
     m_draggedOut = true;
 }
 
-//=============================================================================================================//
+
 
 BString URLView::GetImportantURL ()
 {
@@ -1012,7 +1012,7 @@ BString URLView::GetImportantURL ()
     return returnMe;
 }
 
-//=============================================================================================================//
+
 
 BRect URLView::GetTextRect()
 {
@@ -1066,7 +1066,7 @@ BRect URLView::GetTextRect()
     return returnMe;
 }
 
-//=============================================================================================================//
+
 
 BRect URLView::GetURLRect()
 {
@@ -1087,7 +1087,7 @@ BRect URLView::GetURLRect()
                 frame.bottom - 1);
 }
 
-//=============================================================================================================//
+
 
 bool URLView::IsEmailLink ()
 {
@@ -1101,7 +1101,7 @@ bool URLView::IsEmailLink ()
     return false;
 }
 
-//=============================================================================================================//
+
 
 bool URLView::IsFTPLink ()
 {
@@ -1109,7 +1109,7 @@ bool URLView::IsFTPLink ()
     return (m_url->FindFirst ("ftp://") == 0);
 }
 
-//=============================================================================================================//
+
 
 bool URLView::IsHTMLLink ()
 {
@@ -1117,7 +1117,7 @@ bool URLView::IsHTMLLink ()
     return ((m_url->FindFirst ("http://") == 0) || (m_url->FindFirst ("file://") == 0));
 }
 
-//=============================================================================================================//
+
 
 void URLView::LaunchURL ()
 {
@@ -1173,7 +1173,7 @@ void URLView::LaunchURL ()
     // We don't know how to handle anything else.
 }
 
-//=============================================================================================================//
+
 
 void URLView::Redraw ()
 {
@@ -1183,7 +1183,7 @@ void URLView::Redraw ()
     Draw (frame);
 }
 
-//=============================================================================================================//
+
 
 void URLView::WriteAttributes (int fd)
 {
@@ -1196,4 +1196,4 @@ void URLView::WriteAttributes (int fd)
     }
 }
 
-//=============================================================================================================//
+

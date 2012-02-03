@@ -54,21 +54,21 @@ Preferences _prefs_colors,
     _prefs_recent_splitfiles,
     _prefs_recent_splitdirs;
 
-//=============================================================================================================//
+
 
 Preferences::Preferences (const char *dir, const char *file)
 {
     Init (dir, file);
 }
 
-//=============================================================================================================//
+
 
 Preferences::Preferences ()
     : m_prefsPathStr (NULL)
 {
 }
 
-//=============================================================================================================//
+
 
 Preferences::~Preferences ()
 {
@@ -77,7 +77,7 @@ Preferences::~Preferences ()
     FreePathString();
 }
 
-//=============================================================================================================//
+
 
 void Preferences::FreePathString ()
 {
@@ -87,7 +87,7 @@ void Preferences::FreePathString ()
     m_prefsPathStr = NULL;
 }
 
-//=============================================================================================================//
+
 
 void Preferences::Init (const char *dir, const char *file)
 {
@@ -98,7 +98,7 @@ void Preferences::Init (const char *dir, const char *file)
     ReadPrefs();
 }
 
-//=============================================================================================================//
+
 
 void Preferences::SetLocation (const char *path)
 {
@@ -106,14 +106,14 @@ void Preferences::SetLocation (const char *path)
     m_prefsPathStr = strdup (path);
 }
 
-//=============================================================================================================//
+
 
 const char* Preferences::Location () const
 {
     return m_prefsPathStr;
 }
 
-//=============================================================================================================//
+
 
 void Preferences::WritePrefs ()
 {
@@ -135,7 +135,7 @@ void Preferences::WritePrefs ()
     }
 }
 
-//=============================================================================================================//
+
 
 void Preferences::ReadPrefs ()
 {
@@ -147,7 +147,7 @@ void Preferences::ReadPrefs ()
     }
 }
 
-//=============================================================================================================//
+
 
 status_t Preferences::SetBool (const char *name, bool b)
 {
@@ -157,7 +157,7 @@ status_t Preferences::SetBool (const char *name, bool b)
     return AddBool (name, b);
 }
 
-//=============================================================================================================//
+
 
 status_t Preferences::SetInt8 (const char *name, int8 i)
 {
@@ -167,7 +167,7 @@ status_t Preferences::SetInt8 (const char *name, int8 i)
     return AddInt8 (name, i);
 }
 
-//=============================================================================================================//
+
 
 status_t Preferences::SetInt16 (const char *name, int16 i)
 {
@@ -177,7 +177,7 @@ status_t Preferences::SetInt16 (const char *name, int16 i)
     return AddInt16 (name, i);
 }
 
-//=============================================================================================================//
+
 
 status_t Preferences::SetInt32 (const char *name, int32 i)
 {
@@ -187,7 +187,7 @@ status_t Preferences::SetInt32 (const char *name, int32 i)
     return AddInt32 (name, i);
 }
 
-//=============================================================================================================//
+
 
 status_t Preferences::SetInt64 (const char *name, int64 i)
 {
@@ -197,7 +197,7 @@ status_t Preferences::SetInt64 (const char *name, int64 i)
     return AddInt64 (name, i);
 }
 
-//=============================================================================================================//
+
 
 status_t Preferences::SetFloat (const char *name, float f)
 {
@@ -207,7 +207,7 @@ status_t Preferences::SetFloat (const char *name, float f)
     return AddFloat(name, f);
 }
 
-//=============================================================================================================//
+
 
 status_t Preferences::SetDouble (const char *name, double f)
 {
@@ -217,7 +217,7 @@ status_t Preferences::SetDouble (const char *name, double f)
     return AddDouble (name, f);
 }
 
-//=============================================================================================================//
+
 
 status_t Preferences::SetString (const char *name, const char *s)
 {
@@ -227,7 +227,7 @@ status_t Preferences::SetString (const char *name, const char *s)
     return AddString (name, s);
 }
 
-//=============================================================================================================//
+
 
 status_t Preferences::SetPoint (const char *name, BPoint p)
 {
@@ -237,7 +237,7 @@ status_t Preferences::SetPoint (const char *name, BPoint p)
     return AddPoint (name, p);
 }
 
-//=============================================================================================================//
+
 
 status_t Preferences::SetRect (const char *name, BRect r)
 {
@@ -247,7 +247,7 @@ status_t Preferences::SetRect (const char *name, BRect r)
     return AddRect (name, r);
 }
 
-//=============================================================================================================//
+
 
 status_t Preferences::SetMessage (const char *name, const BMessage *message)
 {
@@ -257,7 +257,7 @@ status_t Preferences::SetMessage (const char *name, const BMessage *message)
     return AddMessage (name, message);
 }
 
-//=============================================================================================================//
+
 
 status_t Preferences::SetColor (const char *name, rgb_color &col)
 {
@@ -266,7 +266,7 @@ status_t Preferences::SetColor (const char *name, rgb_color &col)
                | (((uint32)col.blue) << 8)    | (((uint32)col.alpha) << 0));
 }
 
-//=============================================================================================================//
+
 
 status_t Preferences::SetFlat (const char *name, const BFlattenable *obj)
 {
@@ -276,7 +276,7 @@ status_t Preferences::SetFlat (const char *name, const BFlattenable *obj)
     return AddFlat (name, (BFlattenable*) obj);
 }
 
-//=============================================================================================================//
+
 
 bool Preferences::FindBoolDef (const char *name, bool defaultValue)
 {
@@ -288,7 +288,7 @@ bool Preferences::FindBoolDef (const char *name, bool defaultValue)
         return defaultValue;
 }
 
-//=============================================================================================================//
+
 
 int8 Preferences::FindInt8Def (const char *name, int8 defaultValue)
 {
@@ -300,7 +300,7 @@ int8 Preferences::FindInt8Def (const char *name, int8 defaultValue)
         return defaultValue;
 }
 
-//=============================================================================================================//
+
 
 int16 Preferences::FindInt16Def (const char *name, int16 defaultValue)
 {
@@ -312,7 +312,7 @@ int16 Preferences::FindInt16Def (const char *name, int16 defaultValue)
         return defaultValue;
 }
 
-//=============================================================================================================//
+
 
 rgb_color Preferences::FindColorDef (const char *name, rgb_color defaultValue)
 {
@@ -332,4 +332,4 @@ rgb_color Preferences::FindColorDef (const char *name, rgb_color defaultValue)
     return retCol;
 }
 
-//=============================================================================================================//
+

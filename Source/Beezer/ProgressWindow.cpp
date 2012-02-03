@@ -47,7 +47,7 @@
 #include "StaticBitmapView.h"
 #include "UIConstants.h"
 
-//=============================================================================================================//
+
 
 ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
                   BMessenger *&messenger, volatile bool *&cancel)
@@ -176,14 +176,14 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
     Show();
 }
 
-//=============================================================================================================//
+
 
 ProgressWindow::~ProgressWindow ()
 {
     delete m_messenger;
 }
 
-//=============================================================================================================//
+
 
 void ProgressWindow::MessageReceived (BMessage *message)
 {
@@ -243,4 +243,4 @@ void ProgressWindow::MessageReceived (BMessage *message)
     }
 }
 
-//=============================================================================================================//
+

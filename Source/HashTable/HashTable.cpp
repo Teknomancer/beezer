@@ -32,7 +32,7 @@
 #include "HashTable.h"
 #include "ListEntry.h"
 
-//=============================================================================================================//
+
 
 HashEntry::HashEntry ()
 {
@@ -42,7 +42,7 @@ HashEntry::HashEntry ()
     m_next = NULL;
 }
 
-//=============================================================================================================//
+
 
 HashEntry::~HashEntry ()
 {
@@ -51,9 +51,9 @@ HashEntry::~HashEntry ()
     // m_clvItem will be deleted by MainWindow
 }
 
-//=============================================================================================================//
-//=============================================================================================================//
-//=============================================================================================================//
+
+
+
 
 HashTable::HashTable (int32 sizeOfTable)
 {
@@ -64,14 +64,14 @@ HashTable::HashTable (int32 sizeOfTable)
     InitializeTable();
 }
 
-//=============================================================================================================//
+
 
 HashTable::~HashTable ()
 {
     DeleteTable();
 }
 
-//=============================================================================================================//
+
 
 int32 HashTable::OptimalSize (int32 minSize)
 {
@@ -83,7 +83,7 @@ int32 HashTable::OptimalSize (int32 minSize)
     return 0;
 }
 
-//=============================================================================================================//
+
 
 void HashTable::InitializeTable ()
 {
@@ -93,7 +93,7 @@ void HashTable::InitializeTable ()
     m_lastFoundEntry = NULL;
 }
 
-//=============================================================================================================//
+
 
 void HashTable::DeleteTable ()
 {
@@ -114,14 +114,14 @@ void HashTable::DeleteTable ()
     delete[] m_table;
 }
 
-//=============================================================================================================//
+
 
 int32 HashTable::CountItems() const
 {
     return m_itemCount;
 }
 
-//=============================================================================================================//
+
 
 int32 HashTable::Hash (const char *str) const
 {
@@ -133,7 +133,7 @@ int32 HashTable::Hash (const char *str) const
     return (h % m_tableSize);
 }
 
-//=============================================================================================================//
+
 
 HashEntry* HashTable::ForceInsert (const char *str, bool copyInput)
 {
@@ -157,7 +157,7 @@ HashEntry* HashTable::ForceInsert (const char *str, bool copyInput)
     return bucket;
 }
 
-//=============================================================================================================//
+
 
 HashEntry* HashTable::LookUp (const char *str, bool insert, bool *wasFound, bool copyInput)
 {
@@ -185,7 +185,7 @@ HashEntry* HashTable::LookUp (const char *str, bool insert, bool *wasFound, bool
     return ForceInsert (str, copyInput);
 }
 
-//=============================================================================================================//
+
 
 int32 HashTable::FindUnder (BMessage *message, const char *fieldName, const char *directoryPath,
            BList *fileList, BList *folderList)
@@ -220,7 +220,7 @@ int32 HashTable::FindUnder (BMessage *message, const char *fieldName, const char
     return count;
 }
 
-//=============================================================================================================//
+
 
 bool HashTable::IsFound (const char *str)
 {
@@ -231,7 +231,7 @@ bool HashTable::IsFound (const char *str)
     return isFound;
 }
 
-//=============================================================================================================//
+
 
 HashEntry* HashTable::Find (const char *str)
 {
@@ -245,14 +245,14 @@ HashEntry* HashTable::Find (const char *str)
     return m_lastFoundEntry;
 }
 
-//=============================================================================================================//
+
 
 HashEntry* HashTable::Insert (char *str, bool *wasFound, bool copyItem)
 {
     return LookUp (str, true, wasFound, copyItem);
 }
 
-//=============================================================================================================//
+
 
 bool HashTable::Delete (HashEntry *entry)
 {
@@ -260,7 +260,7 @@ bool HashTable::Delete (HashEntry *entry)
     return Delete ((char*)entry->m_pathStr);
 }
 
-//=============================================================================================================//
+
 
 bool HashTable::Delete (char *str)
 {
@@ -293,28 +293,28 @@ bool HashTable::Delete (char *str)
     return false;
 }
 
-//=============================================================================================================//
+
 
 HashEntry* HashTable::LastAddedEntry () const
 {
     return m_lastAddedEntry;
 }
 
-//=============================================================================================================//
+
 
 HashEntry* HashTable::ItemAt (int32 bucket) const
 {
     return m_table[bucket];
 }
 
-//=============================================================================================================//
+
 
 int32 HashTable::TableSize () const
 {
     return m_tableSize;
 }
 
-//=============================================================================================================//
+
 
 void HashTable::ResetCache (HashEntry *element)
 {
@@ -324,4 +324,4 @@ void HashTable::ResetCache (HashEntry *element)
         m_lastFoundEntry = NULL;
 }
 
-//=============================================================================================================//
+

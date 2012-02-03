@@ -43,7 +43,7 @@
 #include "MainMenu.h"
 #include "MsgConstants.h"
 
-//=============================================================================================================//
+
 
 MainMenu::MainMenu (BRect frame)
     : BMenuBar (frame, "MainMenu", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_ITEMS_IN_ROW, true)
@@ -185,7 +185,7 @@ MainMenu::MainMenu (BRect frame)
     //m_logContextMenu->AddItem (new BMenuItem (str (S_LOG_CONTEXT_SAVE), new BMessage (M_LOG_CONTEXT_SAVE)));
 }
 
-//=============================================================================================================//
+
 
 MainMenu::~MainMenu ()
 {
@@ -196,7 +196,7 @@ MainMenu::~MainMenu ()
     m_logContextMenu = NULL;
 }
 
-//=============================================================================================================//
+
 
 void MainMenu::SetRecentMenu (BMenu *menu)
 {
@@ -212,14 +212,14 @@ void MainMenu::SetRecentMenu (BMenu *menu)
 
 }
 
-//=============================================================================================================//
+
 
 BMenu* MainMenu::RecentMenu () const
 {
     return m_recentMenu;
 }
 
-//=============================================================================================================//
+
 
 void MainMenu::SetExtractPathsMenu (BMenu *menu)
 {
@@ -238,7 +238,7 @@ void MainMenu::SetExtractPathsMenu (BMenu *menu)
     SetExtractSelPathsMenu (new BMenu (&archiveMessage));
 }
 
-//=============================================================================================================//
+
 
 void MainMenu::SetExtractSelPathsMenu (BMenu *menu)
 {
@@ -258,11 +258,11 @@ void MainMenu::SetExtractSelPathsMenu (BMenu *menu)
     }
 }
 
-//=============================================================================================================//
+
 
 BMenu* MainMenu::ExtractPathsMenu () const
 {
     return m_extractPathsMenu;
 }
 
-//=============================================================================================================//
+
