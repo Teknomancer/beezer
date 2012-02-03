@@ -47,7 +47,7 @@
 #include "PrefsViewMisc.h"
 #include "UIConstants.h"
 
-//=============================================================================================================//
+
 
 PrefsViewMisc::PrefsViewMisc (BRect frame)
     : PrefsView (frame, str (S_PREFS_TITLE_MISC), str (S_PREFS_DESC_MISC))
@@ -56,7 +56,7 @@ PrefsViewMisc::PrefsViewMisc (BRect frame)
     Render();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewMisc::Render ()
 {
@@ -135,7 +135,7 @@ void PrefsViewMisc::Render ()
     AddRevertButton();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewMisc::Save ()
 {
@@ -151,7 +151,7 @@ void PrefsViewMisc::Save ()
     _prefs_misc.WritePrefs();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewMisc::Load ()
 {
@@ -182,7 +182,7 @@ void PrefsViewMisc::Load ()
         item->SetMarked (true);
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewMisc::AttachedToWindow ()
 {
@@ -190,7 +190,7 @@ void PrefsViewMisc::AttachedToWindow ()
     return PrefsView::AttachedToWindow();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewMisc::MessageReceived (BMessage *message)
 {
@@ -208,4 +208,4 @@ void PrefsViewMisc::MessageReceived (BMessage *message)
     }
 }
 
-//=============================================================================================================//
+

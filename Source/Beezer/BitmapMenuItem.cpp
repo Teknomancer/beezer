@@ -31,7 +31,7 @@
 
 #include <Bitmap.h>
 
-//=============================================================================================================//
+
 
 BitmapMenuItem::BitmapMenuItem (BMenu *subMenu, BBitmap *bitmap)
     : BMenuItem (subMenu),
@@ -39,7 +39,7 @@ BitmapMenuItem::BitmapMenuItem (BMenu *subMenu, BBitmap *bitmap)
 {
 }
 
-//=============================================================================================================//
+
 
 void BitmapMenuItem::DrawContent ()
 {
@@ -49,7 +49,7 @@ void BitmapMenuItem::DrawContent ()
     menu->SetDrawingMode (B_OP_COPY);
 }
 
-//=============================================================================================================//
+
 
 void BitmapMenuItem::GetContentSize (float *width, float *height)
 {
@@ -57,4 +57,4 @@ void BitmapMenuItem::GetContentSize (float *width, float *height)
     *height = m_bitmap->Bounds().Height() + 1;
 }
 
-//=============================================================================================================//
+

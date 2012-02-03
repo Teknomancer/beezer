@@ -41,7 +41,7 @@
 #include "StatusWindow.h"
 #include "UIConstants.h"
 
-//=============================================================================================================//
+
 
 StatusWindow::StatusWindow (const char *title, BWindow *callerWindow, const char *text, volatile bool *cancel,
         bool showWindow)
@@ -141,7 +141,7 @@ StatusWindow::StatusWindow (const char *title, BWindow *callerWindow, const char
         Show();
 }
 
-//=============================================================================================================//
+
 
 void StatusWindow::MessageReceived (BMessage *message)
 {
@@ -171,5 +171,5 @@ void StatusWindow::MessageReceived (BMessage *message)
     }
 }
 
-//=============================================================================================================//
+
 

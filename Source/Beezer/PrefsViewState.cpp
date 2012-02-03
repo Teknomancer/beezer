@@ -39,7 +39,7 @@
 #include "PrefsViewState.h"
 #include "UIConstants.h"
 
-//=============================================================================================================//
+
 
 PrefsViewState::PrefsViewState (BRect frame)
     : PrefsView (frame, str (S_PREFS_TITLE_STATE), str (S_PREFS_DESC_STATE))
@@ -48,7 +48,7 @@ PrefsViewState::PrefsViewState (BRect frame)
     Render();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewState::Render ()
 {
@@ -89,7 +89,7 @@ void PrefsViewState::Render ()
     AddRevertButton();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewState::Save ()
 {
@@ -101,7 +101,7 @@ void PrefsViewState::Save ()
     _prefs_state.WritePrefs();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewState::Load ()
 {
@@ -111,4 +111,4 @@ void PrefsViewState::Load ()
     m_restoreArkChk->SetValue (_prefs_state.FindBoolDef (kPfRestoreArk, true));
 }
 
-//=============================================================================================================//
+

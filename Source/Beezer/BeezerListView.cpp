@@ -51,7 +51,7 @@
 
 const char *const kPfSpecialField = "beezer_special_field_magix!";
 
-//=============================================================================================================//
+
 
 BeezerListView::BeezerListView (BRect frame, CLVContainerView **containerView, const char *name,
                   uint32 resizingMode, uint32 flags,
@@ -72,7 +72,7 @@ BeezerListView::BeezerListView (BRect frame, CLVContainerView **containerView, c
     m_dropItem = NULL;
 }
 
-//=============================================================================================================//
+
 
 BeezerListView::~BeezerListView ()
 {
@@ -82,7 +82,7 @@ BeezerListView::~BeezerListView ()
         delete (ListEntry*)ColumnListView::RemoveItem(0L);
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::MessageReceived (BMessage *message)
 {
@@ -156,7 +156,7 @@ void BeezerListView::MessageReceived (BMessage *message)
     }
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::KeyDown (const char *bytes, int32 numBytes)
 {
@@ -306,7 +306,7 @@ void BeezerListView::KeyDown (const char *bytes, int32 numBytes)
     ColumnListView::KeyDown (bytes, numBytes);
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::MouseMoved (BPoint point, uint32 status, const BMessage *message)
 {
@@ -394,7 +394,7 @@ void BeezerListView::MouseMoved (BPoint point, uint32 status, const BMessage *me
     return ColumnListView::MouseMoved (point, status, message);
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::EraseIndicator ()
 {
@@ -408,7 +408,7 @@ void BeezerListView::EraseIndicator ()
     StrokeLine (BPoint (0, m_dropY), BPoint (Bounds().right, m_dropY));
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::MouseDown (BPoint point)
 {
@@ -511,7 +511,7 @@ void BeezerListView::MouseDown (BPoint point)
     ColumnListView::MouseDown (point);
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::PostSelectionMessage (int32 *count, uint32 *bytes)
 {
@@ -521,7 +521,7 @@ void BeezerListView::PostSelectionMessage (int32 *count, uint32 *bytes)
     Window()->PostMessage (&msg);
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::SelectionChanged (int32 *count, uint32 *bytes)
 {
@@ -535,7 +535,7 @@ void BeezerListView::SelectionChanged (int32 *count, uint32 *bytes)
     }
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::SelectionChanged ()
 {
@@ -559,7 +559,7 @@ void BeezerListView::SelectionChanged ()
     ColumnListView::SelectionChanged ();
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::SelectSubItems (CLVListItem *superItem)
 {
@@ -597,7 +597,7 @@ void BeezerListView::SelectSubItems (CLVListItem *superItem)
         SelectionChanged();
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::DeselectSubItems (CLVListItem *superItem)
 {
@@ -626,14 +626,14 @@ void BeezerListView::DeselectSubItems (CLVListItem *superItem)
     SelectionChanged();
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::SetContextMenu (BPopUpMenu *menu)
 {
     m_contextMenu = menu;
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::InvertSelection ()
 {
@@ -664,7 +664,7 @@ void BeezerListView::InvertSelection ()
     PostSelectionMessage (&selCount, &bytes);
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::SelectAll ()
 {
@@ -690,7 +690,7 @@ void BeezerListView::SelectAll ()
     PostSelectionMessage (&count, &bytes);
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::DeselectAll ()
 {
@@ -704,7 +704,7 @@ void BeezerListView::DeselectAll ()
     SelectionChanged();
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::ToggleAllSuperItems (bool expand)
 {
@@ -733,7 +733,7 @@ void BeezerListView::ToggleAllSuperItems (bool expand)
     Invalidate();
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::ToggleSelectedSuperItems (bool expand)
 {
@@ -761,7 +761,7 @@ void BeezerListView::ToggleSelectedSuperItems (bool expand)
     SelectionChanged();
 }
 
-//=============================================================================================================//
+
 
 int32 BeezerListView::Search (const BMessage *message, const char *&errorString)
 {
@@ -901,7 +901,7 @@ int32 BeezerListView::Search (const BMessage *message, const char *&errorString)
     return found;
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::CopyToClipboard (char columnSeparator)
 {
@@ -961,14 +961,14 @@ void BeezerListView::CopyToClipboard (char columnSeparator)
     delete[] displayOrderArray;
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::UpdateWindow () const
 {
     Window()->UpdateIfNeeded();
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::MakeFocus (bool focused)
 {
@@ -977,7 +977,7 @@ void BeezerListView::MakeFocus (bool focused)
     ColumnListView::MakeFocus (focused);
 }
 
-//=============================================================================================================//
+
 
 int BeezerListView::SortAsPerName (const char *name1, const char *name2, BList *columnList, int32 sortKey)
 {
@@ -998,7 +998,7 @@ int BeezerListView::SortAsPerName (const char *name1, const char *name2, BList *
         return -strcasecmp (name1, name2);
 }
 
-//=============================================================================================================//
+
 
 int BeezerListView::SortFunction (const CLVListItem *a, const CLVListItem *b, BList *columnList,
                       int32 sortKey)
@@ -1102,7 +1102,7 @@ int BeezerListView::SortFunction (const CLVListItem *a, const CLVListItem *b, BL
     return retValue;
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::SelectSubItemsOfSelection (bool select)
 {
@@ -1146,7 +1146,7 @@ void BeezerListView::SelectSubItemsOfSelection (bool select)
     SelectionChanged();
 }
 
-//=============================================================================================================//
+
 
 int32 BeezerListView::FullListSelectionCount () const
 {
@@ -1158,7 +1158,7 @@ int32 BeezerListView::FullListSelectionCount () const
     return count;
 }
 
-//=============================================================================================================//
+
 
 int32 BeezerListView::SelectionCount () const
 {
@@ -1169,7 +1169,7 @@ int32 BeezerListView::SelectionCount () const
     return count;
 }
 
-//=============================================================================================================//
+
 
 bool BeezerListView::HasSelection () const
 {
@@ -1179,14 +1179,14 @@ bool BeezerListView::HasSelection () const
     return false;
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::SendSelectionMessage (bool send)
 {
     m_sendSelectionMessage = send;
 }
 
-//=============================================================================================================//
+
 
 bool BeezerListView::InitiateDrag (BPoint point, int32 index, bool wasSelected)
 {
@@ -1283,7 +1283,7 @@ bool BeezerListView::InitiateDrag (BPoint point, int32 index, bool wasSelected)
     return true;
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::CountSelectionDumb (int32 &subItems, int32 &superItems)
 {
@@ -1305,7 +1305,7 @@ void BeezerListView::CountSelectionDumb (int32 &subItems, int32 &superItems)
     superItems = folderCount;
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::CountSelectionSmart (int32 &subItems, int32 &superItems)
 {
@@ -1333,7 +1333,7 @@ void BeezerListView::CountSelectionSmart (int32 &subItems, int32 &superItems)
     superItems = folderCount;
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::CountSubItemsOf (int32 &subItems, int32 &superItems, CLVListItem *item)
 {
@@ -1362,7 +1362,7 @@ void BeezerListView::CountSubItemsOf (int32 &subItems, int32 &superItems, CLVLis
     superItems += folderCount;
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::SelectAllEx (bool superItems)
 {
@@ -1396,7 +1396,7 @@ void BeezerListView::SelectAllEx (bool superItems)
     PostSelectionMessage (&selCount, &bytes);
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::GetState (BMessage &msg) const
 {
@@ -1432,7 +1432,7 @@ void BeezerListView::GetState (BMessage &msg) const
     delete[] sortModes;
 }
 
-//=============================================================================================================//
+
 
 void BeezerListView::SetState (BMessage *msg)
 {
@@ -1485,4 +1485,4 @@ void BeezerListView::SetState (BMessage *msg)
     delete[] sortModes;
 }
 
-//=============================================================================================================//
+

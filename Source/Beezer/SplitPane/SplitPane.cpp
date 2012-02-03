@@ -27,7 +27,7 @@
 
 #include "SplitPane.h"
 
-//=============================================================================================================//
+
 
 SplitPane::SplitPane (BRect frame, BView *one, BView *two,uint32 Mode)
     : BView (frame, "", Mode, B_WILL_DRAW | B_FRAME_EVENTS)
@@ -67,7 +67,7 @@ SplitPane::SplitPane (BRect frame, BView *one, BView *two,uint32 Mode)
     AddChild (two);
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::AttachedToWindow()
 {
@@ -77,7 +77,7 @@ void SplitPane::AttachedToWindow()
    Update();
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::FrameResized (float w, float h)
 {
@@ -90,7 +90,7 @@ void SplitPane::FrameResized (float w, float h)
     Invalidate();
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::Draw (BRect updateRect)
 {
@@ -154,7 +154,7 @@ void SplitPane::Draw (BRect updateRect)
     }
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::Update ()
 {
@@ -239,7 +239,7 @@ void SplitPane::Update ()
     Window()->Unlock();
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::MouseDown (BPoint where)
 {
@@ -287,7 +287,7 @@ void SplitPane::MouseDown (BPoint where)
     Window()->Unlock();
 }
 
-//=============================================================================================================//
+
 
 bool SplitPane::IsInDraggerBounds (BPoint pt) const
 {
@@ -297,14 +297,14 @@ bool SplitPane::IsInDraggerBounds (BPoint pt) const
         : ((pt.y > PaneOne->Frame().bottom) && (pt.y < PaneTwo->Frame().top));
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::MouseUp (BPoint point)
 {
     Draggin = false; // stop following mouse
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::MouseMoved (BPoint where, uint32 info, const BMessage *message)
 {
@@ -357,7 +357,7 @@ void SplitPane::MouseMoved (BPoint where, uint32 info, const BMessage *message)
     }
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::AddChildOne (BView *v)
 {
@@ -366,7 +366,7 @@ void SplitPane::AddChildOne (BView *v)
     AddChild (PaneOne);
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::AddChildTwo (BView *v)
 {
@@ -375,7 +375,7 @@ void SplitPane::AddChildTwo (BView *v)
     AddChild (PaneTwo);
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::SetAlignment (uint a)
 {
@@ -386,14 +386,14 @@ void SplitPane::SetAlignment (uint a)
    Invalidate();
 }
 
-//=============================================================================================================//
+
 
 uint SplitPane::GetAlignment () const
 {
     return align;
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::SetBarPosition (BPoint p)
 {
@@ -404,14 +404,14 @@ void SplitPane::SetBarPosition (BPoint p)
     Invalidate();
 }
 
-//=============================================================================================================//
+
 
 BPoint SplitPane::GetBarPosition () const
 {
     return pos;
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::SetBarThickness (BPoint t)
 {
@@ -422,14 +422,14 @@ void SplitPane::SetBarThickness (BPoint t)
     Invalidate();
 }
 
-//=============================================================================================================//
+
 
 BPoint SplitPane::GetBarThickness () const
 {
     return thickness;
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::SetJump (BPoint j)
 {
@@ -438,14 +438,14 @@ void SplitPane::SetJump (BPoint j)
         Update();
 }
 
-//=============================================================================================================//
+
 
 BPoint SplitPane::GetJump () const
 {
     return jump;
 }
 
-//=============================================================================================================//
+
 
 bool SplitPane::HasViewOne () const
 {
@@ -455,7 +455,7 @@ bool SplitPane::HasViewOne () const
     return false;
 }
 
-//=============================================================================================================//
+
 
 bool SplitPane::HasViewTwo () const
 {
@@ -465,49 +465,49 @@ bool SplitPane::HasViewTwo () const
     return false;
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::SetViewOneDetachable (bool b)
 {
     VOneDetachable = b;
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::SetViewTwoDetachable (bool b)
 {
     VTwoDetachable = b;
 }
 
-//=============================================================================================================//
+
 
 bool SplitPane::IsViewOneDetachable () const
 {
     return VOneDetachable;
 }
 
-//=============================================================================================================//
+
 
 bool SplitPane::IsViewTwoDetachable () const
 {
     return VTwoDetachable;
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::SetEditable (bool /*b*/)
 {
    //ADD CODE HERE YNOP
 }
 
-//=============================================================================================================//
+
 
 bool SplitPane::IsEditable () const
 {
     return true; //ADD SOME MORE CODE HERE
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::SetViewInsetBy (BPoint p)
 {
@@ -518,70 +518,70 @@ void SplitPane::SetViewInsetBy (BPoint p)
     Invalidate();
 }
 
-//=============================================================================================================//
+
 
 BPoint SplitPane::GetViewInsetBy () const
 {
     return pad;
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::SetMinSizeOne (const BPoint & p)
 {
     MinSizeOne = p;
 }
 
-//=============================================================================================================//
+
 
 BPoint SplitPane::GetMinSizeOne () const
 {
     return MinSizeOne;
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::SetMinSizeTwo (const BPoint & p)
 {
     MinSizeTwo = p;
 }
 
-//=============================================================================================================//
+
 
 BPoint SplitPane::GetMinSizeTwo () const
 {
     return MinSizeTwo;
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::SetBarLocked (bool b)
 {
     poslocked = b;
 }
 
-//=============================================================================================================//
+
 
 bool SplitPane::IsBarLocked () const
 {
     return poslocked;
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::SetBarAlignmentLocked (bool b)
 {
     alignlocked = b;
 }
 
-//=============================================================================================================//
+
 
 bool SplitPane::IsBarAlignmentLocked () const
 {
     return alignlocked;
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::SetResizeViewOne (bool x, bool y)
 {
@@ -593,7 +593,7 @@ void SplitPane::SetResizeViewOne (bool x, bool y)
     Invalidate();
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::GetResizeViewOne (bool & rx, bool & ry) const
 {
@@ -601,7 +601,7 @@ void SplitPane::GetResizeViewOne (bool & rx, bool & ry) const
     ry = resizeOneY;
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::GetState (BMessage& state) const
 {
@@ -622,7 +622,7 @@ void SplitPane::GetState (BMessage& state) const
     state.AddBool ("ry", resizeOneY);
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::SetState (BMessage *state)
 {
@@ -678,7 +678,7 @@ void SplitPane::SetState (BMessage *state)
     //}
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::MessageReceived (BMessage *msg)
 {
@@ -694,7 +694,7 @@ void SplitPane::MessageReceived (BMessage *msg)
     }
 }
 
-//=============================================================================================================//
+
 
 BView* SplitPane::ViewAt (int32 num)
 {
@@ -707,7 +707,7 @@ BView* SplitPane::ViewAt (int32 num)
     return NULL;
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::RestoreBarPosition ()
 {
@@ -725,7 +725,7 @@ void SplitPane::RestoreBarPosition ()
     }
 }
 
-//=============================================================================================================//
+
 
 void SplitPane::StoreBarPosition()
 {
@@ -734,4 +734,4 @@ void SplitPane::StoreBarPosition()
     storedalign = align;
 }
 
-//=============================================================================================================//
+

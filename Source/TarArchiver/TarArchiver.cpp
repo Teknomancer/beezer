@@ -48,7 +48,7 @@
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
 
-//=============================================================================================================//
+
 
 #ifndef STATIC_LIB_BUILD
     Archiver *load_archiver ()
@@ -57,9 +57,9 @@
     }
 #endif
 
-//=============================================================================================================//
-//=============================================================================================================//
-//=============================================================================================================//
+
+
+
 
 TarArchiver::TarArchiver ()
 {
@@ -78,7 +78,7 @@ TarArchiver::TarArchiver ()
     }
 }
 
-//=============================================================================================================//
+
 
 TarArchiver::TarArchiver (bool isBeingDerived)
 {
@@ -92,7 +92,7 @@ TarArchiver::TarArchiver (bool isBeingDerived)
     }
 }
 
-//=============================================================================================================//
+
 
 status_t TarArchiver::ReadOpen (FILE *fp)
 {
@@ -144,7 +144,7 @@ status_t TarArchiver::ReadOpen (FILE *fp)
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t TarArchiver::Open (entry_ref *ref, BMessage *fileList)
 {
@@ -185,7 +185,7 @@ status_t TarArchiver::Open (entry_ref *ref, BMessage *fileList)
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t TarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger *progress,
                       volatile bool *cancel)
@@ -264,7 +264,7 @@ status_t TarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t TarArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool *cancel)
 {
@@ -294,14 +294,14 @@ status_t TarArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t TarArchiver::Test (char *&outputStr, BMessenger *progress, volatile bool *cancel)
 {
     return BZR_NOT_SUPPORTED;
 }
 
-//=============================================================================================================//
+
 
 status_t TarArchiver::Add (bool createMode, const char *relativePath, BMessage *message, BMessage *addedPaths,
                       BMessenger *progress, volatile bool *cancel)
@@ -367,7 +367,7 @@ status_t TarArchiver::Add (bool createMode, const char *relativePath, BMessage *
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t TarArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progress, volatile bool *cancel)
 {
@@ -402,7 +402,7 @@ status_t TarArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t TarArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *progress,
                       volatile bool *cancel)
@@ -470,7 +470,7 @@ status_t TarArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t TarArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progress,
                       volatile bool *cancel)
@@ -482,7 +482,7 @@ status_t TarArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progre
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t TarArchiver::Create (BPath *archivePath, const char *relPath, BMessage *fileList, BMessage *addedPaths,
                              BMessenger *progress, volatile bool *cancel)
@@ -504,7 +504,7 @@ status_t TarArchiver::Create (BPath *archivePath, const char *relPath, BMessage 
     return result;
 }
 
-//=============================================================================================================//
+
 
 BList TarArchiver::HiddenColumns (BList *columns) const
 {
@@ -520,18 +520,18 @@ BList TarArchiver::HiddenColumns (BList *columns) const
     return availList;
 }
 
-//=============================================================================================================//
+
 
 bool TarArchiver::CanReplaceFiles () const
 {
     return false;
 }
 
-//=============================================================================================================//
+
 
 bool TarArchiver::CanPartiallyOpen () const
 {
     return false;
 }
 
-//=============================================================================================================//
+

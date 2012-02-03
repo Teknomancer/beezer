@@ -55,40 +55,40 @@
 
 #include "RegExString.h"
 
-//=============================================================================================================//
+
 
 RegExString::RegExString()
 {
 }
 
-//=============================================================================================================//
+
 
 RegExString::RegExString (const char *string)
     : BString (string)
 {
 }
 
-//=============================================================================================================//
+
 
 RegExString::RegExString (const RegExString &string)
     : BString (string)
 {
 }
 
-//=============================================================================================================//
+
 
 RegExString::RegExString (const char *string, int32 maxLength)
     : BString (string, maxLength)
 {
 }
 
-//=============================================================================================================//
+
 
 RegExString::~RegExString()
 {
 }
 
-//=============================================================================================================//
+
 
 bool RegExString::Matches (const char *string, bool caseSensitivity,
                       RegExStringExpressionType expressionType) const
@@ -116,7 +116,7 @@ bool RegExString::Matches (const char *string, bool caseSensitivity,
     }
 }
 
-//=============================================================================================================//
+
 
 bool RegExString::MatchesRegExp (const char *pattern, bool caseSensitivity) const
 {
@@ -137,14 +137,14 @@ bool RegExString::MatchesRegExp (const char *pattern, bool caseSensitivity) cons
     return expression.Matches (textString);
 }
 
-//=============================================================================================================//
+
 
 bool RegExString::MatchesGlob (const char *string, bool caseSensitivity) const
 {
     return StringMatchesPattern (String(), string, caseSensitivity);
 }
 
-//=============================================================================================================//
+
 
 bool RegExString::EndsWith (const char *string, bool caseSensitivity) const
 {
@@ -164,7 +164,7 @@ bool RegExString::EndsWith (const char *string, bool caseSensitivity) const
         return IFindLast (string) == foundIndexPos;
 }
 
-//=============================================================================================================//
+
 
 bool RegExString::StartsWith (const char *string, bool caseSensitivity) const
 {
@@ -174,7 +174,7 @@ bool RegExString::StartsWith (const char *string, bool caseSensitivity) const
         return IFindFirst (string) == 0;
 }
 
-//=============================================================================================================//
+
 
 bool RegExString::Contains (const char *string, bool caseSensitivity) const
 {
@@ -184,28 +184,28 @@ bool RegExString::Contains (const char *string, bool caseSensitivity) const
         return IFindFirst(string) > -1;
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::FindFirst (const BString &string) const
 {
     return FindFirst (string.String(), 0);
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::FindFirst (const char *string) const
 {
     return FindFirst (string, 0);
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::FindFirst(const BString &string, int32 fromOffset) const
 {
     return FindFirst(string.String(), fromOffset);
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::FindFirst (const char *string, int32 fromOffset) const
 {
@@ -238,7 +238,7 @@ int32 RegExString::FindFirst (const char *string, int32 fromOffset) const
     return position;
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::FindFirst(char ch) const
 {
@@ -246,7 +246,7 @@ int32 RegExString::FindFirst(char ch) const
     return FindFirst (string, 0);
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::FindFirst (char ch, int32 fromOffset) const
 {
@@ -254,28 +254,28 @@ int32 RegExString::FindFirst (char ch, int32 fromOffset) const
     return FindFirst (string, fromOffset);
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::FindLast (const BString &string) const
 {
     return FindLast (string.String(), Length() - 1);
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::FindLast (const char *string) const
 {
     return FindLast (string, Length() - 1);
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::FindLast (const BString &string, int32 beforeOffset) const
 {
     return FindLast (string.String(), beforeOffset);
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::FindLast (const char *string, int32 beforeOffset) const
 {
@@ -308,7 +308,7 @@ int32 RegExString::FindLast (const char *string, int32 beforeOffset) const
     return position;
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::FindLast(char ch) const
 {
@@ -316,7 +316,7 @@ int32 RegExString::FindLast(char ch) const
     return FindLast (string, Length() - 1);
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::FindLast (char ch, int32 beforeOffset) const
 {
@@ -324,28 +324,28 @@ int32 RegExString::FindLast (char ch, int32 beforeOffset) const
     return FindLast (string, beforeOffset);
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::IFindFirst (const BString &string) const
 {
     return IFindFirst (string.String(), 0);
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::IFindFirst(const char *string) const
 {
     return IFindFirst (string, 0);
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::IFindFirst (const BString &string, int32 fromOffset) const
 {
     return FindFirst (string.String(), fromOffset);
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::IFindFirst (const char *string, int32 fromOffset) const
 {
@@ -377,28 +377,28 @@ int32 RegExString::IFindFirst (const char *string, int32 fromOffset) const
     return position;
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::IFindLast(const BString &string) const
 {
     return IFindLast (string.String(), Length() - 1);
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::IFindLast(const char *string) const
 {
     return IFindLast (string, Length() - 1);
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::IFindLast (const BString &string, int32 beforeOffset) const
 {
     return IFindLast (string.String(), beforeOffset);
 }
 
-//=============================================================================================================//
+
 
 int32 RegExString::IFindLast(const char *string, int32 beforeOffset) const
 {
@@ -431,7 +431,7 @@ int32 RegExString::IFindLast(const char *string, int32 beforeOffset) const
     return position;
 }
 
-//=============================================================================================================//
+
 
 // MatchesBracketExpression() assumes 'pattern' to point to the
 // character following the initial '[' in a bracket expression.
@@ -499,7 +499,7 @@ bool RegExString::MatchesBracketExpression(const char *string, const char *patte
     return (match ^ inverse) != 0;
 }
 
-//=============================================================================================================//
+
 
 bool RegExString::StringMatchesPattern (const char *string, const char *pattern,
     bool caseSensitivity) const
@@ -660,7 +660,7 @@ bool RegExString::StringMatchesPattern (const char *string, const char *pattern,
     return *string == '\0' && *pattern == '\0';
 }
 
-//=============================================================================================================//
+
 
 bool RegExString::UTF8CharsAreEqual (const char *string1, const char *string2) const
 {
@@ -684,7 +684,7 @@ bool RegExString::UTF8CharsAreEqual (const char *string1, const char *string2) c
         return false;
 }
 
-//=============================================================================================================//
+
 
 const char *RegExString::MoveToEndOfGlyph (const char *string) const
 {
@@ -695,25 +695,25 @@ const char *RegExString::MoveToEndOfGlyph (const char *string) const
     return ptr;
 }
 
-//=============================================================================================================//
+
 
 bool RegExString::IsGlyph (char ch) const
 {
     return (ch & 0x80) == 0x80;
 }
 
-//=============================================================================================================//
+
 
 bool RegExString::IsInsideGlyph(char ch) const
 {
     return (ch & 0xC0) == 0x80;
 }
 
-//=============================================================================================================//
+
 
 bool RegExString::IsStartOfGlyph (char ch) const
 {
     return (ch & 0xC0) == 0xC0;
 }
 
-//=============================================================================================================//
+

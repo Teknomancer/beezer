@@ -39,7 +39,7 @@
 int32 WindowMgr::m_runCount = 0;
 BLocker _wnd_locker ("_window_mgr_lock", true);
 
-//=============================================================================================================//
+
 
 WindowMgr::WindowMgr ()
 {
@@ -50,14 +50,14 @@ WindowMgr::WindowMgr ()
         debugger ("only one WindowMgr instance allowed/necessary");
 }
 
-//=============================================================================================================//
+
 
 WindowMgr::~WindowMgr ()
 {
     delete m_windowList;
 }
 
-//=============================================================================================================//
+
 
 bool WindowMgr::AddWindow (BWindow *wnd)
 {
@@ -70,7 +70,7 @@ bool WindowMgr::AddWindow (BWindow *wnd)
     return false;
 }
 
-//=============================================================================================================//
+
 
 bool WindowMgr::RemoveWindow (BWindow *wnd)
 {
@@ -86,21 +86,21 @@ bool WindowMgr::RemoveWindow (BWindow *wnd)
     return result;
 }
 
-//=============================================================================================================//
+
 
 BWindow* WindowMgr::WindowAt (int32 index) const
 {
     return reinterpret_cast<BWindow*>(m_windowList->ItemAtFast (index));
 }
 
-//=============================================================================================================//
+
 
 int32 WindowMgr::CountWindows () const
 {
     return m_windowList->CountItems();
 }
 
-//=============================================================================================================//
+
 
 void WindowMgr::UpdateFrom (BWindow *sourceWnd, bool updateBeApp)
 {
@@ -113,7 +113,7 @@ void WindowMgr::UpdateFrom (BWindow *sourceWnd, bool updateBeApp)
     UpdateFrom (sourceWnd, &msg, updateBeApp);
 }
 
-//=============================================================================================================//
+
 
 void WindowMgr::UpdateFrom (BWindow *sourceWnd, BMessage *message, bool updateBeApp)
 {
@@ -136,4 +136,4 @@ void WindowMgr::UpdateFrom (BWindow *sourceWnd, BMessage *message, bool updateBe
         be_app->PostMessage (message);
 }
 
-//=============================================================================================================//
+

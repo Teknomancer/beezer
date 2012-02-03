@@ -49,16 +49,16 @@
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
 
-//=============================================================================================================//
+
 
 Archiver *load_archiver ()
 {
     return new RarArchiver ();
 }
 
-//=============================================================================================================//
-//=============================================================================================================//
-//=============================================================================================================//
+
+
+
 
 RarArchiver::RarArchiver ()
 {
@@ -82,7 +82,7 @@ RarArchiver::RarArchiver ()
     }
 }
 
-//=============================================================================================================//
+
 
 status_t RarArchiver::ReadOpen (FILE *fp)
 {
@@ -155,7 +155,7 @@ status_t RarArchiver::ReadOpen (FILE *fp)
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t RarArchiver::Open (entry_ref *ref, BMessage *fileList)
 {
@@ -192,7 +192,7 @@ status_t RarArchiver::Open (entry_ref *ref, BMessage *fileList)
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t RarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger *progress,
                       volatile bool *cancel)
@@ -309,7 +309,7 @@ status_t RarArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t RarArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool *cancel)
 {
@@ -346,7 +346,7 @@ status_t RarArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t RarArchiver::Test (char *&outputStr, BMessenger *progress, volatile bool *cancel)
 {
@@ -414,7 +414,7 @@ status_t RarArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t RarArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress, volatile bool *cancel)
 {
@@ -474,7 +474,7 @@ status_t RarArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t RarArchiver::GetComment (char *&commentStr)
 {
@@ -515,7 +515,7 @@ status_t RarArchiver::GetComment (char *&commentStr)
     return BZR_ERRSTREAM_FOUND;
 }
 
-//=============================================================================================================//
+
 
 status_t RarArchiver::SetComment (char *commentStr, const char *tempDirPath)
 {
@@ -544,14 +544,14 @@ status_t RarArchiver::SetComment (char *commentStr, const char *tempDirPath)
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 bool RarArchiver::SupportsComment () const
 {
     return true;
 }
 
-//=============================================================================================================//
+
 
 bool RarArchiver::CanPartiallyOpen() const
 {
@@ -560,7 +560,7 @@ bool RarArchiver::CanPartiallyOpen() const
     return false;
 }
 
-//=============================================================================================================//
+
 
 status_t RarArchiver::Add (bool createMode, const char *relativePath, BMessage *message, BMessage *addedPaths,
                       BMessenger *progress, volatile bool *cancel)
@@ -642,7 +642,7 @@ status_t RarArchiver::Add (bool createMode, const char *relativePath, BMessage *
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t RarArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progress, volatile bool *cancel)
 {
@@ -718,7 +718,7 @@ status_t RarArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t RarArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *progress,
                       volatile bool *cancel)
@@ -726,7 +726,7 @@ status_t RarArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
     return BZR_NOT_SUPPORTED;
 }
 
-//=============================================================================================================//
+
 
 status_t RarArchiver::Create (BPath *archivePath, const char *relPath, BMessage *fileList, BMessage *addedPaths,
                              BMessenger *progress, volatile bool *cancel)
@@ -750,7 +750,7 @@ status_t RarArchiver::Create (BPath *archivePath, const char *relPath, BMessage 
     return result;
 }
 
-//=============================================================================================================//
+
 
 void RarArchiver::BuildDefaultMenu ()
 {
@@ -831,7 +831,7 @@ void RarArchiver::BuildDefaultMenu ()
     m_settingsMenu->AddItem (othersMenu);
 }
 
-//=============================================================================================================//
+
 
 void RarArchiver::SetMimeType ()
 {
@@ -845,7 +845,7 @@ void RarArchiver::SetMimeType ()
     }
 }
 
-//=============================================================================================================//
+
 
 bool RarArchiver::NeedsTempDirectory () const
 {
@@ -853,14 +853,14 @@ bool RarArchiver::NeedsTempDirectory () const
     return true;
 }
 
-//=============================================================================================================//
+
 
 bool RarArchiver::SupportsPassword () const
 {
     return true;
 }
 
-//=============================================================================================================//
+
 
 bool RarArchiver::CanDeleteFiles () const
 {
@@ -869,4 +869,4 @@ bool RarArchiver::CanDeleteFiles () const
     return false;
 }
 
-//=============================================================================================================//
+

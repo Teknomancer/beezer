@@ -38,8 +38,6 @@ class BTextControl;
 
 class ImageButton;
 
-class BetterScrollView;
-
 class PrefsViewPaths : public PrefsView
 {
     public:

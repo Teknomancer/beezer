@@ -52,7 +52,7 @@
 #include "StaticBitmapView.h"
 #include "UIConstants.h"
 
-//=============================================================================================================//
+
 
 ArkInfoWindow::ArkInfoWindow (BWindow *callerWindow, Archiver *archiver, BEntry *entry)
     : BWindow (BRect (30, 30, 440, 280), str (S_ARK_INFO_WINDOW_TITLE), B_TITLED_WINDOW,
@@ -289,7 +289,7 @@ ArkInfoWindow::ArkInfoWindow (BWindow *callerWindow, Archiver *archiver, BEntry 
     Show();
 }
 
-//=============================================================================================================//
+
 
 bool ArkInfoWindow::QuitRequested()
 {
@@ -299,7 +299,7 @@ bool ArkInfoWindow::QuitRequested()
     return BWindow::QuitRequested();
 }
 
-//=============================================================================================================//
+
 
 void ArkInfoWindow::AutoSizeWindow (float cornerMargin, float midMargin, float leftSideMaxWidth)
 {
@@ -339,7 +339,7 @@ void ArkInfoWindow::AutoSizeWindow (float cornerMargin, float midMargin, float l
     ResizeTo (maxRWidth, Frame().Height());
 }
 
-//=============================================================================================================//
+
 
 void ArkInfoWindow::FillDetails ()
 {
@@ -430,4 +430,4 @@ void ArkInfoWindow::FillDetails ()
     m_compressRatioBar->Update (ratio, NULL, buf.String());
 }
 
-//=============================================================================================================//
+

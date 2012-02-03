@@ -53,7 +53,7 @@
 #include "StaticBitmapView.h"
 #include "UIConstants.h"
 
-//=============================================================================================================//
+
 
 SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage,
                const BEntry *entry, const BList *columnList, const Archiver *ark)
@@ -328,7 +328,7 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage,
     SetToolTips();
 }
 
-//=============================================================================================================//
+
 
 void SearchWindow::Quit ()
 {
@@ -339,7 +339,7 @@ void SearchWindow::Quit ()
     BWindow::Quit();
 }
 
-//=============================================================================================================//
+
 
 void SearchWindow::MessageReceived (BMessage *message)
 {
@@ -403,7 +403,7 @@ void SearchWindow::MessageReceived (BMessage *message)
     BWindow::MessageReceived (message);
 }
 
-//=============================================================================================================//
+
 
 int32 SearchWindow::ExpressionType () const
 {
@@ -428,7 +428,7 @@ int32 SearchWindow::ExpressionType () const
     return typeArray[index];
 }
 
-//=============================================================================================================//
+
 
 CLVColumn* SearchWindow::Column () const
 {
@@ -442,7 +442,7 @@ CLVColumn* SearchWindow::Column () const
     return (CLVColumn*)m_tmpList.ItemAtFast (index);
 }
 
-//=============================================================================================================//
+
 
 void SearchWindow::SetToolTips ()
 {
@@ -461,7 +461,7 @@ void SearchWindow::SetToolTips ()
     m_persistentChk->SetToolTip(const_cast<char*>(str (S_SEARCH_PERSISTENT_BH)));
 }
 
-//=============================================================================================================//
+
 
 void SearchWindow::GetSettings (BMessage &msg, uint32 msgwhat) const
 {
@@ -478,4 +478,4 @@ void SearchWindow::GetSettings (BMessage &msg, uint32 msgwhat) const
     msg.AddRect (kWindowRect, Frame());
 }
 
-//=============================================================================================================//
+

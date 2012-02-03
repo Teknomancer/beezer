@@ -127,7 +127,7 @@ class RegExString : public BString
         bool               UTF8CharsAreEqual (const char *string1, const char *string2) const;
 };
 
-//=============================================================================================================//
+
 
 inline bool RegExString::MatchesRegExp(const RegExp *expression) const
 {
@@ -137,7 +137,7 @@ inline bool RegExString::MatchesRegExp(const RegExp *expression) const
     return expression->Matches (*this);
 }
 
-//=============================================================================================================//
+
 
 inline bool RegExString::MatchesRegExp (const RegExp &expression) const
 {
@@ -147,21 +147,21 @@ inline bool RegExString::MatchesRegExp (const RegExp &expression) const
     return expression.Matches(*this);
 }
 
-//=============================================================================================================//
+
 
 inline char RegExString::ConditionalToLower (char c, bool caseSensitivity) const
 {
     return caseSensitivity ? c : (char)tolower(c);
 }
 
-//=============================================================================================================//
+
 
 inline bool RegExString::CharsAreEqual (char char1, char char2, bool caseSensitivity) const
 {
     return ConditionalToLower(char1, caseSensitivity) == ConditionalToLower (char2, caseSensitivity);
 }
 
-//=============================================================================================================//
+
 
 
 

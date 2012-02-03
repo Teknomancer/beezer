@@ -34,7 +34,7 @@
 
 #include "SelectDirPanel.h"
 
-//=============================================================================================================//
+
 
 SelectDirPanel::SelectDirPanel (file_panel_mode mode, BMessenger *target, const entry_ref *start_directory,
                   uint32 node_flavors, bool allow_multiple_selection, BMessage *message, BRefFilter *filter,
@@ -61,13 +61,13 @@ SelectDirPanel::SelectDirPanel (file_panel_mode mode, BMessenger *target, const 
     UpdateButton();
 }
 
-//=============================================================================================================//
+
 
 SelectDirPanel::~SelectDirPanel()
 {
 }
 
-//=============================================================================================================//
+
 
 void SelectDirPanel::SetCurrentDirButton (const char *label)
 {
@@ -75,7 +75,7 @@ void SelectDirPanel::SetCurrentDirButton (const char *label)
     UpdateButton();
 }
 
-//=============================================================================================================//
+
 
 void SelectDirPanel::SelectionChanged ()
 {
@@ -83,7 +83,7 @@ void SelectDirPanel::SelectionChanged ()
     BFilePanel::SelectionChanged();
 }
 
-//=============================================================================================================//
+
 
 void SelectDirPanel::Refresh()
 {
@@ -91,7 +91,7 @@ void SelectDirPanel::Refresh()
     BFilePanel::Refresh();
 }
 
-//=============================================================================================================//
+
 
 void SelectDirPanel::UpdateButton ()
 {
@@ -117,7 +117,7 @@ void SelectDirPanel::UpdateButton ()
     Window()->UnlockLooper();
 }
 
-//=============================================================================================================//
+
 
 void SelectDirPanel::SetMessage (BMessage *msg)
 {
@@ -128,7 +128,7 @@ void SelectDirPanel::SetMessage (BMessage *msg)
     BFilePanel::SetMessage (msg);
 }
 
-//=============================================================================================================//
+
 
 void SelectDirPanel::SendMessage (const BMessenger *target, BMessage *message)
 {
@@ -143,4 +143,4 @@ void SelectDirPanel::SendMessage (const BMessenger *target, BMessage *message)
         return BFilePanel::SendMessage (target, message);
 }
 
-//=============================================================================================================//
+

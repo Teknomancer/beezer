@@ -37,13 +37,13 @@
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
 
-//=============================================================================================================//
+
 
 ArchiveEntry::ArchiveEntry()
 {
 }
 
-//=============================================================================================================//
+
 
 ArchiveEntry::ArchiveEntry (bool dir, const char *pathStr, const char *sizeStr, const char *packedStr,
                   const char *dateStr, time_t timeValue, const char *methodStr, const char *crcStr)
@@ -87,7 +87,7 @@ ArchiveEntry::ArchiveEntry (bool dir, const char *pathStr, const char *sizeStr, 
         m_crcStr = NULL;
 }
 
-//=============================================================================================================//
+
 
 ArchiveEntry::~ArchiveEntry()
 {
@@ -102,4 +102,4 @@ ArchiveEntry::~ArchiveEntry()
     if (m_crcStr) free (m_crcStr);
 }
 
-//=============================================================================================================//
+

@@ -45,7 +45,7 @@
 #include "FSUtils.h"
 #include "MsgConstants.h"
 
-//=============================================================================================================//
+
 
 ArchiveRep::ArchiveRep ()
 {
@@ -53,7 +53,7 @@ ArchiveRep::ArchiveRep ()
     m_archiver = NULL;
 }
 
-//=============================================================================================================//
+
 
 ArchiveRep::~ArchiveRep()
 {
@@ -68,7 +68,7 @@ ArchiveRep::~ArchiveRep()
     }
 }
 
-//=============================================================================================================//
+
 
 status_t ArchiveRep::InitArchiver (const char *name, bool popupErrors)
 {
@@ -87,7 +87,7 @@ status_t ArchiveRep::InitArchiver (const char *name, bool popupErrors)
     return result;
 }
 
-//=============================================================================================================//
+
 
 status_t ArchiveRep::InitArchiver (entry_ref *ref, char *mimeString)
 {
@@ -135,7 +135,7 @@ status_t ArchiveRep::InitArchiver (entry_ref *ref, char *mimeString)
     return errCode;
 }
 
-//=============================================================================================================//
+
 
 const char* ArchiveRep::MakeTempDirectory ()
 {
@@ -145,21 +145,21 @@ const char* ArchiveRep::MakeTempDirectory ()
     return m_tempDirPath;
 }
 
-//=============================================================================================================//
+
 
 Archiver* ArchiveRep::Ark () const
 {
     return m_archiver;
 }
 
-//=============================================================================================================//
+
 
 thread_id ArchiveRep::ThreadID () const
 {
     return m_thread;
 }
 
-//=============================================================================================================//
+
 
 void ArchiveRep::CleanMessage (BMessage *message)
 {
@@ -168,7 +168,7 @@ void ArchiveRep::CleanMessage (BMessage *message)
     message->AddPointer (kArchiverPtr, (void*)m_archiver);
 }
 
-//=============================================================================================================//
+
 
 status_t ArchiveRep::Open (BMessage *message)
 {
@@ -178,7 +178,7 @@ status_t ArchiveRep::Open (BMessage *message)
     return B_OK;
 }
 
-//=============================================================================================================//
+
 
 status_t ArchiveRep::Open ()
 {
@@ -187,7 +187,7 @@ status_t ArchiveRep::Open ()
     return m_archiver->Open (&ref);
 }
 
-//=============================================================================================================//
+
 
 status_t ArchiveRep::Test ()
 {
@@ -195,7 +195,7 @@ status_t ArchiveRep::Test ()
     return m_archiver->Test (output, NULL, NULL);
 }
 
-//=============================================================================================================//
+
 
 status_t ArchiveRep::Test (BMessage *message)
 {
@@ -205,7 +205,7 @@ status_t ArchiveRep::Test (BMessage *message)
     return B_OK;
 }
 
-//=============================================================================================================//
+
 
 status_t ArchiveRep::Count (BMessage *message)
 {
@@ -216,7 +216,7 @@ status_t ArchiveRep::Count (BMessage *message)
     return B_OK;
 }
 
-//=============================================================================================================//
+
 
 status_t ArchiveRep::Create (BMessage *message)
 {
@@ -228,7 +228,7 @@ status_t ArchiveRep::Create (BMessage *message)
     return B_OK;
 }
 
-//=============================================================================================================//
+
 
 int32 ArchiveRep::_opener (void *arg)
 {
@@ -251,7 +251,7 @@ int32 ArchiveRep::_opener (void *arg)
     return result;
 }
 
-//=============================================================================================================//
+
 
 int32 ArchiveRep::_tester (void *arg)
 {
@@ -282,7 +282,7 @@ int32 ArchiveRep::_tester (void *arg)
     return result;
 }
 
-//=============================================================================================================//
+
 
 int32 ArchiveRep::_counter (void *arg)
 {
@@ -339,7 +339,7 @@ int32 ArchiveRep::_counter (void *arg)
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 int32 ArchiveRep::_adder (void *arg)
 {
@@ -384,4 +384,4 @@ int32 ArchiveRep::_adder (void *arg)
     return result;
 }
 
-//=============================================================================================================//
+

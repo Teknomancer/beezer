@@ -60,7 +60,7 @@
 #include "Joiner.h"
 #include "Shared.h"
 
-//=============================================================================================================//
+
 
 FileJoinerWindow::FileJoinerWindow (RecentMgr *dirs)
     : BWindow (BRect (10, 10, 520, 300), str (S_FILE_JOINER_TITLE), B_TITLED_WINDOW,
@@ -319,14 +319,14 @@ FileJoinerWindow::FileJoinerWindow (RecentMgr *dirs)
     m_messenger = new BMessenger (this);
 }
 
-//=============================================================================================================//
+
 
 FileJoinerWindow::~FileJoinerWindow ()
 {
     delete m_messenger;
 }
 
-//=============================================================================================================//
+
 
 void FileJoinerWindow::Quit ()
 {
@@ -334,7 +334,7 @@ void FileJoinerWindow::Quit ()
     return BWindow::Quit ();
 }
 
-//=============================================================================================================//
+
 
 bool FileJoinerWindow::QuitRequested ()
 {
@@ -363,7 +363,7 @@ bool FileJoinerWindow::QuitRequested ()
         return BWindow::QuitRequested();
 }
 
-//=============================================================================================================//
+
 
 void FileJoinerWindow::MessageReceived (BMessage *message)
 {
@@ -604,14 +604,14 @@ void FileJoinerWindow::MessageReceived (BMessage *message)
     }
 }
 
-//=============================================================================================================//
+
 
 void FileJoinerWindow::UpdateRecentMenus ()
 {
     m_recentSplitDirs->UpdateMenu (m_folderMenu, kRecentSplitDir, this);
 }
 
-//=============================================================================================================//
+
 
 void FileJoinerWindow::UpdateData ()
 {
@@ -637,7 +637,7 @@ void FileJoinerWindow::UpdateData ()
         m_joinBtn->SetEnabled (false);
 }
 
-//=============================================================================================================//
+
 
 void FileJoinerWindow::RefreshInfo ()
 {
@@ -663,7 +663,7 @@ void FileJoinerWindow::RefreshInfo ()
     m_calcSize = true;
 }
 
-//=============================================================================================================//
+
 
 void FileJoinerWindow::GetDirectoryInfo (BEntry *srcDir, int32 &fileCount, off_t &totalSize,
            volatile bool *cancel)
@@ -688,7 +688,7 @@ void FileJoinerWindow::GetDirectoryInfo (BEntry *srcDir, int32 &fileCount, off_t
     }
 }
 
-//=============================================================================================================//
+
 
 void FileJoinerWindow::DeleteChunks (const char *firstChunkPathStr, const char *separator)
 {
@@ -728,7 +728,7 @@ void FileJoinerWindow::DeleteChunks (const char *firstChunkPathStr, const char *
     }
 }
 
-//=============================================================================================================//
+
 
 void FileJoinerWindow::ToggleWindowHeight (bool expand)
 {
@@ -757,9 +757,9 @@ void FileJoinerWindow::ToggleWindowHeight (bool expand)
 }
 
 
-//=============================================================================================================//
-//=============================================================================================================//
-//=============================================================================================================//
+
+
+
 
 int32 FileJoinerWindow::_calcsize (void *arg)
 {
@@ -798,7 +798,7 @@ int32 FileJoinerWindow::_calcsize (void *arg)
     return 0;
 }
 
-//=============================================================================================================//
+
 
 int32 FileJoinerWindow::_joiner (void *arg)
 {
@@ -815,4 +815,4 @@ int32 FileJoinerWindow::_joiner (void *arg)
     return result;
 }
 
-//=============================================================================================================//
+

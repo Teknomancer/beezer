@@ -38,7 +38,7 @@
 #include "PrefsView.h"
 #include "UIConstants.h"
 
-//=============================================================================================================//
+
 
 PrefsView::PrefsView (BRect frame, const char *title, const char *description)
     : BevelView (frame, NULL, btInset, B_FOLLOW_LEFT, B_WILL_DRAW)
@@ -60,7 +60,7 @@ PrefsView::PrefsView (BRect frame, const char *title, const char *description)
     // class and make it pass that to us, but thats a bore too
 }
 
-//=============================================================================================================//
+
 
 PrefsView::~PrefsView ()
 {
@@ -73,21 +73,21 @@ PrefsView::~PrefsView ()
     DeleteBitmap();
 }
 
-//=============================================================================================================//
+
 
 const char* PrefsView::Description () const
 {
     return m_descriptionStr;
 }
 
-//=============================================================================================================//
+
 
 const char* PrefsView::Title () const
 {
     return m_titleStr;
 }
 
-//=============================================================================================================//
+
 
 bool PrefsView::IsChecked (BCheckBox *chkBox) const
 {
@@ -98,7 +98,7 @@ bool PrefsView::IsChecked (BCheckBox *chkBox) const
         return false;
 }
 
-//=============================================================================================================//
+
 
 void PrefsView::AddRevertButton ()
 {
@@ -110,7 +110,7 @@ void PrefsView::AddRevertButton ()
     m_revertBtn->SetTarget (this);
 }
 
-//=============================================================================================================//
+
 
 void PrefsView::DeleteBitmap ()
 {
@@ -121,7 +121,7 @@ void PrefsView::DeleteBitmap ()
     }
 }
 
-//=============================================================================================================//
+
 
 void PrefsView::SetBitmap (BBitmap *bmp)
 {
@@ -129,32 +129,32 @@ void PrefsView::SetBitmap (BBitmap *bmp)
     m_bitmap = bmp;
 }
 
-//=============================================================================================================//
+
 
 BBitmap *PrefsView::Bitmap () const
 {
     return m_bitmap;
 }
 
-//=============================================================================================================//
+
 
 void PrefsView::Render ()
 {
     // Derived class will override this, deliberately not made abstract
 }
 
-//=============================================================================================================//
+
 
 void PrefsView::Save ()
 {
     // Derived class will override this, deliberately not made abstract
 }
 
-//=============================================================================================================//
+
 
 void PrefsView::Load ()
 {
     // Derived class will override this, deliberately not made abstract
 }
 
-//=============================================================================================================//
+

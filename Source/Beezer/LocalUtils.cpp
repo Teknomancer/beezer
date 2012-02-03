@@ -53,7 +53,7 @@
 
 BLocker _local_utils_locker ("_local_utils_lock", true);
 
-//=============================================================================================================//
+
 
 bool OpenEntry (const char *tempDirPath, const char *entryPath, bool openWith)
 {
@@ -99,7 +99,7 @@ bool OpenEntry (const char *tempDirPath, const char *entryPath, bool openWith)
     return true;
 }
 
-//=============================================================================================================//
+
 
 bool TrackerOpenWith (entry_ref *ref)
 {
@@ -130,7 +130,7 @@ bool TrackerOpenWith (entry_ref *ref)
     return true;
 }
 
-//=============================================================================================================//
+
 
 void TrackerOpenFolder (entry_ref *refToDir)
 {
@@ -145,7 +145,7 @@ void TrackerOpenFolder (entry_ref *refToDir)
     }
 }
 
-//=============================================================================================================//
+
 
 BString CommaFormatString (off_t num)
 {
@@ -181,7 +181,7 @@ BString CommaFormatString (off_t num)
     return bytes;
 }
 
-//=============================================================================================================//
+
 
 BBitmap* ResBitmap (const char *name, uint32 type)
 {
@@ -214,7 +214,7 @@ BBitmap* ResBitmap (const char *name, uint32 type)
     return new BBitmap (&msg);
 }
 
-//=============================================================================================================//
+
 
 int64 BytesFromString (char *text)
 {
@@ -242,7 +242,7 @@ int64 BytesFromString (char *text)
     return (int64)val;
 }
 
-//=============================================================================================================//
+
 
 BString LocaleStringFromBytes (int64 v)
 {
@@ -276,7 +276,7 @@ BString LocaleStringFromBytes (int64 v)
     return str;
 }
 
-//=============================================================================================================//
+
 
 // Currently un-used, will use when we do dynamic column resizes
 //float TruncSizeString (BString *result, BView *view, char *text, float width)
@@ -357,7 +357,7 @@ BString LocaleStringFromBytes (int64 v)
 //    }
 //}
 
-//=============================================================================================================//
+
 
 void SetTargetForMenuRecursive (BMenu *menu, BHandler *target)
 {
@@ -377,4 +377,4 @@ void SetTargetForMenuRecursive (BMenu *menu, BHandler *target)
     }
 }
 
-//=============================================================================================================//
+

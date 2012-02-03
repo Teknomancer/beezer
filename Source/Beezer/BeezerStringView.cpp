@@ -37,7 +37,7 @@
 
 #include "BeezerStringView.h"
 
-//=============================================================================================================//
+
 
 BeezerStringView::BeezerStringView (BRect frame, const char *name, const char *label,
                uint32 rmask, uint32 flags)
@@ -51,7 +51,7 @@ BeezerStringView::BeezerStringView (BRect frame, const char *name, const char *l
     m_font = *be_plain_font;
 }
 
-//=============================================================================================================//
+
 
 BeezerStringView::~BeezerStringView ()
 {
@@ -62,7 +62,7 @@ BeezerStringView::~BeezerStringView ()
         free (m_oldText);
 }
 
-//=============================================================================================================//
+
 
 void BeezerStringView::Draw (BRect frame)
 {
@@ -70,7 +70,7 @@ void BeezerStringView::Draw (BRect frame)
     BView::Draw (frame);
 }
 
-//=============================================================================================================//
+
 
 void BeezerStringView::Invalidate (BRect invalRect)
 {
@@ -78,7 +78,7 @@ void BeezerStringView::Invalidate (BRect invalRect)
     BView::Invalidate (invalRect);
 }
 
-//=============================================================================================================//
+
 
 void BeezerStringView::RenderView (bool firstTime)
 {
@@ -117,7 +117,7 @@ void BeezerStringView::RenderView (bool firstTime)
     m_backBitmap->Unlock();
 }
 
-//=============================================================================================================//
+
 
 void BeezerStringView::SetText (const char *text)
 {
@@ -132,14 +132,14 @@ void BeezerStringView::SetText (const char *text)
     RenderView ();
 }
 
-//=============================================================================================================//
+
 
 const char* BeezerStringView::Text () const
 {
     return const_cast<const char*>(m_text);
 }
 
-//=============================================================================================================//
+
 
 void BeezerStringView::AttachedToWindow ()
 {
@@ -162,7 +162,7 @@ void BeezerStringView::AttachedToWindow ()
     BView::AttachedToWindow();
 }
 
-//=============================================================================================================//
+
 
 void BeezerStringView::SetHighColor (rgb_color a_color)
 {
@@ -170,7 +170,7 @@ void BeezerStringView::SetHighColor (rgb_color a_color)
     BView::SetHighColor(a_color);
 }
 
-//=============================================================================================================//
+
 
 void BeezerStringView::SetHighColor (uchar r, uchar g, uchar b, uchar a)
 {
@@ -181,7 +181,7 @@ void BeezerStringView::SetHighColor (uchar r, uchar g, uchar b, uchar a)
     BView::SetHighColor (r, g, b, a);
 }
 
-//=============================================================================================================//
+
 
 void BeezerStringView::SetFont (const BFont *font, uint32 mask)
 {
@@ -189,7 +189,7 @@ void BeezerStringView::SetFont (const BFont *font, uint32 mask)
     BView::SetFont (font, mask);
 }
 
-//=============================================================================================================//
+
 
 void BeezerStringView::GetPreferredSize (float *width, float *height)
 {
@@ -199,14 +199,14 @@ void BeezerStringView::GetPreferredSize (float *width, float *height)
     *width = 6 + m_font.StringWidth (m_text);
 }
 
-//=============================================================================================================//
+
 
 void BeezerStringView::SendMouseEventsTo (BView *view)
 {
     m_mouseTargetView = view;
 }
 
-//=============================================================================================================//
+
 
 void BeezerStringView::MouseDown (BPoint point)
 {
@@ -216,4 +216,4 @@ void BeezerStringView::MouseDown (BPoint point)
     return BView::MouseDown (point);
 }
 
-//=============================================================================================================//
+

@@ -58,7 +58,7 @@
 #include "PrefsFields.h"
 #include "UIConstants.h"
 
-//=============================================================================================================//
+
 
 AddOnWindow::AddOnWindow (BMessage *refsMessage)
     : BWindow (BRect (10, 10, 420, 475), str (S_TA_TITLE), B_TITLED_WINDOW,
@@ -285,7 +285,7 @@ AddOnWindow::AddOnWindow (BMessage *refsMessage)
     Show();
 }
 
-//=============================================================================================================//
+
 
 bool AddOnWindow::QuitRequested ()
 {
@@ -313,7 +313,7 @@ bool AddOnWindow::QuitRequested ()
         return BWindow::QuitRequested();
 }
 
-//=============================================================================================================//
+
 
 void AddOnWindow::Quit ()
 {
@@ -325,7 +325,7 @@ void AddOnWindow::Quit ()
     return BWindow::Quit();
 }
 
-//=============================================================================================================//
+
 
 void AddOnWindow::MessageReceived (BMessage *message)
 {
@@ -477,7 +477,7 @@ void AddOnWindow::MessageReceived (BMessage *message)
     }
 }
 
-//=============================================================================================================//
+
 
 void AddOnWindow::EnableControls (bool enable)
 {
@@ -490,7 +490,7 @@ void AddOnWindow::EnableControls (bool enable)
     m_password->SetEnabled (enable);
 }
 
-//=============================================================================================================//
+
 
 void AddOnWindow::CreateArchiveRepAndMenus ()
 {
@@ -543,7 +543,7 @@ void AddOnWindow::CreateArchiveRepAndMenus ()
     }
 }
 
-//=============================================================================================================//
+
 
 bool AddOnWindow::ReplaceExtensionWith (const char *newExt)
 {
@@ -585,7 +585,7 @@ bool AddOnWindow::ReplaceExtensionWith (const char *newExt)
     return replacedExt;
 }
 
-//=============================================================================================================//
+
 
 void AddOnWindow::UpdateStatus (const char *text)
 {
@@ -604,7 +604,7 @@ void AddOnWindow::UpdateStatus (const char *text)
     m_statusStr->ResizeToPreferred ();
 }
 
-//=============================================================================================================//
+
 
 void AddOnWindow::ValidateData ()
 {
@@ -649,7 +649,7 @@ void AddOnWindow::ValidateData ()
         m_createBtn->SetEnabled (false);
 }
 
-//=============================================================================================================//
+
 
 void AddOnWindow::RefsReceived (BMessage *message)
 {
@@ -699,4 +699,4 @@ void AddOnWindow::RefsReceived (BMessage *message)
         m_readyMode = true;
 }
 
-//=============================================================================================================//
+

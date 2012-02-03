@@ -42,7 +42,7 @@
 #include "PrefsViewRecent.h"
 #include "UIConstants.h"
 
-//=============================================================================================================//
+
 
 PrefsViewRecent::PrefsViewRecent (BRect frame)
     : PrefsView (frame, str (S_PREFS_TITLE_RECENT), str (S_PREFS_DESC_RECENT))
@@ -51,7 +51,7 @@ PrefsViewRecent::PrefsViewRecent (BRect frame)
     Render();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewRecent::Render ()
 {
@@ -100,7 +100,7 @@ void PrefsViewRecent::Render ()
     AddRevertButton();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewRecent::Save ()
 {
@@ -110,7 +110,7 @@ void PrefsViewRecent::Save ()
     _prefs_state.WritePrefs();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewRecent::Load ()
 {
@@ -133,4 +133,4 @@ void PrefsViewRecent::Load ()
     m_recentExtView->SetText (buf.String());
 }
 
-//=============================================================================================================//
+

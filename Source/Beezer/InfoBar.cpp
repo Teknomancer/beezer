@@ -45,7 +45,7 @@
 #include "PrefsFields.h"
 #include "UIConstants.h"
 
-//=============================================================================================================//
+
 
 InfoBar::InfoBar (BRect frame, BList *slotPositions, const char *name, rgb_color backColor)
     : BView (frame, name, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_WILL_DRAW),
@@ -61,14 +61,14 @@ InfoBar::InfoBar (BRect frame, BList *slotPositions, const char *name, rgb_color
     m_slotPositions = slotPositions;
 }
 
-//=============================================================================================================//
+
 
 InfoBar::~InfoBar ()
 {
     delete m_slotPositions;
 }
 
-//=============================================================================================================//
+
 
 void InfoBar::AttachedToWindow ()
 {
@@ -109,7 +109,7 @@ void InfoBar::AttachedToWindow ()
     AddSeparatorItem (twoX, true);
 }
 
-//=============================================================================================================//
+
 
 void InfoBar::UpdateFilesDisplay (int32 selectedCount, int32 totalCount, bool setTotalCount)
 {
@@ -122,7 +122,7 @@ void InfoBar::UpdateFilesDisplay (int32 selectedCount, int32 totalCount, bool se
     m_selectedFiles = selectedCount;
 }
 
-//=============================================================================================================//
+
 
 void InfoBar::UpdateBytesDisplay (uint32 selectedBytes, uint32 totalBytes, bool setTotalBytes)
 {
@@ -136,7 +136,7 @@ void InfoBar::UpdateBytesDisplay (uint32 selectedBytes, uint32 totalBytes, bool 
     m_selectedBytes = selectedBytes;
 }
 
-//=============================================================================================================//
+
 
 void InfoBar::UpdateBy (int32 countBy, uint32 bytesBy)
 {
@@ -152,7 +152,7 @@ void InfoBar::UpdateBy (int32 countBy, uint32 bytesBy)
     m_bytesStr->SetText (buf2);
 }
 
-//=============================================================================================================//
+
 
 void InfoBar::Draw (BRect updateRect)
 {
@@ -167,7 +167,7 @@ void InfoBar::Draw (BRect updateRect)
     BView::Draw (updateRect);
 }
 
-//=============================================================================================================//
+
 
 inline void InfoBar::RenderEdges ()
 {
@@ -196,7 +196,7 @@ inline void InfoBar::RenderEdges ()
     EndLineArray();
 }
 
-//=============================================================================================================//
+
 
 void InfoBar::MouseDown (BPoint point)
 {
@@ -212,7 +212,7 @@ void InfoBar::MouseDown (BPoint point)
     BView::MouseDown (point);
 }
 
-//=============================================================================================================//
+
 
 void InfoBar::Toggle ()
 {
@@ -249,7 +249,7 @@ void InfoBar::Toggle ()
     Window()->PostMessage (&notifierMessage);
 }
 
-//=============================================================================================================//
+
 
 void InfoBar::AddSeparatorItem (float x, bool finalSeparator)
 {
@@ -303,21 +303,21 @@ void InfoBar::AddSeparatorItem (float x, bool finalSeparator)
         m_finalX = x;
 }
 
-//=============================================================================================================//
+
 
 bool InfoBar::IsShown () const
 {
     return !m_isHidden;
 }
 
-//=============================================================================================================//
+
 
 BarberPole *InfoBar::LoadIndicator () const
 {
     return m_barberPole;
 }
 
-//=============================================================================================================//
+
 
 float InfoBar::Height() const
 {
@@ -327,7 +327,7 @@ float InfoBar::Height() const
         return Frame().Height();
 }
 
-//=============================================================================================================//
+
 
 void InfoBar::Redraw ()
 {
@@ -350,4 +350,4 @@ void InfoBar::Redraw ()
     Invalidate ();
 }
 
-//=============================================================================================================//
+

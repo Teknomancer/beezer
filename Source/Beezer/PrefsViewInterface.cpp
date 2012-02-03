@@ -52,7 +52,7 @@
 #define M_COLOR_CHANGE        'clch'
 #define M_ITEM_CHANGE        'itch'
 
-//=============================================================================================================//
+
 
 PrefsViewInterface::PrefsViewInterface (BRect frame)
     : PrefsView (frame, str (S_PREFS_TITLE_INTERFACE), str (S_PREFS_DESC_INTERFACE))
@@ -61,7 +61,7 @@ PrefsViewInterface::PrefsViewInterface (BRect frame)
     Render();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewInterface::Render ()
 {
@@ -152,7 +152,7 @@ void PrefsViewInterface::Render ()
     AddRevertButton();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewInterface::Save ()
 {
@@ -189,7 +189,7 @@ void PrefsViewInterface::Save ()
     msg.Flatten (&writeFile);
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewInterface::Load ()
 {
@@ -223,7 +223,7 @@ void PrefsViewInterface::Load ()
         m_foldingPopUp->ItemAt(3)->SetMarked (true);
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewInterface::AttachedToWindow()
 {
@@ -232,7 +232,7 @@ void PrefsViewInterface::AttachedToWindow()
     return PrefsView::AttachedToWindow();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewInterface::MessageReceived (BMessage *message)
 {
@@ -268,7 +268,7 @@ void PrefsViewInterface::MessageReceived (BMessage *message)
     return PrefsView::MessageReceived (message);
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewInterface::UpdateColorWell ()
 {
@@ -276,7 +276,7 @@ void PrefsViewInterface::UpdateColorWell ()
     m_colorWell->Invalidate();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewInterface::UpdateColorControl (BMenuItem *item)
 {
@@ -289,7 +289,7 @@ void PrefsViewInterface::UpdateColorControl (BMenuItem *item)
     UpdateColorWell();
 }
 
-//=============================================================================================================//
+
 
 bool PrefsViewInterface::FindBoolDef (BMessage *msg, const char *name, bool defaultValue)
 {
@@ -303,4 +303,4 @@ bool PrefsViewInterface::FindBoolDef (BMessage *msg, const char *name, bool defa
         return defaultValue;
 }
 
-//=============================================================================================================//
+

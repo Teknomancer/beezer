@@ -49,16 +49,16 @@
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
 
-//=============================================================================================================//
+
 
 Archiver *load_archiver ()
 {
     return new LhaArchiver ();
 }
 
-//=============================================================================================================//
-//=============================================================================================================//
-//=============================================================================================================//
+
+
+
 
 LhaArchiver::LhaArchiver ()
 {
@@ -80,7 +80,7 @@ LhaArchiver::LhaArchiver ()
     }
 }
 
-//=============================================================================================================//
+
 
 status_t LhaArchiver::ReadOpen (FILE *fp)
 {
@@ -162,7 +162,7 @@ status_t LhaArchiver::ReadOpen (FILE *fp)
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t LhaArchiver::Open (entry_ref *ref, BMessage *fileList)
 {
@@ -199,7 +199,7 @@ status_t LhaArchiver::Open (entry_ref *ref, BMessage *fileList)
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t LhaArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger *progress,
                       volatile bool *cancel)
@@ -279,7 +279,7 @@ status_t LhaArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenge
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t LhaArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool *cancel)
 {
@@ -313,7 +313,7 @@ status_t LhaArchiver::ReadExtract (FILE *fp, BMessenger *progress, volatile bool
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t LhaArchiver::Test (char *&outputStr, BMessenger *progress, volatile bool *cancel)
 {
@@ -374,7 +374,7 @@ status_t LhaArchiver::Test (char *&outputStr, BMessenger *progress, volatile boo
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t LhaArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress, volatile bool *cancel)
 {
@@ -429,7 +429,7 @@ status_t LhaArchiver::ReadTest (FILE *fp, char *&outputStr, BMessenger *progress
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 bool LhaArchiver::SupportsFolderEntity () const
 {
@@ -438,7 +438,7 @@ bool LhaArchiver::SupportsFolderEntity () const
     return false;
 }
 
-//=============================================================================================================//
+
 
 bool LhaArchiver::CanPartiallyOpen () const
 {
@@ -447,7 +447,7 @@ bool LhaArchiver::CanPartiallyOpen () const
     return false;
 }
 
-//=============================================================================================================//
+
 
 status_t LhaArchiver::Add (bool createMode, const char *relativePath, BMessage *message, BMessage *addedPaths,
                       BMessenger *progress, volatile bool *cancel)
@@ -517,7 +517,7 @@ status_t LhaArchiver::Add (bool createMode, const char *relativePath, BMessage *
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t LhaArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progress, volatile bool *cancel)
 {
@@ -565,7 +565,7 @@ status_t LhaArchiver::ReadAdd (FILE *fp, BMessage *addedPaths, BMessenger *progr
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t LhaArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *progress,
                       volatile bool *cancel)
@@ -635,7 +635,7 @@ status_t LhaArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *p
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t LhaArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progress,
                       volatile bool *cancel)
@@ -664,7 +664,7 @@ status_t LhaArchiver::ReadDelete (FILE *fp, char *&outputStr, BMessenger *progre
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t LhaArchiver::Create (BPath *archivePath, const char *relPath, BMessage *fileList, BMessage *addedPaths,
                              BMessenger *progress, volatile bool *cancel)
@@ -688,7 +688,7 @@ status_t LhaArchiver::Create (BPath *archivePath, const char *relPath, BMessage 
     return result;
 }
 
-//=============================================================================================================//
+
 
 int8 LhaArchiver::MonthStrToNum (const char *month) const
 {
@@ -709,7 +709,7 @@ int8 LhaArchiver::MonthStrToNum (const char *month) const
     return 1;
 }
 
-//=============================================================================================================//
+
 
 void LhaArchiver::BuildDefaultMenu ()
 {
@@ -742,7 +742,7 @@ void LhaArchiver::BuildDefaultMenu ()
     m_settingsMenu->AddItem (otherMenu);
 }
 
-//=============================================================================================================//
+
 
 void LhaArchiver::SetMimeType ()
 {
@@ -756,4 +756,4 @@ void LhaArchiver::SetMimeType ()
     }
 }
 
-//=============================================================================================================//
+

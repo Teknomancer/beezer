@@ -49,16 +49,16 @@
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
 
-//=============================================================================================================//
+
 
 Archiver *load_archiver ()
 {
     return new XzArchiver ();
 }
 
-//=============================================================================================================//
-//=============================================================================================================//
-//=============================================================================================================//
+
+
+
 
 XzArchiver::XzArchiver ()
     : TarArchiver (true)
@@ -78,7 +78,7 @@ XzArchiver::XzArchiver ()
     }
 }
 
-//=============================================================================================================//
+
 
 status_t XzArchiver::ReadOpen (FILE *fp)
 {
@@ -130,7 +130,7 @@ status_t XzArchiver::ReadOpen (FILE *fp)
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t XzArchiver::Open (entry_ref *ref, BMessage *fileList)
 {
@@ -215,7 +215,7 @@ status_t XzArchiver::Open (entry_ref *ref, BMessage *fileList)
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 status_t XzArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger *progress,
                       volatile bool *cancel)
@@ -253,7 +253,7 @@ status_t XzArchiver::Extract (entry_ref *refToDir, BMessage *message, BMessenger
     }
 }
 
-//=============================================================================================================//
+
 
 status_t XzArchiver::Test (char *&outputStr, BMessenger *progress, volatile bool *cancel)
 {
@@ -301,7 +301,7 @@ status_t XzArchiver::Test (char *&outputStr, BMessenger *progress, volatile bool
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 status_t XzArchiver::Add (bool createMode, const char *relativePath, BMessage *message, BMessage *addedPaths,
                       BMessenger *progress, volatile bool *cancel)
@@ -319,7 +319,7 @@ status_t XzArchiver::Add (bool createMode, const char *relativePath, BMessage *m
         return BZR_NOT_SUPPORTED;
 }
 
-//=============================================================================================================//
+
 
 status_t XzArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *progress,
                       volatile bool *cancel)
@@ -337,7 +337,7 @@ status_t XzArchiver::Delete (char *&outputStr, BMessage *message, BMessenger *pr
         return BZR_NOT_SUPPORTED;
 }
 
-//=============================================================================================================//
+
 
 status_t XzArchiver::Create (BPath *archivePath, const char *relPath, BMessage *fileList, BMessage *addedPaths,
                              BMessenger *progress, volatile bool *cancel)
@@ -364,14 +364,14 @@ status_t XzArchiver::Create (BPath *archivePath, const char *relPath, BMessage *
     return result;
 }
 
-//=============================================================================================================//
+
 
 bool XzArchiver::NeedsTempDirectory () const
 {
     return true;
 }
 
-//=============================================================================================================//
+
 
 void XzArchiver::BuildDefaultMenu ()
 {
@@ -398,7 +398,7 @@ void XzArchiver::BuildDefaultMenu ()
     m_settingsMenu->AddItem (ratioMenu);
 }
 
-//=============================================================================================================//
+
 
 BString XzArchiver::OutputFileName (const char *fullFileName) const
 {
@@ -425,7 +425,7 @@ BString XzArchiver::OutputFileName (const char *fullFileName) const
     return outputFileName;
 }
 
-//=============================================================================================================//
+
 
 BList XzArchiver::HiddenColumns (BList *columns) const
 {
@@ -438,7 +438,7 @@ BList XzArchiver::HiddenColumns (BList *columns) const
     }
 }
 
-//=============================================================================================================//
+
 
 void XzArchiver::CompressFromTemp ()
 {
@@ -457,7 +457,7 @@ void XzArchiver::CompressFromTemp ()
     m_pipeMgr.Pipe ();
 }
 
-//=============================================================================================================//
+
 
 BString XzArchiver::InitTarFilePath (char *leaf)
 {
@@ -467,7 +467,7 @@ BString XzArchiver::InitTarFilePath (char *leaf)
     return destPath;
 }
 
-//=============================================================================================================//
+
 
 void XzArchiver::SendProgressMessage (BMessenger *progress) const
 {
@@ -476,7 +476,7 @@ void XzArchiver::SendProgressMessage (BMessenger *progress) const
     progress->SendMessage (&updateMessage, &reply);
 }
 
-//=============================================================================================================//
+
 
 bool XzArchiver::CanAddFiles() const
 {
@@ -486,4 +486,4 @@ bool XzArchiver::CanAddFiles() const
         return TarArchiver::CanAddFiles();
 }
 
-//=============================================================================================================//
+

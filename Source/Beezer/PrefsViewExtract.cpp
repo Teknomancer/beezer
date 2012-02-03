@@ -39,7 +39,7 @@
 #include "PrefsViewExtract.h"
 #include "UIConstants.h"
 
-//=============================================================================================================//
+
 
 PrefsViewExtract::PrefsViewExtract (BRect frame)
     : PrefsView (frame, str (S_PREFS_TITLE_EXTRACT), str (S_PREFS_DESC_EXTRACT))
@@ -48,7 +48,7 @@ PrefsViewExtract::PrefsViewExtract (BRect frame)
     Render();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewExtract::Render ()
 {
@@ -77,7 +77,7 @@ void PrefsViewExtract::Render ()
     AddRevertButton();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewExtract::Save ()
 {
@@ -89,7 +89,7 @@ void PrefsViewExtract::Save ()
     _prefs_extract.WritePrefs();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewExtract::Load ()
 {
@@ -99,4 +99,4 @@ void PrefsViewExtract::Load ()
     m_dragChk->SetValue (_prefs_extract.FindBoolDef (kPfDrag, true));
 }
 
-//=============================================================================================================//
+

@@ -65,7 +65,7 @@ const char *const kTextCtrlPtr =    "txtctrptr";
 const char *const kListCtrlPtr =    "lstctrptr";
 const char *const kArkDir =           ":arkdir:";
 
-//=============================================================================================================//
+
 
 PrefsViewPaths::PrefsViewPaths (BRect frame)
     : PrefsView (frame, str (S_PREFS_TITLE_PATHS), str (S_PREFS_DESC_PATHS))
@@ -77,7 +77,7 @@ PrefsViewPaths::PrefsViewPaths (BRect frame)
     Render();
 }
 
-//=============================================================================================================//
+
 
 PrefsViewPaths::~PrefsViewPaths()
 {
@@ -89,7 +89,7 @@ PrefsViewPaths::~PrefsViewPaths()
     delete m_removeBmp;
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewPaths::Render ()
 {
@@ -232,7 +232,7 @@ void PrefsViewPaths::Render ()
     AddRevertButton();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewPaths::Save ()
 {
@@ -250,7 +250,7 @@ void PrefsViewPaths::Save ()
     _prefs_paths.WritePrefs();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewPaths::Load ()
 {
@@ -288,7 +288,7 @@ void PrefsViewPaths::Load ()
     m_genChk->SetValue (_prefs_paths.FindBoolDef (kPfGenPath, true));
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewPaths::AttachedToWindow ()
 {
@@ -303,7 +303,7 @@ void PrefsViewPaths::AttachedToWindow ()
     PrefsView::AttachedToWindow();
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewPaths::MessageReceived (BMessage *message)
 {
@@ -433,7 +433,7 @@ void PrefsViewPaths::MessageReceived (BMessage *message)
     }
 }
 
-//=============================================================================================================//
+
 
 void PrefsViewPaths::ToggleExtractPathView (bool enable)
 {
@@ -441,4 +441,4 @@ void PrefsViewPaths::ToggleExtractPathView (bool enable)
     m_extractPathBtn->SetEnabled (enable);
 }
 
-//=============================================================================================================//
+

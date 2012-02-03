@@ -47,7 +47,7 @@
 BLocker _recent_locker ("_recent_mgr_lock", true);
 int32 RecentMgr::m_maxInternalCount = 99;
 
-//=============================================================================================================//
+
 
 RecentMgr::RecentMgr (int32 maxNumPaths, Preferences *pref, RecentItemType allowedPathType, bool showFullPath)
 {
@@ -59,7 +59,7 @@ RecentMgr::RecentMgr (int32 maxNumPaths, Preferences *pref, RecentItemType allow
     LoadPrefs();
 }
 
-//=============================================================================================================//
+
 
 RecentMgr::~RecentMgr ()
 {
@@ -69,28 +69,28 @@ RecentMgr::~RecentMgr ()
         free ((char*)m_paths.RemoveItem (0L));
 }
 
-//=============================================================================================================//
+
 
 void RecentMgr::SetMaxPaths (int32 maxNumPaths)
 {
     m_maxNumPaths = maxNumPaths;
 }
 
-//=============================================================================================================//
+
 
 void RecentMgr::SetShowFullPath (bool showFullPath)
 {
     m_showFullPath = showFullPath;
 }
 
-//=============================================================================================================//
+
 
 void RecentMgr::SetCommand (uint32 command)
 {
     m_command = command;
 }
 
-//=============================================================================================================//
+
 
 void RecentMgr::AddPath (const char *path)
 {
@@ -116,7 +116,7 @@ void RecentMgr::AddPath (const char *path)
     m_paths.AddItem ((void*)strdup (path), 0L);
 }
 
-//=============================================================================================================//
+
 
 void RecentMgr::RemovePath (const char *path)
 {
@@ -127,7 +127,7 @@ void RecentMgr::RemovePath (const char *path)
     m_paths.RemoveItem ((void*)path);
 }
 
-//=============================================================================================================//
+
 
 BMenu* RecentMgr::BuildMenu (const char *menuName, const char *fieldName, BHandler *targetForItems)
 {
@@ -136,7 +136,7 @@ BMenu* RecentMgr::BuildMenu (const char *menuName, const char *fieldName, BHandl
     return recentMenu;
 }
 
-//=============================================================================================================//
+
 
 BPopUpMenu* RecentMgr::BuildPopUpMenu (const char *menuName, const char *fieldName, BHandler *targetForItems)
 {
@@ -145,7 +145,7 @@ BPopUpMenu* RecentMgr::BuildPopUpMenu (const char *menuName, const char *fieldNa
     return recentMenu;
 }
 
-//=============================================================================================================//
+
 
 void RecentMgr::UpdateMenu (BMenu *recentMenu, const char *fieldName, BHandler *targetForItems)
 {
@@ -158,7 +158,7 @@ void RecentMgr::UpdateMenu (BMenu *recentMenu, const char *fieldName, BHandler *
     FillMenu (recentMenu, fieldName, targetForItems);
 }
 
-//=============================================================================================================//
+
 
 void RecentMgr::FillMenu (BMenu *menu, const char *fieldName, BHandler *target)
 {
@@ -204,7 +204,7 @@ void RecentMgr::FillMenu (BMenu *menu, const char *fieldName, BHandler *target)
         menu->SetTargetForItems (target);
 }
 
-//=============================================================================================================//
+
 
 void RecentMgr::SavePrefs ()
 {
@@ -225,7 +225,7 @@ void RecentMgr::SavePrefs ()
     m_prefs->WritePrefs();
 }
 
-//=============================================================================================================//
+
 
 void RecentMgr::LoadPrefs ()
 {
@@ -238,4 +238,4 @@ void RecentMgr::LoadPrefs ()
         m_paths.AddItem ((void*)strdup (path));
 }
 
-//=============================================================================================================//
+

@@ -54,7 +54,7 @@ typedef struct stat StatStruct;
 // Global object declares
 BLocker _fs_utils_locker ("_fs_utils_lock", true);
 
-//=============================================================================================================//
+
 
 status_t CopyDirectory (BEntry *srcDir, BDirectory *destDir, BMessenger *progress, volatile bool *cancel)
 {
@@ -103,7 +103,7 @@ status_t CopyDirectory (BEntry *srcDir, BDirectory *destDir, BMessenger *progres
     return exitCode;
 }
 
-//=============================================================================================================//
+
 
 void GetDirectoryInfo (BEntry *srcDir, int32 &fileCount, int32 &folderCount, off_t &totalSize,
            volatile bool *cancel)
@@ -137,7 +137,7 @@ void GetDirectoryInfo (BEntry *srcDir, int32 &fileCount, int32 &folderCount, off
     }
 }
 
-//=============================================================================================================//
+
 
 void RemoveDirectory (BDirectory *dir)
 {
@@ -164,7 +164,7 @@ void RemoveDirectory (BDirectory *dir)
         entry.Remove();
 }
 
-//=============================================================================================================//
+
 
 BString CreateTempDirectory (const char *prefix, BDirectory **createdDir, bool createNow)
 {
@@ -192,7 +192,7 @@ BString CreateTempDirectory (const char *prefix, BDirectory **createdDir, bool c
     return tempDirName;
 }
 
-//=============================================================================================================//
+
 
 status_t CopyFile (BEntry *srcEntry, BDirectory *destDir, BMessenger *progress,    volatile bool *cancel)
 {
@@ -297,7 +297,7 @@ status_t CopyFile (BEntry *srcEntry, BDirectory *destDir, BMessenger *progress, 
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+
 
 void CopyAttributes (BNode *srcNode, BNode *destNode, void *buffer, size_t bufSize)
 {
@@ -328,7 +328,7 @@ void CopyAttributes (BNode *srcNode, BNode *destNode, void *buffer, size_t bufSi
     }
 }
 
-//=============================================================================================================//
+
 
 status_t SplitFile (BEntry *srcEntry, BDirectory *destDir, BMessenger *progress, uint64 fragmentSize,
            uint16 fragmentCount, char *sepString, BString &firstChunkName, volatile bool *cancel)
@@ -479,4 +479,4 @@ status_t SplitFile (BEntry *srcEntry, BDirectory *destDir, BMessenger *progress,
     return BZR_DONE;
 }
 
-//=============================================================================================================//
+

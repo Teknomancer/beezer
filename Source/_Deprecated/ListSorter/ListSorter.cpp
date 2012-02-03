@@ -13,7 +13,7 @@
 #include "HashTable.h"
 #include "ArchiveEntry.h"
 
-//=============================================================================================================//
+
 
 ListSorter::ListSorter (BList *list, CompareFunc func)
 {
@@ -26,13 +26,13 @@ ListSorter::ListSorter (BList *list, CompareFunc func)
     QuickSort (ptrOfList, nItems);
 }
 
-//=============================================================================================================//
+
 
 ListSorter::~ListSorter ()
 {
 }
 
-//=============================================================================================================//
+
 
 void ListSorter::QuickSort (unsigned long *list, int32 n)
 {
@@ -64,7 +64,7 @@ void ListSorter::QuickSort (unsigned long *list, int32 n)
     QuickSort (list + last + 1, n - last - 1);
 }
 
-//=============================================================================================================//
+
 
 inline void ListSorter::SwapItems (unsigned long *list, int32 i, int32 j)
 {
@@ -74,4 +74,4 @@ inline void ListSorter::SwapItems (unsigned long *list, int32 i, int32 j)
     list[j] = temp;
 }
 
-//=============================================================================================================//
+

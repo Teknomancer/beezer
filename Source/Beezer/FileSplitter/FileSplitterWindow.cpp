@@ -64,7 +64,7 @@
 #include "ArchiverMgr.h"
 #include "AppConstants.h"
 
-//=============================================================================================================//
+
 
 FileSplitterWindow::FileSplitterWindow (RecentMgr *files, RecentMgr *dirs)
     : BWindow (BRect (10, 10, 540, 350), str (S_FILE_SPLITTER_TITLE), B_TITLED_WINDOW,
@@ -392,7 +392,7 @@ FileSplitterWindow::FileSplitterWindow (RecentMgr *files, RecentMgr *dirs)
     m_quitNow = false;
 }
 
-//=============================================================================================================//
+
 
 FileSplitterWindow::~FileSplitterWindow ()
 {
@@ -408,7 +408,7 @@ FileSplitterWindow::~FileSplitterWindow ()
     delete m_messenger;
 }
 
-//=============================================================================================================//
+
 
 bool FileSplitterWindow::QuitRequested ()
 {
@@ -437,7 +437,7 @@ bool FileSplitterWindow::QuitRequested ()
         return BWindow::QuitRequested();
 }
 
-//=============================================================================================================//
+
 
 void FileSplitterWindow::Quit ()
 {
@@ -445,7 +445,7 @@ void FileSplitterWindow::Quit ()
     return BWindow::Quit();
 }
 
-//=============================================================================================================//
+
 
 void FileSplitterWindow::MessageReceived (BMessage *message)
 {
@@ -714,7 +714,7 @@ void FileSplitterWindow::MessageReceived (BMessage *message)
     }
 }
 
-//=============================================================================================================//
+
 
 void FileSplitterWindow::ToggleWindowHeight (bool expand)
 {
@@ -742,7 +742,7 @@ void FileSplitterWindow::ToggleWindowHeight (bool expand)
     }
 }
 
-//=============================================================================================================//
+
 
 void FileSplitterWindow::UpdateData ()
 {
@@ -856,7 +856,7 @@ void FileSplitterWindow::UpdateData ()
         m_splitBtn->SetEnabled (false);
 }
 
-//=============================================================================================================//
+
 
 void FileSplitterWindow::UpdateRecentMenus ()
 {
@@ -864,7 +864,7 @@ void FileSplitterWindow::UpdateRecentMenus ()
     m_recentSplitDirs->UpdateMenu (m_folderMenu, kRecentSplitDir, this);
 }
 
-//=============================================================================================================//
+
 
 void FileSplitterWindow::CreateSelfJoiner ()
 {
@@ -910,9 +910,9 @@ void FileSplitterWindow::CreateSelfJoiner ()
     stubFile.Unset();
 }
 
-//=============================================================================================================//
-//=============================================================================================================//
-//=============================================================================================================//
+
+
+
 
 int32 FileSplitterWindow::_splitter (void *arg)
 {
@@ -930,4 +930,4 @@ int32 FileSplitterWindow::_splitter (void *arg)
     return result;
 }
 
-//=============================================================================================================//
+

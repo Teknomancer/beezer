@@ -38,9 +38,6 @@
 #include "PrefsFields.h"
 #include "UIConstants.h"
 
-#include "BetterScrollView.h"
-
-//=============================================================================================================//
 
 LogWindow::LogWindow (BWindow *callerWindow, const char *title, const char *logText, BFont *displayFont)
     : BWindow (BRect (80, 140, 605, 355), title, B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE)
@@ -63,8 +60,8 @@ LogWindow::LogWindow (BWindow *callerWindow, const char *title, const char *logT
                       "LogWindow:TextView", BRect (2, 2, 100000, 0), B_FOLLOW_ALL_SIDES,
                       B_WILL_DRAW | B_FRAME_EVENTS);
 
-    m_scrollView = new BetterScrollView ("LogWindow:ScrollView", m_textView,
-                                B_FOLLOW_ALL_SIDES, B_WILL_DRAW, true, true, true, B_PLAIN_BORDER);
+    m_scrollView = new BScrollView ("LogWindow:ScrollView", m_textView,
+                                B_FOLLOW_ALL_SIDES, B_WILL_DRAW, true, true, B_PLAIN_BORDER);
     m_backView->AddChild (m_scrollView);
 
     m_textView->SetText (logText);
@@ -107,7 +104,6 @@ LogWindow::LogWindow (BWindow *callerWindow, const char *title, const char *logT
     Show();
 }
 
-//=============================================================================================================//
 
 bool LogWindow::QuitRequested()
 {
@@ -116,14 +112,3 @@ bool LogWindow::QuitRequested()
 
     return BWindow::QuitRequested();
 }
-
-//=============================================================================================================//
-
-void LogWindow::FrameResized (float newWidth, float newHeight)
-{
-    // fix, as scrollview failed to be enabled, we do the below trick
-    m_scrollView->SetDataRect (BRect (1, 1, m_maxLineWidth + 3, m_textView->TextRect().Height()), true);
-    BWindow::FrameResized (newWidth, newHeight);
-}
-
-//=============================================================================================================//

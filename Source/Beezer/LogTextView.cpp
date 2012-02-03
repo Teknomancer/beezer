@@ -39,7 +39,7 @@
 #include "LogTextView.h"
 #include "MsgConstants.h"
 
-//=============================================================================================================//
+
 
 LogTextView::LogTextView (BRect frame, const char *name, uint32 resizeMask, uint32 flags)
     : BTextView (frame, name, kInternalTextRect, resizeMask, flags)
@@ -47,7 +47,7 @@ LogTextView::LogTextView (BRect frame, const char *name, uint32 resizeMask, uint
     InitSelf();
 }
 
-//=============================================================================================================//
+
 
 LogTextView::LogTextView (BRect frame, const char *name, const BFont *initialFont,
                const rgb_color *initialColor, uint32 resizeMask, uint32 flags)
@@ -56,7 +56,7 @@ LogTextView::LogTextView (BRect frame, const char *name, const BFont *initialFon
     InitSelf();
 }
 
-//=============================================================================================================//
+
 
 void LogTextView::InitSelf ()
 {
@@ -68,14 +68,14 @@ void LogTextView::InitSelf ()
     SetWordWrap (false);
 }
 
-//=============================================================================================================//
+
 
 void LogTextView::SetContextMenu (BPopUpMenu *contextMenu)
 {
     m_contextMenu = contextMenu;
 }
 
-//=============================================================================================================//
+
 
 void LogTextView::AddText (const char *text, bool newLine, bool capitalizeFirstLetter, bool trimLeadingSpaces)
 {
@@ -107,7 +107,7 @@ void LogTextView::AddText (const char *text, bool newLine, bool capitalizeFirstL
     ScrollToSelection();
 }
 
-//=============================================================================================================//
+
 
 void LogTextView::MouseDown (BPoint point)
 {
@@ -132,7 +132,7 @@ void LogTextView::MouseDown (BPoint point)
         BTextView::MouseDown (point);
 }
 
-//=============================================================================================================//
+
 
 void LogTextView::Copy ()
 {
@@ -170,7 +170,7 @@ void LogTextView::Copy ()
     }
 }
 
-//=============================================================================================================//
+
 
 void LogTextView::MakeFocus (bool focused)
 {
@@ -178,4 +178,4 @@ void LogTextView::MakeFocus (bool focused)
     return BTextView::MakeFocus (focused);
 }
 
-//=============================================================================================================//
+
