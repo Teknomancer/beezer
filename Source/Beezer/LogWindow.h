@@ -32,11 +32,8 @@
 
 #include <Window.h>
 
-class BFont;
-class BScrollView;
-class BTextView;
 
-class BevelView;
+class BFont;
 
 class LogWindow : public BWindow
 {
@@ -45,14 +42,6 @@ class LogWindow : public BWindow
 
         // Inherited hooks
         virtual bool        QuitRequested();
-
-    private:
-        // Private members
-        BevelView          *m_backView;
-        BTextView          *m_textView;
-        BButton            *m_closeButton;
-        BScrollView         *m_scrollView;
-        float               m_maxLineWidth;
 };
 
 #endif /* _LOG_WINDOW_H */
