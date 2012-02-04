@@ -27,67 +27,37 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Button.h>
-#include <ScrollView.h>
-#include <TextView.h>
-
-#include "BevelView.h"
-#include "LangStrings.h"
 #include "LogWindow.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
-#include "UIConstants.h"
+
+#include <GroupLayoutBuilder.h>
+#include <ScrollView.h>
+#include <TextView.h>
 
 
 LogWindow::LogWindow (BWindow *callerWindow, const char *title, const char *logText, BFont *displayFont)
-    : BWindow (BRect (80, 140, 605, 355), title, B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE)
+    : BWindow (BRect (80, 140, 605, 355), title, B_FLOATING_WINDOW_LOOK, B_MODAL_APP_WINDOW_FEEL, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE)
 {
-    if (!callerWindow)
-        SetFeel (B_MODAL_APP_WINDOW_FEEL);
-    else
+    if (callerWindow)
     {
         SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
         AddToSubset (callerWindow);
     }
 
-    BRect bounds (Bounds());
-    m_backView = new BevelView (bounds, "LogWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
-    m_backView->SetViewColor (K_BACKGROUND_COLOR);
-    AddChild (m_backView);
+    SetLayout(new BGroupLayout(B_VERTICAL));
 
-    m_textView = new BTextView (BRect (K_MARGIN, K_MARGIN, bounds.right - K_MARGIN - B_V_SCROLL_BAR_WIDTH,
-                      bounds.bottom - 2 * K_MARGIN - K_BUTTON_HEIGHT - B_H_SCROLL_BAR_HEIGHT),
-                      "LogWindow:TextView", BRect (2, 2, 100000, 0), B_FOLLOW_ALL_SIDES,
-                      B_WILL_DRAW | B_FRAME_EVENTS);
+    BTextView *textView = new BTextView ("LogWindow:TextView", displayFont, NULL, B_WILL_DRAW | B_FRAME_EVENTS);
 
-    m_scrollView = new BScrollView ("LogWindow:ScrollView", m_textView,
-                                B_FOLLOW_ALL_SIDES, B_WILL_DRAW, true, true, B_PLAIN_BORDER);
-    m_backView->AddChild (m_scrollView);
+    BScrollView *scrollView = new BScrollView ("LogWindow:ScrollView", textView, B_WILL_DRAW, true, true, B_PLAIN_BORDER);
 
-    m_textView->SetText (logText);
-    m_textView->SetWordWrap (false);
-    m_textView->MakeEditable (false);
+    textView->SetText (logText);
+    textView->SetWordWrap (false);
+    textView->MakeEditable (false);
 
-    // Calculate the longest line's width
-    m_maxLineWidth = 0;
-    for (int32 i = 0; i < m_textView->CountLines(); i++)
-        m_maxLineWidth = MAX (m_textView->LineWidth(i), m_maxLineWidth);
-    m_textView->SetTextRect (BRect (1, 1, m_maxLineWidth, 0));
+    AddChild(scrollView);
 
-    if (displayFont != NULL)
-        m_textView->SetFontAndColor (displayFont);
-
-    m_closeButton = new BButton (BRect (bounds.right - K_MARGIN - K_BUTTON_WIDTH,
-                         bounds.bottom - K_MARGIN - K_BUTTON_HEIGHT, bounds.right - K_MARGIN,
-                         bounds.bottom - K_MARGIN), "LogWindow:CloseButton", str (S_LOG_WINDOW_CLOSE),
-                         new BMessage (B_QUIT_REQUESTED), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW);
-    m_backView->AddChild (m_closeButton);
-
-    // Constrain the width and height of the window
-    float minH, maxH, minV, maxV;
-    GetSizeLimits (&minH, &maxH, &minV, &maxV);
-    SetSizeLimits (m_closeButton->Frame().Width() + 2 * K_MARGIN, maxH,
-           m_closeButton->Frame().Height() + 2 * K_MARGIN + 50, maxV);
+    AddShortcut('w', B_COMMAND_KEY, new BMessage(B_QUIT_REQUESTED));
 
     // Center window on-screen
     CenterOnScreen();
