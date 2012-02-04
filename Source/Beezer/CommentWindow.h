@@ -49,12 +49,8 @@ class CommentWindow : public BWindow
 
     private:
         // Private members
-        const char         *m_commentText;
 
-        BevelView          *m_backView;
         BTextView          *m_textView;
-        BButton            *m_closeButton,
-                         *m_saveButton;
         BWindow            *m_callerWindow;
 };
 
