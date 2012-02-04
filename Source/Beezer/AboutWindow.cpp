@@ -94,9 +94,6 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
     : BWindow (BRect (0, 0, 319, 374), str (S_ABOUT_TITLE), B_MODAL_WINDOW,
         B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE | B_NOT_RESIZABLE)
 {
-    SetFeel (B_MODAL_APP_WINDOW_FEEL);
-    SetLook (B_MODAL_WINDOW_LOOK);
-
     // Create the BBitmap objects and set its data with error checking
     BBitmap *titleBmp = BTranslationUtils::GetBitmap ('PNG ', "Img:AboutBox");
     if (titleBmp == NULL)

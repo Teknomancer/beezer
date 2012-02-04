@@ -51,7 +51,7 @@
 
 ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
                   BMessenger *&messenger, volatile bool *&cancel)
-    : BWindow (BRect (0, 0, 370, 0), NULL, B_TITLED_WINDOW,
+    : BWindow (BRect (0, 0, 370, 0), NULL, B_MODAL_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
            B_ASYNCHRONOUS_CONTROLS | B_NOT_V_RESIZABLE | B_NOT_ZOOMABLE | B_NOT_CLOSABLE, B_CURRENT_WORKSPACE),
     m_progressCount (1L),
     m_cancel (false)
@@ -61,7 +61,6 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
         SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
         AddToSubset (callerWindow);
     }
-    SetLook (B_MODAL_WINDOW_LOOK);
 
     BFont font (be_plain_font);
     font.SetFace (B_BOLD_FACE);
