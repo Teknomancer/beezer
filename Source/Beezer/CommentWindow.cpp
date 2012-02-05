@@ -62,14 +62,6 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
 
     SetLayout(new BGroupLayout(B_VERTICAL, 0));
 
-    // Get font metrics
-    BFont font (be_plain_font);
-    font_height fntHt;
-
-    font.SetFace (B_BOLD_FACE);
-    font.GetHeight (&fntHt);
-    float totalFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
-
     // Get comment icon from resource, construct comment holding view etc.
     BBitmap *commentBmp = ResBitmap ("Img:Comment");
 
@@ -82,7 +74,7 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
 
     // Add the file name string view (align it vertically with the icon view)
     BStringView *fileNameStr = new BStringView ("CommentWindow:FileNameView", archiveName, B_WILL_DRAW);
-    fileNameStr->SetFont (&font);
+    fileNameStr->SetFont (be_bold_font);
 
     AddChild(BGroupLayoutBuilder(B_HORIZONTAL)
         .Add(BSpaceLayoutItem::CreateHorizontalStrut(30))
