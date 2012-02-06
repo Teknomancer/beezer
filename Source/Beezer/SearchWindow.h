@@ -38,11 +38,6 @@ class BMenuField;
 class BRadioButton;
 class BTextControl;
 
-class CLVColumn;
-
-class Archiver;
-class BevelView;
-
 #define M_ALL_ENTRIES            '_all'
 #define M_VISIBLE_ENTRIES        '_vsb'
 #define M_SELECTED_ENTRIES        '_sel'
@@ -68,7 +63,6 @@ class SearchWindow : public BWindow
 
     private:
         // Private members
-        BevelView          *m_backView;
         BList               m_tmpList;
         BWindow            *m_callerWindow;
         BTextControl        *m_searchTextControl;
