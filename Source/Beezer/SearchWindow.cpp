@@ -32,6 +32,7 @@
 #include <Button.h>
 #include <CheckBox.h>
 #include <Entry.h>
+#include <GroupLayoutBuilder.h>
 #include <List.h>
 #include <MenuField.h>
 #include <MenuItem.h>
@@ -57,8 +58,8 @@
 
 SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage,
                const BEntry *entry, const BList *columnList, const Archiver *ark)
-    : BWindow (BRect (30, 30, 440, 312), str (S_SEARCH_WINDOW_TITLE), B_TITLED_WINDOW,
-        B_ASYNCHRONOUS_CONTROLS | B_NOT_V_RESIZABLE | B_NOT_ZOOMABLE, B_CURRENT_WORKSPACE),
+    : BWindow (BRect (30, 30, 440, 312), str (S_SEARCH_WINDOW_TITLE), B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
+        B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE),
            m_callerWindow (callerWindow),
            m_loadMessage (loadMessage)
 {
@@ -92,53 +93,22 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage,
         m_loadMessage->FindRect (kWindowRect, &windowrect);
     }
 
-    // Get font metrics
-    BFont font (be_plain_font);
-    font_height fntHt;
-
-    font.GetHeight (&fntHt);
-    float normFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
-
-    font.SetFace (B_BOLD_FACE);
-    font.GetHeight (&fntHt);
-    float totalFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
-
-    // Render controls
-    m_backView = new BevelView (Bounds(), "SearchWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
-    m_backView->SetViewColor (K_BACKGROUND_COLOR);
-    AddChild (m_backView);
+    SetLayout(new BGroupLayout(B_VERTICAL, 0));
 
     BBitmap *searchBmp = ResBitmap ("Img:SearchArchive");
-
-    BevelView *sepView1 = new BevelView (BRect (-1, searchBmp->Bounds().Height() + 4 * K_MARGIN,
-                                Bounds().right - 1.0, searchBmp->Bounds().Height() + 4 * K_MARGIN + 1),
-                                "SearchWindow:SepView1", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
-    m_backView->AddChild (sepView1);
 
     // Add icon view, make it hold the search picture
     StaticBitmapView *searchBmpView = new StaticBitmapView (BRect (K_MARGIN * 5, K_MARGIN * 2,
                              searchBmp->Bounds().Width() + K_MARGIN * 5,
                              searchBmp->Bounds().Height() + K_MARGIN * 2), "SearchWindow:searchBmpView",
                              searchBmp);
-    searchBmpView->SetViewColor (m_backView->ViewColor());
-    AddChild (searchBmpView);
+    searchBmpView->SetViewColor (ui_color(B_PANEL_BACKGROUND_COLOR));
 
     // Add the file name string view (align it vertically with the icon view)
     char buf[B_FILE_NAME_LENGTH];
     entry->GetName (buf);
-    BStringView *fileNameStr = new BStringView (BRect (searchBmpView->Frame().right + K_MARGIN * 3,
-                                    searchBmpView->Frame().top, Bounds().right - 1,
-                                    searchBmpView->Frame().top + totalFontHeight),
-                                    "SearchWindow:FileNameView", buf, B_FOLLOW_LEFT, B_WILL_DRAW);
-    fileNameStr->SetFont (&font);
-    m_backView->AddChild (fileNameStr);
-    fileNameStr->MoveTo (fileNameStr->Frame().left,
-        (searchBmpView->Frame().Height() / 2 - totalFontHeight / 2) + totalFontHeight / 2 + 1);
-    fileNameStr->ResizeToPreferred ();
-
-    float marginLeft = 4 * K_MARGIN;
-    float marginTop = 2 * K_MARGIN;
-    float vGap = 6;
+    BStringView *fileNameStr = new BStringView ("SearchWindow:FileNameView", buf, B_WILL_DRAW);
+    fileNameStr->SetFont (be_bold_font);
 
     // Get the available list of columns - no point in searching columns that has no information
     // Eg: Tar archives won't have the columns: compressed size, ratio etc.
@@ -159,12 +129,7 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage,
     else
         columnMenu->ItemAt(m_tmpList.IndexOf (column))->SetMarked (true);
 
-    m_columnField = new BMenuField (BRect (marginLeft, sepView1->Frame().bottom + marginTop - 1,
-                         Bounds().Width() - marginLeft, 0), "SearchWindow:ColumnField",
-                         str (S_SEARCH_COLUMN), columnMenu);
-     m_backView->AddChild (m_columnField);
-    m_columnField->SetDivider (m_backView->StringWidth (m_columnField->Label()) + 10.0);
-    m_columnField->ResizeToPreferred();
+    m_columnField = new BMenuField ("SearchWindow:ColumnField", str (S_SEARCH_COLUMN), columnMenu);
 
     // Setup the match type and the match type menu
     BMenu *matchMenu = new BPopUpMenu ("");
@@ -177,23 +142,11 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage,
     matchMenu->SetLabelFromMarked (true);
     matchMenu->ItemAt(exprType)->SetMarked (true);
 
-    m_matchField = new BMenuField (BRect (
-                         m_backView->StringWidth (columnMenu->ItemAt(0L)->Label()) +
-                         m_backView->StringWidth (m_columnField->Label()) + 50 + 2 * marginLeft,
-                         sepView1->Frame().bottom + marginTop - 1, Bounds().Width() - marginLeft, 0),
-                         "SearchWindow:MatchField", NULL, matchMenu);
-    m_backView->AddChild (m_matchField);
-    m_matchField->SetDivider (m_backView->StringWidth (m_matchField->Label()) + 10.0);
-    m_matchField->ResizeToPreferred();
+    m_matchField = new BMenuField ("SearchWindow:MatchField", NULL, matchMenu);
 
     // Setup the 'search for' text control
     // removed label - str (S_SEARCH_FOR), add it when needed as people thot "Find:" was not needed
-    m_searchTextControl = new BTextControl (BRect (marginLeft, m_matchField->Frame().bottom + vGap,
-                             Bounds().right - marginLeft - 2, 0), "SearchWindow:SearchTextControl",
-                             "", searchText, NULL, B_FOLLOW_LEFT_RIGHT);
-    m_backView->AddChild (m_searchTextControl);
-    m_searchTextControl->SetDivider (m_backView->StringWidth (m_searchTextControl->Label()));
-    m_searchTextControl->MakeFocus (true);
+    m_searchTextControl = new BTextControl ("SearchWindow:SearchTextControl", "", searchText, NULL);
     m_searchTextControl->SetModificationMessage (new BMessage (M_SEARCH_TEXT_MODIFIED));
     BTextView *textView = m_searchTextControl->TextView();
 
@@ -209,110 +162,96 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage,
     textView->DisallowChar (B_END);
 
     // Setup the scope group box
-    BBox *scopeBox = new BBox (BRect (marginLeft, m_searchTextControl->Frame().bottom + 2 * vGap, 0, 0),
-                         "SearchWindow:ScopeBox", B_FOLLOW_LEFT, B_WILL_DRAW);
+    BBox *scopeBox = new BBox ("SearchWindow:ScopeBox", B_WILL_DRAW);
     scopeBox->SetLabel (str (S_SEARCH_SCOPE));
     scopeBox->SetFont (be_plain_font);
-    m_backView->AddChild (scopeBox);
 
     // Draw the radio buttons inside the group box (co-ordinates are relative to the group box)
-    m_allEntriesOpt = new BRadioButton (BRect (marginLeft/2, normFontHeight + vGap/2,
-                         marginLeft/2 + m_backView->StringWidth (str (S_SEARCH_ALL_ENTRIES)) +
-                         25.0, 0), "SearchWindow:AllEntriesOpt", str (S_SEARCH_ALL_ENTRIES),
-                         new BMessage (M_ALL_ENTRIES));
-    scopeBox->AddChild (m_allEntriesOpt);
-    m_allEntriesOpt->ResizeToPreferred();
+    m_allEntriesOpt = new BRadioButton ("SearchWindow:AllEntriesOpt", str (S_SEARCH_ALL_ENTRIES), new BMessage (M_ALL_ENTRIES));
     m_allEntriesOpt->SetValue (allFiles == true ? B_CONTROL_ON : B_CONTROL_OFF);
     if (allFiles)
         m_allEntriesOpt->Invoke ();
 
-    m_visibleEntriesOpt = new BRadioButton (BRect (m_allEntriesOpt->Frame().left, m_allEntriesOpt->Frame().bottom,
-                             m_allEntriesOpt->Frame().left +
-                             m_backView->StringWidth (str (S_SEARCH_VISIBLE_ENTRIES)) + 25.0, 0),
-                             "SearchWindow:VisibleEntriesOpt", str (S_SEARCH_VISIBLE_ENTRIES),
-                             new BMessage (M_VISIBLE_ENTRIES));
-    scopeBox->AddChild (m_visibleEntriesOpt);
-    m_visibleEntriesOpt->ResizeToPreferred();
+    m_visibleEntriesOpt = new BRadioButton ("SearchWindow:VisibleEntriesOpt", str (S_SEARCH_VISIBLE_ENTRIES), new BMessage (M_VISIBLE_ENTRIES));
     m_visibleEntriesOpt->SetValue (allFiles == false ? B_CONTROL_ON : B_CONTROL_OFF);
     if (!allFiles)
         m_visibleEntriesOpt->Invoke ();
 
-    m_selEntriesOpt = new BRadioButton (BRect (m_visibleEntriesOpt->Frame().left, m_visibleEntriesOpt->Frame().bottom,
-                         m_visibleEntriesOpt->Frame().left +
-                         m_backView->StringWidth (str (S_SEARCH_SELECTED_ENTRIES)) + 25.0, 0),
-                         "SearchWindow:SelectedEntriesOpt", str (S_SEARCH_SELECTED_ENTRIES),
-                         new BMessage (M_SELECTED_ENTRIES));
-    scopeBox->AddChild (m_selEntriesOpt);
-    m_selEntriesOpt->ResizeToPreferred();
+    m_selEntriesOpt = new BRadioButton ("SearchWindow:SelectedEntriesOpt", str (S_SEARCH_SELECTED_ENTRIES), new BMessage (M_SELECTED_ENTRIES));
     m_selEntriesOpt->SetValue (searchSelection == true ? B_CONTROL_ON : B_CONTROL_OFF);
     if (searchSelection)
         m_selEntriesOpt->Invoke ();
 
-    // Dynamically size the scope box (auto-fit)
-    float maxWidth = m_selEntriesOpt->Frame().Width();
-    maxWidth = MAX (maxWidth, m_visibleEntriesOpt->Frame().Width());
-    maxWidth = MAX (maxWidth, m_allEntriesOpt->Frame().Width());
+    BView* view = new BGroupView();
+    view->SetLayout(new BGroupLayout(B_VERTICAL));
+    view->AddChild(BGroupLayoutBuilder(B_VERTICAL, 0)
+        .Add(m_allEntriesOpt)
+        .Add(m_visibleEntriesOpt)
+        .Add(m_selEntriesOpt)
+        .SetInsets(K_MARGIN, K_MARGIN, K_MARGIN, K_MARGIN)
+    );
 
-    scopeBox->ResizeTo (maxWidth + marginLeft + 2, m_selEntriesOpt->Frame().bottom + vGap);
+    scopeBox->AddChild(view);
 
     // Setup the scoping options group box
-    BBox *optionsBox = new BBox (BRect (scopeBox->Frame().right + marginLeft, scopeBox->Frame().top, 0, 0),
-                         "SearchWindow:OptionsBox");
+    BBox *optionsBox = new BBox ("SearchWindow:OptionsBox");
     optionsBox->SetLabel (str (S_SEARCH_OPTIONS));
     optionsBox->SetFont (be_plain_font);
-    m_backView->AddChild (optionsBox);
 
     // Draw the checkboxes for the (All, Visible) scope
-    m_addToSelChk = new BCheckBox (BRect (marginLeft / 2, normFontHeight -1 + vGap / 2, 0, 0),
-                      "SearchWindow:AddSelChk", str (S_SEARCH_ADD_TO_SELECTION), NULL);
-    optionsBox->AddChild (m_addToSelChk);
-    m_addToSelChk->ResizeToPreferred();
+    m_addToSelChk = new BCheckBox ("SearchWindow:AddSelChk", str (S_SEARCH_ADD_TO_SELECTION), NULL);
     m_addToSelChk->SetValue (addToSelection == true ? B_CONTROL_ON : B_CONTROL_OFF);
 
-    m_ignoreCaseChk = new BCheckBox (BRect (m_addToSelChk->Frame().left, m_addToSelChk->Frame().bottom-1,
-                                0, 0), "SearchWindow:IgnoreCaseChk", str (S_SEARCH_IGNORE_CASE), NULL);
-    optionsBox->AddChild (m_ignoreCaseChk);
-    m_ignoreCaseChk->ResizeToPreferred();
+    m_ignoreCaseChk = new BCheckBox ("SearchWindow:IgnoreCaseChk", str (S_SEARCH_IGNORE_CASE), NULL);
     m_ignoreCaseChk->SetValue (ignoreCase == true ? B_CONTROL_ON : B_CONTROL_OFF);
 
-    m_invertChk = new BCheckBox (BRect (m_ignoreCaseChk->Frame().left, m_ignoreCaseChk->Frame().bottom-1,
-                                0, 0), "SearchWindow:InvertChk", str (S_SEARCH_INVERT), NULL);
-    optionsBox->AddChild (m_invertChk);
-    m_invertChk->ResizeToPreferred();
+    m_invertChk = new BCheckBox ("SearchWindow:InvertChk", str (S_SEARCH_INVERT), NULL);
     m_invertChk->SetValue (invertSearch == true ? B_CONTROL_ON : B_CONTROL_OFF);
 
-    // Dynamically size the group box (auto-fit)
-    maxWidth = m_addToSelChk->Frame().Width();
-    maxWidth = MAX (maxWidth, m_ignoreCaseChk->Frame().Width());
-    maxWidth = MAX (maxWidth, m_invertChk->Frame().Width());
-    maxWidth = MAX (maxWidth, m_backView->StringWidth (str (S_SEARCH_DESELECT_UNMATCHED_ENTRIES)) + 21.0);
+    view = new BGroupView();
+    view->SetLayout(new BGroupLayout(B_VERTICAL));
+    view->AddChild(BGroupLayoutBuilder(B_VERTICAL, 0)
+        .Add(m_addToSelChk)
+        .Add(m_ignoreCaseChk)
+        .Add(m_invertChk)
+        .SetInsets(K_MARGIN, K_MARGIN, K_MARGIN, K_MARGIN)
+    );
 
-    optionsBox->ResizeTo (maxWidth + marginLeft + 2, m_invertChk->Frame().bottom + vGap);
+    optionsBox->AddChild(view);
 
     // Render the search button
-    m_searchBtn = new BButton (BRect (Bounds().right - marginLeft - K_BUTTON_WIDTH - 4,
-                             optionsBox->Frame().bottom + 2 * vGap, Bounds().right - marginLeft - 4,
-                             optionsBox->Frame().bottom + 2 * vGap + K_BUTTON_HEIGHT),
-                             "SearchWindow:SearchBtn", str (S_SEARCH), new BMessage (M_SEARCH_CLICKED),
-                             B_FOLLOW_RIGHT);
+    m_searchBtn = new BButton ("SearchWindow:SearchBtn", str (S_SEARCH), new BMessage (M_SEARCH_CLICKED));
     m_searchBtn->MakeDefault (true);
     m_searchBtn->SetEnabled (searchText ? true : false);
-    m_backView->AddChild (m_searchBtn);
 
     // Render the close after search button
-    m_persistentChk = new BCheckBox (BRect (marginLeft, m_searchBtn->Frame().top + normFontHeight / 2,
-                      0, 0), "SearchWindow:CloseChk", str (S_SEARCH_PERSISTENT), NULL);
-    m_backView->AddChild (m_persistentChk);
-    m_persistentChk->ResizeToPreferred();
+    m_persistentChk = new BCheckBox ("SearchWindow:CloseChk", str (S_SEARCH_PERSISTENT), NULL);
     m_persistentChk->SetValue (persistent == true ? B_CONTROL_ON : B_CONTROL_OFF);
 
+    AddChild(BGroupLayoutBuilder(B_VERTICAL)
+        .AddGroup(B_HORIZONTAL)
+            .Add(searchBmpView, 0)
+            .Add(fileNameStr, 0)
+            .AddGlue()
+            .SetInsets(K_MARGIN, K_MARGIN, K_MARGIN, K_MARGIN)
+        .End()
+        .AddGroup(B_HORIZONTAL)
+            .Add(m_columnField)
+            .Add(m_matchField)
+        .End()
+        .Add(m_searchTextControl)
+        .AddGroup(B_HORIZONTAL)
+            .Add(scopeBox)
+            .Add(optionsBox)
+        .End()
+        .AddGroup(B_HORIZONTAL)
+            .Add(m_persistentChk)
+            .Add(m_searchBtn)
+        .End()
+        .SetInsets(4 * K_MARGIN, 2 * K_MARGIN, 4 * K_MARGIN, 2 * K_MARGIN)
+    );
 
-    // Resize the window, then set contraints
-    ResizeTo (optionsBox->Frame().right + marginLeft + 2, m_searchBtn->Frame().bottom + vGap + 2);
-
-    float minH, maxH, minV, maxV;
-    GetSizeLimits (&minH, &maxH, &minV, &maxV);
-    SetSizeLimits (Bounds().Width(), maxH, Bounds().Height(), maxV);
+    m_searchTextControl->MakeFocus (true);
 
     // Center window on-screen
     CenterOnScreen();
