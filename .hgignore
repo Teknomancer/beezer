@@ -7,3 +7,7 @@ CMakeCache.txt
 cmake_install.cmake
 CMakeFiles/*
 Source/build
+GPATH
+GRTAGS
+GTAGS
+ID
