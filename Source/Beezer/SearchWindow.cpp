@@ -58,12 +58,11 @@
 
 SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage,
                const BEntry *entry, const BList *columnList, const Archiver *ark)
-    : BWindow (BRect (30, 30, 440, 312), str (S_SEARCH_WINDOW_TITLE), B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
+    : BWindow (BRect (30, 30, 440, 312), str (S_SEARCH_WINDOW_TITLE), B_FLOATING_WINDOW_LOOK, B_MODAL_SUBSET_WINDOW_FEEL,
         B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE),
            m_callerWindow (callerWindow),
            m_loadMessage (loadMessage)
 {
-    SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
     AddToSubset (callerWindow);
 
     // Get previous settings (assign default values - for the first time)
