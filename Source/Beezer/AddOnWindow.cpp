@@ -555,24 +555,28 @@ bool AddOnWindow::ReplaceExtensionWith (const char *newExt)
     const char *newExtStr = newExt;
     bool replacedExt = false;
 
-    for (int32 i = 0; i < m_arkExtensions.CountItems(); i++)
-        if (existingName.FindFirst ((char*)m_arkExtensions.ItemAtFast (i)) >= 0L
-           && existingName != newExtStr)
+    for (int32 i = 0; i < m_arkExtensions.CountItems(); i++) {
+        int32 extLocation = existingName.FindLast ((char*)m_arkExtensions.ItemAtFast (i));
+        if (extLocation >= 0L
+            // make sure it's exactly the same. otherwise extensions like tar get found before tar.xz
+            && (existingName.Length() - extLocation == strlen((char*)m_arkExtensions.ItemAtFast (i)))
+            && existingName != newExtStr)
         {
-           BString newExtension = existingName;
-           newExtension.ReplaceLast ((char*)m_arkExtensions.ItemAtFast(i), newExtStr);
+            BString newExtension = existingName;
+            newExtension.ReplaceLast ((char*)m_arkExtensions.ItemAtFast(i), newExtStr);
 
-           // overcome a bug in BString in BeOS R5's (libbe.so), BONE/DANO fixes this bug
-           #if !B_BEOS_VERSION_DANO
-               if (newExtension == (char*)m_arkExtensions.ItemAtFast(i))
-                  newExtension = newExtStr;
-           #endif
+            // overcome a bug in BString in BeOS R5's (libbe.so), BONE/DANO fixes this bug
+            #if !B_BEOS_VERSION_DANO
+                if (newExtension == (char*)m_arkExtensions.ItemAtFast(i))
+                    newExtension = newExtStr;
+            #endif
 
-           fileNameView->SetText (newExtension.String());
-           fileNameView->Select (start, end);
-           replacedExt = true;
-           break;
+            fileNameView->SetText (newExtension.String());
+            fileNameView->Select (start, end);
+            replacedExt = true;
+            break;
         }
+    }
 
     if (replacedExt == false)
     {
