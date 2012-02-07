@@ -425,7 +425,7 @@ BBitmap* Archiver::BitmapForExtension (const char *str) const
         if (strcmp (extn, "htm") == 0|| strcmp (extn, "html") == 0)
            icon = m_htmlBmp;
         else if (strcmp (extn, "cpp") == 0 || strcmp (extn, "c") == 0 || strcmp (extn, "h") == 0 ||
-               strcmp (extn, "py") == 0)
+               strcmp (extn, "py") == 0 || strcmp(extn, "rb") == 0)
            icon = m_sourceBmp;
         else if (strcmp (extn, "txt") == 0 || strcmp (extn, "sh") == 0 || strcmp (extn, "doc") == 0)
            icon = m_textBmp;
@@ -434,7 +434,7 @@ BBitmap* Archiver::BitmapForExtension (const char *str) const
                   strcmp (extn, "tiff") == 0)
            icon = m_imageBmp;
         else if (strcmp (extn, "z") == 0 || strcmp (extn, "zip") == 0 || strcmp (extn, "gz") == 0 ||
-               strcmp (extn, "gzip") == 0 || strcmp (extn, "tgz") == 0)
+               strcmp (extn, "gzip") == 0 || strcmp (extn, "tgz") == 0 || strcmp(extn, "xz") == 0 || strcmp(extn, "txz") == 0)
            icon = m_archiveBmp;
         else if (strcmp (extn, "wav") == 0 || strcmp (extn, "mp3") == 0 || strcmp (extn, "mp2") == 0    ||
                strcmp (extn, "aiff") == 0 || strcmp (extn, "riff") == 0 || strcmp (extn, "ogg") == 0 ||
