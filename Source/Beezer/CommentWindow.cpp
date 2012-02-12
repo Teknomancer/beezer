@@ -65,11 +65,8 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
     BBitmap *commentBmp = ResBitmap ("Img:Comment");
 
     // Add icon view, make it hold the picture
-    StaticBitmapView *commentBmpView = new StaticBitmapView (BRect (K_MARGIN * 5, K_MARGIN * 2,
-                             commentBmp->Bounds().Width() + K_MARGIN * 5,
-                             commentBmp->Bounds().Height() + K_MARGIN * 2), "CommentWindow:commentBmpView",
-                             commentBmp);
-    commentBmpView->SetViewColor (ui_color(B_PANEL_BACKGROUND_COLOR));
+    StaticBitmapView *commentBmpView = new StaticBitmapView (BRect (0, 0, commentBmp->Bounds().Width(), commentBmp->Bounds().Height()),
+                                                "CommentWindow:commentBmpView", commentBmp);
 
     // Add the file name string view (align it vertically with the icon view)
     BStringView *fileNameStr = new BStringView ("CommentWindow:FileNameView", archiveName);

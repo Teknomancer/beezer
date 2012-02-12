@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2012, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -37,6 +38,7 @@ StaticBitmapView::StaticBitmapView (BRect frame, const char *name, BBitmap *bmp,
     : BView (frame, name, resizeMask, flags),
         m_bitmap (bmp)
 {
+    SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 }
 
 

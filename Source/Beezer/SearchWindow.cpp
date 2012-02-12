@@ -97,11 +97,8 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage,
     BBitmap *searchBmp = ResBitmap ("Img:SearchArchive");
 
     // Add icon view, make it hold the search picture
-    StaticBitmapView *searchBmpView = new StaticBitmapView (BRect (K_MARGIN * 5, K_MARGIN * 2,
-                             searchBmp->Bounds().Width() + K_MARGIN * 5,
-                             searchBmp->Bounds().Height() + K_MARGIN * 2), "SearchWindow:searchBmpView",
-                             searchBmp);
-    searchBmpView->SetViewColor (ui_color(B_PANEL_BACKGROUND_COLOR));
+    StaticBitmapView *searchBmpView = new StaticBitmapView (BRect (0, 0, searchBmp->Bounds().Width(), searchBmp->Bounds().Height()),
+                                                        "SearchWindow:searchBmpView", searchBmp);
 
     // Add the file name string view (align it vertically with the icon view)
     char buf[B_FILE_NAME_LENGTH];
