@@ -59,7 +59,6 @@ StatusWindow::StatusWindow (const char *title, BWindow *callerWindow, const char
     BBitmap *icon = ResBitmap ("Img:WarnAlert");
 
     StaticBitmapView *iconView = new StaticBitmapView (BRect (0, 0, icon->Bounds().Width(), icon->Bounds().Height()), "StatusWindow:iconView", icon);
-    iconView->SetViewColor (ui_color(B_PANEL_BACKGROUND_COLOR));
 
     BStringView *titleStrView = new BStringView ("StatusWindow:StringView", title);
     titleStrView->SetFont (be_bold_font);

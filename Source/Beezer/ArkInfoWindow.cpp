@@ -77,7 +77,6 @@ ArkInfoWindow::ArkInfoWindow (BWindow *callerWindow, Archiver *archiver, BEntry 
     StaticBitmapView *infoBmpView = new StaticBitmapView (BRect (K_MARGIN * 5, K_MARGIN * 2,
                          infoBmp->Bounds().Width() + K_MARGIN * 5, infoBmp->Bounds().Height() + K_MARGIN * 2),
                                     "ArkInfoWindow:iconView", infoBmp);
-    infoBmpView->SetViewColor (ui_color(B_PANEL_BACKGROUND_COLOR));
 
     // Add the file name string view (align it vertically with the icon view)
     m_fileNameStr = new BStringView ("ArkInfoWindow:FileNameView", "");
