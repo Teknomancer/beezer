@@ -95,7 +95,7 @@
 
 MainWindow::MainWindow (BRect frame, WindowMgr *windowMgr, RecentMgr *recentMgr,
                   RecentMgr *extractMgr, RuleMgr *ruleMgr)
-    : BWindow (frame, str (S_UNTITLED), B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE),
+    : BWindow (frame, str (S_UNTITLED), B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS),
     m_searchWnd (NULL),
     m_extractToPanel (NULL),
     m_addPanel (NULL),

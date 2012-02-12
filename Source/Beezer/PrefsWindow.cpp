@@ -57,7 +57,7 @@
 
 PrefsWindow::PrefsWindow ()
     : BWindow (BRect (0, 0, 570+30, 320+100), str (S_PREFERENCES_TITLE), B_TITLED_WINDOW,
-           B_NOT_ZOOMABLE | B_NOT_RESIZABLE, B_CURRENT_WORKSPACE),
+           B_NOT_ZOOMABLE | B_NOT_RESIZABLE),
     m_currentPanel (NULL)
 {
     SetFeel (B_MODAL_APP_WINDOW_FEEL);

@@ -56,7 +56,7 @@
 
 JoinerWindow::JoinerWindow ()
     : BWindow (BRect (100, 100, 450, 210), str (S_JOINER_WINDOW_TITLE), B_TITLED_WINDOW,
-        B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE | B_NOT_V_RESIZABLE, B_CURRENT_WORKSPACE)
+        B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE | B_NOT_V_RESIZABLE)
 {
     m_backView = new BevelView (Bounds(), "JoinerWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_backView->SetViewColor (K_BACKGROUND_COLOR);

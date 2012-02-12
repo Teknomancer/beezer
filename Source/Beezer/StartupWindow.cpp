@@ -59,13 +59,13 @@
 
 StartupWindow::StartupWindow (RecentMgr *recentMgr, bool startup)
     : BWindow (BRect (10, 10, 0, 100), K_APP_TITLE, B_TITLED_WINDOW,
-        B_NOT_V_RESIZABLE | B_NOT_ZOOMABLE | B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE),
+        B_NOT_V_RESIZABLE | B_NOT_ZOOMABLE | B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS),
     m_recentMgr (recentMgr)
 {
     SetLayout(new BGroupLayout(B_VERTICAL, 0));
 
     float width, height;
-    m_headingView = new BStringView ("StartupWindow:HeadingView", str (S_WELCOME_TO), B_WILL_DRAW);
+    m_headingView = new BStringView ("StartupWindow:HeadingView", str (S_WELCOME_TO));
     m_headingView->SetFont (be_bold_font);
     m_headingView->SetHighColor (K_STARTUP_MAIN_HEADING);
     m_headingView->SetLowColor (m_headingView->ViewColor());

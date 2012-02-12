@@ -68,7 +68,7 @@
 
 FileSplitterWindow::FileSplitterWindow (RecentMgr *files, RecentMgr *dirs)
     : BWindow (BRect (10, 10, 540, 350), str (S_FILE_SPLITTER_TITLE), B_TITLED_WINDOW,
-               B_NOT_ZOOMABLE | B_NOT_V_RESIZABLE | B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE),
+               B_NOT_ZOOMABLE | B_NOT_V_RESIZABLE | B_ASYNCHRONOUS_CONTROLS),
     m_dirPanel (NULL),
     m_filePanel (NULL),
     m_sepString (NULL),

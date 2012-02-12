@@ -37,7 +37,7 @@
 
 
 LogWindow::LogWindow (BWindow *callerWindow, const char *title, const char *logText, BFont *displayFont)
-    : BWindow (BRect (80, 140, 605, 355), title, B_FLOATING_WINDOW_LOOK, B_MODAL_APP_WINDOW_FEEL, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE)
+    : BWindow (BRect (80, 140, 605, 355), title, B_FLOATING_WINDOW_LOOK, B_MODAL_APP_WINDOW_FEEL, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS)
 {
     if (callerWindow)
     {
