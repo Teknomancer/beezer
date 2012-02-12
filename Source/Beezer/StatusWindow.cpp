@@ -46,7 +46,7 @@
 StatusWindow::StatusWindow (const char *title, BWindow *callerWindow, const char *text, volatile bool *cancel,
         bool showWindow)
     : BWindow (BRect (0, 0, 300, 0), title, B_MODAL_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
-           B_ASYNCHRONOUS_CONTROLS | B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_NOT_CLOSABLE, B_CURRENT_WORKSPACE)
+           B_ASYNCHRONOUS_CONTROLS | B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_NOT_CLOSABLE)
 {
     if (callerWindow)
     {

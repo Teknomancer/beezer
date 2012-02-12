@@ -51,7 +51,7 @@
 CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, const char *commentText,
                   BFont *displayFont)
     : BWindow (BRect (0, 0, 590, 290), str (S_COMMENT_WINDOW_TITLE), B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
-        B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE)
+        B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS)
 {
     m_callerWindow = callerWindow;
     if (m_callerWindow)
@@ -73,7 +73,7 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
     commentBmpView->SetViewColor (ui_color(B_PANEL_BACKGROUND_COLOR));
 
     // Add the file name string view (align it vertically with the icon view)
-    BStringView *fileNameStr = new BStringView ("CommentWindow:FileNameView", archiveName, B_WILL_DRAW);
+    BStringView *fileNameStr = new BStringView ("CommentWindow:FileNameView", archiveName);
     fileNameStr->SetFont (be_bold_font);
 
     AddChild(BGroupLayoutBuilder(B_HORIZONTAL)
@@ -103,9 +103,9 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
 
     AddChild(scrollView);
 
-    BButton *saveButton = new BButton ("CommentWindow:SaveButton", str (S_COMMENT_WINDOW_SAVE), new BMessage (M_SAVE_COMMENT), B_WILL_DRAW);
+    BButton *saveButton = new BButton ("CommentWindow:SaveButton", str (S_COMMENT_WINDOW_SAVE), new BMessage (M_SAVE_COMMENT));
 
-    BButton *closeButton = new BButton ("CommentWindow:CloseButton", str (S_COMMENT_WINDOW_CLOSE), new BMessage (B_QUIT_REQUESTED), B_WILL_DRAW);
+    BButton *closeButton = new BButton ("CommentWindow:CloseButton", str (S_COMMENT_WINDOW_CLOSE), new BMessage (B_QUIT_REQUESTED));
 
     AddChild(BGroupLayoutBuilder(B_HORIZONTAL)
         .AddGlue()

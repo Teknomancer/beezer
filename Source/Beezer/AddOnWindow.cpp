@@ -62,7 +62,7 @@
 
 AddOnWindow::AddOnWindow (BMessage *refsMessage)
     : BWindow (BRect (10, 10, 420, 475), str (S_TA_TITLE), B_TITLED_WINDOW,
-        B_NOT_ZOOMABLE | B_NOT_V_RESIZABLE | B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE),
+        B_NOT_ZOOMABLE | B_NOT_V_RESIZABLE | B_ASYNCHRONOUS_CONTROLS),
     m_arkSettingsMenuField (NULL),
     m_archive (NULL),
     m_readyMode (true),

@@ -52,7 +52,7 @@
 ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
                   BMessenger *&messenger, volatile bool *&cancel)
     : BWindow (BRect (0, 0, 370, 0), NULL, B_MODAL_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
-           B_ASYNCHRONOUS_CONTROLS | B_NOT_V_RESIZABLE | B_NOT_ZOOMABLE | B_NOT_CLOSABLE, B_CURRENT_WORKSPACE),
+           B_ASYNCHRONOUS_CONTROLS | B_NOT_V_RESIZABLE | B_NOT_ZOOMABLE | B_NOT_CLOSABLE),
     m_progressCount (1L),
     m_cancel (false)
 {

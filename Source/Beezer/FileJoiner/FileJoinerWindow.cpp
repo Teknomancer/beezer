@@ -64,7 +64,7 @@
 
 FileJoinerWindow::FileJoinerWindow (RecentMgr *dirs)
     : BWindow (BRect (10, 10, 520, 300), str (S_FILE_JOINER_TITLE), B_TITLED_WINDOW,
-           B_NOT_ZOOMABLE | B_NOT_V_RESIZABLE | B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE),
+           B_NOT_ZOOMABLE | B_NOT_V_RESIZABLE | B_ASYNCHRONOUS_CONTROLS),
     m_filePanel (NULL),
     m_dirPanel (NULL),
     m_calcSize (false),

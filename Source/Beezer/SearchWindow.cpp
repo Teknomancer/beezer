@@ -59,7 +59,7 @@
 SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage,
                const BEntry *entry, const BList *columnList, const Archiver *ark)
     : BWindow (BRect (30, 30, 440, 312), str (S_SEARCH_WINDOW_TITLE), B_FLOATING_WINDOW_LOOK, B_MODAL_SUBSET_WINDOW_FEEL,
-        B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE),
+        B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS),
            m_callerWindow (callerWindow),
            m_loadMessage (loadMessage)
 {
@@ -106,7 +106,7 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage,
     // Add the file name string view (align it vertically with the icon view)
     char buf[B_FILE_NAME_LENGTH];
     entry->GetName (buf);
-    BStringView *fileNameStr = new BStringView ("SearchWindow:FileNameView", buf, B_WILL_DRAW);
+    BStringView *fileNameStr = new BStringView ("SearchWindow:FileNameView", buf);
     fileNameStr->SetFont (be_bold_font);
 
     // Get the available list of columns - no point in searching columns that has no information
@@ -161,7 +161,7 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage,
     textView->DisallowChar (B_END);
 
     // Setup the scope group box
-    BBox *scopeBox = new BBox ("SearchWindow:ScopeBox", B_WILL_DRAW);
+    BBox *scopeBox = new BBox ("SearchWindow:ScopeBox");
     scopeBox->SetLabel (str (S_SEARCH_SCOPE));
     scopeBox->SetFont (be_plain_font);
 
