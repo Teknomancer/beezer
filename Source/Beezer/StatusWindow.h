@@ -33,7 +33,6 @@
 #include <Window.h>
 
 class BarberPole;
-class BevelView;
 
 class StatusWindow : public BWindow
 {
@@ -45,7 +44,6 @@ class StatusWindow : public BWindow
         virtual void        MessageReceived (BMessage *message);
 
     private:
-        BevelView         *m_backView;
         BarberPole        *m_barberPole;
         volatile bool      *m_cancel;
 };
