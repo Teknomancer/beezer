@@ -30,6 +30,7 @@
 #include <Application.h>
 #include <Bitmap.h>
 #include <Button.h>
+#include <GroupLayoutBuilder.h>
 #include <Messenger.h>
 #include <Resources.h>
 #include <StatusBar.h>
@@ -52,7 +53,7 @@
 ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
                   BMessenger *&messenger, volatile bool *&cancel)
     : BWindow (BRect (0, 0, 370, 0), NULL, B_MODAL_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
-           B_ASYNCHRONOUS_CONTROLS | B_NOT_V_RESIZABLE | B_NOT_ZOOMABLE | B_NOT_CLOSABLE),
+           B_ASYNCHRONOUS_CONTROLS | B_NOT_V_RESIZABLE | B_NOT_ZOOMABLE | B_NOT_CLOSABLE | B_AUTO_UPDATE_SIZE_LIMITS),
     m_progressCount (1L),
     m_cancel (false)
 {
@@ -62,16 +63,7 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
         AddToSubset (callerWindow);
     }
 
-    BFont font (be_plain_font);
-    font.SetFace (B_BOLD_FACE);
-    font_height fntHt;
-    font.GetHeight (&fntHt);
-    float totalFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
-
-    BRect bounds (Bounds());
-    m_backView = new BevelView (bounds, "ProgressWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
-    m_backView->SetViewColor (K_BACKGROUND_COLOR);
-    AddChild (m_backView);
+    SetLayout(new BGroupLayout(B_VERTICAL, 0));
 
     BBitmap *actionIcon = NULL;
     int32 fileCount (0L);
@@ -115,57 +107,49 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
         }
     }
 
-    StaticBitmapView *iconView = new StaticBitmapView (BRect (2 * K_MARGIN + 2, 2 * K_MARGIN + 2,
-                                    2 * K_MARGIN + 2 + 31.0, 2 * K_MARGIN + 2 + 31.0),
+    StaticBitmapView *iconView = new StaticBitmapView (BRect (0, 0, actionIcon->Bounds().Width(), actionIcon->Bounds().Height()),
                                     "ProgressWindow:iconView", actionIcon);
-    iconView->SetViewColor (m_backView->ViewColor());
-    AddChild (iconView);
 
-    BStringView *strView = new BStringView (BRect (iconView->Frame().right + totalFontHeight,
-                             K_MARGIN + 3.0, iconView->Frame().right + totalFontHeight +
-                             font.StringWidth (strOfStrView) + font.StringWidth ("W"),
-                             totalFontHeight + K_MARGIN + 3.0), "ProgressWindow:StringView",
-                             strOfStrView, B_FOLLOW_LEFT, B_WILL_DRAW);
-    strView->SetFont (&font, B_FONT_ALL);
+    BStringView *strView = new BStringView ("ProgressWindow:StringView", strOfStrView);
+    strView->SetFont (be_bold_font);
     strView->SetHighColor (K_STARTUP_MAIN_HEADING);
-    strView->SetLowColor (strView->ViewColor());
-    m_backView->AddChild (strView);
 
-    m_statusBar = new BStatusBar (BRect (strView->Frame().left + 3 * K_MARGIN,
-                         strView->Frame().bottom + K_MARGIN, bounds.right - 2 * K_MARGIN, 0),
-                         "ProgressWindow:StatusBar", NULL, NULL);
+    m_statusBar = new BStatusBar ("ProgressWindow:StatusBar", NULL, NULL);
     m_statusBar->SetText (prepareString);
-    m_statusBar->SetResizingMode (B_FOLLOW_LEFT_RIGHT);
     m_statusBar->SetBarHeight (K_PROGRESSBAR_HEIGHT);
     m_statusBar->SetBarColor (K_PROGRESS_COLOR);
     m_statusBar->SetMaxValue (fileCount);
     m_fileCount = fileCount;
-    m_backView->AddChild (m_statusBar);
 
-    BevelView *edgeView = new BevelView (BRect (-1, m_statusBar->Frame().bottom + 2 * K_MARGIN,
-                             bounds.right - 1, m_statusBar->Frame().bottom + 2 * K_MARGIN + 1.0),
-                             "ProgressWindow:EdgeView", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
-    m_backView->AddChild (edgeView);
+    m_cancelButton = new BButton ("ProgressWindow:CancelButton", str (S_STOP_OPERATION), new BMessage (M_STOP_OPERATION));
 
-    m_cancelButton = new BButton (BRect (bounds.right - K_BUTTON_WIDTH - 2 * K_MARGIN,
-                         edgeView->Frame().bottom + K_MARGIN, bounds.right - 2 * K_MARGIN,
-                         edgeView->Frame().bottom + K_MARGIN + K_BUTTON_HEIGHT),
-                         "ProgressWindow:CancelButton", str (S_STOP_OPERATION),
-                         new BMessage (M_STOP_OPERATION), B_FOLLOW_RIGHT, B_WILL_DRAW);
-    m_backView->AddChild (m_cancelButton);
-    ResizeTo (Frame().Width(), m_cancelButton->Frame().bottom + K_MARGIN);
-    m_backView->ResizeBy(0, K_MARGIN);
+    // FIXME? this doesn't show up unless the SetValue call is changed below
+    // leaving it as is for now
+    m_barberPole = new BarberPole (BRect (0, 0, 1, 1), "ProgressWindow::BarberPole");
 
-    m_barberPole = new BarberPole (BRect (strView->Frame().left, m_statusBar->Frame().bottom - 30, 0,
-                      m_statusBar->Frame().bottom - 3), "ProgressWindow::BarberPole");
-    m_backView->AddChild (m_barberPole);
+    AddChild(BGroupLayoutBuilder(B_VERTICAL)
+        .AddGroup(B_HORIZONTAL)
+            .Add(iconView, 0)
+            .AddGroup(B_VERTICAL, 0)
+                .AddGroup(B_HORIZONTAL)
+                    .Add(strView, 0)
+                    .AddGlue()
+                .End()
+                .AddGroup(B_HORIZONTAL)
+                    .Add(m_barberPole, 0)
+                    .Add(m_statusBar)
+                .End()
+            .End()
+        .End()
+        .AddGroup(B_HORIZONTAL)
+            .AddGlue()
+            .Add(m_cancelButton, 0)
+        .End()
+        .SetInsets(4 * K_MARGIN, 2 * K_MARGIN, 4 * K_MARGIN, 2 * K_MARGIN)
+    );
 
     // Center window on-screen & set the constraints
     CenterOnScreen();
-
-    float minH, maxH, minV, maxV;
-    GetSizeLimits (&minH, &maxH, &minV, &maxV);
-    SetSizeLimits (Bounds().Width(), maxH, Bounds().Height(), maxV);
 
     messenger = new BMessenger (this);
     m_messenger = messenger;

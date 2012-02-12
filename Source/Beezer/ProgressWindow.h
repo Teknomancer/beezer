@@ -36,7 +36,6 @@ class BButton;
 class BMessenger;
 
 class BarberPole;
-class BevelView;
 
 class ProgressWindow : public BWindow
 {
@@ -50,7 +49,6 @@ class ProgressWindow : public BWindow
 
     protected:
         // Protected members
-        BevelView          *m_backView;
         BarberPole         *m_barberPole;
         BStatusBar         *m_statusBar;
         BButton            *m_cancelButton;
