@@ -39,7 +39,6 @@ class BStatusBar;
 class BStringView;
 
 class Archiver;
-class BevelView;
 
 class ArkInfoWindow : public BWindow
 {
@@ -52,10 +51,8 @@ class ArkInfoWindow : public BWindow
     private:
         // Private hooks
         void                FillDetails ();
-        void                AutoSizeWindow (float cornerMargin, float midMargin, float leftSideMaxWidth);
 
         // Private members
-        BevelView          *m_backView;
         Archiver           *m_archiver;
 
         BEntry             *m_entry;
