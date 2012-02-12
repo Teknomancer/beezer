@@ -29,11 +29,11 @@
 
 #include <Bitmap.h>
 #include <Button.h>
+#include <GroupLayoutBuilder.h>
 #include <StringView.h>
 
 #include "AppConstants.h"
 #include "BarberPole.h"
-#include "BevelView.h"
 #include "LangStrings.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
@@ -46,7 +46,7 @@
 StatusWindow::StatusWindow (const char *title, BWindow *callerWindow, const char *text, volatile bool *cancel,
         bool showWindow)
     : BWindow (BRect (0, 0, 300, 0), title, B_MODAL_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
-           B_ASYNCHRONOUS_CONTROLS | B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_NOT_CLOSABLE)
+           B_ASYNCHRONOUS_CONTROLS | B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_NOT_CLOSABLE | B_AUTO_UPDATE_SIZE_LIMITS)
 {
     if (callerWindow)
     {
@@ -54,77 +54,41 @@ StatusWindow::StatusWindow (const char *title, BWindow *callerWindow, const char
         AddToSubset (callerWindow);
     }
 
-    BFont font (be_plain_font);
-    font.SetFace (B_BOLD_FACE);
-    font_height fntHt;
-    font.GetHeight (&fntHt);
-    float totalFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
-
-    BRect bounds (Bounds());
-    m_backView = new BevelView (bounds, "StatusWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
-    m_backView->SetViewColor (K_BACKGROUND_COLOR);
-    AddChild (m_backView);
+	SetLayout(new BGroupLayout(B_VERTICAL, 0));
 
     BBitmap *icon = ResBitmap ("Img:WarnAlert");
 
-    StaticBitmapView *iconView = new StaticBitmapView (BRect (2 * K_MARGIN + 2, 2 * K_MARGIN + 2,
-                                    2 * K_MARGIN + 2 + 31.0, 2 * K_MARGIN + 2 + 31.0),
-                                    "StatusWindow:iconView", icon);
-    iconView->SetViewColor (m_backView->ViewColor());
-    AddChild (iconView);
+    StaticBitmapView *iconView = new StaticBitmapView (BRect (0, 0, icon->Bounds().Width(), icon->Bounds().Height()), "StatusWindow:iconView", icon);
+    iconView->SetViewColor (ui_color(B_PANEL_BACKGROUND_COLOR));
 
-    float width, height;
-    BStringView *titleStrView = new BStringView (BRect (iconView->Frame().right + 4 * K_MARGIN,
-                             K_MARGIN + 3.0, iconView->Frame().right + 4 * K_MARGIN +
-                             m_backView->StringWidth (title) + m_backView->StringWidth ("W"),
-                             totalFontHeight + K_MARGIN + 3.0), "StatusWindow:StringView",
-                             title, B_FOLLOW_LEFT, B_WILL_DRAW);
-    titleStrView->SetFont (&font, B_FONT_ALL);
+    BStringView *titleStrView = new BStringView ("StatusWindow:StringView", title);
+    titleStrView->SetFont (be_bold_font);
     titleStrView->SetHighColor (K_STARTUP_MAIN_HEADING);
-    titleStrView->SetLowColor (titleStrView->ViewColor());
-    titleStrView->SetAlignment (B_ALIGN_CENTER);
-    titleStrView->GetPreferredSize (&width, &height);
-    titleStrView->ResizeTo (width, titleStrView->Frame().Height());
-    m_backView->AddChild (titleStrView);
 
-    m_barberPole = new BarberPole (BRect (titleStrView->Frame().left + 1.0,
-                                titleStrView->Frame().bottom + K_MARGIN / 2.0,
-                                0, iconView->Frame().bottom), "StatusWindow::BarberPole");
-    m_backView->AddChild (m_barberPole);
+    m_barberPole = new BarberPole (BRect (0, 0, 1, 1), "StatusWindow::BarberPole");
 
-    // Recalculate font height for plain font as we don't use bold font anymore
-    be_plain_font->GetHeight (&fntHt);
-    totalFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
+    BStringView *textLabel = new BStringView ("StatusWindow:StringView", text);
 
-    BStringView *textLabel = new BStringView (BRect (m_barberPole->Frame().right + 2 * K_MARGIN,
-                             m_barberPole->Frame().top + totalFontHeight / 2.0,
-                             m_barberPole->Frame().right + 2 * K_MARGIN + m_backView->StringWidth (text) +
-                             m_backView->StringWidth ("W"), totalFontHeight +
-                             m_barberPole->Frame().top + totalFontHeight / 2.0), "StatusWindow:StringView",
-                             text, B_FOLLOW_LEFT, B_WILL_DRAW);
-    textLabel->ResizeToPreferred();
-    textLabel->MoveTo (textLabel->Frame().left, m_barberPole->Frame().bottom - textLabel->Frame().Height());
-    m_backView->AddChild (textLabel);
+    // Start the builder with vertical in case we need to add the cancel button
+    BGroupLayoutBuilder layout = BGroupLayoutBuilder(B_VERTICAL)
+        .AddGroup(B_HORIZONTAL)
+            .Add(iconView, 0)
+            .AddGroup(B_VERTICAL, 0)
+                .Add(titleStrView)
+                .AddGroup(B_HORIZONTAL)
+                    .Add(m_barberPole, 0)
+                    .Add(textLabel)
+                    .AddGlue()
+                .End()
+            .End()
+            .AddGlue()
+        .End()
+        .SetInsets(4 * K_MARGIN, 2 * K_MARGIN, 4 * K_MARGIN, 2 * K_MARGIN);
 
     if (cancel)
-    {
-        BevelView *edgeView = new BevelView (BRect (-1, textLabel->Frame().bottom + 2 * K_MARGIN,
-                                bounds.right - 1, textLabel->Frame().bottom + 2 * K_MARGIN + 1.0),
-                                "StatusWindow:EdgeView", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
-        m_backView->AddChild (edgeView);
+        layout.Add(new BButton ("StatusWindow:CancelButton", str (S_STOP_OPERATION), new BMessage (M_STOP_OPERATION)));
 
-        BButton *cancelButton = new BButton (BRect (bounds.right - K_BUTTON_WIDTH - 2 * K_MARGIN,
-                             edgeView->Frame().bottom + K_MARGIN, bounds.right - 2 * K_MARGIN,
-                             edgeView->Frame().bottom + K_MARGIN + K_BUTTON_HEIGHT),
-                             "StatusWindow:CancelButton", str (S_STOP_OPERATION),
-                             new BMessage (M_STOP_OPERATION), B_FOLLOW_RIGHT, B_WILL_DRAW);
-        m_backView->AddChild (cancelButton);
-        ResizeTo (Frame().Width(), cancelButton->Frame().bottom + K_MARGIN);
-    }
-    else
-        ResizeTo (Frame().Width(), textLabel->Frame().bottom + 2 * K_MARGIN + 4);
-
-    m_backView->ResizeBy(0, K_MARGIN);
+    AddChild(layout);
 
     // Center our window on screen
     CenterOnScreen();
@@ -139,7 +103,6 @@ StatusWindow::StatusWindow (const char *title, BWindow *callerWindow, const char
     if (showWindow == true)
         Show();
 }
-
 
 
 void StatusWindow::MessageReceived (BMessage *message)
@@ -169,6 +132,3 @@ void StatusWindow::MessageReceived (BMessage *message)
         }
     }
 }
-
-
-
