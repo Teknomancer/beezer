@@ -54,7 +54,7 @@ StatusWindow::StatusWindow (const char *title, BWindow *callerWindow, const char
         AddToSubset (callerWindow);
     }
 
-	SetLayout(new BGroupLayout(B_VERTICAL, 0));
+    SetLayout(new BGroupLayout(B_VERTICAL, 0));
 
     BBitmap *icon = ResBitmap ("Img:WarnAlert");
 
@@ -86,7 +86,11 @@ StatusWindow::StatusWindow (const char *title, BWindow *callerWindow, const char
         .SetInsets(4 * K_MARGIN, 2 * K_MARGIN, 4 * K_MARGIN, 2 * K_MARGIN);
 
     if (cancel)
-        layout.Add(new BButton ("StatusWindow:CancelButton", str (S_STOP_OPERATION), new BMessage (M_STOP_OPERATION)));
+        layout.Add(BGroupLayoutBuilder(B_HORIZONTAL, 0)
+			.AddGlue()
+			.Add(new BButton ("StatusWindow:CancelButton", str (S_STOP_OPERATION), new BMessage (M_STOP_OPERATION)))
+			.AddGlue()
+		);
 
     AddChild(layout);
 

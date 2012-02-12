@@ -34,7 +34,6 @@
 #include <MenuItem.h>
 #include <Message.h>
 #include <PopUpMenu.h>
-#include <SpaceLayoutItem.h>
 #include <String.h>
 #include <StringView.h>
 
@@ -106,12 +105,12 @@ StartupWindow::StartupWindow (RecentMgr *recentMgr, bool startup)
                          kBelowIcon,    false, true, true, B_FOLLOW_H_CENTER);
 
     AddChild(BGroupLayoutBuilder(B_VERTICAL, 0)
-        .Add(BSpaceLayoutItem::CreateVerticalStrut(5))
+        .AddStrut(5)
         .Add(m_headingView)
-        .Add(BSpaceLayoutItem::CreateVerticalStrut(5))
+        .AddStrut(5)
         .Add(sepViewLiteEdge, 0)
         .Add(sepViewDarkEdge, 0)
-        .Add(BSpaceLayoutItem::CreateVerticalStrut(5))
+        .AddStrut(5)
         .AddGroup(B_HORIZONTAL)
             .Add(m_createBtn)
             .Add(m_openBtn)

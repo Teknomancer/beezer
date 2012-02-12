@@ -31,7 +31,6 @@
 #include <Button.h>
 #include <GroupLayoutBuilder.h>
 #include <ScrollView.h>
-#include <SpaceLayoutItem.h>
 #include <StringView.h>
 #include <TextView.h>
 
@@ -77,7 +76,7 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
     fileNameStr->SetFont (be_bold_font);
 
     AddChild(BGroupLayoutBuilder(B_HORIZONTAL)
-        .Add(BSpaceLayoutItem::CreateHorizontalStrut(30))
+        .AddStrut(30)
         .Add(commentBmpView, 0.0f)
         .Add(fileNameStr, 1.0f)
         .AddGlue()

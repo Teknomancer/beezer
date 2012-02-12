@@ -37,7 +37,6 @@
 #include <GroupLayoutBuilder.h>
 #include <List.h>
 #include <Path.h>
-#include <SpaceLayoutItem.h>
 #include <StatusBar.h>
 #include <String.h>
 #include <StringView.h>
