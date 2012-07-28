@@ -29,6 +29,7 @@
 
 #include <Application.h>
 #include <Bitmap.h>
+#include <IconUtils.h>
 #include <Message.h>
 #include <Resources.h>
 #include <Roster.h>
@@ -103,19 +104,15 @@ BitmapPool::BitmapPool ()
     m_tbarDeleteDisabledBmp = ResBitmap ("Img:DeleteDisabled");
     m_tbarDeleteBmp = ResBitmap ("Img:Delete");
 
-    // Archived bitmap (MICN - mini icon) get from resource
-    size_t size;
-    BMessage msg;
-    const char *buf = NULL;
-    buf = reinterpret_cast<const char*>(be_app->AppResources()->LoadResource ('MICN', "BEOS:M:STD_ICON", &size));
-    m_smallAppIcon = new BBitmap (BRect (0, 0, 15, 15), B_CMAP8);
-    m_smallAppIcon->SetBits (buf, 16*16, 0, B_CMAP8);
-    delete[] buf;
+    m_smallAppIcon = new BBitmap (BRect (0, 0, 15, 15), B_RGBA32);
+    m_largeAppIcon = new BBitmap (BRect (0, 0, 31, 31), B_RGBA32);
 
-    buf = reinterpret_cast<const char*>(be_app->AppResources()->LoadResource ('ICON', "BEOS:L:STD_ICON", &size));
-    m_largeAppIcon = new BBitmap (BRect (0, 0, 31, 31), B_CMAP8);
-    m_largeAppIcon->SetBits (buf, 32*32, 0, B_CMAP8);
-    delete[] buf;
+    size_t size;
+    const void* buf = be_app->AppResources()->LoadResource (B_VECTOR_ICON_TYPE, "BEOS:ICON", &size);
+    if (buf != NULL) {
+        BIconUtils::GetVectorIcon((const uint8*)buf, size, m_smallAppIcon);
+        BIconUtils::GetVectorIcon((const uint8*)buf, size, m_largeAppIcon);
+    }
 }
 
 

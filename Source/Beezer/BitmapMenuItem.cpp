@@ -53,8 +53,8 @@ void BitmapMenuItem::DrawContent ()
 
 void BitmapMenuItem::GetContentSize (float *width, float *height)
 {
-    *width = m_bitmap->Bounds().Width() + 4;
-    *height = m_bitmap->Bounds().Height() + 1;
+    *width = m_bitmap->Bounds().Width();
+    *height = m_bitmap->Bounds().Height();
 }
 
 
