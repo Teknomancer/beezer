@@ -37,6 +37,7 @@
 #include <malloc.h>
 #include <string.h>
 
+#include "BitmapPool.h"
 #include "CommentWindow.h"
 #include "LangStrings.h"
 #include "LocalUtils.h"
@@ -62,7 +63,7 @@ CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, co
     SetLayout(new BGroupLayout(B_VERTICAL, 0));
 
     // Get comment icon from resource, construct comment holding view etc.
-    BBitmap *commentBmp = ResBitmap ("Img:Comment");
+BBitmap *commentBmp = BitmapPool::LoadAppVector ("Img:Comment", 32, 32);
 
     // Add icon view, make it hold the picture
     StaticBitmapView *commentBmpView = new StaticBitmapView (BRect (0, 0, commentBmp->Bounds().Width(), commentBmp->Bounds().Height()),

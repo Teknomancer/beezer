@@ -41,6 +41,7 @@
 #include "Archiver.h"
 #include "BarberPole.h"
 #include "BevelView.h"
+#include "BitmapPool.h"
 #include "LangStrings.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
@@ -72,7 +73,7 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
     {
         case M_EXTRACT_TO: case M_EXTRACT_SELECTED_TO:
         {
-           actionIcon = ResBitmap ("Img:ExtractStatus");
+           actionIcon = BitmapPool::LoadAppVector ("Img:ExtractStatus", 32, 32);
            fileCount = actionMessage->FindInt32 (kCount);
            actionMessage->FindString (kProgressAction, &strOfStrView);
            actionMessage->FindString (kPreparing, &prepareString);
@@ -81,7 +82,7 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
 
         case M_ACTIONS_DELETE:
         {
-           actionIcon = ResBitmap ("Img:DeleteStatus");
+           actionIcon = BitmapPool::LoadAppVector ("Img:DeleteStatus", 32, 32);
            fileCount = actionMessage->FindInt32 (kCount);
            actionMessage->FindString (kProgressAction, &strOfStrView);
            actionMessage->FindString (kPreparing, &prepareString);
@@ -99,7 +100,7 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
 
         case M_ACTIONS_ADD:
         {
-           actionIcon = ResBitmap ("Img:AddStatus");
+           actionIcon = BitmapPool::LoadAppVector ("Img:AddStatus", 32, 32);
            fileCount = actionMessage->FindInt32 (kCount);
            actionMessage->FindString (kProgressAction, &strOfStrView);
            actionMessage->FindString (kPreparing, &prepareString);

@@ -44,6 +44,7 @@
 #include "AppUtils.h"
 #include "Archiver.h"
 #include "ArkInfoWindow.h"
+#include "BitmapPool.h"
 #include "HashTable.h"
 #include "LangStrings.h"
 #include "ListEntry.h"
@@ -72,7 +73,7 @@ ArkInfoWindow::ArkInfoWindow (BWindow *callerWindow, Archiver *archiver, BEntry 
 
     SetLayout(new BGroupLayout(B_VERTICAL, 0));
 
-    BBitmap *infoBmp = ResBitmap ("Img:ArchiveInfo");
+    BBitmap *infoBmp = BitmapPool::LoadAppVector ("Img:ArchiveInfo", 32, 32);
 
     StaticBitmapView *infoBmpView = new StaticBitmapView (BRect (K_MARGIN * 5, K_MARGIN * 2,
                          infoBmp->Bounds().Width() + K_MARGIN * 5, infoBmp->Bounds().Height() + K_MARGIN * 2),

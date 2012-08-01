@@ -47,6 +47,7 @@
 
 #include "Archiver.h"
 #include "BevelView.h"
+#include "BitmapPool.h"
 #include "LangStrings.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
@@ -94,7 +95,7 @@ SearchWindow::SearchWindow (BWindow *callerWindow, BMessage *loadMessage,
 
     SetLayout(new BGroupLayout(B_VERTICAL, 0));
 
-    BBitmap *searchBmp = ResBitmap ("Img:SearchArchive");
+BBitmap *searchBmp = BitmapPool::LoadAppVector ("Img:SearchArchive", 32, 32);
 
     // Add icon view, make it hold the search picture
     StaticBitmapView *searchBmpView = new StaticBitmapView (BRect (0, 0, searchBmp->Bounds().Width(), searchBmp->Bounds().Height()),
