@@ -58,6 +58,7 @@ InfoBar::InfoBar(BRect frame, BList* slotPositions, const char* name, rgb_color 
       m_totalBytes(0),
       m_backColor(backColor)
 {
+	// @todo get rid of slotPositions, they aren't currently used
     m_slotPositions = slotPositions;
 }
 
@@ -88,25 +89,29 @@ void InfoBar::AttachedToWindow()
 
     float normFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
 
-    // Size according to the slot positions given from the MainWindow, yes its ugly but its consistent accross
-    // fonts or else the width will change for each font, now only TOO big fonts will make beezer look ugly
-    float oneX = *((float*)m_slotPositions->ItemAtFast(0L));
-    float twoX = *((float*)m_slotPositions->ItemAtFast(1L));
+	// Use realistic maximums for now, later figure a way to resize this dynamically
+    float oneX = StringWidth(str(S_INFOBAR_FILES)) + StringWidth(str(S_OF))
+    					+ 2 * StringWidth(" 9999999");	// 99 million files
+    float twoX = StringWidth(str(S_INFOBAR_BYTES)) + StringWidth(str(S_OF)) + StringWidth("(100%)")
+    					+ 2 * StringWidth(" 1099511627776"); // 1 TB
     m_filesStr = new BeezerStringView(BRect(m_barberPole->Frame().right + m_horizGap + 6,
-                                            Bounds().Height() / 2 - normFontHeight / 2 - 1, oneX - 1, Bounds().Height() / 2 -
-                                            normFontHeight / 2 + normFontHeight), "InfoBar:FilesStr", str(S_INFOBAR_FILES));
+                                            Bounds().Height() / 2 - normFontHeight / 2 - 1,
+                                            m_barberPole->Frame().right + m_horizGap + 6 + oneX - 1,
+                                            Bounds().Height() / 2 - normFontHeight / 2 + normFontHeight),
+                                            "InfoBar:FilesStr", str(S_INFOBAR_FILES));
     AddChild(m_filesStr);
     m_filesStr->SendMouseEventsTo(this);
     UpdateFilesDisplay(0L, 0L, true);
-    AddSeparatorItem(oneX, false);
+    AddSeparatorItem(m_filesStr->Frame().right + 1, false);
 
-    m_bytesStr = new BeezerStringView(BRect(m_filesStr->Frame().right + m_horizGap + 25,
-                                            Bounds().Height() / 2 - normFontHeight / 2 - 1, twoX - 1, Bounds().Height() / 2 -
+    m_bytesStr = new BeezerStringView(BRect(m_filesStr->Frame().right + m_horizGap + 6,
+                                            Bounds().Height() / 2 - normFontHeight / 2 - 1,
+                                            m_filesStr->Frame().right + m_horizGap + 6 + twoX - 1, Bounds().Height() / 2 -
                                             normFontHeight / 2 + normFontHeight), "InfoBar:BytesStr", str(S_INFOBAR_BYTES));
     AddChild(m_bytesStr);
     m_bytesStr->SendMouseEventsTo(this);
     UpdateBytesDisplay(0L, 0L, true);
-    AddSeparatorItem(twoX, true);
+    AddSeparatorItem(m_filesStr->Frame().right + m_horizGap + 6 + twoX, true);
 }
 
 
