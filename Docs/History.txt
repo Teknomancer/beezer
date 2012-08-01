@@ -14,7 +14,8 @@ A detailed history of Beezer...
 > Compiled and built under Haiku natively using CMake, abandoned legacy BeIDE projects
 > Change main app icon to a vector one created by Meanwhile
 > Load file type icons from the system database
-
+> Removed close button from the toolbar
+> Fixed size of infobar slots
 
 • Version 0.09
 > Made file extension stripping in Extract context menu case insensitive.
