@@ -38,6 +38,7 @@
 #include <stdlib.h>
 
 #include "AppConstants.h"
+#include "BitmapPool.h"
 #include "LangStrings.h"
 #include "LocalUtils.h"
 #include "Preferences.h"
@@ -52,7 +53,7 @@
 PrefsViewAdd::PrefsViewAdd (BRect frame)
     : PrefsView (frame, str (S_PREFS_TITLE_ADD), str (S_PREFS_DESC_ADD))
 {
-    SetBitmap (ResBitmap ("Img:Prefs_Add"));
+    SetBitmap (BitmapPool::LoadAppVector("Img:Prefs_Add", 20, 20));
     Render();
 }
 

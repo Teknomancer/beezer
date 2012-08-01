@@ -32,6 +32,7 @@
 #include <StringView.h>
 
 #include "AppConstants.h"
+#include "BitmapPool.h"
 #include "LangStrings.h"
 #include "LocalUtils.h"
 #include "Preferences.h"
@@ -44,7 +45,7 @@
 PrefsViewWindows::PrefsViewWindows (BRect frame)
     : PrefsView (frame, str (S_PREFS_TITLE_WINDOWS), str (S_PREFS_DESC_WINDOWS))
 {
-    SetBitmap (ResBitmap ("Img:Prefs_Windows"));
+    SetBitmap (BitmapPool::LoadAppVector("Img:Prefs_Windows", 20, 20));
     Render();
 }
 

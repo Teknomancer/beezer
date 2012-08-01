@@ -42,6 +42,7 @@
 #include <Window.h>
 
 #include "AppConstants.h"
+#include "BitmapPool.h"
 #include "ImageButton.h"
 #include "LangStrings.h"
 #include "LocalUtils.h"
@@ -73,7 +74,7 @@ PrefsViewPaths::PrefsViewPaths (BRect frame)
     m_messenger = NULL;
     m_message = NULL;
     m_openPanel = NULL;
-    SetBitmap (ResBitmap ("Img:Prefs_Paths"));
+    SetBitmap (BitmapPool::LoadSystemVector("application/x-vnd.Be-directory", 20, 20));
     Render();
 }
 
