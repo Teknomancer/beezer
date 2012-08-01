@@ -830,7 +830,7 @@ void ImageButton::ShowContextMenu (BPoint point)
     {
         m_isPushed = false;
         m_drawingTriangle = false;
-        Invalidate ();
+        // Invalidate ();
     }
 }
 
