@@ -70,6 +70,7 @@ class BitmapPool
                          *m_largeAppIcon;
 
     private:
+        BBitmap* _LoadSystemVector(const char* mimestring, int width, int height);
         static int32        m_runCount;
 };
 

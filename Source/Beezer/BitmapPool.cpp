@@ -64,16 +64,16 @@ BitmapPool::BitmapPool ()
         return;
     }
 
-    m_folderBmp = ResBitmap ("Img:Folder");
-    m_executableBmp = ResBitmap ("Img:Executable");
-    m_htmlBmp = ResBitmap ("Img:HTML");
-    m_textBmp = ResBitmap ("Img:Text");
-    m_sourceBmp = ResBitmap ("Img:Source");
-    m_audioBmp = ResBitmap ("Img:Audio");
-    m_archiveBmp = ResBitmap ("Img:Archive");
-    m_packageBmp = ResBitmap ("Img:Package");
-    m_pdfBmp = ResBitmap ("Img:PDF");
-    m_imageBmp = ResBitmap ("Img:Image");
+    m_folderBmp = _LoadSystemVector("application/x-vnd.Be-directory", 16, 16);
+    m_executableBmp = _LoadSystemVector("application/x-vnd.Be-elfexecutable", 16, 16);
+    m_htmlBmp = _LoadSystemVector("text/html", 16, 16);
+    m_textBmp = _LoadSystemVector("text/plain", 16, 16);
+    m_sourceBmp = _LoadSystemVector("text/x-source-code", 16, 16);
+    m_audioBmp = _LoadSystemVector("audio", 16, 16);
+    m_archiveBmp = _LoadSystemVector("application/zip", 16, 16);
+    m_packageBmp = _LoadSystemVector("application/x-scode-UPkg", 16, 16);
+    m_pdfBmp = _LoadSystemVector("application/pdf", 16, 16);
+    m_imageBmp = _LoadSystemVector("image", 16, 16);
 
     // The **ORDER** in which the bmps are added to the BList is critical
     m_iconList.AddItem ((void*)m_folderBmp);
@@ -153,3 +153,30 @@ BitmapPool::~BitmapPool ()
 }
 
 
+BBitmap* BitmapPool::_LoadSystemVector(const char* mimestring, int width, int height)
+{
+    BMimeType mime(mimestring);
+    if (mime.InitCheck() != B_OK)
+        return NULL;
+
+    uint8* vectorData;
+    size_t vectorDataSize;
+
+    //Try the File Type database
+    if (mime.GetIcon(&vectorData, &vectorDataSize) != B_OK) {
+        //Try the supertype
+        BMimeType superType;
+        mime.GetSupertype(&superType);
+        if (superType.GetIcon(&vectorData, &vectorDataSize) != B_OK) {
+            //still no luck, use generic icon
+            mime.SetTo("application/octet-stream");
+            if (mime.GetIcon(&vectorData, &vectorDataSize) != B_OK)
+                return NULL;
+        }
+    }
+
+    BBitmap* icon = new BBitmap(BRect(0, 0, width - 1, height - 1), B_RGBA32);
+    BIconUtils::GetVectorIcon(vectorData, vectorDataSize, icon);
+
+    return icon;
+}
