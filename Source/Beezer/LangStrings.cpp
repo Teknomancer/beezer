@@ -208,7 +208,6 @@ static const char * _englishStrings [NUM_STRINGS] =
     "[ Programming ]",
     "[ ColumnListView ]",
     "[ SplitPane ]",
-    "[ ToolTips ]",
     "[ URLView ]",
     "[ BeShare ]",
     "[ 7zip Add-on ]",
@@ -221,7 +220,6 @@ static const char * _englishStrings [NUM_STRINGS] =
         "$S_CREDITS$\n\n"
         "$S_COLUMN_LIST_VIEW$\nBrian Tietz\n\n"
         "$S_SPLITPANE$\nYNOP Talton\n\n"
-        "$S_BUBBLE_HELP$\nMarco Nelissen\n\n"
         "$S_7ZIP$\nMarcin Konicki\n\n"
         "Thank you for your contributions\n\n*  *  *\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
         "A special round of applause\n"

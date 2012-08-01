@@ -146,7 +146,6 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
     formatStr.ReplaceAll ("$S_CREDITS$", str (S_ABOUT_CREDITS));
     formatStr.ReplaceAll ("$S_COLUMN_LIST_VIEW$", str (S_ABOUT_COLUMN_LIST_VIEW));
     formatStr.ReplaceAll ("$S_SPLITPANE$", str (S_ABOUT_SPLITPANE));
-    formatStr.ReplaceAll ("$S_BUBBLE_HELP$", str (S_ABOUT_BUBBLE_HELP));
     formatStr.ReplaceAll ("$S_URLVIEW$", str (S_ABOUT_URLVIEW));
     formatStr.ReplaceAll ("$S_BESHARE$", str (S_ABOUT_BESHARE));
     formatStr.ReplaceAll ("$S_7ZIP$", str (S_ABOUT_7ZIP));
@@ -162,24 +161,23 @@ AboutWindow::AboutWindow (const char *compileTimeStr)
     // Dealloc m_creditsText as our textview would have made a copy of it & we don't use it anywhere else
     free ((char*)m_creditsText);
 
-    int32 nSubHeadings = 8;
+    int32 nSubHeadings = 7;
     BString subHeadings[] =
     {
-        str (S_ABOUT_PROGRAMMING),               // 0
-        str (S_ABOUT_COLUMN_LIST_VIEW),           // 1
+        str (S_ABOUT_PROGRAMMING),             // 0
+        str (S_ABOUT_COLUMN_LIST_VIEW),        // 1
         str (S_ABOUT_SPLITPANE),               // 2
-        str (S_ABOUT_BUBBLE_HELP),               // 3
-        str (S_ABOUT_URLVIEW),                  // 4
-        str (S_ABOUT_BESHARE),                  // 5
-        str (S_ABOUT_7ZIP),                      // 6
-        str (S_ABOUT_DISCLAIMER)               // 7
+        str (S_ABOUT_URLVIEW),                 // 3
+        str (S_ABOUT_BESHARE),                 // 4
+        str (S_ABOUT_7ZIP),                    // 5
+        str (S_ABOUT_DISCLAIMER)               // 6
     };
 
     int32 nMainHeadings = 3;
     BString mainHeadings[] =
     {
-        str (S_ABOUT_CREDITS),                  // 0
-        str (S_ABOUT_LEGAL_MUMBO_JUMBO),        // 1
+        str (S_ABOUT_CREDITS),                 // 0
+        str (S_ABOUT_LEGAL_MUMBO_JUMBO),       // 1
         str (S_ABOUT_SPECIAL_THANKS)           // 2
     };
 
