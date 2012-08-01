@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2012, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
@@ -341,7 +341,7 @@ static const char * _englishStrings [NUM_STRINGS] =
     "Matches regular expression",
     "Find:",
     "What you are searching for",
-    "Scope",
+    "Search",
     "All entries",
     "Searches the entire archive\n"
         "(Automatically unfolds all folded\n"

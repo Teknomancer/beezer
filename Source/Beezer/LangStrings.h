@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2012, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
@@ -263,7 +263,7 @@ enum LanguageStrings
     S_SEARCH_REGULAR_EXPRESSION,
     S_SEARCH_FOR,
     S_SEARCH_FOR_BH,
-    S_SEARCH_SCOPE,
+    S_SEARCH_SEARCH,
     S_SEARCH_ALL_ENTRIES,
     S_SEARCH_ALL_ENTRIES_BH,
     S_SEARCH_VISIBLE_ENTRIES,

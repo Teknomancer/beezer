@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2012, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011, Chris Roberts
  * All rights reserved.
  *
@@ -160,7 +160,7 @@ BBitmap *searchBmp = BitmapPool::LoadAppVector ("Img:SearchArchive", 32, 32);
 
     // Setup the scope group box
     BBox *scopeBox = new BBox ("SearchWindow:ScopeBox");
-    scopeBox->SetLabel (str (S_SEARCH_SCOPE));
+    scopeBox->SetLabel (str (S_SEARCH_SEARCH));
     scopeBox->SetFont (be_plain_font);
 
     // Draw the radio buttons inside the group box (co-ordinates are relative to the group box)
