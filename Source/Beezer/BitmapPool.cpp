@@ -104,15 +104,10 @@ BitmapPool::BitmapPool ()
     m_tbarDeleteDisabledBmp = ResBitmap ("Img:DeleteDisabled");
     m_tbarDeleteBmp = ResBitmap ("Img:Delete");
 
-    m_smallAppIcon = new BBitmap (BRect (0, 0, 15, 15), B_RGBA32);
-    m_largeAppIcon = new BBitmap (BRect (0, 0, 31, 31), B_RGBA32);
+    m_smallAppIcon = LoadAppVector("BEOS:ICON", 16, 16);
 
-    size_t size;
-    const void* buf = be_app->AppResources()->LoadResource (B_VECTOR_ICON_TYPE, "BEOS:ICON", &size);
-    if (buf != NULL) {
-        BIconUtils::GetVectorIcon((const uint8*)buf, size, m_smallAppIcon);
-        BIconUtils::GetVectorIcon((const uint8*)buf, size, m_largeAppIcon);
-    }
+    m_largeAppIcon = LoadAppVector("BEOS:ICON", 32, 32);
+
 }
 
 
@@ -177,6 +172,19 @@ BBitmap* BitmapPool::_LoadSystemVector(const char* mimestring, int width, int he
 
     BBitmap* icon = new BBitmap(BRect(0, 0, width - 1, height - 1), B_RGBA32);
     BIconUtils::GetVectorIcon(vectorData, vectorDataSize, icon);
+
+    return icon;
+}
+
+BBitmap* BitmapPool::LoadAppVector(const char* resource, int width, int height)
+{
+    size_t size;
+    const void* buf = be_app->AppResources()->LoadResource (B_VECTOR_ICON_TYPE, resource, &size);
+    if (buf == NULL)
+        return NULL;
+
+    BBitmap* icon = new BBitmap(BRect(0, 0, width - 1, height - 1), B_RGBA32);
+    BIconUtils::GetVectorIcon((const uint8*)buf, size, icon);
 
     return icon;
 }

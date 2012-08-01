@@ -39,6 +39,8 @@ class BitmapPool
         BitmapPool ();
         ~BitmapPool ();
 
+        static BBitmap* LoadAppVector(const char* resource, int width, int height);
+
         BList               m_iconList;
         BBitmap            *m_folderBmp,
                          *m_executableBmp,
@@ -71,6 +73,7 @@ class BitmapPool
 
     private:
         BBitmap* _LoadSystemVector(const char* mimestring, int width, int height);
+
         static int32        m_runCount;
 };
 
