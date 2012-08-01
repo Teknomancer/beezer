@@ -12,6 +12,8 @@ A detailed history of Beezer...
 > Bug Fix: Fixed reading and testing of 7z files for latest 7z binaries
 > Bug Fix: Minor UI fixes for Haiku
 > Compiled and built under Haiku natively using CMake, abandoned legacy BeIDE projects
+> Change main app icon to a vector one created by Meanwhile
+> Load file type icons from the system database
 
 
 • Version 0.09
