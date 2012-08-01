@@ -64,16 +64,16 @@ BitmapPool::BitmapPool ()
         return;
     }
 
-    m_folderBmp = _LoadSystemVector("application/x-vnd.Be-directory", 16, 16);
-    m_executableBmp = _LoadSystemVector("application/x-vnd.Be-elfexecutable", 16, 16);
-    m_htmlBmp = _LoadSystemVector("text/html", 16, 16);
-    m_textBmp = _LoadSystemVector("text/plain", 16, 16);
-    m_sourceBmp = _LoadSystemVector("text/x-source-code", 16, 16);
-    m_audioBmp = _LoadSystemVector("audio", 16, 16);
-    m_archiveBmp = _LoadSystemVector("application/zip", 16, 16);
-    m_packageBmp = _LoadSystemVector("application/x-scode-UPkg", 16, 16);
-    m_pdfBmp = _LoadSystemVector("application/pdf", 16, 16);
-    m_imageBmp = _LoadSystemVector("image", 16, 16);
+    m_folderBmp = LoadSystemVector("application/x-vnd.Be-directory", 16, 16);
+    m_executableBmp = LoadSystemVector("application/x-vnd.Be-elfexecutable", 16, 16);
+    m_htmlBmp = LoadSystemVector("text/html", 16, 16);
+    m_textBmp = LoadSystemVector("text/plain", 16, 16);
+    m_sourceBmp = LoadSystemVector("text/x-source-code", 16, 16);
+    m_audioBmp = LoadSystemVector("audio", 16, 16);
+    m_archiveBmp = LoadSystemVector("application/zip", 16, 16);
+    m_packageBmp = LoadSystemVector("application/x-scode-UPkg", 16, 16);
+    m_pdfBmp = LoadSystemVector("application/pdf", 16, 16);
+    m_imageBmp = LoadSystemVector("image", 16, 16);
 
     // The **ORDER** in which the bmps are added to the BList is critical
     m_iconList.AddItem ((void*)m_folderBmp);
@@ -148,7 +148,7 @@ BitmapPool::~BitmapPool ()
 }
 
 
-BBitmap* BitmapPool::_LoadSystemVector(const char* mimestring, int width, int height)
+BBitmap* BitmapPool::LoadSystemVector(const char* mimestring, int width, int height)
 {
     BMimeType mime(mimestring);
     if (mime.InitCheck() != B_OK)
