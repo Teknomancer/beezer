@@ -35,6 +35,7 @@
 #include <stdlib.h>
 
 #include "AppConstants.h"
+#include "BitmapPool.h"
 #include "LangStrings.h"
 #include "LocalUtils.h"
 #include "Preferences.h"
@@ -47,7 +48,7 @@
 PrefsViewRecent::PrefsViewRecent (BRect frame)
     : PrefsView (frame, str (S_PREFS_TITLE_RECENT), str (S_PREFS_DESC_RECENT))
 {
-    SetBitmap (ResBitmap ("Img:Prefs_Recent"));
+    SetBitmap (BitmapPool::LoadAppVector("Img:Prefs_Recent", 20, 20));
     Render();
 }
 
