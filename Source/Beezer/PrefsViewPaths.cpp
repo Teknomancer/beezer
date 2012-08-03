@@ -202,8 +202,8 @@ void PrefsViewPaths::Render ()
 
     m_genChk->MoveTo (m_genChk->Frame().left, m_scrollView->Frame().bottom + m_vGap + 4);
 
-    m_addBmp = ResBitmap ("Img:PlusSign");
-    m_removeBmp = ResBitmap ("Img:MinusSign");
+    m_addBmp = BitmapPool::LoadAppVector("Img:PlusSign", 20, 20);
+    m_removeBmp = BitmapPool::LoadAppVector("Img:MinusSign", 20, 20);
 
     m_addBtn = new ImageButton (BRect (m_scrollView->Frame().right + m_margin, m_scrollView->Frame().top + 1,
                   m_scrollView->Frame().right + 20, m_scrollView->Frame().top + 21), "PrefsViewPaths:addBnt",
