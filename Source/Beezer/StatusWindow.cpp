@@ -34,6 +34,7 @@
 
 #include "AppConstants.h"
 #include "BarberPole.h"
+#include "BitmapPool.h"
 #include "LangStrings.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
@@ -56,7 +57,7 @@ StatusWindow::StatusWindow (const char *title, BWindow *callerWindow, const char
 
     SetLayout(new BGroupLayout(B_VERTICAL, 0));
 
-    BBitmap *icon = ResBitmap ("Img:WarnAlert");
+    BBitmap *icon = BitmapPool::LoadAppVector("Img:WarnAlert", 32, 32);
 
     StaticBitmapView *iconView = new StaticBitmapView (BRect (0, 0, icon->Bounds().Width(), icon->Bounds().Height()), "StatusWindow:iconView", icon);
 
