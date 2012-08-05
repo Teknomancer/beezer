@@ -41,6 +41,7 @@
 #include "AppConstants.h"
 #include "ArchiverMgr.h"
 #include "Beezer.h"
+#include "BitmapPool.h"
 #include "LangStrings.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
@@ -57,7 +58,7 @@
 PrefsViewInterface::PrefsViewInterface (BRect frame)
     : PrefsView (frame, str (S_PREFS_TITLE_INTERFACE), str (S_PREFS_DESC_INTERFACE))
 {
-    SetBitmap (ResBitmap ("Img:Prefs_Interface"));
+    SetBitmap (BitmapPool::LoadAppVector("Img:Prefs_Interface", 20, 20));
     Render();
 }
 
