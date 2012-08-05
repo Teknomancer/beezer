@@ -93,8 +93,8 @@ BitmapPool::BitmapPool ()
     m_tbarPrefsBmp = ResBitmap ("Img:Prefs");
     m_tbarToolsBmp = ResBitmap ("Img:Tools");
     m_tbarCloseBmp = ResBitmap ("Img:Close");
-    m_tbarSearchDisabledBmp = ResBitmap ("Img:SearchDisabled");
-    m_tbarSearchBmp = ResBitmap ("Img:Search");
+    m_tbarSearchDisabledBmp = LoadAppVector("Img:SearchDisabled", 20, 20);
+    m_tbarSearchBmp = LoadAppVector("Img:Search", 20, 20);
     m_tbarExtractDisabledBmp = ResBitmap ("Img:ExtractDisabled");
     m_tbarExtractBmp = ResBitmap ("Img:Extract");
     m_tbarViewDisabledBmp = ResBitmap ("Img:ViewDisabled");
