@@ -101,8 +101,8 @@ BitmapPool::BitmapPool ()
     m_tbarViewBmp = ResBitmap ("Img:View");
     m_tbarAddDisabledBmp = LoadAppVector("Img:AddDisabled", 20, 20);
     m_tbarAddBmp = LoadAppVector("Img:Add", 20, 20);
-    m_tbarDeleteDisabledBmp = ResBitmap ("Img:DeleteDisabled");
-    m_tbarDeleteBmp = ResBitmap ("Img:Delete");
+    m_tbarDeleteDisabledBmp = LoadAppVector("Img:DeleteDisabled", 20, 20);
+    m_tbarDeleteBmp = LoadAppVector("Img:Delete", 20, 20);
 
     m_smallAppIcon = LoadAppVector("BEOS:ICON", 16, 16);
 
