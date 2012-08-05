@@ -87,9 +87,9 @@ BitmapPool::BitmapPool ()
     m_iconList.AddItem ((void*)m_pdfBmp);
     m_iconList.AddItem ((void*)m_imageBmp);
 
-    m_tbarNewBmp = ResBitmap ("Img:New");
-    m_tbarOpenBmp = ResBitmap ("Img:Open");
-    m_tbarOpenRecentBmp = ResBitmap ("Img:OpenRecent");
+    m_tbarNewBmp = LoadAppVector("Img:New", 20, 20);
+    m_tbarOpenBmp = LoadSystemVector("application/x-vnd.Be-directory", 20, 20);
+    m_tbarOpenRecentBmp = LoadAppVector("Img:OpenRecent", 20, 20);
     m_tbarPrefsBmp = ResBitmap ("Img:Prefs");
     m_tbarToolsBmp = ResBitmap ("Img:Tools");
     m_tbarCloseBmp = ResBitmap ("Img:Close");
