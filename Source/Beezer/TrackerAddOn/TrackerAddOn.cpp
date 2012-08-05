@@ -38,15 +38,15 @@
 
 
 
-void process_refs (entry_ref dirRef, BMessage *message, void *reserved)
+void process_refs(entry_ref dirRef, BMessage* message, void* reserved)
 {
     message->what = M_LAUNCH_TRACKER_ADDON;
-    be_roster->Launch (K_APP_SIGNATURE, message);
+    be_roster->Launch(K_APP_SIGNATURE, message);
 }
 
 
 
-int main ()
+int main()
 {
     BString str = "Beezer Tracker add-on";
     str << "\n" << "© 2005 Ramshankar.\n\n";
@@ -54,9 +54,9 @@ int main ()
     str << "/boot/home/config/add-ons/Tracker\n\n";
     str << "To use this add-on choose the files you with to archive, right-click them and choose this add-on…";
 
-    str.Prepend ("alert \"");
-    str.Append ("\"");
-    system (str.String());
+    str.Prepend("alert \"");
+    str.Append("\"");
+    system(str.String());
     return 0;
 }
 

@@ -34,17 +34,17 @@
 
 
 
-JoinerStub::JoinerStub ()
-    : BApplication (K_JOINER_STUB_SIGNATURE)
+JoinerStub::JoinerStub()
+    : BApplication(K_JOINER_STUB_SIGNATURE)
 {
     Run();
 }
 
 
 
-void JoinerStub::ReadyToRun ()
+void JoinerStub::ReadyToRun()
 {
-    m_joinWnd = new JoinerWindow ();
+    m_joinWnd = new JoinerWindow();
 
     return BApplication::ReadyToRun();
 }
@@ -53,7 +53,7 @@ void JoinerStub::ReadyToRun ()
 
 
 
-int main ()
+int main()
 {
     delete new JoinerStub();
     return B_OK;

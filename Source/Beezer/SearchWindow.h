@@ -48,35 +48,35 @@ class BTextControl;
 class SearchWindow : public BWindow
 {
     public:
-        SearchWindow (BWindow *caller, BMessage *loadMessage,
-                    const BEntry *entry, const BList *columnList, const Archiver *ark);
+        SearchWindow(BWindow* caller, BMessage* loadMessage,
+                     const BEntry* entry, const BList* columnList, const Archiver* ark);
 
         // Inherited hooks
-        virtual void        Quit ();
-        virtual void        MessageReceived (BMessage *message);
+        virtual void        Quit();
+        virtual void        MessageReceived(BMessage* message);
 
         // Additional hooks
-        int32               ExpressionType () const;
-        CLVColumn          *Column () const;
-        void                SetToolTips ();
-        void                GetSettings (BMessage &msg, uint32 msgwhat) const;
+        int32               ExpressionType() const;
+        CLVColumn*          Column() const;
+        void                SetToolTips();
+        void                GetSettings(BMessage& msg, uint32 msgwhat) const;
 
     private:
         // Private members
         BList               m_tmpList;
-        BWindow            *m_callerWindow;
-        BTextControl        *m_searchTextControl;
-        BButton            *m_searchBtn;
-        BMenuField         *m_columnField,
-                         *m_matchField;
-        BRadioButton        *m_allEntriesOpt,
-                         *m_visibleEntriesOpt,
-                         *m_selEntriesOpt;
-        BCheckBox          *m_addToSelChk,
-                         *m_ignoreCaseChk,
-                         *m_invertChk,
-                         *m_persistentChk;
-        BMessage           *m_loadMessage;
+        BWindow*            m_callerWindow;
+        BTextControl*        m_searchTextControl;
+        BButton*            m_searchBtn;
+        BMenuField*         m_columnField,
+                            *m_matchField;
+        BRadioButton*        m_allEntriesOpt,
+                             *m_visibleEntriesOpt,
+                             *m_selEntriesOpt;
+        BCheckBox*          m_addToSelChk,
+                            *m_ignoreCaseChk,
+                            *m_invertChk,
+                            *m_persistentChk;
+        BMessage*           m_loadMessage;
 };
 
 #endif /* _SEARCH_WINDOW_H */

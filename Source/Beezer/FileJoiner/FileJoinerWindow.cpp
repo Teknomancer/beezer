@@ -62,299 +62,299 @@
 
 
 
-FileJoinerWindow::FileJoinerWindow (RecentMgr *dirs)
-    : BWindow (BRect (10, 10, 520, 300), str (S_FILE_JOINER_TITLE), B_TITLED_WINDOW,
-           B_NOT_ZOOMABLE | B_NOT_V_RESIZABLE | B_ASYNCHRONOUS_CONTROLS),
-    m_filePanel (NULL),
-    m_dirPanel (NULL),
-    m_calcSize (false),
-    m_joinInProgress (false),
-    m_quitNow (false),
-    m_cancel (false),
-    m_recentSplitDirs (dirs)
+FileJoinerWindow::FileJoinerWindow(RecentMgr* dirs)
+    : BWindow(BRect(10, 10, 520, 300), str(S_FILE_JOINER_TITLE), B_TITLED_WINDOW,
+              B_NOT_ZOOMABLE | B_NOT_V_RESIZABLE | B_ASYNCHRONOUS_CONTROLS),
+    m_filePanel(NULL),
+    m_dirPanel(NULL),
+    m_calcSize(false),
+    m_joinInProgress(false),
+    m_quitNow(false),
+    m_cancel(false),
+    m_recentSplitDirs(dirs)
 {
-    m_backView = new BevelView (Bounds(), "FileJoinerWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
-    m_backView->SetViewColor (K_BACKGROUND_COLOR);
-    AddChild (m_backView);
+    m_backView = new BevelView(Bounds(), "FileJoinerWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
+    m_backView->SetViewColor(K_BACKGROUND_COLOR);
+    AddChild(m_backView);
 
-    BFont font (be_plain_font);
+    BFont font(be_plain_font);
     font_height fntHt;
 
-    font.GetHeight (&fntHt);
+    font.GetHeight(&fntHt);
     float normFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
 
-    font.SetFace (B_BOLD_FACE);
-    font.GetHeight (&fntHt);
+    font.SetFace(B_BOLD_FACE);
+    font.GetHeight(&fntHt);
     float totalFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
 
-    BBitmap *splitBmp = ResBitmap ("Img:FileJoiner");
+    BBitmap* splitBmp = ResBitmap("Img:FileJoiner");
 
-    BevelView *sepView1 = new BevelView (BRect (-1, splitBmp->Bounds().Height() + 4 * K_MARGIN,
-                                Bounds().right - 1.0, splitBmp->Bounds().Height() + 4 * K_MARGIN + 1),
-                                "FileJoinerWindow:SepView1", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
-    m_backView->AddChild (sepView1);
+    BevelView* sepView1 = new BevelView(BRect(-1, splitBmp->Bounds().Height() + 4 * K_MARGIN,
+                                        Bounds().right - 1.0, splitBmp->Bounds().Height() + 4 * K_MARGIN + 1),
+                                        "FileJoinerWindow:SepView1", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+    m_backView->AddChild(sepView1);
 
-    StaticBitmapView *splitBmpView = new StaticBitmapView (BRect (K_MARGIN * 5, K_MARGIN * 2,
-                         splitBmp->Bounds().Width() + K_MARGIN * 5,
-                         splitBmp->Bounds().Height() + K_MARGIN * 2), "FileJoinerWindow:splitBmpView",
-                         splitBmp);
-    splitBmpView->SetViewColor (m_backView->ViewColor());
-    AddChild (splitBmpView);
+    StaticBitmapView* splitBmpView = new StaticBitmapView(BRect(K_MARGIN * 5, K_MARGIN * 2,
+            splitBmp->Bounds().Width() + K_MARGIN * 5,
+            splitBmp->Bounds().Height() + K_MARGIN * 2), "FileJoinerWindow:splitBmpView",
+            splitBmp);
+    splitBmpView->SetViewColor(m_backView->ViewColor());
+    AddChild(splitBmpView);
 
     // Add the file name string view (align it vertically with the icon view)
-    m_descStr = new BStringView (BRect (splitBmpView->Frame().right + K_MARGIN * 3,
-                                    splitBmpView->Frame().top, Bounds().right - 1,
-                                    splitBmpView->Frame().top + totalFontHeight),
-                                    "FileJoinerWindow:DescStr", str (S_FILE_JOINER_DESC),
-                                    B_FOLLOW_LEFT, B_WILL_DRAW);
+    m_descStr = new BStringView(BRect(splitBmpView->Frame().right + K_MARGIN * 3,
+                                      splitBmpView->Frame().top, Bounds().right - 1,
+                                      splitBmpView->Frame().top + totalFontHeight),
+                                "FileJoinerWindow:DescStr", str(S_FILE_JOINER_DESC),
+                                B_FOLLOW_LEFT, B_WILL_DRAW);
 
-    m_backView->AddChild (m_descStr);
-    m_descStr->MoveTo (m_descStr->Frame().left,
-        (splitBmpView->Frame().Height() / 2 - normFontHeight / 2) + normFontHeight / 2 + 1);
-    m_descStr->MoveBy (0, -normFontHeight / 2 - 1);
-    m_descStr->ResizeToPreferred ();
+    m_backView->AddChild(m_descStr);
+    m_descStr->MoveTo(m_descStr->Frame().left,
+                      (splitBmpView->Frame().Height() / 2 - normFontHeight / 2) + normFontHeight / 2 + 1);
+    m_descStr->MoveBy(0, -normFontHeight / 2 - 1);
+    m_descStr->ResizeToPreferred();
 
-    m_descStr2 = new BStringView (BRect (m_descStr->Frame().left,
-                                    m_descStr->Frame().bottom + 1, Bounds().right - 1, 0),
-                                    "FileJoinerWindow:DescStr2", str (S_FILE_JOINER_DESC2),
-                                    B_FOLLOW_LEFT, B_WILL_DRAW);
-    m_backView->AddChild (m_descStr2);
+    m_descStr2 = new BStringView(BRect(m_descStr->Frame().left,
+                                       m_descStr->Frame().bottom + 1, Bounds().right - 1, 0),
+                                 "FileJoinerWindow:DescStr2", str(S_FILE_JOINER_DESC2),
+                                 B_FOLLOW_LEFT, B_WILL_DRAW);
+    m_backView->AddChild(m_descStr2);
     m_descStr2->ResizeToPreferred();
 
-    m_innerView = new BevelView (BRect (K_MARGIN, sepView1->Frame().bottom + K_MARGIN,
-                                Bounds().right - K_MARGIN,
-                                Bounds().bottom - K_MARGIN), "FileJoinerWindow:InnerView", btNoBevel,
+    m_innerView = new BevelView(BRect(K_MARGIN, sepView1->Frame().bottom + K_MARGIN,
+                                      Bounds().right - K_MARGIN,
+                                      Bounds().bottom - K_MARGIN), "FileJoinerWindow:InnerView", btNoBevel,
                                 B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
-    m_backView->AddChild (m_innerView);
+    m_backView->AddChild(m_innerView);
 
-    m_filePathView = new BTextControl (BRect (K_MARGIN, K_MARGIN,
-                         m_innerView->Frame().Width() - 2 * K_MARGIN - K_BUTTON_WIDTH, 0),
-                         "FileJoinerWindow:FilePathView", str (S_FIRST_FILE_TO_JOIN), NULL, NULL,
-                         B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
-    m_innerView->AddChild (m_filePathView);
-    m_filePathView->SetModificationMessage (new BMessage (M_UPDATE_DATA));
+    m_filePathView = new BTextControl(BRect(K_MARGIN, K_MARGIN,
+                                            m_innerView->Frame().Width() - 2 * K_MARGIN - K_BUTTON_WIDTH, 0),
+                                      "FileJoinerWindow:FilePathView", str(S_FIRST_FILE_TO_JOIN), NULL, NULL,
+                                      B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
+    m_innerView->AddChild(m_filePathView);
+    m_filePathView->SetModificationMessage(new BMessage(M_UPDATE_DATA));
 
-    BString buttonText = str (S_PREFS_PATHS_SELECT); buttonText << "...";
-    m_selectFileBtn = new BButton (BRect (m_innerView->Frame().Width() - K_MARGIN - K_BUTTON_WIDTH,
-                         m_filePathView->Frame().top - 4, m_innerView->Frame().Width() - K_MARGIN,
-                         m_filePathView->Frame().top - 4 + K_BUTTON_HEIGHT), "FileJoinerWindow:SelectFileBtn",
-                         buttonText.String(), new BMessage (M_SELECT_JOIN_FILE), B_FOLLOW_RIGHT,
-                         B_WILL_DRAW | B_NAVIGABLE);
-    m_innerView->AddChild (m_selectFileBtn);
+    BString buttonText = str(S_PREFS_PATHS_SELECT); buttonText << "...";
+    m_selectFileBtn = new BButton(BRect(m_innerView->Frame().Width() - K_MARGIN - K_BUTTON_WIDTH,
+                                        m_filePathView->Frame().top - 4, m_innerView->Frame().Width() - K_MARGIN,
+                                        m_filePathView->Frame().top - 4 + K_BUTTON_HEIGHT), "FileJoinerWindow:SelectFileBtn",
+                                  buttonText.String(), new BMessage(M_SELECT_JOIN_FILE), B_FOLLOW_RIGHT,
+                                  B_WILL_DRAW | B_NAVIGABLE);
+    m_innerView->AddChild(m_selectFileBtn);
 
-    m_folderMenu = new BMenu (str (S_FOLDER_FOR_JOINED_FILE));
-    m_folderField = new BMenuField (BRect (K_MARGIN, m_filePathView->Frame().bottom + K_MARGIN,
-                         K_MARGIN + m_innerView->StringWidth (str (S_FOLDER_FOR_JOINED_FILE)) + 36, 0),
-                         "FileJoinerWindow:FolderField", NULL, m_folderMenu);
-    m_innerView->AddChild (m_folderField);
+    m_folderMenu = new BMenu(str(S_FOLDER_FOR_JOINED_FILE));
+    m_folderField = new BMenuField(BRect(K_MARGIN, m_filePathView->Frame().bottom + K_MARGIN,
+                                         K_MARGIN + m_innerView->StringWidth(str(S_FOLDER_FOR_JOINED_FILE)) + 36, 0),
+                                   "FileJoinerWindow:FolderField", NULL, m_folderMenu);
+    m_innerView->AddChild(m_folderField);
 
-    m_folderPathView = new BTextControl (BRect (m_folderField->Frame().right + K_MARGIN + 1,
-                             m_filePathView->Frame().bottom + K_MARGIN + 2,
-                             m_innerView->Frame().Width() - 2 * K_MARGIN - K_BUTTON_WIDTH, 0),
-                             "FileJoinerWindow:FolderPathView", NULL, NULL, NULL,
-                             B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
-    m_innerView->AddChild (m_folderPathView);
-    m_folderPathView->SetModificationMessage (new BMessage (M_UPDATE_DATA));
+    m_folderPathView = new BTextControl(BRect(m_folderField->Frame().right + K_MARGIN + 1,
+                                        m_filePathView->Frame().bottom + K_MARGIN + 2,
+                                        m_innerView->Frame().Width() - 2 * K_MARGIN - K_BUTTON_WIDTH, 0),
+                                        "FileJoinerWindow:FolderPathView", NULL, NULL, NULL,
+                                        B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
+    m_innerView->AddChild(m_folderPathView);
+    m_folderPathView->SetModificationMessage(new BMessage(M_UPDATE_DATA));
 
-    m_selectFolderBtn = new BButton (BRect (m_innerView->Frame().Width() - K_MARGIN - K_BUTTON_WIDTH,
-                             m_folderPathView->Frame().top - 4, m_innerView->Frame().Width() - K_MARGIN,
-                             m_folderPathView->Frame().top - 4 + K_BUTTON_HEIGHT),
-                             "FileJoinerWindow:SelectFolderBtn", buttonText.String(),
-                             new BMessage (M_SELECT_JOIN_FOLDER), B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
-    m_innerView->AddChild (m_selectFolderBtn);
+    m_selectFolderBtn = new BButton(BRect(m_innerView->Frame().Width() - K_MARGIN - K_BUTTON_WIDTH,
+                                          m_folderPathView->Frame().top - 4, m_innerView->Frame().Width() - K_MARGIN,
+                                          m_folderPathView->Frame().top - 4 + K_BUTTON_HEIGHT),
+                                    "FileJoinerWindow:SelectFolderBtn", buttonText.String(),
+                                    new BMessage(M_SELECT_JOIN_FOLDER), B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
+    m_innerView->AddChild(m_selectFolderBtn);
 
     float divider;
-    divider = MAX (K_MARGIN + m_innerView->StringWidth (m_folderPathView->Label()),
-                      m_folderField->Frame().right);
-    divider = MAX (divider, K_MARGIN + m_innerView->StringWidth (str (S_SPLIT_SEPARATOR)));
-    divider = MAX (divider, K_MARGIN + m_backView->StringWidth (str (S_NUMBER_OF_PIECES)));
-    m_filePathView->SetDivider (divider);
-    m_folderPathView->SetDivider (0);
-    m_folderPathView->MoveTo (m_filePathView->Frame().left + divider + 1, m_folderPathView->Frame().top);
+    divider = MAX(K_MARGIN + m_innerView->StringWidth(m_folderPathView->Label()),
+                  m_folderField->Frame().right);
+    divider = MAX(divider, K_MARGIN + m_innerView->StringWidth(str(S_SPLIT_SEPARATOR)));
+    divider = MAX(divider, K_MARGIN + m_backView->StringWidth(str(S_NUMBER_OF_PIECES)));
+    m_filePathView->SetDivider(divider);
+    m_folderPathView->SetDivider(0);
+    m_folderPathView->MoveTo(m_filePathView->Frame().left + divider + 1, m_folderPathView->Frame().top);
 
-    m_separatorView = new BTextControl (BRect (K_MARGIN, m_folderPathView->Frame().bottom + K_MARGIN + 2,
-                             K_MARGIN + divider + 50, 0), "FileJoinerWindow:SeparatorView",
-                             str (S_SPLIT_SEPARATOR), "_", NULL, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
-    m_separatorView->SetDivider (divider + 1);
-    m_separatorView->TextView()->SetMaxBytes (128);
-    m_separatorView->TextView()->DisallowChar ('0');    // too lazy to loop using ASCII value :)
-    m_separatorView->TextView()->DisallowChar ('1');
-    m_separatorView->TextView()->DisallowChar ('2');
-    m_separatorView->TextView()->DisallowChar ('3');
-    m_separatorView->TextView()->DisallowChar ('4');
-    m_separatorView->TextView()->DisallowChar ('5');
-    m_separatorView->TextView()->DisallowChar ('6');
-    m_separatorView->TextView()->DisallowChar ('7');
-    m_separatorView->TextView()->DisallowChar ('8');
-    m_separatorView->TextView()->DisallowChar ('9');
-    m_separatorView->TextView()->DisallowChar (':');
-    m_separatorView->TextView()->DisallowChar ('/');
-    m_separatorView->TextView()->DisallowChar ('\\');
-    m_separatorView->TextView()->DisallowChar ('*');
-    m_separatorView->TextView()->DisallowChar ('?');
-    m_separatorView->SetModificationMessage (new BMessage (M_SEPARATOR_CHANGED));
-    m_innerView->AddChild (m_separatorView);
+    m_separatorView = new BTextControl(BRect(K_MARGIN, m_folderPathView->Frame().bottom + K_MARGIN + 2,
+                                       K_MARGIN + divider + 50, 0), "FileJoinerWindow:SeparatorView",
+                                       str(S_SPLIT_SEPARATOR), "_", NULL, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
+    m_separatorView->SetDivider(divider + 1);
+    m_separatorView->TextView()->SetMaxBytes(128);
+    m_separatorView->TextView()->DisallowChar('0');     // too lazy to loop using ASCII value :)
+    m_separatorView->TextView()->DisallowChar('1');
+    m_separatorView->TextView()->DisallowChar('2');
+    m_separatorView->TextView()->DisallowChar('3');
+    m_separatorView->TextView()->DisallowChar('4');
+    m_separatorView->TextView()->DisallowChar('5');
+    m_separatorView->TextView()->DisallowChar('6');
+    m_separatorView->TextView()->DisallowChar('7');
+    m_separatorView->TextView()->DisallowChar('8');
+    m_separatorView->TextView()->DisallowChar('9');
+    m_separatorView->TextView()->DisallowChar(':');
+    m_separatorView->TextView()->DisallowChar('/');
+    m_separatorView->TextView()->DisallowChar('\\');
+    m_separatorView->TextView()->DisallowChar('*');
+    m_separatorView->TextView()->DisallowChar('?');
+    m_separatorView->SetModificationMessage(new BMessage(M_SEPARATOR_CHANGED));
+    m_innerView->AddChild(m_separatorView);
 
-    BevelView *sepView2 = new BevelView (BRect (m_separatorView->Frame().right + 4 * K_MARGIN + 2,
-                             m_separatorView->Frame().top - 2,
-                             m_separatorView->Frame().right + 4 * K_MARGIN + 3, 0),
-                             "FileJoinerWindow:sepView2", btInset, B_FOLLOW_LEFT, B_WILL_DRAW);
-    m_innerView->AddChild (sepView2);
+    BevelView* sepView2 = new BevelView(BRect(m_separatorView->Frame().right + 4 * K_MARGIN + 2,
+                                        m_separatorView->Frame().top - 2,
+                                        m_separatorView->Frame().right + 4 * K_MARGIN + 3, 0),
+                                        "FileJoinerWindow:sepView2", btInset, B_FOLLOW_LEFT, B_WILL_DRAW);
+    m_innerView->AddChild(sepView2);
 
-    m_openChk = new BCheckBox (BRect (sepView2->Frame().left + 3 * K_MARGIN, m_separatorView->Frame().top, 0, 0),
-                      "FileJoinerwindow:OpenChk", str (S_OPEN_DIR_AFTER_JOIN), NULL, B_FOLLOW_LEFT,
-                      B_WILL_DRAW | B_NAVIGABLE);
+    m_openChk = new BCheckBox(BRect(sepView2->Frame().left + 3 * K_MARGIN, m_separatorView->Frame().top, 0, 0),
+                              "FileJoinerwindow:OpenChk", str(S_OPEN_DIR_AFTER_JOIN), NULL, B_FOLLOW_LEFT,
+                              B_WILL_DRAW | B_NAVIGABLE);
     m_openChk->ResizeToPreferred();
-    m_innerView->AddChild (m_openChk);
-    m_openChk->SetValue (B_CONTROL_ON);
+    m_innerView->AddChild(m_openChk);
+    m_openChk->SetValue(B_CONTROL_ON);
 
-    m_closeChk = new BCheckBox (BRect (m_openChk->Frame().left, m_openChk->Frame().bottom + 1, 0, 0),
-                      "FileJoinerWindow:CloseChk", str (S_CLOSE_AFTER_JOIN), NULL, B_FOLLOW_LEFT,
-                      B_WILL_DRAW | B_NAVIGABLE);
-    m_closeChk->ResizeToPreferred ();
-    m_innerView->AddChild (m_closeChk);
-    m_closeChk->SetValue (B_CONTROL_ON);
+    m_closeChk = new BCheckBox(BRect(m_openChk->Frame().left, m_openChk->Frame().bottom + 1, 0, 0),
+                               "FileJoinerWindow:CloseChk", str(S_CLOSE_AFTER_JOIN), NULL, B_FOLLOW_LEFT,
+                               B_WILL_DRAW | B_NAVIGABLE);
+    m_closeChk->ResizeToPreferred();
+    m_innerView->AddChild(m_closeChk);
+    m_closeChk->SetValue(B_CONTROL_ON);
 
-    m_deleteChk = new BCheckBox (BRect (m_closeChk->Frame().left, m_closeChk->Frame().bottom + 1, 0, 0),
-                      "FileJoinerWindow:DeleteChk", str (S_DELETE_AFTER_JOIN), NULL, B_FOLLOW_LEFT,
-                      B_WILL_DRAW | B_NAVIGABLE);
+    m_deleteChk = new BCheckBox(BRect(m_closeChk->Frame().left, m_closeChk->Frame().bottom + 1, 0, 0),
+                                "FileJoinerWindow:DeleteChk", str(S_DELETE_AFTER_JOIN), NULL, B_FOLLOW_LEFT,
+                                B_WILL_DRAW | B_NAVIGABLE);
     m_deleteChk->ResizeToPreferred();
-    m_innerView->AddChild (m_deleteChk);
-    m_deleteChk->SetValue (B_CONTROL_OFF);
+    m_innerView->AddChild(m_deleteChk);
+    m_deleteChk->SetValue(B_CONTROL_OFF);
 
-    sepView2->ResizeTo (sepView2->Frame().Width(), m_deleteChk->Frame().bottom + 2 - sepView2->Frame().top);
+    sepView2->ResizeTo(sepView2->Frame().Width(), m_deleteChk->Frame().bottom + 2 - sepView2->Frame().top);
 
-    m_innerView->ResizeTo (m_innerView->Frame().Width(), m_deleteChk->Frame().bottom + K_MARGIN);
+    m_innerView->ResizeTo(m_innerView->Frame().Width(), m_deleteChk->Frame().bottom + K_MARGIN);
 
-    BevelView *sepView3 = new BevelView (BRect (-1, m_innerView->Frame().bottom + K_MARGIN + 1,
-                             Bounds().right - 1.0, m_innerView->Frame().bottom + K_MARGIN + 1 + 1),
-                             "FileJoinerWindow:SepView2", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
-    m_backView->AddChild (sepView3);
+    BevelView* sepView3 = new BevelView(BRect(-1, m_innerView->Frame().bottom + K_MARGIN + 1,
+                                        Bounds().right - 1.0, m_innerView->Frame().bottom + K_MARGIN + 1 + 1),
+                                        "FileJoinerWindow:SepView2", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+    m_backView->AddChild(sepView3);
 
 
-    BStringView *noPiecesStr = new BStringView (BRect (2 * K_MARGIN, sepView3->Frame().bottom + 2 * K_MARGIN,
-                                2 * K_MARGIN + m_backView->StringWidth (str (S_NUMBER_OF_PIECES)) + 3, 0),
-                                "FileJoinerWindow:noPiecesStr", str (S_NUMBER_OF_PIECES), B_FOLLOW_LEFT,
-                                B_WILL_DRAW);
-    m_backView->AddChild (noPiecesStr);
-    noPiecesStr->ResizeToPreferred ();
+    BStringView* noPiecesStr = new BStringView(BRect(2 * K_MARGIN, sepView3->Frame().bottom + 2 * K_MARGIN,
+            2 * K_MARGIN + m_backView->StringWidth(str(S_NUMBER_OF_PIECES)) + 3, 0),
+            "FileJoinerWindow:noPiecesStr", str(S_NUMBER_OF_PIECES), B_FOLLOW_LEFT,
+            B_WILL_DRAW);
+    m_backView->AddChild(noPiecesStr);
+    noPiecesStr->ResizeToPreferred();
 
-    m_piecesStr = new BStringView (BRect (m_folderPathView->Frame().left + K_MARGIN, noPiecesStr->Frame().top,
-                         Bounds().right - K_MARGIN, 0), "FileJoinerWindow:PiecesStr", "-", B_FOLLOW_LEFT,
-                         B_WILL_DRAW);
-    m_backView->AddChild (m_piecesStr);
-    m_piecesStr->ResizeToPreferred ();
+    m_piecesStr = new BStringView(BRect(m_folderPathView->Frame().left + K_MARGIN, noPiecesStr->Frame().top,
+                                        Bounds().right - K_MARGIN, 0), "FileJoinerWindow:PiecesStr", "-", B_FOLLOW_LEFT,
+                                  B_WILL_DRAW);
+    m_backView->AddChild(m_piecesStr);
+    m_piecesStr->ResizeToPreferred();
 
-    BStringView *sizeStr = new BStringView (BRect (noPiecesStr->Frame().left,
-                             noPiecesStr->Frame().bottom + K_MARGIN - 1, 0, 0), "FileJoinerWindow:SizeStr",
-                             str (S_JOINT_FILE_SIZE), B_FOLLOW_LEFT, B_WILL_DRAW);
-    m_backView->AddChild (sizeStr);
+    BStringView* sizeStr = new BStringView(BRect(noPiecesStr->Frame().left,
+                                           noPiecesStr->Frame().bottom + K_MARGIN - 1, 0, 0), "FileJoinerWindow:SizeStr",
+                                           str(S_JOINT_FILE_SIZE), B_FOLLOW_LEFT, B_WILL_DRAW);
+    m_backView->AddChild(sizeStr);
     sizeStr->ResizeToPreferred();
 
-    m_sizeStr = new BStringView (BRect (m_piecesStr->Frame().left, sizeStr->Frame().top, 0, 0),
-                      "FileJoinerWindow:SizeStr", "-", B_FOLLOW_LEFT, B_WILL_DRAW);
-    m_sizeStr->ResizeToPreferred ();
-    m_backView->AddChild (m_sizeStr);
+    m_sizeStr = new BStringView(BRect(m_piecesStr->Frame().left, sizeStr->Frame().top, 0, 0),
+                                "FileJoinerWindow:SizeStr", "-", B_FOLLOW_LEFT, B_WILL_DRAW);
+    m_sizeStr->ResizeToPreferred();
+    m_backView->AddChild(m_sizeStr);
 
-    m_refreshBtn = new BButton (BRect (m_piecesStr->Frame().right + m_backView->StringWidth ("9999999999"),
-                      m_piecesStr->Frame().top + K_MARGIN,
-                      m_piecesStr->Frame().right + m_backView->StringWidth ("9999999999") + K_MARGIN +
-                      K_BUTTON_WIDTH, m_piecesStr->Frame().top + K_MARGIN + K_BUTTON_HEIGHT),
-                      "FileJoinerWindow:RefreshBtn", str (S_REFRESH_INFO), new BMessage (M_REFRESH_INFO),
-                      B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
-    m_backView->AddChild (m_refreshBtn);
-    m_refreshBtn->SetEnabled (false);
+    m_refreshBtn = new BButton(BRect(m_piecesStr->Frame().right + m_backView->StringWidth("9999999999"),
+                                     m_piecesStr->Frame().top + K_MARGIN,
+                                     m_piecesStr->Frame().right + m_backView->StringWidth("9999999999") + K_MARGIN +
+                                     K_BUTTON_WIDTH, m_piecesStr->Frame().top + K_MARGIN + K_BUTTON_HEIGHT),
+                               "FileJoinerWindow:RefreshBtn", str(S_REFRESH_INFO), new BMessage(M_REFRESH_INFO),
+                               B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
+    m_backView->AddChild(m_refreshBtn);
+    m_refreshBtn->SetEnabled(false);
 
-    m_joinBtn = new BButton (BRect (Bounds().right - 2 * K_MARGIN - K_BUTTON_WIDTH - 3,
-                      m_refreshBtn->Frame().top, Bounds().right - 2 * K_MARGIN - 3,
-                      m_refreshBtn->Frame().top + K_BUTTON_HEIGHT),
-                      "FileJoinerWindow:JoinBtn", str (S_JOIN), new BMessage (M_JOIN_NOW),
-                      B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
-    m_backView->AddChild (m_joinBtn);
-    m_joinBtn->MakeDefault (true);
-    m_joinBtn->SetEnabled (false);
+    m_joinBtn = new BButton(BRect(Bounds().right - 2 * K_MARGIN - K_BUTTON_WIDTH - 3,
+                                  m_refreshBtn->Frame().top, Bounds().right - 2 * K_MARGIN - 3,
+                                  m_refreshBtn->Frame().top + K_BUTTON_HEIGHT),
+                            "FileJoinerWindow:JoinBtn", str(S_JOIN), new BMessage(M_JOIN_NOW),
+                            B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
+    m_backView->AddChild(m_joinBtn);
+    m_joinBtn->MakeDefault(true);
+    m_joinBtn->SetEnabled(false);
 
-    BevelView *sepView4 = new BevelView (BRect (-1, m_sizeStr->Frame().bottom + K_MARGIN,
-                             Bounds().right - 1.0, m_sizeStr->Frame().bottom + K_MARGIN + 1),
-                             "FileJoinerWindow:SepView4", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
-    m_backView->AddChild (sepView4);
+    BevelView* sepView4 = new BevelView(BRect(-1, m_sizeStr->Frame().bottom + K_MARGIN,
+                                        Bounds().right - 1.0, m_sizeStr->Frame().bottom + K_MARGIN + 1),
+                                        "FileJoinerWindow:SepView4", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+    m_backView->AddChild(sepView4);
     sepView4->Hide();
 
-    m_statusBar = new BStatusBar (BRect (3 * K_MARGIN, sepView4->Frame().bottom + 2 * K_MARGIN + 1,
-                         Bounds().right - 8 * K_MARGIN - K_BUTTON_WIDTH, 0),
-                         "FileSplitterWindow:StatusBar", NULL, NULL);
-    m_statusBar->ResizeToPreferred ();
-    m_statusBar->SetResizingMode (B_FOLLOW_LEFT_RIGHT);
-    m_statusBar->ResizeTo (m_joinBtn->Frame().right - 4 * K_MARGIN, m_statusBar->Frame().Height());
-    m_statusBar->SetBarHeight (K_PROGRESSBAR_HEIGHT);
-    m_statusBar->SetBarColor (K_PROGRESS_COLOR);
-    m_backView->AddChild (m_statusBar);
+    m_statusBar = new BStatusBar(BRect(3 * K_MARGIN, sepView4->Frame().bottom + 2 * K_MARGIN + 1,
+                                       Bounds().right - 8 * K_MARGIN - K_BUTTON_WIDTH, 0),
+                                 "FileSplitterWindow:StatusBar", NULL, NULL);
+    m_statusBar->ResizeToPreferred();
+    m_statusBar->SetResizingMode(B_FOLLOW_LEFT_RIGHT);
+    m_statusBar->ResizeTo(m_joinBtn->Frame().right - 4 * K_MARGIN, m_statusBar->Frame().Height());
+    m_statusBar->SetBarHeight(K_PROGRESSBAR_HEIGHT);
+    m_statusBar->SetBarColor(K_PROGRESS_COLOR);
+    m_backView->AddChild(m_statusBar);
 
     m_hideProgress = sepView4->Frame().top + K_MARGIN;
     m_showProgress =  m_statusBar->Frame().bottom + K_MARGIN;
-    ResizeTo (Frame().Width(), m_hideProgress);
+    ResizeTo(Frame().Width(), m_hideProgress);
 
     // Calculate minimum width of window dynamically
-    float maxWidth = MAX (m_openChk->Frame().right, m_deleteChk->Frame().right);
-    maxWidth = MAX (maxWidth, m_descStr2->Frame().right);
-    maxWidth = MAX (maxWidth, m_descStr->Frame().right);
+    float maxWidth = MAX(m_openChk->Frame().right, m_deleteChk->Frame().right);
+    maxWidth = MAX(maxWidth, m_descStr2->Frame().right);
+    maxWidth = MAX(maxWidth, m_descStr->Frame().right);
     maxWidth += 2 * K_MARGIN;
-    maxWidth = MAX (maxWidth, 520);
+    maxWidth = MAX(maxWidth, 520);
 
     // Center window on-screen
     CenterOnScreen();
 
     // Constrain window size
     float minH, maxH, minV, maxV;
-    GetSizeLimits (&minH, &maxH, &minV, &maxV);
-    SetSizeLimits (maxWidth, maxH, minV, maxV);
+    GetSizeLimits(&minH, &maxH, &minV, &maxV);
+    SetSizeLimits(maxWidth, maxH, minV, maxV);
     if (Frame().Width() < maxWidth)
-        ResizeTo (maxWidth, Frame().Height());
+        ResizeTo(maxWidth, Frame().Height());
 
     // Set focus control
-    m_filePathView->MakeFocus (true);
+    m_filePathView->MakeFocus(true);
     UpdateRecentMenus();
 
     m_noOfPieces = m_totalSize = 0;
-    m_messenger = new BMessenger (this);
+    m_messenger = new BMessenger(this);
 }
 
 
 
-FileJoinerWindow::~FileJoinerWindow ()
+FileJoinerWindow::~FileJoinerWindow()
 {
     delete m_messenger;
 }
 
 
 
-void FileJoinerWindow::Quit ()
+void FileJoinerWindow::Quit()
 {
-    be_app_messenger.SendMessage (M_CLOSE_FILE_JOINER);
-    return BWindow::Quit ();
+    be_app_messenger.SendMessage(M_CLOSE_FILE_JOINER);
+    return BWindow::Quit();
 }
 
 
 
-bool FileJoinerWindow::QuitRequested ()
+bool FileJoinerWindow::QuitRequested()
 {
     if (m_joinInProgress && m_quitNow == false)    // m_quitNow is checked so this isn't called twice
     {
-        suspend_thread (m_thread);
+        suspend_thread(m_thread);
 
-        BAlert *alert = new BAlert ("Quit", str (S_FORCE_JOIN_CLOSE_WARNING), str (S_DONT_FORCE_CLOSE),
-                             str (S_FORCE_CLOSE), NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
-        alert->SetShortcut (0L, B_ESCAPE);
-        alert->SetDefaultButton (alert->ButtonAt (1L));
+        BAlert* alert = new BAlert("Quit", str(S_FORCE_JOIN_CLOSE_WARNING), str(S_DONT_FORCE_CLOSE),
+                                   str(S_FORCE_CLOSE), NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
+        alert->SetShortcut(0L, B_ESCAPE);
+        alert->SetDefaultButton(alert->ButtonAt(1L));
         int32 index = alert->Go();
         if (index == 1L)
         {
-           m_cancel = true;
-           m_joinBtn->SetEnabled (false);
+            m_cancel = true;
+            m_joinBtn->SetEnabled(false);
         }
 
         m_quitNow = true;
-        resume_thread (m_thread);
+        resume_thread(m_thread);
         return false;
     }
     else if (m_quitNow)    // Incase QuitRequested is called a second time, still don't do anything silly
@@ -365,372 +365,372 @@ bool FileJoinerWindow::QuitRequested ()
 
 
 
-void FileJoinerWindow::MessageReceived (BMessage *message)
+void FileJoinerWindow::MessageReceived(BMessage* message)
 {
     switch (message->what)
     {
         case M_JOIN_NOW:
         {
-           if (m_joinInProgress == false)
-           {
-               UpdateData();
+            if (m_joinInProgress == false)
+            {
+                UpdateData();
 
-               if (Frame().Height() == m_hideProgress)
-                  ToggleWindowHeight (true);
+                if (Frame().Height() == m_hideProgress)
+                    ToggleWindowHeight(true);
 
-               m_cancel = false;
-               m_thread = spawn_thread (_joiner, "_joiner", B_NORMAL_PRIORITY, (void*)this);
-               resume_thread (m_thread);
-               m_joinBtn->SetLabel (str (S_CANCEL));
-               m_joinInProgress = true;
-               m_joinBtn->MakeDefault (false);
-           }
-           else
-           {
-               m_cancel = true;
-               m_joinBtn->SetEnabled (false);
-           }
+                m_cancel = false;
+                m_thread = spawn_thread(_joiner, "_joiner", B_NORMAL_PRIORITY, (void*)this);
+                resume_thread(m_thread);
+                m_joinBtn->SetLabel(str(S_CANCEL));
+                m_joinInProgress = true;
+                m_joinBtn->MakeDefault(false);
+            }
+            else
+            {
+                m_cancel = true;
+                m_joinBtn->SetEnabled(false);
+            }
 
-           break;
+            break;
         }
 
 
         case M_SELECT_JOIN_FILE:
         {
-           if (m_filePanel == NULL)
-           {
-               m_filePanel = new BFilePanel (B_OPEN_PANEL, new BMessenger (this), NULL, B_FILE_NODE, false,
-                                new BMessage (M_JOIN_FILE_SELECTED), NULL, true, true);
-               m_filePanel->Window()->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
-               m_filePanel->Window()->AddToSubset (this);
-               if (m_filePanel->Window()->LockLooper())
-               {
-                  m_filePanel->Window()->SetTitle (str (S_JOIN_FILE_SELECT_TITLE));
-                  m_filePanel->Window()->UnlockLooper();
-               }
-           }
+            if (m_filePanel == NULL)
+            {
+                m_filePanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this), NULL, B_FILE_NODE, false,
+                                             new BMessage(M_JOIN_FILE_SELECTED), NULL, true, true);
+                m_filePanel->Window()->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
+                m_filePanel->Window()->AddToSubset(this);
+                if (m_filePanel->Window()->LockLooper())
+                {
+                    m_filePanel->Window()->SetTitle(str(S_JOIN_FILE_SELECT_TITLE));
+                    m_filePanel->Window()->UnlockLooper();
+                }
+            }
 
-           m_filePanel->Show();
-           break;
+            m_filePanel->Show();
+            break;
         }
 
         case M_JOIN_FILE_SELECTED: case B_SIMPLE_DATA:
         {
-           // Also handle drag 'n drop
-           entry_ref ref;
-           message->FindRef ("refs", &ref);
+            // Also handle drag 'n drop
+            entry_ref ref;
+            message->FindRef("refs", &ref);
 
-           BEntry entry (&ref, true);
-           BPath filePath;
-           entry.GetPath (&filePath);
-           m_filePathView->SetText (filePath.Path());
-           filePath.GetParent (&filePath);
+            BEntry entry(&ref, true);
+            BPath filePath;
+            entry.GetPath(&filePath);
+            m_filePathView->SetText(filePath.Path());
+            filePath.GetParent(&filePath);
 
-           m_folderPathView->SetText (filePath.Path());
-           UpdateData();
-           RefreshInfo();
-           break;
+            m_folderPathView->SetText(filePath.Path());
+            UpdateData();
+            RefreshInfo();
+            break;
         }
 
         case M_SELECT_JOIN_FOLDER:
         {
-           if (m_dirPanel == NULL)
-           {
-               m_dirPanel = new SelectDirPanel (B_OPEN_PANEL, new BMessenger (this), NULL, B_DIRECTORY_NODE,
-                                    false, new BMessage (M_JOIN_FOLDER_SELECTED), NULL, true, false);
+            if (m_dirPanel == NULL)
+            {
+                m_dirPanel = new SelectDirPanel(B_OPEN_PANEL, new BMessenger(this), NULL, B_DIRECTORY_NODE,
+                                                false, new BMessage(M_JOIN_FOLDER_SELECTED), NULL, true, false);
 
-               m_dirPanel->SetButtonLabel (B_DEFAULT_BUTTON, str (S_SPLIT_FOLDER_SELECT));
-               m_dirPanel->Window()->SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
-               m_dirPanel->Window()->AddToSubset (this);
-               m_dirPanel->SetCurrentDirButton (str (S_JOIN_FOLDER_SELECT));
+                m_dirPanel->SetButtonLabel(B_DEFAULT_BUTTON, str(S_SPLIT_FOLDER_SELECT));
+                m_dirPanel->Window()->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
+                m_dirPanel->Window()->AddToSubset(this);
+                m_dirPanel->SetCurrentDirButton(str(S_JOIN_FOLDER_SELECT));
 
-               if (m_dirPanel->Window()->LockLooper())
-               {
-                  m_dirPanel->Window()->SetTitle (str (S_JOIN_FOLDER_SELECT_TITLE));
-                  m_dirPanel->Window()->Unlock();
-               }
-           }
-           m_dirPanel->Show();
-           break;
+                if (m_dirPanel->Window()->LockLooper())
+                {
+                    m_dirPanel->Window()->SetTitle(str(S_JOIN_FOLDER_SELECT_TITLE));
+                    m_dirPanel->Window()->Unlock();
+                }
+            }
+            m_dirPanel->Show();
+            break;
         }
 
         case M_JOIN_FOLDER_SELECTED:
         {
-           if (m_dirPanel && m_dirPanel->IsShowing())
-               m_dirPanel->Hide();
+            if (m_dirPanel && m_dirPanel->IsShowing())
+                m_dirPanel->Hide();
 
-           entry_ref ref;
-           message->FindRef ("refs", &ref);
+            entry_ref ref;
+            message->FindRef("refs", &ref);
 
-           BPath folderPath (&ref);
-           m_folderPathView->SetText (folderPath.Path());
-           UpdateData();
-           // No need to call refresh info when output file folder is selected
-           break;
+            BPath folderPath(&ref);
+            m_folderPathView->SetText(folderPath.Path());
+            UpdateData();
+            // No need to call refresh info when output file folder is selected
+            break;
         }
 
         case M_UPDATE_DATA:
         {
-           UpdateData();
-           break;
+            UpdateData();
+            break;
         }
 
         case M_REFRESH_INFO:
         {
-           RefreshInfo();
-           break;
+            RefreshInfo();
+            break;
         }
 
         case M_CALC_COMPLETE:
         {
-           m_calcSize = false;
+            m_calcSize = false;
 
-           m_noOfPieces = message->FindInt32 (kCount);
-           m_totalSize = message->FindInt64 (kSize);
+            m_noOfPieces = message->FindInt32(kCount);
+            m_totalSize = message->FindInt64(kSize);
 
-           m_sizeStr->SetText (LocaleStringFromBytes (m_totalSize).String());
-           m_sizeStr->ResizeToPreferred();
+            m_sizeStr->SetText(LocaleStringFromBytes(m_totalSize).String());
+            m_sizeStr->ResizeToPreferred();
 
-           char countStr[60];
-           sprintf (countStr, "%d", m_noOfPieces);
-           m_piecesStr->SetText (countStr);
-           m_piecesStr->ResizeToPreferred();
-           UpdateData();
-           break;
+            char countStr[60];
+            sprintf(countStr, "%d", m_noOfPieces);
+            m_piecesStr->SetText(countStr);
+            m_piecesStr->ResizeToPreferred();
+            UpdateData();
+            break;
         }
 
         case M_SEPARATOR_CHANGED:
         {
-           m_separatorStr = m_separatorView->Text();
-           if (m_separatorStr.Length() > 0)
-               RefreshInfo();
-           break;
+            m_separatorStr = m_separatorView->Text();
+            if (m_separatorStr.Length() > 0)
+                RefreshInfo();
+            break;
         }
 
         case BZR_UPDATE_PROGRESS:
         {
-           char percentStr [100];
-           float delta = message->FindFloat ("delta");
-           int8 percent = (int8)ceil(100 * ((m_statusBar->CurrentValue() + delta) / m_statusBar->MaxValue()));
-           sprintf (percentStr, "%d%%", percent);
+            char percentStr [100];
+            float delta = message->FindFloat("delta");
+            int8 percent = (int8)ceil(100 * ((m_statusBar->CurrentValue() + delta) / m_statusBar->MaxValue()));
+            sprintf(percentStr, "%d%%", percent);
 
-           BString text = str (S_JOINING_FILE);
-           text << " " << message->FindString ("text");
+            BString text = str(S_JOINING_FILE);
+            text << " " << message->FindString("text");
 
-           m_statusBar->Update (delta, text.String(), percentStr);
-           message->SendReply ('DUMB');
-           break;
+            m_statusBar->Update(delta, text.String(), percentStr);
+            message->SendReply('DUMB');
+            break;
         }
 
         case M_OPERATION_COMPLETE:
         {
-           m_joinInProgress = false;
-           m_joinBtn->SetEnabled (true);
-           m_joinBtn->MakeDefault (true);
+            m_joinInProgress = false;
+            m_joinBtn->SetEnabled(true);
+            m_joinBtn->MakeDefault(true);
 
-           status_t result = message->FindInt32 (kResult);
-           snooze (10000);
-           ToggleWindowHeight (false);
-           m_statusBar->Reset();
+            status_t result = message->FindInt32(kResult);
+            snooze(10000);
+            ToggleWindowHeight(false);
+            m_statusBar->Reset();
 
-           BAlert *alert = NULL;
-           if (result == BZR_DONE)
-           {
-               alert = new BAlert ("Done", str (S_JOIN_SUCCESS), str (S_OK), NULL, NULL,
-                                    B_WIDTH_AS_USUAL, B_INFO_ALERT);
-           }
-           else if (result == BZR_CANCEL)
-           {
-               alert = new BAlert ("Cancel", str (S_JOIN_CANCEL), str (S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
-                             B_WARNING_ALERT);
-           }
-           else
-           {
-               alert = new BAlert ("Error", str (S_JOIN_ERROR), str (S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
-                             B_STOP_ALERT);
-           }
+            BAlert* alert = NULL;
+            if (result == BZR_DONE)
+            {
+                alert = new BAlert("Done", str(S_JOIN_SUCCESS), str(S_OK), NULL, NULL,
+                                   B_WIDTH_AS_USUAL, B_INFO_ALERT);
+            }
+            else if (result == BZR_CANCEL)
+            {
+                alert = new BAlert("Cancel", str(S_JOIN_CANCEL), str(S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
+                                   B_WARNING_ALERT);
+            }
+            else
+            {
+                alert = new BAlert("Error", str(S_JOIN_ERROR), str(S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
+                                   B_STOP_ALERT);
+            }
 
-           // Incase of no-errors with input files and output dirs, save them to recent lists
-           if (result == BZR_DONE || result == BZR_CANCEL)
-           {
-               m_recentSplitDirs->AddPath (m_dirPathStr.String());
-               UpdateRecentMenus ();
-           }
+            // Incase of no-errors with input files and output dirs, save them to recent lists
+            if (result == BZR_DONE || result == BZR_CANCEL)
+            {
+                m_recentSplitDirs->AddPath(m_dirPathStr.String());
+                UpdateRecentMenus();
+            }
 
-           // Find and delete source files if needed and only if the join operation was successful!
-           if (result == BZR_DONE && m_deleteChk->Value() == B_CONTROL_ON)
-               DeleteChunks (m_chunkPathStr.String(), m_separatorStr.String());
+            // Find and delete source files if needed and only if the join operation was successful!
+            if (result == BZR_DONE && m_deleteChk->Value() == B_CONTROL_ON)
+                DeleteChunks(m_chunkPathStr.String(), m_separatorStr.String());
 
-           // Disable buttons as needed, etc. after pieces are deleted etc it will be disabled
-           // or else enabled
-           RefreshInfo();
-           UpdateData();
+            // Disable buttons as needed, etc. after pieces are deleted etc it will be disabled
+            // or else enabled
+            RefreshInfo();
+            UpdateData();
 
-           m_joinBtn->SetLabel (str (S_JOIN));
-           alert->SetShortcut (0L, B_ESCAPE);
-           alert->SetDefaultButton (alert->ButtonAt(0L));
-           alert->Go();
+            m_joinBtn->SetLabel(str(S_JOIN));
+            alert->SetShortcut(0L, B_ESCAPE);
+            alert->SetDefaultButton(alert->ButtonAt(0L));
+            alert->Go();
 
-           if (m_openChk->Value() == B_CONTROL_ON)
-           {
-               entry_ref dirRef;
-               BEntry destDirEntry (m_dirPathStr.String(), false);
-               destDirEntry.GetRef (&dirRef);
-               TrackerOpenFolder (&dirRef);
-           }
+            if (m_openChk->Value() == B_CONTROL_ON)
+            {
+                entry_ref dirRef;
+                BEntry destDirEntry(m_dirPathStr.String(), false);
+                destDirEntry.GetRef(&dirRef);
+                TrackerOpenFolder(&dirRef);
+            }
 
-           if (m_quitNow)
-           {
-               // If this is the last window to quit, quit be_app because it's message loop would have
-               // gone down and thus PostMessage() won't work
-               if (be_app->CountWindows() <= 1L)
-                  be_app->Quit();
+            if (m_quitNow)
+            {
+                // If this is the last window to quit, quit be_app because it's message loop would have
+                // gone down and thus PostMessage() won't work
+                if (be_app->CountWindows() <= 1L)
+                    be_app->Quit();
 
-               Quit();
-               break;
-           }
+                Quit();
+                break;
+            }
 
-           if (result == BZR_DONE && m_closeChk->Value() == B_CONTROL_ON)
-               Quit();
+            if (result == BZR_DONE && m_closeChk->Value() == B_CONTROL_ON)
+                Quit();
 
-           break;
+            break;
         }
 
         default:
         {
-           BWindow::MessageReceived (message);
-           break;
+            BWindow::MessageReceived(message);
+            break;
         }
     }
 }
 
 
 
-void FileJoinerWindow::UpdateRecentMenus ()
+void FileJoinerWindow::UpdateRecentMenus()
 {
-    m_recentSplitDirs->UpdateMenu (m_folderMenu, kRecentSplitDir, this);
+    m_recentSplitDirs->UpdateMenu(m_folderMenu, kRecentSplitDir, this);
 }
 
 
 
-void FileJoinerWindow::UpdateData ()
+void FileJoinerWindow::UpdateData()
 {
-    BEntry sourceEntry (m_filePathView->Text(), true);
-    m_separatorView->SetEnabled (sourceEntry.IsFile());
+    BEntry sourceEntry(m_filePathView->Text(), true);
+    m_separatorView->SetEnabled(sourceEntry.IsFile());
 
-    BEntry outputDir (m_folderPathView->Text(), false);
+    BEntry outputDir(m_folderPathView->Text(), false);
 
     m_chunkPathStr = m_filePathView->Text();
     m_separatorStr = m_separatorView->Text();
     m_dirPathStr = m_folderPathView->Text();
 
-    m_statusBar->SetMaxValue (m_totalSize);
+    m_statusBar->SetMaxValue(m_totalSize);
 
     if (sourceEntry.Exists())
-        m_refreshBtn->SetEnabled (true);
+        m_refreshBtn->SetEnabled(true);
     else
-        m_refreshBtn->SetEnabled (false);
+        m_refreshBtn->SetEnabled(false);
 
     if (outputDir.Exists() && sourceEntry.Exists() && m_noOfPieces > 1)
-        m_joinBtn->SetEnabled (true);
+        m_joinBtn->SetEnabled(true);
     else
-        m_joinBtn->SetEnabled (false);
+        m_joinBtn->SetEnabled(false);
 }
 
 
 
-void FileJoinerWindow::RefreshInfo ()
+void FileJoinerWindow::RefreshInfo()
 {
     if (m_calcSize == true)
     {
         m_cancel = true;
-        snooze (180000);
+        snooze(180000);
         m_calcSize = false;
     }
 
     entry_ref ref;
-    BEntry sourceEntry (m_filePathView->Text(), true);
-    sourceEntry.GetRef (&ref);
+    BEntry sourceEntry(m_filePathView->Text(), true);
+    sourceEntry.GetRef(&ref);
 
     m_cancel = false;
-    BMessage *msg = new BMessage ('xxxx');
-    msg->AddRef (kRef, &ref);
-    msg->AddPointer (kWindowPtr, (void*)this);
-    msg->AddPointer (kCancel, (void*)m_cancel);
+    BMessage* msg = new BMessage('xxxx');
+    msg->AddRef(kRef, &ref);
+    msg->AddPointer(kWindowPtr, (void*)this);
+    msg->AddPointer(kCancel, (void*)m_cancel);
 
-    m_thread = spawn_thread (_calcsize, "_calcsize", B_NORMAL_PRIORITY, (void*)msg);
-    resume_thread (m_thread);
+    m_thread = spawn_thread(_calcsize, "_calcsize", B_NORMAL_PRIORITY, (void*)msg);
+    resume_thread(m_thread);
     m_calcSize = true;
 }
 
 
 
-void FileJoinerWindow::GetDirectoryInfo (BEntry *srcDir, int32 &fileCount, off_t &totalSize,
-           volatile bool *cancel)
+void FileJoinerWindow::GetDirectoryInfo(BEntry* srcDir, int32& fileCount, off_t& totalSize,
+                                        volatile bool* cancel)
 {
     // Customized version of FSUtil's GetDirectoryInfo to not include recursion and counting of directories
     // I did not modify FSUtils one as it is performance critical and checking for bools each time inside
     // the loop etc would slow it down
-    BDirectory dir (srcDir);
+    BDirectory dir(srcDir);
     BEntry entry;
     off_t size;
-    while (dir.GetNextEntry (&entry, false) == B_OK)
+    while (dir.GetNextEntry(&entry, false) == B_OK)
     {
         if (cancel && *cancel == true)
-           return;
+            return;
 
         if (entry.IsFile())
         {
-           entry.GetSize (&size);
-           fileCount ++;
-           totalSize += size;
+            entry.GetSize(&size);
+            fileCount ++;
+            totalSize += size;
         }
     }
 }
 
 
 
-void FileJoinerWindow::DeleteChunks (const char *firstChunkPathStr, const char *separator)
+void FileJoinerWindow::DeleteChunks(const char* firstChunkPathStr, const char* separator)
 {
     BString firstChunkPath = firstChunkPathStr;
-    int32 index = firstChunkPath.FindLast ('/');
+    int32 index = firstChunkPath.FindLast('/');
     BString dirString;
-    firstChunkPath.CopyInto (dirString, 0, index);
+    firstChunkPath.CopyInto(dirString, 0, index);
 
-    int32 index2 = firstChunkPath.FindLast (separator);
+    int32 index2 = firstChunkPath.FindLast(separator);
     if (index2 <= 0 || index2 < index)
         return;
 
     BString baseName;
-    firstChunkPath.CopyInto (baseName, index + 1, index2 - 1 - index);
+    firstChunkPath.CopyInto(baseName, index + 1, index2 - 1 - index);
 
     BString numberString;
-    firstChunkPath.CopyInto (numberString, index2 + strlen(separator), firstChunkPath.Length() - index2);
+    firstChunkPath.CopyInto(numberString, index2 + strlen(separator), firstChunkPath.Length() - index2);
 
     int8 width = numberString.Length();
 
     BString curFileName = baseName;
     curFileName << separator << numberString;
 
-    BDirectory dir (dirString.String());
+    BDirectory dir(dirString.String());
     BEntry chunkEntry;
-    uint16 start = atoi (numberString.String());    // start from the number they choose eg 2 or 3
+    uint16 start = atoi(numberString.String());     // start from the number they choose eg 2 or 3
     // uint16 start = 1;                         // always start with 1 as the first file number
     // Determine what is to be done, either 1 or the number user chooses
-    while (dir.FindEntry (curFileName.String(), &chunkEntry, false) == B_OK)
+    while (dir.FindEntry(curFileName.String(), &chunkEntry, false) == B_OK)
     {
         chunkEntry.Remove();
 
         start++;
         char buf[B_PATH_NAME_LENGTH];
-        sprintf (buf, "%s%s%0*d", baseName.String(), separator, width, start);
+        sprintf(buf, "%s%s%0*d", baseName.String(), separator, width, start);
         curFileName = buf;
     }
 }
 
 
 
-void FileJoinerWindow::ToggleWindowHeight (bool expand)
+void FileJoinerWindow::ToggleWindowHeight(bool expand)
 {
     float start = m_hideProgress;
     float finish = m_showProgress + 1;
@@ -745,14 +745,14 @@ void FileJoinerWindow::ToggleWindowHeight (bool expand)
 
     for (float i = start; i != finish; i += step)
     {
-        ResizeTo (Frame().Width(), i);
+        ResizeTo(Frame().Width(), i);
         if (expand)
-           m_backView->Invalidate (BRect (0, i - 10, Bounds().right, i + 10));
+            m_backView->Invalidate(BRect(0, i - 10, Bounds().right, i + 10));
 
-        UpdateIfNeeded ();
-        snooze ((int32)snoozeTime);
+        UpdateIfNeeded();
+        snooze((int32)snoozeTime);
         Flush();
-        UpdateIfNeeded ();
+        UpdateIfNeeded();
     }
 }
 
@@ -761,56 +761,56 @@ void FileJoinerWindow::ToggleWindowHeight (bool expand)
 
 
 
-int32 FileJoinerWindow::_calcsize (void *arg)
+int32 FileJoinerWindow::_calcsize(void* arg)
 {
     // Thread that computes the total size of files/folder that is selected to be joined
     entry_ref ref;
-    volatile bool *cancel;
-    FileJoinerWindow *wnd (NULL);
+    volatile bool* cancel;
+    FileJoinerWindow* wnd(NULL);
     int32 fileCount = 0;
     off_t totalSize = 0;
 
-    BMessage *msg = (BMessage*)arg;
-    msg->FindPointer (kWindowPtr, reinterpret_cast<void**>(&wnd));
-    msg->FindRef (kRef, &ref);
-    msg->FindPointer (kCancel, (void**)&cancel);
+    BMessage* msg = (BMessage*)arg;
+    msg->FindPointer(kWindowPtr, reinterpret_cast<void**>(&wnd));
+    msg->FindRef(kRef, &ref);
+    msg->FindPointer(kCancel, (void**)&cancel);
 
-    BEntry entry (&ref, true);
+    BEntry entry(&ref, true);
     if (entry.IsDirectory())
-        wnd->GetDirectoryInfo (&entry, fileCount, totalSize, cancel);
+        wnd->GetDirectoryInfo(&entry, fileCount, totalSize, cancel);
     else
     {
         // Now count should be determined for the moment it's 1
         BPath path;
-        entry.GetPath (&path);
-        FindChunks (path.Path(), wnd->m_separatorStr.String(), fileCount, totalSize, cancel);
+        entry.GetPath(&path);
+        FindChunks(path.Path(), wnd->m_separatorStr.String(), fileCount, totalSize, cancel);
         if (fileCount == 0)
         {
-           fileCount = 1;
-           entry.GetSize (&totalSize);
+            fileCount = 1;
+            entry.GetSize(&totalSize);
         }
     }
 
     msg->what = M_CALC_COMPLETE;
-    msg->AddInt32 (kCount, fileCount);
-    msg->AddInt64 (kSize, totalSize);
-    wnd->PostMessage (msg);
+    msg->AddInt32(kCount, fileCount);
+    msg->AddInt64(kSize, totalSize);
+    wnd->PostMessage(msg);
     return 0;
 }
 
 
 
-int32 FileJoinerWindow::_joiner (void *arg)
+int32 FileJoinerWindow::_joiner(void* arg)
 {
     // The thread that does controls the split process
-    FileJoinerWindow *wnd = (FileJoinerWindow*)arg;
+    FileJoinerWindow* wnd = (FileJoinerWindow*)arg;
 
-    status_t result = JoinFile (wnd->m_chunkPathStr.String(), wnd->m_dirPathStr.String(),
-                         wnd->m_separatorStr.String(), wnd->m_messenger, &(wnd->m_cancel));
+    status_t result = JoinFile(wnd->m_chunkPathStr.String(), wnd->m_dirPathStr.String(),
+                               wnd->m_separatorStr.String(), wnd->m_messenger, &(wnd->m_cancel));
 
-    BMessage completeMsg (M_OPERATION_COMPLETE);
-    completeMsg.AddInt32 (kResult, result);
-    wnd->m_messenger->SendMessage (&completeMsg);
+    BMessage completeMsg(M_OPERATION_COMPLETE);
+    completeMsg.AddInt32(kResult, result);
+    wnd->m_messenger->SendMessage(&completeMsg);
 
     return result;
 }

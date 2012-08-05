@@ -53,7 +53,7 @@
 
 #define M_LAUNCH_TRACKER_ADDON        'ltad'
 
-const char *const kPath =             "path";
+const char* const kPath =             "path";
 const int64 kMaxFragmentCount =       32767;
 
 #define K_TRACKER_SIGNATURE           "application/x-vnd.Be-TRAK"

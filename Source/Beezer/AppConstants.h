@@ -72,9 +72,9 @@
 #define K_SEPARATOR_ATTRIBUTE                "bzr:sep"
 
 #ifdef __INTEL__
-    #define K_APP_VERSION                "0.99 (x86)"
+#define K_APP_VERSION                "0.99 (x86)"
 #else
-    #define K_APP_VERSION                "0.99 (ppc)"
+#define K_APP_VERSION                "0.99 (ppc)"
 #endif
 
 #define K_BARBERPOLE_PULSERATE                100000

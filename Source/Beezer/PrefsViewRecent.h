@@ -34,18 +34,18 @@
 class PrefsViewRecent : public PrefsView
 {
     public:
-        PrefsViewRecent (BRect frame);
+        PrefsViewRecent(BRect frame);
 
         // Inherited hooks
-        virtual void        Render ();
-        virtual void        Save ();
-        virtual void        Load ();
+        virtual void        Render();
+        virtual void        Save();
+        virtual void        Load();
 
     private:
         // Private members
-        BCheckBox          *m_showPathChk;
-        BTextControl        *m_recentArkView,
-                         *m_recentExtView;
+        BCheckBox*          m_showPathChk;
+        BTextControl*        m_recentArkView,
+                             *m_recentExtView;
 
 };
 

@@ -59,56 +59,56 @@ const rgb_color gray =        { 100, 100, 100 };    // The default disabled colo
 class URLView : public BStringView
 {
     public:
-        URLView (BRect frame, const char *name, const char *label, const char *url,
-                uint32 resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP, uint32 flags = B_WILL_DRAW );
-        ~URLView ();
+        URLView(BRect frame, const char* name, const char* label, const char* url,
+                uint32 resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP, uint32 flags = B_WILL_DRAW);
+        ~URLView();
 
         // Inherited hooks
-        virtual void        AttachedToWindow ();
-        virtual void        Draw (BRect updateRect);
-        virtual void        MessageReceived (BMessage *message);
-        virtual void        MouseDown (BPoint point);
-        virtual void        MouseMoved (BPoint point, uint32 transit, const BMessage *message);
-        virtual void        MouseUp (BPoint point);
-        virtual void        WindowActivated (bool active);
+        virtual void        AttachedToWindow();
+        virtual void        Draw(BRect updateRect);
+        virtual void        MessageReceived(BMessage* message);
+        virtual void        MouseDown(BPoint point);
+        virtual void        MouseMoved(BPoint point, uint32 transit, const BMessage* message);
+        virtual void        MouseUp(BPoint point);
+        virtual void        WindowActivated(bool active);
 
         // Additional hooks
-        virtual void        AddAttribute (const char *name, const char *value);
-        virtual bool        IsEnabled ();
-        virtual void        SetColor (rgb_color color);
-        virtual void        SetColor (uchar red, uchar green, uchar blue, uchar alpha = 255);
-        virtual void        SetClickColor (rgb_color color);
-        virtual void        SetClickColor (uchar red, uchar green, uchar blue, uchar alpha = 255);
-        virtual void        SetDisabledColor (rgb_color color);
-        virtual void        SetDisabledColor (uchar red, uchar green, uchar blue, uchar alpha = 255);
-        virtual void        SetDraggable (bool draggable);
-        virtual void        SetEnabled (bool enabled);
-        virtual void        SetHoverColor (rgb_color color);
-        virtual void        SetHoverColor (uchar red, uchar green, uchar blue, uchar alpha = 255);
-        virtual void        SetHoverEnabled (bool hover);
-        virtual void        SetIconSize (icon_size iconSize);
-        virtual void        SetUnderlineThickness (int thickness);
-        virtual void        SetURL (const char *url);
+        virtual void        AddAttribute(const char* name, const char* value);
+        virtual bool        IsEnabled();
+        virtual void        SetColor(rgb_color color);
+        virtual void        SetColor(uchar red, uchar green, uchar blue, uchar alpha = 255);
+        virtual void        SetClickColor(rgb_color color);
+        virtual void        SetClickColor(uchar red, uchar green, uchar blue, uchar alpha = 255);
+        virtual void        SetDisabledColor(rgb_color color);
+        virtual void        SetDisabledColor(uchar red, uchar green, uchar blue, uchar alpha = 255);
+        virtual void        SetDraggable(bool draggable);
+        virtual void        SetEnabled(bool enabled);
+        virtual void        SetHoverColor(rgb_color color);
+        virtual void        SetHoverColor(uchar red, uchar green, uchar blue, uchar alpha = 255);
+        virtual void        SetHoverEnabled(bool hover);
+        virtual void        SetIconSize(icon_size iconSize);
+        virtual void        SetUnderlineThickness(int thickness);
+        virtual void        SetURL(const char* url);
 
     private:
         // Private hooks
         void               CopyToClipboard();
-        void               CreateBookmark (const BString *fullName, const BString *title);
-        void               CreatePerson (const BString *fullName, const BString *title);
-        BPopUpMenu        *CreatePopupMenu ();
-        void               DoBookmarkDrag ();
-        void               DoPersonDrag ();
-        BString            GetImportantURL ();
-        BRect              GetTextRect ();
-        BRect              GetURLRect ();
-        bool               IsEmailLink ();
-        bool               IsFTPLink ();
-        bool               IsHTMLLink ();
-        void               LaunchURL ();
-        void               Redraw ();
-        void               WriteAttributes (int fd);
+        void               CreateBookmark(const BString* fullName, const BString* title);
+        void               CreatePerson(const BString* fullName, const BString* title);
+        BPopUpMenu*        CreatePopupMenu();
+        void               DoBookmarkDrag();
+        void               DoPersonDrag();
+        BString            GetImportantURL();
+        BRect              GetTextRect();
+        BRect              GetURLRect();
+        bool               IsEmailLink();
+        bool               IsFTPLink();
+        bool               IsHTMLLink();
+        void               LaunchURL();
+        void               Redraw();
+        void               WriteAttributes(int fd);
 
-        BString           *m_url;
+        BString*           m_url;
         rgb_color          m_foreColor;
         rgb_color          m_clickColor;
         rgb_color          m_hoverColor;
@@ -122,14 +122,14 @@ class URLView : public BStringView
         bool               m_hovering;
         bool               m_draggedOut;
         bool               m_inPopup;
-        const BCursor      *m_linkCursor;
+        const BCursor*      m_linkCursor;
         BPoint             m_dragOffset;
-        BList             *m_attributes;
+        BList*             m_attributes;
 
         typedef struct kp
         {
-           BString        *key;
-           BString        *value;
+            BString*        key;
+            BString*        value;
         } KeyPair;
 };
 

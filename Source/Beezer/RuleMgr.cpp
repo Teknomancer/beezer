@@ -40,7 +40,7 @@
 
 
 
-MimeRule::MimeRule (const char *mime, const char *extension)
+MimeRule::MimeRule(const char* mime, const char* extension)
 {
     m_mime = mime;
     m_extension = extension;
@@ -52,13 +52,13 @@ MimeRule::MimeRule (const char *mime, const char *extension)
 
 int32 RuleMgr::m_runCount = 0;
 
-RuleMgr::RuleMgr (BDirectory *ruleDir, const char *ruleFile)
+RuleMgr::RuleMgr(BDirectory* ruleDir, const char* ruleFile)
 {
     // You only need one instance per application
-    if (atomic_add (&m_runCount, 1) == 0)
-        m_ruleList = new BList (10L);
+    if (atomic_add(&m_runCount, 1) == 0)
+        m_ruleList = new BList(10L);
     else
-        debugger ("only one RuleMgr instance allowed/necessary");
+        debugger("only one RuleMgr instance allowed/necessary");
 
     BEntry rulesEntry(ruleDir, ruleFile);
     // If we can't find our rules file then create a default one
@@ -72,49 +72,49 @@ RuleMgr::RuleMgr (BDirectory *ruleDir, const char *ruleFile)
         defaultRulesFile.Unset();
     }
 
-    ReadRules (&rulesEntry);
+    ReadRules(&rulesEntry);
 }
 
 
 
-RuleMgr::~RuleMgr ()
+RuleMgr::~RuleMgr()
 {
     delete m_ruleList;
 }
 
 
 
-void RuleMgr::ReadRules (BEntry* rulesEntry)
+void RuleMgr::ReadRules(BEntry* rulesEntry)
 {
     int32 len = B_MIME_TYPE_LENGTH+30;    // we don't care for extensions more than 30 characters long ;-P
     char buffer[len];
     BPath rulePath(rulesEntry);
 
-    std::fstream f (rulePath.Path(), std::ios::in);
+    std::fstream f(rulePath.Path(), std::ios::in);
     if (!f)
         return;
 
     while (!f.eof())
     {
-        f.getline (buffer, len, '\n');
+        f.getline(buffer, len, '\n');
 
         // skip comments and blank lines
         if (buffer[0] == '#' || buffer[0] == '\0')
-           continue;
+            continue;
 
         BString tempBuf = buffer;
         BString mime, extension;
-        int32 equalIndex = tempBuf.FindFirst ('=');
+        int32 equalIndex = tempBuf.FindFirst('=');
         int32 lineLen = tempBuf.Length();
 
         if (equalIndex > 0 && equalIndex < lineLen)
         {
-           // abcd=defg           assume "abcd" is mimetype and "defg" is extension
-           // 012345678
-           // Segregate mime type into mime and extension strings
-           tempBuf.CopyInto (mime, 0L, equalIndex);
-           tempBuf.CopyInto (extension, equalIndex + 1, lineLen - equalIndex);
-           m_ruleList->AddItem (new MimeRule (mime.String(), extension.String()));
+            // abcd=defg           assume "abcd" is mimetype and "defg" is extension
+            // 012345678
+            // Segregate mime type into mime and extension strings
+            tempBuf.CopyInto(mime, 0L, equalIndex);
+            tempBuf.CopyInto(extension, equalIndex + 1, lineLen - equalIndex);
+            m_ruleList->AddItem(new MimeRule(mime.String(), extension.String()));
         }
     }
 
@@ -123,20 +123,20 @@ void RuleMgr::ReadRules (BEntry* rulesEntry)
 
 
 
-char* RuleMgr::ValidateFileType (BPath *filePath) const
+char* RuleMgr::ValidateFileType(BPath* filePath) const
 {
     char type[B_MIME_TYPE_LENGTH+1];
-    char *mime = new char [B_MIME_TYPE_LENGTH+1];
+    char* mime = new char [B_MIME_TYPE_LENGTH+1];
     BString fileName = filePath->Leaf();
-    BNode node (filePath->Path());
-    BNodeInfo nodeInfo (&node);
-    nodeInfo.GetType (type);
+    BNode node(filePath->Path());
+    BNodeInfo nodeInfo(&node);
+    nodeInfo.GetType(type);
 
     int32 extensionIndex = -1;
     for (int32 i = 0; i < m_ruleList->CountItems(); i++)
     {
-        MimeRule *rule = (MimeRule*)m_ruleList->ItemAtFast(i);
-        int32 foundIndex = fileName.IFindLast (rule->m_extension.String());
+        MimeRule* rule = (MimeRule*)m_ruleList->ItemAtFast(i);
+        int32 foundIndex = fileName.IFindLast(rule->m_extension.String());
 
         // xyz.zip           .zip
         // 0123457           0123
@@ -145,11 +145,11 @@ char* RuleMgr::ValidateFileType (BPath *filePath) const
         // Check if extension matches
         if (foundIndex > 0 && foundIndex == fileName.Length() - rule->m_extension.Length())
         {
-           // check if mime-type matches, if so everything is okay no need for any corrections
-           if (strcmp (rule->m_mime.String(), type) == 0)
-               return NULL;
-           else
-               extensionIndex = i;
+            // check if mime-type matches, if so everything is okay no need for any corrections
+            if (strcmp(rule->m_mime.String(), type) == 0)
+                return NULL;
+            else
+                extensionIndex = i;
         }
     }
 
@@ -158,14 +158,14 @@ char* RuleMgr::ValidateFileType (BPath *filePath) const
     {
         for (int32 i = 0; i < m_ruleList->CountItems(); i++)
         {
-           MimeRule *rule = (MimeRule*)m_ruleList->ItemAtFast(i);
+            MimeRule* rule = (MimeRule*)m_ruleList->ItemAtFast(i);
 
-           // Like say a .zip named "test" without any extension but with correct mime
-           if (strcmp (rule->m_mime.String(), type) == 0)
-           {
-               strcpy (mime, rule->m_mime.String());
-               return mime;
-           }
+            // Like say a .zip named "test" without any extension but with correct mime
+            if (strcmp(rule->m_mime.String(), type) == 0)
+            {
+                strcpy(mime, rule->m_mime.String());
+                return mime;
+            }
         }
     }
 
@@ -173,14 +173,14 @@ char* RuleMgr::ValidateFileType (BPath *filePath) const
     // remove mime type and ask BeOS to set the correct type
     // This will also take place in case the rules file could not be opened (deleted,renamed or moved etc)
     // as CountItems() would be zero, the loop wouldn't have entered
-    status_t result = nodeInfo.SetType ("application/octet-stream");
-    update_mime_info (filePath->Path(), false, true, true);
+    status_t result = nodeInfo.SetType("application/octet-stream");
+    update_mime_info(filePath->Path(), false, true, true);
 
     if (result != B_OK && extensionIndex >= 0L)
     {
         // If extension matched but not mime type return a mime type from the rule's list
         // This is for archives on , say, a CD without mime-types but with extensions
-        strcpy (mime, ((MimeRule*)m_ruleList->ItemAtFast (extensionIndex))->m_mime.String());
+        strcpy(mime, ((MimeRule*)m_ruleList->ItemAtFast(extensionIndex))->m_mime.String());
         return mime;
     }
 

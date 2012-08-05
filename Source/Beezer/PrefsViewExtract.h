@@ -34,19 +34,19 @@
 class PrefsViewExtract : public PrefsView
 {
     public:
-        PrefsViewExtract (BRect frame);
+        PrefsViewExtract(BRect frame);
 
         // Inherited hooks
-        virtual void        Render ();
-        virtual void        Save ();
-        virtual void        Load ();
+        virtual void        Render();
+        virtual void        Save();
+        virtual void        Load();
 
     private:
         // Private members
-        BCheckBox          *m_openFolderChk,
-                         *m_closeChk,
-                         *m_quitChk,
-                         *m_dragChk;
+        BCheckBox*          m_openFolderChk,
+                            *m_closeChk,
+                            *m_quitChk,
+                            *m_dragChk;
 };
 
 #endif /* _PREFS_VIEW_EXTRACT_H */

@@ -44,24 +44,24 @@ class PrefsView;
 class PrefsWindow : public BWindow
 {
     public:
-        PrefsWindow ();
+        PrefsWindow();
 
         // Inherited hooks
-        virtual void        Quit ();
-        virtual void        MessageReceived (BMessage *message);
+        virtual void        Quit();
+        virtual void        MessageReceived(BMessage* message);
 
     private:
         // Private hooks
-        void                AddControls ();
-        void                SetActivePanel (PrefsView *panel);
+        void                AddControls();
+        void                SetActivePanel(PrefsView* panel);
 
         // Private members
         BRect               m_panelFrame;
         BList               m_panelList;
-        PrefsView          *m_currentPanel;
-        BevelView          *m_backView;
-        BListView          *m_listView;
-        BTextView          *m_descTextView;
+        PrefsView*          m_currentPanel;
+        BevelView*          m_backView;
+        BListView*          m_listView;
+        BTextView*          m_descTextView;
 };
 
 #endif /* _PREFS_WINDOW_H */

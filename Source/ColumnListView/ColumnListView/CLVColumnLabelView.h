@@ -50,7 +50,7 @@ struct CLVDragGroup
 {
     int32 GroupStartDispListIndex;        //Indices in the column display list where this group starts
     int32 GroupStopDispListIndex;        //and finishes
-    float GroupBegin,GroupEnd;           //-1.0 if whole group is hidden
+    float GroupBegin, GroupEnd;          //-1.0 if whole group is hidden
     CLVColumn* LastColumnShown;
     bool AllLockBeginning;
     bool AllLockEnd;
@@ -63,13 +63,13 @@ class CLVColumnLabelView : public BView
 {
     public:
         //Constructor and destructor
-        CLVColumnLabelView(BRect Bounds,ColumnListView* Parent,const BFont* Font);
+        CLVColumnLabelView(BRect Bounds, ColumnListView* Parent, const BFont* Font);
         ~CLVColumnLabelView();
 
         //BView overrides
         virtual void Draw(BRect UpdateRect);
         virtual void MouseDown(BPoint Point);
-        virtual void MouseMoved(BPoint where, uint32 code, const BMessage *message);
+        virtual void MouseMoved(BPoint where, uint32 code, const BMessage* message);
         virtual void MouseUp(BPoint where);
 
     private:
@@ -92,12 +92,12 @@ class CLVColumnLabelView : public BView
         CLVDragGroup* fTheShownGroupBefore;
         CLVDragGroup* fTheShownGroupAfter;
         int32 fSnapGroupBefore,               //Index into DragGroups of TheShownGroupBefore and
-           fSnapGroupAfter;               //TheShownGroupAfter, if the group the user is dragging is
-                                        //allowed to snap there, otherwise -1
-        float fDragBoxMouseHoldOffset,fResizeMouseHoldOffset;
+              fSnapGroupAfter;               //TheShownGroupAfter, if the group the user is dragging is
+        //allowed to snap there, otherwise -1
+        float fDragBoxMouseHoldOffset, fResizeMouseHoldOffset;
         float fDragBoxWidth;               //Can include multiple columns; depends on CLV_LOCK_WITH_RIGHT
-        float fPrevDragOutlineLeft,fPrevDragOutlineRight;
-        float fSnapMin,fSnapMax;           //-1.0 indicates the column can't snap in the given direction
+        float fPrevDragOutlineLeft, fPrevDragOutlineRight;
+        float fSnapMin, fSnapMax;          //-1.0 indicates the column can't snap in the given direction
         ColumnListView* fParent;
 
         //Private functions

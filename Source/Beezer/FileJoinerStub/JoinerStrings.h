@@ -34,10 +34,10 @@
 
 #define str(X) strR5(X)
 
-extern const char *strR5 (int whichString, int whichLanguage = -1);
-extern void SetLanguage (int whichLanguage);
-extern const char *GetLanguageName (int whichLanguage, bool inNativeTongue);
-extern int GetLanguage ();
+extern const char* strR5(int whichString, int whichLanguage = -1);
+extern void SetLanguage(int whichLanguage);
+extern const char* GetLanguageName(int whichLanguage, bool inNativeTongue);
+extern int GetLanguage();
 
 enum LanguageNames
 {

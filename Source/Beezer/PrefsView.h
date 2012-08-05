@@ -41,37 +41,37 @@ class BCheckBox;
 class PrefsView : public BevelView
 {
     public:
-        PrefsView (BRect frame, const char *title, const char *description);
-        virtual ~PrefsView ();
+        PrefsView(BRect frame, const char* title, const char* description);
+        virtual ~PrefsView();
 
         // Additional hooks
-        const char         *Description () const;
-        const char         *Title () const;
-        virtual bool        IsChecked (BCheckBox *chkBox) const;
-        virtual void        Render ();
-        virtual void        Save ();
-        virtual void        Load ();
-        virtual void        SetBitmap (BBitmap *bmp);
-        virtual BBitmap     *Bitmap () const;
+        const char*         Description() const;
+        const char*         Title() const;
+        virtual bool        IsChecked(BCheckBox* chkBox) const;
+        virtual void        Render();
+        virtual void        Save();
+        virtual void        Load();
+        virtual void        SetBitmap(BBitmap* bmp);
+        virtual BBitmap*     Bitmap() const;
 
     protected:
         // Protected hooks
-        void                AddRevertButton ();
+        void                AddRevertButton();
 
         // Protected members
-        BButton            *m_revertBtn;
+        BButton*            m_revertBtn;
         float               m_margin;
         float               m_vGap;
         BFont               m_sectionFont;
 
     private:
         // Private hooks
-        void                DeleteBitmap ();
+        void                DeleteBitmap();
 
         // Private members
-        const char         *m_titleStr;
-        const char         *m_descriptionStr;
-        BBitmap            *m_bitmap;
+        const char*         m_titleStr;
+        const char*         m_descriptionStr;
+        BBitmap*            m_bitmap;
 };
 
 #endif /* _PREFS_VIEW_H */

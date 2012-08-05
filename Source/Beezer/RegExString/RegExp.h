@@ -72,9 +72,11 @@
 
 #include <String.h>
 
-namespace BPrivate {
+namespace BPrivate
+{
 
-enum {
+enum
+{
     REGEXP_UNMATCHED_PARENTHESIS = B_ERRORS_END,
     REGEXP_TOO_BIG,
     REGEXP_TOO_MANY_PARENTHESIS,
@@ -94,92 +96,94 @@ enum {
 
 const int32 kSubExpressionMax = 10;
 
-struct regexp {
-    const char *startp[kSubExpressionMax];
-    const char *endp[kSubExpressionMax];
+struct regexp
+{
+    const char* startp[kSubExpressionMax];
+    const char* endp[kSubExpressionMax];
     char regstart;        /* Internal use only. See RegExp.cpp for details. */
     char reganch;        /* Internal use only. */
-    const char *regmust;/* Internal use only. */
+    const char* regmust;/* Internal use only. */
     int regmlen;        /* Internal use only. */
     char program[1];    /* Unwarranted chumminess with compiler. */
 };
 
-class RegExp {
+class RegExp
+{
 
-public:
-    RegExp();
-    RegExp(const char *);
-    RegExp(const BString &);
-    ~RegExp();
+    public:
+        RegExp();
+        RegExp(const char*);
+        RegExp(const BString&);
+        ~RegExp();
 
-    status_t InitCheck() const;
+        status_t InitCheck() const;
 
-    status_t SetTo(const char*);
-    status_t SetTo(const BString &);
+        status_t SetTo(const char*);
+        status_t SetTo(const BString&);
 
-    bool Matches(const char *string) const;
-    bool Matches(const BString &) const;
+        bool Matches(const char* string) const;
+        bool Matches(const BString&) const;
 
-    int32 RunMatcher(regexp *, const char *) const;
-    regexp *Compile(const char *);
-    regexp *Expression() const;
-    const char *ErrorString() const;
+        int32 RunMatcher(regexp*, const char*) const;
+        regexp* Compile(const char*);
+        regexp* Expression() const;
+        const char* ErrorString() const;
 
 #ifdef DEBUG
-    void Dump();
+        void Dump();
 #endif
 
-private:
+    private:
 
-    void SetError(status_t error) const;
+        void SetError(status_t error) const;
 
-    // Working functions for Compile():
-    char *Reg(int32, int32 *);
-    char *Branch(int32 *);
-    char *Piece(int32 *);
-    char *Atom(int32 *);
-    char *Node(char);
-    char *Next(char *);
-    const char *Next(const char *) const;
-    void Char(char);
-    void Insert(char, char *);
-    void Tail(char *, char *);
-    void OpTail(char *, char *);
+        // Working functions for Compile():
+        char* Reg(int32, int32*);
+        char* Branch(int32*);
+        char* Piece(int32*);
+        char* Atom(int32*);
+        char* Node(char);
+        char* Next(char*);
+        const char* Next(const char*) const;
+        void Char(char);
+        void Insert(char, char*);
+        void Tail(char*, char*);
+        void OpTail(char*, char*);
 
-    // Working functions for RunMatcher():
-    int32 Try(regexp *, const char *) const;
-    int32 Match(const char *) const;
-    int32 Repeat(const char *) const;
+        // Working functions for RunMatcher():
+        int32 Try(regexp*, const char*) const;
+        int32 Match(const char*) const;
+        int32 Repeat(const char*) const;
 
-    // Utility functions:
+        // Utility functions:
 #ifdef DEBUG
-    char *Prop(const char *) const;
-    void RegExpError(const char *) const;
+        char* Prop(const char*) const;
+        void RegExpError(const char*) const;
 #endif
-    inline int32 UCharAt(const char *p) const;
-    inline char *Operand(char* p) const;
-    inline const char *Operand(const char* p) const;
-    inline bool    IsMult(char c) const;
+        inline int32 UCharAt(const char* p) const;
+        inline char* Operand(char* p) const;
+        inline const char* Operand(const char* p) const;
+        inline bool    IsMult(char c) const;
 
 // --------- Variables -------------
 
-    mutable status_t fError;
-    regexp *fRegExp;
+        mutable status_t fError;
+        regexp* fRegExp;
 
-    // Work variables for Compile().
+        // Work variables for Compile().
 
-    const char *fInputScanPointer;
-    int32 fParenthesisCount;
-    char fDummy;
-    char *fCodeEmitPointer;        // &fDummy = don't.
-    long fCodeSize;
+        const char* fInputScanPointer;
+        int32 fParenthesisCount;
+        char fDummy;
+        char* fCodeEmitPointer;        // &fDummy = don't.
+        long fCodeSize;
 
-    // Work variables for RunMatcher().
+        // Work variables for RunMatcher().
 
-    mutable const char *fStringInputPointer;
-    mutable const char *fRegBol;    // Beginning of input, for ^ check.
-    mutable const char **fStartPArrayPointer;
-    mutable const char **fEndPArrayPointer;
+        mutable const char* fStringInputPointer;
+        mutable const char* fRegBol;    // Beginning of input, for ^ check.
+        mutable const char** fStartPArrayPointer;
+        mutable const char** fEndPArrayPointer;
 };
 
 } // namespace BPrivate

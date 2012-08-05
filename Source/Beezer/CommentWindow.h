@@ -40,18 +40,18 @@ class BevelView;
 class CommentWindow : public BWindow
 {
     public:
-        CommentWindow (BWindow *callerWindow, const char *archiveName,
-                     const char *commentText, BFont *displayFont = NULL);
+        CommentWindow(BWindow* callerWindow, const char* archiveName,
+                      const char* commentText, BFont* displayFont = NULL);
 
         // Inherited hooks
-        virtual bool        QuitRequested ();
-        virtual void        MessageReceived (BMessage *message);
+        virtual bool        QuitRequested();
+        virtual void        MessageReceived(BMessage* message);
 
     private:
         // Private members
 
-        BTextView          *m_textView;
-        BWindow            *m_callerWindow;
+        BTextView*          m_textView;
+        BWindow*            m_callerWindow;
 };
 
 #endif /* _COMMENT_WINDOW_H */

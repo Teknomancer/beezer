@@ -40,37 +40,37 @@
 #include "Preferences.h"
 
 Preferences _prefs_colors,
-    _prefs_paths,
-    _prefs_extract,
-    _prefs_add,
-    _prefs_state,
-    _prefs_windows,
-    _prefs_recent,
-    _prefs_lang,
-    _prefs_misc,
-    _prefs_recent_archives,
-    _prefs_recent_extract,
-    _prefs_interface,
-    _prefs_recent_splitfiles,
-    _prefs_recent_splitdirs;
+            _prefs_paths,
+            _prefs_extract,
+            _prefs_add,
+            _prefs_state,
+            _prefs_windows,
+            _prefs_recent,
+            _prefs_lang,
+            _prefs_misc,
+            _prefs_recent_archives,
+            _prefs_recent_extract,
+            _prefs_interface,
+            _prefs_recent_splitfiles,
+            _prefs_recent_splitdirs;
 
 
 
-Preferences::Preferences (const char *dir, const char *file)
+Preferences::Preferences(const char* dir, const char* file)
 {
-    Init (dir, file);
+    Init(dir, file);
 }
 
 
 
-Preferences::Preferences ()
-    : m_prefsPathStr (NULL)
+Preferences::Preferences()
+    : m_prefsPathStr(NULL)
 {
 }
 
 
 
-Preferences::~Preferences ()
+Preferences::~Preferences()
 {
     // Write settings to the file before dying
     WritePrefs();
@@ -79,209 +79,209 @@ Preferences::~Preferences ()
 
 
 
-void Preferences::FreePathString ()
+void Preferences::FreePathString()
 {
     if (m_prefsPathStr)
-        free ((char*)m_prefsPathStr);
+        free((char*)m_prefsPathStr);
 
     m_prefsPathStr = NULL;
 }
 
 
 
-void Preferences::Init (const char *dir, const char *file)
+void Preferences::Init(const char* dir, const char* file)
 {
     BString locationStr = dir;
     locationStr << '/' << file;
-    locationStr.ReplaceAll ("//", "/");        // BugFix: Incase of invalid paths
-    SetLocation (locationStr.String());
+    locationStr.ReplaceAll("//", "/");         // BugFix: Incase of invalid paths
+    SetLocation(locationStr.String());
     ReadPrefs();
 }
 
 
 
-void Preferences::SetLocation (const char *path)
+void Preferences::SetLocation(const char* path)
 {
     FreePathString();
-    m_prefsPathStr = strdup (path);
+    m_prefsPathStr = strdup(path);
 }
 
 
 
-const char* Preferences::Location () const
+const char* Preferences::Location() const
 {
     return m_prefsPathStr;
 }
 
 
 
-void Preferences::WritePrefs ()
+void Preferences::WritePrefs()
 {
     // Serialize contents of "prefs" to a file on disk
     if (m_prefsPathStr && IsEmpty() == false)
     {
         // Create settings directory if need be
-        BPath filePath (m_prefsPathStr);
+        BPath filePath(m_prefsPathStr);
         BPath settingsDirPath;
-        filePath.GetParent (&settingsDirPath);
+        filePath.GetParent(&settingsDirPath);
 
-        BEntry settingsDirEntry (settingsDirPath.Path(), true);
+        BEntry settingsDirEntry(settingsDirPath.Path(), true);
         if (settingsDirEntry.Exists() == false)
-           create_directory (settingsDirPath.Path(), 0777);
+            create_directory(settingsDirPath.Path(), 0777);
 
-        BFile file (m_prefsPathStr, B_CREATE_FILE | B_ERASE_FILE | B_WRITE_ONLY);
+        BFile file(m_prefsPathStr, B_CREATE_FILE | B_ERASE_FILE | B_WRITE_ONLY);
         if (file.InitCheck() == B_OK)
-           Flatten (&file);
+            Flatten(&file);
     }
 }
 
 
 
-void Preferences::ReadPrefs ()
+void Preferences::ReadPrefs()
 {
     // Load "prefs" from the preferences file
     if (m_prefsPathStr)
     {
-        BFile file (m_prefsPathStr, B_READ_ONLY);
-        Unflatten (&file);
+        BFile file(m_prefsPathStr, B_READ_ONLY);
+        Unflatten(&file);
     }
 }
 
 
 
-status_t Preferences::SetBool (const char *name, bool b)
+status_t Preferences::SetBool(const char* name, bool b)
 {
-    if (HasBool (name) == true)
-        return ReplaceBool (name, 0, b);
+    if (HasBool(name) == true)
+        return ReplaceBool(name, 0, b);
 
-    return AddBool (name, b);
+    return AddBool(name, b);
 }
 
 
 
-status_t Preferences::SetInt8 (const char *name, int8 i)
+status_t Preferences::SetInt8(const char* name, int8 i)
 {
-    if (HasInt8 (name) == true)
-        return ReplaceInt8 (name, 0, i);
+    if (HasInt8(name) == true)
+        return ReplaceInt8(name, 0, i);
 
-    return AddInt8 (name, i);
+    return AddInt8(name, i);
 }
 
 
 
-status_t Preferences::SetInt16 (const char *name, int16 i)
+status_t Preferences::SetInt16(const char* name, int16 i)
 {
-    if (HasInt16 (name) == true)
-        return ReplaceInt16 (name, 0, i);
+    if (HasInt16(name) == true)
+        return ReplaceInt16(name, 0, i);
 
-    return AddInt16 (name, i);
+    return AddInt16(name, i);
 }
 
 
 
-status_t Preferences::SetInt32 (const char *name, int32 i)
+status_t Preferences::SetInt32(const char* name, int32 i)
 {
-    if (HasInt32 (name) == true)
-        return ReplaceInt32 (name, 0, i);
+    if (HasInt32(name) == true)
+        return ReplaceInt32(name, 0, i);
 
-    return AddInt32 (name, i);
+    return AddInt32(name, i);
 }
 
 
 
-status_t Preferences::SetInt64 (const char *name, int64 i)
+status_t Preferences::SetInt64(const char* name, int64 i)
 {
-    if (HasInt64 (name) == true)
-        return ReplaceInt64 (name, 0, i);
+    if (HasInt64(name) == true)
+        return ReplaceInt64(name, 0, i);
 
-    return AddInt64 (name, i);
+    return AddInt64(name, i);
 }
 
 
 
-status_t Preferences::SetFloat (const char *name, float f)
+status_t Preferences::SetFloat(const char* name, float f)
 {
-    if (HasFloat (name) == true)
-        return ReplaceFloat (name, 0, f);
+    if (HasFloat(name) == true)
+        return ReplaceFloat(name, 0, f);
 
     return AddFloat(name, f);
 }
 
 
 
-status_t Preferences::SetDouble (const char *name, double f)
+status_t Preferences::SetDouble(const char* name, double f)
 {
-    if (HasDouble (name) == true)
-        return ReplaceDouble (name, 0, f);
+    if (HasDouble(name) == true)
+        return ReplaceDouble(name, 0, f);
 
-    return AddDouble (name, f);
+    return AddDouble(name, f);
 }
 
 
 
-status_t Preferences::SetString (const char *name, const char *s)
+status_t Preferences::SetString(const char* name, const char* s)
 {
-    if (HasString (name) == true)
-        return ReplaceString (name, 0, s);
+    if (HasString(name) == true)
+        return ReplaceString(name, 0, s);
 
-    return AddString (name, s);
+    return AddString(name, s);
 }
 
 
 
-status_t Preferences::SetPoint (const char *name, BPoint p)
+status_t Preferences::SetPoint(const char* name, BPoint p)
 {
-    if (HasPoint (name) == true)
-        return ReplacePoint (name, 0, p);
+    if (HasPoint(name) == true)
+        return ReplacePoint(name, 0, p);
 
-    return AddPoint (name, p);
+    return AddPoint(name, p);
 }
 
 
 
-status_t Preferences::SetRect (const char *name, BRect r)
+status_t Preferences::SetRect(const char* name, BRect r)
 {
-    if (HasRect (name) == true)
-        return ReplaceRect (name, 0, r);
+    if (HasRect(name) == true)
+        return ReplaceRect(name, 0, r);
 
-    return AddRect (name, r);
+    return AddRect(name, r);
 }
 
 
 
-status_t Preferences::SetMessage (const char *name, const BMessage *message)
+status_t Preferences::SetMessage(const char* name, const BMessage* message)
 {
-    if (HasMessage (name) == true)
-        return ReplaceMessage (name, 0, message);
+    if (HasMessage(name) == true)
+        return ReplaceMessage(name, 0, message);
 
-    return AddMessage (name, message);
+    return AddMessage(name, message);
 }
 
 
 
-status_t Preferences::SetColor (const char *name, rgb_color &col)
+status_t Preferences::SetColor(const char* name, rgb_color& col)
 {
-    RemoveName (name);
-    return AddInt32 (name, (((uint32)col.red) << 24) | (((uint32)col.green) << 16)
-               | (((uint32)col.blue) << 8)    | (((uint32)col.alpha) << 0));
+    RemoveName(name);
+    return AddInt32(name, (((uint32)col.red) << 24) | (((uint32)col.green) << 16)
+                    | (((uint32)col.blue) << 8)    | (((uint32)col.alpha) << 0));
 }
 
 
 
-status_t Preferences::SetFlat (const char *name, const BFlattenable *obj)
+status_t Preferences::SetFlat(const char* name, const BFlattenable* obj)
 {
-    if (HasFlat (name, obj) == true)
-        return ReplaceFlat (name, 0, (BFlattenable*)obj);
+    if (HasFlat(name, obj) == true)
+        return ReplaceFlat(name, 0, (BFlattenable*)obj);
 
-    return AddFlat (name, (BFlattenable*) obj);
+    return AddFlat(name, (BFlattenable*) obj);
 }
 
 
 
-bool Preferences::FindBoolDef (const char *name, bool defaultValue)
+bool Preferences::FindBoolDef(const char* name, bool defaultValue)
 {
     bool v;
-    status_t result = FindBool (name, &v);
+    status_t result = FindBool(name, &v);
     if (result == B_OK)
         return v;
     else
@@ -290,10 +290,10 @@ bool Preferences::FindBoolDef (const char *name, bool defaultValue)
 
 
 
-int8 Preferences::FindInt8Def (const char *name, int8 defaultValue)
+int8 Preferences::FindInt8Def(const char* name, int8 defaultValue)
 {
     int8 v;
-    status_t result = FindInt8 (name, &v);
+    status_t result = FindInt8(name, &v);
     if (result == B_OK)
         return v;
     else
@@ -302,10 +302,10 @@ int8 Preferences::FindInt8Def (const char *name, int8 defaultValue)
 
 
 
-int16 Preferences::FindInt16Def (const char *name, int16 defaultValue)
+int16 Preferences::FindInt16Def(const char* name, int16 defaultValue)
 {
     int16 v;
-    status_t result = FindInt16 (name, &v);
+    status_t result = FindInt16(name, &v);
     if (result == B_OK)
         return v;
     else
@@ -314,12 +314,12 @@ int16 Preferences::FindInt16Def (const char *name, int16 defaultValue)
 
 
 
-rgb_color Preferences::FindColorDef (const char *name, rgb_color defaultValue)
+rgb_color Preferences::FindColorDef(const char* name, rgb_color defaultValue)
 {
     uint32 val;
     rgb_color retCol;
 
-    if (FindInt32 (name, (int32*)&val) == B_NO_ERROR)
+    if (FindInt32(name, (int32*)&val) == B_NO_ERROR)
     {
         retCol.red   = (val >> 24);
         retCol.green = (val >> 16);

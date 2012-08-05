@@ -43,33 +43,33 @@ class Archiver;
 class ArkInfoWindow : public BWindow
 {
     public:
-        ArkInfoWindow (BWindow *callerWindow, Archiver *archiver, BEntry *archiveEntry);
+        ArkInfoWindow(BWindow* callerWindow, Archiver* archiver, BEntry* archiveEntry);
 
         // Inherited hooks
-        virtual bool        QuitRequested ();
+        virtual bool        QuitRequested();
 
     private:
         // Private hooks
-        void                FillDetails ();
+        void                FillDetails();
 
         // Private members
-        Archiver           *m_archiver;
+        Archiver*           m_archiver;
 
-        BEntry             *m_entry;
-        BList              *m_fileList,
-                         *m_dirList;
-        BButton            *m_closeButton;
-        BStatusBar         *m_compressRatioBar;
-        BStringView        *m_fileNameStr,
-                         *m_compressedSizeStr,
-                         *m_originalSizeStr,
-                         *m_fileCountStr,
-                         *m_folderCountStr,
-                         *m_totalCountStr,
-                         *m_typeStr,
-                         *m_pathStr,
-                         *m_createdStr,
-                         *m_modifiedStr;
+        BEntry*             m_entry;
+        BList*              m_fileList,
+                            *m_dirList;
+        BButton*            m_closeButton;
+        BStatusBar*         m_compressRatioBar;
+        BStringView*        m_fileNameStr,
+                            *m_compressedSizeStr,
+                            *m_originalSizeStr,
+                            *m_fileCountStr,
+                            *m_folderCountStr,
+                            *m_totalCountStr,
+                            *m_typeStr,
+                            *m_pathStr,
+                            *m_createdStr,
+                            *m_modifiedStr;
 };
 
 #endif /*_ARK_INFO_WINDOW_H */
