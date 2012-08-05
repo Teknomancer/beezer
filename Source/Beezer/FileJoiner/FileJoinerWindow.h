@@ -58,49 +58,49 @@ class RecentMgr;
 class FileJoinerWindow : public BWindow
 {
     public:
-        FileJoinerWindow (RecentMgr *dirs);
-        virtual ~FileJoinerWindow ();
+        FileJoinerWindow(RecentMgr* dirs);
+        virtual ~FileJoinerWindow();
 
         // Inherited hooks
-        virtual void        Quit ();
-        virtual bool        QuitRequested ();
-        virtual void        MessageReceived (BMessage *message);
+        virtual void        Quit();
+        virtual bool        QuitRequested();
+        virtual void        MessageReceived(BMessage* message);
 
     private:
         // Private threads
-        static int32        _calcsize (void *arg);
-        static int32        _joiner (void *arg);
+        static int32        _calcsize(void* arg);
+        static int32        _joiner(void* arg);
 
         // Private hooks
-        void                UpdateData ();
-        void                UpdateRecentMenus ();
-        void                RefreshInfo ();
-        void                GetDirectoryInfo (BEntry *srcDir, int32 &fileCount,
-                                              off_t &totalSize, volatile bool *cancel);
-        void                DeleteChunks (const char *firstChunkPathStr, const char *separator);
-        void                ToggleWindowHeight (bool expand);
+        void                UpdateData();
+        void                UpdateRecentMenus();
+        void                RefreshInfo();
+        void                GetDirectoryInfo(BEntry* srcDir, int32& fileCount,
+                                             off_t& totalSize, volatile bool* cancel);
+        void                DeleteChunks(const char* firstChunkPathStr, const char* separator);
+        void                ToggleWindowHeight(bool expand);
 
         // Private members
-        BevelView          *m_backView,
-                           *m_innerView;
-        BStringView        *m_descStr,
-                           *m_descStr2,
-                           *m_piecesStr,
-                           *m_sizeStr;
-        BTextControl       *m_filePathView,
-                           *m_folderPathView,
-                           *m_separatorView;
-        BMenu              *m_folderMenu;
-        BMenuField         *m_folderField;
-        BButton            *m_selectFileBtn,
-                           *m_selectFolderBtn,
-                           *m_joinBtn,
-                           *m_refreshBtn;
-        BFilePanel         *m_filePanel;
-        SelectDirPanel     *m_dirPanel;
-        BCheckBox          *m_openChk,
-                           *m_deleteChk,
-                           *m_closeChk;
+        BevelView*          m_backView,
+                            *m_innerView;
+        BStringView*        m_descStr,
+                            *m_descStr2,
+                            *m_piecesStr,
+                            *m_sizeStr;
+        BTextControl*       m_filePathView,
+                            *m_folderPathView,
+                            *m_separatorView;
+        BMenu*              m_folderMenu;
+        BMenuField*         m_folderField;
+        BButton*            m_selectFileBtn,
+                            *m_selectFolderBtn,
+                            *m_joinBtn,
+                            *m_refreshBtn;
+        BFilePanel*         m_filePanel;
+        SelectDirPanel*     m_dirPanel;
+        BCheckBox*          m_openChk,
+                            *m_deleteChk,
+                            *m_closeChk;
         bool                m_calcSize,
                             m_joinInProgress,
                             m_quitNow;
@@ -111,12 +111,12 @@ class FileJoinerWindow : public BWindow
                             m_dirPathStr;
         uint16              m_noOfPieces;
         off_t               m_totalSize;
-        BStatusBar         *m_statusBar;
+        BStatusBar*         m_statusBar;
         float               m_hideProgress,
                             m_showProgress;
 
-        BMessenger         *m_messenger;
-        RecentMgr          *m_recentSplitDirs;    // yes split is used for both !
+        BMessenger*         m_messenger;
+        RecentMgr*          m_recentSplitDirs;    // yes split is used for both !
 };
 
 #endif /* _FILE_JOINER_WINDOW_H */

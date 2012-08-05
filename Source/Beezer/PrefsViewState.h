@@ -34,19 +34,19 @@
 class PrefsViewState : public PrefsView
 {
     public:
-        PrefsViewState (BRect frame);
+        PrefsViewState(BRect frame);
 
         // Inherited hooks
-        virtual void        Render ();
-        virtual void        Save ();
-        virtual void        Load ();
+        virtual void        Render();
+        virtual void        Save();
+        virtual void        Load();
 
     private:
         // Private members
-        BCheckBox          *m_storeUIChk,
-                         *m_restoreUIChk,
-                         *m_storeArkChk,
-                         *m_restoreArkChk;
+        BCheckBox*          m_storeUIChk,
+                            *m_restoreUIChk,
+                            *m_storeArkChk,
+                            *m_restoreArkChk;
 };
 
 #endif /* _PREFS_VIEW_STATE_H */

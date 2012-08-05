@@ -37,15 +37,15 @@ class BarberPole;
 class StatusWindow : public BWindow
 {
     public:
-        StatusWindow (const char *title, BWindow *callerWindow, const char *text, volatile bool *cancel,
-                    bool showWindow = true);
+        StatusWindow(const char* title, BWindow* callerWindow, const char* text, volatile bool* cancel,
+                     bool showWindow = true);
 
         // Inherited hooks
-        virtual void        MessageReceived (BMessage *message);
+        virtual void        MessageReceived(BMessage* message);
 
     private:
-        BarberPole        *m_barberPole;
-        volatile bool      *m_cancel;
+        BarberPole*        m_barberPole;
+        volatile bool*      m_cancel;
 };
 
 #endif /* _STATUS_WINDOW_H */

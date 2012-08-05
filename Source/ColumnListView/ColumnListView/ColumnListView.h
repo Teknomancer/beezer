@@ -52,7 +52,7 @@ class CLVContainerView;
 //**** CONSTANTS AND TYPE DEFINITIONS
 //******************************************************************************************************
 typedef int (*CLVCompareFuncPtr)(const CLVListItem* item1, const CLVListItem* item2,
-                         BList *columnList, int32 sort_key);
+                                 BList* columnList, int32 sort_key);
 
 
 //******************************************************************************************************
@@ -62,108 +62,111 @@ class ColumnListView : public BListView
 {
     public:
         //Constructor and destructor
-        ColumnListView(    BRect Frame,
-                      CLVContainerView** ContainerView,    //Used to get back a pointer to the container
-                                                      //view that will hold the ColumnListView, the
-                                                      //the CLVColumnLabelView, and the scrollbars.
-                                                      //If no scroll bars or border are asked for,
-                                                      //this will act like a plain BView container.
-                      const char* Name = NULL,
-                      uint32 ResizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP,
-                      uint32 flags = B_WILL_DRAW | B_FRAME_EVENTS | B_NAVIGABLE,
-                      list_view_type Type = B_SINGLE_SELECTION_LIST,
-                      bool hierarchical = false,
-                      bool horizontal = true,                  //Which scroll bars should I add, if any
-                      bool vertical = true,
-                      bool scroll_view_corner = true,
-                      border_style border = B_NO_BORDER,        //What type of border to add, if any
-                      const BFont* LabelFont = be_plain_font);
+        ColumnListView(BRect Frame,
+                       CLVContainerView** ContainerView,    //Used to get back a pointer to the container
+                       //view that will hold the ColumnListView, the
+                       //the CLVColumnLabelView, and the scrollbars.
+                       //If no scroll bars or border are asked for,
+                       //this will act like a plain BView container.
+                       const char* Name = NULL,
+                       uint32 ResizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP,
+                       uint32 flags = B_WILL_DRAW | B_FRAME_EVENTS | B_NAVIGABLE,
+                       list_view_type Type = B_SINGLE_SELECTION_LIST,
+                       bool hierarchical = false,
+                       bool horizontal = true,                  //Which scroll bars should I add, if any
+                       bool vertical = true,
+                       bool scroll_view_corner = true,
+                       border_style border = B_NO_BORDER,        //What type of border to add, if any
+                       const BFont* LabelFont = be_plain_font);
         virtual ~ColumnListView();
 
         //Archival stuff
-           /*** Not implemented yet
+        /*** Not implemented yet
         ColumnListView(BMessage* archive);
         static ColumnListView* Instantiate(BMessage* data);
         virtual    status_t Archive(BMessage* data, bool deep = true) const;
-           ***/
+        ***/
 
         // hacked in by jaf
-        CLVColumnLabelView * GetColumnLabelView() {return fColumnLabelView;}
+        CLVColumnLabelView* GetColumnLabelView()
+        {
+            return fColumnLabelView;
+        }
 
         //Column setup functions
         virtual bool AddColumn(CLVColumn* Column);           //Note that a column may only be added to
-                                                      //one ColumnListView at a time, and may not
-                                                      //be added more than once to the same
-                                                      //ColumnListView without removing it
-                                                      //inbetween
+        //one ColumnListView at a time, and may not
+        //be added more than once to the same
+        //ColumnListView without removing it
+        //inbetween
         virtual bool AddColumnList(BList* NewColumns);
         virtual bool RemoveColumn(CLVColumn* Column);
         virtual bool RemoveColumns(CLVColumn* Column, int32 Count);    //Finds Column in ColumnList
-                                                             //and removes Count columns and
-                                                             //their data from the view
-                                                             //and its items
+        //and removes Count columns and
+        //their data from the view
+        //and its items
         int32 CountColumns() const;
         int32 IndexOfColumn(CLVColumn* column) const;
         CLVColumn* ColumnAt(int32 column_index) const;
         virtual bool SetDisplayOrder(const int32* Order);
-           //Sets the display order: each int32 in the Order list specifies the column index of the
-           //next column to display.  Note that this DOES NOT get called if the user drags a
-           //column, so overriding it will not inform you of user changes.  If you need that info,
-           //override DisplayOrderChanged instead.  Also note that SetDisplayOrder does call
-           //DisplayOrderChanged(false).
+        //Sets the display order: each int32 in the Order list specifies the column index of the
+        //next column to display.  Note that this DOES NOT get called if the user drags a
+        //column, so overriding it will not inform you of user changes.  If you need that info,
+        //override DisplayOrderChanged instead.  Also note that SetDisplayOrder does call
+        //DisplayOrderChanged(false).
         void GetDisplayOrder(int32* order) const;
-           //Fills a caller-provided array with the display order of the columns in the same format
-           //as used in calling SetDisplayOrder.  The order pointer should point to an array
-           //int32 order[n] where n is the number of columns in the ColumnListView.
+        //Fills a caller-provided array with the display order of the columns in the same format
+        //as used in calling SetDisplayOrder.  The order pointer should point to an array
+        //int32 order[n] where n is the number of columns in the ColumnListView.
         virtual void ColumnWidthChanged(int32 ColumnIndex, float NewWidth);
         virtual void DisplayOrderChanged(const int32* order);
-           //Override this if you want to find out when the display order changed.
+        //Override this if you want to find out when the display order changed.
         virtual void SetSortKey(int32 ColumnIndex, bool sortNow);
-           //Set it to -1 to remove the sort key.
+        //Set it to -1 to remove the sort key.
         virtual void AddSortKey(int32 ColumnIndex);
         void ReverseSortMode(int32 ColumnIndex);
-        virtual void SetSortMode(int32 ColumnIndex,CLVSortMode Mode);
-           //Override this to filter the modes
+        virtual void SetSortMode(int32 ColumnIndex, CLVSortMode Mode);
+        //Override this to filter the modes
         int32 GetSorting(int32* SortKeys, CLVSortMode* SortModes) const;
-           //Returns the number of used sort keys, and fills the provided arrays with the sort keys
-           //by column index and sort modes, in priority order.  The pointers should point to an array
-           //int32 SortKeys[n], and an array CLVSortMode SortModes[n] where n is the number of sortable
-           //columns in the ColumnListView.  Note: sorting will only occur if the key column is shown.
+        //Returns the number of used sort keys, and fills the provided arrays with the sort keys
+        //by column index and sort modes, in priority order.  The pointers should point to an array
+        //int32 SortKeys[n], and an array CLVSortMode SortModes[n] where n is the number of sortable
+        //columns in the ColumnListView.  Note: sorting will only occur if the key column is shown.
         void SetSorting(int32 NumberOfKeys, int32* SortKeys, CLVSortMode* SortModes);
-           //Sets the sorting parameters using the same format returned by Sorting
+        //Sets the sorting parameters using the same format returned by Sorting
         virtual void SortingChanged();    //Override this to detect changes to the sorting keys or modes.
 
         // Following three functions added by Ram
-        inline void SetItemSelectForeColor (bool window_active, rgb_color color)
+        inline void SetItemSelectForeColor(bool window_active, rgb_color color)
         {
-           if (window_active) fSelectedItemForeColorWindowActive = color;
-           else fSelectedItemForeColorWindowInactive = color;
+            if (window_active) fSelectedItemForeColorWindowActive = color;
+            else fSelectedItemForeColorWindowInactive = color;
         }
-        inline rgb_color ItemSelectForeColor (bool window_active) const
+        inline rgb_color ItemSelectForeColor(bool window_active) const
         {
-           if (window_active) return fSelectedItemForeColorWindowActive;
-           return fSelectedItemForeColorWindowInactive;
+            if (window_active) return fSelectedItemForeColorWindowActive;
+            return fSelectedItemForeColorWindowInactive;
         }
         inline rgb_color ItemSelectForeColor() const
         {
-           if (fWindowActive) return fSelectedItemForeColorWindowActive;
-           return fSelectedItemForeColorWindowInactive;
+            if (fWindowActive) return fSelectedItemForeColorWindowActive;
+            return fSelectedItemForeColorWindowInactive;
         }
 
         inline void SetItemSelectColor(bool window_active, rgb_color color)
         {
-           if(window_active) fSelectedItemColorWindowActive = color;
-           else fSelectedItemColorWindowInactive = color;
+            if (window_active) fSelectedItemColorWindowActive = color;
+            else fSelectedItemColorWindowInactive = color;
         }
         inline rgb_color ItemSelectColor(bool window_active) const
         {
-           if(window_active) return fSelectedItemColorWindowActive;
-           return fSelectedItemColorWindowInactive;
+            if (window_active) return fSelectedItemColorWindowActive;
+            return fSelectedItemColorWindowInactive;
         }
         inline rgb_color ItemSelectColor() const
         {
-           if(fWindowActive) return fSelectedItemColorWindowActive;
-           return fSelectedItemColorWindowInactive;
+            if (fWindowActive) return fSelectedItemColorWindowActive;
+            return fSelectedItemColorWindowInactive;
         }
 
         //BView overrides
@@ -180,12 +183,12 @@ class ColumnListView : public BListView
 
         virtual bool AddItem(BListItem* item, int32 fullListIndex);
         virtual bool AddItem(BListItem* item);
-        virtual bool AddItemFastHierarchical (BListItem* a_item);           // Ram
+        virtual bool AddItemFastHierarchical(BListItem* a_item);            // Ram
 
         virtual bool AddList(BList* newItems);                      //This must be a BList of
-                                                             //CLVListItem*'s, NOT BListItem*'s
+        //CLVListItem*'s, NOT BListItem*'s
         virtual bool AddList(BList* newItems, int32 fullListIndex);    //This must be a BList of
-                                                             //CLVListItem*'s, NOT BListItem*'s
+        //CLVListItem*'s, NOT BListItem*'s
         virtual bool RemoveItem(BListItem* item);
         virtual BListItem* RemoveItem(int32 fullListIndex);           //Actually returns CLVListItem
         virtual bool RemoveItems(int32 fullListIndex, int32 count);
@@ -209,7 +212,7 @@ class ColumnListView : public BListView
         void SetSortFunction(CLVCompareFuncPtr compare);
         void SortItems();
         virtual CLVContainerView* CreateContainer(bool horizontal, bool vertical, bool scroll_view_corner,
-           border_style border, uint32 ResizingMode, uint32 flags);
+                border_style border, uint32 ResizingMode, uint32 flags);
 
     private:
         friend class CLVMainView;
@@ -220,7 +223,7 @@ class ColumnListView : public BListView
         void UpdateColumnSizesDataRectSizeScrollBars(bool scrolling_allowed = true);
         void ColumnsChanged();
         void EmbedInContainer(bool horizontal, bool vertical, bool scroll_view_corner, border_style border,
-           uint32 ResizingMode, uint32 flags);
+                              uint32 ResizingMode, uint32 flags);
         void SortListArray(CLVListItem** SortArray, int32 NumberOfItems);
         void MakeEmptyPrivate();
         bool AddListPrivate(BList* newItems, int32 fullListIndex);
@@ -232,8 +235,8 @@ class ColumnListView : public BListView
         static int HierarchicalBListSortFunc(BListItem** item1, BListItem** item2);
         //void AssertWindowLocked() const;                      // Commented out by Ram
 
-        void QuickSort (CLVListItem **list, int32 n);           // Ram
-        void SwapItems (CLVListItem **list, int32 i, int32 j);    // Ram
+        void QuickSort(CLVListItem** list, int32 n);            // Ram
+        void SwapItems(CLVListItem** list, int32 i, int32 j);     // Ram
 
         CLVColumnLabelView* fColumnLabelView;
         CLVContainerView* fScrollView;
@@ -261,7 +264,7 @@ class CLVContainerView : public BetterScrollView
 {
     public:
         CLVContainerView(ColumnListView* target, uint32 resizingMode, uint32 flags, bool horizontal, bool vertical,
-           bool scroll_view_corner, border_style border);
+                         bool scroll_view_corner, border_style border);
         ~CLVContainerView();
 
     private:

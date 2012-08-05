@@ -42,52 +42,52 @@ class BPopUpMenu;
 class ImageButton : public BView
 {
     public:
-        ImageButton (BRect frame, const char *name, const char *text, BBitmap *bitmap, BBitmap *disabled,
-                     BMessage *message, bool popUpMenu, const rgb_color backColor,
-                     textPosition textPos = kBelowIcon, bool borders = true, bool smallFont = true,
-                     bool hoverHighlight = true, uint32 resizeMask = B_FOLLOW_LEFT | B_FOLLOW_TOP,
-                     uint32 flags = B_WILL_DRAW);
-        virtual ~ImageButton ();
+        ImageButton(BRect frame, const char* name, const char* text, BBitmap* bitmap, BBitmap* disabled,
+                    BMessage* message, bool popUpMenu, const rgb_color backColor,
+                    textPosition textPos = kBelowIcon, bool borders = true, bool smallFont = true,
+                    bool hoverHighlight = true, uint32 resizeMask = B_FOLLOW_LEFT | B_FOLLOW_TOP,
+                    uint32 flags = B_WILL_DRAW);
+        virtual ~ImageButton();
 
         // Inherited hooks
-        virtual void        Draw (BRect updateRect);
-        virtual void        MouseMoved (BPoint point, uint32 status, const BMessage *dragInfo);
-        virtual void        MouseDown (BPoint point);
-        virtual void        MouseUp (BPoint point);
-        virtual void        GetPreferredSize (float *width, float *height);
-        virtual void        AttachedToWindow ();
-        virtual void        WindowActivated (bool state);
+        virtual void        Draw(BRect updateRect);
+        virtual void        MouseMoved(BPoint point, uint32 status, const BMessage* dragInfo);
+        virtual void        MouseDown(BPoint point);
+        virtual void        MouseUp(BPoint point);
+        virtual void        GetPreferredSize(float* width, float* height);
+        virtual void        AttachedToWindow();
+        virtual void        WindowActivated(bool state);
 
         // Additional hooks
-        virtual void        SetTarget (const BHandler *handler);
-        virtual void        SetContextMenu (BPopUpMenu *contextMenu);
-        virtual void        DrawContextMenuTriangle (BPoint topLeftPoint);
-        virtual void        SetBorderPadding (float horizontal, float vertical);
-        virtual void        GetBorderPadding (float *horizontal, float *vertical);
-        virtual void        SetEnabled (bool enable);
-        virtual bool        IsEnabled () const;
-        virtual void        SetMessage (BMessage *msg);
-        virtual BMessage    *Message () const;
-        virtual void        SetClickable (bool clickable);
-        virtual bool        IsClickable () const;
-        virtual status_t    SetMargin (float width, float height);
-        virtual void        GetMargin (float *width, float *height);
+        virtual void        SetTarget(const BHandler* handler);
+        virtual void        SetContextMenu(BPopUpMenu* contextMenu);
+        virtual void        DrawContextMenuTriangle(BPoint topLeftPoint);
+        virtual void        SetBorderPadding(float horizontal, float vertical);
+        virtual void        GetBorderPadding(float* horizontal, float* vertical);
+        virtual void        SetEnabled(bool enable);
+        virtual bool        IsEnabled() const;
+        virtual void        SetMessage(BMessage* msg);
+        virtual BMessage*    Message() const;
+        virtual void        SetClickable(bool clickable);
+        virtual bool        IsClickable() const;
+        virtual status_t    SetMargin(float width, float height);
+        virtual void        GetMargin(float* width, float* height);
 
     protected:
         // Protected hooks
-        virtual void        DrawOutsideEdge (BRect rect);
-        virtual void        DrawShinyEdge (BRect rect, bool isPressing);
-        virtual void        PushButton (BRect rect);
-        virtual void        ShowContextMenu (BPoint point);
-        virtual void        HighlightNow (bool isPressing);
+        virtual void        DrawOutsideEdge(BRect rect);
+        virtual void        DrawShinyEdge(BRect rect, bool isPressing);
+        virtual void        PushButton(BRect rect);
+        virtual void        ShowContextMenu(BPoint point);
+        virtual void        HighlightNow(bool isPressing);
 
         // Protected members
-        const char         *m_buttonText;
-        BHandler           *m_handler;
-        BBitmap            *m_clickBitmap,
-                           *m_disabledBitmap;
-        BMessage           *m_clickMessage;
-        BPopUpMenu         *m_contextMenu;
+        const char*         m_buttonText;
+        BHandler*           m_handler;
+        BBitmap*            m_clickBitmap,
+                            *m_disabledBitmap;
+        BMessage*           m_clickMessage;
+        BPopUpMenu*         m_contextMenu;
         rgb_color           m_backColor,
                             m_darkEdge1,
                             m_darkEdge2,

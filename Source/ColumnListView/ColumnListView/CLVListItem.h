@@ -59,21 +59,36 @@ class CLVListItem : public BListItem
         */
 
         virtual void DrawItemColumn(BView* owner, BRect item_column_rect, int32 column_index,
-           bool complete) = 0;    //column_index (0-N) is based on the order in which the columns were added
-                             //to the ColumnListView, not the display order.  An index of -1 indicates
-                             //that the program needs to draw a blank area beyond the last column.  The
-                             //main purpose is to allow the highlighting bar to continue all the way to
-                             //the end of the ColumnListView, even after the end of the last column.
+                                    bool complete) = 0;    //column_index (0-N) is based on the order in which the columns were added
+        //to the ColumnListView, not the display order.  An index of -1 indicates
+        //that the program needs to draw a blank area beyond the last column.  The
+        //main purpose is to allow the highlighting bar to continue all the way to
+        //the end of the ColumnListView, even after the end of the last column.
         virtual void DrawItem(BView* owner, BRect itemRect, bool complete);
-                             //In general, you don't need or want to override DrawItem().
+        //In general, you don't need or want to override DrawItem().
         BRect ItemColumnFrame(int32 column_index, ColumnListView* owner);
         float ExpanderShift(int32 column_index, ColumnListView* owner);
         virtual void Update(BView* owner, const BFont* font);
-        inline bool IsSuperItem() const {return fSuperItem;}
-        inline void SetSuperItem(bool superitem) {fSuperItem = superitem;}
-        inline uint32 OutlineLevel() const {return fOutlineLevel;}
-        inline void SetOutlineLevel(uint32 level) {fOutlineLevel = level;}
-        inline bool ExpanderRectContains(BPoint where) {return fExpanderButtonRect.Contains(where);}
+        inline bool IsSuperItem() const
+        {
+            return fSuperItem;
+        }
+        inline void SetSuperItem(bool superitem)
+        {
+            fSuperItem = superitem;
+        }
+        inline uint32 OutlineLevel() const
+        {
+            return fOutlineLevel;
+        }
+        inline void SetOutlineLevel(uint32 level)
+        {
+            fOutlineLevel = level;
+        }
+        inline bool ExpanderRectContains(BPoint where)
+        {
+            return fExpanderButtonRect.Contains(where);
+        }
         virtual void ColumnWidthChanged(int32 column_index, float column_width, ColumnListView* the_view);
         virtual void FrameChanged(int32 column_index, BRect new_frame, ColumnListView* the_view);
 

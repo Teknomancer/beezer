@@ -36,27 +36,27 @@
 
 
 
-SelectDirPanel::SelectDirPanel (file_panel_mode mode, BMessenger *target, const entry_ref *start_directory,
-                  uint32 node_flavors, bool allow_multiple_selection, BMessage *message, BRefFilter *filter,
-                  bool modal, bool hide_when_done)
-    : BFilePanel (mode, target, start_directory, B_DIRECTORY_NODE, allow_multiple_selection, message, filter,
-               modal, hide_when_done)
+SelectDirPanel::SelectDirPanel(file_panel_mode mode, BMessenger* target, const entry_ref* start_directory,
+                               uint32 node_flavors, bool allow_multiple_selection, BMessage* message, BRefFilter* filter,
+                               bool modal, bool hide_when_done)
+    : BFilePanel(mode, target, start_directory, B_DIRECTORY_NODE, allow_multiple_selection, message, filter,
+                 modal, hide_when_done)
 {
     m_buttonName = "bzr:special_button";
 
     Window()->LockLooper();
 
-    BButton *cancelBtn = (BButton*)Window()->FindView ("cancel button");
-    m_curDirBtn = new BButton (BRect (cancelBtn->Frame().left - 20 - 185, cancelBtn->Frame().top,
-                         cancelBtn->Frame().left - 20, cancelBtn->Frame().bottom), m_buttonName.String(),
-                         NULL, message, B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW | B_NAVIGABLE);
-    m_curDirBtn->SetTarget (target->Target(NULL));
+    BButton* cancelBtn = (BButton*)Window()->FindView("cancel button");
+    m_curDirBtn = new BButton(BRect(cancelBtn->Frame().left - 20 - 185, cancelBtn->Frame().top,
+                                    cancelBtn->Frame().left - 20, cancelBtn->Frame().bottom), m_buttonName.String(),
+                              NULL, message, B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW | B_NAVIGABLE);
+    m_curDirBtn->SetTarget(target->Target(NULL));
 
     // Tweak the default button (turn it off) so <ENTER> doesn't select the folder, instead
     // enters the folder in the BFilePanel's list
-    ((BButton*)Window()->FindView ("default button"))->MakeDefault (false);
+    ((BButton*)Window()->FindView("default button"))->MakeDefault(false);
 
-    Window()->ChildAt(0L)->AddChild (m_curDirBtn);
+    Window()->ChildAt(0L)->AddChild(m_curDirBtn);
     Window()->UnlockLooper();
     UpdateButton();
 }
@@ -69,7 +69,7 @@ SelectDirPanel::~SelectDirPanel()
 
 
 
-void SelectDirPanel::SetCurrentDirButton (const char *label)
+void SelectDirPanel::SetCurrentDirButton(const char* label)
 {
     m_buttonLabel = label;
     UpdateButton();
@@ -77,7 +77,7 @@ void SelectDirPanel::SetCurrentDirButton (const char *label)
 
 
 
-void SelectDirPanel::SelectionChanged ()
+void SelectDirPanel::SelectionChanged()
 {
     UpdateButton();
     BFilePanel::SelectionChanged();
@@ -87,31 +87,31 @@ void SelectDirPanel::SelectionChanged ()
 
 void SelectDirPanel::Refresh()
 {
-    UpdateButton ();
+    UpdateButton();
     BFilePanel::Refresh();
 }
 
 
 
-void SelectDirPanel::UpdateButton ()
+void SelectDirPanel::UpdateButton()
 {
     entry_ref dirRef;
-    GetPanelDirectory (&dirRef);
+    GetPanelDirectory(&dirRef);
 
-    BPath dirPath (&dirRef);
+    BPath dirPath(&dirRef);
     BString btnLabel = m_buttonLabel;
     btnLabel << " " << '\'' << dirPath.Leaf() << '\'';
 
     Window()->LockLooper();
-    BButton *curDirBtn = (BButton*)Window()->FindView (m_buttonName.String());
+    BButton* curDirBtn = (BButton*)Window()->FindView(m_buttonName.String());
     if (curDirBtn)
     {
-        curDirBtn->SetLabel (btnLabel.String());
-        BMessage *msg = curDirBtn->Message();
+        curDirBtn->SetLabel(btnLabel.String());
+        BMessage* msg = curDirBtn->Message();
         if (msg)
         {
-           msg->RemoveName ("refs");
-           msg->AddRef ("refs", &dirRef);
+            msg->RemoveName("refs");
+            msg->AddRef("refs", &dirRef);
         }
     }
     Window()->UnlockLooper();
@@ -119,28 +119,28 @@ void SelectDirPanel::UpdateButton ()
 
 
 
-void SelectDirPanel::SetMessage (BMessage *msg)
+void SelectDirPanel::SetMessage(BMessage* msg)
 {
-    BMessage *curDirMsg = new BMessage (*msg);
-    m_curDirBtn->SetMessage (curDirMsg);
-    UpdateButton ();
+    BMessage* curDirMsg = new BMessage(*msg);
+    m_curDirBtn->SetMessage(curDirMsg);
+    UpdateButton();
 
-    BFilePanel::SetMessage (msg);
+    BFilePanel::SetMessage(msg);
 }
 
 
 
-void SelectDirPanel::SendMessage (const BMessenger *target, BMessage *message)
+void SelectDirPanel::SendMessage(const BMessenger* target, BMessage* message)
 {
     // Bug-fix: 0.07 -- a possibility because BFilePanel has a "Favourites" menu that lists
     // files also, and apparently BFilePanel sends the message when a file is selected from Favs,
     // this is fixed here
     entry_ref ref;
-    message->FindRef ("refs", &ref);
-    BEntry entry (&ref, true);
+    message->FindRef("refs", &ref);
+    BEntry entry(&ref, true);
 
     if (entry.IsDirectory() == true)
-        return BFilePanel::SendMessage (target, message);
+        return BFilePanel::SendMessage(target, message);
 }
 
 

@@ -36,24 +36,24 @@
 #include <TextView.h>
 
 
-LogWindow::LogWindow (BWindow *callerWindow, const char *title, const char *logText, BFont *displayFont)
-    : BWindow (BRect (80, 140, 605, 355), title, B_FLOATING_WINDOW_LOOK, B_MODAL_APP_WINDOW_FEEL, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS)
+LogWindow::LogWindow(BWindow* callerWindow, const char* title, const char* logText, BFont* displayFont)
+    : BWindow(BRect(80, 140, 605, 355), title, B_FLOATING_WINDOW_LOOK, B_MODAL_APP_WINDOW_FEEL, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS)
 {
     if (callerWindow)
     {
-        SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
-        AddToSubset (callerWindow);
+        SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
+        AddToSubset(callerWindow);
     }
 
     SetLayout(new BGroupLayout(B_VERTICAL));
 
-    BTextView *textView = new BTextView ("LogWindow:TextView", displayFont, NULL, B_WILL_DRAW | B_FRAME_EVENTS);
+    BTextView* textView = new BTextView("LogWindow:TextView", displayFont, NULL, B_WILL_DRAW | B_FRAME_EVENTS);
 
-    BScrollView *scrollView = new BScrollView ("LogWindow:ScrollView", textView, B_WILL_DRAW, true, true, B_PLAIN_BORDER);
+    BScrollView* scrollView = new BScrollView("LogWindow:ScrollView", textView, B_WILL_DRAW, true, true, B_PLAIN_BORDER);
 
-    textView->SetText (logText);
-    textView->SetWordWrap (false);
-    textView->MakeEditable (false);
+    textView->SetText(logText);
+    textView->SetWordWrap(false);
+    textView->MakeEditable(false);
 
     AddChild(scrollView);
 
@@ -64,11 +64,11 @@ LogWindow::LogWindow (BWindow *callerWindow, const char *title, const char *logT
 
     // Load from prefs if it allows
     BRect frame;
-    if (_prefs_windows.FindBoolDef (kPfLogWnd, true))
-        if (_prefs_windows.FindRect (kPfLogWndFrame, &frame) == B_OK)
+    if (_prefs_windows.FindBoolDef(kPfLogWnd, true))
+        if (_prefs_windows.FindRect(kPfLogWndFrame, &frame) == B_OK)
         {
-           MoveTo (frame.LeftTop());
-           ResizeTo (frame.Width(), frame.Height());
+            MoveTo(frame.LeftTop());
+            ResizeTo(frame.Width(), frame.Height());
         }
 
     Show();
@@ -77,8 +77,8 @@ LogWindow::LogWindow (BWindow *callerWindow, const char *title, const char *logT
 
 bool LogWindow::QuitRequested()
 {
-    if (_prefs_windows.FindBoolDef (kPfLogWnd, true))
-        _prefs_windows.SetRect (kPfLogWndFrame, Frame());
+    if (_prefs_windows.FindBoolDef(kPfLogWnd, true))
+        _prefs_windows.SetRect(kPfLogWndFrame, Frame());
 
     return BWindow::QuitRequested();
 }

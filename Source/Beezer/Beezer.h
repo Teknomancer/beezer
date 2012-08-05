@@ -54,25 +54,25 @@ class WindowMgr;
 class Beezer : public BApplication
 {
     public:
-        Beezer ();
+        Beezer();
         virtual ~Beezer();
 
         // Inherited hooks
-        virtual void        MessageReceived (BMessage *message);
-        virtual void        RefsReceived (BMessage *message);
-        virtual void        ReadyToRun ();
-        virtual void        Quit ();
+        virtual void        MessageReceived(BMessage* message);
+        virtual void        RefsReceived(BMessage* message);
+        virtual void        ReadyToRun();
+        virtual void        Quit();
 
         // Additional hooks
-        MainWindow         *RegisterWindow (entry_ref *ref = NULL);
-        void                UnRegisterWindow (bool closeApp);
-        void                CreateFilePanel (BFilePanel *&panel, file_panel_mode mode);
-        void                DeleteFilePanel (BFilePanel *&panel);
-        MainWindow         *IsFirstWindowADummy ();
-        MainWindow         *WindowForRef (entry_ref *ref);
-        MainWindow         *CreateWindow (entry_ref *ref);
-        BMenu              *BuildToolsMenu () const;
-        BPopUpMenu         *BuildToolsPopUpMenu () const;
+        MainWindow*         RegisterWindow(entry_ref* ref = NULL);
+        void                UnRegisterWindow(bool closeApp);
+        void                CreateFilePanel(BFilePanel*& panel, file_panel_mode mode);
+        void                DeleteFilePanel(BFilePanel*& panel);
+        MainWindow*         IsFirstWindowADummy();
+        MainWindow*         WindowForRef(entry_ref* ref);
+        MainWindow*         CreateWindow(entry_ref* ref);
+        BMenu*              BuildToolsMenu() const;
+        BPopUpMenu*         BuildToolsPopUpMenu() const;
 
         // Public members
         BString             m_settingsPathStr;
@@ -83,37 +83,37 @@ class Beezer : public BApplication
 
     private:
         // Private members
-        void                InitPaths ();
-        void                InitPrefs ();
-        void                LoadArchivers ();
-        void                UnloadArchivers ();
-        const char*         CompileTimeString (bool writeToResIfNeeded) const;
-        void                WriteToCTFile (BFile *ctFile, BString *compileTimeStr) const;
-        void                ShowCreateFilePanel ();
-        int8                RegisterFileTypes () const;
+        void                InitPaths();
+        void                InitPrefs();
+        void                LoadArchivers();
+        void                UnloadArchivers();
+        const char*         CompileTimeString(bool writeToResIfNeeded) const;
+        void                WriteToCTFile(BFile* ctFile, BString* compileTimeStr) const;
+        void                ShowCreateFilePanel();
+        int8                RegisterFileTypes() const;
 
-        AboutWindow        *m_aboutWnd;
-        StartupWindow      *m_startupWnd;
-        PrefsWindow        *m_prefsWnd;
-        FileSplitterWindow *m_splitWnd;
-        FileJoinerWindow   *m_joinWnd;
-        AddOnWindow        *m_addOnWnd;
+        AboutWindow*        m_aboutWnd;
+        StartupWindow*      m_startupWnd;
+        PrefsWindow*        m_prefsWnd;
+        FileSplitterWindow* m_splitWnd;
+        FileJoinerWindow*   m_joinWnd;
+        AddOnWindow*        m_addOnWnd;
 
         uint32              m_nextWindowID,
                             m_nWindows;
         BRect               m_defaultWindowRect,
                             m_newWindowRect;
-        BFilePanel         *m_openFilePanel,
-                           *m_createFilePanel;
-        WindowMgr          *m_windowMgr;
-        RecentMgr          *m_recentMgr,
-                           *m_extractMgr,
-                           *m_splitFilesMgr,
-                           *m_splitDirsMgr;
-        RuleMgr            *m_ruleMgr;
-        BPopUpMenu         *m_arkTypePopUp;
-        BMenu              *m_toolsMenu;
-        BMenuField         *m_arkTypeField;
+        BFilePanel*         m_openFilePanel,
+                            *m_createFilePanel;
+        WindowMgr*          m_windowMgr;
+        RecentMgr*          m_recentMgr,
+                            *m_extractMgr,
+                            *m_splitFilesMgr,
+                            *m_splitDirsMgr;
+        RuleMgr*            m_ruleMgr;
+        BPopUpMenu*         m_arkTypePopUp;
+        BMenu*              m_toolsMenu;
+        BMenuField*         m_arkTypeField;
         BList               m_arkTypes,
                             m_arkExtensions;
 };

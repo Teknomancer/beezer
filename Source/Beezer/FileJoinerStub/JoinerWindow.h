@@ -41,32 +41,32 @@ class BMessenger;
 #define M_CANCEL               'canc'
 #define M_OPERATION_COMPLETE    'opcc'
 
-const char *const kResult =     "result";
+const char* const kResult =     "result";
 
 class JoinerWindow : public BWindow
 {
     public:
-        JoinerWindow ();
+        JoinerWindow();
 
         // Inherited hooks
-        virtual bool        QuitRequested ();
-        virtual void        MessageReceived (BMessage *message);
+        virtual bool        QuitRequested();
+        virtual void        MessageReceived(BMessage* message);
 
     private:
         // Private hooks
-        status_t            ReadSelf ();
-        static int32        _joiner (void *arg);
+        status_t            ReadSelf();
+        static int32        _joiner(void* arg);
 
         // Private members
-        BevelView          *m_backView;
-        BStatusBar         *m_statusBar;
-        BButton            *m_cancelBtn;
+        BevelView*          m_backView;
+        BStatusBar*         m_statusBar;
+        BButton*            m_cancelBtn;
         BString             m_separatorStr,
-                          m_chunkPathStr,
-                          m_dirPathStr;
+                            m_chunkPathStr,
+                            m_dirPathStr;
         volatile bool        m_cancel;
         bool                m_joinInProgress;
-        BMessenger         *m_messenger;
+        BMessenger*         m_messenger;
         thread_id           m_thread;
 };
 

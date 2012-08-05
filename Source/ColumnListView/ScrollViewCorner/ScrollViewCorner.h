@@ -51,7 +51,7 @@
 class ScrollViewCorner : public BView
 {
     public:
-        ScrollViewCorner(float Left,float Top);
+        ScrollViewCorner(float Left, float Top);
         ~ScrollViewCorner();
         void Draw(BRect Update);
 };

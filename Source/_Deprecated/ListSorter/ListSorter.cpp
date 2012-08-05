@@ -15,26 +15,26 @@
 
 
 
-ListSorter::ListSorter (BList *list, CompareFunc func)
+ListSorter::ListSorter(BList* list, CompareFunc func)
 {
     m_sortList = list;
     m_compareFunc = func;
 
     int32 nItems = m_sortList->CountItems();
-    unsigned long *ptrOfList = (unsigned long*)m_sortList->Items();
+    unsigned long* ptrOfList = (unsigned long*)m_sortList->Items();
 
-    QuickSort (ptrOfList, nItems);
+    QuickSort(ptrOfList, nItems);
 }
 
 
 
-ListSorter::~ListSorter ()
+ListSorter::~ListSorter()
 {
 }
 
 
 
-void ListSorter::QuickSort (unsigned long *list, int32 n)
+void ListSorter::QuickSort(unsigned long* list, int32 n)
 {
     // Custom QuickSort algorithm: Blazing fast :)
     // Written to sort a list of pointers basically.
@@ -47,26 +47,26 @@ void ListSorter::QuickSort (unsigned long *list, int32 n)
     if (n <= 1)
         return;
 
-    SwapItems (list, 0L, n / 2);
+    SwapItems(list, 0L, n / 2);
     unsigned long pivot = list[0];
     int32 i = 1, last = 0;
 
     pivot = list[0];
-    HashEntry *pvt = reinterpret_cast<HashEntry*>(pivot);
+    HashEntry* pvt = reinterpret_cast<HashEntry*>(pivot);
 
     for (; i < n; ++i)
-        if (strcasecmp (((HashEntry*)list[i])->m_pathStr, pvt->m_pathStr) < 0)
-           SwapItems (list, ++last, i);
+        if (strcasecmp(((HashEntry*)list[i])->m_pathStr, pvt->m_pathStr) < 0)
+            SwapItems(list, ++last, i);
 
-    SwapItems (list, 0L, last);
+    SwapItems(list, 0L, last);
 
-    QuickSort (list, last);
-    QuickSort (list + last + 1, n - last - 1);
+    QuickSort(list, last);
+    QuickSort(list + last + 1, n - last - 1);
 }
 
 
 
-inline void ListSorter::SwapItems (unsigned long *list, int32 i, int32 j)
+inline void ListSorter::SwapItems(unsigned long* list, int32 i, int32 j)
 {
     unsigned long temp;
     temp = list[i];

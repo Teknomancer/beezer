@@ -31,9 +31,9 @@
 
 static int _language = LANG_ENGLISH;
 
-const char* strR5 (int whichLang, int language);
+const char* strR5(int whichLang, int language);
 
-static const char * _englishStrings [NUM_STRINGS] =
+static const char* _englishStrings [NUM_STRINGS] =
 {
     "English",
     "Beezer: File Joiner",
@@ -47,14 +47,14 @@ static const char * _englishStrings [NUM_STRINGS] =
 
 
 
-int GetLanguage ()
+int GetLanguage()
 {
     return _language;
 }
 
 
 
-void SetLanguage (int whichLang)
+void SetLanguage(int whichLang)
 {
     if ((whichLang >= 0) && (whichLang < NUM_LANGUAGES))
         _language = whichLang;
@@ -62,21 +62,21 @@ void SetLanguage (int whichLang)
 
 
 
-const char* GetLanguageName (int whichLang, bool native)
+const char* GetLanguageName(int whichLang, bool native)
 {
     switch (whichLang)
     {
-        case LANG_ENGLISH: return strR5 (S_ENGLISH, native ? LANG_ENGLISH : _language);
+        case LANG_ENGLISH: return strR5(S_ENGLISH, native ? LANG_ENGLISH : _language);
 
-        default: debugger ("bad language index!"); return 0;
+        default: debugger("bad language index!"); return 0;
     }
 }
 
 
 
-const char* strR5 (int whichLang, int language)
+const char* strR5(int whichLang, int language)
 {
-    const char **base = NULL;
+    const char** base = NULL;
     switch ((language < 0) ? _language : language)
     {
         case LANG_ENGLISH:        base = _englishStrings;        break;

@@ -48,32 +48,32 @@ extern BLocker _recent_locker;
 class RecentMgr
 {
     public:
-        RecentMgr (int32 maxNumPaths, Preferences *pref, RecentItemType itemType, bool showFullPath);
-        virtual ~RecentMgr ();
+        RecentMgr(int32 maxNumPaths, Preferences* pref, RecentItemType itemType, bool showFullPath);
+        virtual ~RecentMgr();
 
         // Public hooks
-        void                AddPath (const char *path);
-        void                RemovePath (const char *path);
-        void                SavePrefs ();
-        void                LoadPrefs ();
-        void                SetCommand (uint32 command);
-        void                SetMaxPaths (int32 maxNumPaths);
-        void                SetShowFullPath (bool showFullPath);
+        void                AddPath(const char* path);
+        void                RemovePath(const char* path);
+        void                SavePrefs();
+        void                LoadPrefs();
+        void                SetCommand(uint32 command);
+        void                SetMaxPaths(int32 maxNumPaths);
+        void                SetShowFullPath(bool showFullPath);
 
-        BMenu              *BuildMenu (const char *menuName, const char *fieldName, BHandler *targetForItems);
-        BPopUpMenu         *BuildPopUpMenu (const char *menuName, const char *fieldName,
-                                        BHandler *targetForItems);
-        void                UpdateMenu (BMenu *recentMenu, const char *fieldName, BHandler *targetForItems);
+        BMenu*              BuildMenu(const char* menuName, const char* fieldName, BHandler* targetForItems);
+        BPopUpMenu*         BuildPopUpMenu(const char* menuName, const char* fieldName,
+                                           BHandler* targetForItems);
+        void                UpdateMenu(BMenu* recentMenu, const char* fieldName, BHandler* targetForItems);
 
     private:
         // Private hooks
-        void                FillMenu (BMenu *menu, const char *fieldName, BHandler *targetForItems);
+        void                FillMenu(BMenu* menu, const char* fieldName, BHandler* targetForItems);
 
         // Static members
         static int32        m_maxInternalCount;
 
         // Private members
-        Preferences        *m_prefs;
+        Preferences*        m_prefs;
         BList               m_paths;
         bool                m_showFullPath;
         int32               m_maxNumPaths;

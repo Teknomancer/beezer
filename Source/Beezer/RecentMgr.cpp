@@ -44,12 +44,12 @@
 #include "PrefsFields.h"
 #include "RecentMgr.h"
 
-BLocker _recent_locker ("_recent_mgr_lock", true);
+BLocker _recent_locker("_recent_mgr_lock", true);
 int32 RecentMgr::m_maxInternalCount = 99;
 
 
 
-RecentMgr::RecentMgr (int32 maxNumPaths, Preferences *pref, RecentItemType allowedPathType, bool showFullPath)
+RecentMgr::RecentMgr(int32 maxNumPaths, Preferences* pref, RecentItemType allowedPathType, bool showFullPath)
 {
     m_maxNumPaths = maxNumPaths;
     m_prefs = pref;
@@ -61,48 +61,48 @@ RecentMgr::RecentMgr (int32 maxNumPaths, Preferences *pref, RecentItemType allow
 
 
 
-RecentMgr::~RecentMgr ()
+RecentMgr::~RecentMgr()
 {
-    SavePrefs ();
+    SavePrefs();
 
     for (int32 i = 0; i < m_paths.CountItems(); i++)
-        free ((char*)m_paths.RemoveItem (0L));
+        free((char*)m_paths.RemoveItem(0L));
 }
 
 
 
-void RecentMgr::SetMaxPaths (int32 maxNumPaths)
+void RecentMgr::SetMaxPaths(int32 maxNumPaths)
 {
     m_maxNumPaths = maxNumPaths;
 }
 
 
 
-void RecentMgr::SetShowFullPath (bool showFullPath)
+void RecentMgr::SetShowFullPath(bool showFullPath)
 {
     m_showFullPath = showFullPath;
 }
 
 
 
-void RecentMgr::SetCommand (uint32 command)
+void RecentMgr::SetCommand(uint32 command)
 {
     m_command = command;
 }
 
 
 
-void RecentMgr::AddPath (const char *path)
+void RecentMgr::AddPath(const char* path)
 {
-    BAutolock codeLock (_recent_locker);
+    BAutolock codeLock(_recent_locker);
     if (!codeLock.IsLocked())
         return;
 
     for (int32 i = 0; i < m_paths.CountItems(); i++)
     {
-        const char *existingPath = (const char*)m_paths.ItemAtFast(i);
-        if (strcmp (existingPath, path) == 0)
-           free ((char*)m_paths.RemoveItem (i));
+        const char* existingPath = (const char*)m_paths.ItemAtFast(i);
+        if (strcmp(existingPath, path) == 0)
+            free((char*)m_paths.RemoveItem(i));
     }
 
     // Clip away any paths that are more than m_maxInternalCount, we store
@@ -110,103 +110,103 @@ void RecentMgr::AddPath (const char *path)
     if (m_paths.CountItems() > RecentMgr::m_maxInternalCount)
     {
         for (int32 i = m_maxNumPaths; i < m_paths.CountItems(); i++)
-           free ((char*)m_paths.RemoveItem(m_maxNumPaths));
+            free((char*)m_paths.RemoveItem(m_maxNumPaths));
     }
 
-    m_paths.AddItem ((void*)strdup (path), 0L);
+    m_paths.AddItem((void*)strdup(path), 0L);
 }
 
 
 
-void RecentMgr::RemovePath (const char *path)
+void RecentMgr::RemovePath(const char* path)
 {
-    BAutolock codeLock (_recent_locker);
+    BAutolock codeLock(_recent_locker);
     if (!codeLock.IsLocked())
         return;
 
-    m_paths.RemoveItem ((void*)path);
+    m_paths.RemoveItem((void*)path);
 }
 
 
 
-BMenu* RecentMgr::BuildMenu (const char *menuName, const char *fieldName, BHandler *targetForItems)
+BMenu* RecentMgr::BuildMenu(const char* menuName, const char* fieldName, BHandler* targetForItems)
 {
-    BMenu *recentMenu = new BMenu (menuName);
-    FillMenu (recentMenu, fieldName, targetForItems);
+    BMenu* recentMenu = new BMenu(menuName);
+    FillMenu(recentMenu, fieldName, targetForItems);
     return recentMenu;
 }
 
 
 
-BPopUpMenu* RecentMgr::BuildPopUpMenu (const char *menuName, const char *fieldName, BHandler *targetForItems)
+BPopUpMenu* RecentMgr::BuildPopUpMenu(const char* menuName, const char* fieldName, BHandler* targetForItems)
 {
-    BPopUpMenu *recentMenu = new BPopUpMenu (menuName, false, false);
-    FillMenu (recentMenu, fieldName, targetForItems);
+    BPopUpMenu* recentMenu = new BPopUpMenu(menuName, false, false);
+    FillMenu(recentMenu, fieldName, targetForItems);
     return recentMenu;
 }
 
 
 
-void RecentMgr::UpdateMenu (BMenu *recentMenu, const char *fieldName, BHandler *targetForItems)
+void RecentMgr::UpdateMenu(BMenu* recentMenu, const char* fieldName, BHandler* targetForItems)
 {
     // Non-destructive way to update an existing menu (without deleting because for a BMenu that is part of
     // a BMenuField, you cannot delete and re-assign a new BMenu to a BMenuField because BMenuField does not
     // allow that, so this can be used to remove all items from a menu, and update with new items
     for (int32 i = recentMenu->CountItems() - 1; i >= 0; i--)
-        delete recentMenu->RemoveItem (i);
+        delete recentMenu->RemoveItem(i);
 
-    FillMenu (recentMenu, fieldName, targetForItems);
+    FillMenu(recentMenu, fieldName, targetForItems);
 }
 
 
 
-void RecentMgr::FillMenu (BMenu *menu, const char *fieldName, BHandler *target)
+void RecentMgr::FillMenu(BMenu* menu, const char* fieldName, BHandler* target)
 {
     // "menu" must be allocated before calling this function
     int32 addedCount = 0L;
     for (int32 i = 0; i < m_paths.CountItems(); i++)
     {
         if (addedCount >= m_maxNumPaths || addedCount >= RecentMgr::m_maxInternalCount)
-           break;
+            break;
 
-        BPath path = (const char*)m_paths.ItemAtFast (i);
+        BPath path = (const char*)m_paths.ItemAtFast(i);
         bool canAddInMenu = true;
 
         // For a file item, the file MUST exist AND must be a file
         // For a folder item, either it must exist AND be a folder or it must not exist
-        BEntry dummyEntry (path.Path(), true);
+        BEntry dummyEntry(path.Path(), true);
         if (dummyEntry.Exists() == true)
         {
-           if (m_type == ritFile && dummyEntry.IsFile() == false)
-               canAddInMenu = false;
-           else if (m_type == ritFolder && dummyEntry.IsDirectory() == false)
-               canAddInMenu = false;
+            if (m_type == ritFile && dummyEntry.IsFile() == false)
+                canAddInMenu = false;
+            else if (m_type == ritFolder && dummyEntry.IsDirectory() == false)
+                canAddInMenu = false;
         }
         else if (m_type != ritFolder)    // MainWindow will create folder if needed
-           canAddInMenu = false;
+            canAddInMenu = false;
 
         if (canAddInMenu)
         {
-           const char *displayPath = path.Path();
-           if (m_showFullPath == false)
-               displayPath = path.Leaf();
+            const char* displayPath = path.Path();
+            if (m_showFullPath == false)
+                displayPath = path.Leaf();
 
-           BMessage *targetMessage = new BMessage (m_command);
-           targetMessage->AddFlat (fieldName, &path);
+            BMessage* targetMessage = new BMessage(m_command);
+            targetMessage->AddFlat(fieldName, &path);
 
-           BMenuItem *item = new BMenuItem (displayPath, targetMessage);
-           menu->AddItem (item);
-           addedCount++;
+            BMenuItem* item = new BMenuItem(displayPath, targetMessage);
+            menu->AddItem(item);
+            addedCount++;
         }
     }
 
     if (target)
-        menu->SetTargetForItems (target);
+        menu->SetTargetForItems(target);
 }
 
 
 
-void RecentMgr::SavePrefs ()
+void RecentMgr::SavePrefs()
 {
     // Save the recent path to preferences
     if (!m_prefs)
@@ -217,9 +217,9 @@ void RecentMgr::SavePrefs ()
     for (int32 i = 0; i < m_paths.CountItems(); i++)
     {
         if (i >= RecentMgr::m_maxInternalCount)
-           break;
+            break;
 
-        m_prefs->AddString (kPfRecentPath, (const char*)m_paths.ItemAtFast(i));
+        m_prefs->AddString(kPfRecentPath, (const char*)m_paths.ItemAtFast(i));
     }
 
     m_prefs->WritePrefs();
@@ -227,15 +227,15 @@ void RecentMgr::SavePrefs ()
 
 
 
-void RecentMgr::LoadPrefs ()
+void RecentMgr::LoadPrefs()
 {
     if (!m_prefs)
         return;
 
-    const char *path;
+    const char* path;
     int32 i = 0L;
-    while (m_prefs->FindString (kPfRecentPath, i++, &path) == B_OK)
-        m_paths.AddItem ((void*)strdup (path));
+    while (m_prefs->FindString(kPfRecentPath, i++, &path) == B_OK)
+        m_paths.AddItem((void*)strdup(path));
 }
 
 

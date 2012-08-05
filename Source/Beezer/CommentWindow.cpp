@@ -48,115 +48,115 @@
 #include "UIConstants.h"
 
 
-CommentWindow::CommentWindow (BWindow *callerWindow, const char *archiveName, const char *commentText,
-                  BFont *displayFont)
-    : BWindow (BRect (0, 0, 590, 290), str (S_COMMENT_WINDOW_TITLE), B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
-        B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS)
+CommentWindow::CommentWindow(BWindow* callerWindow, const char* archiveName, const char* commentText,
+                             BFont* displayFont)
+    : BWindow(BRect(0, 0, 590, 290), str(S_COMMENT_WINDOW_TITLE), B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
+              B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS)
 {
     m_callerWindow = callerWindow;
     if (m_callerWindow)
     {
-        SetFeel (B_MODAL_SUBSET_WINDOW_FEEL);
-        AddToSubset (m_callerWindow);
+        SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
+        AddToSubset(m_callerWindow);
     }
 
     SetLayout(new BGroupLayout(B_VERTICAL, 0));
 
     // Get comment icon from resource, construct comment holding view etc.
-BBitmap *commentBmp = BitmapPool::LoadAppVector ("Img:Comment", 32, 32);
+    BBitmap* commentBmp = BitmapPool::LoadAppVector("Img:Comment", 32, 32);
 
     // Add icon view, make it hold the picture
-    StaticBitmapView *commentBmpView = new StaticBitmapView (BRect (0, 0, commentBmp->Bounds().Width(), commentBmp->Bounds().Height()),
-                                                "CommentWindow:commentBmpView", commentBmp);
+    StaticBitmapView* commentBmpView = new StaticBitmapView(BRect(0, 0, commentBmp->Bounds().Width(), commentBmp->Bounds().Height()),
+            "CommentWindow:commentBmpView", commentBmp);
 
     // Add the file name string view (align it vertically with the icon view)
-    BStringView *fileNameStr = new BStringView ("CommentWindow:FileNameView", archiveName);
-    fileNameStr->SetFont (be_bold_font);
+    BStringView* fileNameStr = new BStringView("CommentWindow:FileNameView", archiveName);
+    fileNameStr->SetFont(be_bold_font);
 
     AddChild(BGroupLayoutBuilder(B_HORIZONTAL)
-        .AddStrut(30)
-        .Add(commentBmpView, 0.0f)
-        .Add(fileNameStr, 1.0f)
-        .AddGlue()
-        .SetInsets(K_MARGIN, K_MARGIN, K_MARGIN, K_MARGIN)
-    );
+             .AddStrut(30)
+             .Add(commentBmpView, 0.0f)
+             .Add(fileNameStr, 1.0f)
+             .AddGlue()
+             .SetInsets(K_MARGIN, K_MARGIN, K_MARGIN, K_MARGIN)
+            );
 
-    m_textView = new BTextView ("CommentWindow:TextView", displayFont, NULL, B_WILL_DRAW);
+    m_textView = new BTextView("CommentWindow:TextView", displayFont, NULL, B_WILL_DRAW);
 
-    BScrollView *scrollView = new BScrollView ("CommentWindow:ScrollView", m_textView, B_WILL_DRAW, true, true, B_PLAIN_BORDER);
+    BScrollView* scrollView = new BScrollView("CommentWindow:ScrollView", m_textView, B_WILL_DRAW, true, true, B_PLAIN_BORDER);
 
-    m_textView->SetWordWrap (false);
-    m_textView->SetText (commentText);
-    m_textView->DisallowChar (B_INSERT);
-    m_textView->DisallowChar (B_ESCAPE);
-    m_textView->DisallowChar (B_DELETE);
-    m_textView->DisallowChar (B_TAB);
-    m_textView->DisallowChar (B_FUNCTION_KEY);
-    m_textView->DisallowChar (B_PAGE_UP);
-    m_textView->DisallowChar (B_PAGE_DOWN);
-    m_textView->DisallowChar (B_HOME);
-    m_textView->DisallowChar (B_END);
-    m_textView->SetMaxBytes (32768L);
+    m_textView->SetWordWrap(false);
+    m_textView->SetText(commentText);
+    m_textView->DisallowChar(B_INSERT);
+    m_textView->DisallowChar(B_ESCAPE);
+    m_textView->DisallowChar(B_DELETE);
+    m_textView->DisallowChar(B_TAB);
+    m_textView->DisallowChar(B_FUNCTION_KEY);
+    m_textView->DisallowChar(B_PAGE_UP);
+    m_textView->DisallowChar(B_PAGE_DOWN);
+    m_textView->DisallowChar(B_HOME);
+    m_textView->DisallowChar(B_END);
+    m_textView->SetMaxBytes(32768L);
 
     AddChild(scrollView);
 
-    BButton *saveButton = new BButton ("CommentWindow:SaveButton", str (S_COMMENT_WINDOW_SAVE), new BMessage (M_SAVE_COMMENT));
+    BButton* saveButton = new BButton("CommentWindow:SaveButton", str(S_COMMENT_WINDOW_SAVE), new BMessage(M_SAVE_COMMENT));
 
-    BButton *closeButton = new BButton ("CommentWindow:CloseButton", str (S_COMMENT_WINDOW_CLOSE), new BMessage (B_QUIT_REQUESTED));
+    BButton* closeButton = new BButton("CommentWindow:CloseButton", str(S_COMMENT_WINDOW_CLOSE), new BMessage(B_QUIT_REQUESTED));
 
     AddChild(BGroupLayoutBuilder(B_HORIZONTAL)
-        .AddGlue()
-        .Add(closeButton, 0.0f)
-        .Add(saveButton, 0.0f)
-        .SetInsets(K_MARGIN, K_MARGIN, K_MARGIN, K_MARGIN)
-    );
+             .AddGlue()
+             .Add(closeButton, 0.0f)
+             .Add(saveButton, 0.0f)
+             .SetInsets(K_MARGIN, K_MARGIN, K_MARGIN, K_MARGIN)
+            );
 
     // Center our window on screen
     CenterOnScreen();
 
-    m_textView->MakeFocus (true);
+    m_textView->MakeFocus(true);
 
     // Load from prefs the window dimensions
     BRect frame;
-    if (_prefs_windows.FindBoolDef (kPfCommentWnd, true))
-        if (_prefs_windows.FindRect (kPfCommentWndFrame, &frame) == B_OK)
+    if (_prefs_windows.FindBoolDef(kPfCommentWnd, true))
+        if (_prefs_windows.FindRect(kPfCommentWndFrame, &frame) == B_OK)
         {
-           MoveTo (frame.LeftTop());
-           ResizeTo (frame.Width(), frame.Height());
+            MoveTo(frame.LeftTop());
+            ResizeTo(frame.Width(), frame.Height());
         }
 
     Show();
 }
 
 
-bool CommentWindow::QuitRequested ()
+bool CommentWindow::QuitRequested()
 {
-    if (_prefs_windows.FindBoolDef (kPfCommentWnd, true))
-        _prefs_windows.SetRect (kPfCommentWndFrame, Frame());
+    if (_prefs_windows.FindBoolDef(kPfCommentWnd, true))
+        _prefs_windows.SetRect(kPfCommentWndFrame, Frame());
 
     return BWindow::QuitRequested();
 }
 
 
-void CommentWindow::MessageReceived (BMessage *message)
+void CommentWindow::MessageReceived(BMessage* message)
 {
     switch (message->what)
     {
         case M_SAVE_COMMENT:
         {
-           // Let the main window handle talking with the archiver to write the comments
-           // We will just pass it the comment (if any) as a field in a BMessage
-           const char *commentStr = m_textView->Text();
-           if (commentStr && strlen (commentStr) > 0L)
-               message->AddString (kCommentContent, commentStr);
+            // Let the main window handle talking with the archiver to write the comments
+            // We will just pass it the comment (if any) as a field in a BMessage
+            const char* commentStr = m_textView->Text();
+            if (commentStr && strlen(commentStr) > 0L)
+                message->AddString(kCommentContent, commentStr);
 
-           m_callerWindow->PostMessage (message);
-           PostMessage(B_QUIT_REQUESTED);
-           break;
+            m_callerWindow->PostMessage(message);
+            PostMessage(B_QUIT_REQUESTED);
+            break;
         }
 
         default:
-           BWindow::MessageReceived (message);
-           break;
+            BWindow::MessageReceived(message);
+            break;
     }
 }

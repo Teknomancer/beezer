@@ -35,28 +35,28 @@ class BString;
 class MimeRule
 {
     public:
-        MimeRule (const char *mime, const char *extension);
+        MimeRule(const char* mime, const char* extension);
 
         // Public members
         BString            m_mime,
-                         m_extension;
+                           m_extension;
 };
 
 class RuleMgr
 {
     public:
-        RuleMgr (BDirectory *ruleDir, const char *ruleFile);
-        ~RuleMgr ();
+        RuleMgr(BDirectory* ruleDir, const char* ruleFile);
+        ~RuleMgr();
 
         // Public hooks
-        char               *ValidateFileType (BPath *filePath) const;
+        char*               ValidateFileType(BPath* filePath) const;
 
     private:
         // Private hooks
-        void               ReadRules (BEntry* rulesEntry);
+        void               ReadRules(BEntry* rulesEntry);
 
         // Private members
-        BList             *m_ruleList;
+        BList*             m_ruleList;
 
         static int32        m_runCount;
 };

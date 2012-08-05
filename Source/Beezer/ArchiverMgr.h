@@ -39,15 +39,15 @@ class Archiver;
 class Beezer;
 
 
-const char * const kLoaderFunc =        "load_archiver";
+const char* const kLoaderFunc =        "load_archiver";
 
 extern BLocker _ark_locker;
 
-Beezer *_bzr();
-Archiver *ArchiverForMime (const char *mimeType);
-Archiver *ArchiverForType (const char *archiverType);
-BList ArchiversInstalled (BList *extensionStrings);
-BPopUpMenu *BuildArchiveTypesMenu (BHandler *targetHandler, BList *extensionStrings);
-Archiver* NewArchiver (const char *name, bool popupErrors, status_t *returnCode);
+Beezer* _bzr();
+Archiver* ArchiverForMime(const char* mimeType);
+Archiver* ArchiverForType(const char* archiverType);
+BList ArchiversInstalled(BList* extensionStrings);
+BPopUpMenu* BuildArchiveTypesMenu(BHandler* targetHandler, BList* extensionStrings);
+Archiver* NewArchiver(const char* name, bool popupErrors, status_t* returnCode);
 
 #endif /* _ARCHIVER_MGR_H */

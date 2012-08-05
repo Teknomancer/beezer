@@ -37,12 +37,12 @@
 #include "BitmapPool.h"
 #include "LocalUtils.h"
 
-BitmapPool *_glob_bitmap_pool;
+BitmapPool* _glob_bitmap_pool;
 int32 BitmapPool::m_runCount = 0;
 
 
 
-BitmapPool::BitmapPool ()
+BitmapPool::BitmapPool()
 {
     // The purpose of this BitmapPool is to maintain a global list of bitmap images, inorder
     // to avoid bitmap redundancy i.e. holding multiple copies of bitmaps for, say, each window.
@@ -58,9 +58,9 @@ BitmapPool::BitmapPool ()
     // make these allocs the app crashes as BBitmap requires be_app to be running BEFORE use of BBitmap
     // whereas AppUtils is a seperate class initialized before be_app, it is also used in Archiver
 
-    if (atomic_add (&m_runCount, 1) != 0)
+    if (atomic_add(&m_runCount, 1) != 0)
     {
-        debugger ("only one BitmapPool instance allowed/necessary");
+        debugger("only one BitmapPool instance allowed/necessary");
         return;
     }
 
@@ -76,29 +76,29 @@ BitmapPool::BitmapPool ()
     m_imageBmp = LoadSystemVector("image", 16, 16);
 
     // The **ORDER** in which the bmps are added to the BList is critical
-    m_iconList.AddItem ((void*)m_folderBmp);
-    m_iconList.AddItem ((void*)m_executableBmp);
-    m_iconList.AddItem ((void*)m_htmlBmp);
-    m_iconList.AddItem ((void*)m_textBmp);
-    m_iconList.AddItem ((void*)m_sourceBmp);
-    m_iconList.AddItem ((void*)m_audioBmp);
-    m_iconList.AddItem ((void*)m_archiveBmp);
-    m_iconList.AddItem ((void*)m_packageBmp);
-    m_iconList.AddItem ((void*)m_pdfBmp);
-    m_iconList.AddItem ((void*)m_imageBmp);
+    m_iconList.AddItem((void*)m_folderBmp);
+    m_iconList.AddItem((void*)m_executableBmp);
+    m_iconList.AddItem((void*)m_htmlBmp);
+    m_iconList.AddItem((void*)m_textBmp);
+    m_iconList.AddItem((void*)m_sourceBmp);
+    m_iconList.AddItem((void*)m_audioBmp);
+    m_iconList.AddItem((void*)m_archiveBmp);
+    m_iconList.AddItem((void*)m_packageBmp);
+    m_iconList.AddItem((void*)m_pdfBmp);
+    m_iconList.AddItem((void*)m_imageBmp);
 
     m_tbarNewBmp = LoadAppVector("Img:New", 20, 20);
     m_tbarOpenBmp = LoadSystemVector("application/x-vnd.Be-directory", 20, 20);
     m_tbarOpenRecentBmp = LoadAppVector("Img:OpenRecent", 20, 20);
-    m_tbarPrefsBmp = ResBitmap ("Img:Prefs");
-    m_tbarToolsBmp = ResBitmap ("Img:Tools");
-    m_tbarCloseBmp = ResBitmap ("Img:Close");
+    m_tbarPrefsBmp = ResBitmap("Img:Prefs");
+    m_tbarToolsBmp = ResBitmap("Img:Tools");
+    m_tbarCloseBmp = ResBitmap("Img:Close");
     m_tbarSearchDisabledBmp = LoadAppVector("Img:SearchDisabled", 20, 20);
     m_tbarSearchBmp = LoadAppVector("Img:Search", 20, 20);
-    m_tbarExtractDisabledBmp = ResBitmap ("Img:ExtractDisabled");
-    m_tbarExtractBmp = ResBitmap ("Img:Extract");
-    m_tbarViewDisabledBmp = ResBitmap ("Img:ViewDisabled");
-    m_tbarViewBmp = ResBitmap ("Img:View");
+    m_tbarExtractDisabledBmp = ResBitmap("Img:ExtractDisabled");
+    m_tbarExtractBmp = ResBitmap("Img:Extract");
+    m_tbarViewDisabledBmp = ResBitmap("Img:ViewDisabled");
+    m_tbarViewBmp = ResBitmap("Img:View");
     m_tbarAddDisabledBmp = LoadAppVector("Img:AddDisabled", 20, 20);
     m_tbarAddBmp = LoadAppVector("Img:Add", 20, 20);
     m_tbarDeleteDisabledBmp = LoadAppVector("Img:DeleteDisabled", 20, 20);
@@ -112,7 +112,7 @@ BitmapPool::BitmapPool ()
 
 
 
-BitmapPool::~BitmapPool ()
+BitmapPool::~BitmapPool()
 {
     // This is fun :)
     delete m_folderBmp;
@@ -158,11 +158,13 @@ BBitmap* BitmapPool::LoadSystemVector(const char* mimestring, int width, int hei
     size_t vectorDataSize;
 
     //Try the File Type database
-    if (mime.GetIcon(&vectorData, &vectorDataSize) != B_OK) {
+    if (mime.GetIcon(&vectorData, &vectorDataSize) != B_OK)
+    {
         //Try the supertype
         BMimeType superType;
         mime.GetSupertype(&superType);
-        if (superType.GetIcon(&vectorData, &vectorDataSize) != B_OK) {
+        if (superType.GetIcon(&vectorData, &vectorDataSize) != B_OK)
+        {
             //still no luck, use generic icon
             mime.SetTo("application/octet-stream");
             if (mime.GetIcon(&vectorData, &vectorDataSize) != B_OK)
@@ -179,7 +181,7 @@ BBitmap* BitmapPool::LoadSystemVector(const char* mimestring, int width, int hei
 BBitmap* BitmapPool::LoadAppVector(const char* resource, int width, int height)
 {
     size_t size;
-    const void* buf = be_app->AppResources()->LoadResource (B_VECTOR_ICON_TYPE, resource, &size);
+    const void* buf = be_app->AppResources()->LoadResource(B_VECTOR_ICON_TYPE, resource, &size);
     if (buf == NULL)
         return NULL;
 

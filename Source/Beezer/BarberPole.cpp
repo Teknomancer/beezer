@@ -37,10 +37,10 @@
 
 
 
-BarberPole::BarberPole (BRect frame, const char *name)
-    : BevelView (frame, name, btInset, B_FOLLOW_LEFT, B_WILL_DRAW | B_PULSE_NEEDED)
+BarberPole::BarberPole(BRect frame, const char* name)
+    : BevelView(frame, name, btInset, B_FOLLOW_LEFT, B_WILL_DRAW | B_PULSE_NEEDED)
 {
-    m_poleImage = ResBitmap ("Img:BarberPole");
+    m_poleImage = ResBitmap("Img:BarberPole");
     m_imageHeight = m_poleImage->Bounds().Height();
     m_edgeThickness = EdgeThickness();
     m_y = m_edgeThickness;
@@ -51,10 +51,10 @@ BarberPole::BarberPole (BRect frame, const char *name)
 
 
 
-void BarberPole::Draw (BRect updateRect)
+void BarberPole::Draw(BRect updateRect)
 {
-    DrawBitmap (m_poleImage, BPoint (m_edgeThickness, -m_y));
-    BevelView::Draw (updateRect);
+    DrawBitmap(m_poleImage, BPoint(m_edgeThickness, -m_y));
+    BevelView::Draw(updateRect);
 }
 
 
@@ -66,7 +66,7 @@ void BarberPole::Pulse()
 
 
 
-void BarberPole::GetPreferredSize (float *width, float *height)
+void BarberPole::GetPreferredSize(float* width, float* height)
 {
     // Auto size the control (according to the bitmap we got)
     // The height is caller controllable - if zero we resize to half of bitmap height
@@ -79,7 +79,7 @@ void BarberPole::GetPreferredSize (float *width, float *height)
 
 
 
-float BarberPole::Width () const
+float BarberPole::Width() const
 {
     return m_poleImage->Bounds().Width() + 2 * m_edgeThickness;
 }
@@ -94,33 +94,33 @@ void BarberPole::AttachedToWindow()
 
 
 
-void BarberPole::SetValue (bool animate, bool adjustPulse)
+void BarberPole::SetValue(bool animate, bool adjustPulse)
 {
     m_animate = animate;
     if (m_animate)
     {
         if (adjustPulse)
-           Window()->SetPulseRate (Window()->PulseRate() > 0 ? Window()->PulseRate() : K_BARBERPOLE_PULSERATE);
+            Window()->SetPulseRate(Window()->PulseRate() > 0 ? Window()->PulseRate() : K_BARBERPOLE_PULSERATE);
         Show();
     }
     else
     {
         if (adjustPulse)
-           Window()->SetPulseRate (0);
+            Window()->SetPulseRate(0);
         Hide();
     }
 }
 
 
 
-bool BarberPole::IsAnimating () const
+bool BarberPole::IsAnimating() const
 {
     return m_animate;
 }
 
 
 
-void BarberPole::Animate ()
+void BarberPole::Animate()
 {
     if (m_y <= Bounds().bottom - 2 * m_edgeThickness)
         m_y ++;
@@ -128,7 +128,7 @@ void BarberPole::Animate ()
         m_y = m_edgeThickness + 1;
 
     if (m_animate)
-        Invalidate ();
+        Invalidate();
 }
 
 

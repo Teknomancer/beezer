@@ -33,25 +33,25 @@
 
 
 
-BitmapMenuItem::BitmapMenuItem (BMenu *subMenu, BBitmap *bitmap)
-    : BMenuItem (subMenu),
-    m_bitmap (bitmap)
+BitmapMenuItem::BitmapMenuItem(BMenu* subMenu, BBitmap* bitmap)
+    : BMenuItem(subMenu),
+      m_bitmap(bitmap)
 {
 }
 
 
 
-void BitmapMenuItem::DrawContent ()
+void BitmapMenuItem::DrawContent()
 {
-    BMenu *menu = Menu();
-    menu->SetDrawingMode (B_OP_OVER);
-    menu->DrawBitmap (m_bitmap, ContentLocation());
-    menu->SetDrawingMode (B_OP_COPY);
+    BMenu* menu = Menu();
+    menu->SetDrawingMode(B_OP_OVER);
+    menu->DrawBitmap(m_bitmap, ContentLocation());
+    menu->SetDrawingMode(B_OP_COPY);
 }
 
 
 
-void BitmapMenuItem::GetContentSize (float *width, float *height)
+void BitmapMenuItem::GetContentSize(float* width, float* height)
 {
     *width = m_bitmap->Bounds().Width();
     *height = m_bitmap->Bounds().Height();

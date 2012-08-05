@@ -36,14 +36,14 @@ class JoinerWindow;
 class JoinerStub : public BApplication
 {
     public:
-        JoinerStub ();
+        JoinerStub();
 
         // Inherited hooks
-        void                ReadyToRun ();
+        void                ReadyToRun();
 
     private:
         // Private members
-        JoinerWindow        *m_joinWnd;
+        JoinerWindow*        m_joinWnd;
 };
 
 #endif /* _JOINER_STUB_H */

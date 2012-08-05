@@ -34,30 +34,30 @@
 class SelectDirPanel : public BFilePanel
 {
     public:
-        SelectDirPanel (file_panel_mode mode = B_OPEN_PANEL, BMessenger *target = 0,
-                      const entry_ref *start_directory = 0, uint32 node_flavors = 0,
-                      bool allow_multiple_selection = true, BMessage *message = 0, BRefFilter * = 0,
-                      bool modal = false, bool hide_when_done = true);
-        ~SelectDirPanel ();
+        SelectDirPanel(file_panel_mode mode = B_OPEN_PANEL, BMessenger* target = 0,
+                       const entry_ref* start_directory = 0, uint32 node_flavors = 0,
+                       bool allow_multiple_selection = true, BMessage* message = 0, BRefFilter * = 0,
+                       bool modal = false, bool hide_when_done = true);
+        ~SelectDirPanel();
 
         // Inherited hooks
         virtual void        SelectionChanged();
         void               Refresh();
-        void               SetMessage (BMessage *msg);
+        void               SetMessage(BMessage* msg);
 
         // Additional hooks
-        void               SetCurrentDirButton (const char *label);
-        void               UpdateButton ();
+        void               SetCurrentDirButton(const char* label);
+        void               UpdateButton();
 
     protected:
         // Protected hooks
-        void               SendMessage (const BMessenger *target, BMessage *message);
+        void               SendMessage(const BMessenger* target, BMessage* message);
 
     private:
         // Private members
         BString            m_buttonLabel,
-                         m_buttonName;
-        BButton           *m_curDirBtn;
+                           m_buttonName;
+        BButton*           m_curDirBtn;
 };
 
 #endif /* _CURRENT_DIR_FILTER_H */

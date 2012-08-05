@@ -40,20 +40,20 @@
 
 
 
-PrefsView::PrefsView (BRect frame, const char *title, const char *description)
-    : BevelView (frame, NULL, btInset, B_FOLLOW_LEFT, B_WILL_DRAW)
+PrefsView::PrefsView(BRect frame, const char* title, const char* description)
+    : BevelView(frame, NULL, btInset, B_FOLLOW_LEFT, B_WILL_DRAW)
 {
-    m_descriptionStr = strdup (description);
-    m_titleStr = strdup (title);
+    m_descriptionStr = strdup(description);
+    m_titleStr = strdup(title);
     m_bitmap = NULL;
 
     // For use in inherited classes - to provide consistency among them we give these
     // member functions which they are supposed to use when needed
     m_margin = K_MARGIN + 2;
     m_vGap = 1;
-    SetViewColor (K_BACKGROUND_COLOR);
+    SetViewColor(K_BACKGROUND_COLOR);
     m_sectionFont = be_plain_font;
-    m_sectionFont.SetFace (B_BOLD_FACE);
+    m_sectionFont.SetFace(B_BOLD_FACE);
     // We are un-necessarily storing a BFont object for each PrefView but there isn't
     // any easy way out (static BFont didn't worked and crashed on initialization)
     // we can do one thing though - add a BFont parameter to ever PrefView derived
@@ -62,34 +62,34 @@ PrefsView::PrefsView (BRect frame, const char *title, const char *description)
 
 
 
-PrefsView::~PrefsView ()
+PrefsView::~PrefsView()
 {
     if (m_descriptionStr)
-        free ((char*)m_descriptionStr);
+        free((char*)m_descriptionStr);
 
     if (m_titleStr)
-        free ((char*)m_titleStr);
+        free((char*)m_titleStr);
 
     DeleteBitmap();
 }
 
 
 
-const char* PrefsView::Description () const
+const char* PrefsView::Description() const
 {
     return m_descriptionStr;
 }
 
 
 
-const char* PrefsView::Title () const
+const char* PrefsView::Title() const
 {
     return m_titleStr;
 }
 
 
 
-bool PrefsView::IsChecked (BCheckBox *chkBox) const
+bool PrefsView::IsChecked(BCheckBox* chkBox) const
 {
     // Convert checkbox's value as a bool
     if (chkBox->Value() == B_CONTROL_ON)
@@ -100,21 +100,21 @@ bool PrefsView::IsChecked (BCheckBox *chkBox) const
 
 
 
-void PrefsView::AddRevertButton ()
+void PrefsView::AddRevertButton()
 {
-    m_revertBtn = new BButton (BRect (Bounds().right - m_margin - K_BUTTON_WIDTH,
-                             Bounds().bottom - m_margin - K_BUTTON_HEIGHT - 1, Bounds().right - m_margin,
-                             Bounds().bottom - m_margin - 1), "PrefsView:defaultBtn", str (S_REVERT),
-                             new BMessage (M_REVERT), B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
-    AddChild (m_revertBtn);
-    m_revertBtn->SetTarget (this);
+    m_revertBtn = new BButton(BRect(Bounds().right - m_margin - K_BUTTON_WIDTH,
+                                    Bounds().bottom - m_margin - K_BUTTON_HEIGHT - 1, Bounds().right - m_margin,
+                                    Bounds().bottom - m_margin - 1), "PrefsView:defaultBtn", str(S_REVERT),
+                              new BMessage(M_REVERT), B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
+    AddChild(m_revertBtn);
+    m_revertBtn->SetTarget(this);
 }
 
 
 
-void PrefsView::DeleteBitmap ()
+void PrefsView::DeleteBitmap()
 {
-    if (m_bitmap !=NULL)
+    if (m_bitmap != NULL)
     {
         delete m_bitmap;
         m_bitmap = NULL;
@@ -123,7 +123,7 @@ void PrefsView::DeleteBitmap ()
 
 
 
-void PrefsView::SetBitmap (BBitmap *bmp)
+void PrefsView::SetBitmap(BBitmap* bmp)
 {
     DeleteBitmap();
     m_bitmap = bmp;
@@ -131,28 +131,28 @@ void PrefsView::SetBitmap (BBitmap *bmp)
 
 
 
-BBitmap *PrefsView::Bitmap () const
+BBitmap* PrefsView::Bitmap() const
 {
     return m_bitmap;
 }
 
 
 
-void PrefsView::Render ()
+void PrefsView::Render()
 {
     // Derived class will override this, deliberately not made abstract
 }
 
 
 
-void PrefsView::Save ()
+void PrefsView::Save()
 {
     // Derived class will override this, deliberately not made abstract
 }
 
 
 
-void PrefsView::Load ()
+void PrefsView::Load()
 {
     // Derived class will override this, deliberately not made abstract
 }

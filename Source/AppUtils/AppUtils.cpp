@@ -46,11 +46,11 @@
 #include "AppUtils.h"
 
 // Global object declares
-BLocker _apputils_locker ("_app_utils_lock", true);
+BLocker _apputils_locker("_app_utils_lock", true);
 
 
 
-BString StringFromBytes (int64 v)
+BString StringFromBytes(int64 v)
 {
     // Hacked from BeShare with minor changes -- many thanks to Jeremy Freisner,
     // Don't bother about holding calculated constants for 1024*1024.. etc. as it will be optimized
@@ -60,15 +60,15 @@ BString StringFromBytes (int64 v)
     {
         char buf[50];
         if (v > (1024LL * 1024LL * 1024LL * 1024LL))
-           sprintf (buf, "%.2f TB", ((double)v) / (1024LL * 1024LL * 1024LL * 1024LL));
+            sprintf(buf, "%.2f TB", ((double)v) / (1024LL * 1024LL * 1024LL * 1024LL));
         else if (v > (1024LL * 1024LL * 1024LL))
-           sprintf(buf, "%.2f GB", ((double)v)/(1024LL * 1024LL * 1024LL));
+            sprintf(buf, "%.2f GB", ((double)v) / (1024LL * 1024LL * 1024LL));
         else if (v > (1024LL * 1024LL))
-           sprintf(buf, "%.2f MB", ((double)v) / (1024LL * 1024LL));
+            sprintf(buf, "%.2f MB", ((double)v) / (1024LL * 1024LL));
         else if (v > (1024LL))
-           sprintf(buf, "%.2f KB", ((double)v) / 1024LL);
+            sprintf(buf, "%.2f KB", ((double)v) / 1024LL);
         else
-           sprintf(buf, "%Li bytes", v);
+            sprintf(buf, "%Li bytes", v);
 
         str = buf;
     }
@@ -80,14 +80,14 @@ BString StringFromBytes (int64 v)
 
 
 
-int32 LastOccurrence (const char *str, char whatChar)
+int32 LastOccurrence(const char* str, char whatChar)
 {
     // Move "str" to the last occurrence of "whatChar" also count and return number of occurrences
     int32 count = 0L;
     while (*str)
     {
         if (*str == whatChar)
-           count++;
+            count++;
 
         str++;
     }
@@ -97,7 +97,7 @@ int32 LastOccurrence (const char *str, char whatChar)
 
 
 
-int32 CountCharsInFront (char *str, char whatChar)
+int32 CountCharsInFront(char* str, char whatChar)
 {
     // Simply count "whatChar"s in the beginning of "str" without modifying "str" pointer
     int32 count = 0;
@@ -109,11 +109,11 @@ int32 CountCharsInFront (char *str, char whatChar)
 
 
 
-bool StrEndsWith (char *str, char *end)
+bool StrEndsWith(char* str, char* end)
 {
     // Check if the given "str" ends with "end"
-    *str += strlen (str) - strlen (end) - 2;
-    if (strcmp (str, end) == 0)
+    *str += strlen(str) - strlen(end) - 2;
+    if (strcmp(str, end) == 0)
         return true;
     else
         return false;
@@ -121,7 +121,7 @@ bool StrEndsWith (char *str, char *end)
 
 
 
-const char* FinalPathComponent (const char *path)
+const char* FinalPathComponent(const char* path)
 {
     // Return the final path component be it a file or folder
     // Archivers like zip etc will use this function to spit out either the final dir name
@@ -135,15 +135,15 @@ const char* FinalPathComponent (const char *path)
     // slash we can simply increment the pointer, but removing a trailing slash involves
     // making copy of the path that is being returned, then manipulating it, we avoid that
     // for sake of speed.
-    int32 len = strlen (path);
+    int32 len = strlen(path);
 
-    if (path[len-1] == '/') len--;
+    if (path[len - 1] == '/') len--;
 
     while (len > 0)
         if (path[--len] == '/')
-           break;
+            break;
 
-    const char *leafStr = path;
+    const char* leafStr = path;
     leafStr += len > 0 ? ++len : len;
 
     return leafStr;
@@ -151,16 +151,16 @@ const char* FinalPathComponent (const char *path)
 
 
 
-const char* LeafFromPath (const char *path)
+const char* LeafFromPath(const char* path)
 {
     // Return the filename (pointer to where filename starts rather) from a full path string
-    int32 len = strlen (path);
+    int32 len = strlen(path);
 
     while (len > 0)
         if (path[--len] == '/')
-           break;
+            break;
 
-    const char *leafStr = path;
+    const char* leafStr = path;
     leafStr += len > 0 ? ++len : len;        // Workaround for no slashes ie root directory
 
     return leafStr;
@@ -168,22 +168,22 @@ const char* LeafFromPath (const char *path)
 
 
 
-char *ParentPath (const char *pathStr, bool truncateSlash)
+char* ParentPath(const char* pathStr, bool truncateSlash)
 {
     // Returns the parent path given a path,
     // e.g: "be/book" is passed, "be" will be returned
     //      if, "dir" is passed then "" will be returned and NOT NULL!
-    int32 parentLen = strlen (pathStr) - strlen (FinalPathComponent(pathStr));
-    char *parent = NULL;
+    int32 parentLen = strlen(pathStr) - strlen(FinalPathComponent(pathStr));
+    char* parent = NULL;
     if (parentLen > 0)
     {
-        parent = (char*)malloc (parentLen + 1);
-        if (pathStr[parentLen-1] == '/' && truncateSlash == true)
-           parentLen--;
-        strncpy (parent, pathStr, parentLen);
+        parent = (char*)malloc(parentLen + 1);
+        if (pathStr[parentLen - 1] == '/' && truncateSlash == true)
+            parentLen--;
+        strncpy(parent, pathStr, parentLen);
     }
     else
-        parent = (char*)malloc (1);
+        parent = (char*)malloc(1);
 
     parent[parentLen] = 0;
     return parent;
@@ -191,18 +191,18 @@ char *ParentPath (const char *pathStr, bool truncateSlash)
 
 
 
-char *Extension (const char *fileName, int extLen)
+char* Extension(const char* fileName, int extLen)
 {
     // Return the extension in lowercase, without '.' in front -- freeing left to the caller
-    int32 len = strlen (fileName);
+    int32 len = strlen(fileName);
     int32 lenCopy = len;
-    char *m = new char[extLen + 1];
+    char* m = new char[extLen + 1];
     bool dotEncountered = false;
     while (len >= lenCopy - extLen - 1)
         if (fileName[--len] == '.')
         {
-           dotEncountered = true;
-           break;
+            dotEncountered = true;
+            break;
         }
 
     if (len >= 0 && dotEncountered == true)
@@ -212,7 +212,7 @@ char *Extension (const char *fileName, int extLen)
 
     int32 i = 0L;
     for (; i < extLen; i++, len++)
-        m[i] = tolower (fileName[len]);
+        m[i] = tolower(fileName[len]);
 
     m[i] = 0;
 
@@ -221,20 +221,20 @@ char *Extension (const char *fileName, int extLen)
 
 
 
-BString SupressWildcards (const char *str)
+BString SupressWildcards(const char* str)
 {
     BString s = str;
-    s.ReplaceAll ("[", "\\[");
-    s.ReplaceAll ("*", "\\*");
+    s.ReplaceAll("[", "\\[");
+    s.ReplaceAll("*", "\\*");
     return s;
 }
 
 
 
-BString SupressWildcardSet (const char *str)
+BString SupressWildcardSet(const char* str)
 {
     BString s = str;
-    s.ReplaceAll ("[", "\\[");
+    s.ReplaceAll("[", "\\[");
     return s;
 }
 

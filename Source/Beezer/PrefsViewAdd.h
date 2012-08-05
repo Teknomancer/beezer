@@ -39,27 +39,27 @@ class BTextControl;
 class PrefsViewAdd : public PrefsView
 {
     public:
-        PrefsViewAdd (BRect frame);
+        PrefsViewAdd(BRect frame);
 
         // Inherited hooks
-        virtual void        AttachedToWindow ();
-        virtual void        MessageReceived (BMessage *message);
+        virtual void        AttachedToWindow();
+        virtual void        MessageReceived(BMessage* message);
 
-        virtual void        Render ();
-        virtual void        Save ();
-        virtual void        Load ();
+        virtual void        Render();
+        virtual void        Save();
+        virtual void        Load();
 
     private:
         // Private hook
-        void               ToggleMBView (bool enable);
+        void               ToggleMBView(bool enable);
 
         // Private members
-        BMenuField           *m_replaceField;
-        BPopUpMenu           *m_replaceMenu;
-        BCheckBox           *m_warnMBChk,
-                         *m_sortChk,
-                         *m_dropChk;
-        BTextControl        *m_mbView;
+        BMenuField*           m_replaceField;
+        BPopUpMenu*           m_replaceMenu;
+        BCheckBox*           m_warnMBChk,
+                             *m_sortChk,
+                             *m_dropChk;
+        BTextControl*        m_mbView;
 };
 
 #endif /* _PREFS_VIEW_ADD_H */

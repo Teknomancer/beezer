@@ -33,35 +33,35 @@
 
 
 
-StaticBitmapView::StaticBitmapView (BRect frame, const char *name, BBitmap *bmp,
-                                    uint32 resizeMask, uint32 flags)
-    : BView (frame, name, resizeMask, flags),
-        m_bitmap (bmp)
+StaticBitmapView::StaticBitmapView(BRect frame, const char* name, BBitmap* bmp,
+                                   uint32 resizeMask, uint32 flags)
+    : BView(frame, name, resizeMask, flags),
+      m_bitmap(bmp)
 {
     SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 }
 
 
 
-StaticBitmapView::~StaticBitmapView ()
+StaticBitmapView::~StaticBitmapView()
 {
     delete m_bitmap;
 }
 
 
 
-void StaticBitmapView::AttachedToWindow ()
+void StaticBitmapView::AttachedToWindow()
 {
-    SetDrawingMode (B_OP_ALPHA);
+    SetDrawingMode(B_OP_ALPHA);
 }
 
 
 
-void StaticBitmapView::Draw (BRect updateRect)
+void StaticBitmapView::Draw(BRect updateRect)
 {
-    SetHighColor (ViewColor());
-    FillRect (updateRect);
-    DrawBitmap (m_bitmap);
+    SetHighColor(ViewColor());
+    FillRect(updateRect);
+    DrawBitmap(m_bitmap);
 }
 
 

@@ -38,7 +38,7 @@ class BFont;
 class LogWindow : public BWindow
 {
     public:
-        LogWindow(BWindow *callerWindow, const char *title, const char *logText, BFont *displayFont = NULL);
+        LogWindow(BWindow* callerWindow, const char* title, const char* logText, BFont* displayFont = NULL);
 
         // Inherited hooks
         virtual bool        QuitRequested();
