@@ -91,7 +91,7 @@ ProgressWindow::ProgressWindow (BWindow *callerWindow, BMessage *actionMessage,
 
         case M_ACTIONS_TEST:
         {
-           actionIcon = ResBitmap ("Img:TestStatus");
+           actionIcon = BitmapPool::LoadAppVector("Img:TestStatus", 32, 32);
            fileCount = actionMessage->FindInt32 (kCount);
            actionMessage->FindString (kProgressAction, &strOfStrView);
            actionMessage->FindString (kPreparing, &prepareString);
