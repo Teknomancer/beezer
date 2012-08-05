@@ -99,8 +99,8 @@ BitmapPool::BitmapPool ()
     m_tbarExtractBmp = ResBitmap ("Img:Extract");
     m_tbarViewDisabledBmp = ResBitmap ("Img:ViewDisabled");
     m_tbarViewBmp = ResBitmap ("Img:View");
-    m_tbarAddDisabledBmp = ResBitmap ("Img:AddDisabled");
-    m_tbarAddBmp = ResBitmap ("Img:Add");
+    m_tbarAddDisabledBmp = LoadAppVector("Img:AddDisabled", 20, 20);
+    m_tbarAddBmp = LoadAppVector("Img:Add", 20, 20);
     m_tbarDeleteDisabledBmp = ResBitmap ("Img:DeleteDisabled");
     m_tbarDeleteBmp = ResBitmap ("Img:Delete");
 
