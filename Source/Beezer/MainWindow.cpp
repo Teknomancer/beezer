@@ -1579,10 +1579,6 @@ void MainWindow::AddToolBar()
                                    NULL, new BMessage(M_FILE_OPEN), true, backColor, kBelowIcon);
     m_openButton->SetToolTip(const_cast<char*>(str(S_TOOLBAR_OPEN_BH)));
 
-    m_closeButton = new ImageButton(buttonRect, "MainWindow:Close", str(S_TOOLBAR_CLOSE),
-                                    _bmps->m_tbarCloseBmp, NULL, new BMessage(M_FILE_CLOSE), false, backColor, kBelowIcon);
-    m_closeButton->SetToolTip(const_cast<char*>(str(S_TOOLBAR_CLOSE_BH)));
-
     m_searchButton = new ImageButton(buttonRect, "MainWindow:Search", str(S_TOOLBAR_SEARCH),
                                      _bmps->m_tbarSearchBmp, _bmps->m_tbarSearchDisabledBmp,
                                      new BMessage(M_ACTIONS_SEARCH_ARCHIVE), false, backColor, kBelowIcon);
@@ -1625,7 +1621,6 @@ void MainWindow::AddToolBar()
     m_backView->AddChild(m_toolBar);
     m_toolBar->AddItem(m_newButton);
     m_toolBar->AddItem(m_openButton);
-    m_toolBar->AddItem(m_closeButton);
     m_slotOneX = m_toolBar->AddSeparatorItem();         // Remember this slot position
     m_toolBar->AddItem(m_searchButton);
     m_toolBar->AddItem(m_extractButton);

@@ -107,8 +107,6 @@ static const char* _englishStrings [NUM_STRINGS] =
     "Open an existing archive",
     "Recent",
     "Open an recently opened archive",
-    "Close",
-    "Close current archive",
     "Search",
     "Search for files in the archive",
     "Extract",

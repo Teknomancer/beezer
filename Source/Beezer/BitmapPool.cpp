@@ -92,7 +92,6 @@ BitmapPool::BitmapPool()
     m_tbarOpenRecentBmp = LoadAppVector("Img:OpenRecent", 20, 20);
     m_tbarPrefsBmp = ResBitmap("Img:Prefs");
     m_tbarToolsBmp = ResBitmap("Img:Tools");
-    m_tbarCloseBmp = ResBitmap("Img:Close");
     m_tbarSearchDisabledBmp = LoadAppVector("Img:SearchDisabled", 20, 20);
     m_tbarSearchBmp = LoadAppVector("Img:Search", 20, 20);
     m_tbarExtractDisabledBmp = ResBitmap("Img:ExtractDisabled");
@@ -131,7 +130,6 @@ BitmapPool::~BitmapPool()
     delete m_tbarOpenRecentBmp;
     delete m_tbarPrefsBmp;
     delete m_tbarToolsBmp;
-    delete m_tbarCloseBmp;
     delete m_tbarSearchDisabledBmp;
     delete m_tbarSearchBmp;
     delete m_tbarExtractDisabledBmp;
