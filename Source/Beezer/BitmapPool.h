@@ -58,7 +58,6 @@ class BitmapPool
                             *m_tbarOpenRecentBmp,
                             *m_tbarPrefsBmp,
                             *m_tbarToolsBmp,
-                            *m_tbarCloseBmp,
                             *m_tbarSearchDisabledBmp,
                             *m_tbarSearchBmp,
                             *m_tbarExtractDisabledBmp,

@@ -179,7 +179,6 @@ class MainWindow : public BWindow
         SearchWindow*       m_searchWnd;
         ImageButton*        m_newButton,
                             *m_openButton,
-                            *m_closeButton,
                             *m_searchButton,
                             *m_viewButton,
                             *m_addButton,
