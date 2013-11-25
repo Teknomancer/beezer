@@ -46,8 +46,8 @@
 #include <fs_attr.h>
 
 #include <ctype.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "AppConstants.h"
 #include "AppUtils.h"
@@ -1219,19 +1219,19 @@ void MainWindow::MessageReceived(BMessage* message)
                 m_searchWnd = NULL;
             }
             
-           	// Add logtext number of entries
-            if (foundCount >= 0) {
+            // Add logtext number of entries
+            if (foundCount >= 0)
+            {
             	BString numberOfEntries;
-            	if (foundCount == 1) {
+            	if (foundCount == 1)
             		numberOfEntries = str(S_SEARCHING_ENTRY);
-            	}
-            	else {
-            		numberOfEntries = str(S_SEARCHING_ENTRIES);
-            	}
+            	else
+                    numberOfEntries = str(S_SEARCHING_ENTRIES);
             	
             	numberOfEntries << " ";
             
-	            if (foundCount > 1) {
+	            if (foundCount != 1)
+                {
 	            	// We need to replace %d with the actual number
 	            	
 	            	char buffer[32];
