@@ -1222,23 +1222,23 @@ void MainWindow::MessageReceived(BMessage* message)
             // Add logtext number of entries
             if (foundCount >= 0)
             {
-            	BString numberOfEntries;
-            	if (foundCount == 1)
-            		numberOfEntries = str(S_SEARCHING_ENTRY);
-            	else
+                BString numberOfEntries;
+                if (foundCount == 1)
+                    numberOfEntries = str(S_SEARCHING_ENTRY);
+                else
                     numberOfEntries = str(S_SEARCHING_ENTRIES);
-            	
-            	numberOfEntries << " ";
+                
+                numberOfEntries << " ";
             
-	            if (foundCount != 1)
+                if (foundCount != 1)
                 {
-	            	// We need to replace %d with the actual number
-	            	
-	            	char buffer[32];
-	    	        sprintf(buffer, "%d", foundCount);
-    	    	    numberOfEntries.ReplaceFirst("%d", buffer);
-	            }
-            	m_logTextView->AddText(numberOfEntries.String(), false, false, false);
+                    // We need to replace %d with the actual number
+                    
+                    char buffer[32];
+                    sprintf(buffer, "%d", foundCount);
+                    numberOfEntries.ReplaceFirst("%d", buffer);
+                }
+                m_logTextView->AddText(numberOfEntries.String(), false, false, false);
             }
             
             
