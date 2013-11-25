@@ -1218,7 +1218,7 @@ void MainWindow::MessageReceived(BMessage* message)
                 m_searchWnd->Quit();
                 m_searchWnd = NULL;
             }
-            
+
             // Add logtext number of entries
             if (foundCount >= 0)
             {
@@ -1227,21 +1227,19 @@ void MainWindow::MessageReceived(BMessage* message)
                     numberOfEntries = str(S_SEARCHING_ENTRY);
                 else
                     numberOfEntries = str(S_SEARCHING_ENTRIES);
-                
+
                 numberOfEntries << " ";
-            
+
                 if (foundCount != 1)
                 {
                     // We need to replace %d with the actual number
-                    
                     char buffer[32];
                     sprintf(buffer, "%d", foundCount);
                     numberOfEntries.ReplaceFirst("%d", buffer);
                 }
                 m_logTextView->AddText(numberOfEntries.String(), false, false, false);
             }
-            
-            
+
             m_logTextView->AddText(str(S_SEARCHING_DONE), false, false, false);
 
             if (foundCount == -1)
