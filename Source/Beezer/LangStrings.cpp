@@ -366,6 +366,8 @@ static const char* _englishStrings [NUM_STRINGS] =
     "Search",
     "Error in regular expression:",
     "Searching for \"%s\"...",
+    "Found 1 entry.",
+    "Found %d entries.",
     "Done.",
     "The archive seems to be missing.\nThe current operation has failed.",
     "Entries: ",
