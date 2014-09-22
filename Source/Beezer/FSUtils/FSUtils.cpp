@@ -177,7 +177,7 @@ BString CreateTempDirectory(const char* prefix, BDirectory** createdDir, bool cr
         prefixStr << prefix << "_";
 
     BPath tmpPath;
-    find_directory(B_COMMON_TEMP_DIRECTORY, &tmpPath, true);
+    find_directory(B_SYSTEM_TEMP_DIRECTORY, &tmpPath, true);
     BString tempDirName = tempnam(const_cast<char*>(tmpPath.Path()), const_cast<char*>(prefixStr.String()));
 
     // Further random the dir name (the below number is a prime)
