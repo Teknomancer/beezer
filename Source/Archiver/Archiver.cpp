@@ -38,7 +38,7 @@
 #include <FindDirectory.h>
 #include <Application.h>
 
-#include <string.h>
+#include <strings.h>
 #include <stdlib.h>
 #include <signal.h>
 
@@ -652,7 +652,7 @@ bool Archiver::IsBinaryFound(char* filePath, const char* fileName) const
         }
     }
 
-    if (find_directory(B_COMMON_BIN_DIRECTORY, &binPath) == B_OK)
+    if (find_directory(B_USER_NONPACKAGED_BIN_DIRECTORY, &binPath) == B_OK)
     {
         binPath.Append(fileName);
         BEntry entry(binPath.Path(), true);
@@ -663,6 +663,16 @@ bool Archiver::IsBinaryFound(char* filePath, const char* fileName) const
         }
     }
 
+    if (find_directory(B_SYSTEM_NONPACKAGED_BIN_DIRECTORY, &binPath) == B_OK)
+    {
+        binPath.Append(fileName);
+        BEntry entry(binPath.Path(), true);
+        if (entry.Exists())
+        {
+            strcpy(filePath, binPath.Path());
+            return true;
+        }
+    }
     // TODO full search of $PATH
 
     filePath = '\0';

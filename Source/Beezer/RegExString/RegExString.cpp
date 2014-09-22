@@ -49,7 +49,7 @@
 #include <OS.h>
 #include <Debug.h>
 
-#include <string.h>
+#include <strings.h>
 #include <stdio.h>
 #include <stdlib.h>
 

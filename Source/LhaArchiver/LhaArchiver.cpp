@@ -31,7 +31,8 @@
 #include <Entry.h>
 #include <Message.h>
 #include <Path.h>
-#include <String.h>
+#include <string.h>
+#include <strings.h>
 #include <File.h>
 #include <NodeInfo.h>
 #include <Messenger.h>

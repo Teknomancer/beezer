@@ -36,6 +36,7 @@
 #include <Window.h>
 
 #include <stdlib.h>
+#include <strings.h>
 
 #include "CLVEasyItem.h"
 
