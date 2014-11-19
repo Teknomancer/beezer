@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2014, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -27,16 +27,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Debug.h>
+#include <Application.h>
 #include <Bitmap.h>
-#include <List.h>
-#include <Roster.h>
-#include <Window.h>
+#include <Debug.h>
 #include <Directory.h>
-#include <Menu.h>
 #include <File.h>
 #include <FindDirectory.h>
-#include <Application.h>
+#include <Menu.h>
+#include <List.h>
+#include <PathFinder.h>
+#include <Roster.h>
+#include <StringList.h>
+#include <Window.h>
 
 #include <strings.h>
 #include <stdlib.h>
@@ -621,46 +623,24 @@ status_t Archiver::SetComment(char* commentStr, const char* tempDirPath)
 }
 
 
-
+#include <iostream>
 bool Archiver::IsBinaryFound(char* filePath, const char* fileName) const
 {
-    // Check if the given fileName exists in the given dir, if so copy the full path of fileName to filePath
-    // Path priority  <appdir>/workers -> B_SYSTEM_BIN_DIRECTORY -> B_COMMON_BIN_DIRECTORY
-    BPath binPath;
+    BStringList pathList;
+    if (BPathFinder::FindPaths(B_FIND_PATH_BIN_DIRECTORY, fileName, B_FIND_PATH_EXISTING_ONLY, pathList) != B_OK) {
+        std::cerr << "ERROR" << std::endl;
+        filePath = '\0';
+        return false;
+    }
 
-    if (find_directory(B_SYSTEM_BIN_DIRECTORY, &binPath) == B_OK)
-    {
-        binPath.Append(fileName);
-        BEntry entry(binPath.Path(), true);
-        if (entry.Exists())
-        {
-            strcpy(filePath, binPath.Path());
+    // B_FIND_PATH_EXISTING_ONLY doesn't seem to work like I would expect so use BEntry to check
+    for (int32 index = 0; index < pathList.CountStrings(); index++) {
+        BEntry entry(pathList.StringAt(index));
+        if (entry.Exists()) {
+            strcpy(filePath, pathList.StringAt(index));
             return true;
         }
     }
-
-    if (find_directory(B_USER_NONPACKAGED_BIN_DIRECTORY, &binPath) == B_OK)
-    {
-        binPath.Append(fileName);
-        BEntry entry(binPath.Path(), true);
-        if (entry.Exists())
-        {
-            strcpy(filePath, binPath.Path());
-            return true;
-        }
-    }
-
-    if (find_directory(B_SYSTEM_NONPACKAGED_BIN_DIRECTORY, &binPath) == B_OK)
-    {
-        binPath.Append(fileName);
-        BEntry entry(binPath.Path(), true);
-        if (entry.Exists())
-        {
-            strcpy(filePath, binPath.Path());
-            return true;
-        }
-    }
-    // TODO full search of $PATH
 
     filePath = '\0';
     return false;
