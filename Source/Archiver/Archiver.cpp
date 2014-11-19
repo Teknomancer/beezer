@@ -627,19 +627,6 @@ bool Archiver::IsBinaryFound(char* filePath, const char* fileName) const
     // Check if the given fileName exists in the given dir, if so copy the full path of fileName to filePath
     // Path priority  <appdir>/workers -> B_SYSTEM_BIN_DIRECTORY -> B_COMMON_BIN_DIRECTORY
     BPath binPath;
-    app_info appInfo;
-    be_app->GetAppInfo(&appInfo);
-    BEntry appEntry(&appInfo.ref);
-    appEntry.GetParent(&appEntry);
-    binPath.SetTo(&appEntry);
-    binPath.Append(K_BIN_DIR_NAME, true);
-    binPath.Append(fileName, true);
-    BEntry workersEntry(binPath.Path(), true);
-    if (workersEntry.Exists())
-    {
-        strcpy(filePath, binPath.Path());
-        return true;
-    }
 
     if (find_directory(B_SYSTEM_BIN_DIRECTORY, &binPath) == B_OK)
     {
