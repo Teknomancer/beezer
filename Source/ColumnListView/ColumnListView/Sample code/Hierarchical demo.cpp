@@ -145,7 +145,7 @@ void GenericWindow::AddCLVItems(ColumnListView* MyColumnListView)
     MyColumnListView->AddItem(new DemoItem(1, true, false, Folder_MICN,   "bin",              "<folder>",     "Tuesday",                  "Blah",                                 "Blah",                             "false", "false", "Blah"));
     MyColumnListView->AddItem(new DemoItem(1, true, false, Folder_MICN,   "boot",             "<folder>",     "Wednesday",                "Blah",                                 "Blah",                             "false", "false", "Blah"));
     MyColumnListView->AddItem(new DemoItem(0, true, false, Folder_MICN,   "Desktop",          "<folder>",     "Thursday",                 "Blah",                                 "Blah",                             "false", "false", "Blah"));
-    MyColumnListView->AddItem(new DemoItem(0, false, false, Paper_MICN,    "Doggie.jpg",       "15 MB",        "Friday",                   "Bad dog!  Bad noise, bad smell!",      "Got away with it...",              "false", "false", "Blamed it on the dog!"));
+    MyColumnListView->AddItem(new DemoItem(0, false, false, Paper_MICN,    "Doggie.jpg",       "15 MiB",        "Friday",                   "Bad dog!  Bad noise, bad smell!",      "Got away with it...",              "false", "false", "Blamed it on the dog!"));
     MyColumnListView->AddItem(new DemoItem(0, false, false, Midi_MICN,     "Midi",             "<link>",       "April 15, 1973",           "Blah",                                 "Blah",                             "false", "true", "I quit!"));
 }
 

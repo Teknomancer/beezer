@@ -92,14 +92,14 @@ ArkInfoWindow::ArkInfoWindow(BWindow* callerWindow, Archiver* archiver, BEntry* 
     compressedSizeStr->SetAlignment(B_ALIGN_RIGHT);
     compressedSizeStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
-    m_compressedSizeStr = new BStringView("ArkInfoWindow:CompressedSizeStr", "0 MB (0 bytes)");
+    m_compressedSizeStr = new BStringView("ArkInfoWindow:CompressedSizeStr", "0 MiB (0 bytes)");
     m_compressedSizeStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
     BStringView* originalSizeStr = new BStringView("ArkInfoWindow:_OriginalSizeStr", str(S_ORIGINAL_SIZE));
     originalSizeStr->SetAlignment(B_ALIGN_RIGHT);
     originalSizeStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
-    m_originalSizeStr = new BStringView("ArkInfoWindow:OriginalSizeStr", "0 MB (0 bytes)");
+    m_originalSizeStr = new BStringView("ArkInfoWindow:OriginalSizeStr", "0 MiB (0 bytes)");
     m_originalSizeStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
     BStringView* fileCountStr = new BStringView("ArkInfoWindow:_FileCountStr", str(S_NUMBER_OF_FILES));
