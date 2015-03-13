@@ -4262,7 +4262,7 @@ void MainWindow::ShowArkPathError() const
 void MainWindow::ShowOpNotSupported() const
 {
     m_logTextView->AddText(str(S_OP_FAILED), true, false, false);
-    BAlert* errAlert = new BAlert("Cannot Operate", str(S_NOT_SUPPORTED), str(S_OK), NULL, NULL,
+    BAlert* errAlert = new BAlert("Cannot operate", str(S_NOT_SUPPORTED), str(S_OK), NULL, NULL,
                                   B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
     errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
     errAlert->AddToSubset((BWindow*)this);
@@ -4273,7 +4273,7 @@ void MainWindow::ShowOpNotSupported() const
 
 void MainWindow::ShowReadOnlyError() const
 {
-    BAlert* errAlert = new BAlert("Cannot Operate", str(S_READ_ONLY_ERROR), str(S_OK), NULL, NULL,
+    BAlert* errAlert = new BAlert("Cannot operate", str(S_READ_ONLY_ERROR), str(S_OK), NULL, NULL,
                                   B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
     errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
     errAlert->AddToSubset((BWindow*)this);
