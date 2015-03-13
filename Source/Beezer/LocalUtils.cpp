@@ -229,13 +229,13 @@ int64 BytesFromString(char* text)
     strcpy(buffer, text);
     val = strtod(buffer, &end);            // Bytes
 
-    if (strstr(buffer, "KB"))                // KB
+    if (strstr(buffer, "KiB"))                // KB
         val *= kKBSize;
-    else if (strstr(buffer, "MB"))            // MB
+    else if (strstr(buffer, "MiB"))            // MB
         val *= kMBSize;
-    else if (strstr(buffer, "GB"))            // GB
+    else if (strstr(buffer, "GiB"))            // GB
         val *= kGBSize;
-    else if (strstr(buffer, "TB"))            // TB
+    else if (strstr(buffer, "TiB"))            // TB
         val *= kTBSize;
 
     delete[] buffer;
@@ -310,22 +310,22 @@ BString LocaleStringFromBytes(int64 v)
 //        float floatValue;
 //        if (value >= kTBSize)
 //        {
-//           suffix = "TB";
+//           suffix = "TiB";
 //           floatValue = (float)value / kTBSize;
 //        }
 //        else if (value >= kGBSize)
 //        {
-//           suffix = "GB";
+//           suffix = "GiB";
 //           floatValue = (float)value / kGBSize;
 //        }
 //        else if (value >= kMBSize)
 //        {
-//           suffix = "MB";
+//           suffix = "MiB";
 //           floatValue = (float)value / kMBSize;
 //        }
 //        else
 //        {
-//           suffix = "KB";
+//           suffix = "KiB";
 //           floatValue = (float)value / kKBSize;
 //        }
 //

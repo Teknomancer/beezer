@@ -788,9 +788,9 @@ void FileSplitterWindow::UpdateData()
             switch (m_prefixPopUp->IndexOf(m_prefixPopUp->FindMarked()))
             {
                 case 0: val << "bytes"; break;
-                case 1: val << "KB"; break;
-                case 2: val << "MB"; break;
-                case 3: val << "GB"; break;
+                case 1: val << "KiB"; break;
+                case 2: val << "MiB"; break;
+                case 3: val << "GiB"; break;
             }
 
             fragmentSize = BytesFromString((char*)val.String());
