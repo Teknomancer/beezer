@@ -30,15 +30,15 @@
 #define _GZIP_STRINGS_H
 
 const char
-*const kCompressionLevel =        "Compression Level",
-*const kLevel1 =                  "1 (Fastest)",
+*const kCompressionLevel =        "Compression level",
+*const kLevel1 =                  "1 (fastest)",
 *const kLevel2 =                  "2",
 *const kLevel3 =                  "3",
 *const kLevel4 =                  "4",
 *const kLevel5 =                  "5",
-*const kLevel6 =                  "6 (Default)",
+*const kLevel6 =                  "6 (default)",
 *const kLevel7 =                  "7",
 *const kLevel8 =                  "8",
-*const kLevel9 =                  "9 (Best)";
+*const kLevel9 =                  "9 (best)";
 
 #endif /* _GZIP_STRING_H */

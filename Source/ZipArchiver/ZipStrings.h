@@ -30,9 +30,9 @@
 #define _ZIP_STRINGS_H
 
 const char
-*const kCompressionLevel =        "Compression Level",
-*const kLevel0 =                  "0 (None)",
-*const kLevel1 =                  "1 (Fastest)",
+*const kCompressionLevel =        "Compression level",
+*const kLevel0 =                  "0 (none)",
+*const kLevel1 =                  "1 (fastest)",
 *const kLevel2 =                  "2",
 *const kLevel3 =                  "3",
 *const kLevel4 =                  "4",
@@ -40,13 +40,13 @@ const char
 *const kLevel6 =                  "6",
 *const kLevel7 =                  "7",
 *const kLevel8 =                  "8",
-*const kLevel9 =                  "9 (Best, default)",
+*const kLevel9 =                  "9 (best, default)",
 
-*const kAdding =                  "While Adding",
+*const kAdding =                  "While adding",
 *const kArchiveAttribs =          "Add attributes",
 *const kDirRecurse =              "Recurse into folders",
 
-*const kExtracting =              "While Extracting",
+*const kExtracting =              "While extracting",
 *const kDirExtract =              "Extract folders",
 *const kExtractAttribs =          "Extract attributes",
 *const kNoOverwrite =             "Never overwrite existing files",

@@ -413,7 +413,7 @@ status_t LhaArchiver::ReadTest(FILE* fp, char*& outputStr, BMessenger* progress,
         else if (c == '\n')
         {
             fullOutputStr << buf.String() << "\n";
-            int32 found = buf.FindLast("- Tested");
+            int32 found = buf.FindLast("- tested");
 
             if (found > 0)
             {
@@ -552,7 +552,7 @@ status_t LhaArchiver::ReadAdd(FILE* fp, BMessage* addedPaths, BMessenger* progre
             continue;
         else if (c == '\n')
         {
-            int32 found = buf.FindLast("- Frozen(");
+            int32 found = buf.FindLast("- frozen(");
             if (found > 0)
             {
                 buf.Truncate(found - 1);

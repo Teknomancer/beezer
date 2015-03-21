@@ -30,27 +30,27 @@
 #define _RAR_STRINGS_H
 
 const char
-*const kCompressionLevel =        "Compression Level",
-*const kLevel0 =                  "0 (None)",
-*const kLevel1 =                  "1 (Fastest)",
+*const kCompressionLevel =        "Compression level",
+*const kLevel0 =                  "0 (none)",
+*const kLevel1 =                  "1 (fastest)",
 *const kLevel2 =                  "2",
-*const kLevel3 =                  "3 (Default)",
+*const kLevel3 =                  "3 (default)",
 *const kLevel4 =                  "4",
-*const kLevel5 =                  "5 (Best)",
+*const kLevel5 =                  "5 (best)",
 
-*const kAdding =                  "While Adding",
+*const kAdding =                  "While adding",
 *const kDisableSolidArk =         "Disable solid archive",
 *const kMultimediaCompress =      "Multimedia compression",
 *const kRecoveryRecord =          "Add recovery record",
 *const kRecurse =                 "Recurse into folders",
 
-*const kExtracting =              "While Extracting",
-*const kAlwaysOverwrite =         "Always overwrite (Default)",
+*const kExtracting =              "While extracting",
+*const kAlwaysOverwrite =         "Always overwrite (default)",
 *const kNoOverwrite =             "Never overwrite existing files",
 *const kUpdate =                  "Update files, create if needed",
 *const kFreshen =                 "Freshen existing files, create none",
 
-*const kOtherOptions =            "Other Options",
+*const kOtherOptions =            "Other options",
 *const kKeepBroken =              "Keep broken extracted files",
 *const kProcessAttributes =       "Process attributes";
 
