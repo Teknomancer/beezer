@@ -35,22 +35,22 @@
 #define _7Z_STRINGS_H
 
 const char
-*const kCompressionLevel =         "Compression Level",
-*const kLevel0 =                   "0 (None)",
+*const kCompressionLevel =         "Compression level",
+*const kLevel0 =                   "0 (none)",
 *const kLevel1 =                   "1",
-*const kLevel5 =                   "5 (Default)",
+*const kLevel5 =                   "5 (default)",
 *const kLevel7 =                   "7",
-*const kLevel9 =                   "9 (Maximum)",
+*const kLevel9 =                   "9 (maximum)",
 
-*const kAdding =                   "While Adding",
+*const kAdding =                   "While adding",
 *const kArchiveAttribs =           "Add attributes",
 *const kUseSolidBlocks =           "Use solid blocks",
-*const kMultiThreaded =            "Use multi-threading (for multi CPU PCs)",
+*const kMultiThreaded =            "Use multi-threading (for multi-core CPUs)",
 
-*const kExtracting =               "While Extracting",
+*const kExtracting =               "While extracting",
 *const kExtractAttribs =           "Extract attributes",
 
-*const kOverwrite =                "Always overwrite (Default)",
+*const kOverwrite =                "Always overwrite (default)",
 *const kNoOverwrite =              "Never overwrite existing files",
 *const kRenameExisting =           "Rename existing files",
 *const kRenameExtracted =          "Rename extracted files";

@@ -30,17 +30,17 @@
 #define _ARJ_STRINGS_H
 
 const char
-*const kCompressionLevel =         "Compression Level",
-*const kLevel0 =                  "0 (None)",
-*const kLevel1 =                  "4 (Fastest)",
+*const kCompressionLevel =         "Compression level",
+*const kLevel0 =                  "0 (none)",
+*const kLevel1 =                  "4 (fastest)",
 *const kLevel2 =                  "3",
 *const kLevel3 =                  "2",
-*const kLevel4 =                  "1 (Best, Default)",
+*const kLevel4 =                  "1 (best, default)",
 
-*const kAdding =                  "While Adding",
+*const kAdding =                  "While adding",
 *const kDirRecurse =               "Recurse into folders",
 
-*const kExtracting =               "While Extracting",
+*const kExtracting =               "While extracting",
 *const kUpdate =                  "Update files (new and newer)",
 *const kFreshen =                 "Freshen existing files",
 *const kMultiVolume =              "Enable multiple volumes";

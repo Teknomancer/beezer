@@ -30,12 +30,12 @@
 #define _LHA_STRINGS_H
 
 const char
-*const kHeaderLevel =             "Header Level",
-*const kLevel0 =                  "0 (Fastest)",
+*const kHeaderLevel =             "Header level",
+*const kLevel0 =                  "0 (fastest)",
 *const kLevel1 =                  "1",
-*const kLevel2 =                  "2 (Best)",
+*const kLevel2 =                  "2 (best)",
 
-*const kOtherOptions =            "Other Options",
+*const kOtherOptions =            "Other options",
 *const kGenericArk =              "LHarc compatible format";
 
 #endif /* _LHA_STRINGS_H */

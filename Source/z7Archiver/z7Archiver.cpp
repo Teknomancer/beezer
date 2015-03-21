@@ -430,7 +430,7 @@ status_t z7Archiver::ReadTest(FILE* fp, char*& outputStr, BMessenger* progress, 
             }
             else if (strncmp(testingStr, "Processing archive:", 19) == 0)         // test process started
                 startedActualTest = true;
-            else if (strncmp(testingStr, "Everything is Ok", 16) == 0 && errFlag == false)
+            else if (strncmp(testingStr, "Everything is OK", 16) == 0 && errFlag == false)
             {
                 // Important we check this before error, error should be the last to be checked
                 exitCode = BZR_DONE;
@@ -805,7 +805,7 @@ status_t z7Archiver::ReadDelete(FILE* fp, char*& outputStr, BMessenger* progress
         lineString[strlen(lineString) - 1] = '\0';
         fullOutputStr << lineString << "\n";
 
-        if (strstr(lineString, "Everything is Ok") == lineString)
+        if (strstr(lineString, "Everything is OK") == lineString)
             exitCode = BZR_DONE;
 
         if (strstr(lineString, "Error:") == lineString)
