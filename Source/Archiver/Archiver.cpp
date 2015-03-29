@@ -623,12 +623,11 @@ status_t Archiver::SetComment(char* commentStr, const char* tempDirPath)
 }
 
 
-#include <iostream>
+
 bool Archiver::IsBinaryFound(char* filePath, const char* fileName) const
 {
     BStringList pathList;
     if (BPathFinder::FindPaths(B_FIND_PATH_BIN_DIRECTORY, fileName, B_FIND_PATH_EXISTING_ONLY, pathList) != B_OK) {
-        std::cerr << "ERROR" << std::endl;
         filePath = '\0';
         return false;
     }
