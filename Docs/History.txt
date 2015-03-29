@@ -2,6 +2,7 @@
 A detailed history of Beezer...
 
 • Version 1.00
+> Add basic support for multipart rar archives
 > Disable arj support and creating/writing of rar archives until Haiku has modern ports of these
 > Updated AboutWindow, removed Authorwindow
 > Enhanced path checking for worker binaries

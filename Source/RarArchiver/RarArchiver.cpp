@@ -86,49 +86,62 @@ status_t RarArchiver::ReadOpen(FILE* fp)
     uint16 len = B_PATH_NAME_LENGTH + 500;
     char lineString[len],
          sizeStr[25], packedStr[25], ratioStr[15], dayStr[5], permStr[50],
-         monthStr[5], yearStr[8], hourStr[5], minuteStr[5], dateStr[90], crcStr[25], versionStr[25],
+         monthStr[5], yearStr[8], hourStr[5], minuteStr[5], dateStr[90], crcStr[25],
          pathStr[B_PATH_NAME_LENGTH + 1];
 
-    do
-    {
+    bool parseLine = false;
+    while (!feof(fp)) {
         fgets(lineString, len, fp);
-    }
-    while (!feof(fp) && (strstr(lineString, "--------") == NULL));
 
-    fgets(lineString, len, fp);
+        if (strstr(lineString, "--------"))
+            parseLine = !parseLine;
+        else if (parseLine) {
+            lineString[strlen(lineString) - 1] = '\0';
+            sscanf(lineString,
+                   " %[^ ] %[0-9] %[0-9] %[^ ] %[0-9]-%[0-9]-%[0-9] %[0-9]:%[0-9] %[^ ] %[^\n]",
+                   permStr, sizeStr, packedStr, ratioStr, dayStr, monthStr, yearStr, hourStr, minuteStr,
+                   crcStr, pathStr);
 
-    while (!feof(fp) && (strstr(lineString, "--------") == NULL))
-    {
-        lineString[strlen(lineString) - 1] = '\0';
+            struct tm timeStruct; time_t timeValue;
+            MakeTime(&timeStruct, &timeValue, dayStr, monthStr, yearStr, hourStr, minuteStr, "00");
+            FormatDate(dateStr, 90, &timeStruct);
 
-        sscanf(lineString,
-               " %[^ ] %[0-9] %[0-9] %[0-9%] %[0-9]-%[0-9]-%[0-9] %[0-9]:%[0-9] %[^ ] %[^ ] %[^\n]",
-               permStr, sizeStr, packedStr, ratioStr, dayStr, monthStr, yearStr, hourStr, minuteStr,
-               crcStr, pathStr);
+            if (permStr[0] == '*')
+                m_passwordRequired = true;
 
-        struct tm timeStruct; time_t timeValue;
-        MakeTime(&timeStruct, &timeValue, dayStr, monthStr, yearStr, hourStr, minuteStr, "00");
-        FormatDate(dateStr, 90, &timeStruct);
+            // Check to see if pathStr is as folder, else add it as a file
+            bool isDir = false;
+            BString pathString = pathStr;
+            // workaroud odd spacing in the output of unrar
+            // hopefully it doesn't actually begin/end in a space
+            pathString.Trim();
 
-        BString pathString = pathStr;
-        if (permStr[0] == '*')
-            m_passwordRequired = true;
+            if (strstr(permStr, "D") != NULL || permStr[0] == 'd')
+            {
+                // Critical we add '/' for empty folders as rar doesn't report folder names with '/'
+                pathString << '/';
+                isDir = true;
+            }
 
-        // Check to see if pathStr is as folder, else add it as a file
-        if (strstr(permStr, "D") != NULL || permStr[0] == 'd')
-        {
-            // Critical we add '/' for empty folders as rar doesn't report folder names with '/'
-            pathString << '/';
-            m_entriesList.AddItem(new ArchiveEntry(true, pathString.String(), sizeStr, packedStr, dateStr,
+            // Filter duplicates from multipart volume listings
+            bool isDup = false;
+            for (int i = 0; i < m_entriesList.CountItems(); i++) {
+                ArchiveEntry* entry = reinterpret_cast<ArchiveEntry*>(m_entriesList.ItemAt(i));
+                if (pathString.Compare(entry->m_pathStr) == 0) {
+                    isDup = true;
+                    // Files that span multiple volumes show a ratio of -->, <->, or <--
+                    // Recalculate the packed size and ratio
+                    if (ratioStr[1] == '-') {
+                        sprintf(entry->m_packedStr, "%li", atol(entry->m_packedStr) + atol(packedStr));
+                        entry->RecalculateRatio();
+                    }
+                }
+            }
+
+            if (!isDup)
+                m_entriesList.AddItem(new ArchiveEntry(isDir, pathString.String(), sizeStr, packedStr, dateStr,
                                                    timeValue, "-", crcStr));
         }
-        else
-        {
-            m_entriesList.AddItem(new ArchiveEntry(false, pathString.String(), sizeStr, packedStr, dateStr,
-                                                   timeValue, "-", crcStr));
-        }
-
-        fgets(lineString, len, fp);
     }
 
     return BZR_DONE;
@@ -142,7 +155,7 @@ status_t RarArchiver::Open(entry_ref* ref, BMessage* fileList)
     m_archivePath.SetTo(ref);
 
     m_pipeMgr.FlushArgs();
-    m_pipeMgr << m_unrarPath << "v" << "-c-" << m_archivePath.Path();
+    m_pipeMgr << m_unrarPath << "v" << "-c-" << "-v" << m_archivePath.Path();
 
     FILE* out, *err;
     int outdes[2], errdes[2];
