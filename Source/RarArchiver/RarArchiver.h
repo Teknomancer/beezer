@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2015, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -33,7 +34,6 @@
 
 #include "Archiver.h"
 
-#define BZR_ARK                        "rar"
 #define BZR_UNARK                      "unrar"
 
 class BMessenger;
@@ -56,7 +56,6 @@ class RarArchiver : public Archiver
         status_t           Test(char*& outputStr, BMessenger* progress, volatile bool* cancel);
         status_t           ReadTest(FILE* fp, char*& outputStr, BMessenger* progress, volatile bool* cancel);
 
-        status_t           ReadAdd(FILE* fp, BMessage* addedPaths, BMessenger* progress, volatile bool* cancel);
         status_t           Add(bool createMode, const char* relPath, BMessage* list, BMessage* addedPaths,
                                BMessenger* progress, volatile bool* cancel);
 
@@ -65,18 +64,16 @@ class RarArchiver : public Archiver
 
         status_t           Delete(char*& outputStr, BMessage* list, BMessenger* progress, volatile bool* cancel);
 
-        status_t           GetComment(char*& commentStr);
-        status_t           SetComment(char* commentStr, const char* tempDirPath);
         bool               SupportsComment() const;
         bool               CanPartiallyOpen() const;
         bool               NeedsTempDirectory() const;
         bool               SupportsPassword() const;
         bool               CanDeleteFiles() const;
+        bool               CanAddFiles() const;
 
     private:
         void               SetMimeType();
 
-        char               m_rarPath[B_PATH_NAME_LENGTH];
         char               m_unrarPath[B_PATH_NAME_LENGTH];
 };
 
