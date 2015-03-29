@@ -67,14 +67,8 @@ ArchiveEntry::ArchiveEntry(bool dir, const char* pathStr, const char* sizeStr, c
     m_sizeStr = strdup(sizeStr);
     m_packedStr = strdup(packedStr);
 
-    float ratio = 100 * (atof(sizeStr) - atof(packedStr));
-    if (ratio > 0)    // to prevent 0 bytes 0 packed files (like those in BeBookmarks.zip)
-        ratio /= atof(sizeStr);
-    else if (ratio < 0)
-        ratio = 0;
-
     m_ratioStr = (char*)malloc(8);
-    sprintf(m_ratioStr, "%.1f%%", ratio);
+    RecalculateRatio();
 
     if (methodStr)
         m_methodStr = strdup(methodStr);
@@ -103,3 +97,13 @@ ArchiveEntry::~ArchiveEntry()
 }
 
 
+
+void ArchiveEntry::RecalculateRatio() {
+    float ratio = 100 * (atof(m_sizeStr) - atof(m_packedStr));
+    if (ratio > 0)    // to prevent 0 bytes 0 packed files (like those in BeBookmarks.zip)
+        ratio /= atof(m_sizeStr);
+    else if (ratio < 0)
+        ratio = 0;
+
+    sprintf(m_ratioStr, "%.1f%%", ratio);
+}
