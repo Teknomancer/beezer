@@ -33,7 +33,8 @@ include_directories(
 
 add_subdirectory(ColumnListView)
 
-add_subdirectory(ArjArchiver)
+#arj support disabled until a proper package is created for Haiku
+#add_subdirectory(ArjArchiver)
 add_subdirectory(BZipArchiver)
 add_subdirectory(GZipArchiver)
 add_subdirectory(LhaArchiver)
