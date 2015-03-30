@@ -174,7 +174,7 @@ char* RuleMgr::ValidateFileType(BPath* filePath) const
     // This will also take place in case the rules file could not be opened (deleted,renamed or moved etc)
     // as CountItems() would be zero, the loop wouldn't have entered
     status_t result = nodeInfo.SetType("application/octet-stream");
-    update_mime_info(filePath->Path(), false, true, true);
+    update_mime_info(filePath->Path(), false, true, B_UPDATE_MIME_INFO_FORCE_UPDATE_ALL);
 
     if (result != B_OK && extensionIndex >= 0L)
     {
