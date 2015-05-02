@@ -39,6 +39,7 @@
 
 #include "AppConstants.h"
 #include "ArchiverMgr.h"
+#include "BitmapPool.h"
 #include "LangStrings.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
@@ -52,7 +53,7 @@
 PrefsViewMisc::PrefsViewMisc(BRect frame)
     : PrefsView(frame, str(S_PREFS_TITLE_MISC), str(S_PREFS_DESC_MISC))
 {
-    SetBitmap(ResBitmap("Img:Prefs_Miscellaneous"));
+    SetBitmap(BitmapPool::LoadAppVector("Img:Prefs", 20, 20));
     Render();
 }
 

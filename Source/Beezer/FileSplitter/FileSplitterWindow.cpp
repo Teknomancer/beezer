@@ -51,6 +51,7 @@
 
 #include "Beezer.h"
 #include "BevelView.h"
+#include "BitmapPool.h"
 #include "LangStrings.h"
 #include "FileSplitterWindow.h"
 #include "UIConstants.h"
@@ -94,7 +95,7 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
     font.GetHeight(&fntHt);
     float totalFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
 
-    BBitmap* splitBmp = ResBitmap("Img:FileSplitter");
+	BBitmap* splitBmp = BitmapPool::LoadAppVector("Img:FileSplitter", 32, 32);
 
     BevelView* sepView1 = new BevelView(BRect(-1, splitBmp->Bounds().Height() + 4 * K_MARGIN,
                                         Bounds().right - 1.0, splitBmp->Bounds().Height() + 4 * K_MARGIN + 1),
