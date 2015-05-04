@@ -90,8 +90,8 @@ BitmapPool::BitmapPool()
     m_tbarNewBmp = LoadAppVector("Img:New", 20, 20);
     m_tbarOpenBmp = LoadSystemVector("application/x-vnd.Be-directory", 20, 20);
     m_tbarOpenRecentBmp = LoadAppVector("Img:OpenRecent", 20, 20);
-	m_tbarPrefsBmp = LoadAppVector("Img:Prefs", 20, 20);
-	m_tbarToolsBmp = LoadAppVector("Img:Tools", 20, 20);
+    m_tbarPrefsBmp = LoadAppVector("Img:Prefs", 20, 20);
+    m_tbarToolsBmp = LoadAppVector("Img:Tools", 20, 20);
     m_tbarSearchDisabledBmp = LoadAppVector("Img:SearchDisabled", 20, 20);
     m_tbarSearchBmp = LoadAppVector("Img:Search", 20, 20);
     m_tbarExtractDisabledBmp = LoadAppVector("Img:ExtractDisabled", 20, 20);
