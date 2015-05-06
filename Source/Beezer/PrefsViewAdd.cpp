@@ -67,10 +67,10 @@ void PrefsViewAdd::Render()
     m_replaceMenu->AddItem(new BMenuItem(str(S_PREFS_ADD_ALWAYS), NULL));
     m_replaceMenu->AddItem(new BMenuItem(str(S_PREFS_ADD_BYDATE), NULL));
 
-    m_replaceField = new BMenuField(BRect(m_margin, m_margin, Bounds().right - m_margin, m_margin),
+    m_replaceField = new BMenuField(BRect(m_margin, m_margin, Frame().right - m_margin, 0),
                                     "PrefsViewAdd:replaceField", str(S_PREFS_ADD_REPLACE), (BMenu*)m_replaceMenu,
                                     B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
-    m_replaceField->ResizeToPreferred();
+    //m_replaceField->ResizeToPreferred();
     m_replaceField->SetDivider(StringWidth(m_replaceField->Label()) + StringWidth("W"));
 
     font_height fntHt;

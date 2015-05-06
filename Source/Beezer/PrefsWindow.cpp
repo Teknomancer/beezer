@@ -56,7 +56,7 @@
 
 
 PrefsWindow::PrefsWindow()
-    : BWindow(BRect(0, 0, 570+30, 320+100), str(S_PREFERENCES_TITLE), B_TITLED_WINDOW,
+    : BWindow(BRect(0, 0, 570+50, 320+100), str(S_PREFERENCES_TITLE), B_TITLED_WINDOW,
               B_NOT_ZOOMABLE | B_NOT_RESIZABLE),
     m_currentPanel(NULL)
 {
@@ -209,7 +209,7 @@ void PrefsWindow::AddControls()
     AddChild(m_backView);
 
     float margin = K_MARGIN + 2;
-    float maxWidth = 110+20;
+    float maxWidth = 140;
     font_height fntHt, boldFntHt;
     be_plain_font->GetHeight(&fntHt);
     be_bold_font->GetHeight(&boldFntHt);
