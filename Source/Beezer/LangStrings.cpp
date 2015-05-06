@@ -209,6 +209,7 @@ static const char* _englishStrings [NUM_STRINGS] =
     "[ URLView ]",
     "[ BeShare ]",
     "[ 7zip Add-on ]",
+    "[ Documentation Updates ]",
     "[ Disclaimer ]",
     "Version " K_APP_VERSION "\n"
     "$DEBUG_BUILD$\n\n"
@@ -219,6 +220,7 @@ static const char* _englishStrings [NUM_STRINGS] =
     "$S_COLUMN_LIST_VIEW$\nBrian Tietz\n\n"
     "$S_SPLITPANE$\nYNOP Talton\n\n"
     "$S_7ZIP$\nMarcin Konicki\n\n"
+    "$S_DOC_UPDATES$\nhumdinger\n\n"
     "Thank you for your contributions\n\n*  *  *\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
     "A special round of applause\n"
     "to BeShare/IRC members:\n\n"

@@ -149,6 +149,7 @@ AboutWindow::AboutWindow(const char* compileTimeStr)
     formatStr.ReplaceAll("$S_URLVIEW$", str(S_ABOUT_URLVIEW));
     formatStr.ReplaceAll("$S_BESHARE$", str(S_ABOUT_BESHARE));
     formatStr.ReplaceAll("$S_7ZIP$", str(S_ABOUT_7ZIP));
+    formatStr.ReplaceAll("$S_DOC_UPDATES$", str(S_ABOUT_DOC_UPDATES));    
     formatStr.ReplaceAll("$S_LEGAL_MUMBO_JUMBO$", str(S_ABOUT_LEGAL_MUMBO_JUMBO));
     formatStr.ReplaceAll("$S_DISCLAIMER$", str(S_ABOUT_DISCLAIMER));
     formatStr.ReplaceAll("$S_SPECIAL_THANKS$", str(S_ABOUT_SPECIAL_THANKS));
@@ -161,7 +162,7 @@ AboutWindow::AboutWindow(const char* compileTimeStr)
     // Dealloc m_creditsText as our textview would have made a copy of it & we don't use it anywhere else
     free((char*)m_creditsText);
 
-    int32 nSubHeadings = 7;
+    int32 nSubHeadings = 8;
     BString subHeadings[] =
     {
         str(S_ABOUT_PROGRAMMING),              // 0
@@ -170,7 +171,8 @@ AboutWindow::AboutWindow(const char* compileTimeStr)
         str(S_ABOUT_URLVIEW),                  // 3
         str(S_ABOUT_BESHARE),                  // 4
         str(S_ABOUT_7ZIP),                     // 5
-        str(S_ABOUT_DISCLAIMER)                // 6
+        str(S_ABOUT_DOC_UPDATES),              // 6
+        str(S_ABOUT_DISCLAIMER)                // 7
     };
 
     int32 nMainHeadings = 3;
