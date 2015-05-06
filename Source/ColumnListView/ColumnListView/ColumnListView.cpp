@@ -927,8 +927,8 @@ void ColumnListView::MouseDown(BPoint where)
                         Select(min_selection, max_selection, false);
                     }
                 }
-                else if ((modifier_keys & B_OPTION_KEY) && type != B_SINGLE_SELECTION_LIST)
-                    //If option held down, expand the selection to include just it.
+                else if ((modifier_keys & B_COMMAND_KEY) && type != B_SINGLE_SELECTION_LIST)
+                    //If command held down, expand the selection to include just it.
                     Select(item_index, true);
                 else
                     //If neither key held down, select this item alone.
@@ -942,8 +942,8 @@ void ColumnListView::MouseDown(BPoint where)
             else
             {
                 //Clicked an already selected item...
-                if (modifier_keys & B_OPTION_KEY)
-                    //if option held down, remove it.
+                if (modifier_keys & B_COMMAND_KEY)
+                    //if command held down, remove it.
                     Deselect(item_index);
                 else if (modifier_keys & B_SHIFT_KEY)
                 {
@@ -972,8 +972,8 @@ void ColumnListView::MouseDown(BPoint where)
     }
     else
     {
-        //Clicked outside of any items.  If no shift or option key, deselect all.
-        if ((!(modifier_keys & B_SHIFT_KEY)) && (!(modifier_keys & B_OPTION_KEY)))
+        //Clicked outside of any items.  If no shift or command key, deselect all.
+        if ((!(modifier_keys & B_SHIFT_KEY)) && (!(modifier_keys & B_COMMAND_KEY)))
             DeselectAll();
     }
 }
