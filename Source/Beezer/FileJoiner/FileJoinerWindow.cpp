@@ -48,6 +48,7 @@
 
 #include "FileJoinerWindow.h"
 #include "BevelView.h"
+#include "BitmapPool.h"
 #include "LangStrings.h"
 #include "UIConstants.h"
 #include "MsgConstants.h"
@@ -87,7 +88,7 @@ FileJoinerWindow::FileJoinerWindow(RecentMgr* dirs)
     font.GetHeight(&fntHt);
     float totalFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
 
-    BBitmap* splitBmp = ResBitmap("Img:FileJoiner");
+    BBitmap* splitBmp = BitmapPool::LoadAppVector("Img:FileJoiner", 32, 32);
 
     BevelView* sepView1 = new BevelView(BRect(-1, splitBmp->Bounds().Height() + 4 * K_MARGIN,
                                         Bounds().right - 1.0, splitBmp->Bounds().Height() + 4 * K_MARGIN + 1),
