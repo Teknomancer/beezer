@@ -1,15 +1,14 @@
-Things to do before releasing the app on the Internet:
+# Release instructions
 
-¶ Make sure the "VersionHistory.html" file is updated
+Things to do before creating an official release version of Beezer:
 
-¶ Make sure the "AppConstants.h" has the correct version number
+* Update "VersionHistory.html"
 
-¶ Remove the DDEBUG flag in BeIDE - but this is a pain as when I start
-	coding again it will be a bother to recompile everything when its turned back on,
-	So maybe this can be avoided
+* Make sure the "AppConstants.h" has the correct version number
 
-¶ Move any older versions of Beezer and its SoftwareValet package files to
-	"_OlderVersions" folder located in this folder's parent folder.
+* Remove the DDEBUG flag in BeIDE.
+  This is a pain as it will cause a full rebuild when its turned back on, but don't do a release with debug symbols.
 
+* Move any older versions of Beezer and its SoftwareValet package files to "_OlderVersions" folder located in this folder's parent folder.
 
-Ram.
+- Ramshankar
