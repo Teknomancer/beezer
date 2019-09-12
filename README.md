@@ -2,9 +2,9 @@
 
 Beezer is an archiver application for the _Haiku_ operating system (and previously for _Zeta_ and _BeOS_ operating systems).
 
-Beezer is functionally similar to programs like WinZip, Ark (on KDE) and Archive Manager (on Gnome).
+Beezer is functionally similar to programs like _WinZip_, _Ark_ (on _KDE_) and _Archive Manager_ (on _Gnome_).
 
-Beezer is a native Haiku/BeOS application written from scratch with the aim of having an easy-to-use & responsive GUI while offering powerful archiving features. Under the hood, it controls command-line programs, most of which come pre-installed with the operating system, to seamlessly perform compression and decompression.
+Beezer is a native _Haiku_/_BeOS_ application written from scratch in C++ with the aim of having an slick, responsive and easy-to-use GUI while offering powerful archiving features. Under the hood, Beezer controls command-line programs, most of which come pre-installed with the operating system, to seamlessly perform compression and decompression.
 
 Beezer was designed for a pluggable module architecture and supports several popular archive formats such as `zip`, `tar`, `gzip`, `bzip2`, `lha` (`lzh`) and `7zip` using pluggable modules/add-ons. Adding support for more archive formats is thus relatively little work.
 
