@@ -34,7 +34,7 @@ archive.
 7. The NULL parent directory entries that files that don't belong to any
    folder are handled separately.
 
-**NOTE** The ArchiveEntries list in Archiver is deleted after it is used by 
+**NOTE:** The ArchiveEntries list in Archiver is deleted after it is used by 
 FillLists(), this is because it will hold duplicate entries. Also while 
 deleting items from archives, we update the fileList and folderList BLists of 
 the Archiver class.
