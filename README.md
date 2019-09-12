@@ -1,8 +1,8 @@
 # Beezer
 
-Beezer is an archiver application for the _Haiku_ operating system (and previously for _Zeta_ and _BeOS_ operating systems).
+Beezer is an archiver application for the _Haiku_ operating system (and earlier versions on _Zeta_ and _BeOS_ operating systems). 
 
-**Beezer is currently only developed/maintained for the Haiku operating system.** The final version available for _Zeta_ and _BeOS_ was 0.09 with no further updates planned.
+Beezer is currently only developed/maintained for the Haiku operating system. The final version available for _Zeta_ and _BeOS_ was 0.09 with no further updates planned. Beezer does -not- work on _Windows_, _GNU/Linux_ or _MacOS_.
 
 Beezer is functionally similar to programs like _WinZip_, _Ark_ (on _KDE_) and _Archive Manager_ (on _Gnome_).
 
