@@ -1,0 +1,17 @@
+*.o
+*.a
+*.make
+*.rsrc
+*~
+Makefile
+CMakeCache.txt
+cmake_install.cmake
+CMakeFiles
+install_manifest.txt
+compile_commands.json
+Source/build
+.dir-locals.el
+GPATH
+GRTAGS
+GTAGS
+ID
