@@ -533,7 +533,7 @@ status_t ZipArchiver::SetComment(char* commentStr, const char* tempDirPath)
 
     // Write the new comment file back to the temp file
     std::fstream fileStream(tempFilePath.String(), std::ios::out);
-    if (fileStream != NULL)
+    if (fileStream.is_open())
         fileStream << outputString.String();
 
     fileStream.close();
