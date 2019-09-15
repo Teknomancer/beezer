@@ -194,7 +194,7 @@ void Archiver::SetIconList(BList* list)
     m_iconList = list;
 
     // Store named pointer variables - for convienience and quick reference
-    m_folderBmp = (BBitmap*)m_iconList->ItemAtFast(0L);
+    m_folderBmp = (BBitmap*)m_iconList->ItemAtFast(0);
     m_binaryBmp = (BBitmap*)m_iconList->ItemAtFast(1L);
     m_htmlBmp = (BBitmap*)m_iconList->ItemAtFast(2L);
     m_textBmp = (BBitmap*)m_iconList->ItemAtFast(3L);
@@ -628,7 +628,7 @@ bool Archiver::IsBinaryFound(char* filePath, const char* fileName) const
 {
     BStringList pathList;
     if (BPathFinder::FindPaths(B_FIND_PATH_BIN_DIRECTORY, fileName, B_FIND_PATH_EXISTING_ONLY, pathList) != B_OK) {
-        filePath = '\0';
+        filePath[0] = '\0';
         return false;
     }
 
@@ -641,7 +641,7 @@ bool Archiver::IsBinaryFound(char* filePath, const char* fileName) const
         }
     }
 
-    filePath = '\0';
+    filePath[0] = '\0';
     return false;
 }
 
@@ -702,9 +702,9 @@ void Archiver::SaveSettingsMenu()
 
     // Remove the first 3 items which will be "Save as Defaults", "Save to archive" and separator item
     // Then save the rest of the items,
-    BMenuItem* item0 = m_settingsMenu->RemoveItem(0L);
-    BMenuItem* item1 = m_settingsMenu->RemoveItem(0L);
-    BMenuItem* item2 = m_settingsMenu->RemoveItem(0L);
+    BMenuItem* item0 = m_settingsMenu->RemoveItem(0);
+    BMenuItem* item1 = m_settingsMenu->RemoveItem(0);
+    BMenuItem* item2 = m_settingsMenu->RemoveItem(0);
 
     m_settingsMenu->Archive(&settingsMsg, true);
 

@@ -80,7 +80,7 @@ BeezerListView::~BeezerListView()
     // Delete all list items here as CLV doesn't do it for us in its destructor
     int32 itemCount = FullListCountItems();
     for (int32 i = 0; i < itemCount; i++)
-        delete(ListEntry*)ColumnListView::RemoveItem(0L);
+        delete(ListEntry*)ColumnListView::RemoveItem(0);
 }
 
 
@@ -933,7 +933,7 @@ void BeezerListView::CopyToClipboard(char columnSeparator)
     {
         for (int32 j = 0; j < columnCount; j++)
         {
-            const char* columnText = selectedItem->GetColumnContentText((int32)visibleColumnList.ItemAt(j));
+            const char* columnText = selectedItem->GetColumnContentText((intptr_t)visibleColumnList.ItemAt(j));
             if (columnText && !(strcmp(columnText, "") == 0))
                 buf << columnText;
 

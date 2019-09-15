@@ -66,7 +66,7 @@ RecentMgr::~RecentMgr()
     SavePrefs();
 
     for (int32 i = 0; i < m_paths.CountItems(); i++)
-        free((char*)m_paths.RemoveItem(0L));
+        free((char*)m_paths.RemoveItem(0));
 }
 
 

@@ -1506,7 +1506,7 @@ void MainWindow::MessageReceived(BMessage* message)
             break;
         }
 
-        case M_LOG_CONTEXT_CLEAR: m_logTextView->SetText(NULL, 0L); break;
+        case M_LOG_CONTEXT_CLEAR: m_logTextView->SetText(NULL, 0); break;
 
         default:
             BWindow::MessageReceived(message);
@@ -3646,9 +3646,9 @@ void MainWindow::SaveArchiverToArchive(BMessage* message)
     BMessage msg('arkv');
 
     // Remove "Save as default" "save to archive" and separator items
-    BMenuItem* item0 = settingsMenu->RemoveItem(0L);
-    BMenuItem* item1 = settingsMenu->RemoveItem(0L);
-    BMenuItem* item2 = settingsMenu->RemoveItem(0L);
+    BMenuItem* item0 = settingsMenu->RemoveItem(0);
+    BMenuItem* item1 = settingsMenu->RemoveItem(0);
+    BMenuItem* item2 = settingsMenu->RemoveItem(0);
 
     // If no "message" is passed save the current archiver menu
     if (!message)
@@ -4240,7 +4240,7 @@ void MainWindow::EmptyListViewIfNeeded()
     {
         int32 count = m_listView->FullListCountItems();
         for (int32 i = 0; i < count; i++)
-            delete m_listView->RemoveItem(0L);
+            delete m_listView->RemoveItem(0);
     }
 }
 
