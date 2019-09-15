@@ -101,7 +101,7 @@ void LogTextView::AddText(const char* text, bool newLine, bool capitalizeFirstLe
     outText.RemoveAll("\n");
 
     if (capitalizeFirstLetter == true)
-        outText[0] = toupper(outText[0]);
+		outText.ReplaceFirst(outText[0], toupper(outText[0]));
 
     Insert(textLen, outText.String(), byteLenOfText);
     ScrollToSelection();
