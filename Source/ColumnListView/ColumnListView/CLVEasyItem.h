@@ -35,6 +35,7 @@
 #include <List.h>
 #include <Font.h> // Ram
 #include <Bitmap.h>    // Ram
+#include <ObjectList.h>
 
 //******************************************************************************************************
 //**** PROJECT HEADER FILES AND CLASS NAME DECLARATIONS
@@ -76,7 +77,7 @@ class CLVEasyItem : public CLVListItem
     private:
         void PrepListsForSet(int column_index);
 
-        BList m_column_types;    //List of int32's converted from CLVColumnTypes
+        BObjectList<int32> m_column_types;    //List of int32's converted from CLVColumnTypes
         BList m_column_content;    //List of char* (full content) or BBitmap*
         BList m_aux_content;    //List of char* (truncated content) or int32 for bitmap horizontal offset
         BList m_cached_rects;    //List of BRect for truncated text
