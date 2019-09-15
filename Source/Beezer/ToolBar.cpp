@@ -39,6 +39,12 @@
 #include "UIConstants.h"
 
 
+// Initialize static non-integral vars here to make c++11 happy
+// while avoiding the use of constexpr which would break gcc2
+const float  ToolBar::mk_vertSpacing = 3;
+const float  ToolBar::mk_horizSpacing = 2;
+const float  ToolBar::mk_Border = 2;
+
 
 ToolBar::ToolBar(BRect frame, const char* name, rgb_color backColor)
     : BView(frame, name, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_WILL_DRAW),

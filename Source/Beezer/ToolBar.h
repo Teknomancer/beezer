@@ -56,9 +56,9 @@ class ToolBar : public BView
         virtual float       Height() const;
 
         // Static constants
-        static const float  mk_vertSpacing = 3;
-        static const float  mk_horizSpacing = 2;
-        static const float  mk_Border = 2;
+        static const float  mk_vertSpacing;
+        static const float  mk_horizSpacing;
+        static const float  mk_Border;
 
     protected:
         // Protected members
