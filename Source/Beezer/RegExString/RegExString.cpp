@@ -536,7 +536,7 @@ bool RegExString::StringMatchesPattern(const char* string, const char* pattern,
                 while (*pattern == '*' || *pattern == '?')
                 {
                     pattern++;
-                    if (*pattern == '?' && string != '\0')
+                    if (*pattern == '?' && *string != '\0')
                     {
                         string++;
                         if (IsInsideGlyph(string[0]))
