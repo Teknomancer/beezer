@@ -57,8 +57,8 @@ class InfoBar : public BView
         BarberPole*         LoadIndicator() const;
 
         // Static constants
-        static const float  mk_vertSpacing = 3;
-        static const float  mk_horizSpacing = 2;
+        static const float  mk_vertSpacing;
+        static const float  mk_horizSpacing;
 
     protected:
         // Protected members

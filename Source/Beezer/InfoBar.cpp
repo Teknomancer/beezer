@@ -46,6 +46,11 @@
 #include "UIConstants.h"
 
 
+// Initialize static non-integral vars here to make c++11 happy
+// while avoiding the use of constexpr which would break gcc2
+const float InfoBar::mk_vertSpacing = 3;
+const float InfoBar::mk_horizSpacing = 2;
+
 
 InfoBar::InfoBar(BRect frame, BList* slotPositions, const char* name, rgb_color backColor)
     : BView(frame, name, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_WILL_DRAW),
