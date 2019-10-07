@@ -192,7 +192,12 @@ void RecentMgr::FillMenu(BMenu* menu, const char* fieldName, BHandler* target)
                 displayPath = path.Leaf();
 
             BMessage* targetMessage = new BMessage(m_command);
-            targetMessage->AddFlat(fieldName, &path);
+            // FIXME  the Haiku version of AddFlat seems to be broken and is sending bad data
+            // send the refs manually for now and reenable once it's fixed
+            entry_ref ref;
+            if (get_ref_for_path(path.Path(), &ref) == B_OK)
+	            targetMessage->AddRef(fieldName, &ref);
+            //targetMessage->AddFlat(fieldName, &path);
 
             BMenuItem* item = new BMenuItem(displayPath, targetMessage);
             menu->AddItem(item);
