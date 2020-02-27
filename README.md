@@ -16,4 +16,4 @@ Contributions in the form of patches are welcome.
 
 Beezer also supports some additional file formats that may require you to download the binaries if they don't ship as part of the operating system.
 
-Beezer's official home page can be found here: https://sites.google.com/site/appbeezer/
+Beezer's official home page can be found here: https://ramshankar.org/software/beezer/
