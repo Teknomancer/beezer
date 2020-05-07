@@ -93,25 +93,11 @@ void BeezerStringView::RenderView(bool firstTime)
 
     BRect bounds(m_backView->Bounds());
     m_backView->SetDrawingMode(B_OP_COPY);
+    m_backView->SetHighColor(m_backView->ViewColor());
+    m_backView->FillRect(bounds);
 
-    if (firstTime == true)
-    {
-        // Fill up the background and draw the borders -- i.e. complete redraw
-        SetViewColor(B_TRANSPARENT_COLOR);
-        m_backView->SetHighColor(m_backView->ViewColor());
-        m_backView->FillRect(bounds);
-    }
-
-    // Erase old text using backcolor
+    // Write text
     m_backView->SetFont(&m_font, B_FONT_ALL);
-    if (m_oldText != NULL && firstTime == false)    // firstTime check is CRITICAL (bugfix)
-    {
-        m_backView->MovePenTo(3, bounds.bottom - 3);
-        m_backView->SetHighColor(m_backView->ViewColor());
-        m_backView->DrawString(m_oldText);
-    }
-
-    // Write new text
     m_backView->MovePenTo(3, bounds.bottom - 3);
     m_backView->SetHighColor(m_foreground);
     m_backView->DrawString(m_text);
