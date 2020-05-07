@@ -1669,14 +1669,14 @@ void MainWindow::AddListView()
 
     // Create the data columns
     uint32 columnFlags = CLV_SORT_KEYABLE | CLV_TELL_ITEMS_WIDTH | CLV_HEADER_TRUNCATE;
-    m_fileNameColumn = new CLVColumn(str(S_COLUMN_NAME), 166, columnFlags | CLV_LOCK_AT_BEGINNING | CLV_NOT_MOVABLE);
-    m_sizeColumn = new CLVColumn(str(S_COLUMN_SIZE), 69, columnFlags | CLV_RIGHT_JUSTIFIED);
-    m_packedColumn = new CLVColumn(str(S_COLUMN_PACKED), 69, columnFlags | CLV_RIGHT_JUSTIFIED);
-    m_ratioColumn = new CLVColumn(str(S_COLUMN_RATIO), 45, columnFlags | CLV_RIGHT_JUSTIFIED);
-    m_pathColumn = new CLVColumn(str(S_COLUMN_PATH), 120, columnFlags);
-    m_dateColumn = new CLVColumn(str(S_COLUMN_DATE), 130, columnFlags);
-    m_methodColumn = new CLVColumn(str(S_COLUMN_METHOD), 56, columnFlags);
-    m_crcColumn = new CLVColumn(str(S_COLUMN_CRC), 60, columnFlags);
+    m_fileNameColumn = new CLVColumn(str(S_COLUMN_NAME), 300, columnFlags | CLV_LOCK_AT_BEGINNING | CLV_NOT_MOVABLE);
+    m_sizeColumn = new CLVColumn(str(S_COLUMN_SIZE), 96, columnFlags | CLV_RIGHT_JUSTIFIED);
+    m_packedColumn = new CLVColumn(str(S_COLUMN_PACKED), 72, columnFlags | CLV_RIGHT_JUSTIFIED);
+    m_ratioColumn = new CLVColumn(str(S_COLUMN_RATIO), 64, columnFlags | CLV_RIGHT_JUSTIFIED);
+    m_pathColumn = new CLVColumn(str(S_COLUMN_PATH), 128, columnFlags);
+    m_dateColumn = new CLVColumn(str(S_COLUMN_DATE), 142, columnFlags);
+    m_methodColumn = new CLVColumn(str(S_COLUMN_METHOD), 72, columnFlags);
+    m_crcColumn = new CLVColumn(str(S_COLUMN_CRC), 64, columnFlags);
 
     // Add all the columns to the list View
     m_columnList.AddItem(m_fileNameColumn);
