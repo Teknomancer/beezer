@@ -702,9 +702,9 @@ void Archiver::SaveSettingsMenu()
 
     // Remove the first 3 items which will be "Save as Defaults", "Save to archive" and separator item
     // Then save the rest of the items,
-    BMenuItem* item0 = m_settingsMenu->RemoveItem(0);
-    BMenuItem* item1 = m_settingsMenu->RemoveItem(0);
-    BMenuItem* item2 = m_settingsMenu->RemoveItem(0);
+    BMenuItem* item0 = m_settingsMenu->RemoveItem((int32)0);
+    BMenuItem* item1 = m_settingsMenu->RemoveItem((int32)0);
+    BMenuItem* item2 = m_settingsMenu->RemoveItem((int32)0);
 
     m_settingsMenu->Archive(&settingsMsg, true);
 
