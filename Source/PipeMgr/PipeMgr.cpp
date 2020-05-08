@@ -55,7 +55,7 @@ void PipeMgr::FlushArgs()
 {
     int32 count = m_argList.CountItems();
     for (int32 i = 0; i < count; i++)
-        free(m_argList.RemoveItem(0));
+        free(m_argList.RemoveItem((int32)0));
     m_argList.MakeEmpty();
 }
 
