@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -35,13 +35,21 @@
 #include "AppConstants.h"
 #include "BarberPole.h"
 #include "BitmapPool.h"
-#include "LangStrings.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
 #include "StaticBitmapView.h"
 #include "StatusWindow.h"
 #include "UIConstants.h"
 
+
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "StatusWindow"
+#else
+#define B_TRANSLATE(x) x
+#endif
 
 
 StatusWindow::StatusWindow(const char* title, BWindow* callerWindow, const char* text, volatile bool* cancel,
@@ -88,7 +96,7 @@ StatusWindow::StatusWindow(const char* title, BWindow* callerWindow, const char*
     if (cancel)
         layout.Add(BGroupLayoutBuilder(B_HORIZONTAL, 0)
                    .AddGlue()
-                   .Add(new BButton("StatusWindow:CancelButton", str(S_STOP_OPERATION), new BMessage(M_STOP_OPERATION)))
+                   .Add(new BButton("StatusWindow:CancelButton", B_TRANSLATE("Cancel"), new BMessage(M_STOP_OPERATION)))
                    .AddGlue()
                   );
 
