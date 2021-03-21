@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -34,10 +34,18 @@
 #include <string.h>
 #include <malloc.h>
 
-#include "LangStrings.h"
 #include "PrefsView.h"
 #include "UIConstants.h"
 
+
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "PrefsView"
+#else
+#define B_TRANSLATE(x) x
+#endif
 
 
 PrefsView::PrefsView(BRect frame, const char* title, const char* description)
@@ -104,7 +112,7 @@ void PrefsView::AddRevertButton()
 {
     m_revertBtn = new BButton(BRect(Bounds().right - m_margin - K_BUTTON_WIDTH,
                                     Bounds().bottom - m_margin - K_BUTTON_HEIGHT - 1, Bounds().right - m_margin,
-                                    Bounds().bottom - m_margin - 1), "PrefsView:defaultBtn", str(S_REVERT),
+                                    Bounds().bottom - m_margin - 1), "PrefsView:defaultBtn", B_TRANSLATE("Revert"),
                               new BMessage(M_REVERT), B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
     AddChild(m_revertBtn);
     m_revertBtn->SetTarget(this);
