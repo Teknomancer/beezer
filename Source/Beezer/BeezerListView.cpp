@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -44,11 +44,21 @@
 #include "AppUtils.h"
 #include "BeezerListView.h"
 #include "BitmapPool.h"
-#include "LangStrings.h"
 #include "ListEntry.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
 #include "RegExString.h"
+
+
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "BeezerListView"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
 
 const char* const kPfSpecialField = "beezer_special_field_magix!";
 
@@ -1213,7 +1223,7 @@ bool BeezerListView::InitiateDrag(BPoint point, int32 index, bool wasSelected)
     BBitmap* appSmallIcon = _glob_bitmap_pool->m_smallAppIcon;
     BString dragStr;
     if (fullArchiveExtract)
-        dragStr = str(S_DRAG_EXTRACT_ARCHIVE);
+        dragStr = B_TRANSLATE("Extract archive");
     else
     {
         //    Later use this to count folders, files -- call Dumb or Smart version
@@ -1222,15 +1232,15 @@ bool BeezerListView::InitiateDrag(BPoint point, int32 index, bool wasSelected)
         CountSelectionSmart(fileCount, folderCount);
 
         if (fileCount == 0)
-            dragStr << folderCount << " " << (folderCount > 1 ? str(S_DRAG_FOLDERS) : str(S_DRAG_FOLDER));
+            dragStr << folderCount << " " << (folderCount > 1 ? B_TRANSLATE("folders") : B_TRANSLATE("folder"));
         else if (folderCount == 0)
-            dragStr << fileCount << " " << (fileCount > 1 ? str(S_DRAG_FILES) : str(S_DRAG_FILE));
+            dragStr << fileCount << " " << (fileCount > 1 ? B_TRANSLATE("files") : B_TRANSLATE("file"));
         else
         {
-            dragStr << folderCount << " " << (folderCount > 1 ? str(S_DRAG_FOLDERS) : str(S_DRAG_FOLDER))
-            << " (" << fileCount << " " << (fileCount > 1 ? str(S_DRAG_FILES) : str(S_DRAG_FILE)) << ")";
+            dragStr << folderCount << " " << (folderCount > 1 ? B_TRANSLATE("folders") : B_TRANSLATE("folder"))
+            << " (" << fileCount << " " << (fileCount > 1 ? B_TRANSLATE("files") : B_TRANSLATE("file")) << ")";
         }
-        dragStr << " " << str(S_DRAG_TO_EXTRACT);
+        dragStr << " " << B_TRANSLATE("to extract");
     }
 
     // Autosize the height to fit icon and text height
