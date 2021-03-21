@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -46,7 +46,6 @@
 #include "BitmapPool.h"
 #include "FileSplitterWindow.h"
 #include "ImageButton.h"
-#include "LangStrings.h"
 #include "MsgConstants.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
@@ -55,16 +54,27 @@
 #include "UIConstants.h"
 
 
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "StartupWindow"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
 
 StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
-    : BWindow(BRect(10, 10, 0, 100), K_APP_TITLE, B_TITLED_WINDOW,
+    : BWindow(BRect(10, 10, 0, 100), B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE), B_TITLED_WINDOW,
               B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS),
     m_recentMgr(recentMgr)
 {
     SetLayout(new BGroupLayout(B_VERTICAL, 0));
 
     float width, height;
-    m_headingView = new BStringView("StartupWindow:HeadingView", str(S_WELCOME_TO));
+    BString welcome(B_TRANSLATE("Welcome to %appname%"));
+    welcome.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
+    m_headingView = new BStringView("StartupWindow:HeadingView", welcome);
     m_headingView->SetFont(be_bold_font);
     m_headingView->SetHighColor(K_STARTUP_MAIN_HEADING);
     m_headingView->SetLowColor(m_headingView->ViewColor());
@@ -80,27 +90,27 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
 
     BitmapPool* _bmps = _glob_bitmap_pool;
 
-    m_createBtn = new ImageButton(buttonRect, "StartupWindow:New", str(S_TOOLBAR_NEW),
+    m_createBtn = new ImageButton(buttonRect, "StartupWindow:New", B_TRANSLATE("New"),
                                   _bmps->m_tbarNewBmp, NULL, new BMessage(M_FILE_NEW), false, ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon,
                                   false, true, true, B_FOLLOW_H_CENTER);
     m_createBtn->SetExplicitMinSize(BSize(K_TOOLBAR_WIDTH, -1));
 
-    m_openBtn = new ImageButton(buttonRect, "StartupWindow:Open", str(S_TOOLBAR_OPEN),
+    m_openBtn = new ImageButton(buttonRect, "StartupWindow:Open", B_TRANSLATE("Open"),
                                 _bmps->m_tbarOpenBmp, NULL, new BMessage(M_FILE_OPEN), false, ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon,
                                 false, true, true, B_FOLLOW_H_CENTER);
     m_openBtn->SetExplicitMinSize(BSize(K_TOOLBAR_WIDTH, -1));
 
-    m_openRecentBtn = new ImageButton(buttonRect, "StartupWindow:OpenRecent", str(S_TOOLBAR_OPEN_RECENT),
+    m_openRecentBtn = new ImageButton(buttonRect, "StartupWindow:OpenRecent", B_TRANSLATE("Recent"),
                                       _bmps->m_tbarOpenRecentBmp, NULL, new BMessage(M_FILE_OPEN_RECENT), false,
                                       ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon, false, true, true, B_FOLLOW_H_CENTER);
     m_openRecentBtn->SetExplicitMinSize(BSize(K_TOOLBAR_WIDTH, -1));
 
-    m_toolsBtn = new ImageButton(buttonRect, "StartupWindow:Tools", str(S_TOOLBAR_TOOLS),
+    m_toolsBtn = new ImageButton(buttonRect, "StartupWindow:Tools", B_TRANSLATE("Tools"),
                                  _bmps->m_tbarToolsBmp, NULL, new BMessage(M_TOOLS_LIST), false,
                                  ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon, false, true, true, B_FOLLOW_H_CENTER);
     m_toolsBtn->SetExplicitMinSize(BSize(K_TOOLBAR_WIDTH, -1));
 
-    m_prefsBtn = new ImageButton(buttonRect, "StartupWindow:Prefs", str(S_TOOLBAR_PREFS),
+    m_prefsBtn = new ImageButton(buttonRect, "StartupWindow:Prefs", B_TRANSLATE("Preferences"),
                                  _bmps->m_tbarPrefsBmp, NULL, new BMessage(M_EDIT_PREFERENCES), false, ui_color(B_PANEL_BACKGROUND_COLOR),
                                  kBelowIcon,    false, true, true, B_FOLLOW_H_CENTER);
 
@@ -126,11 +136,11 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
             );
 
     // Setup the tooltips
-    m_createBtn->SetToolTip(const_cast<char*>(str(S_BUBBLEHELP_NEW)));
-    m_openBtn->SetToolTip(const_cast<char*>(str(S_BUBBLEHELP_OPEN)));
-    m_openRecentBtn->SetToolTip(const_cast<char*>(str(S_BUBBLEHELP_OPEN_RECENT)));
-    m_prefsBtn->SetToolTip(const_cast<char*>(str(S_BUBBLEHELP_PREFS)));
-    m_toolsBtn->SetToolTip(const_cast<char*>(str(S_BUBBLEHELP_TOOLS)));
+    m_createBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Create a new archive")));
+    m_openBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Open an existing archive")));
+    m_openRecentBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Open a recently opened archive")));
+    m_prefsBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Edit application preferences")));
+    m_toolsBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Additional tools")));
 
     // Center window on-screen
     CenterOnScreen();
