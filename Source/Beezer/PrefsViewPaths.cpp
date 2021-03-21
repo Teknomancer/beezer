@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -44,7 +44,6 @@
 #include "AppConstants.h"
 #include "BitmapPool.h"
 #include "ImageButton.h"
-#include "LangStrings.h"
 #include "LocalUtils.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
@@ -52,6 +51,17 @@
 #include "PrefsViewPaths.h"
 #include "Shared.h"
 #include "UIConstants.h"
+
+
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "PrefsViewPaths"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
 
 #define M_PATH_SELECTED               'pths'
 #define M_SELECT_OPEN_PATH           'sopp'
@@ -69,7 +79,7 @@ const char* const kArkDir =           ":arkdir:";
 
 
 PrefsViewPaths::PrefsViewPaths(BRect frame)
-    : PrefsView(frame, str(S_PREFS_TITLE_PATHS), str(S_PREFS_DESC_PATHS))
+    : PrefsView(frame, B_TRANSLATE("Paths"), B_TRANSLATE("Configure default & favorite paths"))
 {
     m_messenger = NULL;
     m_message = NULL;
@@ -95,7 +105,7 @@ PrefsViewPaths::~PrefsViewPaths()
 void PrefsViewPaths::Render()
 {
     BStringView* defaultStrView = new BStringView(BRect(m_margin, m_margin, 0, 0), NULL,
-            str(S_PREFS_PATHS_DEFAULT));
+            B_TRANSLATE("Default paths:"));
     defaultStrView->SetFont(&m_sectionFont);
     defaultStrView->ResizeToPreferred();
     defaultStrView->SetLowColor(ViewColor());
@@ -103,9 +113,9 @@ void PrefsViewPaths::Render()
     int8 dividerStrCount = 3;
     BString dividerStrings[] =
     {
-        str(S_PREFS_PATHS_OPEN),
-        str(S_PREFS_PATHS_ADD),
-        str(S_PREFS_PATHS_EXTRACT)
+        B_TRANSLATE("Open path: "),
+        B_TRANSLATE("Add path: "),
+        B_TRANSLATE("Extract path: ")
     };
 
     float divider = -1;
@@ -116,13 +126,13 @@ void PrefsViewPaths::Render()
 
     m_openPathView = new BTextControl(BRect(3 * m_margin, defaultStrView->Frame().bottom + m_vGap + 6,
                                             Bounds().right - (2 * m_margin) - K_BUTTON_WIDTH, 0), "PrefsViewPaths:openPathView",
-                                      str(S_PREFS_PATHS_OPEN), NULL, NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP,
+                                      B_TRANSLATE("Open path: "), NULL, NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP,
                                       B_WILL_DRAW | B_NAVIGABLE);
     m_openPathView->SetDivider(divider);
     m_openPathView->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
     m_openPathView->TextView()->DisallowChar(B_INSERT);
 
-    BString buttonText = str(S_PREFS_PATHS_SELECT); buttonText << "...";
+    BString buttonText = B_TRANSLATE("Select");
     m_openPathBtn = new BButton(BRect(m_openPathView->Frame().right + m_margin, m_openPathView->Frame().top - 4,
                                       m_openPathView->Frame().right + m_margin + K_BUTTON_WIDTH,
                                       m_openPathView->Frame().top - 4 + K_BUTTON_HEIGHT), "PrefsViewPaths:openPathBtn",
@@ -130,7 +140,7 @@ void PrefsViewPaths::Render()
                                 B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
 
     m_addPathView = new BTextControl(BRect(3 * m_margin, m_openPathView->Frame().bottom + m_vGap + 6,
-                                           m_openPathView->Frame().right, 0), "PrefsViewPaths:addPathView", str(S_PREFS_PATHS_ADD),
+                                           m_openPathView->Frame().right, 0), "PrefsViewPaths:addPathView", B_TRANSLATE("Add path: "),
                                      NULL, NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
     m_addPathView->SetDivider(divider);
     m_addPathView->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
@@ -144,19 +154,19 @@ void PrefsViewPaths::Render()
 
     BStringView* extractStrView = new BStringView(BRect(m_addPathView->Frame().left,
             m_addPathView->Frame().bottom + 2 * m_vGap + 10,
-            m_addPathView->Frame().left + StringWidth(str(S_PREFS_PATHS_EXTRACT)), 0),
-            "PrefsViewPaths:extractStrView", str(S_PREFS_PATHS_EXTRACT),
+            m_addPathView->Frame().left + StringWidth(B_TRANSLATE("Extract path: ")), 0),
+            "PrefsViewPaths:extractStrView", B_TRANSLATE("Extract path: "),
             B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
     extractStrView->ResizeToPreferred();
 
     m_arkDirOpt = new BRadioButton(BRect(extractStrView->Frame().left + 3 * m_margin,
                                          extractStrView->Frame().bottom + m_vGap, 0, 0), "PrefsViewPaths:arkDirOpt",
-                                   str(S_PREFS_PATHS_ARKDIR), new BMessage(M_ARK_DIR), B_FOLLOW_LEFT | B_FOLLOW_TOP,
+                                   B_TRANSLATE("Same folder as source (archive) file"), new BMessage(M_ARK_DIR), B_FOLLOW_LEFT | B_FOLLOW_TOP,
                                    B_WILL_DRAW | B_NAVIGABLE);
     m_arkDirOpt->ResizeToPreferred();
 
     m_useDirOpt = new BRadioButton(BRect(m_arkDirOpt->Frame().left, m_arkDirOpt->Frame().bottom + m_vGap + 1,
-                                         0, 0), "PrefsViewPaths:useDirOpt", str(S_PREFS_PATHS_USEDIR),
+                                         0, 0), "PrefsViewPaths:useDirOpt", B_TRANSLATE("Use: "),
                                    new BMessage(M_USE_DIR), B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
     m_useDirOpt->ResizeToPreferred();
     m_useDirOpt->SetValue(B_CONTROL_ON);
@@ -180,14 +190,14 @@ void PrefsViewPaths::Render()
 
     BStringView* favStrView = new BStringView(BRect(defaultStrView->Frame().left,
             m_extractPathView->Frame().bottom + m_margin + m_vGap + 8, 0, 0),
-            "PrefsViewPaths:favStrView", str(S_PREFS_PATHS_FAVOURITE),
+            "PrefsViewPaths:favStrView", B_TRANSLATE("Favorite extract paths:"),
             B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
     favStrView->SetFont(&m_sectionFont);
     favStrView->ResizeToPreferred();
     favStrView->SetLowColor(ViewColor());
 
     m_genChk = new BCheckBox(BRect(3 * m_margin, favStrView->Frame().bottom, 0, 0),
-                             "PrefsViewPaths:genChk", str(S_PREFS_PATHS_GENERATE), NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP,
+                             "PrefsViewPaths:genChk", B_TRANSLATE("List more paths (using archive name)"), NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP,
                              B_WILL_DRAW | B_NAVIGABLE);
     m_genChk->ResizeToPreferred();
 
@@ -317,7 +327,7 @@ void PrefsViewPaths::MessageReceived(BMessage* message)
             {
                 m_openPanel = new BFilePanel(B_OPEN_PANEL, m_messenger, NULL, B_DIRECTORY_NODE, false, NULL,
                                              NULL, true, true);
-                m_openPanel->SetButtonLabel(B_DEFAULT_BUTTON, str(S_PREFS_PATHS_SELECT));
+                m_openPanel->SetButtonLabel(B_DEFAULT_BUTTON, B_TRANSLATE("Select"));
             }
 
             if (m_message == NULL)
@@ -329,22 +339,22 @@ void PrefsViewPaths::MessageReceived(BMessage* message)
             if (message->what == M_SELECT_OPEN_PATH)
             {
                 m_message->AddPointer(kTextCtrlPtr, m_openPathView);
-                panelWindowTitle = str(S_PREFS_PATHS_OPEN_TITLE);
+                panelWindowTitle = B_TRANSLATE("Select default open path");
             }
             else if (message->what == M_SELECT_ADD_PATH)
             {
                 m_message->AddPointer(kTextCtrlPtr, m_addPathView);
-                panelWindowTitle = str(S_PREFS_PATHS_ADD_TITLE);
+                panelWindowTitle = B_TRANSLATE("Select default add path");
             }
             else if (message->what == M_SELECT_EXTRACT_PATH)
             {
                 m_message->AddPointer(kTextCtrlPtr, m_extractPathView);
-                panelWindowTitle = str(S_PREFS_PATHS_EXTRACT_TITLE);
+                panelWindowTitle = B_TRANSLATE("Select default extract path");
             }
             else if (message->what == M_ADD_CLICKED)
             {
                 m_message->AddPointer(kListCtrlPtr, m_favListView);
-                panelWindowTitle = str(S_PREFS_PATHS_FAV_TITLE);
+                panelWindowTitle = B_TRANSLATE("Add a favorite extract path");
             }
 
             m_openPanel->Window()->SetTitle(panelWindowTitle.String());
@@ -376,9 +386,9 @@ void PrefsViewPaths::MessageReceived(BMessage* message)
                     // don't add if same path is being added
                     if (strcmp(existingPath.String(), pathOfRef.Path()) == 0)
                     {
-                        BString errString = str(S_PREFS_PATHS_NOT_UNIQUE);
-                        errString.ReplaceAll("%s", existingPath.String());
-                        BAlert* errAlert = new BAlert("error", errString.String(), str(S_OK),
+                        BString errString = B_TRANSLATE("%filepath% is already present in your favorites");
+                        errString.ReplaceAll("%filepath%", existingPath.String());
+                        BAlert* errAlert = new BAlert("error", errString.String(), B_TRANSLATE("OK"),
                                                       NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
                         errAlert->SetShortcut(0L, B_ESCAPE);
                         errAlert->Go();
