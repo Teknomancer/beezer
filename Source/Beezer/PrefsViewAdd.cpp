@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -39,19 +39,28 @@
 
 #include "AppConstants.h"
 #include "BitmapPool.h"
-#include "LangStrings.h"
 #include "LocalUtils.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
 #include "PrefsViewAdd.h"
 #include "UIConstants.h"
 
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "PrefsViewAdd"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
+
 #define M_WARN               'warn'
 
 
 
 PrefsViewAdd::PrefsViewAdd(BRect frame)
-    : PrefsView(frame, str(S_PREFS_TITLE_ADD), str(S_PREFS_DESC_ADD))
+    : PrefsView(frame, B_TRANSLATE("Add"), B_TRANSLATE("Options related to adding of entries to archives"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Add", 20, 20));
     Render();
@@ -62,13 +71,13 @@ PrefsViewAdd::PrefsViewAdd(BRect frame)
 void PrefsViewAdd::Render()
 {
     m_replaceMenu = new BPopUpMenu("");
-    m_replaceMenu->AddItem(new BMenuItem(str(S_PREFS_ADD_NEVER), NULL));
-    m_replaceMenu->AddItem(new BMenuItem(str(S_PREFS_ADD_ASKUSER), NULL));
-    m_replaceMenu->AddItem(new BMenuItem(str(S_PREFS_ADD_ALWAYS), NULL));
-    m_replaceMenu->AddItem(new BMenuItem(str(S_PREFS_ADD_BYDATE), NULL));
+    m_replaceMenu->AddItem(new BMenuItem(B_TRANSLATE("Never replace"), NULL));
+    m_replaceMenu->AddItem(new BMenuItem(B_TRANSLATE("Ask before replacing"), NULL));
+    m_replaceMenu->AddItem(new BMenuItem(B_TRANSLATE("Without asking"), NULL));
+    m_replaceMenu->AddItem(new BMenuItem(B_TRANSLATE("When new file is more recent"), NULL));
 
     m_replaceField = new BMenuField(BRect(m_margin, m_margin, Bounds().right - m_margin, 0),
-                                    "PrefsViewAdd:replaceField", str(S_PREFS_ADD_REPLACE), (BMenu*)m_replaceMenu,
+                                    "PrefsViewAdd:replaceField", B_TRANSLATE("Replace files:"), (BMenu*)m_replaceMenu,
                                     B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
     m_replaceField->SetDivider(StringWidth(m_replaceField->Label()) + StringWidth("W"));
 
@@ -76,7 +85,7 @@ void PrefsViewAdd::Render()
     be_plain_font->GetHeight(&fntHt);
 
     m_warnMBChk = new BCheckBox(BRect(m_margin, 3 * m_margin + fntHt.ascent + fntHt.descent + m_vGap + 4, 0, 0),
-                                "PrefsViewAdd:warnMBChk", str(S_PREFS_ADD_WARNMB), new BMessage(M_WARN), B_FOLLOW_LEFT,
+                                "PrefsViewAdd:warnMBChk", B_TRANSLATE("Confirm when adding more than "), new BMessage(M_WARN), B_FOLLOW_LEFT,
                                 B_WILL_DRAW | B_NAVIGABLE);
     m_warnMBChk->ResizeToPreferred();
 
@@ -88,16 +97,16 @@ void PrefsViewAdd::Render()
     m_mbView->SetDivider(0);
 
     BStringView* mbStrView = new BStringView(BRect(m_mbView->Frame().right + 4, m_warnMBChk->Frame().top + 1,
-            0, 0), "PrefsViewAdd:mbStrView", str(S_PREFS_ADD_MB), B_FOLLOW_LEFT, B_WILL_DRAW);
+            0, 0), "PrefsViewAdd:mbStrView", B_TRANSLATE("MiB"), B_FOLLOW_LEFT, B_WILL_DRAW);
     mbStrView->ResizeToPreferred();
 
     m_dropChk = new BCheckBox(BRect(m_margin,    m_warnMBChk->Frame().bottom + m_vGap, 0, 0),
-                              "PrefsViewAdd:dropChk", str(S_PREFS_CONFIRM_DROP), NULL, B_FOLLOW_LEFT,
+                              "PrefsViewAdd:dropChk", B_TRANSLATE("Confirm when adding through drag 'n drop"), NULL, B_FOLLOW_LEFT,
                               B_WILL_DRAW | B_NAVIGABLE);
     m_dropChk->ResizeToPreferred();
 
     m_sortChk = new BCheckBox(BRect(m_margin, m_dropChk->Frame().bottom + m_vGap, 0, 0),
-                              "PrefsViewAdd:sortChk", str(S_PREFS_ADD_SORT), NULL, B_FOLLOW_LEFT,
+                              "PrefsViewAdd:sortChk", B_TRANSLATE("Sort after add (n/a for reloading archivers)"), NULL, B_FOLLOW_LEFT,
                               B_WILL_DRAW | B_NAVIGABLE);
     m_sortChk->ResizeToPreferred();
 
