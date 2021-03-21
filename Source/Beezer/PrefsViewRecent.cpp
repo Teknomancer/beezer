@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -36,7 +36,6 @@
 
 #include "AppConstants.h"
 #include "BitmapPool.h"
-#include "LangStrings.h"
 #include "LocalUtils.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
@@ -44,9 +43,18 @@
 #include "UIConstants.h"
 
 
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "PrefsViewRecent"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
 
 PrefsViewRecent::PrefsViewRecent(BRect frame)
-    : PrefsView(frame, str(S_PREFS_TITLE_RECENT), str(S_PREFS_DESC_RECENT))
+    : PrefsView(frame, B_TRANSLATE("Recent"), B_TRANSLATE("Configure recent archives & extract locations"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Recent", 20, 20));
     Render();
@@ -57,37 +65,37 @@ PrefsViewRecent::PrefsViewRecent(BRect frame)
 void PrefsViewRecent::Render()
 {
     BStringView* arkStrView = new BStringView(BRect(m_margin, m_margin, 0, 0), NULL,
-            str(S_PREFS_RECENT_ARCHIVES));
+            B_TRANSLATE("Recent archives"));
     arkStrView->SetFont(&m_sectionFont);
     arkStrView->ResizeToPreferred();
     arkStrView->SetLowColor(ViewColor());
 
-    float strW = StringWidth(str(S_PREFS_RECENT_NUMARK));
+    float strW = StringWidth(B_TRANSLATE("Number of recent archives"));
     strW += 6;
 
     m_recentArkView = new BTextControl(BRect(3 * m_margin, arkStrView->Frame().bottom + m_vGap + 2,
                                        3 * m_margin + strW + StringWidth("WWW"), 0),
-                                       "PrefsViewRecent:recentArkView", str(S_PREFS_RECENT_NUMARK), NULL, NULL,
+                                       "PrefsViewRecent:recentArkView", B_TRANSLATE("Number of recent archives"), NULL, NULL,
                                        B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
     m_recentArkView->TextView()->SetMaxBytes(2);
     m_recentArkView->TextView()->DisallowChar(B_INSERT);
     m_recentArkView->SetDivider(strW);
 
     m_showPathChk = new BCheckBox(BRect(3 * m_margin, m_recentArkView->Frame().bottom + m_vGap + 2, 0, 0),
-                                  "PrefsViewRecent:showPathChk", str(S_PREFS_RECENT_SHOWPATH), NULL);
+                                  "PrefsViewRecent:showPathChk", B_TRANSLATE("Show full path in recent archives"), NULL);
     m_showPathChk->ResizeToPreferred();
 
     BStringView* extStrView = new BStringView(BRect(m_margin, m_showPathChk->Frame().bottom + m_vGap + 8, 0, 0),
-            NULL, str(S_PREFS_RECENT_EXTRACTS));
+            NULL, B_TRANSLATE("Recent extract paths"));
     extStrView->SetFont(&m_sectionFont);
     extStrView->ResizeToPreferred();
     extStrView->SetLowColor(ViewColor());
 
-    strW = StringWidth(str(S_PREFS_RECENT_NUMEXT));
+    strW = StringWidth(B_TRANSLATE("Number of recent extract paths"));
     strW += 6;
     m_recentExtView = new BTextControl(BRect(3 * m_margin, extStrView->Frame().bottom + m_vGap + 2,
                                        3 * m_margin + strW + StringWidth("WWW"), 0),
-                                       "PrefsViewRecent:recentExtView", str(S_PREFS_RECENT_NUMEXT), NULL, NULL,
+                                       "PrefsViewRecent:recentExtView", B_TRANSLATE("Number of recent extract paths"), NULL, NULL,
                                        B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
     m_recentExtView->TextView()->SetMaxBytes(2);
     m_recentExtView->TextView()->DisallowChar(B_INSERT);
