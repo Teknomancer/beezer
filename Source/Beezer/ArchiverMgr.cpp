@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -40,8 +40,18 @@
 #include "Archiver.h"
 #include "ArchiverMgr.h"
 #include "Beezer.h"
-#include "LangStrings.h"
 #include "MsgConstants.h"
+
+
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "ArchiveMgr"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
 
 BLocker _ark_locker("_ark_mgr_lock", true);
 
@@ -230,7 +240,7 @@ Archiver* NewArchiver(const char* name, bool popupErrors, status_t* returnCode)
         {
             if (popupErrors)
             {
-                (new BAlert("error", str(S_BINARY_MISSING), str(S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
+                (new BAlert("error", B_TRANSLATE("Archiver binary missing. Cannot continue"), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
                             B_EVEN_SPACING, B_STOP_ALERT))->Go();
             }
             break;
@@ -240,7 +250,7 @@ Archiver* NewArchiver(const char* name, bool popupErrors, status_t* returnCode)
         {
             if (popupErrors)
             {
-                (new BAlert("error", str(S_OPTIONAL_BINARY_MISSING), str(S_OK), NULL, NULL,
+                (new BAlert("error", B_TRANSLATE("Optional binary missing. Some features may not be available"), B_TRANSLATE("OK"), NULL, NULL,
                             B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT))->Go();
             }
             break;
