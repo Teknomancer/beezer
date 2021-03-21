@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -40,7 +40,6 @@
 #include "AppConstants.h"
 #include "ArchiverMgr.h"
 #include "BitmapPool.h"
-#include "LangStrings.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
 #include "Preferences.h"
@@ -49,9 +48,18 @@
 #include "UIConstants.h"
 
 
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "PrefsViewMisc"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
 
 PrefsViewMisc::PrefsViewMisc(BRect frame)
-    : PrefsView(frame, str(S_PREFS_TITLE_MISC), str(S_PREFS_DESC_MISC))
+    : PrefsView(frame, B_TRANSLATE("Miscellaneous"), B_TRANSLATE("Other general options"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs", 20, 20));
     Render();
@@ -61,10 +69,10 @@ PrefsViewMisc::PrefsViewMisc(BRect frame)
 
 void PrefsViewMisc::Render()
 {
-    BString buf2 = str(S_PREFS_MISC_STARTUP);
-    buf2.ReplaceAll("%s", K_APP_TITLE);
+    BString buf2 = B_TRANSLATE("When %appname% starts: ");
+    buf2.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
 
-    float maxWidth = MAX(be_plain_font->StringWidth(str(S_PREFS_MISC_ALLCLOSE)),
+    float maxWidth = MAX(be_plain_font->StringWidth(B_TRANSLATE("When last archive is closed: ")),
                          be_plain_font->StringWidth(buf2.String())) + 5;
 
     // Add the startup fields
@@ -74,23 +82,23 @@ void PrefsViewMisc::Render()
                                     B_FOLLOW_LEFT, B_WILL_DRAW);
     m_startupField->SetDivider(maxWidth);
     m_startupField->SetAlignment(B_ALIGN_RIGHT);
-    m_startupPopUp->AddItem(new BMenuItem(str(S_PREFS_MISC_WELCOME), NULL));
-    m_startupPopUp->AddItem(new BMenuItem(str(S_PREFS_MISC_CREATE), NULL));
-    m_startupPopUp->AddItem(new BMenuItem(str(S_PREFS_MISC_OPEN), NULL));
+    m_startupPopUp->AddItem(new BMenuItem(B_TRANSLATE("Show welcome window"), NULL));
+    m_startupPopUp->AddItem(new BMenuItem(B_TRANSLATE("Show create archive panel"), NULL));
+    m_startupPopUp->AddItem(new BMenuItem(B_TRANSLATE("Show open archive panel"), NULL));
     m_startupPopUp->ResizeToPreferred();
 
 
     // Add the quit fields
     m_quitPopUp = new BPopUpMenu("");
     m_quitField = new BMenuField(BRect(m_margin, m_startupField->Frame().top + m_vGap, Frame().Width(), 0),
-                                 "PrefsViewMisc:quitField", str(S_PREFS_MISC_ALLCLOSE), (BMenu*)m_quitPopUp,
+                                 "PrefsViewMisc:quitField", B_TRANSLATE("When last archive is closed: "), (BMenu*)m_quitPopUp,
                                  B_FOLLOW_LEFT, B_WILL_DRAW);
     m_quitField->SetDivider(maxWidth);
     m_quitField->SetAlignment(B_ALIGN_RIGHT);
-    m_quitPopUp->AddItem(new BMenuItem(str(S_PREFS_MISC_WELCOME), NULL));
+    m_quitPopUp->AddItem(new BMenuItem(B_TRANSLATE("Show welcome window"), NULL));
 
-    BString buf = str(S_PREFS_MISC_QUIT);
-    buf.ReplaceAll("%s", K_APP_TITLE);
+    BString buf = B_TRANSLATE("Quit %appname%");
+    buf.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
 
     m_quitPopUp->AddItem(new BMenuItem(buf.String(), NULL));
     m_quitPopUp->ResizeToPreferred();
@@ -98,28 +106,26 @@ void PrefsViewMisc::Render()
 
     // Add other controls
     m_commentChk = new BCheckBox(BRect(m_margin, 2 * m_quitPopUp->Frame().Height(), 0, 0),
-                                 "PrefsViewMisc:commentChk", str(S_PREFS_MISC_COMMENTS), NULL, B_FOLLOW_LEFT,
+                                 "PrefsViewMisc:commentChk", B_TRANSLATE("Show comments (if any) after opening an archive"), NULL, B_FOLLOW_LEFT,
                                  B_WILL_DRAW | B_NAVIGABLE);
     m_commentChk->ResizeToPreferred();
 
-    buf = str(S_PREFS_MISC_MIME);
-    buf.ReplaceAll("%s", K_APP_TITLE);
     m_mimeChk = new BCheckBox(BRect(m_margin, m_commentChk->Frame().bottom + m_vGap, 0, 0),
-                              "PrefsViewMisc:mimeChk", buf.String(), NULL, B_FOLLOW_LEFT,
+                              "PrefsViewMisc:mimeChk", B_TRANSLATE("Check file types at startup"), NULL, B_FOLLOW_LEFT,
                               B_WILL_DRAW | B_NAVIGABLE);
     m_mimeChk->ResizeToPreferred();
 
-    float btnWidth = MAX(K_BUTTON_WIDTH, StringWidth(str(S_PREFS_MISC_MIMENOW)) + 22);
+    float btnWidth = MAX(K_BUTTON_WIDTH, StringWidth(B_TRANSLATE("Register file types now")) + 22);
     m_mimeBtn = new BButton(BRect(5 * m_margin, m_mimeChk->Frame().bottom + m_vGap + 2,
                                   5 * m_margin + btnWidth, m_mimeChk->Frame().bottom + m_vGap + 2 + K_BUTTON_HEIGHT),
-                            "PrefsViewMisc:mimeBtn", str(S_PREFS_MISC_MIMENOW), new BMessage(M_REGISTER_TYPES),
+                            "PrefsViewMisc:mimeBtn", B_TRANSLATE("Register file types now"), new BMessage(M_REGISTER_TYPES),
                             B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
 
     m_arkTypePopUp = new BPopUpMenu("");
     m_arkTypeField = new BMenuField(BRect(m_margin, m_mimeBtn->Frame().bottom + 2 * m_margin,
-                                          Frame().Width(), 0), "PrefsViewMisc:arkTypeField", str(S_PREFS_MISC_DEFARK),
+                                          Frame().Width(), 0), "PrefsViewMisc:arkTypeField", B_TRANSLATE("Default archiver: "),
                                     (BMenu*)m_arkTypePopUp, B_FOLLOW_LEFT, B_WILL_DRAW);
-    m_arkTypeField->SetDivider(be_plain_font->StringWidth(str(S_PREFS_MISC_DEFARK)) + 5);
+    m_arkTypeField->SetDivider(be_plain_font->StringWidth(B_TRANSLATE("Default archiver: ")) + 5);
 
     m_arkTypes = ArchiversInstalled(NULL);
     for (int32 i = 0; i < m_arkTypes.CountItems(); i++)
