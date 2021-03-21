@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -59,7 +59,6 @@
 #include "BitmapPool.h"
 #include "FileJoinerWindow.h"
 #include "FileSplitterWindow.h"
-#include "LangStrings.h"
 #include "MainWindow.h"
 #include "MsgConstants.h"
 #include "Preferences.h"
@@ -72,6 +71,15 @@
 #include "UIConstants.h"
 #include "WindowMgr.h"
 
+
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "Beezer"
+#else
+#define B_TRANSLATE(x) x
+#endif
 
 
 Beezer::Beezer()
@@ -127,11 +135,11 @@ Beezer::Beezer()
         RegisterFileTypes();
 
     // Setup tools menu and popups
-    m_toolsMenu = new BMenu(str(S_TOOLS));
-    BString buf = str(S_FILE_SPLITTER_TITLE); buf << B_UTF8_ELLIPSIS;
+    m_toolsMenu = new BMenu(B_TRANSLATE("Tools"));
+    BString buf = B_TRANSLATE("File splitter"); buf << B_UTF8_ELLIPSIS;
     m_toolsMenu->AddItem(new BMenuItem(buf.String(), new BMessage(M_TOOLS_FILE_SPLITTER)));
 
-    buf = str(S_FILE_JOINER_TITLE); buf << B_UTF8_ELLIPSIS;
+    buf = B_TRANSLATE("File joiner"); buf << B_UTF8_ELLIPSIS;
     m_toolsMenu->AddItem(new BMenuItem(buf.String(), new BMessage(M_TOOLS_FILE_JOINER)));
 
     // Start the message loop
@@ -266,25 +274,22 @@ void Beezer::MessageReceived(BMessage* message)
         case M_REGISTER_TYPES:
         {
             int8 regCount = RegisterFileTypes();
-            char* buf = new char [strlen(str(S_COMPLETED_REGISTER)) + strlen(K_APP_TITLE) + 10];
-            if (regCount > 0)
-                sprintf(buf, str(S_COMPLETED_REGISTER), regCount, K_APP_TITLE);
-            else if (regCount == 0)
-                sprintf(buf, str(S_ALREADY_REGISTERED), K_APP_TITLE);
-            else
-            {
-                delete[] buf;
-                buf = NULL;
+            BString buf;
+            if (regCount > 0) {
+	            buf = B_TRANSLATE("Completed registering of file types. Associated %count% file types with %appname%.");
+	            BString countBuf;
+	            countBuf.SetToFormat("%ld", regCount);
+	            buf.ReplaceAll("%count%", countBuf);
+            } else if (regCount == 0) {
+                buf = B_TRANSLATE("%appname% has already been associated with all supported archive types.");
             }
 
-            if (buf)
-            {
-                BAlert* a = new BAlert("done", buf, str(S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
-                                       B_EVEN_SPACING, B_INFO_ALERT);
-                a->SetShortcut(0L, B_ESCAPE);
-                a->Go();
-                delete[] buf;
-            }
+            buf.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
+
+            BAlert* a = new BAlert("done", buf, B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
+                                   B_EVEN_SPACING, B_INFO_ALERT);
+            a->SetShortcut(0L, B_ESCAPE);
+            a->Go();
 
             break;
         }
@@ -329,7 +334,7 @@ void Beezer::MessageReceived(BMessage* message)
                 firstTime = true;
 
             CreateFilePanel(m_openFilePanel, B_OPEN_PANEL);
-            m_openFilePanel->Window()->SetTitle(str(S_OPEN_PANEL_TITLE));
+            m_openFilePanel->Window()->SetTitle(B_TRANSLATE("Open archive"));
 
             const char* openDirPath = _prefs_paths.FindString(kPfDefOpenPath);
             if (firstTime && openDirPath)
@@ -465,7 +470,7 @@ void Beezer::MessageReceived(BMessage* message)
 
             if (helpFileEntry.Exists() == false)
             {
-                (new BAlert("error", str(S_HELP_FILE_NOT_FOUND), str(S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
+                (new BAlert("error", B_TRANSLATE("Couldn't locate the help files."), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
                             B_STOP_ALERT))->Go();
             }
             else
@@ -814,15 +819,15 @@ void Beezer::ShowCreateFilePanel()
 {
     CreateFilePanel(m_createFilePanel, B_SAVE_PANEL);
     BWindow* panelWnd = m_createFilePanel->Window();
-    panelWnd->SetTitle(str(S_CREATE_PANEL_TITLE));
+    panelWnd->SetTitle(B_TRANSLATE("Create archive"));
 
     if (m_arkTypeField == NULL && panelWnd->LockLooper())
     {
-        m_createFilePanel->SetButtonLabel(B_DEFAULT_BUTTON, str(S_CREATE));
+        m_createFilePanel->SetButtonLabel(B_DEFAULT_BUTTON, B_TRANSLATE("Create"));
 
         BView* backView = panelWnd->ChildAt(0L);
         BButton* saveBtn = (BButton*)panelWnd->FindView("default button");
-        saveBtn->SetLabel(str(S_CREATE));
+        saveBtn->SetLabel(B_TRANSLATE("Create"));
         BTextControl* textField = (BTextControl*)panelWnd->FindView("text view");
         textField->ResizeBy(-20, 0);
         textField->TextView()->DisallowChar('*');
@@ -834,9 +839,9 @@ void Beezer::ShowCreateFilePanel()
         m_arkTypePopUp = BuildArchiveTypesMenu(this, &m_arkExtensions);
         m_arkTypeField = new BMenuField(BRect(textField->Frame().right + K_MARGIN,
                                               textField->Frame().top - 2, backView->Frame().Width(), 0),
-                                        "Beezer:arkTypeField", str(S_ARCHIVE_TYPE), (BMenu*)m_arkTypePopUp,
+                                        "Beezer:arkTypeField", B_TRANSLATE("Type: "), (BMenu*)m_arkTypePopUp,
                                         B_FOLLOW_BOTTOM, B_WILL_DRAW);
-        m_arkTypeField->SetDivider(be_plain_font->StringWidth(str(S_ARCHIVE_TYPE)) + 5);
+        m_arkTypeField->SetDivider(be_plain_font->StringWidth(B_TRANSLATE("Type: ")) + 5);
 
         if (m_arkTypes.CountItems() > 0)
         {
@@ -912,19 +917,18 @@ int8 Beezer::RegisterFileTypes() const
 
                 BString buf;
                 if (!mimeType.IsInstalled())
-                    buf = str(S_INSTALL_MIMETYPE);
+                    buf = B_TRANSLATE("Register %mimetype% and make %appname% the preferred app for this type?");
                 else
-                    buf = str(S_MAKE_APP_PREFERRED);
+                    buf = B_TRANSLATE("Make %appname% the preferred app for this type?");
 
-                buf.ReplaceAll("%s", K_APP_TITLE);
-                buf.ReplaceAll("%o", ref.name);
-                buf.ReplaceAll("%t", mimeTypeStr.String());
+                buf.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
+                buf.ReplaceAll("%mimetype%", mimeTypeStr.String());
 
                 int32 index = 2L;
                 if (skipFurtherAlerts == false)
                 {
-                    BAlert* confAlert = new BAlert("mime", buf.String(), str(S_NO), str(S_MAKE_DEFAULT),
-                                                   str(S_REGISTER_ALL), B_WIDTH_AS_USUAL, B_OFFSET_SPACING,
+                    BAlert* confAlert = new BAlert("mime", buf.String(), B_TRANSLATE("No"), B_TRANSLATE("Yes, make it preferred"),
+                                                   B_TRANSLATE("Register all types!!"), B_WIDTH_AS_USUAL, B_OFFSET_SPACING,
                                                    B_WARNING_ALERT);
                     confAlert->SetDefaultButton(confAlert->ButtonAt(1L));
                     index = confAlert->Go();
