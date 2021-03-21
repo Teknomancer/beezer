@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -33,7 +33,6 @@
 
 #include "AppConstants.h"
 #include "BitmapPool.h"
-#include "LangStrings.h"
 #include "LocalUtils.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
@@ -41,9 +40,18 @@
 #include "UIConstants.h"
 
 
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "PrefsViewExtract"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
 
 PrefsViewExtract::PrefsViewExtract(BRect frame)
-    : PrefsView(frame, str(S_PREFS_TITLE_EXTRACT), str(S_PREFS_DESC_EXTRACT))
+    : PrefsView(frame, B_TRANSLATE("Extract"), B_TRANSLATE("Options related to extraction"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Extract", 20, 20));
     Render();
@@ -54,21 +62,21 @@ PrefsViewExtract::PrefsViewExtract(BRect frame)
 void PrefsViewExtract::Render()
 {
     m_openFolderChk = new BCheckBox(BRect(m_margin, m_margin, 0, 0), "PrefsViewExtract:openFolderChk",
-                                    str(S_PREFS_EXTRACT_OPEN_DIR), NULL);
+                                    B_TRANSLATE("Open destination folder after extracting"), NULL);
     m_openFolderChk->ResizeToPreferred();
 
     m_closeChk = new BCheckBox(BRect(m_margin, m_openFolderChk->Frame().bottom + m_vGap, 0, 0),
-                               "PrefsViewExtract:closeChk", str(S_PREFS_EXTRACT_CLOSE_WINDOW), NULL);
+                               "PrefsViewExtract:closeChk", B_TRANSLATE("Close window after extracting"), NULL);
     m_closeChk->ResizeToPreferred();
 
-    BString s = str(S_PREFS_EXTRACT_QUIT_APP);
-    s.ReplaceAll("%s", K_APP_TITLE);
+    BString s = B_TRANSLATE("Quit %apptitle% after extracting");
+    s.ReplaceAll("%apptitle%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
     m_quitChk = new BCheckBox(BRect(m_margin, m_closeChk->Frame().bottom + m_vGap, 0, 0),
                               "PrefsViewExtract:closeChk", s.String(), NULL);
     m_quitChk->ResizeToPreferred();
 
     m_dragChk = new BCheckBox(BRect(m_margin, m_quitChk->Frame().bottom + m_vGap, 0, 0),
-                              "PrefsViewExtract:dragChk", str(S_PREFS_EXTRACT_DRAG_PATH), NULL);
+                              "PrefsViewExtract:dragChk", B_TRANSLATE("Extract with full path during drag 'n drop"), NULL);
     m_dragChk->ResizeToPreferred();
 
     AddChild(m_openFolderChk);
