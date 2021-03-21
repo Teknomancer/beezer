@@ -40,6 +40,14 @@
 #include "LangStrings.h"
 #include "UIConstants.h"
 
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "AboutWindow"
+#else
+#define B_TRANSLATE(x) x
+#endif
 
 
 MarqueeView::MarqueeView(BRect frame, const char* name, BRect textRect, uint32 resizeMask,
@@ -91,7 +99,7 @@ void MarqueeView::ScrollBy(float dh, float dv)
 
 
 AboutWindow::AboutWindow(const char* compileTimeStr)
-    : BWindow(BRect(0, 0, 319, 374), str(S_ABOUT_TITLE), B_MODAL_WINDOW,
+    : BWindow(BRect(0, 0, 319, 374), B_TRANSLATE("About"), B_MODAL_WINDOW,
               B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE | B_NOT_RESIZABLE)
 {
     // Create the BBitmap objects and set its data with error checking
@@ -99,7 +107,7 @@ AboutWindow::AboutWindow(const char* compileTimeStr)
     if (titleBmp == NULL)
     {
         Hide();
-        (new BAlert("Error", str(S_ERROR_LOADING_ABOUT_RSRC), str(S_CLOSE_WORD), NULL, NULL,
+        (new BAlert("Error", B_TRANSLATE("An error was encountered while trying to load resources for the About window."), B_TRANSLATE("Close"), NULL, NULL,
                     B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT))->Go();
         PostMessage(B_QUIT_REQUESTED);
         Show();
@@ -134,9 +142,9 @@ AboutWindow::AboutWindow(const char* compileTimeStr)
 
     BString formatStr = str(S_ABOUT_STRING);
 #ifdef DEBUG
-    formatStr.ReplaceAll("$DEBUG_BUILD$", str(S_DEBUG_RELEASE));
+    formatStr.ReplaceAll("$DEBUG_BUILD$", B_TRANSLATE("Debug release"));
 #else
-    formatStr.ReplaceAll("$DEBUG_BUILD$", str(S_PUBLIC_RELEASE));
+    formatStr.ReplaceAll("$DEBUG_BUILD$", B_TRANSLATE("Public release"));
 #endif
 
     formatStr.ReplaceAll("$BUILD_DATE$", compileTimeStr);
@@ -165,22 +173,22 @@ AboutWindow::AboutWindow(const char* compileTimeStr)
     int32 nSubHeadings = 8;
     BString subHeadings[] =
     {
-        str(S_ABOUT_PROGRAMMING),              // 0
-        str(S_ABOUT_COLUMN_LIST_VIEW),         // 1
-        str(S_ABOUT_SPLITPANE),                // 2
-        str(S_ABOUT_URLVIEW),                  // 3
-        str(S_ABOUT_BESHARE),                  // 4
-        str(S_ABOUT_7ZIP),                     // 5
-        str(S_ABOUT_DOC_UPDATES),              // 6
-        str(S_ABOUT_DISCLAIMER)                // 7
+        B_TRANSLATE("[ Programming ]"),            // 0
+        B_TRANSLATE("[ ColumnListView ]"),         // 1
+        B_TRANSLATE("[ SplitPane ]"),              // 2
+        B_TRANSLATE("[ URLView ]"),                // 3
+        B_TRANSLATE("[ BeShare ]"),                // 4
+        B_TRANSLATE("[ 7zip Add-on ]"),            // 5
+        B_TRANSLATE("[ Documentation Updates ]"),  // 6
+        B_TRANSLATE("[ Disclaimer ]")              // 7
     };
 
     int32 nMainHeadings = 3;
     BString mainHeadings[] =
     {
-        str(S_ABOUT_CREDITS),                  // 0
-        str(S_ABOUT_LEGAL_MUMBO_JUMBO),        // 1
-        str(S_ABOUT_SPECIAL_THANKS)            // 2
+        B_TRANSLATE("CREDITS"),                    // 0
+        B_TRANSLATE("LEGAL MUMBO JUMBO"),          // 1
+        B_TRANSLATE("SPECIAL THANKS TO")           // 2
     };
 
     // Search and color sub headings
