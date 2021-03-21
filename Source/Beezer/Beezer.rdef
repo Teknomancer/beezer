@@ -1589,6 +1589,8 @@ resource vector_icon {
 
 resource app_signature "application/x-vnd.Ram-Beezer";
 
+resource app_name_catalog_entry "Ram-Beezer:System name:Beezer";
+
 resource file_types message {
 	"types" = "application/zip",
 	"types" = "application/x-zip-compressed",
