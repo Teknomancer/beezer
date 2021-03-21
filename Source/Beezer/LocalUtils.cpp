@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -47,9 +47,18 @@
 #include <stdlib.h>
 
 #include "AppConstants.h"
-#include "LangStrings.h"
 #include "LocalUtils.h"
 #include "Shared.h"
+
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "LocalUtils"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
 
 BLocker _local_utils_locker("_local_utils_lock", true);
 
@@ -258,15 +267,15 @@ BString LocaleStringFromBytes(int64 v)
     {
         char buf[50];
         if (v > (1024LL * 1024LL * 1024LL * 1024LL))
-            sprintf(buf, "%.2f %s", ((double)v) / (1024LL * 1024LL * 1024LL * 1024LL), str(S_PREFIX_TB));
+            sprintf(buf, "%.2f %s", ((double)v) / (1024LL * 1024LL * 1024LL * 1024LL), B_TRANSLATE_COMMENT("TiB", "abbreviation of terrabyte"));
         else if (v > (1024LL * 1024LL * 1024LL))
-            sprintf(buf, "%.2f %s", ((double)v) / (1024LL * 1024LL * 1024LL), str(S_PREFIX_GB));
+            sprintf(buf, "%.2f %s", ((double)v) / (1024LL * 1024LL * 1024LL), B_TRANSLATE_COMMENT("GiB", "abbreviation of gigabyte"));
         else if (v > (1024LL * 1024LL))
-            sprintf(buf, "%.2f %s", ((double)v) / (1024LL * 1024LL), str(S_PREFIX_MB));
+            sprintf(buf, "%.2f %s", ((double)v) / (1024LL * 1024LL), B_TRANSLATE_COMMENT("MiB", "abbreviation of megabyte"));
         else if (v > (1024LL))
-            sprintf(buf, "%.2f %s", ((double)v) / 1024LL, str(S_PREFIX_KB));
+            sprintf(buf, "%.2f %s", ((double)v) / 1024LL, B_TRANSLATE_COMMENT("KiB", "abbreviation of kilobyte"));
         else
-            sprintf(buf, "%Li %s", v, str(S_PREFIX_BYTES));
+            sprintf(buf, "%Li %s", v, B_TRANSLATE("bytes"));
 
         str = buf;
     }
