@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -33,7 +33,6 @@
 
 #include "AppConstants.h"
 #include "BitmapPool.h"
-#include "LangStrings.h"
 #include "LocalUtils.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
@@ -41,9 +40,18 @@
 #include "UIConstants.h"
 
 
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "PrefsViewWindows"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
 
 PrefsViewWindows::PrefsViewWindows(BRect frame)
-    : PrefsView(frame, str(S_PREFS_TITLE_WINDOWS), str(S_PREFS_DESC_WINDOWS))
+    : PrefsView(frame, B_TRANSLATE("Windows"), B_TRANSLATE("Configure remembering of windows' settings"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Windows", 20, 20));
     Render();
@@ -54,27 +62,27 @@ PrefsViewWindows::PrefsViewWindows(BRect frame)
 void PrefsViewWindows::Render()
 {
     m_searchChk = new BCheckBox(BRect(m_margin, m_margin, 0, 0), "PrefsViewWindows:searchChk",
-                                str(S_PREFS_WINDOWS_SEARCH), NULL);
+                                B_TRANSLATE("Search window"), NULL);
     m_searchChk->ResizeToPreferred();
 
     m_logChk = new BCheckBox(BRect(m_margin, m_searchChk->Frame().bottom + m_vGap, 0, 0),
-                             "PrefsViewWindows:logChk", str(S_PREFS_WINDOWS_LOG), NULL);
+                             "PrefsViewWindows:logChk", B_TRANSLATE("Log window"), NULL);
     m_logChk->ResizeToPreferred();
 
     m_commentChk = new BCheckBox(BRect(m_margin, m_logChk->Frame().bottom + m_vGap, 0, 0),
-                                 "PrefsViewWindows:commentChk", str(S_PREFS_WINDOWS_COMMENT), NULL);
+                                 "PrefsViewWindows:commentChk", B_TRANSLATE("Comment window"), NULL);
     m_commentChk->ResizeToPreferred();
 
     m_arkInfoChk = new BCheckBox(BRect(m_margin, m_commentChk->Frame().bottom + m_vGap, 0, 0),
-                                 "PrefsViewWindows:arkInfoChk", str(S_PREFS_WINDOWS_ARKINFO), NULL);
+                                 "PrefsViewWindows:arkInfoChk", B_TRANSLATE("Archive info window"), NULL);
     m_arkInfoChk->ResizeToPreferred();
 
     m_welcomeChk = new BCheckBox(BRect(m_margin, m_arkInfoChk->Frame().bottom + m_vGap, 0, 0),
-                                 "PrefsViewWindows:welcomeChk", str(S_PREFS_WINDOWS_WELCOME), NULL);
+                                 "PrefsViewWindows:welcomeChk", B_TRANSLATE("Welcome window"), NULL);
     m_welcomeChk->ResizeToPreferred();
 
     m_prefsChk = new BCheckBox(BRect(m_margin, m_welcomeChk->Frame().bottom + m_vGap, 0, 0),
-                               "PrefsViewWindows:presfChk", str(S_PREFS_WINDOWS_PREFS), NULL);
+                               "PrefsViewWindows:presfChk", B_TRANSLATE("Preferences window"), NULL);
     m_prefsChk->ResizeToPreferred();
 
     AddChild(m_searchChk);
