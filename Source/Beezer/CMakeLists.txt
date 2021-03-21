@@ -1,4 +1,5 @@
-set(EXECUTABLE_OUTPUT_PATH ${BEEZER_BUILD_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BEEZER_BUILD_DIR})
+set(HAIKU_CATALOG_BUILD_DIR ${BEEZER_BUILD_DIR})
 
 include_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}
@@ -11,6 +12,11 @@ include_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/SplitPane
 		${CMAKE_CURRENT_SOURCE_DIR}/URLView
 )
+
+if(HAIKU_ENABLE_I18N STREQUAL "ON")
+	set("Beezer-APP_MIME_SIG" "x-vnd.Ram-Beezer")
+	set("Beezer-LOCALES" "en")
+endif()
 
 add_executable(Beezer
 		Beezer.rdef
@@ -74,6 +80,10 @@ add_executable(Beezer
 		FSUtils/FSUtils.cpp
 )
 
-target_link_libraries(Beezer "be" "tracker" "translation" CLV)
+target_link_libraries(Beezer "be" "tracker" "translation" "CLV")
+
+if(HAIKU_ENABLE_I18N STREQUAL "ON")
+	target_link_libraries(Beezer "localestub")
+endif()
 
 add_subdirectory(TrackerAddOn)
