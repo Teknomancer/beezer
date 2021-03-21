@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -46,7 +46,6 @@
 #include "ArkInfoWindow.h"
 #include "BitmapPool.h"
 #include "HashTable.h"
-#include "LangStrings.h"
 #include "ListEntry.h"
 #include "LocalUtils.h"
 #include "Preferences.h"
@@ -55,8 +54,18 @@
 #include "UIConstants.h"
 
 
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "ArkInfoWindow"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
+
 ArkInfoWindow::ArkInfoWindow(BWindow* callerWindow, Archiver* archiver, BEntry* entry)
-    : BWindow(BRect(30, 30, 440, 280), str(S_ARK_INFO_WINDOW_TITLE), B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
+    : BWindow(BRect(30, 30, 440, 280), B_TRANSLATE("Archive Information"), B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
               B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS),
     m_archiver(archiver),
     m_entry(entry)
@@ -83,40 +92,40 @@ ArkInfoWindow::ArkInfoWindow(BWindow* callerWindow, Archiver* archiver, BEntry* 
     m_fileNameStr = new BStringView("ArkInfoWindow:FileNameView", "");
     m_fileNameStr->SetFont(be_bold_font);
 
-    m_compressRatioBar = new BStatusBar("ArkInfoWindow:CompressRatioBar", str(S_COMPRESSION_RATIO), NULL);
+    m_compressRatioBar = new BStatusBar("ArkInfoWindow:CompressRatioBar", B_TRANSLATE("Compression ratio:"), NULL);
     m_compressRatioBar->SetBarHeight(K_PROGRESSBAR_HEIGHT);
     m_compressRatioBar->SetBarColor(K_PROGRESS_COLOR);
     m_compressRatioBar->SetMaxValue(100);
 
-    BStringView* compressedSizeStr = new BStringView("ArkInfoWindow:_CompressedSizeStr", str(S_COMPRESSED_SIZE));
+    BStringView* compressedSizeStr = new BStringView("ArkInfoWindow:_CompressedSizeStr", B_TRANSLATE("Compressed size:"));
     compressedSizeStr->SetAlignment(B_ALIGN_RIGHT);
     compressedSizeStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
     m_compressedSizeStr = new BStringView("ArkInfoWindow:CompressedSizeStr", "0 MiB (0 bytes)");
     m_compressedSizeStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
-    BStringView* originalSizeStr = new BStringView("ArkInfoWindow:_OriginalSizeStr", str(S_ORIGINAL_SIZE));
+    BStringView* originalSizeStr = new BStringView("ArkInfoWindow:_OriginalSizeStr", B_TRANSLATE("Original size:"));
     originalSizeStr->SetAlignment(B_ALIGN_RIGHT);
     originalSizeStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
     m_originalSizeStr = new BStringView("ArkInfoWindow:OriginalSizeStr", "0 MiB (0 bytes)");
     m_originalSizeStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
-    BStringView* fileCountStr = new BStringView("ArkInfoWindow:_FileCountStr", str(S_NUMBER_OF_FILES));
+    BStringView* fileCountStr = new BStringView("ArkInfoWindow:_FileCountStr", B_TRANSLATE("Number of files:"));
     fileCountStr->SetAlignment(B_ALIGN_RIGHT);
     fileCountStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
     m_fileCountStr = new BStringView("ArkInfoWindow:FileCountStr", "0");
     m_fileCountStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
-    BStringView* folderCountStr = new BStringView("ArkInfoWindow:_FolderCountStr", str(S_NUMBER_OF_FOLDERS));
+    BStringView* folderCountStr = new BStringView("ArkInfoWindow:_FolderCountStr", B_TRANSLATE("Number of folders:"));
     folderCountStr->SetAlignment(B_ALIGN_RIGHT);
     folderCountStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
     m_folderCountStr = new BStringView("ArkInfoWindow:FolderCountStr", "0");
     m_folderCountStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
-    BStringView* totalCountStr = new BStringView("ArkInfoWindow:_TotalCountStr", str(S_TOTAL_ENTRIES));
+    BStringView* totalCountStr = new BStringView("ArkInfoWindow:_TotalCountStr", B_TRANSLATE("Total entries:"));
     totalCountStr->SetAlignment(B_ALIGN_RIGHT);
     totalCountStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
@@ -124,28 +133,28 @@ ArkInfoWindow::ArkInfoWindow(BWindow* callerWindow, Archiver* archiver, BEntry* 
     m_totalCountStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
     // Other file infos like path, type, created, modified etc.
-    BStringView* typeStr = new BStringView("ArkInfoWindow:_TypeStr", str(S_TYPE));
+    BStringView* typeStr = new BStringView("ArkInfoWindow:_TypeStr", B_TRANSLATE("Type:"));
     typeStr->SetAlignment(B_ALIGN_RIGHT);
     typeStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
     m_typeStr = new BStringView("ArkInfoWindow:TypeStr", "-");
     m_typeStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
-    BStringView* pathStr = new BStringView("ArkInfoWindow:_PathStr", str(S_PATH));
+    BStringView* pathStr = new BStringView("ArkInfoWindow:_PathStr", B_TRANSLATE("Path:"));
     pathStr->SetAlignment(B_ALIGN_RIGHT);
     pathStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
     m_pathStr = new BStringView("ArkInfoWindow:PathStr", "/boot");
     m_pathStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
-    BStringView* createdStr = new BStringView("ArkInfoWindow:_CreatedStr", str(S_CREATED));
+    BStringView* createdStr = new BStringView("ArkInfoWindow:_CreatedStr", B_TRANSLATE("Created on:"));
     createdStr->SetAlignment(B_ALIGN_RIGHT);
     createdStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
     m_createdStr = new BStringView("ArkInfoWindow:CreatedStr", "Thursday, 19 June 2003, 03:10:03 PM");
     m_createdStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
-    BStringView* modifiedStr = new BStringView("ArkInfoWindow:_ModifiedStr", str(S_MODIFIED));
+    BStringView* modifiedStr = new BStringView("ArkInfoWindow:_ModifiedStr", B_TRANSLATE("Last modified:"));
     modifiedStr->SetAlignment(B_ALIGN_RIGHT);
     modifiedStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
@@ -224,7 +233,7 @@ void ArkInfoWindow::FillDetails()
     if (m_entry->Exists() == false)
     {
         Hide();
-        (new BAlert("error", str(S_ARCHIVE_MISSING), str(S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
+        (new BAlert("error", B_TRANSLATE("Operation failed. The archive is missing."), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
                     B_EVEN_SPACING, B_STOP_ALERT))->Go();
         PostMessage(B_QUIT_REQUESTED);
     }
@@ -242,7 +251,7 @@ void ArkInfoWindow::FillDetails()
     buf = ""; buf << m_fileList->CountItems() + m_dirList->CountItems();
     m_totalCountStr->SetText(buf.String());
 
-    buf = ""; buf << m_archiver->ArchiveType() << " " << str(S_ARCHIVE);
+    buf = ""; buf << m_archiver->ArchiveType() << " " << B_TRANSLATE("archive");
     m_typeStr->SetText(buf.String());
 
     BEntry parent; BPath parentPath;
@@ -268,7 +277,7 @@ void ArkInfoWindow::FillDetails()
     m_entry->GetSize(&compressedSize);
     buf = StringFromBytes(compressedSize);
     if (compressedSize >= 1024LL)
-        buf << " (" << CommaFormatString(compressedSize) << " bytes)";
+        buf << " (" << CommaFormatString(compressedSize) << " " << B_TRANSLATE("bytes") << ")";
 
     m_compressedSizeStr->SetText(buf.String());
 
