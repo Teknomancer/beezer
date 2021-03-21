@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -39,7 +39,6 @@
 
 #include "BitmapPool.h"
 #include "CommentWindow.h"
-#include "LangStrings.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
 #include "Preferences.h"
@@ -47,10 +46,19 @@
 #include "StaticBitmapView.h"
 #include "UIConstants.h"
 
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "CommentWindow"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
 
 CommentWindow::CommentWindow(BWindow* callerWindow, const char* archiveName, const char* commentText,
                              BFont* displayFont)
-    : BWindow(BRect(0, 0, 590, 290), str(S_COMMENT_WINDOW_TITLE), B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
+    : BWindow(BRect(0, 0, 590, 290), B_TRANSLATE("Comment"), B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
               B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS)
 {
     m_callerWindow = callerWindow;
@@ -100,9 +108,9 @@ CommentWindow::CommentWindow(BWindow* callerWindow, const char* archiveName, con
 
     AddChild(scrollView);
 
-    BButton* saveButton = new BButton("CommentWindow:SaveButton", str(S_COMMENT_WINDOW_SAVE), new BMessage(M_SAVE_COMMENT));
+    BButton* saveButton = new BButton("CommentWindow:SaveButton", B_TRANSLATE("Save"), new BMessage(M_SAVE_COMMENT));
 
-    BButton* closeButton = new BButton("CommentWindow:CloseButton", str(S_COMMENT_WINDOW_CLOSE), new BMessage(B_QUIT_REQUESTED));
+    BButton* closeButton = new BButton("CommentWindow:CloseButton", B_TRANSLATE("Close"), new BMessage(B_QUIT_REQUESTED));
 
     AddChild(BGroupLayoutBuilder(B_HORIZONTAL)
              .AddGlue()
