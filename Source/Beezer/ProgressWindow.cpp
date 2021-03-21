@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -42,13 +42,21 @@
 #include "BarberPole.h"
 #include "BevelView.h"
 #include "BitmapPool.h"
-#include "LangStrings.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
 #include "ProgressWindow.h"
 #include "StaticBitmapView.h"
 #include "UIConstants.h"
 
+
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "ProgressWindow"
+#else
+#define B_TRANSLATE(x) x
+#endif
 
 
 ProgressWindow::ProgressWindow(BWindow* callerWindow, BMessage* actionMessage,
@@ -122,7 +130,7 @@ ProgressWindow::ProgressWindow(BWindow* callerWindow, BMessage* actionMessage,
     m_statusBar->SetMaxValue(fileCount);
     m_fileCount = fileCount;
 
-    m_cancelButton = new BButton("ProgressWindow:CancelButton", str(S_STOP_OPERATION), new BMessage(M_STOP_OPERATION));
+    m_cancelButton = new BButton("ProgressWindow:CancelButton", B_TRANSLATE("Cancel"), new BMessage(M_STOP_OPERATION));
 
     // FIXME? this doesn't show up unless the SetValue call is changed below
     // leaving it as is for now
