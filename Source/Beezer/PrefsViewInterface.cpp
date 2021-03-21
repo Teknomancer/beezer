@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -42,7 +42,6 @@
 #include "ArchiverMgr.h"
 #include "Beezer.h"
 #include "BitmapPool.h"
-#include "LangStrings.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
 #include "Preferences.h"
@@ -50,13 +49,24 @@
 #include "PrefsViewInterface.h"
 #include "UIConstants.h"
 
+
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "PrefsViewInterface"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
+
 #define M_COLOR_CHANGE        'clch'
 #define M_ITEM_CHANGE        'itch'
 
 
 
 PrefsViewInterface::PrefsViewInterface(BRect frame)
-    : PrefsView(frame, str(S_PREFS_TITLE_INTERFACE), str(S_PREFS_DESC_INTERFACE))
+    : PrefsView(frame, B_TRANSLATE("Interface"), B_TRANSLATE("Configure graphical user interface options"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Interface", 20, 20));
     Render();
@@ -67,11 +77,11 @@ PrefsViewInterface::PrefsViewInterface(BRect frame)
 void PrefsViewInterface::Render()
 {
     m_fullLengthBarsChk = new BCheckBox(BRect(m_margin, m_margin, 0, 0), "PrefsViewInterface:fullLenBars",
-                                        str(S_PREFS_INTERFACE_FULLBARS), NULL);
+                                        B_TRANSLATE("Full length toolbar & infobar"), NULL);
     m_fullLengthBarsChk->ResizeToPreferred();
 
     BStringView* colorStrView = new BStringView(BRect(m_margin, m_fullLengthBarsChk->Frame().bottom +
-            m_margin + 2 * m_vGap, 0, 0), NULL, str(S_PREFS_INTERFACE_COLORS));
+            m_margin + 2 * m_vGap, 0, 0), NULL, B_TRANSLATE("Configure colors: "));
     colorStrView->SetFont(&m_sectionFont);
     colorStrView->ResizeToPreferred();
     colorStrView->SetLowColor(ViewColor());
@@ -92,8 +102,8 @@ void PrefsViewInterface::Render()
                                         outerView->Frame().top + 2, Frame().Width(), 0),
                                   "PrefsViewInterface:colorField", NULL, (BMenu*)m_colorPopUp, B_FOLLOW_LEFT,
                                   B_WILL_DRAW);
-    m_colorPopUp->AddItem(new BMenuItem(str(S_PREFS_INTERFACE_ACTFORE), new BMessage(M_ITEM_CHANGE)));
-    m_colorPopUp->AddItem(new BMenuItem(str(S_PREFS_INTERFACE_ACTBACK), new BMessage(M_ITEM_CHANGE)));
+    m_colorPopUp->AddItem(new BMenuItem(B_TRANSLATE("Selected text color"), new BMessage(M_ITEM_CHANGE)));
+    m_colorPopUp->AddItem(new BMenuItem(B_TRANSLATE("Selected background color"), new BMessage(M_ITEM_CHANGE)));
     m_colorPopUp->ResizeToPreferred();
 
     m_colorControl = new BColorControl(BPoint(3 * m_margin,
@@ -102,37 +112,37 @@ void PrefsViewInterface::Render()
 
 
     BStringView* defStrView = new BStringView(BRect(m_margin, m_colorControl->Frame().bottom +
-            2 * m_margin + 2 * m_vGap, 0, 0), NULL, str(S_PREFS_INTERFACE_DEFAULTS));
+            2 * m_margin + 2 * m_vGap, 0, 0), NULL, B_TRANSLATE("Default interface settings:"));
     defStrView->SetFont(&m_sectionFont);
     defStrView->ResizeToPreferred();
     defStrView->SetLowColor(ViewColor());
 
     m_toolbarChk = new BCheckBox(BRect(3 * m_margin, defStrView->Frame().bottom + m_vGap, 0, 0),
-                                 "PrefsViewInterface:toolbarChk", str(S_PREFS_INTERFACE_TOOLBAR), NULL);
+                                 "PrefsViewInterface:toolbarChk", B_TRANSLATE("Show toolbar"), NULL);
     m_toolbarChk->ResizeToPreferred();
 
     m_infobarChk = new BCheckBox(BRect(3 * m_margin, m_toolbarChk->Frame().bottom + m_vGap, 0, 0),
-                                 "PrefsViewInterface:infoBarChk", str(S_PREFS_INTERFACE_INFOBAR), NULL);
+                                 "PrefsViewInterface:infoBarChk", B_TRANSLATE("Show infobar"), NULL);
     m_infobarChk->ResizeToPreferred();
 
     m_actionLogChk = new BCheckBox(BRect(3 * m_margin, m_infobarChk->Frame().bottom + m_vGap, 0, 0),
-                                   "PrefsViewInterface:actionLogChk", str(S_PREFS_INTERFACE_ACTION_LOG), NULL);
+                                   "PrefsViewInterface:actionLogChk", B_TRANSLATE("Show action log"), NULL);
     m_actionLogChk->ResizeToPreferred();
 
     m_foldingPopUp = new BPopUpMenu("");
-    m_foldingPopUp->AddItem(new BMenuItem(str(S_SETTINGS_FOLDING_NONE), NULL));
-    m_foldingPopUp->AddItem(new BMenuItem(str(S_SETTINGS_FOLDING_ONE), NULL));
-    m_foldingPopUp->AddItem(new BMenuItem(str(S_SETTINGS_FOLDING_TWO), NULL));
-    m_foldingPopUp->AddItem(new BMenuItem(str(S_SETTINGS_FOLDING_ALL), NULL));
+    m_foldingPopUp->AddItem(new BMenuItem(B_TRANSLATE("Show all items folded"), NULL));
+    m_foldingPopUp->AddItem(new BMenuItem(B_TRANSLATE("Show first level unfolded"), NULL));
+    m_foldingPopUp->AddItem(new BMenuItem(B_TRANSLATE("Show first 2 levels unfolded"), NULL));
+    m_foldingPopUp->AddItem(new BMenuItem(B_TRANSLATE("Show all items unfolded"), NULL));
     m_foldingPopUp->ItemAt(3)->SetMarked(true);
 
-    float maxW = MAX(StringWidth(str(S_PREFS_INTERFACE_INFOBAR)), StringWidth(str(S_PREFS_INTERFACE_TOOLBAR)));
-    maxW = MAX(maxW, StringWidth(str(S_PREFS_INTERFACE_ACTION_LOG)));
+    float maxW = MAX(StringWidth(B_TRANSLATE("Show infobar")), StringWidth(B_TRANSLATE("Show toolbar")));
+    maxW = MAX(maxW, StringWidth(B_TRANSLATE("Show action log")));
     maxW += 5 * m_margin + 30;
 
     m_foldingField = new BMenuField(BRect(m_toolbarChk->Frame().left + maxW,
                                           m_toolbarChk->Frame().top, Bounds().right - m_margin, 0),
-                                    "PrefsViewInterface:foldingField", str(S_PREFS_INTERFACE_FOLDING),
+                                    "PrefsViewInterface:foldingField", B_TRANSLATE("Folding: "),
                                     (BMenu*)m_foldingPopUp, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
     float div = m_foldingField->StringWidth(m_foldingField->Label()) + 10;
     m_foldingField->SetDivider(div);
@@ -246,9 +256,9 @@ void PrefsViewInterface::MessageReceived(BMessage* message)
                 break;
 
             BString itemText = item->Label();
-            if (itemText == str(S_PREFS_INTERFACE_ACTFORE))
+            if (itemText == B_TRANSLATE("Selected text color"))
                 m_actFore = m_colorControl->ValueAsColor();
-            else if (itemText == str(S_PREFS_INTERFACE_ACTBACK))
+            else if (itemText == B_TRANSLATE("Selected background color"))
                 m_actBack = m_colorControl->ValueAsColor();
 
             UpdateColorWell();
@@ -282,9 +292,9 @@ void PrefsViewInterface::UpdateColorWell()
 void PrefsViewInterface::UpdateColorControl(BMenuItem* item)
 {
     BString itemText = item->Label();
-    if (itemText == str(S_PREFS_INTERFACE_ACTFORE))
+    if (itemText == B_TRANSLATE("Selected text color"))
         m_colorControl->SetValue(m_actFore);
-    else if (itemText == str(S_PREFS_INTERFACE_ACTBACK))
+    else if (itemText == B_TRANSLATE("Selected background color"))
         m_colorControl->SetValue(m_actBack);
 
     UpdateColorWell();
