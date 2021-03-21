@@ -61,6 +61,7 @@
 #define B_TRANSLATION_CONTEXT "StartupWindow"
 #else
 #define B_TRANSLATE(x) x
+#define B_TRANSLATE_SYSTEM_NAME(x) x
 #endif
 
 
