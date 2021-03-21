@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -37,7 +37,6 @@
 
 #include "BevelView.h"
 #include "BitmapPool.h"
-#include "LangStrings.h"
 #include "MsgConstants.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
@@ -54,9 +53,18 @@
 #include "UIConstants.h"
 
 
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "PrefsWindow"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
 
 PrefsWindow::PrefsWindow()
-    : BWindow(BRect(0, 0, 570+50, 320+100), str(S_PREFERENCES_TITLE), B_TITLED_WINDOW,
+    : BWindow(BRect(0, 0, 570+50, 320+100), B_TRANSLATE("Preferences"), B_TITLED_WINDOW,
               B_NOT_ZOOMABLE | B_NOT_RESIZABLE),
     m_currentPanel(NULL)
 {
@@ -247,17 +255,17 @@ void PrefsWindow::AddControls()
     BButton* discardBtn = new BButton(BRect(scrollView->Frame().right + margin,
                                             Bounds().bottom - K_BUTTON_HEIGHT - margin,
                                             scrollView->Frame().right + margin + K_BUTTON_WIDTH, Bounds().bottom - margin),
-                                      "PrefsWindow:discardBtn", str(S_PREFS_DISCARD), new BMessage(B_QUIT_REQUESTED),
+                                      "PrefsWindow:discardBtn", B_TRANSLATE("Discard"), new BMessage(B_QUIT_REQUESTED),
                                       B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
 
     BButton* saveBtn = new BButton(BRect(discardBtn->Frame().right + margin, discardBtn->Frame().top,
                                          discardBtn->Frame().right + margin + K_BUTTON_WIDTH, discardBtn->Frame().bottom),
-                                   "PrefsWindow:saveBtn", str(S_PREFS_SAVE), new BMessage(M_SAVE_PREFS),
+                                   "PrefsWindow:saveBtn", B_TRANSLATE("Save"), new BMessage(M_SAVE_PREFS),
                                    B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
 
     BButton* helpBtn = new BButton(BRect(Bounds().right - margin - K_BUTTON_WIDTH, discardBtn->Frame().top,
                                          Bounds().right - margin, discardBtn->Frame().bottom), "PrefsWindow:helpBtn",
-                                   str(S_HELP), new BMessage(M_PREFS_HELP), B_FOLLOW_LEFT,
+                                   B_TRANSLATE("Help"), new BMessage(M_PREFS_HELP), B_FOLLOW_LEFT,
                                    B_WILL_DRAW | B_NAVIGABLE);
     m_backView->AddChild(saveBtn);
     m_backView->AddChild(discardBtn);
