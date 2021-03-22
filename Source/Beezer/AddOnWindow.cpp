@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -51,7 +51,6 @@
 #include "ArchiverMgr.h"
 #include "BarberPole.h"
 #include "BevelView.h"
-#include "LangStrings.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
 #include "Preferences.h"
@@ -59,9 +58,19 @@
 #include "UIConstants.h"
 
 
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "AddOnWindow"
+#else
+#define B_TRANSLATE(x) x
+#define B_TRANSLATE_SYSTEM_NAME(x) x
+#endif
+
 
 AddOnWindow::AddOnWindow(BMessage* refsMessage)
-    : BWindow(BRect(10, 10, 420, 475), str(S_TA_TITLE), B_TITLED_WINDOW,
+    : BWindow(BRect(10, 10, 420, 475), B_TRANSLATE("QuickCreate archive"), B_TITLED_WINDOW,
               B_NOT_ZOOMABLE | B_NOT_V_RESIZABLE | B_ASYNCHRONOUS_CONTROLS),
     m_arkSettingsMenuField(NULL),
     m_archive(NULL),
@@ -82,13 +91,13 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
     m_backViewMain->SetViewColor(K_BACKGROUND_COLOR);
 
     float divider = 0;
-    divider = MAX(divider, m_backViewMain->StringWidth(str(S_TA_ARCHIVE_NAME)));
-    divider = MAX(divider, m_backViewMain->StringWidth(str(S_TA_ARCHIVE_TYPE)));
-    divider = MAX(divider, m_backViewMain->StringWidth(str(S_TA_PASSWORD)));
+    divider = MAX(divider, m_backViewMain->StringWidth(B_TRANSLATE("Archive name:")));
+    divider = MAX(divider, m_backViewMain->StringWidth(B_TRANSLATE("Archive type:")));
+    divider = MAX(divider, m_backViewMain->StringWidth(B_TRANSLATE("Password:")));
     divider += 10;
 
     m_fileName = new BTextControl(BRect(K_MARGIN, 2 * K_MARGIN, 0, 0), "AddOnWindow:fileName",
-                                  str(S_TA_ARCHIVE_NAME), NULL, NULL, B_FOLLOW_LEFT_RIGHT,
+                                  B_TRANSLATE("Archive name:"), NULL, NULL, B_FOLLOW_LEFT_RIGHT,
                                   B_WILL_DRAW);
     m_backViewMain->AddChild(m_fileName);
     m_fileName->SetModificationMessage(new BMessage(M_FILENAME_CHANGED));
@@ -103,7 +112,7 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
     m_arkTypePopUp = BuildArchiveTypesMenu(this, &m_arkExtensions);
     m_arkTypeField = new BMenuField(BRect(K_MARGIN, m_fileName->Frame().bottom + K_MARGIN,
                                           m_backViewMain->Frame().right, 0), "AddOnWindow:ArkTypeField",
-                                    str(S_TA_ARCHIVE_TYPE), (BMenu*)m_arkTypePopUp, B_FOLLOW_LEFT, B_WILL_DRAW);
+                                    B_TRANSLATE("Archive type:"), (BMenu*)m_arkTypePopUp, B_FOLLOW_LEFT, B_WILL_DRAW);
     m_backViewMain->AddChild(m_arkTypeField);
     m_arkTypeField->ResizeToPreferred();
     m_arkTypeField->SetDivider(divider + 2);
@@ -136,14 +145,14 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
     else
     {
         // We've seen enough there are no add-ons installed, no use proceeding!!! Call it quits NOW
-        (new BAlert("error", str(S_TA_FATAL), str(S_OK), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT))->Go();
+        (new BAlert("error", B_TRANSLATE("Fatal error, no add-ons found! You cannot create any archives using Beezer."), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT))->Go();
         PostMessage(B_QUIT_REQUESTED);
         Show();
         return;
     }
 
     m_password = new BTextControl(BRect(K_MARGIN, m_arkTypeField->Frame().bottom + K_MARGIN,
-                                        divider + 2 * K_MARGIN + 80, 0), "AddOnWindow:Password", str(S_TA_PASSWORD), NULL,
+                                        divider + 2 * K_MARGIN + 80, 0), "AddOnWindow:Password", B_TRANSLATE("Password:"), NULL,
                                   NULL, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
     m_backViewMain->AddChild(m_password);
     m_password->TextView()->HideTyping(true);
@@ -171,14 +180,14 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
 
     m_helpBtn = new BButton(BRect(K_MARGIN, sepView2->Frame().bottom - K_MARGIN - K_BUTTON_HEIGHT,
                                   K_MARGIN + K_BUTTON_WIDTH, sepView2->Frame().bottom - K_MARGIN),
-                            "AddOnWindow:HelpButton", str(S_TA_HELP), new BMessage(M_ADDON_HELP),
+                            "AddOnWindow:HelpButton", B_TRANSLATE("Help"), new BMessage(M_ADDON_HELP),
                             B_FOLLOW_LEFT | B_FOLLOW_BOTTOM, B_WILL_DRAW | B_NAVIGABLE);
     m_backView->AddChild(m_helpBtn);
 
     m_createBtn = new BButton(BRect(Bounds().right - K_MARGIN - 4 - K_BUTTON_WIDTH,
                                     sepView2->Frame().bottom - K_MARGIN - K_BUTTON_HEIGHT - 4,
                                     Bounds().right - K_MARGIN - 4, sepView2->Frame().bottom - K_MARGIN - 4),
-                              "AddOnWindow:CreateBtn", str(S_TA_CREATE), new BMessage(M_ADDON_CREATE),
+                              "AddOnWindow:CreateBtn", B_TRANSLATE("Create"), new BMessage(M_ADDON_CREATE),
                               B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW | B_NAVIGABLE);
     m_backView->AddChild(m_createBtn);
     m_createBtn->MakeDefault(true);
@@ -199,7 +208,7 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
         m_backViewAlt->SetViewColor(0, 0, 0, 255);
 
         BStringView* shadowStr = new BStringView(BRect(2 * K_MARGIN, 4 * K_MARGIN, 0, 0),
-                "AddOnWindow:DropStr", str(S_TA_PROMPT_DROP), B_FOLLOW_LEFT,
+                "AddOnWindow:DropStr", B_TRANSLATE("Drop files to create an archive."), B_FOLLOW_LEFT,
                 B_WILL_DRAW);
         shadowStr->SetFont(be_bold_font);
         shadowStr->SetFontSize(font.Size() + 4);
@@ -208,7 +217,7 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
         m_backViewAlt->AddChild(shadowStr);
 
         BStringView* dropStr = new BStringView(BRect(2 * K_MARGIN, 4 * K_MARGIN, 0, 0), "AddOnWindow:DropStr",
-                                               str(S_TA_PROMPT_DROP), B_FOLLOW_LEFT, B_WILL_DRAW);
+                                               B_TRANSLATE("Drop files to create an archive."), B_FOLLOW_LEFT, B_WILL_DRAW);
         dropStr->SetFont(be_bold_font);
         dropStr->SetFontSize(font.Size() + 4);
         dropStr->SetHighColor(K_STARTUP_MAIN_HEADING);
@@ -227,11 +236,11 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
         ResizeTo(MAX(350, dropStr->Frame().right + 2 * K_MARGIN + 2), Frame().Height());
     }
 
-    BString statusString = str(S_TA_READY);
+    BString statusString = B_TRANSLATE("Ready to create archive.");
     m_statusColor = SC_READY;
     if (m_readyMode == false)
     {
-        statusString = str(S_TA_NOT_READY);
+        statusString = B_TRANSLATE("Waiting for input files.");
         m_statusColor = SC_NOT_READY;
     }
 
@@ -255,7 +264,7 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
     m_addView->AddChild(m_barberPole);
 
     m_addingFileStr = new BStringView(BRect(m_barberPole->Frame().right + K_MARGIN, K_MARGIN + 1, 0, 0),
-                                      "AddOnWindow:AddingFileStr", str(S_TA_ADDING), B_FOLLOW_LEFT,
+                                      "AddOnWindow:AddingFileStr", B_TRANSLATE("Adding:"), B_FOLLOW_LEFT,
                                       B_WILL_DRAW);
     m_addingFileStr->ResizeToPreferred();
     m_addView->AddChild(m_addingFileStr);
@@ -293,8 +302,8 @@ bool AddOnWindow::QuitRequested()
     {
         // We cannot pause the creation thread as we cannot get "zip", "gzip"s thread ID, atbest we can
         // only get thread ID of the thread that spawned zip etc., so forget it for the time being
-        BAlert* alert = new BAlert("Quit", str(S_FORCE_ADDON_CLOSE_WARNING), str(S_DONT_FORCE_CLOSE),
-                                   str(S_FORCE_CLOSE), NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
+        BAlert* alert = new BAlert("Quit", B_TRANSLATE("Operation is in progress, force it to stop?"), B_TRANSLATE("Don't force"),
+                                   B_TRANSLATE("Force"), NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
         alert->SetShortcut(0L, B_ESCAPE);
         alert->SetDefaultButton(alert->ButtonAt(1L));
         int32 index = alert->Go();
@@ -337,8 +346,8 @@ void AddOnWindow::MessageReceived(BMessage* message)
             if (message->FindString("text", &mainText) != B_OK)
                 mainText = "";
 
-            BString buf = str(S_TA_ADDING);
-            buf << mainText;
+            BString buf = B_TRANSLATE("Adding:");
+            buf << " " << mainText;
             m_addingFileStr->SetText(buf.String());
             m_addingFileStr->ResizeToPreferred();
             break;
@@ -358,8 +367,8 @@ void AddOnWindow::MessageReceived(BMessage* message)
                 if (m_archive)
                 {
                     m_inProgress = true;
-                    UpdateStatus(str(S_TA_BUSY));
-                    m_createBtn->SetLabel(str(S_CANCEL));
+                    UpdateStatus(B_TRANSLATE("Adding files to the archive"));
+                    m_createBtn->SetLabel(B_TRANSLATE("Cancel"));
                     m_createBtn->MakeDefault(false);
                     m_cancel = false;
                     EnableControls(false);
@@ -409,7 +418,7 @@ void AddOnWindow::MessageReceived(BMessage* message)
                 m_cancel = true;
                 m_inProgress = false;
                 m_createBtn->MakeDefault(true);
-                m_createBtn->SetLabel(str(S_TA_CREATE));
+                m_createBtn->SetLabel(B_TRANSLATE("Create"));
 
                 EnableControls(true);
                 PostMessage(B_QUIT_REQUESTED);
@@ -519,7 +528,7 @@ void AddOnWindow::CreateArchiveRepAndMenus()
         {
             m_arkSettingsMenuField = new BMenuField(BRect(m_strWidthOfArkTypes,
                                                     m_arkTypeField->Frame().top, m_backViewMain->Frame().right, 0),
-                                                    "AddOnWindow:ArkSettingsMenuField", str(S_TA_SETTINGS),
+                                                    "AddOnWindow:ArkSettingsMenuField", B_TRANSLATE("Settings:"),
                                                     m_archive->Ark()->SettingsMenu(), B_FOLLOW_LEFT,
                                                     B_WILL_DRAW | B_NAVIGABLE);
             m_backViewMain->AddChild(m_arkSettingsMenuField);
@@ -594,13 +603,13 @@ bool AddOnWindow::ReplaceExtensionWith(const char* newExt)
 
 void AddOnWindow::UpdateStatus(const char* text)
 {
-    if (strcmp(text, str(S_TA_OVERWRITE)) == 0)
+    if (strcmp(text, B_TRANSLATE("Warning! File already exists and will be overwritten!")) == 0)
         m_statusStr->SetHighColor(SC_OVERWRITE);
-    else if (strcmp(text, str(S_TA_READY)) == 0)
+    else if (strcmp(text, B_TRANSLATE("Ready to create archive.")) == 0)
         m_statusStr->SetHighColor(SC_READY);
-    else if (strcmp(text, str(S_TA_DIR_MISSING)) == 0)
+    else if (strcmp(text, B_TRANSLATE("Error! Destination folder is incorrect.")) == 0)
         m_statusStr->SetHighColor(SC_DIR_MISSING);
-    else if (strcmp(text, str(S_TA_BUSY)) == 0)
+    else if (strcmp(text, B_TRANSLATE("Adding files to the archive")) == 0)
         m_statusStr->SetHighColor(SC_BUSY);
     else
         m_statusStr->SetHighColor(0, 0, 0, 255);
@@ -621,9 +630,9 @@ void AddOnWindow::ValidateData()
     {
         BEntry entry(m_fileName->Text(), false);
         if (entry.Exists() == true)
-            UpdateStatus(str(S_TA_OVERWRITE));
+            UpdateStatus(B_TRANSLATE("Warning! File already exists and will be overwritten!"));
         else
-            UpdateStatus(str(S_TA_READY));
+            UpdateStatus(B_TRANSLATE("Ready to create archive."));
 
         BString buf = m_fileName->Text();
         int32 found = buf.FindLast('/');
@@ -638,14 +647,14 @@ void AddOnWindow::ValidateData()
 
         if (dirEntry.Exists() == false || dirEntry.IsDirectory() == false || doubleSlash == true)
         {
-            UpdateStatus(str(S_TA_DIR_MISSING));
+            UpdateStatus(B_TRANSLATE("Error! Destination folder is incorrect."));
             valid = false;
         }
     }
     else
     {
         valid = false;
-        UpdateStatus(str(S_TA_NOT_READY));
+        UpdateStatus(B_TRANSLATE("Waiting for input files."));
     }
 
     if (m_readyMode && valid == true)
