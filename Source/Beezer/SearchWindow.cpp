@@ -48,7 +48,6 @@
 #include "Archiver.h"
 #include "BevelView.h"
 #include "BitmapPool.h"
-#include "LangStrings.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
 #include "SearchWindow.h"
@@ -56,10 +55,19 @@
 #include "UIConstants.h"
 
 
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "SearchWindow"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
 
 SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
                            const BEntry* entry, const BList* columnList, const Archiver* ark)
-    : BWindow(BRect(30, 30, 440, 312), str(S_SEARCH_WINDOW_TITLE), B_FLOATING_WINDOW_LOOK, B_MODAL_SUBSET_WINDOW_FEEL,
+    : BWindow(BRect(30, 30, 440, 312), B_TRANSLATE("Search archive"), B_FLOATING_WINDOW_LOOK, B_MODAL_SUBSET_WINDOW_FEEL,
               B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS),
     m_callerWindow(callerWindow),
     m_loadMessage(loadMessage)
@@ -126,15 +134,15 @@ SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
     else
         columnMenu->ItemAt(m_tmpList.IndexOf(column))->SetMarked(true);
 
-    m_columnField = new BMenuField("SearchWindow:ColumnField", str(S_SEARCH_COLUMN), columnMenu);
+    m_columnField = new BMenuField("SearchWindow:ColumnField", B_TRANSLATE("Column:"), columnMenu);
 
     // Setup the match type and the match type menu
     BMenu* matchMenu = new BPopUpMenu("");
-    matchMenu->AddItem(new BMenuItem(str(S_SEARCH_STARTS_WITH), NULL));
-    matchMenu->AddItem(new BMenuItem(str(S_SEARCH_ENDS_WITH), NULL));
-    matchMenu->AddItem(new BMenuItem(str(S_SEARCH_CONTAINS), NULL));
-    matchMenu->AddItem(new BMenuItem(str(S_SEARCH_WILDCARD_EXPRESSION), NULL));
-    matchMenu->AddItem(new BMenuItem(str(S_SEARCH_REGULAR_EXPRESSION), NULL));
+    matchMenu->AddItem(new BMenuItem(B_TRANSLATE("Starts with"), NULL));
+    matchMenu->AddItem(new BMenuItem(B_TRANSLATE("Ends with"), NULL));
+    matchMenu->AddItem(new BMenuItem(B_TRANSLATE("Contains"), NULL));
+    matchMenu->AddItem(new BMenuItem(B_TRANSLATE("Matches wildcard expression"), NULL));
+    matchMenu->AddItem(new BMenuItem(B_TRANSLATE("Matches regular expression"), NULL));
 
     matchMenu->SetLabelFromMarked(true);
     matchMenu->ItemAt(exprType)->SetMarked(true);
@@ -160,21 +168,21 @@ SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
 
     // Setup the scope group box
     BBox* scopeBox = new BBox("SearchWindow:ScopeBox");
-    scopeBox->SetLabel(str(S_SEARCH_SEARCH));
+    scopeBox->SetLabel(B_TRANSLATE("Search"));
     scopeBox->SetFont(be_plain_font);
 
     // Draw the radio buttons inside the group box (co-ordinates are relative to the group box)
-    m_allEntriesOpt = new BRadioButton("SearchWindow:AllEntriesOpt", str(S_SEARCH_ALL_ENTRIES), new BMessage(M_ALL_ENTRIES));
+    m_allEntriesOpt = new BRadioButton("SearchWindow:AllEntriesOpt", B_TRANSLATE("All entries"), new BMessage(M_ALL_ENTRIES));
     m_allEntriesOpt->SetValue(allFiles == true ? B_CONTROL_ON : B_CONTROL_OFF);
     if (allFiles)
         m_allEntriesOpt->Invoke();
 
-    m_visibleEntriesOpt = new BRadioButton("SearchWindow:VisibleEntriesOpt", str(S_SEARCH_VISIBLE_ENTRIES), new BMessage(M_VISIBLE_ENTRIES));
+    m_visibleEntriesOpt = new BRadioButton("SearchWindow:VisibleEntriesOpt", B_TRANSLATE("Visible entries"), new BMessage(M_VISIBLE_ENTRIES));
     m_visibleEntriesOpt->SetValue(allFiles == false ? B_CONTROL_ON : B_CONTROL_OFF);
     if (!allFiles)
         m_visibleEntriesOpt->Invoke();
 
-    m_selEntriesOpt = new BRadioButton("SearchWindow:SelectedEntriesOpt", str(S_SEARCH_SELECTED_ENTRIES), new BMessage(M_SELECTED_ENTRIES));
+    m_selEntriesOpt = new BRadioButton("SearchWindow:SelectedEntriesOpt", B_TRANSLATE("Selected entries"), new BMessage(M_SELECTED_ENTRIES));
     m_selEntriesOpt->SetValue(searchSelection == true ? B_CONTROL_ON : B_CONTROL_OFF);
     if (searchSelection)
         m_selEntriesOpt->Invoke();
@@ -192,17 +200,17 @@ SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
 
     // Setup the scoping options group box
     BBox* optionsBox = new BBox("SearchWindow:OptionsBox");
-    optionsBox->SetLabel(str(S_SEARCH_OPTIONS));
+    optionsBox->SetLabel(B_TRANSLATE("Options"));
     optionsBox->SetFont(be_plain_font);
 
     // Draw the checkboxes for the (All, Visible) scope
-    m_addToSelChk = new BCheckBox("SearchWindow:AddSelChk", str(S_SEARCH_ADD_TO_SELECTION), NULL);
+    m_addToSelChk = new BCheckBox("SearchWindow:AddSelChk", B_TRANSLATE("Add to selection"), NULL);
     m_addToSelChk->SetValue(addToSelection == true ? B_CONTROL_ON : B_CONTROL_OFF);
 
-    m_ignoreCaseChk = new BCheckBox("SearchWindow:IgnoreCaseChk", str(S_SEARCH_IGNORE_CASE), NULL);
+    m_ignoreCaseChk = new BCheckBox("SearchWindow:IgnoreCaseChk", B_TRANSLATE("Ignore case"), NULL);
     m_ignoreCaseChk->SetValue(ignoreCase == true ? B_CONTROL_ON : B_CONTROL_OFF);
 
-    m_invertChk = new BCheckBox("SearchWindow:InvertChk", str(S_SEARCH_INVERT), NULL);
+    m_invertChk = new BCheckBox("SearchWindow:InvertChk", B_TRANSLATE("Invert"), NULL);
     m_invertChk->SetValue(invertSearch == true ? B_CONTROL_ON : B_CONTROL_OFF);
 
     view = new BGroupView();
@@ -217,12 +225,12 @@ SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
     optionsBox->AddChild(view);
 
     // Render the search button
-    m_searchBtn = new BButton("SearchWindow:SearchBtn", str(S_SEARCH), new BMessage(M_SEARCH_CLICKED));
+    m_searchBtn = new BButton("SearchWindow:SearchBtn", B_TRANSLATE("Search"), new BMessage(M_SEARCH_CLICKED));
     m_searchBtn->MakeDefault(true);
     m_searchBtn->SetEnabled(searchText ? true : false);
 
     // Render the close after search button
-    m_persistentChk = new BCheckBox("SearchWindow:CloseChk", str(S_SEARCH_PERSISTENT), NULL);
+    m_persistentChk = new BCheckBox("SearchWindow:CloseChk", B_TRANSLATE("Persistent window"), NULL);
     m_persistentChk->SetValue(persistent == true ? B_CONTROL_ON : B_CONTROL_OFF);
 
     AddChild(BGroupLayoutBuilder(B_VERTICAL)
@@ -289,10 +297,10 @@ void SearchWindow::MessageReceived(BMessage* message)
 
         case M_ALL_ENTRIES: case M_VISIBLE_ENTRIES:
         {
-            if (strcmp(m_addToSelChk->Label(), str(S_SEARCH_ADD_TO_SELECTION)) != 0)
+            if (strcmp(m_addToSelChk->Label(), B_TRANSLATE("Add to selection")) != 0)
             {
-                m_addToSelChk->SetToolTip(const_cast<char*>(str(S_SEARCH_ADD_TO_SELECTION_BH)));
-                m_addToSelChk->SetLabel(str(S_SEARCH_ADD_TO_SELECTION));
+                m_addToSelChk->SetToolTip(const_cast<char*>(B_TRANSLATE("Adds found items to existing selection (if any)")));
+                m_addToSelChk->SetLabel(B_TRANSLATE("Add to selection"));
                 m_addToSelChk->ResizeToPreferred();
             }
 
@@ -301,10 +309,10 @@ void SearchWindow::MessageReceived(BMessage* message)
 
         case M_SELECTED_ENTRIES:
         {
-            if (strcmp(m_addToSelChk->Label(), str(S_SEARCH_DESELECT_UNMATCHED_ENTRIES)) != 0)
+            if (strcmp(m_addToSelChk->Label(), B_TRANSLATE("Deselect unmatched entries")) != 0)
             {
-                m_addToSelChk->SetToolTip(const_cast<char*>(str(S_SEARCH_DESELECT_UNMATCHED_ENTRIES_BH)));
-                m_addToSelChk->SetLabel(str(S_SEARCH_DESELECT_UNMATCHED_ENTRIES));
+                m_addToSelChk->SetToolTip(const_cast<char*>(B_TRANSLATE("Deselects entries that don't match the search criteria")));
+                m_addToSelChk->SetLabel(B_TRANSLATE("Deselect unmatched entries"));
                 m_addToSelChk->ResizeToPreferred();
             }
 
@@ -383,19 +391,19 @@ CLVColumn* SearchWindow::Column() const
 
 void SearchWindow::SetToolTips()
 {
-    m_allEntriesOpt->SetToolTip(const_cast<char*>(str(S_SEARCH_ALL_ENTRIES_BH)));
-    m_visibleEntriesOpt->SetToolTip(const_cast<char*>(str(S_SEARCH_VISIBLE_ENTRIES_BH)));
-    m_selEntriesOpt->SetToolTip(const_cast<char*>(str(S_SEARCH_SELECTED_ENTRIES_BH)));
+    m_allEntriesOpt->SetToolTip(const_cast<char*>(B_TRANSLATE("Searches the entire archive(Automatically unfolds all folders before searching)")));
+    m_visibleEntriesOpt->SetToolTip(const_cast<char*>(B_TRANSLATE("Searches all visible entries(Contents of folded folders will not be searched)")));
+    m_selEntriesOpt->SetToolTip(const_cast<char*>(B_TRANSLATE("Searches only selected entries")));
 
-    m_addToSelChk->SetToolTip(const_cast<char*>(str(S_SEARCH_ADD_TO_SELECTION_BH)));
-    m_ignoreCaseChk->SetToolTip(const_cast<char*>(str(S_SEARCH_IGNORE_CASE_BH)));
-    m_invertChk->SetToolTip(const_cast<char*>(str(S_SEARCH_INVERT_BH)));
+    m_addToSelChk->SetToolTip(const_cast<char*>(B_TRANSLATE("Adds found items to existing selection (if any)")));
+    m_ignoreCaseChk->SetToolTip(const_cast<char*>(B_TRANSLATE("Treats uppercase and lowercase letters as the same")));
+    m_invertChk->SetToolTip(const_cast<char*>(B_TRANSLATE("Selects all entries that don't match the search criteria i.e. inverts the result of the search")));
 
-    m_searchTextControl->SetToolTip(const_cast<char*>(str(S_SEARCH_FOR_BH)));
-    m_matchField->SetToolTip(const_cast<char*>(str(S_SEARCH_MATCH_BH)));
-    m_columnField->SetToolTip(const_cast<char*>(str(S_SEARCH_COLUMN_BH)));
+    m_searchTextControl->SetToolTip(const_cast<char*>(B_TRANSLATE("What you are searching for")));
+    m_matchField->SetToolTip(const_cast<char*>(B_TRANSLATE("The type of matching to do in the search")));
+    m_columnField->SetToolTip(const_cast<char*>(B_TRANSLATE("Which column to search in")));
 
-    m_persistentChk->SetToolTip(const_cast<char*>(str(S_SEARCH_PERSISTENT_BH)));
+    m_persistentChk->SetToolTip(const_cast<char*>(B_TRANSLATE("Prevents closing of this window before searching")));
 }
 
 
