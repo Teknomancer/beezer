@@ -1,4 +1,4 @@
-1	English	x-vnd.Ram-Beezer	886197346
+1	English	x-vnd.Ram-Beezer	1680993009
 Save	CommentWindow		Save
 Show first 2 levels unfolded	PrefsViewInterface		Show first 2 levels unfolded
 Select default extract path	PrefsViewPaths		Select default extract path
@@ -6,11 +6,15 @@ When new file is more recent	PrefsViewAdd		When new file is more recent
 Windows	PrefsViewWindows		Windows
 Use: 	PrefsViewPaths		Use: 
 to extract	BeezerListView		to extract
+Column:	SearchWindow		Column:
+Selects all entries that don't match the search criteria i.e. inverts the result of the search	SearchWindow		Selects all entries that don't match the search criteria i.e. inverts the result of the search
 MiB	LocalUtils	abbreviation of megabyte	MiB
 Preferences	PrefsWindow		Preferences
 When last archive is closed: 	PrefsViewMisc		When last archive is closed: 
+Searches only selected entries	SearchWindow		Searches only selected entries
 Default paths:	PrefsViewPaths		Default paths:
 Beezer	System name		Beezer
+Prevents closing of this window before searching	SearchWindow		Prevents closing of this window before searching
 Show first level unfolded	PrefsViewInterface		Show first level unfolded
 Favorite extract paths:	PrefsViewPaths		Favorite extract paths:
 Open path: 	PrefsViewPaths		Open path: 
@@ -19,12 +23,16 @@ Same folder as source (archive) file	PrefsViewPaths		Same folder as source (arch
 Selected text color	PrefsViewInterface		Selected text color
 Number of recent extract paths	PrefsViewRecent		Number of recent extract paths
 Options related to extraction	PrefsViewExtract		Options related to extraction
+Matches regular expression	SearchWindow		Matches regular expression
 File splitter	Beezer		File splitter
 Folding: 	PrefsViewInterface		Folding: 
 Paths	PrefsViewPaths		Paths
 Restore automatically	PrefsViewState		Restore automatically
 Discard	PrefsWindow		Discard
+Selected entries	SearchWindow		Selected entries
 Number of folders:	ArkInfoWindow		Number of folders:
+Searches all visible entries(Contents of folded folders will not be searched)	SearchWindow		Searches all visible entries(Contents of folded folders will not be searched)
+Ignore case	SearchWindow		Ignore case
 Recent archives	PrefsViewRecent		Recent archives
 Total entries:	ArkInfoWindow		Total entries:
 Search window	PrefsViewWindows		Search window
@@ -41,6 +49,7 @@ Tools	StartupWindow		Tools
 Recent extract paths	PrefsViewRecent		Recent extract paths
 File joiner	Beezer		File joiner
 Check file types at startup	PrefsViewMisc		Check file types at startup
+Starts with	SearchWindow		Starts with
 Preferences window	PrefsViewWindows		Preferences window
 folder	BeezerListView		folder
 Create a new archive	StartupWindow		Create a new archive
@@ -50,7 +59,9 @@ Add	PrefsViewAdd		Add
 Configure what to tag along with archives as attributes	PrefsViewState		Configure what to tag along with archives as attributes
 Make %appname% the preferred app for this type?	Beezer		Make %appname% the preferred app for this type?
 Ask before replacing	PrefsViewAdd		Ask before replacing
+Options	SearchWindow		Options
 Public release	AboutWindow		Public release
+Adds found items to existing selection (if any)	SearchWindow		Adds found items to existing selection (if any)
 [ URLView ]	AboutWindow		[ URLView ]
 [ 7zip Add-on ]	AboutWindow		[ 7zip Add-on ]
 Open an existing archive	StartupWindow		Open an existing archive
@@ -74,8 +85,10 @@ Bytes: 	InfoBar		Bytes:
 Yes, make it preferred	Beezer		Yes, make it preferred
 Register file types now	PrefsViewMisc		Register file types now
 Number of files:	ArkInfoWindow		Number of files:
+Treats uppercase and lowercase letters as the same	SearchWindow		Treats uppercase and lowercase letters as the same
 OK	PrefsViewPaths		OK
 Extract	PrefsViewExtract		Extract
+Search archive	SearchWindow		Search archive
 Archive Information	ArkInfoWindow		Archive Information
 Configure default & favorite paths	PrefsViewPaths		Configure default & favorite paths
 Never replace	PrefsViewAdd		Never replace
@@ -85,8 +98,10 @@ Confirm when adding through drag 'n drop	PrefsViewAdd		Confirm when adding throu
 Tools	Beezer		Tools
 Save	PrefsWindow		Save
 Show toolbar	PrefsViewInterface		Show toolbar
+The type of matching to do in the search	SearchWindow		The type of matching to do in the search
 Add a favorite extract path	PrefsViewPaths		Add a favorite extract path
 Compression ratio:	ArkInfoWindow		Compression ratio:
+Which column to search in	SearchWindow		Which column to search in
 Log window	PrefsViewWindows		Log window
 Archiver binary missing. Cannot continue	ArchiveMgr		Archiver binary missing. Cannot continue
 Store automatically	PrefsViewState		Store automatically
@@ -106,6 +121,7 @@ Show all items folded	PrefsViewInterface		Show all items folded
 List more paths (using archive name)	PrefsViewPaths		List more paths (using archive name)
 CREDITS	AboutWindow		CREDITS
 Show action log	PrefsViewInterface		Show action log
+Searches the entire archive(Automatically unfolds all folders before searching)	SearchWindow		Searches the entire archive(Automatically unfolds all folders before searching)
 MiB	PrefsViewAdd		MiB
 Additional tools	StartupWindow		Additional tools
 Default archiver: 	PrefsViewMisc		Default archiver: 
@@ -115,14 +131,18 @@ Open a recently opened archive	StartupWindow		Open a recently opened archive
 Created on:	ArkInfoWindow		Created on:
 Quit %apptitle% after extracting	PrefsViewExtract		Quit %apptitle% after extracting
 Full length toolbar & infobar	PrefsViewInterface		Full length toolbar & infobar
+Deselects entries that don't match the search criteria	SearchWindow		Deselects entries that don't match the search criteria
 Show welcome window	PrefsViewMisc		Show welcome window
 [ ColumnListView ]	AboutWindow		[ ColumnListView ]
+Deselect unmatched entries	SearchWindow		Deselect unmatched entries
 [ SplitPane ]	AboutWindow		[ SplitPane ]
+Matches wildcard expression	SearchWindow		Matches wildcard expression
 Show comments (if any) after opening an archive	PrefsViewMisc		Show comments (if any) after opening an archive
 Interface	PrefsViewInterface		Interface
 Options related to adding of entries to archives	PrefsViewAdd		Options related to adding of entries to archives
 Edit application preferences	StartupWindow		Edit application preferences
 OK	Beezer		OK
+All entries	SearchWindow		All entries
 LEGAL MUMBO JUMBO	AboutWindow		LEGAL MUMBO JUMBO
 Interface state	PrefsViewState		Interface state
 Archive info window	PrefsViewWindows		Archive info window
@@ -134,9 +154,11 @@ Optional binary missing. Some features may not be available	ArchiveMgr		Optional
 State	PrefsViewState		State
 Quit %appname%	PrefsViewMisc		Quit %appname%
 TiB	LocalUtils	abbreviation of terrabyte	TiB
+Invert	SearchWindow		Invert
 Type:	ArkInfoWindow		Type:
 Extract with full path during drag 'n drop	PrefsViewExtract		Extract with full path during drag 'n drop
 Configure colors: 	PrefsViewInterface		Configure colors: 
+Persistent window	SearchWindow		Persistent window
 Default interface settings:	PrefsViewInterface		Default interface settings:
 About	AboutWindow		About
 SPECIAL THANKS TO	AboutWindow		SPECIAL THANKS TO
@@ -145,6 +167,9 @@ OK	ArkInfoWindow		OK
 Type: 	Beezer		Type: 
 bytes	ArkInfoWindow		bytes
 Show all items unfolded	PrefsViewInterface		Show all items unfolded
+Add to selection	SearchWindow		Add to selection
+Search	SearchWindow		Search
+Contains	SearchWindow		Contains
 Replace files:	PrefsViewAdd		Replace files:
 Confirm when adding more than 	PrefsViewAdd		Confirm when adding more than 
 Show open archive panel	PrefsViewMisc		Show open archive panel
@@ -158,11 +183,14 @@ Extract archive	BeezerListView		Extract archive
 Register %mimetype% and make %appname% the preferred app for this type?	Beezer		Register %mimetype% and make %appname% the preferred app for this type?
 bytes	LocalUtils		bytes
 Compressed size:	ArkInfoWindow		Compressed size:
+Visible entries	SearchWindow		Visible entries
 No	Beezer		No
 [ BeShare ]	AboutWindow		[ BeShare ]
+What you are searching for	SearchWindow		What you are searching for
 When %appname% starts: 	PrefsViewMisc		When %appname% starts: 
 Register all types!!	Beezer		Register all types!!
 Create	Beezer		Create
 file	BeezerListView		file
 Path:	ArkInfoWindow		Path:
 Recent	StartupWindow		Recent
+Ends with	SearchWindow		Ends with
