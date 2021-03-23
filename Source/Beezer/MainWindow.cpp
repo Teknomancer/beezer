@@ -542,9 +542,9 @@ void MainWindow::MessageReceived(BMessage* message)
             }
 
             if (message->what == M_TOOLBAR_TOGGLED)
-                m_mainMenu->m_settingsMenu->FindItem(M_TOGGLE_TOOLBAR)->SetMarked(!isHidden);
+                m_mainMenu->m_viewMenu->FindItem(M_TOGGLE_TOOLBAR)->SetMarked(!isHidden);
             else
-                m_mainMenu->m_settingsMenu->FindItem(M_TOGGLE_INFOBAR)->SetMarked(!isHidden);
+                m_mainMenu->m_viewMenu->FindItem(M_TOGGLE_INFOBAR)->SetMarked(!isHidden);
 
             break;
         }
@@ -1762,7 +1762,7 @@ void MainWindow::ToggleColumn(CLVColumn* col, BMessage* message)
 
 void MainWindow::ToggleToolBar()
 {
-    m_mainMenu->m_settingsMenu->FindItem(M_TOGGLE_TOOLBAR)->SetMarked(!(m_toolBar->IsShown()));
+    m_mainMenu->m_viewMenu->FindItem(M_TOGGLE_TOOLBAR)->SetMarked(!(m_toolBar->IsShown()));
     m_toolBar->Toggle();
 }
 
@@ -1770,7 +1770,7 @@ void MainWindow::ToggleToolBar()
 
 void MainWindow::ToggleInfoBar()
 {
-    m_mainMenu->m_settingsMenu->FindItem(M_TOGGLE_INFOBAR)->SetMarked(!(m_infoBar->IsShown()));
+    m_mainMenu->m_viewMenu->FindItem(M_TOGGLE_INFOBAR)->SetMarked(!(m_infoBar->IsShown()));
     m_infoBar->Toggle();
 }
 
@@ -1792,7 +1792,7 @@ void MainWindow::ToggleActionLog()
         m_splitPane->SetBarPosition(BPoint(Bounds().Width(), Bounds().Height()));
     }
 
-    m_mainMenu->m_settingsMenu->FindItem(M_TOGGLE_LOG)->SetMarked(m_logHidden);
+    m_mainMenu->m_viewMenu->FindItem(M_TOGGLE_LOG)->SetMarked(m_logHidden);
     m_logHidden = !m_logHidden;
     m_splitPane->SetBarLocked(m_logHidden);
 }
@@ -3020,7 +3020,7 @@ void MainWindow::AddArchiverMenu()
         m_archiver->SettingsMenu()->AddItem(new BMenuItem(B_TRANSLATE("Save as defaults"), new BMessage(M_SAVE_ARK_AS_DEFAULT)), 0);
         m_archiver->SettingsMenu()->AddItem(new BMenuItem(B_TRANSLATE("Save to archive"), new BMessage(M_SAVE_ARK_TO_ARCHIVE)), 1);
         m_archiver->SettingsMenu()->AddItem(new BSeparatorItem(), 2);
-        m_mainMenu->AddItem(m_archiver->SettingsMenu(), m_mainMenu->IndexOf(m_mainMenu->m_settingsMenu) + 1);
+        m_mainMenu->AddItem(m_archiver->SettingsMenu(), m_mainMenu->IndexOf(m_mainMenu->m_viewMenu) + 1);
     }
 }
 
