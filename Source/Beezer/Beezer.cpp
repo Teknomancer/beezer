@@ -464,7 +464,7 @@ void Beezer::MessageReceived(BMessage* message)
             break;
         }
 
-        case M_FILE_HELP: case M_ADDON_HELP: case M_PREFS_HELP:
+        case M_HELP_MANUAL: case M_ADDON_HELP: case M_PREFS_HELP:
         {
             BPath helpFilePath(&m_docsDir, "Index.html");
             BEntry helpFileEntry(helpFilePath.Path(), true);
@@ -479,6 +479,19 @@ void Beezer::MessageReceived(BMessage* message)
                 entry_ref ref;
                 helpFileEntry.GetRef(&ref);
                 be_roster->Launch(&ref);
+            }
+            break;
+        }
+
+        case M_HELP_WEBSITE: case M_HELP_GITHUB:
+        {
+            BString launchURL(message->what == M_HELP_WEBSITE ? K_APP_WEBSITE_URL : K_APP_GITHUB_URL);
+            char* pURL((char*) launchURL.String());
+
+            status_t rc = be_roster->Launch("application/x-vnd.Be.URL.https", 1, &pURL);
+            if (rc != B_OK && rc != B_ALREADY_RUNNING) {
+                (new BAlert("Error", B_TRANSLATE("Failed to launch URL"), B_TRANSLATE("OK"),
+                            NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT))->Go();
             }
             break;
         }
