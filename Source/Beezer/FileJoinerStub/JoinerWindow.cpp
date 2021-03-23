@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -43,7 +43,6 @@
 #include <stdio.h>
 
 #include "JoinerWindow.h"
-#include "JoinerStrings.h"
 
 #include "UIConstants.h"
 #include "Joiner.h"
@@ -53,9 +52,19 @@
 #include "Shared.h"
 
 
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "JoinerWindow"
+#else
+#define B_TRANSLATE(x) x
+#define B_TRANSLATE_SYSTEM_NAME(x) x
+#endif
+
 
 JoinerWindow::JoinerWindow()
-    : BWindow(BRect(100, 100, 450, 210), str(S_JOINER_WINDOW_TITLE), B_TITLED_WINDOW,
+    : BWindow(BRect(100, 100, 450, 210), B_TRANSLATE("Beezer: File Joiner"), B_TITLED_WINDOW,
               B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE | B_NOT_V_RESIZABLE)
 {
     m_backView = new BevelView(Bounds(), "JoinerWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
@@ -63,7 +72,7 @@ JoinerWindow::JoinerWindow()
     AddChild(m_backView);
 
     m_statusBar = new BStatusBar(BRect(2 * K_MARGIN, 2 * K_MARGIN, Bounds().right - 2 * K_MARGIN, 0),
-                                 "JoinerWindow:StatusBar", str(S_JOINING_FILE), NULL);
+                                 "JoinerWindow:StatusBar", B_TRANSLATE("Joining:"), NULL);
     m_statusBar->ResizeToPreferred();
     m_statusBar->ResizeTo(Bounds().right - 4 * K_MARGIN - 1, m_statusBar->Frame().Height());
     m_statusBar->SetResizingMode(B_FOLLOW_LEFT_RIGHT);
@@ -74,7 +83,7 @@ JoinerWindow::JoinerWindow()
     m_cancelBtn = new BButton(BRect(Bounds().right - 2 * K_MARGIN - K_BUTTON_WIDTH,
                                     m_statusBar->Frame().bottom + K_MARGIN, Bounds().right - 2 * K_MARGIN,
                                     m_statusBar->Frame().bottom + K_MARGIN + K_BUTTON_HEIGHT),
-                              "JoinerWindow:CancelBtn", str(S_CANCEL), new BMessage(M_CANCEL),
+                              "JoinerWindow:CancelBtn", B_TRANSLATE("Cancel"), new BMessage(M_CANCEL),
                               B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
     m_backView->AddChild(m_cancelBtn);
 
@@ -100,7 +109,7 @@ JoinerWindow::JoinerWindow()
         Show();
     else
     {
-        (new BAlert("error", str(S_STUB_ERROR), str(S_OK)))->Go();
+        (new BAlert("Error", B_TRANSLATE("An error occurred while reading the stub!"), B_TRANSLATE("OK")))->Go();
         be_app->PostMessage(B_QUIT_REQUESTED);
     }
 }
@@ -125,7 +134,7 @@ void JoinerWindow::MessageReceived(BMessage* message)
             status_t result = message->FindInt32(kResult);
             if (result == BZR_ERROR)
             {
-                BAlert* alert = new BAlert("Error", str(S_JOIN_ERROR), str(S_OK), NULL, NULL,
+                BAlert* alert = new BAlert("Error", B_TRANSLATE("An unknown error occurred while joining the files."), B_TRANSLATE("OK"), NULL, NULL,
                                            B_WIDTH_AS_USUAL, B_STOP_ALERT);
                 alert->Go();
             }
@@ -201,14 +210,14 @@ status_t JoinerWindow::ReadSelf()
     m_chunkPathStr = m_dirPathStr;
     m_chunkPathStr << "/" << fileName;
 
-    m_statusBar->Update(0, str(S_COMPUTING));
+    m_statusBar->Update(0, B_TRANSLATE("Computing file size..."));
     // Call findchunks to find out the total size of the joined file to assign to the
     // progress bar
     int32 fileCount = 0;
     off_t totalSize = 0;
     FindChunks(m_chunkPathStr.String(), m_separatorStr.String(), fileCount, totalSize, &m_cancel);
     m_statusBar->SetMaxValue(totalSize);
-    m_statusBar->Update(0, str(S_JOINING_FILE));
+    m_statusBar->Update(0, B_TRANSLATE("Joining:"));
 
     // Now we have all we want to start the join process, then what're we waiting for :)
     m_thread = spawn_thread(_joiner, "_joiner", B_NORMAL_PRIORITY, (void*)this);
