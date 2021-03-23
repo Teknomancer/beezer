@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -34,6 +34,10 @@
 
 class BitmapMenuItem;
 
+// these menu titles are shared with MainWindow.cpp and must be consistent so
+// that it can find the menus to enable/disable them
+#define S_EXTRACT_TO "Extract to..."
+#define S_EXTRACT_SELECTED "Extract selected..."
 
 
 class MainMenu : public BMenuBar
