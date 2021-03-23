@@ -8,6 +8,7 @@ include_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/FileSplitterWindow
 		${CMAKE_CURRENT_SOURCE_DIR}/FileSplitter
 		${CMAKE_CURRENT_SOURCE_DIR}/FileJoiner
+		${CMAKE_CURRENT_SOURCE_DIR}/PrefsWindow
 		${CMAKE_CURRENT_SOURCE_DIR}/SplitView
 		${CMAKE_CURRENT_SOURCE_DIR}/SplitPane
 		${CMAKE_CURRENT_SOURCE_DIR}/URLView
@@ -43,17 +44,17 @@ add_executable(Beezer
 		MainMenu.cpp
 		MainWindow.cpp
 		Preferences.cpp
-		PrefsListItem.cpp
-		PrefsView.cpp
-		PrefsViewAdd.cpp
-		PrefsViewExtract.cpp
-		PrefsViewInterface.cpp
-		PrefsViewMisc.cpp
-		PrefsViewPaths.cpp
-		PrefsViewRecent.cpp
-		PrefsViewState.cpp
-		PrefsViewWindows.cpp
-		PrefsWindow.cpp
+		PrefsWindow/PrefsListItem.cpp
+		PrefsWindow/PrefsView.cpp
+		PrefsWindow/PrefsViewAdd.cpp
+		PrefsWindow/PrefsViewExtract.cpp
+		PrefsWindow/PrefsViewInterface.cpp
+		PrefsWindow/PrefsViewMisc.cpp
+		PrefsWindow/PrefsViewPaths.cpp
+		PrefsWindow/PrefsViewRecent.cpp
+		PrefsWindow/PrefsViewState.cpp
+		PrefsWindow/PrefsViewWindows.cpp
+		PrefsWindow/PrefsWindow.cpp
 		ProgressWindow.cpp
 		RecentMgr.cpp
 		RuleMgr.cpp
