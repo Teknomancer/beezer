@@ -3,6 +3,7 @@ set(HAIKU_CATALOG_BUILD_DIR ${BEEZER_BUILD_DIR})
 
 include_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}
+		${CMAKE_CURRENT_SOURCE_DIR}/Dialogs
 		${CMAKE_CURRENT_SOURCE_DIR}/FSUtils
 		${CMAKE_CURRENT_SOURCE_DIR}/RegExString
 		${CMAKE_CURRENT_SOURCE_DIR}/FileSplitterWindow
@@ -37,7 +38,7 @@ add_executable(Beezer
 		CommentWindow.cpp
 		Widgets/ImageButton.cpp
 		Widgets/InfoBar.cpp
-		InputAlert.cpp
+		Dialogs/InputAlert.cpp
 		LangStrings.cpp
 		LocalUtils.cpp
 		Widgets/LogTextView.cpp
@@ -60,7 +61,7 @@ add_executable(Beezer
 		RecentMgr.cpp
 		RuleMgr.cpp
 		SearchWindow.cpp
-		SelectDirPanel.cpp
+		Dialogs/SelectDirPanel.cpp
 		StartupWindow.cpp
 		Widgets/StaticBitmapView.cpp
 		StatusWindow.cpp
