@@ -12,6 +12,7 @@ include_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/SplitView
 		${CMAKE_CURRENT_SOURCE_DIR}/SplitPane
 		${CMAKE_CURRENT_SOURCE_DIR}/URLView
+		${CMAKE_CURRENT_SOURCE_DIR}/Widgets
 )
 
 if(HAIKU_ENABLE_I18N STREQUAL "ON")
@@ -26,20 +27,20 @@ add_executable(Beezer
 		ArchiveRep.cpp
 		ArchiverMgr.cpp
 		ArkInfoWindow.cpp
-		BarberPole.cpp
+		Widgets/BarberPole.cpp
 		Beezer.cpp
-		BeezerListView.cpp
-		BeezerStringView.cpp
-		BevelView.cpp
-		BitmapMenuItem.cpp
+		Widgets/BeezerListView.cpp
+		Widgets/BeezerStringView.cpp
+		Widgets/BevelView.cpp
+		Widgets/BitmapMenuItem.cpp
 		BitmapPool.cpp
 		CommentWindow.cpp
-		ImageButton.cpp
-		InfoBar.cpp
+		Widgets/ImageButton.cpp
+		Widgets/InfoBar.cpp
 		InputAlert.cpp
 		LangStrings.cpp
 		LocalUtils.cpp
-		LogTextView.cpp
+		Widgets/LogTextView.cpp
 		LogWindow.cpp
 		MainMenu.cpp
 		MainWindow.cpp
@@ -61,9 +62,9 @@ add_executable(Beezer
 		SearchWindow.cpp
 		SelectDirPanel.cpp
 		StartupWindow.cpp
-		StaticBitmapView.cpp
+		Widgets/StaticBitmapView.cpp
 		StatusWindow.cpp
-		ToolBar.cpp
+		Widgets/ToolBar.cpp
 		WindowMgr.cpp
 		../AppUtils/AppUtils.cpp
 		../Archiver/Archiver.cpp
