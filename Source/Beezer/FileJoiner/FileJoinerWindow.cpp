@@ -354,8 +354,8 @@ bool FileJoinerWindow::QuitRequested()
         suspend_thread(m_thread);
 
         BAlert* alert = new BAlert("Quit", B_TRANSLATE("Joining is in progress.  Force it to stop?"),
-                                   B_TRANSLATE("Don't force"),
-                                   B_TRANSLATE("Force"), NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
+                                   B_TRANSLATE("Cancel"), B_TRANSLATE("Force"), NULL,
+                                   B_WIDTH_AS_USUAL, B_WARNING_ALERT);
         alert->SetShortcut(0L, B_ESCAPE);
         alert->SetDefaultButton(alert->ButtonAt(1L));
         int32 index = alert->Go();
