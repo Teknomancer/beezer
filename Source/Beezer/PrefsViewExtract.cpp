@@ -52,7 +52,7 @@
 
 
 PrefsViewExtract::PrefsViewExtract(BRect frame)
-    : PrefsView(frame, B_TRANSLATE("Extract"), B_TRANSLATE("Options related to extraction"))
+    : PrefsView(frame, B_TRANSLATE("Extract"), B_TRANSLATE("Extraction related settings"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Extract", 20, 20));
     Render();

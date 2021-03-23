@@ -66,7 +66,7 @@
 
 
 PrefsViewInterface::PrefsViewInterface(BRect frame)
-    : PrefsView(frame, B_TRANSLATE("Interface"), B_TRANSLATE("Configure graphical user interface options"))
+    : PrefsView(frame, B_TRANSLATE("Interface"), B_TRANSLATE("Configure graphical user interface settings"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Interface", 20, 20));
     Render();
