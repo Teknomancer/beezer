@@ -81,7 +81,7 @@ void PrefsViewInterface::Render()
     m_fullLengthBarsChk->ResizeToPreferred();
 
     BStringView* colorStrView = new BStringView(BRect(m_margin, m_fullLengthBarsChk->Frame().bottom +
-            m_margin + 2 * m_vGap, 0, 0), NULL, B_TRANSLATE("Configure colors: "));
+            m_margin + 2 * m_vGap, 0, 0), NULL, B_TRANSLATE("Configure colors:"));
     colorStrView->SetFont(&m_sectionFont);
     colorStrView->ResizeToPreferred();
     colorStrView->SetLowColor(ViewColor());
@@ -142,7 +142,7 @@ void PrefsViewInterface::Render()
 
     m_foldingField = new BMenuField(BRect(m_toolbarChk->Frame().left + maxW,
                                           m_toolbarChk->Frame().top, Bounds().right - m_margin, 0),
-                                    "PrefsViewInterface:foldingField", B_TRANSLATE("Folding: "),
+                                    "PrefsViewInterface:foldingField", B_TRANSLATE("Folding:"),
                                     (BMenu*)m_foldingPopUp, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
     float div = m_foldingField->StringWidth(m_foldingField->Label()) + 10;
     m_foldingField->SetDivider(div);

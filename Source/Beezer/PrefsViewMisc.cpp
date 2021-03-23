@@ -70,10 +70,11 @@ PrefsViewMisc::PrefsViewMisc(BRect frame)
 
 void PrefsViewMisc::Render()
 {
-    BString buf2 = B_TRANSLATE("When %appname% starts: ");
+    BString buf2 = B_TRANSLATE("When %appname% starts:");
     buf2.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
+    buf2 << " ";
 
-    float maxWidth = MAX(be_plain_font->StringWidth(B_TRANSLATE("When last archive is closed: ")),
+    float maxWidth = MAX(be_plain_font->StringWidth(B_TRANSLATE("When last archive is closed:")),
                          be_plain_font->StringWidth(buf2.String())) + 5;
 
     // Add the startup fields
@@ -92,7 +93,7 @@ void PrefsViewMisc::Render()
     // Add the quit fields
     m_quitPopUp = new BPopUpMenu("");
     m_quitField = new BMenuField(BRect(m_margin, m_startupField->Frame().top + m_vGap, Frame().Width(), 0),
-                                 "PrefsViewMisc:quitField", B_TRANSLATE("When last archive is closed: "), (BMenu*)m_quitPopUp,
+                                 "PrefsViewMisc:quitField", B_TRANSLATE("When last archive is closed:"), (BMenu*)m_quitPopUp,
                                  B_FOLLOW_LEFT, B_WILL_DRAW);
     m_quitField->SetDivider(maxWidth);
     m_quitField->SetAlignment(B_ALIGN_RIGHT);
@@ -107,8 +108,8 @@ void PrefsViewMisc::Render()
 
     // Add other controls
     m_commentChk = new BCheckBox(BRect(m_margin, 2 * m_quitPopUp->Frame().Height(), 0, 0),
-                                 "PrefsViewMisc:commentChk", B_TRANSLATE("Show comments (if any) after opening an archive"), NULL, B_FOLLOW_LEFT,
-                                 B_WILL_DRAW | B_NAVIGABLE);
+                                 "PrefsViewMisc:commentChk", B_TRANSLATE("Show comments (if any) after opening an archive"),
+                                 NULL, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
     m_commentChk->ResizeToPreferred();
 
     m_mimeChk = new BCheckBox(BRect(m_margin, m_commentChk->Frame().bottom + m_vGap, 0, 0),
@@ -124,9 +125,9 @@ void PrefsViewMisc::Render()
 
     m_arkTypePopUp = new BPopUpMenu("");
     m_arkTypeField = new BMenuField(BRect(m_margin, m_mimeBtn->Frame().bottom + 2 * m_margin,
-                                          Frame().Width(), 0), "PrefsViewMisc:arkTypeField", B_TRANSLATE("Default archiver: "),
+                                          Frame().Width(), 0), "PrefsViewMisc:arkTypeField", B_TRANSLATE("Default archiver:"),
                                     (BMenu*)m_arkTypePopUp, B_FOLLOW_LEFT, B_WILL_DRAW);
-    m_arkTypeField->SetDivider(be_plain_font->StringWidth(B_TRANSLATE("Default archiver: ")) + 5);
+    m_arkTypeField->SetDivider(be_plain_font->StringWidth(B_TRANSLATE("Default archiver:")) + 5);
 
     m_arkTypes = ArchiversInstalled(NULL);
     for (int32 i = 0; i < m_arkTypes.CountItems(); i++)

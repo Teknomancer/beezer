@@ -840,9 +840,9 @@ void Beezer::ShowCreateFilePanel()
         m_arkTypePopUp = BuildArchiveTypesMenu(this, &m_arkExtensions);
         m_arkTypeField = new BMenuField(BRect(textField->Frame().right + K_MARGIN,
                                               textField->Frame().top - 2, backView->Frame().Width(), 0),
-                                        "Beezer:arkTypeField", B_TRANSLATE("Type: "), (BMenu*)m_arkTypePopUp,
+                                        "Beezer:arkTypeField", B_TRANSLATE("Type:"), (BMenu*)m_arkTypePopUp,
                                         B_FOLLOW_BOTTOM, B_WILL_DRAW);
-        m_arkTypeField->SetDivider(be_plain_font->StringWidth(B_TRANSLATE("Type: ")) + 5);
+        m_arkTypeField->SetDivider(be_plain_font->StringWidth(B_TRANSLATE("Type:")) + 5);
 
         if (m_arkTypes.CountItems() > 0)
         {
