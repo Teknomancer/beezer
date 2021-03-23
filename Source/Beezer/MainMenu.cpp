@@ -91,8 +91,6 @@ MainMenu::MainMenu(BRect frame)
     m_editMenu->AddItem(new BMenuItem(B_TRANSLATE("Expand selected"), new BMessage(M_EDIT_EXPAND_SELECTED)));
     m_editMenu->AddItem(new BMenuItem(B_TRANSLATE("Collapse all"), new BMessage(M_EDIT_COLLAPSE_ALL)));
     m_editMenu->AddItem(new BMenuItem(B_TRANSLATE("Collapse selected"), new BMessage(M_EDIT_COLLAPSE_SELECTED)));
-    m_editMenu->AddSeparatorItem();
-    m_editMenu->AddItem(new BMenuItem(B_TRANSLATE("Settings…"), new BMessage(M_EDIT_PREFERENCES)));
 
     m_actionsMenu = new BMenu(B_TRANSLATE("Actions"));
     m_actionsMenu->AddItem(new BMenuItem(B_TRANSLATE("Extract"), new BMessage(M_ACTIONS_EXTRACT), 'X'));
@@ -112,18 +110,18 @@ MainMenu::MainMenu(BRect frame)
     m_actionsMenu->AddItem(new BMenuItem(B_TRANSLATE("Create folder"), new BMessage(M_ACTIONS_CREATE_FOLDER), 'M'));
     m_actionsMenu->AddItem(new BMenuItem(B_TRANSLATE("Add"), new BMessage(M_ACTIONS_ADD), 'A', B_SHIFT_KEY));
 
-    m_settingsMenu = new BMenu(B_TRANSLATE("Settings"));
+    m_viewMenu = new BMenu(B_TRANSLATE("View"));
 
-    m_settingsMenu->AddItem(new BMenuItem(B_TRANSLATE("Save as defaults"), new BMessage(M_SAVE_AS_DEFAULT)));
-    m_settingsMenu->AddItem(new BMenuItem(B_TRANSLATE("Save to archive"), new BMessage(M_SAVE_TO_ARCHIVE)));
-    m_settingsMenu->AddSeparatorItem();
+    m_viewMenu->AddItem(new BMenuItem(B_TRANSLATE("Save as defaults"), new BMessage(M_SAVE_AS_DEFAULT)));
+    m_viewMenu->AddItem(new BMenuItem(B_TRANSLATE("Save to archive"), new BMessage(M_SAVE_TO_ARCHIVE)));
+    m_viewMenu->AddSeparatorItem();
 
-    m_settingsMenu->AddItem(new BMenuItem(B_TRANSLATE("Toolbar"), new BMessage(M_TOGGLE_TOOLBAR)));
-    m_settingsMenu->FindItem(M_TOGGLE_TOOLBAR)->SetMarked(true);
-    m_settingsMenu->AddItem(new BMenuItem(B_TRANSLATE("Infobar"), new BMessage(M_TOGGLE_INFOBAR)));
-    m_settingsMenu->FindItem(M_TOGGLE_INFOBAR)->SetMarked(true);
-    m_settingsMenu->AddItem(new BMenuItem(B_TRANSLATE("Action log"), new BMessage(M_TOGGLE_LOG)));
-    m_settingsMenu->FindItem(M_TOGGLE_LOG)->SetMarked(true);
+    m_viewMenu->AddItem(new BMenuItem(B_TRANSLATE("Toolbar"), new BMessage(M_TOGGLE_TOOLBAR)));
+    m_viewMenu->FindItem(M_TOGGLE_TOOLBAR)->SetMarked(true);
+    m_viewMenu->AddItem(new BMenuItem(B_TRANSLATE("Infobar"), new BMessage(M_TOGGLE_INFOBAR)));
+    m_viewMenu->FindItem(M_TOGGLE_INFOBAR)->SetMarked(true);
+    m_viewMenu->AddItem(new BMenuItem(B_TRANSLATE("Action log"), new BMessage(M_TOGGLE_LOG)));
+    m_viewMenu->FindItem(M_TOGGLE_LOG)->SetMarked(true);
 
     m_columnsSubMenu = new BMenu(B_TRANSLATE("Columns"));
     m_columnsSubMenu->AddItem(new BMenuItem(B_TRANSLATE("Name"), new BMessage(M_TOGGLE_COLUMN_NAME)));
@@ -135,7 +133,7 @@ MainMenu::MainMenu(BRect frame)
     m_columnsSubMenu->AddItem(new BMenuItem(B_TRANSLATE("Date"), new BMessage(M_TOGGLE_COLUMN_DATE)));
     m_columnsSubMenu->AddItem(new BMenuItem(B_TRANSLATE("Method"), new BMessage(M_TOGGLE_COLUMN_METHOD)));
     m_columnsSubMenu->AddItem(new BMenuItem(B_TRANSLATE("CRC"), new BMessage(M_TOGGLE_COLUMN_CRC)));
-    m_settingsMenu->AddItem(m_columnsSubMenu);
+    m_viewMenu->AddItem(m_columnsSubMenu);
 
     int32 columnCount = m_columnsSubMenu->CountItems();
     for (int32 i = 0; i < columnCount; i++)
@@ -149,7 +147,7 @@ MainMenu::MainMenu(BRect frame)
     m_foldingMenu->AddItem(new BMenuItem(B_TRANSLATE("Show all items unfolded"), NULL));
     m_foldingMenu->ItemAt(3)->SetMarked(true);
 
-    m_settingsMenu->AddItem(m_foldingMenu);
+    m_viewMenu->AddItem(m_foldingMenu);
 
     m_windowsMenu = new BMenu(B_TRANSLATE("Windows"));
 
@@ -160,6 +158,7 @@ MainMenu::MainMenu(BRect frame)
     systemMenu->AddItem(new BMenuItem(B_TRANSLATE("Help"), new BMessage(M_FILE_HELP)));
     systemMenu->AddSeparatorItem();
     systemMenu->AddItem(new BMenuItem(strBuf.String(), new BMessage(M_FILE_ABOUT)));
+    systemMenu->AddItem(new BMenuItem(B_TRANSLATE("Settings…"), new BMessage(M_EDIT_PREFERENCES)));
 
     systemMenu->AddSeparatorItem();
     systemMenu->AddItem(new BMenuItem(B_TRANSLATE("Quit"), new BMessage(M_FILE_QUIT), 'Q'));
@@ -174,7 +173,7 @@ MainMenu::MainMenu(BRect frame)
     AddItem(m_editMenu);
     AddItem(m_actionsMenu);
     AddItem(m_toolsMenu);
-    AddItem(m_settingsMenu);
+    AddItem(m_viewMenu);
     AddItem(m_windowsMenu);
 
     m_archiveContextMenu = new BPopUpMenu("_cntxt", false, false);

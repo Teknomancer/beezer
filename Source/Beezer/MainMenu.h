@@ -67,7 +67,7 @@ class MainMenu : public BMenuBar
                             *m_foldingMenu,
                             *m_toolsMenu,
                             *m_windowsMenu,
-                            *m_settingsMenu;
+                            *m_viewMenu;
         BPopUpMenu*         m_archiveContextMenu,
                             *m_logContextMenu;
         BitmapMenuItem*     m_systemMenu;
