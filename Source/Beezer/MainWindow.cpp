@@ -610,7 +610,7 @@ void MainWindow::MessageReceived(BMessage* message)
                 BString countBuf;
                 countBuf.SetToFormat("%ld", fileCount);
                 confirmStr.ReplaceAll("%numfiles%", countBuf);
-                BAlert* confirmAlert = new BAlert("confirm", confirmStr, B_TRANSLATE("Continue"),
+                BAlert* confirmAlert = new BAlert("Confirm", confirmStr, B_TRANSLATE("Continue"),
                                                   B_TRANSLATE("No"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_WARNING_ALERT);
                 confirmAlert->SetShortcut(1, B_ESCAPE);
                 confirmAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
@@ -2314,7 +2314,7 @@ void MainWindow::DeleteUpdate()
         selEntry = (ListEntry*)m_deleteFileList->ItemAtFast(x);
         BString path = selEntry->m_fullPath;
 
-        // We put this in a while loop so that archivers like tar delete all occurences of the file
+        // We put this in a while loop so that archivers like tar delete all occurrences of the file
         // if there are duplicate files
         HashEntry* entry(NULL);
         while ((entry = m_archiver->Table()->Find(path.String())) != NULL)
@@ -2477,7 +2477,7 @@ void MainWindow::ExtractDone(BMessage* message)
             m_logTextView->AddText(B_TRANSLATE("Error (password protected file)"), true, true, true);
             if (message->HasBool(kFailOnNull) == false)
             {
-                BAlert* alert = new BAlert("Error", B_TRANSLATE("A password protection error has occured.\nPlease set the correct password and retry"),
+                BAlert* alert = new BAlert("Error", B_TRANSLATE("A password protection error has occurred.\nPlease set the correct password and retry"),
                                            B_TRANSLATE("Cancel"), B_TRANSLATE("Set password..."), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
                 if (alert->Go() == 1L)
                     PostMessage(M_FILE_PASSWORD);
@@ -2515,7 +2515,7 @@ void MainWindow::ExtractDone(BMessage* message)
 
         default:
         {
-            m_logTextView->AddText(B_TRANSLATE("An unknown error occured."), true, true, true);
+            m_logTextView->AddText(B_TRANSLATE("An unknown error occurred."), true, true, true);
             break;
         }
     }
@@ -2927,7 +2927,7 @@ void MainWindow::SetupArchiver(entry_ref* ref, char* mimeString)
         BString errStr(B_TRANSLATE("%filename% is not an archive or is an unsupported type"));
         errStr.ReplaceAll("%filename%", m_archivePath.Leaf());
 
-        BAlert* errAlert = new BAlert("error", errStr, B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING,
+        BAlert* errAlert = new BAlert("Error", errStr, B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING,
                                       B_INFO_ALERT);
         errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
         errAlert->AddToSubset(this);
@@ -2947,7 +2947,7 @@ void MainWindow::SetupArchiver(entry_ref* ref, char* mimeString)
             case BZR_BINARY_MISSING:           // Add-on couldn't trace its binary in the Binaries folder
             {
                 m_logTextView->AddText(B_TRANSLATE("Failed!"), false, false, false);
-                (new BAlert("error", B_TRANSLATE("Archiver binary missing. Cannot continue."), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
+                (new BAlert("Error", B_TRANSLATE("Archiver binary missing. Cannot continue."), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
                             B_EVEN_SPACING, B_STOP_ALERT))->Go();
 
                 PostMessage(M_FILE_CLOSE);
@@ -2957,7 +2957,7 @@ void MainWindow::SetupArchiver(entry_ref* ref, char* mimeString)
             case BZR_OPTIONAL_BINARY_MISSING:    // Add-on couldn't find a non-critical binary (optional)
             {
                 m_logTextView->AddText(B_TRANSLATE("Partially successful."), false, false, false);
-                (new BAlert("error",
+                (new BAlert("Error",
                             B_TRANSLATE("Optional binary missing. Some features may not be available"),
                             B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
                             B_EVEN_SPACING, B_INFO_ALERT))->Go();

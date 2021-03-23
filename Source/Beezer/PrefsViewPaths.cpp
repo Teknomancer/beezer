@@ -388,7 +388,7 @@ void PrefsViewPaths::MessageReceived(BMessage* message)
                     {
                         BString errString = B_TRANSLATE("%filepath% is already present in your favorites");
                         errString.ReplaceAll("%filepath%", existingPath.String());
-                        BAlert* errAlert = new BAlert("error", errString.String(), B_TRANSLATE("OK"),
+                        BAlert* errAlert = new BAlert("Error", errString.String(), B_TRANSLATE("OK"),
                                                       NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
                         errAlert->SetShortcut(0L, B_ESCAPE);
                         errAlert->Go();

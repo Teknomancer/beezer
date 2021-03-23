@@ -287,7 +287,7 @@ void Beezer::MessageReceived(BMessage* message)
 
             buf.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
 
-            BAlert* a = new BAlert("done", buf, B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
+            BAlert* a = new BAlert("Done", buf, B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
                                    B_EVEN_SPACING, B_INFO_ALERT);
             a->SetShortcut(0L, B_ESCAPE);
             a->Go();
@@ -471,8 +471,8 @@ void Beezer::MessageReceived(BMessage* message)
 
             if (helpFileEntry.Exists() == false)
             {
-                (new BAlert("error", B_TRANSLATE("Couldn't locate the help files."), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
-                            B_STOP_ALERT))->Go();
+                (new BAlert("Error", B_TRANSLATE("Couldn't locate the help files."), B_TRANSLATE("OK"),
+                            NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT))->Go();
             }
             else
             {
@@ -928,7 +928,7 @@ int8 Beezer::RegisterFileTypes() const
                 int32 index = 2L;
                 if (skipFurtherAlerts == false)
                 {
-                    BAlert* confAlert = new BAlert("mime", buf.String(), B_TRANSLATE("No"), B_TRANSLATE("Yes, make it preferred"),
+                    BAlert* confAlert = new BAlert("Mimetypes", buf.String(), B_TRANSLATE("No"), B_TRANSLATE("Yes, make it preferred"),
                                                    B_TRANSLATE("Register all types!!"), B_WIDTH_AS_USUAL, B_OFFSET_SPACING,
                                                    B_WARNING_ALERT);
                     confAlert->SetDefaultButton(confAlert->ButtonAt(1L));

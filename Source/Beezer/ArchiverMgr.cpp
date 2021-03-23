@@ -240,7 +240,7 @@ Archiver* NewArchiver(const char* name, bool popupErrors, status_t* returnCode)
         {
             if (popupErrors)
             {
-                (new BAlert("error", B_TRANSLATE("Archiver binary missing. Cannot continue"), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
+                (new BAlert("Error", B_TRANSLATE("Archiver binary missing. Cannot continue"), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
                             B_EVEN_SPACING, B_STOP_ALERT))->Go();
             }
             break;
@@ -250,7 +250,7 @@ Archiver* NewArchiver(const char* name, bool popupErrors, status_t* returnCode)
         {
             if (popupErrors)
             {
-                (new BAlert("error", B_TRANSLATE("Optional binary missing. Some features may not be available"), B_TRANSLATE("OK"), NULL, NULL,
+                (new BAlert("Error", B_TRANSLATE("Optional binary missing. Some features may not be available"), B_TRANSLATE("OK"), NULL, NULL,
                             B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT))->Go();
             }
             break;

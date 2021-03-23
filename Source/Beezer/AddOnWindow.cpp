@@ -144,7 +144,7 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
     else
     {
         // We've seen enough there are no add-ons installed, no use proceeding!!! Call it quits NOW
-        (new BAlert("error", B_TRANSLATE("Fatal error, no add-ons found! You cannot create any archives using Beezer."), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT))->Go();
+        (new BAlert("Error", B_TRANSLATE("Fatal error, no add-ons found! You cannot create any archives using Beezer."), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT))->Go();
         PostMessage(B_QUIT_REQUESTED);
         Show();
         return;
