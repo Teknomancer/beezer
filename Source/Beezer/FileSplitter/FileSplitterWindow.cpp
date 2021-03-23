@@ -186,7 +186,7 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
                                         m_filePathView->Frame().top - 4,
                                         m_filePathView->Frame().right + K_MARGIN + K_BUTTON_WIDTH,
                                         m_filePathView->Frame().top - 4 + K_BUTTON_HEIGHT),
-                                  "FileSplitterWindow:SelectFileBtn", B_TRANSLATE("Select..."),
+                                  "FileSplitterWindow:SelectFileBtn", B_TRANSLATE("Select…"),
                                   new BMessage(M_SELECT_SPLIT_FILE), B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
     m_innerView->AddChild(m_filePathView);
     m_innerView->AddChild(m_selectFileBtn);
@@ -195,14 +195,14 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
                                           m_folderPathView->Frame().top - 4,
                                           m_folderPathView->Frame().right + K_MARGIN + K_BUTTON_WIDTH,
                                           m_folderPathView->Frame().top - 4 + K_BUTTON_HEIGHT),
-                                    "FileSplitterWindow:SelectFolderBtn", B_TRANSLATE("Select..."),
+                                    "FileSplitterWindow:SelectFolderBtn", B_TRANSLATE("Select…"),
                                     new BMessage(M_SELECT_SPLIT_FOLDER), B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
     m_innerView->AddChild(m_folderField);
     m_innerView->AddChild(m_folderPathView);
     m_innerView->AddChild(m_selectFolderBtn);
 
     m_sizePopUp = new BPopUpMenu("Sizes", true, true);
-    m_sizePopUp->AddItem(new BMenuItem(B_TRANSLATE("Custom size..."), new BMessage(M_CUSTOM_SIZE)));
+    m_sizePopUp->AddItem(new BMenuItem(B_TRANSLATE("Custom size…"), new BMessage(M_CUSTOM_SIZE)));
     m_sizePopUp->AddSeparatorItem();
     m_sizePopUp->AddItem(new BMenuItem(B_TRANSLATE("1.44 MiB - (floppy)"), new BMessage(M_PREDEFINED_SIZE)));
     m_sizePopUp->AddItem(new BMenuItem(B_TRANSLATE("1.20 MiB - (floppy)"), new BMessage(M_PREDEFINED_SIZE)));

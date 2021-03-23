@@ -99,7 +99,7 @@ MainMenu::MainMenu(BRect frame)
     SetExtractPathsMenu(new BMenu(B_TRANSLATE(S_EXTRACT_TO)));
 
     m_actionsMenu->AddItem(new BMenuItem(B_TRANSLATE("View file"), new BMessage(M_ACTIONS_VIEW), 'V'));
-    m_actionsMenu->AddItem(new BMenuItem(B_TRANSLATE("Open with..."), new BMessage(M_ACTIONS_OPEN_WITH), 'O'));
+    m_actionsMenu->AddItem(new BMenuItem(B_TRANSLATE("Open with…"), new BMessage(M_ACTIONS_OPEN_WITH), 'O'));
     m_actionsMenu->AddSeparatorItem();
     m_actionsMenu->AddItem(new BMenuItem(B_TRANSLATE("Test"), new BMessage(M_ACTIONS_TEST), 'T'));
     m_actionsMenu->AddItem(new BMenuItem(B_TRANSLATE("Search archive"), new BMessage(M_ACTIONS_SEARCH_ARCHIVE), 'F'));
