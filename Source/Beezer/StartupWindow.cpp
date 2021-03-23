@@ -111,7 +111,7 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
                                  ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon, false, true, true, B_FOLLOW_H_CENTER);
     m_toolsBtn->SetExplicitMinSize(BSize(K_TOOLBAR_WIDTH, -1));
 
-    m_prefsBtn = new ImageButton(buttonRect, "StartupWindow:Prefs", B_TRANSLATE("Preferences"),
+    m_prefsBtn = new ImageButton(buttonRect, "StartupWindow:Prefs", B_TRANSLATE("Settings"),
                                  _bmps->m_tbarPrefsBmp, NULL, new BMessage(M_EDIT_PREFERENCES), false, ui_color(B_PANEL_BACKGROUND_COLOR),
                                  kBelowIcon,    false, true, true, B_FOLLOW_H_CENTER);
 

@@ -92,7 +92,7 @@ MainMenu::MainMenu(BRect frame)
     m_editMenu->AddItem(new BMenuItem(B_TRANSLATE("Collapse all"), new BMessage(M_EDIT_COLLAPSE_ALL)));
     m_editMenu->AddItem(new BMenuItem(B_TRANSLATE("Collapse selected"), new BMessage(M_EDIT_COLLAPSE_SELECTED)));
     m_editMenu->AddSeparatorItem();
-    m_editMenu->AddItem(new BMenuItem(B_TRANSLATE("Preferences"), new BMessage(M_EDIT_PREFERENCES)));
+    m_editMenu->AddItem(new BMenuItem(B_TRANSLATE("Settings…"), new BMessage(M_EDIT_PREFERENCES)));
 
     m_actionsMenu = new BMenu(B_TRANSLATE("Actions"));
     m_actionsMenu->AddItem(new BMenuItem(B_TRANSLATE("Extract"), new BMessage(M_ACTIONS_EXTRACT), 'X'));
