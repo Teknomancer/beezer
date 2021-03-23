@@ -628,7 +628,7 @@ void MainWindow::MessageReceived(BMessage* message)
             entry_ref tempDirRef;
             tempDirEntry.GetRef(&tempDirRef);
 
-            m_statusWnd = new StatusWindow(B_TRANSLATE("Extracting..."), this, B_TRANSLATE("Please wait..."), &m_publicThreadCancel);
+            m_statusWnd = new StatusWindow(B_TRANSLATE("Extracting…"), this, B_TRANSLATE("Please wait…"), &m_publicThreadCancel);
 
             viewMsg->AddPointer(kWindowPtr, (void*)this);
             viewMsg->AddPointer(kArchiverPtr, (void*)m_archiver);
@@ -812,7 +812,7 @@ void MainWindow::MessageReceived(BMessage* message)
             // While this thread counts the directories and files sizes in message, we setup a blocker-status
             // window so that it shows barber pole PLUS blocks our MainWindow preventing the user from
             // doing other operations (2-in-1) ! Plus user can cancel the operation - (3-in-1) !! Yay!
-            m_statusWnd = new StatusWindow(B_TRANSLATE("Preparing to add..."), this, B_TRANSLATE("Gathering information"),
+            m_statusWnd = new StatusWindow(B_TRANSLATE("Preparing to add…"), this, B_TRANSLATE("Gathering information"),
                                            &m_publicThreadCancel);
 
             BMessage* countMsg = new BMessage(*message);
@@ -924,8 +924,8 @@ void MainWindow::MessageReceived(BMessage* message)
 
                 copyMsg->AddString(kTempPath, copyToDir.String());
                 copyMsg->AddString(kLaunchDir, m_tempDirPath);
-                copyMsg->AddString(kProgressAction, B_TRANSLATE("Copying..."));
-                copyMsg->AddString(kPreparing, B_TRANSLATE("Preparing to add..."));
+                copyMsg->AddString(kProgressAction, B_TRANSLATE("Copying…"));
+                copyMsg->AddString(kPreparing, B_TRANSLATE("Preparing to add…"));
                 copyMsg->AddPointer(kSuperItem, (void*)selectedItem);         // Will be used in M_ADD_DONE
                 copyMsg->AddString(kSuperItemPath, itemPath);                // Will be used in _copier
 
@@ -935,7 +935,7 @@ void MainWindow::MessageReceived(BMessage* message)
                 copyMsg->AddPointer(kCancel, (void*)cancel);
                 copyMsg->AddPointer(kWindowPtr, (void*)this);
 
-                m_logTextView->AddText(B_TRANSLATE("Preparing to add..."), true, false, false);
+                m_logTextView->AddText(B_TRANSLATE("Preparing to add…"), true, false, false);
                 m_logTextView->AddText(" ", false, false, false);
                 resume_thread(spawn_thread(_copier, "_copier", B_NORMAL_PRIORITY, (void*)copyMsg));
             }
@@ -999,8 +999,8 @@ void MainWindow::MessageReceived(BMessage* message)
 
             addMsg->what = M_ACTIONS_ADD;
             addMsg->RemoveName(kProgressAction);
-            addMsg->AddString(kProgressAction, B_TRANSLATE("Adding..."));
-            addMsg->AddString(kPreparing, B_TRANSLATE("Preparing to add..."));
+            addMsg->AddString(kProgressAction, B_TRANSLATE("Adding…"));
+            addMsg->AddString(kPreparing, B_TRANSLATE("Preparing to add…"));
 
             m_progressWnd = new ProgressWindow(this, addMsg, messenger, cancel);
 
@@ -1015,7 +1015,7 @@ void MainWindow::MessageReceived(BMessage* message)
                 m_archiveEntry.Remove();    // Overwrite existing file if any
 
             SetTitle(m_archivePath.Leaf());
-            m_logTextView->AddText(B_TRANSLATE("Adding..."), true, false, false);
+            m_logTextView->AddText(B_TRANSLATE("Adding…"), true, false, false);
             m_logTextView->AddText(" ", false, false, false);
             resume_thread(spawn_thread(_adder, "_adder", B_NORMAL_PRIORITY, (void*)addMsg));
             break;
@@ -1029,7 +1029,7 @@ void MainWindow::MessageReceived(BMessage* message)
             if (result == BZR_CANCEL_ARCHIVER)
             {
                 BAlert* errAlert = new BAlert("Error",
-                                              B_TRANSLATE("A critical operation has been cancelled and the archive is in an unknown state.\n\nCannot continue, closing window..."),
+                                              B_TRANSLATE("A critical operation has been cancelled and the archive is in an unknown state.\n\nCannot continue, closing window…"),
                                               B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
                 errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                 errAlert->AddToSubset(this);
@@ -1217,7 +1217,7 @@ void MainWindow::MessageReceived(BMessage* message)
             message->FindBool(kPersistent, &persistent);
 
             // Add logtext view descriptive text
-            BString searchText = B_TRANSLATE("Searching for \"%searchstring%\"...");
+            BString searchText = B_TRANSLATE("Searching for \"%searchstring%\"…");
             searchText << " ";
             searchText.ReplaceFirst("%searchstring%", message->FindString(kExpr));
             m_logTextView->AddText(searchText.String(), true, true, false);
@@ -1302,7 +1302,7 @@ void MainWindow::MessageReceived(BMessage* message)
             const char* comment = NULL;
             message->FindString(kCommentContent, &comment);
 
-            m_statusWnd = new StatusWindow(B_TRANSLATE("Saving comment..."), this, B_TRANSLATE("Please wait..."), NULL);
+            m_statusWnd = new StatusWindow(B_TRANSLATE("Saving comment…"), this, B_TRANSLATE("Please wait…"), NULL);
             m_archiver->SetComment(const_cast<char*>(comment), MakeTempDirectory());
             update_mime_info(m_archivePath.Path(), false, true, true);
             m_statusWnd->PostMessage(M_CLOSE);
@@ -2119,7 +2119,7 @@ void MainWindow::DeleteFilesFromArchive()
     m_deleteDirList = new BList(m_listView->FullListSelectionCount());
 
     m_publicThreadCancel = false;        // Reset this
-    m_statusWnd = new StatusWindow(B_TRANSLATE("Preparing to delete..."), this,
+    m_statusWnd = new StatusWindow(B_TRANSLATE("Preparing to delete…"), this,
                                    B_TRANSLATE("Gathering information"), &m_publicThreadCancel);
 
     ListEntry* selEntry(NULL);
@@ -2224,8 +2224,8 @@ void MainWindow::DeleteFilesFromArchive()
     }
 
     msg->AddInt32(kCount, count);
-    msg->AddString(kPreparing, B_TRANSLATE("Preparing to delete..."));
-    msg->AddString(kProgressAction, B_TRANSLATE("Deleting..."));
+    msg->AddString(kPreparing, B_TRANSLATE("Preparing to delete…"));
+    msg->AddString(kProgressAction, B_TRANSLATE("Deleting…"));
 
     // Proceed to remove files
     BMessenger* messenger(NULL);
@@ -2240,7 +2240,7 @@ void MainWindow::DeleteFilesFromArchive()
     threadInfo->AddMessage(kFileList, msg);
     delete msg;
 
-    m_logTextView->AddText(B_TRANSLATE("Deleting..."), true, false, false);
+    m_logTextView->AddText(B_TRANSLATE("Deleting…"), true, false, false);
 
     resume_thread(spawn_thread(_deletor, "_deletor", B_NORMAL_PRIORITY, (void*)threadInfo));
 }
@@ -2269,7 +2269,7 @@ void MainWindow::DeleteDone(BMessage* message)
         {
             // Cancelling a delete is painful
             BAlert* errAlert = new BAlert("Error",
-                                          B_TRANSLATE("A critical operation has been cancelled and the archive is in an unknown state.\n\nCannot continue, closing window..."),
+                                          B_TRANSLATE("A critical operation has been cancelled and the archive is in an unknown state.\n\nCannot continue, closing window…"),
                                           B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
             errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
             errAlert->AddToSubset(this);
@@ -2376,8 +2376,8 @@ void MainWindow::TestArchive()
     volatile bool* cancel;
 
     msg.AddInt32(kCount, m_fileList->CountItems());
-    msg.AddString(kPreparing, B_TRANSLATE("Preparing to test..."));
-    msg.AddString(kProgressAction, B_TRANSLATE("Testing..."));
+    msg.AddString(kPreparing, B_TRANSLATE("Preparing to test…"));
+    msg.AddString(kProgressAction, B_TRANSLATE("Testing…"));
 
     BMessenger* messenger = NULL;
     m_progressWnd = new ProgressWindow(this, &msg, messenger, cancel);
@@ -2388,7 +2388,7 @@ void MainWindow::TestArchive()
     threadInfo->AddPointer(kArchiverPtr, (void*)m_archiver);
     threadInfo->AddPointer(kCancel, (void*)cancel);
 
-    m_logTextView->AddText(B_TRANSLATE("Testing..."));
+    m_logTextView->AddText(B_TRANSLATE("Testing…"));
     thread_id tst_id = spawn_thread(_tester, "_tester", B_NORMAL_PRIORITY, (void*)threadInfo);
     resume_thread(tst_id);
 }
@@ -2482,7 +2482,7 @@ void MainWindow::ExtractDone(BMessage* message)
             if (message->HasBool(kFailOnNull) == false)
             {
                 BAlert* alert = new BAlert("Error", B_TRANSLATE("A password protection error has occurred.\nPlease set the correct password and retry"),
-                                           B_TRANSLATE("Cancel"), B_TRANSLATE("Set password..."), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
+                                           B_TRANSLATE("Cancel"), B_TRANSLATE("Set password…"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
                 if (alert->Go() == 1L)
                     PostMessage(M_FILE_PASSWORD);
             }
@@ -2652,8 +2652,8 @@ void MainWindow::ExtractArchive(entry_ref refToDir, bool fullArchive)
         msg.AddInt32(kCount, fileCount);
     }
 
-    msg.AddString(kPreparing, B_TRANSLATE("Preparing to extract..."));
-    msg.AddString(kProgressAction, B_TRANSLATE("Extracting..."));
+    msg.AddString(kPreparing, B_TRANSLATE("Preparing to extract…"));
+    msg.AddString(kProgressAction, B_TRANSLATE("Extracting…"));
 
     BMessenger* messenger(NULL);
     volatile bool* cancel;
@@ -2900,7 +2900,7 @@ int32 MainWindow::AddItemsFromList(int32 index, int32* totalItems)
 void MainWindow::SetupArchiver(entry_ref* ref, char* mimeString)
 {
     // Initialise archiver based either on ref, or on the passed-in mimeString
-    m_logTextView->AddText(B_TRANSLATE("Detecting format..."), true, false, false);
+    m_logTextView->AddText(B_TRANSLATE("Detecting format…"), true, false, false);
     char type[B_MIME_TYPE_LENGTH];
     if (ref)
     {
@@ -2942,7 +2942,7 @@ void MainWindow::SetupArchiver(entry_ref* ref, char* mimeString)
     }
 
     m_logTextView->AddText(B_TRANSLATE("Done."), false, false, false);
-    m_logTextView->AddText(B_TRANSLATE("Verifying archiver..."), true, false, false);
+    m_logTextView->AddText(B_TRANSLATE("Verifying archiver…"), true, false, false);
     if ((errCode = m_archiver->InitCheck()) != BZR_DONE)    // Type is supported,
     {
         // but add-on has error initializing
@@ -3038,7 +3038,7 @@ void MainWindow::OpenArchive()
     if (m_archiver == NULL)
         return;
 
-    m_logTextView->AddText(B_TRANSLATE("Loading archive..."));
+    m_logTextView->AddText(B_TRANSLATE("Loading archive…"));
     UpdateIfNeeded();
 
     BMessage* openMsg = new BMessage('open');
@@ -3057,7 +3057,7 @@ void MainWindow::OpenArchive()
     // which would lead to the worker thread not being quit. Otherwise it does a normal open
 
     m_criticalSection = true;        // Tells QuitRequested() not to grant permission to close window
-    m_statusWnd = new StatusWindow(B_TRANSLATE("Preparing to open..."), this, B_TRANSLATE("Please wait..."), NULL, false);
+    m_statusWnd = new StatusWindow(B_TRANSLATE("Preparing to open…"), this, B_TRANSLATE("Please wait…"), NULL, false);
     thread_id tid = spawn_thread(_opener, "_opener", B_NORMAL_PRIORITY, (void*)openMsg);
     resume_thread(tid);
     while (1)
@@ -3548,8 +3548,8 @@ void MainWindow::AddNewFolder()
     {
         if (buttonIndex == 1L)
         {
-            m_statusWnd = new StatusWindow(B_TRANSLATE("Creating folder..."), this,
-                                           B_TRANSLATE("Please wait..."), NULL);
+            m_statusWnd = new StatusWindow(B_TRANSLATE("Creating folder…"), this,
+                                           B_TRANSLATE("Please wait…"), NULL);
 
             MakeTempDirectory();
             BString mkdirPath = m_tempDirPath;
@@ -3576,7 +3576,7 @@ void MainWindow::AddNewFolder()
                 return;
             }
 
-            m_logTextView->AddText(B_TRANSLATE("Creating folder..."), true, false, false);
+            m_logTextView->AddText(B_TRANSLATE("Creating folder…"), true, false, false);
             m_logTextView->AddText(" ", false, false, false);
 
             create_directory(mkdirPath.String(), 0777);

@@ -128,7 +128,7 @@ FileJoinerWindow::FileJoinerWindow(RecentMgr* dirs)
     m_descStr2 = new BStringView(BRect(m_descStr->Frame().left,
                                        m_descStr->Frame().bottom + 1, Bounds().right - 1, 0),
                                  "FileJoinerWindow:DescStr2",
-                                 B_TRANSLATE("The order of joining is based on number suffixes in the filenames..."),
+                                 B_TRANSLATE("The order of joining is based on number suffixes in the filenames…"),
                                  B_FOLLOW_LEFT, B_WILL_DRAW);
     m_backView->AddChild(m_descStr2);
     m_descStr2->ResizeToPreferred();
@@ -149,7 +149,7 @@ FileJoinerWindow::FileJoinerWindow(RecentMgr* dirs)
     m_selectFileBtn = new BButton(BRect(m_innerView->Frame().Width() - K_MARGIN - K_BUTTON_WIDTH,
                                         m_filePathView->Frame().top - 4, m_innerView->Frame().Width() - K_MARGIN,
                                         m_filePathView->Frame().top - 4 + K_BUTTON_HEIGHT), "FileJoinerWindow:SelectFileBtn",
-                                  B_TRANSLATE("Select..."), new BMessage(M_SELECT_JOIN_FILE), B_FOLLOW_RIGHT,
+                                  B_TRANSLATE("Select…"), new BMessage(M_SELECT_JOIN_FILE), B_FOLLOW_RIGHT,
                                   B_WILL_DRAW | B_NAVIGABLE);
     m_innerView->AddChild(m_selectFileBtn);
 
@@ -170,7 +170,7 @@ FileJoinerWindow::FileJoinerWindow(RecentMgr* dirs)
     m_selectFolderBtn = new BButton(BRect(m_innerView->Frame().Width() - K_MARGIN - K_BUTTON_WIDTH,
                                           m_folderPathView->Frame().top - 4, m_innerView->Frame().Width() - K_MARGIN,
                                           m_folderPathView->Frame().top - 4 + K_BUTTON_HEIGHT),
-                                    "FileJoinerWindow:SelectFolderBtn", B_TRANSLATE("Select..."),
+                                    "FileJoinerWindow:SelectFolderBtn", B_TRANSLATE("Select…"),
                                     new BMessage(M_SELECT_JOIN_FOLDER), B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
     m_innerView->AddChild(m_selectFolderBtn);
 

@@ -210,7 +210,7 @@ status_t JoinerWindow::ReadSelf()
     m_chunkPathStr = m_dirPathStr;
     m_chunkPathStr << "/" << fileName;
 
-    m_statusBar->Update(0, B_TRANSLATE("Computing file size..."));
+    m_statusBar->Update(0, B_TRANSLATE("Computing file size…"));
     // Call findchunks to find out the total size of the joined file to assign to the
     // progress bar
     int32 fileCount = 0;
