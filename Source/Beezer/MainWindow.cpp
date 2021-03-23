@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -67,7 +67,6 @@
 #include "ImageButton.h"
 #include "InfoBar.h"
 #include "InputAlert.h"
-#include "LangStrings.h"
 #include "ListEntry.h"
 #include "LocalUtils.h"
 #include "LogTextView.h"
@@ -90,13 +89,23 @@
 #include "WindowMgr.h"
 
 
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "MainWindow"
+#else
+#define B_TRANSLATE(x) x
+#define B_TRANSLATE_SYSTEM_NAME(x) x
+#endif
+
 
 // Note: Don't let BeIDE sort function popups if we want these pragmas to work
 #pragma mark --- Inherited Hooks ---
 
 MainWindow::MainWindow(BRect frame, WindowMgr* windowMgr, RecentMgr* recentMgr,
                        RecentMgr* extractMgr, RuleMgr* ruleMgr)
-    : BWindow(frame, str(S_UNTITLED), B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS),
+    : BWindow(frame, B_TRANSLATE("Untitled"), B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS),
       m_searchWnd(NULL),
       m_extractToPanel(NULL),
       m_addPanel(NULL),
@@ -400,9 +409,9 @@ void MainWindow::MessageReceived(BMessage* message)
                 const char* errString;
                 if (msg->FindString(kErrorString, &errString) == B_OK)
                 {
-                    m_logTextView->AddText(str(S_LOADING_ERROR), false, false, false);
-                    BAlert* errAlert = new BAlert("Error", str(S_VIEW_ERRORS_NOW), str(S_VIEW_ERROR),
-                                                  str(S_CANCEL), NULL, B_WIDTH_AS_USUAL,    B_EVEN_SPACING,    B_STOP_ALERT);
+                    m_logTextView->AddText(B_TRANSLATE("Error!"), false, false, false);
+                    BAlert* errAlert = new BAlert("Error", B_TRANSLATE("The archiver has encountered errors.\nDo you want to view a detailed report?"), B_TRANSLATE("View report"),
+                                                  B_TRANSLATE("Cancel"), NULL, B_WIDTH_AS_USUAL,    B_EVEN_SPACING,    B_STOP_ALERT);
                     errAlert->SetDefaultButton(errAlert->ButtonAt(1L));
                     errAlert->SetShortcut(1L, B_ESCAPE);
                     errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
@@ -410,17 +419,17 @@ void MainWindow::MessageReceived(BMessage* message)
                     int32 buttonIndex = errAlert->Go();
                     if (buttonIndex == 0L)
                     {
-                        BString errWindowTitle = str(S_ERRORS_AND_WARNINGS);
-                        errWindowTitle << Title();
+                        BString errWindowTitle = B_TRANSLATE("Errors & warnings:");
+                        errWindowTitle << " " << Title();
                         new LogWindow(this, errWindowTitle.String(), errString);
                     }
                 }
             }
             else
-                m_logTextView->AddText(str(S_LOADING_DONE), false, false, false);
+                m_logTextView->AddText(B_TRANSLATE("Done."), false, false, false);
 
             if (m_archiver->SupportsPassword() && m_archiver->PasswordRequired())
-                m_logTextView->AddText(str(S_PASSWORD_FOUND), true, false, false);
+                m_logTextView->AddText(B_TRANSLATE("Password protected file(s) found."), true, false, false);
 
             ActivateUIForValidArchive();
             break;
@@ -597,10 +606,12 @@ void MainWindow::MessageReceived(BMessage* message)
 
             if (fileCount > 10)
             {
-                char* confirmStr = new char[strlen(str(S_MANY_FILES_TO_VIEW)) + 15];
-                sprintf(confirmStr, str(S_MANY_FILES_TO_VIEW), fileCount);
-                BAlert* confirmAlert = new BAlert("confirm", confirmStr, str(S_YES_VIEW),
-                                                  str(S_NO), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_WARNING_ALERT);
+                BString confirmStr(B_TRANSLATE("You are opening %numfiles% files simultenously.  Are you sure you wish to proceed?"));
+                BString countBuf;
+                countBuf.SetToFormat("%ld", fileCount);
+                confirmStr.ReplaceAll("%numfiles%", countBuf);
+                BAlert* confirmAlert = new BAlert("confirm", confirmStr, B_TRANSLATE("Continue"),
+                                                  B_TRANSLATE("No"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_WARNING_ALERT);
                 confirmAlert->SetShortcut(1, B_ESCAPE);
                 confirmAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                 confirmAlert->AddToSubset(this);
@@ -617,7 +628,7 @@ void MainWindow::MessageReceived(BMessage* message)
             entry_ref tempDirRef;
             tempDirEntry.GetRef(&tempDirRef);
 
-            m_statusWnd = new StatusWindow(str(S_EXTRACTING), this, str(S_PLEASE_WAIT), &m_publicThreadCancel);
+            m_statusWnd = new StatusWindow(B_TRANSLATE("Extracting..."), this, B_TRANSLATE("Please wait..."), &m_publicThreadCancel);
 
             viewMsg->AddPointer(kWindowPtr, (void*)this);
             viewMsg->AddPointer(kArchiverPtr, (void*)m_archiver);
@@ -686,7 +697,7 @@ void MainWindow::MessageReceived(BMessage* message)
             bool allFiles = true;
             BMenu* sourceMenu = source->Menu();
             if (sourceMenu && sourceMenu->Superitem() && strcmp(sourceMenu->Superitem()->Label(),
-                    str(S_EXTRACT_SELECTED)) == 0)
+                    B_TRANSLATE(S_EXTRACT_SELECTED)) == 0)
             {
                 allFiles = false;
             }
@@ -801,7 +812,7 @@ void MainWindow::MessageReceived(BMessage* message)
             // While this thread counts the directories and files sizes in message, we setup a blocker-status
             // window so that it shows barber pole PLUS blocks our MainWindow preventing the user from
             // doing other operations (2-in-1) ! Plus user can cancel the operation - (3-in-1) !! Yay!
-            m_statusWnd = new StatusWindow(str(S_PREPARING_FOR_ADD), this, str(S_GATHERING_INFO),
+            m_statusWnd = new StatusWindow(B_TRANSLATE("Preparing to add..."), this, B_TRANSLATE("Gathering information"),
                                            &m_publicThreadCancel);
 
             BMessage* countMsg = new BMessage(*message);
@@ -824,8 +835,8 @@ void MainWindow::MessageReceived(BMessage* message)
             if ((message->HasBool(kRoot) || message->HasPointer(kListItem)) &&
                     _prefs_add.FindBoolDef(kPfConfirmDropAdd, true))
             {
-                BAlert* confirmAlert = new BAlert("confirm", str(S_CONFIRM_DROP_ADD), str(S_YES_ADD),
-                                                  str(S_NO), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING,
+                BAlert* confirmAlert = new BAlert("confirm", B_TRANSLATE("Proceed to add the dropped files to the archive?"), B_TRANSLATE("Continue"),
+                                                  B_TRANSLATE("No"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING,
                                                   B_INFO_ALERT);
                 confirmAlert->SetShortcut(1, B_ESCAPE);
                 confirmAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
@@ -841,10 +852,10 @@ void MainWindow::MessageReceived(BMessage* message)
                 // if more than "n" MB is being added, warn, get "n" from prefs or default to 100 MB
                 if (totalSize > _prefs_add.FindInt16Def(kPfWarnAmount, 100) * 1024 * 1024)
                 {
-                    char* confirmStr = new char[strlen(str(S_MANY_FILES_TO_ADD)) + 15];
-                    sprintf(confirmStr, str(S_MANY_FILES_TO_ADD), StringFromBytes(totalSize).String());
-                    BAlert* confirmAlert = new BAlert("confirm", confirmStr, str(S_YES_ADD),
-                                                      str(S_NO), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_WARNING_ALERT);
+                    BString confirmStr(B_TRANSLATE("Adding %size% of data could take some time.  Are you sure you wish to proceed?"));
+                    confirmStr.ReplaceAll("%size%", StringFromBytes(totalSize).String());
+                    BAlert* confirmAlert = new BAlert("confirm", confirmStr, B_TRANSLATE("Continue"),
+                                                      B_TRANSLATE("No"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_WARNING_ALERT);
                     confirmAlert->SetShortcut(1, B_ESCAPE);
                     confirmAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                     confirmAlert->AddToSubset(this);
@@ -913,8 +924,8 @@ void MainWindow::MessageReceived(BMessage* message)
 
                 copyMsg->AddString(kTempPath, copyToDir.String());
                 copyMsg->AddString(kLaunchDir, m_tempDirPath);
-                copyMsg->AddString(kProgressAction, str(S_COPYING));
-                copyMsg->AddString(kPreparing, str(S_PREPARING_FOR_ADD));
+                copyMsg->AddString(kProgressAction, B_TRANSLATE("Copying..."));
+                copyMsg->AddString(kPreparing, B_TRANSLATE("Preparing to add..."));
                 copyMsg->AddPointer(kSuperItem, (void*)selectedItem);         // Will be used in M_ADD_DONE
                 copyMsg->AddString(kSuperItemPath, itemPath);                // Will be used in _copier
 
@@ -924,7 +935,7 @@ void MainWindow::MessageReceived(BMessage* message)
                 copyMsg->AddPointer(kCancel, (void*)cancel);
                 copyMsg->AddPointer(kWindowPtr, (void*)this);
 
-                m_logTextView->AddText(str(S_PREPARING_FOR_ADD), true, false, false);
+                m_logTextView->AddText(B_TRANSLATE("Preparing to add..."), true, false, false);
                 m_logTextView->AddText(" ", false, false, false);
                 resume_thread(spawn_thread(_copier, "_copier", B_NORMAL_PRIORITY, (void*)copyMsg));
             }
@@ -975,12 +986,12 @@ void MainWindow::MessageReceived(BMessage* message)
             message->FindInt32(kResult, &result);
             if (result == BZR_CANCEL)
             {
-                m_logTextView->AddText(str(S_COPYING_CANCELLED), false, false, false);
+                m_logTextView->AddText(B_TRANSLATE("Cancelled"), false, false, false);
                 break;
             }
 
             if (result != (int32)M_SKIPPED)
-                m_logTextView->AddText(str(S_COPYING_DONE), false, false, false);
+                m_logTextView->AddText(B_TRANSLATE("Done"), false, false, false);
 
             BMessage* addMsg = new BMessage(*message);
             BMessenger* messenger(NULL);
@@ -988,8 +999,8 @@ void MainWindow::MessageReceived(BMessage* message)
 
             addMsg->what = M_ACTIONS_ADD;
             addMsg->RemoveName(kProgressAction);
-            addMsg->AddString(kProgressAction, str(S_ADDING));
-            addMsg->AddString(kPreparing, str(S_PREPARING_FOR_ADD));
+            addMsg->AddString(kProgressAction, B_TRANSLATE("Adding..."));
+            addMsg->AddString(kPreparing, B_TRANSLATE("Preparing to add..."));
 
             m_progressWnd = new ProgressWindow(this, addMsg, messenger, cancel);
 
@@ -1004,7 +1015,7 @@ void MainWindow::MessageReceived(BMessage* message)
                 m_archiveEntry.Remove();    // Overwrite existing file if any
 
             SetTitle(m_archivePath.Leaf());
-            m_logTextView->AddText(str(S_ADDING), true, false, false);
+            m_logTextView->AddText(B_TRANSLATE("Adding..."), true, false, false);
             m_logTextView->AddText(" ", false, false, false);
             resume_thread(spawn_thread(_adder, "_adder", B_NORMAL_PRIORITY, (void*)addMsg));
             break;
@@ -1017,8 +1028,9 @@ void MainWindow::MessageReceived(BMessage* message)
 
             if (result == BZR_CANCEL_ARCHIVER)
             {
-                BAlert* errAlert = new BAlert("Error", str(S_CRITICAL_ERROR), str(S_OK), NULL, NULL,
-                                              B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
+                BAlert* errAlert = new BAlert("Error",
+                                              B_TRANSLATE("A critical operation has been cancelled and the archive is in an unknown state.\n\nCannot continue, closing window..."),
+                                              B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
                 errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                 errAlert->AddToSubset(this);
                 errAlert->Go();
@@ -1032,7 +1044,7 @@ void MainWindow::MessageReceived(BMessage* message)
             }
             else if (result != BZR_DONE)
             {
-                m_logTextView->AddText(str(S_LOADING_ERROR), false, false, false);
+                m_logTextView->AddText(B_TRANSLATE("Error!"), false, false, false);
                 if (m_archiver->CanPartiallyOpen() == false)
                     break;
             }
@@ -1103,7 +1115,7 @@ void MainWindow::MessageReceived(BMessage* message)
                 m_infoBar->UpdateBytesDisplay(0L, m_archiveSize, true);
 
                 SetBusyState(false);
-                m_logTextView->AddText(str(S_ADDING_DONE), false, false, false);
+                m_logTextView->AddText(B_TRANSLATE("Done."), false, false, false);
 
                 if (m_createMode == true)
                 {
@@ -1205,9 +1217,9 @@ void MainWindow::MessageReceived(BMessage* message)
             message->FindBool(kPersistent, &persistent);
 
             // Add logtext view descriptive text
-            BString searchText = str(S_SEARCHING_FOR);
+            BString searchText = B_TRANSLATE("Searching for \"%searchstring%\"...");
             searchText << " ";
-            searchText.ReplaceFirst("%s", message->FindString(kExpr));
+            searchText.ReplaceFirst("%searchstring%", message->FindString(kExpr));
             m_logTextView->AddText(searchText.String(), true, true, false);
 
             const char* errorString = NULL;
@@ -1224,23 +1236,20 @@ void MainWindow::MessageReceived(BMessage* message)
             {
                 BString numberOfEntries;
                 if (foundCount == 1)
-                    numberOfEntries = str(S_SEARCHING_ENTRY);
-                else
-                    numberOfEntries = str(S_SEARCHING_ENTRIES);
+                    numberOfEntries = B_TRANSLATE("Found 1 entry.");
+                else {
+                    numberOfEntries = B_TRANSLATE("Found %number% entries.");
+                    BString countBuf;
+                    countBuf.SetToFormat("%d", foundCount);
+                    numberOfEntries.ReplaceFirst("%number%", countBuf);
+                }
 
                 numberOfEntries << " ";
 
-                if (foundCount != 1)
-                {
-                    // We need to replace %d with the actual number
-                    char buffer[32];
-                    sprintf(buffer, "%d", foundCount);
-                    numberOfEntries.ReplaceFirst("%d", buffer);
-                }
                 m_logTextView->AddText(numberOfEntries.String(), false, false, false);
             }
 
-            m_logTextView->AddText(str(S_SEARCHING_DONE), false, false, false);
+            m_logTextView->AddText(B_TRANSLATE("Done."), false, false, false);
 
             if (foundCount == -1)
             {
@@ -1252,9 +1261,9 @@ void MainWindow::MessageReceived(BMessage* message)
                     m_searchWnd->UnlockLooper();
                 }
 
-                BString errorStr = str(S_ERROR_IN_REGEXP);
+                BString errorStr = B_TRANSLATE("Error in regular expression:");
                 errorStr << "\n\n'" << errorString << "'";
-                (new BAlert("", errorStr.String(), str(S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
+                (new BAlert("", errorStr.String(), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
                             B_STOP_ALERT))->Go();
 
                 free((char*)errorString);
@@ -1293,7 +1302,7 @@ void MainWindow::MessageReceived(BMessage* message)
             const char* comment = NULL;
             message->FindString(kCommentContent, &comment);
 
-            m_statusWnd = new StatusWindow(str(S_SETTING_COMMENT), this, str(S_PLEASE_WAIT), NULL);
+            m_statusWnd = new StatusWindow(B_TRANSLATE("Saving comment..."), this, B_TRANSLATE("Please wait..."), NULL);
             m_archiver->SetComment(const_cast<char*>(comment), MakeTempDirectory());
             update_mime_info(m_archivePath.Path(), false, true, true);
             m_statusWnd->PostMessage(M_CLOSE);
@@ -1390,8 +1399,8 @@ void MainWindow::MessageReceived(BMessage* message)
 
         case M_SAVE_AS_DEFAULT:
         {
-            BAlert* alert = new BAlert(K_APP_TITLE, str(S_SAVE_AS_DEFAULT_CONFIRM), str(S_DONT_SAVE),
-                                       str(S_SAVE), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
+            BAlert* alert = new BAlert(B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE), B_TRANSLATE("Save interface and folding settings as defaults?"), B_TRANSLATE("Don't save"),
+                                       B_TRANSLATE("Save"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
             alert->SetDefaultButton(alert->ButtonAt(1));
             alert->SetShortcut(0, B_ESCAPE);
             if (alert->Go() == 1)
@@ -1402,8 +1411,8 @@ void MainWindow::MessageReceived(BMessage* message)
 
         case M_SAVE_TO_ARCHIVE:
         {
-            BAlert* alert = new BAlert(K_APP_TITLE, str(S_SAVE_TO_ARCHIVE_CONFIRM), str(S_DONT_SAVE),
-                                       str(S_SAVE), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
+            BAlert* alert = new BAlert(B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE), B_TRANSLATE("Save interace and folding settings to the archive?"), B_TRANSLATE("Don't save"),
+                                       B_TRANSLATE("Save"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
             alert->SetDefaultButton(alert->ButtonAt(1));
             alert->SetShortcut(0, B_ESCAPE);
             alert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
@@ -1416,15 +1425,12 @@ void MainWindow::MessageReceived(BMessage* message)
 
         case M_SAVE_ARK_AS_DEFAULT:
         {
-            char* confirmStr = new char[strlen(str(S_SAVE_ARK_AS_DEFAULT_CONFIRM)) +
-                                        2 * strlen(m_archiver->ArchiveType()) + 1];
-            sprintf(confirmStr, str(S_SAVE_ARK_AS_DEFAULT_CONFIRM), m_archiver->ArchiveType(),
-                    m_archiver->ArchiveType());
-            BAlert* alert = new BAlert(K_APP_TITLE, confirmStr, str(S_DONT_SAVE),
-                                       str(S_SAVE), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
+        	BString confirmStr(B_TRANSLATE("Save %archivetype% settings as defaults for %archivetype% files?"));
+            confirmStr.ReplaceAll("%archivetype%", m_archiver->ArchiveType());
+            BAlert* alert = new BAlert(B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE), confirmStr, B_TRANSLATE("Don't save"),
+                                       B_TRANSLATE("Save"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
             alert->SetDefaultButton(alert->ButtonAt(1));
             alert->SetShortcut(0, B_ESCAPE);
-            delete[] confirmStr;
             if (alert->Go() == 1)
                 m_archiver->SaveSettingsMenu();
 
@@ -1433,14 +1439,12 @@ void MainWindow::MessageReceived(BMessage* message)
 
         case M_SAVE_ARK_TO_ARCHIVE:
         {
-            char* confirmStr = new char[strlen(str(S_SAVE_ARK_TO_ARCHIVE_CONFIRM)) +
-                                        strlen(m_archiver->ArchiveType()) + 2];
-            sprintf(confirmStr, str(S_SAVE_ARK_TO_ARCHIVE_CONFIRM), m_archiver->ArchiveType());
-            BAlert* alert = new BAlert(K_APP_TITLE, confirmStr, str(S_DONT_SAVE),
-                                       str(S_SAVE), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
+            BString confirmStr(B_TRANSLATE("Save %archivetype% settings to the archive?"));
+            confirmStr.ReplaceAll("%archivetype%", m_archiver->ArchiveType());
+            BAlert* alert = new BAlert(B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE), confirmStr, B_TRANSLATE("Don't save"),
+                                       B_TRANSLATE("Save"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
             alert->SetDefaultButton(alert->ButtonAt(1));
             alert->SetShortcut(0, B_ESCAPE);
-            delete[] confirmStr;
             if (alert->Go() == 1)
                 SaveArchiverToArchive(NULL);
 
@@ -1457,9 +1461,10 @@ void MainWindow::MessageReceived(BMessage* message)
 
         case M_FILE_DELETE:
         {
-            BAlert* confirm = new BAlert("", str(S_DELETE_ARCHIVE_WARNING), str(S_NO_DONT_DELETE),
-                                         str(S_YES_DELETE), str(S_MOVE_TO_TRASH), B_WIDTH_AS_USUAL,
-                                         B_OFFSET_SPACING, B_WARNING_ALERT);
+            BAlert* confirm = new BAlert("",
+                                         B_TRANSLATE("Delete this archive from disk?\nThis operation cannot be reverted."),
+                                         B_TRANSLATE("Cancel"), B_TRANSLATE("Delete"), B_TRANSLATE("Move to Trash"),
+                                         B_WIDTH_AS_USUAL, B_OFFSET_SPACING, B_WARNING_ALERT);
             confirm->SetShortcut(0, B_ESCAPE);
             confirm->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
             confirm->AddToSubset(this);
@@ -1487,7 +1492,7 @@ void MainWindow::MessageReceived(BMessage* message)
             if (!m_archiver)
                 break;
 
-            InputAlert* passwordAlert = new InputAlert(str(S_PASSWORD_REQUEST), str(S_PASSWORD_PROMPT),
+            InputAlert* passwordAlert = new InputAlert(B_TRANSLATE("Enter the password to be used while extracting and adding files."), B_TRANSLATE("Password:"),
                     m_archiver->Password().String(), true, "Cancel", "Clear", "OK",
                     B_WIDTH_AS_USUAL, B_OFFSET_SPACING, B_INFO_ALERT);
             BMessage msg = passwordAlert->GetInput(this);
@@ -1593,43 +1598,43 @@ void MainWindow::AddToolBar()
     BitmapPool* _bmps = _glob_bitmap_pool;
 
     // Construct the toolbar buttons
-    m_newButton = new ImageButton(buttonRect, "MainWindow:New", str(S_TOOLBAR_NEW), _bmps->m_tbarNewBmp,
+    m_newButton = new ImageButton(buttonRect, "MainWindow:New", B_TRANSLATE("New"), _bmps->m_tbarNewBmp,
                                   NULL, new BMessage(M_FILE_NEW), false, backColor, kBelowIcon);
-    m_newButton->SetToolTip(const_cast<char*>(str(S_TOOLBAR_NEW_BH)));
+    m_newButton->SetToolTip(const_cast<char*>(B_TRANSLATE("Create a new archive")));
 
-    m_openButton = new ImageButton(buttonRect, "MainWindow:Open", str(S_TOOLBAR_OPEN), _bmps->m_tbarOpenBmp,
+    m_openButton = new ImageButton(buttonRect, "MainWindow:Open", B_TRANSLATE("Open"), _bmps->m_tbarOpenBmp,
                                    NULL, new BMessage(M_FILE_OPEN), true, backColor, kBelowIcon);
-    m_openButton->SetToolTip(const_cast<char*>(str(S_TOOLBAR_OPEN_BH)));
+    m_openButton->SetToolTip(const_cast<char*>(B_TRANSLATE("Open an existing archive")));
 
-    m_searchButton = new ImageButton(buttonRect, "MainWindow:Search", str(S_TOOLBAR_SEARCH),
+    m_searchButton = new ImageButton(buttonRect, "MainWindow:Search", B_TRANSLATE("Search"),
                                      _bmps->m_tbarSearchBmp, _bmps->m_tbarSearchDisabledBmp,
                                      new BMessage(M_ACTIONS_SEARCH_ARCHIVE), false, backColor, kBelowIcon);
-    m_searchButton->SetToolTip(const_cast<char*>(str(S_TOOLBAR_SEARCH_BH)));
+    m_searchButton->SetToolTip(const_cast<char*>(B_TRANSLATE("Search for files in the archive")));
 
-    m_extractButton = new ImageButton(buttonRect, "MainWindow:Extact", str(S_TOOLBAR_EXTRACT),
+    m_extractButton = new ImageButton(buttonRect, "MainWindow:Extact", B_TRANSLATE("Extract"),
                                       _bmps->m_tbarExtractBmp, _bmps->m_tbarExtractDisabledBmp,
                                       new BMessage(M_ACTIONS_EXTRACT), true, backColor, kBelowIcon);
     m_extractButton->SetEnabled(false);
-    m_extractButton->SetToolTip(const_cast<char*>(str(S_TOOLBAR_EXTRACT_BH)));
+    m_extractButton->SetToolTip(const_cast<char*>(B_TRANSLATE("Extract contents of archive")));
 
-    m_viewButton = new ImageButton(buttonRect, "MainWindow:View", str(S_TOOLBAR_VIEW),
+    m_viewButton = new ImageButton(buttonRect, "MainWindow:View", B_TRANSLATE("View"),
                                    _bmps->m_tbarViewBmp, _bmps->m_tbarViewDisabledBmp, new BMessage(M_ACTIONS_VIEW), false,
                                    backColor, kBelowIcon);
     m_viewButton->SetEnabled(false);
-    m_viewButton->SetToolTip(const_cast<char*>(str(S_TOOLBAR_VIEW_BH)));
+    m_viewButton->SetToolTip(const_cast<char*>(B_TRANSLATE("View selected file(s)")));
 
-    m_addButton = new ImageButton(buttonRect, "MainWindow:Add", str(S_TOOLBAR_ADD),
+    m_addButton = new ImageButton(buttonRect, "MainWindow:Add", B_TRANSLATE("Add"),
                                   _bmps->m_tbarAddBmp, _bmps->m_tbarAddDisabledBmp, new BMessage(M_ACTIONS_ADD), false,
                                   backColor, kBelowIcon);
     m_addButton->SetEnabled(false);
-    m_addButton->SetToolTip(const_cast<char*>(str(S_TOOLBAR_ADD_BH)));
+    m_addButton->SetToolTip(const_cast<char*>(B_TRANSLATE("Add files to archive")));
 
-    m_deleteButton = new ImageButton(buttonRect, "MainWindow:Delete", str(S_TOOLBAR_DELETE),
+    m_deleteButton = new ImageButton(buttonRect, "MainWindow:Delete", B_TRANSLATE("Delete"),
                                      _bmps->m_tbarDeleteBmp, _bmps->m_tbarDeleteDisabledBmp,
                                      new BMessage(M_ACTIONS_DELETE), false, backColor, kBelowIcon);
     m_deleteButton->SetEnabled(false);
 
-    m_deleteButton->SetToolTip(const_cast<char*>(str(S_TOOLBAR_DELETE_BH)));
+    m_deleteButton->SetToolTip(const_cast<char*>(B_TRANSLATE("Delete selected files & folders")));
 
     // Construct the toolbar object
     float btnWidth, btnHeight;
@@ -1669,14 +1674,14 @@ void MainWindow::AddListView()
 
     // Create the data columns
     uint32 columnFlags = CLV_SORT_KEYABLE | CLV_TELL_ITEMS_WIDTH | CLV_HEADER_TRUNCATE;
-    m_fileNameColumn = new CLVColumn(str(S_COLUMN_NAME), 300, columnFlags | CLV_LOCK_AT_BEGINNING | CLV_NOT_MOVABLE);
-    m_sizeColumn = new CLVColumn(str(S_COLUMN_SIZE), 96, columnFlags | CLV_RIGHT_JUSTIFIED);
-    m_packedColumn = new CLVColumn(str(S_COLUMN_PACKED), 72, columnFlags | CLV_RIGHT_JUSTIFIED);
-    m_ratioColumn = new CLVColumn(str(S_COLUMN_RATIO), 64, columnFlags | CLV_RIGHT_JUSTIFIED);
-    m_pathColumn = new CLVColumn(str(S_COLUMN_PATH), 128, columnFlags);
-    m_dateColumn = new CLVColumn(str(S_COLUMN_DATE), 142, columnFlags);
-    m_methodColumn = new CLVColumn(str(S_COLUMN_METHOD), 72, columnFlags);
-    m_crcColumn = new CLVColumn(str(S_COLUMN_CRC), 64, columnFlags);
+    m_fileNameColumn = new CLVColumn(B_TRANSLATE("Name"), 300, columnFlags | CLV_LOCK_AT_BEGINNING | CLV_NOT_MOVABLE);
+    m_sizeColumn = new CLVColumn(B_TRANSLATE("Size"), 96, columnFlags | CLV_RIGHT_JUSTIFIED);
+    m_packedColumn = new CLVColumn(B_TRANSLATE("Packed"), 72, columnFlags | CLV_RIGHT_JUSTIFIED);
+    m_ratioColumn = new CLVColumn(B_TRANSLATE("Ratio"), 64, columnFlags | CLV_RIGHT_JUSTIFIED);
+    m_pathColumn = new CLVColumn(B_TRANSLATE("Path"), 128, columnFlags);
+    m_dateColumn = new CLVColumn(B_TRANSLATE("Date"), 142, columnFlags);
+    m_methodColumn = new CLVColumn(B_TRANSLATE("Method"), 72, columnFlags);
+    m_crcColumn = new CLVColumn(B_TRANSLATE("CRC"), 64, columnFlags);
 
     // Add all the columns to the list View
     m_columnList.AddItem(m_fileNameColumn);
@@ -1847,7 +1852,7 @@ void MainWindow::UpdateFocusNeeders(bool enable)
 void MainWindow::UpdateSelectNeeders(bool enable)
 {
     // Items that should be enabled when any item is selected, disabled when no selection
-    m_mainMenu->m_actionsMenu->FindItem(str(S_EXTRACT_SELECTED))->SetEnabled(enable);
+    m_mainMenu->m_actionsMenu->FindItem(B_TRANSLATE(S_EXTRACT_SELECTED))->SetEnabled(enable);
     m_mainMenu->m_editMenu->FindItem(M_EDIT_COPY)->SetEnabled(enable);
     m_mainMenu->m_actionsMenu->FindItem(M_ACTIONS_DELETE)->SetEnabled(enable);
     m_deleteButton->SetEnabled(enable);
@@ -1862,7 +1867,7 @@ void MainWindow::UpdateListItemNeeders(bool enable)
     m_mainMenu->m_editMenu->FindItem(M_EDIT_COLLAPSE_SELECTED)->SetEnabled(enable);
     m_mainMenu->m_editMenu->FindItem(M_EDIT_EXPAND_ALL)->SetEnabled(enable);
     m_mainMenu->m_editMenu->FindItem(M_EDIT_COLLAPSE_ALL)->SetEnabled(enable);
-    m_mainMenu->m_editMenu->FindItem(str(S_SELECT_ALL))->SetEnabled(enable);
+    m_mainMenu->m_editMenu->FindItem(B_TRANSLATE("Select all"))->SetEnabled(enable);
     m_mainMenu->m_editMenu->FindItem(M_EDIT_DESELECT_ALL)->SetEnabled(enable);
     m_mainMenu->m_editMenu->FindItem(M_EDIT_INVERT_SELECTION)->SetEnabled(enable);
 }
@@ -1886,12 +1891,12 @@ void MainWindow::UpdateValidArchiveNeeders(bool enable)
     m_searchButton->SetEnabled(enable);
 
     m_mainMenu->m_actionsMenu->FindItem(M_ACTIONS_EXTRACT)->SetEnabled(enable);
-    m_mainMenu->m_actionsMenu->FindItem(str(S_EXTRACT_TO))->SetEnabled(enable);
+    m_mainMenu->m_actionsMenu->FindItem(B_TRANSLATE(S_EXTRACT_TO))->SetEnabled(enable);
 
     if (enable == true)
-        m_mainMenu->m_actionsMenu->FindItem(str(S_EXTRACT_SELECTED))->SetEnabled(m_listView->HasSelection());
+        m_mainMenu->m_actionsMenu->FindItem(B_TRANSLATE(S_EXTRACT_SELECTED))->SetEnabled(m_listView->HasSelection());
     else
-        m_mainMenu->m_actionsMenu->FindItem(str(S_EXTRACT_SELECTED))->SetEnabled(false);
+        m_mainMenu->m_actionsMenu->FindItem(B_TRANSLATE(S_EXTRACT_SELECTED))->SetEnabled(false);
 
     // Comments-alone we will handle it differently - first the format must support comments,
     BMenuItem* item = m_mainMenu->m_actionsMenu->FindItem(M_ACTIONS_COMMENT);
@@ -2001,7 +2006,7 @@ void MainWindow::UpdateNewWindow()
 
 void MainWindow::UpdateRecentMenu()
 {
-    m_mainMenu->SetRecentMenu(m_recentMgr->BuildMenu(str(S_OPEN), "refs", be_app));
+    m_mainMenu->SetRecentMenu(m_recentMgr->BuildMenu(B_TRANSLATE("Open"), "refs", be_app));
     m_openButton->SetContextMenu(m_recentMgr->BuildPopUpMenu(NULL, "refs", be_app));
 }
 
@@ -2009,7 +2014,7 @@ void MainWindow::UpdateRecentMenu()
 
 void MainWindow::UpdateExtractMenu()
 {
-    BMenu* menu = m_extractMgr->BuildMenu(str(S_EXTRACT_TO), kPath, NULL);
+    BMenu* menu = m_extractMgr->BuildMenu(B_TRANSLATE(S_EXTRACT_TO), kPath, NULL);
     AddFavouriteExtractPaths(menu);
     AddDynamicExtractPaths(menu);
 
@@ -2017,13 +2022,13 @@ void MainWindow::UpdateExtractMenu()
     AddFavouriteExtractPaths((BMenu*)popupMenu);
     AddDynamicExtractPaths((BMenu*)popupMenu);
 
-    BMenuItem* item = m_mainMenu->m_actionsMenu->FindItem(str(S_EXTRACT_SELECTED));
+    BMenuItem* item = m_mainMenu->m_actionsMenu->FindItem(B_TRANSLATE(S_EXTRACT_SELECTED));
     bool enable = item->IsEnabled();
 
     m_mainMenu->SetExtractPathsMenu(menu);
     m_extractButton->SetContextMenu(popupMenu);
 
-    m_mainMenu->m_actionsMenu->FindItem(str(S_EXTRACT_SELECTED))->SetEnabled(enable);
+    m_mainMenu->m_actionsMenu->FindItem(B_TRANSLATE(S_EXTRACT_SELECTED))->SetEnabled(enable);
 }
 
 
@@ -2110,8 +2115,8 @@ void MainWindow::DeleteFilesFromArchive()
     m_deleteDirList = new BList(m_listView->FullListSelectionCount());
 
     m_publicThreadCancel = false;        // Reset this
-    m_statusWnd = new StatusWindow(str(S_PREPARING_FOR_DELETE), this, str(S_GATHERING_INFO),
-                                   &m_publicThreadCancel);
+    m_statusWnd = new StatusWindow(B_TRANSLATE("Preparing to delete..."), this,
+                                   B_TRANSLATE("Gathering information"), &m_publicThreadCancel);
 
     ListEntry* selEntry(NULL);
     BList hackEntryList;
@@ -2196,8 +2201,9 @@ void MainWindow::DeleteFilesFromArchive()
     // Now infobar will display incorrect (outdated) information
 
     // Ask confirmation!!
-    BAlert* warnAlert = new BAlert("Warning", str(S_DELETE_WARNING), str(S_YES_DELETE),
-                                   str(S_NO_DONT_DELETE), NULL, B_WIDTH_AS_USUAL,
+    BAlert* warnAlert = new BAlert("Warning",
+                                   B_TRANSLATE("Delete the selected item(s)?\nThis operation cannot be reverted."),
+                                   B_TRANSLATE("Delete"), B_TRANSLATE("Cancel"), NULL, B_WIDTH_AS_USUAL,
                                    B_EVEN_SPACING, B_WARNING_ALERT);
     warnAlert->SetDefaultButton(warnAlert->ButtonAt(1L));
     warnAlert->SetShortcut(1L, B_ESCAPE);
@@ -2214,8 +2220,8 @@ void MainWindow::DeleteFilesFromArchive()
     }
 
     msg->AddInt32(kCount, count);
-    msg->AddString(kPreparing, str(S_PREPARING_FOR_DELETE));
-    msg->AddString(kProgressAction, str(S_DELETING));
+    msg->AddString(kPreparing, B_TRANSLATE("Preparing to delete..."));
+    msg->AddString(kProgressAction, B_TRANSLATE("Deleting..."));
 
     // Proceed to remove files
     BMessenger* messenger(NULL);
@@ -2230,7 +2236,7 @@ void MainWindow::DeleteFilesFromArchive()
     threadInfo->AddMessage(kFileList, msg);
     delete msg;
 
-    m_logTextView->AddText(str(S_DELETING), true, false, false);
+    m_logTextView->AddText(B_TRANSLATE("Deleting..."), true, false, false);
 
     resume_thread(spawn_thread(_deletor, "_deletor", B_NORMAL_PRIORITY, (void*)threadInfo));
 }
@@ -2258,8 +2264,9 @@ void MainWindow::DeleteDone(BMessage* message)
         case BZR_CANCEL_ARCHIVER:
         {
             // Cancelling a delete is painful
-            BAlert* errAlert = new BAlert("Error", str(S_CRITICAL_ERROR), str(S_OK), NULL, NULL,
-                                          B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
+            BAlert* errAlert = new BAlert("Error",
+                                          B_TRANSLATE("A critical operation has been cancelled and the archive is in an unknown state.\n\nCannot continue, closing window..."),
+                                          B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
             errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
             errAlert->AddToSubset(this);
             errAlert->Go();
@@ -2271,11 +2278,11 @@ void MainWindow::DeleteDone(BMessage* message)
         {
             if (result == BZR_DONE)
             {
-                m_logTextView->AddText(str(S_DELETING_DONE), false, false, false);
+                m_logTextView->AddText(B_TRANSLATE("Done."), false, false, false);
                 DeleteUpdate();
             }
             else
-                m_logTextView->AddText(str(S_DELETING_ERROR),    false, false, false);
+                m_logTextView->AddText(B_TRANSLATE("Error(s) found."),    false, false, false);
             break;
         }
 
@@ -2365,8 +2372,8 @@ void MainWindow::TestArchive()
     volatile bool* cancel;
 
     msg.AddInt32(kCount, m_fileList->CountItems());
-    msg.AddString(kPreparing, str(S_PREPARING_FOR_TEST));
-    msg.AddString(kProgressAction, str(S_TESTING_ARCHIVE));
+    msg.AddString(kPreparing, B_TRANSLATE("Preparing to test..."));
+    msg.AddString(kProgressAction, B_TRANSLATE("Testing..."));
 
     BMessenger* messenger = NULL;
     m_progressWnd = new ProgressWindow(this, &msg, messenger, cancel);
@@ -2377,7 +2384,7 @@ void MainWindow::TestArchive()
     threadInfo->AddPointer(kArchiverPtr, (void*)m_archiver);
     threadInfo->AddPointer(kCancel, (void*)cancel);
 
-    m_logTextView->AddText(str(S_TESTING_ARCHIVE));
+    m_logTextView->AddText(B_TRANSLATE("Testing..."));
     thread_id tst_id = spawn_thread(_tester, "_tester", B_NORMAL_PRIORITY, (void*)threadInfo);
     resume_thread(tst_id);
 }
@@ -2391,12 +2398,12 @@ void MainWindow::TestDone(BMessage* message)
     switch (result)
     {
         case BZR_CANCEL_ARCHIVER:
-            m_logTextView->AddText(str(S_TESTING_CANCELLED), false, false, false);
+            m_logTextView->AddText(B_TRANSLATE("Cancelled."), false, false, false);
             break;
 
         case BZR_DONE: case BZR_ERRSTREAM_FOUND:
         {
-            m_logTextView->AddText(result == BZR_DONE ? str(S_TESTING_DONE) : str(S_TESTING_ERROR),
+            m_logTextView->AddText(result == BZR_DONE ? B_TRANSLATE("Done.") : B_TRANSLATE("Error(s) found."),
                                    false, false, false);
 
             const char* testResult = NULL;
@@ -2405,13 +2412,15 @@ void MainWindow::TestDone(BMessage* message)
                 BAlert* errAlert;
                 if (result == BZR_ERRSTREAM_FOUND)
                 {
-                    errAlert = new BAlert("Error", str(S_TESTING_ERRORWARNING), str(S_VIEW_ERROR),
-                                          str(S_CANCEL), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
+                    errAlert = new BAlert("Error",
+                                          B_TRANSLATE("The archiver has encountered errors while deleting.\nDo you want to view a detailed report?"),
+                                          B_TRANSLATE("View report"), B_TRANSLATE("Cancel"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
                 }
                 else
                 {
-                    errAlert = new BAlert("Result", str(S_TESTING_NOERRORFOUND), str(S_VIEW_ERROR),
-                                          str(S_OK), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
+                    errAlert = new BAlert("Result",
+                                          B_TRANSLATE("Test completed successfully without any errors.\nDo you want to view a detailed report?"),
+                                          B_TRANSLATE("View report"), B_TRANSLATE("OK"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
                 }
 
                 errAlert->SetDefaultButton(errAlert->ButtonAt(1L));
@@ -2421,8 +2430,8 @@ void MainWindow::TestDone(BMessage* message)
                 if (errAlert->Go() == 0L)
                 {
                     BString title = (result == BZR_ERRSTREAM_FOUND ?
-                                     str(S_ERRORS_AND_WARNINGS) : str(S_TEST_RESULTS));
-                    title << Title();
+                                     B_TRANSLATE("Errors & warnings:") : B_TRANSLATE("Test results:"));
+                    title << " " << Title();
                     new LogWindow(this, title.String(), testResult);
                 }
             }
@@ -2455,7 +2464,7 @@ void MainWindow::ExtractDone(BMessage* message)
     {
         case BZR_CANCEL_ARCHIVER:
         {
-            m_logTextView->AddText(str(S_EXTRACTION_CANCELLED), true, true, true);
+            m_logTextView->AddText(B_TRANSLATE("Extraction cancelled."), true, true, true);
 
             if (_prefs_extract.FindBoolDef(kPfOpen, true))
                 TrackerOpenFolder(&refToDir);
@@ -2465,11 +2474,11 @@ void MainWindow::ExtractDone(BMessage* message)
 
         case BZR_PASSWORD_ERROR:
         {
-            m_logTextView->AddText(str(S_PASSWORD_ERROR), true, true, true);
+            m_logTextView->AddText(B_TRANSLATE("Error (password protected file)"), true, true, true);
             if (message->HasBool(kFailOnNull) == false)
             {
-                BAlert* alert = new BAlert("Error", str(S_PASSWORD_ERROR_DESC), str(S_CANCEL),
-                                           str(S_PASSWORD_SET), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
+                BAlert* alert = new BAlert("Error", B_TRANSLATE("A password protection error has occured.\nPlease set the correct password and retry"),
+                                           B_TRANSLATE("Cancel"), B_TRANSLATE("Set password..."), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
                 if (alert->Go() == 1L)
                     PostMessage(M_FILE_PASSWORD);
             }
@@ -2479,7 +2488,7 @@ void MainWindow::ExtractDone(BMessage* message)
 
         case BZR_DONE:
         {
-            m_logTextView->AddText(str(S_EXTRACTING_DONE), true, true, true);
+            m_logTextView->AddText(B_TRANSLATE("Done extracting."), true, true, true);
 
             if (_prefs_extract.FindBoolDef(kPfOpen, true))
                 TrackerOpenFolder(&refToDir);
@@ -2494,7 +2503,7 @@ void MainWindow::ExtractDone(BMessage* message)
 
         case BZR_EXTRACT_DIR_INIT_ERROR:
         {
-            m_logTextView->AddText(str(S_EXTRACT_DIR_ERROR), true, true, true);
+            m_logTextView->AddText(B_TRANSLATE("Couldn't create destination folder."), true, true, true);
             break;
         }
 
@@ -2506,7 +2515,7 @@ void MainWindow::ExtractDone(BMessage* message)
 
         default:
         {
-            m_logTextView->AddText(str(S_UNKNOWN_ERROR), true, true, true);
+            m_logTextView->AddText(B_TRANSLATE("An unknown error occured."), true, true, true);
             break;
         }
     }
@@ -2639,8 +2648,8 @@ void MainWindow::ExtractArchive(entry_ref refToDir, bool fullArchive)
         msg.AddInt32(kCount, fileCount);
     }
 
-    msg.AddString(kPreparing, str(S_PREPARING_FOR_EXTRACT));
-    msg.AddString(kProgressAction, str(S_EXTRACTING));
+    msg.AddString(kPreparing, B_TRANSLATE("Preparing to extract..."));
+    msg.AddString(kProgressAction, B_TRANSLATE("Extracting..."));
 
     BMessenger* messenger(NULL);
     volatile bool* cancel;
@@ -2659,7 +2668,7 @@ void MainWindow::ExtractArchive(entry_ref refToDir, bool fullArchive)
 
     thread_id ext_id = spawn_thread(_extractor, "_extractor", B_NORMAL_PRIORITY, (void*)threadInfo);
 
-    m_logTextView->AddText(str(S_EXTRACTING_TO));
+    m_logTextView->AddText(B_TRANSLATE("Extracting to:"));
     BPath dirPath(&refToDir);
     m_logTextView->AddText(dirPath.Path(), false, false, false);
 
@@ -2678,8 +2687,8 @@ bool MainWindow::IsExtractPathValid(const char* path, bool throwAlertErrorIfAny)
     {
         if (throwAlertErrorIfAny)
         {
-            BAlert* errAlert = new BAlert("error", str(S_FOLDER_CREATION_FAILED), str(S_OK), NULL, NULL,
-                                          B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
+            BAlert* errAlert = new BAlert("Error", B_TRANSLATE("Failed to create destination folder.  File with the same name exists."),
+                                          B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
             errAlert->SetShortcut(0L, B_ESCAPE);
             errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
             errAlert->AddToSubset((BWindow*)this);
@@ -2701,19 +2710,19 @@ void MainWindow::SetupExtractPanel(BMessage* extractMessage)
     {
         m_extractToPanel = new SelectDirPanel(B_OPEN_PANEL, new BMessenger(this), 0,
                                               B_DIRECTORY_NODE, false, NULL);
-        m_extractToPanel->SetButtonLabel(B_DEFAULT_BUTTON, str(S_EXTRACT_SELECT_BUTTON));
+        m_extractToPanel->SetButtonLabel(B_DEFAULT_BUTTON, B_TRANSLATE("Extract"));
         m_extractToPanel->Window()->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
         m_extractToPanel->Window()->AddToSubset(this);
-        m_extractToPanel->SetCurrentDirButton(str(S_EXTRACT_TO_CURDIR));
+        m_extractToPanel->SetCurrentDirButton(B_TRANSLATE("Extract to"));
     }
 
     uint32 w = extractMessage->what;
     if (m_extractToPanel->Window()->LockLooper())
     {
         // Set the title for the BFilePanel
-        BString titleStr = w == M_ACTIONS_EXTRACT_TO ? str(S_SELECT_EXTRACT_TO_PATH) :
-        str(S_SELECT_EXTRACT_SELECTED_TO_PATH);
-        titleStr << Title() << ":";
+        BString titleStr = w == M_ACTIONS_EXTRACT_TO ? B_TRANSLATE("Extract archive") :
+        B_TRANSLATE("Extract selected entries of");
+        titleStr << " " << Title() << ":";
         m_extractToPanel->Window()->SetTitle(titleStr.String());
         m_extractToPanel->Window()->UnlockLooper();
     }
@@ -2887,7 +2896,7 @@ int32 MainWindow::AddItemsFromList(int32 index, int32* totalItems)
 void MainWindow::SetupArchiver(entry_ref* ref, char* mimeString)
 {
     // Initialise archiver based either on ref, or on the passed-in mimeString
-    m_logTextView->AddText(str(S_DETECTING), true, false, false);
+    m_logTextView->AddText(B_TRANSLATE("Detecting format..."), true, false, false);
     char type[B_MIME_TYPE_LENGTH];
     if (ref)
     {
@@ -2914,11 +2923,11 @@ void MainWindow::SetupArchiver(entry_ref* ref, char* mimeString)
 
     if (m_archiver == NULL)        // Handle unsupported types
     {
-        m_logTextView->AddText(str(S_DETECTING_FAILED), false, false, false);
-        char* errStr = new char [strlen(str(S_BAD_MIME_TYPE)) + strlen(m_archivePath.Leaf()) + 1];
-        sprintf(errStr, str(S_BAD_MIME_TYPE), m_archivePath.Leaf());
+        m_logTextView->AddText(B_TRANSLATE("Failed!"), false, false, false);
+        BString errStr(B_TRANSLATE("%filename% is not an archive or is an unsupported type"));
+        errStr.ReplaceAll("%filename%", m_archivePath.Leaf());
 
-        BAlert* errAlert = new BAlert("error", errStr, str(S_OK), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING,
+        BAlert* errAlert = new BAlert("error", errStr, B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING,
                                       B_INFO_ALERT);
         errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
         errAlert->AddToSubset(this);
@@ -2928,8 +2937,8 @@ void MainWindow::SetupArchiver(entry_ref* ref, char* mimeString)
         return;
     }
 
-    m_logTextView->AddText(str(S_LOADING_DONE), false, false, false);
-    m_logTextView->AddText(str(S_VERIFYING_ARCHIVER), true, false, false);
+    m_logTextView->AddText(B_TRANSLATE("Done."), false, false, false);
+    m_logTextView->AddText(B_TRANSLATE("Verifying archiver..."), true, false, false);
     if ((errCode = m_archiver->InitCheck()) != BZR_DONE)    // Type is supported,
     {
         // but add-on has error initializing
@@ -2937,8 +2946,8 @@ void MainWindow::SetupArchiver(entry_ref* ref, char* mimeString)
         {
             case BZR_BINARY_MISSING:           // Add-on couldn't trace its binary in the Binaries folder
             {
-                m_logTextView->AddText(str(S_DETECTING_FAILED), false, false, false);
-                (new BAlert("error", str(S_BINARY_MISSING), str(S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
+                m_logTextView->AddText(B_TRANSLATE("Failed!"), false, false, false);
+                (new BAlert("error", B_TRANSLATE("Archiver binary missing. Cannot continue."), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
                             B_EVEN_SPACING, B_STOP_ALERT))->Go();
 
                 PostMessage(M_FILE_CLOSE);
@@ -2947,15 +2956,17 @@ void MainWindow::SetupArchiver(entry_ref* ref, char* mimeString)
 
             case BZR_OPTIONAL_BINARY_MISSING:    // Add-on couldn't find a non-critical binary (optional)
             {
-                m_logTextView->AddText(str(S_DETECTING_PARTIALLY_FAILED), false, false, false);
-                (new BAlert("error", str(S_OPTIONAL_BINARY_MISSING), str(S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
+                m_logTextView->AddText(B_TRANSLATE("Partially successful."), false, false, false);
+                (new BAlert("error",
+                            B_TRANSLATE("Optional binary missing. Some features may not be available"),
+                            B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
                             B_EVEN_SPACING, B_INFO_ALERT))->Go();
                 break;
             }
         }
     }
     else
-        m_logTextView->AddText(str(S_SUCESS), false, false, false);
+        m_logTextView->AddText(B_TRANSLATE("Success."), false, false, false);
 
     InitArchiver();
 }
@@ -3002,8 +3013,8 @@ void MainWindow::AddArchiverMenu()
 {
     if (m_createMode == false)
     {
-        m_archiver->SettingsMenu()->AddItem(new BMenuItem(str(S_SAVE_AS_DEFAULT), new BMessage(M_SAVE_ARK_AS_DEFAULT)), 0);
-        m_archiver->SettingsMenu()->AddItem(new BMenuItem(str(S_SAVE_TO_ARCHIVE), new BMessage(M_SAVE_ARK_TO_ARCHIVE)), 1);
+        m_archiver->SettingsMenu()->AddItem(new BMenuItem(B_TRANSLATE("Save as defaults"), new BMessage(M_SAVE_ARK_AS_DEFAULT)), 0);
+        m_archiver->SettingsMenu()->AddItem(new BMenuItem(B_TRANSLATE("Save to archive"), new BMessage(M_SAVE_ARK_TO_ARCHIVE)), 1);
         m_archiver->SettingsMenu()->AddItem(new BSeparatorItem(), 2);
         m_mainMenu->AddItem(m_archiver->SettingsMenu(), m_mainMenu->IndexOf(m_mainMenu->m_settingsMenu) + 1);
     }
@@ -3023,7 +3034,7 @@ void MainWindow::OpenArchive()
     if (m_archiver == NULL)
         return;
 
-    m_logTextView->AddText(str(S_LOADING_ARCHIVE));
+    m_logTextView->AddText(B_TRANSLATE("Loading archive..."));
     UpdateIfNeeded();
 
     BMessage* openMsg = new BMessage('open');
@@ -3042,7 +3053,7 @@ void MainWindow::OpenArchive()
     // which would lead to the worker thread not being quit. Otherwise it does a normal open
 
     m_criticalSection = true;        // Tells QuitRequested() not to grant permission to close window
-    m_statusWnd = new StatusWindow(str(S_PREPARING_FOR_OPEN), this, str(S_PLEASE_WAIT), NULL, false);
+    m_statusWnd = new StatusWindow(B_TRANSLATE("Preparing to open..."), this, B_TRANSLATE("Please wait..."), NULL, false);
     thread_id tid = spawn_thread(_opener, "_opener", B_NORMAL_PRIORITY, (void*)openMsg);
     resume_thread(tid);
     while (1)
@@ -3271,12 +3282,12 @@ bool MainWindow::ConfirmAddOperation(const char* addingUnderPath, BMessage* refs
                 bool showError = false;
                 if (existingEntrySuper && !addingEntrySuper)        // Trying to add file in place of folder
                 {
-                    confirmBufStr = str(S_CANNOT_ADD_FILE);
+                    confirmBufStr = B_TRANSLATE("Cannot add \"%s\" as a folder with the same name already exists.");
                     showError = true;
                 }
                 else if (!existingEntrySuper && addingEntrySuper)    // Trying to add folder in place of file
                 {
-                    confirmBufStr = str(S_CANNOT_ADD_FOLDER);
+                    confirmBufStr = B_TRANSLATE("Cannot add \"%s\" as a file with the same name already exists.");
                     showError = true;
                 }
                 else if (existingEntrySuper && addingEntrySuper)    // Replacement of folder
@@ -3295,11 +3306,11 @@ bool MainWindow::ConfirmAddOperation(const char* addingUnderPath, BMessage* refs
                     }
 
                     // The warnType left is (1) i.e. to ask the user
-                    BString confirmBufStr = str(S_REPLACEDIR_CONFIRM);
+                    BString confirmBufStr = B_TRANSLATE("A folder named \"%s\" already exists. Replace it with the one being added?");
                     confirmBufStr.ReplaceAll("%s", hashEntry->m_clvItem->GetColumnContentText(2));
 
-                    BAlert* confAlert = new BAlert("Confirm", confirmBufStr.String(), str(S_CANCEL),
-                                                   str(S_SKIP), str(S_REPLACE), B_WIDTH_AS_USUAL,
+                    BAlert* confAlert = new BAlert("Confirm", confirmBufStr.String(), B_TRANSLATE("Cancel"),
+                                                   B_TRANSLATE("Skip"), B_TRANSLATE("Replace"), B_WIDTH_AS_USUAL,
                                                    B_EVEN_SPACING, B_INFO_ALERT);
                     confAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                     confAlert->AddToSubset(this);
@@ -3355,9 +3366,9 @@ bool MainWindow::ConfirmAddOperation(const char* addingUnderPath, BMessage* refs
                     strftime(existingTimeBuf, 256, "%b %d %Y, %I:%M:%S %p", &existingTime);
 
                     if (m_archiver->CanReplaceFiles() == true)
-                        confirmBufStr = str(S_OVERWRITE_CONFIRM);
+                        confirmBufStr = B_TRANSLATE("You are trying to replace the file:\n\t%s1\n\t(%z1, %d1)\nwith:\n\t%s2\n\t(%z2, %d2)\n\nWould you like to replace it with the one you are adding?");
                     else
-                        confirmBufStr = str(S_APPEND_CONFIRM);
+                        confirmBufStr = B_TRANSLATE("You are trying to add the file:\n\t%s1\n\t(%z1, %d1)\nwhile this:\n\t%s2\n\t(%z2, %d2)\nalready exists.\n\nAre you sure you wish to append another file with the same name?");
 
                     confirmBufStr.ReplaceAll("\t", "    ");
                     confirmBufStr.ReplaceAll("%s1", hashEntry->m_clvItem->GetColumnContentText(2));
@@ -3367,9 +3378,9 @@ bool MainWindow::ConfirmAddOperation(const char* addingUnderPath, BMessage* refs
                     confirmBufStr.ReplaceAll("%z2", StringFromBytes(size).String());
                     confirmBufStr.ReplaceAll("%d2", dateTimeBuf);
 
-                    BAlert* confAlert = new BAlert("Confirm", confirmBufStr.String(), str(S_CANCEL),
-                                                   str(S_SKIP),
-                                                   m_archiver->CanReplaceFiles() ? str(S_REPLACE) : str(S_APPEND),
+                    BAlert* confAlert = new BAlert("Confirm", confirmBufStr.String(), B_TRANSLATE("Cancel"),
+                                                   B_TRANSLATE("Skip"),
+                                                   m_archiver->CanReplaceFiles() ? B_TRANSLATE("Replace") : B_TRANSLATE("Append"),
                                                    B_WIDTH_AS_USUAL,
                                                    B_EVEN_SPACING, B_INFO_ALERT);
                     confAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
@@ -3389,7 +3400,7 @@ bool MainWindow::ConfirmAddOperation(const char* addingUnderPath, BMessage* refs
                 {
                     confirmBufStr.ReplaceAll("%s", nameBuf);
 
-                    BAlert* errAlert = new BAlert("Error", confirmBufStr.String(), str(S_OK), NULL, NULL,
+                    BAlert* errAlert = new BAlert("Error", confirmBufStr.String(), B_TRANSLATE("OK"), NULL, NULL,
                                                   B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
                     errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                     errAlert->AddToSubset(this);
@@ -3413,7 +3424,7 @@ void MainWindow::SetupAddPanel()
         m_addPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this), 0,
                                     B_DIRECTORY_NODE | B_FILE_NODE | B_SYMLINK_NODE, true,
                                     new BMessage(M_ADD));
-        m_addPanel->SetButtonLabel(B_DEFAULT_BUTTON, str(S_ADD_BUTTON));
+        m_addPanel->SetButtonLabel(B_DEFAULT_BUTTON, B_TRANSLATE("Add"));
         m_addPanel->Window()->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
         m_addPanel->Window()->AddToSubset(this);
 
@@ -3437,7 +3448,7 @@ void MainWindow::SetupAddPanel()
             BButton* button = (BButton*)m_addPanel->Window()->FindView("cancel button");
             BTextControl* pwdText = new BTextControl(BRect(10, button->Frame().top + 2,
                     10 + 150, 0), "pwdText",
-                    str(S_PASSWORD_PROMPT), NULL, NULL,
+                    B_TRANSLATE("Password:"), NULL, NULL,
                     B_FOLLOW_LEFT | B_FOLLOW_BOTTOM, B_WILL_DRAW);
             m_addPanel->Window()->ChildAt(0)->AddChild(pwdText);
             pwdText->SetDivider(pwdText->StringWidth(pwdText->Label()) + 1);
@@ -3450,7 +3461,7 @@ void MainWindow::SetupAddPanel()
         }
     }
 
-    BString titleStr = str(S_ADD_PANEL_TITLE);
+    BString titleStr = B_TRANSLATE("Add to:");
     titleStr << " " << m_archivePath.Leaf();
 
     // Tweak the default button (turn it off) so <ENTER> doesn't select the folder, instead
@@ -3501,7 +3512,7 @@ void MainWindow::AddNewFolder()
     else if (selectedItem->IsSuperItem() == false && selectedItem->OutlineLevel() == 0L)
         addingAtRoot = true;
 
-    BString createDirStr = str(S_CREATE_DIRECTORY_UNDER);
+    BString createDirStr = B_TRANSLATE("Create folder in:");
     const char* parentPath = NULL;
     if (addingAtRoot == false)
     {
@@ -3511,13 +3522,13 @@ void MainWindow::AddNewFolder()
             parentPath = selectedItem->m_fullPath.String();
     }
     else
-        parentPath = str(S_ROOT);
+        parentPath = B_TRANSLATE(":Root:");
 
-    createDirStr.ReplaceAll("%s", parentPath);
-    InputAlert* dirAlert = new InputAlert(createDirStr.String(), str(S_DIRECTORY_NAME), "", false,
-                                          str(S_CANCEL), str(S_OK));
+	createDirStr << "\n   " << parentPath << "\n";
+    InputAlert* dirAlert = new InputAlert(createDirStr.String(), B_TRANSLATE("New folder name:"), "", false,
+                                          B_TRANSLATE("Cancel"), B_TRANSLATE("OK"));
     dirAlert->SetDefaultButton(dirAlert->ButtonAt(1L));
-    dirAlert->ButtonAt(1L)->SetLabel(str(S_CREATE));
+    dirAlert->ButtonAt(1L)->SetLabel(B_TRANSLATE("Create"));
     dirAlert->TextControl()->TextView()->DisallowChar(':');
     dirAlert->TextControl()->TextView()->DisallowChar('*');
     dirAlert->TextControl()->TextView()->DisallowChar('/');
@@ -3533,8 +3544,8 @@ void MainWindow::AddNewFolder()
     {
         if (buttonIndex == 1L)
         {
-            m_statusWnd = new StatusWindow(str(S_CREATING_FOLDER), this,
-                                           str(S_PLEASE_WAIT), NULL);
+            m_statusWnd = new StatusWindow(B_TRANSLATE("Creating folder..."), this,
+                                           B_TRANSLATE("Please wait..."), NULL);
 
             MakeTempDirectory();
             BString mkdirPath = m_tempDirPath;
@@ -3554,14 +3565,14 @@ void MainWindow::AddNewFolder()
             {
                 // an error
                 m_statusWnd->PostMessage(M_CLOSE);
-                BAlert* errAlert = new BAlert("Error", str(S_FOLDER_ALREADY_EXISTS), str(S_OK));
+                BAlert* errAlert = new BAlert("Error", B_TRANSLATE("Cannot create folder. A folder with this name already exists."), B_TRANSLATE("OK"));
                 errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                 errAlert->AddToSubset(this);
                 errAlert->Go();
                 return;
             }
 
-            m_logTextView->AddText(str(S_CREATING_FOLDER), true, false, false);
+            m_logTextView->AddText(B_TRANSLATE("Creating folder..."), true, false, false);
             m_logTextView->AddText(" ", false, false, false);
 
             create_directory(mkdirPath.String(), 0777);
@@ -3878,7 +3889,7 @@ int32 MainWindow::_viewer(void* arg)
 
             if (wnd->LockLooper())
             {
-                wnd->m_logTextView->AddText(str(S_VIEWING), true);
+                wnd->m_logTextView->AddText(B_TRANSLATE("Viewing:"), true);
                 wnd->m_logTextView->AddText(entryPath, false, false, false);
                 wnd->UnlockLooper();
             }
@@ -4248,9 +4259,10 @@ void MainWindow::EmptyListViewIfNeeded()
 
 void MainWindow::ShowArkPathError() const
 {
-    m_logTextView->AddText(str(S_ARCHIVE_PATH_ERROR), true, true, true);
-    BAlert* errAlert = new BAlert("Error", str(S_ARCHIVE_PATH_ERROR_LONG), str(S_OK), NULL, NULL,
-                                  B_WIDTH_AS_USUAL, B_STOP_ALERT);
+    m_logTextView->AddText(B_TRANSLATE("Couldn't initialize archive path."), true, true, true);
+    BAlert* errAlert = new BAlert("Error",
+                                  B_TRANSLATE("Couldn't initialize archive path.\nThe location of the archive has been changed.\n\nEither the archive was deleted or moved to another location."),
+                                  B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
     errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
     errAlert->AddToSubset((BWindow*)this);
     errAlert->Go();
@@ -4261,9 +4273,9 @@ void MainWindow::ShowArkPathError() const
 
 void MainWindow::ShowOpNotSupported() const
 {
-    m_logTextView->AddText(str(S_OP_FAILED), true, false, false);
-    BAlert* errAlert = new BAlert("Cannot operate", str(S_NOT_SUPPORTED), str(S_OK), NULL, NULL,
-                                  B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
+    m_logTextView->AddText(B_TRANSLATE("Operation unavailable."), true, false, false);
+    BAlert* errAlert = new BAlert("Cannot operate", B_TRANSLATE("The archiver does not support this operation."),
+                                  B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
     errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
     errAlert->AddToSubset((BWindow*)this);
     errAlert->Go();
@@ -4273,8 +4285,8 @@ void MainWindow::ShowOpNotSupported() const
 
 void MainWindow::ShowReadOnlyError() const
 {
-    BAlert* errAlert = new BAlert("Cannot operate", str(S_READ_ONLY_ERROR), str(S_OK), NULL, NULL,
-                                  B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
+    BAlert* errAlert = new BAlert("Cannot operate", B_TRANSLATE("The archive is read-only, or is in a read-only partition."),
+                                  B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
     errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
     errAlert->AddToSubset((BWindow*)this);
     errAlert->Go();
