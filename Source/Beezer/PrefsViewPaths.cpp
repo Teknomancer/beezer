@@ -113,9 +113,9 @@ void PrefsViewPaths::Render()
     int8 dividerStrCount = 3;
     BString dividerStrings[] =
     {
-        B_TRANSLATE("Open path: "),
-        B_TRANSLATE("Add path: "),
-        B_TRANSLATE("Extract path: ")
+        B_TRANSLATE("Open path:"),
+        B_TRANSLATE("Add path:"),
+        B_TRANSLATE("Extract path:")
     };
 
     float divider = -1;
@@ -126,7 +126,7 @@ void PrefsViewPaths::Render()
 
     m_openPathView = new BTextControl(BRect(3 * m_margin, defaultStrView->Frame().bottom + m_vGap + 6,
                                             Bounds().right - (2 * m_margin) - K_BUTTON_WIDTH, 0), "PrefsViewPaths:openPathView",
-                                      B_TRANSLATE("Open path: "), NULL, NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP,
+                                      B_TRANSLATE("Open path:"), NULL, NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP,
                                       B_WILL_DRAW | B_NAVIGABLE);
     m_openPathView->SetDivider(divider);
     m_openPathView->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
@@ -140,7 +140,7 @@ void PrefsViewPaths::Render()
                                 B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
 
     m_addPathView = new BTextControl(BRect(3 * m_margin, m_openPathView->Frame().bottom + m_vGap + 6,
-                                           m_openPathView->Frame().right, 0), "PrefsViewPaths:addPathView", B_TRANSLATE("Add path: "),
+                                           m_openPathView->Frame().right, 0), "PrefsViewPaths:addPathView", B_TRANSLATE("Add path:"),
                                      NULL, NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
     m_addPathView->SetDivider(divider);
     m_addPathView->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
@@ -154,8 +154,8 @@ void PrefsViewPaths::Render()
 
     BStringView* extractStrView = new BStringView(BRect(m_addPathView->Frame().left,
             m_addPathView->Frame().bottom + 2 * m_vGap + 10,
-            m_addPathView->Frame().left + StringWidth(B_TRANSLATE("Extract path: ")), 0),
-            "PrefsViewPaths:extractStrView", B_TRANSLATE("Extract path: "),
+            m_addPathView->Frame().left + StringWidth(B_TRANSLATE("Extract path:")), 0),
+            "PrefsViewPaths:extractStrView", B_TRANSLATE("Extract path:"),
             B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
     extractStrView->ResizeToPreferred();
 
@@ -166,7 +166,7 @@ void PrefsViewPaths::Render()
     m_arkDirOpt->ResizeToPreferred();
 
     m_useDirOpt = new BRadioButton(BRect(m_arkDirOpt->Frame().left, m_arkDirOpt->Frame().bottom + m_vGap + 1,
-                                         0, 0), "PrefsViewPaths:useDirOpt", B_TRANSLATE("Use: "),
+                                         0, 0), "PrefsViewPaths:useDirOpt", B_TRANSLATE("Use:"),
                                    new BMessage(M_USE_DIR), B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
     m_useDirOpt->ResizeToPreferred();
     m_useDirOpt->SetValue(B_CONTROL_ON);

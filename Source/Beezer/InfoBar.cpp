@@ -105,15 +105,15 @@ void InfoBar::AttachedToWindow()
     float normFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
 
 	// Use realistic maximums for now, later figure a way to resize this dynamically
-    float oneX = StringWidth(B_TRANSLATE("Entries: ")) + StringWidth(B_TRANSLATE_COMMENT("of", "ex: 7 of 9"))
+    float oneX = StringWidth(B_TRANSLATE("Entries:")) + StringWidth(B_TRANSLATE_COMMENT("of", "ex: 7 of 9"))
     					+ 2 * StringWidth(" 9999999");	// 99 million files
-    float twoX = StringWidth(B_TRANSLATE("Bytes: ")) + StringWidth(B_TRANSLATE_COMMENT("of", "ex: 7 of 9")) + StringWidth("(100%)")
+    float twoX = StringWidth(B_TRANSLATE("Bytes:")) + StringWidth(B_TRANSLATE_COMMENT("of", "ex: 7 of 9")) + StringWidth("(100%)")
     					+ 2 * StringWidth(" 1099511627776"); // 1 TB
     m_filesStr = new BeezerStringView(BRect(m_barberPole->Frame().right + m_horizGap + 6,
                                             Bounds().Height() / 2 - normFontHeight / 2 - 1,
                                             m_barberPole->Frame().right + m_horizGap + 6 + oneX - 1,
                                             Bounds().Height() / 2 - normFontHeight / 2 + normFontHeight),
-                                            "InfoBar:FilesStr", B_TRANSLATE("Entries: "));
+                                            "InfoBar:FilesStr", B_TRANSLATE("Entries:"));
     AddChild(m_filesStr);
     m_filesStr->SendMouseEventsTo(this);
     UpdateFilesDisplay(0L, 0L, true);
@@ -122,7 +122,7 @@ void InfoBar::AttachedToWindow()
     m_bytesStr = new BeezerStringView(BRect(m_filesStr->Frame().right + m_horizGap + 6,
                                             Bounds().Height() / 2 - normFontHeight / 2 - 1,
                                             m_filesStr->Frame().right + m_horizGap + 6 + twoX - 1, Bounds().Height() / 2 -
-                                            normFontHeight / 2 + normFontHeight), "InfoBar:BytesStr", B_TRANSLATE("Bytes: "));
+                                            normFontHeight / 2 + normFontHeight), "InfoBar:BytesStr", B_TRANSLATE("Bytes:"));
     AddChild(m_bytesStr);
     m_bytesStr->SendMouseEventsTo(this);
     UpdateBytesDisplay(0L, 0L, true);
@@ -136,8 +136,8 @@ void InfoBar::UpdateFilesDisplay(int32 selectedCount, int32 totalCount, bool set
     if (setTotalCount == true)
         m_filesTotal = totalCount;
 
-    char buf[strlen(B_TRANSLATE("Entries: ")) + 50];
-    sprintf(buf, "%s%ld %s %ld", B_TRANSLATE("Entries: "), selectedCount, B_TRANSLATE_COMMENT("of", "ex: 7 of 9"), m_filesTotal);
+    char buf[strlen(B_TRANSLATE("Entries:")) + 50];
+    sprintf(buf, "%s%ld %s %ld", B_TRANSLATE("Entries:"), selectedCount, B_TRANSLATE_COMMENT("of", "ex: 7 of 9"), m_filesTotal);
     m_filesStr->SetText(buf);
     m_selectedFiles = selectedCount;
 }
@@ -150,8 +150,8 @@ void InfoBar::UpdateBytesDisplay(uint32 selectedBytes, uint32 totalBytes, bool s
         m_totalBytes = totalBytes;
 
     int8 percent = m_totalBytes > 0 ? (int8)(selectedBytes / (float)m_totalBytes * 100) : 0;
-    char buf[strlen(B_TRANSLATE("Bytes: ")) + 50];
-    sprintf(buf, "%s%ld %s %Ld (%d%%)", B_TRANSLATE("Bytes: "), selectedBytes, B_TRANSLATE_COMMENT("of", "ex: 7 of 9"), m_totalBytes, percent);
+    char buf[strlen(B_TRANSLATE("Bytes:")) + 50];
+    sprintf(buf, "%s%ld %s %Ld (%d%%)", B_TRANSLATE("Bytes:"), selectedBytes, B_TRANSLATE_COMMENT("of", "ex: 7 of 9"), m_totalBytes, percent);
     m_bytesStr->SetText(buf);
     m_selectedBytes = selectedBytes;
 }
@@ -161,14 +161,14 @@ void InfoBar::UpdateBytesDisplay(uint32 selectedBytes, uint32 totalBytes, bool s
 void InfoBar::UpdateBy(int32 countBy, uint32 bytesBy)
 {
     m_selectedFiles += countBy;
-    char buf[strlen(B_TRANSLATE("Entries: ")) + 50];
-    sprintf(buf, "%s%ld %s %ld", B_TRANSLATE("Entries: "), m_selectedFiles, B_TRANSLATE_COMMENT("of", "ex: 7 of 9"), m_filesTotal);
+    char buf[strlen(B_TRANSLATE("Entries:")) + 50];
+    sprintf(buf, "%s%ld %s %ld", B_TRANSLATE("Entries:"), m_selectedFiles, B_TRANSLATE_COMMENT("of", "ex: 7 of 9"), m_filesTotal);
     m_filesStr->SetText(buf);
 
     m_selectedBytes += bytesBy;
     int8 percent = m_totalBytes > 0 ? (int8)(m_selectedBytes / (float)m_totalBytes * 100) : 0;
-    char buf2[strlen(B_TRANSLATE("Bytes: ")) + 50];
-    sprintf(buf2, "%s%Ld %s %Ld (%d%%)", B_TRANSLATE("Bytes: "), m_selectedBytes, B_TRANSLATE_COMMENT("of", "ex: 7 of 9"), m_totalBytes, percent);
+    char buf2[strlen(B_TRANSLATE("Bytes:")) + 50];
+    sprintf(buf2, "%s%Ld %s %Ld (%d%%)", B_TRANSLATE("Bytes:"), m_selectedBytes, B_TRANSLATE_COMMENT("of", "ex: 7 of 9"), m_totalBytes, percent);
     m_bytesStr->SetText(buf2);
 }
 
