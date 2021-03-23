@@ -60,7 +60,7 @@
 
 
 PrefsViewAdd::PrefsViewAdd(BRect frame)
-    : PrefsView(frame, B_TRANSLATE("Add"), B_TRANSLATE("Options related to adding of entries to archives"))
+    : PrefsView(frame, B_TRANSLATE("Add"), B_TRANSLATE("Settings related to adding entries to archives"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Add", 20, 20));
     Render();

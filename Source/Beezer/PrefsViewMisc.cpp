@@ -60,7 +60,7 @@
 
 
 PrefsViewMisc::PrefsViewMisc(BRect frame)
-    : PrefsView(frame, B_TRANSLATE("Miscellaneous"), B_TRANSLATE("Other general options"))
+    : PrefsView(frame, B_TRANSLATE("Miscellaneous"), B_TRANSLATE("Other general settings"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs", 20, 20));
     Render();
