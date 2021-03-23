@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -52,7 +52,6 @@
 #include "Beezer.h"
 #include "BevelView.h"
 #include "BitmapPool.h"
-#include "LangStrings.h"
 #include "FileSplitterWindow.h"
 #include "UIConstants.h"
 #include "StaticBitmapView.h"
@@ -66,9 +65,19 @@
 #include "AppConstants.h"
 
 
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "FileSplitterWindow"
+#else
+#define B_TRANSLATE(x) x
+#define B_TRANSLATE_COMMENT(x, y) x
+#endif
+
 
 FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
-    : BWindow(BRect(10, 10, 540, 350), str(S_FILE_SPLITTER_TITLE), B_TITLED_WINDOW,
+    : BWindow(BRect(10, 10, 540, 350), B_TRANSLATE("File Splitter"), B_TITLED_WINDOW,
               B_NOT_ZOOMABLE | B_NOT_V_RESIZABLE | B_ASYNCHRONOUS_CONTROLS),
     m_dirPanel(NULL),
     m_filePanel(NULL),
@@ -113,7 +122,8 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
     m_descStr = new BStringView(BRect(splitBmpView->Frame().right + K_MARGIN * 3,
                                       splitBmpView->Frame().top, Bounds().right - 1,
                                       splitBmpView->Frame().top + totalFontHeight),
-                                "FileSplitterWindow:DescStr", str(S_FILE_SPLITTER_DESC),
+                                "FileSplitterWindow:DescStr",
+                                B_TRANSLATE("This tool lets you split a file into several small pieces."),
                                 B_FOLLOW_LEFT, B_WILL_DRAW);
 
     //m_descStr->SetFont (&font);
@@ -125,7 +135,8 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
 
     m_descStr2 = new BStringView(BRect(m_descStr->Frame().left,
                                        m_descStr->Frame().bottom + 1, Bounds().right - 1, 0),
-                                 "FileSplitterWindow:DescStr2", str(S_FILE_SPLITTER_DESC2),
+                                 "FileSplitterWindow:DescStr2",
+                                 B_TRANSLATE("The pieces can later be rejoined to recreate the original file."),
                                  B_FOLLOW_LEFT, B_WILL_DRAW);
     m_backView->AddChild(m_descStr2);
     m_descStr2->ResizeToPreferred();
@@ -136,22 +147,22 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
                                 B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     m_backView->AddChild(m_innerView);
 
-    m_fileMenu = new BMenu(str(S_FILE_TO_SPLIT));
+    m_fileMenu = new BMenu(B_TRANSLATE("File to split:"));
     m_fileField = new BMenuField(BRect(K_MARGIN, K_MARGIN,
-                                       K_MARGIN + m_backView->StringWidth(str(S_FILE_TO_SPLIT)) + 40, 0),
+                                       K_MARGIN + m_backView->StringWidth(B_TRANSLATE("File to split:")) + 40, 0),
                                  "FileSplitterWindow:FileField", NULL, m_fileMenu);
     m_innerView->AddChild(m_fileField);
 
-    m_folderMenu = new BMenu(str(S_FOLDER_FOR_PIECES));
+    m_folderMenu = new BMenu(B_TRANSLATE("Folder for pieces:"));
     m_folderField = new BMenuField(BRect(K_MARGIN, m_fileField->Frame().bottom + K_MARGIN - 1,
-                                         K_MARGIN + m_backView->StringWidth(str(S_FOLDER_FOR_PIECES)) + 40, 0),
+                                         K_MARGIN + m_backView->StringWidth(B_TRANSLATE("Folder for pieces:")) + 40, 0),
                                    "FileSplitterWindow:FolderField", NULL, m_folderMenu);
     float maxWidth = MAX(m_folderField->Frame().Width(), m_fileField->Frame().Width());
-    maxWidth = MAX(maxWidth, m_backView->StringWidth(str(S_SIZE_OF_PIECES)));
-    maxWidth = MAX(maxWidth, m_backView->StringWidth(str(S_CUSTOM_SIZE_PROMPT)));
-    maxWidth = MAX(maxWidth, m_backView->StringWidth(str(S_NUMBER_OF_PIECES)));
-    maxWidth = MAX(maxWidth, m_backView->StringWidth(str(S_SPLIT_FILE_SIZE)));
-    maxWidth = MAX(maxWidth, m_backView->StringWidth(str(S_SPLIT_SEPARATOR)));
+    maxWidth = MAX(maxWidth, m_backView->StringWidth(B_TRANSLATE("Size of pieces:")));
+    maxWidth = MAX(maxWidth, m_backView->StringWidth(B_TRANSLATE("Custom size:")));
+    maxWidth = MAX(maxWidth, m_backView->StringWidth(B_TRANSLATE("Number of pieces:")));
+    maxWidth = MAX(maxWidth, m_backView->StringWidth(B_TRANSLATE("File size:")));
+    maxWidth = MAX(maxWidth, m_backView->StringWidth(B_TRANSLATE("File number separator:")));
     maxWidth += 2 * K_MARGIN;
 
     m_filePathView = new BTextControl(BRect(maxWidth, m_fileField->Frame().top + 2,
@@ -171,12 +182,11 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
     m_folderPathView->SetModificationMessage(new BMessage(M_UPDATE_DATA));
 
     // Re-use this string here
-    BString buttonText = str(S_PREFS_PATHS_SELECT); buttonText << "...";
     m_selectFileBtn = new BButton(BRect(m_filePathView->Frame().right + K_MARGIN,
                                         m_filePathView->Frame().top - 4,
                                         m_filePathView->Frame().right + K_MARGIN + K_BUTTON_WIDTH,
                                         m_filePathView->Frame().top - 4 + K_BUTTON_HEIGHT),
-                                  "FileSplitterWindow:SelectFileBtn", buttonText.String(),
+                                  "FileSplitterWindow:SelectFileBtn", B_TRANSLATE("Select..."),
                                   new BMessage(M_SELECT_SPLIT_FILE), B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
     m_innerView->AddChild(m_filePathView);
     m_innerView->AddChild(m_selectFileBtn);
@@ -185,35 +195,35 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
                                           m_folderPathView->Frame().top - 4,
                                           m_folderPathView->Frame().right + K_MARGIN + K_BUTTON_WIDTH,
                                           m_folderPathView->Frame().top - 4 + K_BUTTON_HEIGHT),
-                                    "FileSplitterWindow:SelectFolderBtn", buttonText.String(),
+                                    "FileSplitterWindow:SelectFolderBtn", B_TRANSLATE("Select..."),
                                     new BMessage(M_SELECT_SPLIT_FOLDER), B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
     m_innerView->AddChild(m_folderField);
     m_innerView->AddChild(m_folderPathView);
     m_innerView->AddChild(m_selectFolderBtn);
 
     m_sizePopUp = new BPopUpMenu("Sizes", true, true);
-    m_sizePopUp->AddItem(new BMenuItem(str(S_CUSTOM_SIZE), new BMessage(M_CUSTOM_SIZE)));
+    m_sizePopUp->AddItem(new BMenuItem(B_TRANSLATE("Custom size..."), new BMessage(M_CUSTOM_SIZE)));
     m_sizePopUp->AddSeparatorItem();
-    m_sizePopUp->AddItem(new BMenuItem(str(S_144_MB_FLOPPY), new BMessage(M_PREDEFINED_SIZE)));
-    m_sizePopUp->AddItem(new BMenuItem(str(S_120_MB_FLOPPY), new BMessage(M_PREDEFINED_SIZE)));
-    m_sizePopUp->AddItem(new BMenuItem(str(S_100_MB_ZIP), new BMessage(M_PREDEFINED_SIZE)));
-    m_sizePopUp->AddItem(new BMenuItem(str(S_250_MB_ZIP), new BMessage(M_PREDEFINED_SIZE)));
-    m_sizePopUp->AddItem(new BMenuItem(str(S_650_MB_CD), new BMessage(M_PREDEFINED_SIZE)));
-    m_sizePopUp->AddItem(new BMenuItem(str(S_700_MB_CD), new BMessage(M_PREDEFINED_SIZE)));
-    m_sizePopUp->AddItem(new BMenuItem(str(S_800_MB_CD), new BMessage(M_PREDEFINED_SIZE)));
-    m_sizePopUp->AddItem(new BMenuItem(str(S_1_GB_JAZ), new BMessage(M_PREDEFINED_SIZE)));
-    m_sizePopUp->AddItem(new BMenuItem(str(S_2_GB_JAZ), new BMessage(M_PREDEFINED_SIZE)));
+    m_sizePopUp->AddItem(new BMenuItem(B_TRANSLATE("1.44 MiB - (floppy)"), new BMessage(M_PREDEFINED_SIZE)));
+    m_sizePopUp->AddItem(new BMenuItem(B_TRANSLATE("1.20 MiB - (floppy)"), new BMessage(M_PREDEFINED_SIZE)));
+    m_sizePopUp->AddItem(new BMenuItem(B_TRANSLATE("100 MiB - (zip disk)"), new BMessage(M_PREDEFINED_SIZE)));
+    m_sizePopUp->AddItem(new BMenuItem(B_TRANSLATE("250 MiB - (zip disk)"), new BMessage(M_PREDEFINED_SIZE)));
+    m_sizePopUp->AddItem(new BMenuItem(B_TRANSLATE("650 MiB - (CD)"), new BMessage(M_PREDEFINED_SIZE)));
+    m_sizePopUp->AddItem(new BMenuItem(B_TRANSLATE("700 MiB - (CD)"), new BMessage(M_PREDEFINED_SIZE)));
+    m_sizePopUp->AddItem(new BMenuItem(B_TRANSLATE("800 MiB - (CD)"), new BMessage(M_PREDEFINED_SIZE)));
+    m_sizePopUp->AddItem(new BMenuItem(B_TRANSLATE("1 GiB - (jaz disk)"), new BMessage(M_PREDEFINED_SIZE)));
+    m_sizePopUp->AddItem(new BMenuItem(B_TRANSLATE("2 GiB - (jaz disk)"), new BMessage(M_PREDEFINED_SIZE)));
     m_sizePopUp->ItemAt(0L)->SetMarked(true);
 
     m_sizeField = new BMenuField(BRect(K_MARGIN, m_folderField->Frame().bottom + K_MARGIN - 1,
                                        m_innerView->Frame().Width() - K_MARGIN, 0),
-                                 "FileSplitterWindow:SizeField", str(S_SIZE_OF_PIECES), (BMenu*)m_sizePopUp,
+                                 "FileSplitterWindow:SizeField", B_TRANSLATE("Size of pieces:"), (BMenu*)m_sizePopUp,
                                  B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
     m_sizeField->SetDivider(m_filePathView->Frame().left - K_MARGIN - 1);
     m_innerView->AddChild(m_sizeField);
 
     m_customSizeView = new BTextControl(BRect(K_MARGIN, m_sizeField->Frame().bottom + K_MARGIN - 1,
-                                        K_MARGIN + 182, 0), "FileSplitterWindow:CustomSizeView", str(S_CUSTOM_SIZE_PROMPT),
+                                        K_MARGIN + 182, 0), "FileSplitterWindow:CustomSizeView", B_TRANSLATE("Custom size:"),
                                         NULL, NULL, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
     m_customSizeView->SetDivider(m_sizeField->Divider() - 2);
     m_customSizeView->SetModificationMessage(new BMessage(M_UPDATE_DATA));
@@ -222,10 +232,10 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
     // !! IMPORTANT !! Order is very critical, if the order below changes, the change must also be reflected
     // in "UpdateData()" function
     m_prefixPopUp = new BPopUpMenu("SizePrefix", true, true);
-    m_prefixPopUp->AddItem(new BMenuItem(str(S_PREFIX_BYTES), new BMessage(M_UPDATE_DATA)));
-    m_prefixPopUp->AddItem(new BMenuItem(str(S_PREFIX_KB), new BMessage(M_UPDATE_DATA)));
-    m_prefixPopUp->AddItem(new BMenuItem(str(S_PREFIX_MB), new BMessage(M_UPDATE_DATA)));
-    m_prefixPopUp->AddItem(new BMenuItem(str(S_PREFIX_GB), new BMessage(M_UPDATE_DATA)));
+    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE("Bytes"), new BMessage(M_UPDATE_DATA)));
+    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE("KiB"), new BMessage(M_UPDATE_DATA)));
+    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE("MiB"), new BMessage(M_UPDATE_DATA)));
+    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE("GiB"), new BMessage(M_UPDATE_DATA)));
     m_prefixPopUp->ItemAt(2L)->SetMarked(true);
     m_prefixField = new BMenuField(BRect(m_customSizeView->Frame().right + K_MARGIN,
                                          m_customSizeView->Frame().top - 2, m_innerView->Frame().right - K_MARGIN, 0),
@@ -252,26 +262,26 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
     m_innerView->AddChild(sepView4);
 
     m_openDirChk = new BCheckBox(BRect(sepView4->Frame().left + 3 * K_MARGIN, m_sizeField->Frame().top + 2,
-                                       0, 0),  "FileSplitterWindow:OpenDirChk", str(S_OPEN_DIR_AFTER_SPLIT), NULL,
+                                       0, 0),  "FileSplitterWindow:OpenDirChk", B_TRANSLATE("Open pieces folder after splitting"), NULL,
                                  B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
     m_openDirChk->ResizeToPreferred();
     m_openDirChk->SetValue(B_CONTROL_ON);
 
     m_closeChk = new BCheckBox(BRect(m_openDirChk->Frame().left, m_openDirChk->Frame().bottom + 1, 0, 0),
-                               "FileSplitterWindow:CloseChk", str(S_CLOSE_AFTER_SPLIT), NULL, B_FOLLOW_LEFT,
+                               "FileSplitterWindow:CloseChk", B_TRANSLATE("Close window after splitting"), NULL, B_FOLLOW_LEFT,
                                B_WILL_DRAW | B_NAVIGABLE);
     m_closeChk->ResizeToPreferred();
     m_closeChk->SetValue(B_CONTROL_ON);
 
     m_createChk = new BCheckBox(BRect(m_closeChk->Frame().left,
                                       m_closeChk->Frame().bottom + 1, 0, 0), "FileSplitterWindow:CreateChk",
-                                str(S_CREATE_EXE), NULL, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
+                                B_TRANSLATE("Create self-joining executable"), NULL, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
     m_createChk->ResizeToPreferred();
 
     m_separatorView = new BTextControl(BRect(m_customSizeView->Frame().left,
                                        m_customSizeView->Frame().bottom + K_MARGIN,
                                        m_customSizeView->Frame().right, 0), "FileSplitter:SeparatorView",
-                                       str(S_SPLIT_SEPARATOR), "_", NULL, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
+                                       B_TRANSLATE("File number separator:"), "_", NULL, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
     m_separatorView->SetDivider(m_customSizeView->Divider());
     m_separatorView->TextView()->SetMaxBytes(128);
     m_separatorView->TextView()->DisallowChar('0');     // too lazy to loop using ASCII value :)
@@ -308,8 +318,8 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
     m_backView->AddChild(sepView2);
 
     BStringView* noPiecesStr = new BStringView(BRect(2 * K_MARGIN, sepView2->Frame().bottom + 2 * K_MARGIN,
-            2 * K_MARGIN + m_backView->StringWidth(str(S_NUMBER_OF_PIECES)) + 3, 0),
-            "FileSplitterWindow:noPiecesStr", str(S_NUMBER_OF_PIECES), B_FOLLOW_LEFT,
+            2 * K_MARGIN + m_backView->StringWidth(B_TRANSLATE("Number of pieces:")) + 3, 0),
+            "FileSplitterWindow:noPiecesStr", B_TRANSLATE("Number of pieces:"), B_FOLLOW_LEFT,
             B_WILL_DRAW);
     m_backView->AddChild(noPiecesStr);
     noPiecesStr->ResizeToPreferred();
@@ -322,7 +332,7 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
 
     BStringView* sizeStr = new BStringView(BRect(noPiecesStr->Frame().left,
                                            noPiecesStr->Frame().bottom + K_MARGIN - 1, 0, 0),
-                                           "FileSplitterWindow:sizeStr", str(S_SPLIT_FILE_SIZE), B_FOLLOW_LEFT,
+                                           "FileSplitterWindow:sizeStr", B_TRANSLATE("File size:"), B_FOLLOW_LEFT,
                                            B_WILL_DRAW);
     sizeStr->ResizeToPreferred();
     m_backView->AddChild(sizeStr);
@@ -342,7 +352,7 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
     m_splitBtn = new BButton(BRect(Bounds().right - 2 * K_MARGIN - K_BUTTON_WIDTH - 3,
                                    sepView3->Frame().bottom - K_MARGIN - 6 - K_BUTTON_HEIGHT,
                                    Bounds().right - 2 * K_MARGIN - 3, sepView3->Frame().bottom - K_MARGIN - 6),
-                             "FileSplitterWindow:SplitBtn", str(S_SPLIT), new BMessage(M_SPLIT_NOW),
+                             "FileSplitterWindow:SplitBtn", B_TRANSLATE("Split"), new BMessage(M_SPLIT_NOW),
                              B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
     m_splitBtn->MakeDefault(true);
     m_backView->AddChild(m_splitBtn);
@@ -417,8 +427,8 @@ bool FileSplitterWindow::QuitRequested()
     {
         suspend_thread(m_thread);
 
-        BAlert* alert = new BAlert("Quit", str(S_FORCE_SPLIT_CLOSE_WARNING), str(S_DONT_FORCE_CLOSE),
-                                   str(S_FORCE_CLOSE), NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
+        BAlert* alert = new BAlert("Quit", B_TRANSLATE("Splitting is in progress, force it to stop?"), B_TRANSLATE("Don't force"),
+                                   B_TRANSLATE("Force"), NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
         alert->SetShortcut(0L, B_ESCAPE);
         alert->SetDefaultButton(alert->ButtonAt(1L));
         int32 index = alert->Go();
@@ -464,7 +474,7 @@ void FileSplitterWindow::MessageReceived(BMessage* message)
                 m_cancel = false;
                 m_thread = spawn_thread(_splitter, "_splitter", B_NORMAL_PRIORITY, (void*)this);
                 resume_thread(m_thread);
-                m_splitBtn->SetLabel(str(S_CANCEL));
+                m_splitBtn->SetLabel(B_TRANSLATE("Cancel"));
                 m_splitInProgress = true;
                 m_splitBtn->MakeDefault(false);
             }
@@ -484,7 +494,7 @@ void FileSplitterWindow::MessageReceived(BMessage* message)
             int8 percent = (int8)ceil(100 * ((m_statusBar->CurrentValue() + delta) / m_statusBar->MaxValue()));
             sprintf(percentStr, "%d%%", percent);
 
-            BString text = str(S_SPLITTING_FILE);
+            BString text = B_TRANSLATE("Creating:");
             text << " " << message->FindString("text");
 
             m_statusBar->Update(delta, text.String(), percentStr);
@@ -506,17 +516,17 @@ void FileSplitterWindow::MessageReceived(BMessage* message)
             BAlert* alert = NULL;
             if (result == BZR_DONE)
             {
-                alert = new BAlert("Done", str(S_SPLIT_SUCCESS), str(S_OK), NULL, NULL,
+                alert = new BAlert("Done", B_TRANSLATE("The file has been successfully split!"), B_TRANSLATE("OK"), NULL, NULL,
                                    B_WIDTH_AS_USUAL, B_INFO_ALERT);
             }
             else if (result == BZR_CANCEL)
             {
-                alert = new BAlert("Cancel", str(S_SPLIT_CANCEL), str(S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
+                alert = new BAlert("Cancel", B_TRANSLATE("Splitting of the file was cancelled"), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
                                    B_WARNING_ALERT);
             }
             else
             {
-                alert = new BAlert("Error", str(S_SPLIT_ERROR), str(S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
+                alert = new BAlert("Error", B_TRANSLATE("An unknown error occured while splitting the file."), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
                                    B_STOP_ALERT);
             }
 
@@ -538,7 +548,7 @@ void FileSplitterWindow::MessageReceived(BMessage* message)
                 UpdateRecentMenus();
             }
 
-            m_splitBtn->SetLabel(str(S_SPLIT));
+            m_splitBtn->SetLabel(B_TRANSLATE("Split"));
             alert->SetShortcut(0L, B_ESCAPE);
             alert->SetDefaultButton(alert->ButtonAt(0L));
             alert->Go();
@@ -581,7 +591,7 @@ void FileSplitterWindow::MessageReceived(BMessage* message)
                 m_filePanel->Window()->AddToSubset(this);
                 if (m_filePanel->Window()->LockLooper())
                 {
-                    m_filePanel->Window()->SetTitle(str(S_SPLIT_FILE_SELECT_TITLE));
+                    m_filePanel->Window()->SetTitle(B_TRANSLATE("Select folder for pieces:"));
                     m_filePanel->Window()->UnlockLooper();
                 }
             }
@@ -616,14 +626,14 @@ void FileSplitterWindow::MessageReceived(BMessage* message)
                 m_dirPanel = new SelectDirPanel(B_OPEN_PANEL, new BMessenger(this), NULL, B_DIRECTORY_NODE,
                                                 false, new BMessage(M_SPLIT_FOLDER_SELECTED), NULL, true, false);
 
-                m_dirPanel->SetButtonLabel(B_DEFAULT_BUTTON, str(S_SPLIT_FOLDER_SELECT));
+                m_dirPanel->SetButtonLabel(B_DEFAULT_BUTTON, B_TRANSLATE("Select"));
                 m_dirPanel->Window()->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                 m_dirPanel->Window()->AddToSubset(this);
-                m_dirPanel->SetCurrentDirButton(str(S_SPLIT_FOLDER_SELECT));
+                m_dirPanel->SetCurrentDirButton(B_TRANSLATE("Select"));
 
                 if (m_dirPanel->Window()->LockLooper())
                 {
-                    m_dirPanel->Window()->SetTitle(str(S_SPLIT_FOLDER_SELECT_TITLE));
+                    m_dirPanel->Window()->SetTitle(B_TRANSLATE("Select folder for pieces:"));
                     m_dirPanel->Window()->Unlock();
                 }
             }
@@ -774,7 +784,7 @@ void FileSplitterWindow::UpdateData()
 
         BString sizeStr = LocaleStringFromBytes(size);
         if (size > 1024L)
-            sizeStr << "  " << "(" << CommaFormatString(size) << " " << str(S_PREFIX_BYTES) << ")";
+            sizeStr << "  " << "(" << CommaFormatString(size) << " " << B_TRANSLATE("Bytes") << ")";
 
         m_sizeStr->SetText(sizeStr.String());
 
@@ -816,7 +826,7 @@ void FileSplitterWindow::UpdateData()
             int32 noOfPieces = (size / fragmentSize);
             if (noOfPieces <= 0 && m_customSizeView->Text())
             {
-                m_piecesStr->SetText(str(S_WRONG_SPLIT_SIZE));
+                m_piecesStr->SetText(B_TRANSLATE("Incorrect split size!"));
                 m_piecesStr->SetHighColor((rgb_color)
                 {
                     210, 0, 0, 255
@@ -824,7 +834,7 @@ void FileSplitterWindow::UpdateData()
             }
             else if (noOfPieces > kMaxFragmentCount)
             {
-                m_piecesStr->SetText(str(S_TOO_MANY_PIECES));
+                m_piecesStr->SetText(B_TRANSLATE("Too many pieces!"));
                 m_piecesStr->SetHighColor((rgb_color)
                 {
                     0, 0, 210, 255
@@ -843,7 +853,7 @@ void FileSplitterWindow::UpdateData()
         }
         else if (fragmentSize < 0)
         {
-            m_piecesStr->SetText(str(S_WRONG_SPLIT_SIZE));
+            m_piecesStr->SetText(B_TRANSLATE("Incorrect split size!"));
             m_piecesStr->SetHighColor((rgb_color)
             {
                 210, 0, 0, 255
@@ -885,8 +895,8 @@ void FileSplitterWindow::CreateSelfJoiner()
     BDirectory* stubDir = &(_bzr()->m_stubDir);
     if (stubDir->IsDirectory() == false)
     {
-        BAlert* err = new BAlert("error", str(S_STUB_DIR_NOT_FOUND), str(S_OK), NULL, NULL, B_WIDTH_AS_USUAL,
-                                 B_STOP_ALERT);
+        BAlert* err = new BAlert("Error", B_TRANSLATE("Stub folder not found.  Cannot create self-joining executable."),
+                                 B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
         err->Go();
         return;
     }
@@ -904,9 +914,8 @@ void FileSplitterWindow::CreateSelfJoiner()
     delete[] stubName;
 
     char* buf = new char[B_FILE_NAME_LENGTH + 1];
-    m_fileEntry.GetName(buf);
-    BString name = str(S_STUB_NAME);
-    name.IReplaceAll("%s", buf);
+    BString name = B_TRANSLATE_COMMENT("_Create_", "Prefix for stub files. The underscore at the beginning is to change the sort order");
+    name << m_fileEntry.GetName(buf);
     delete[] buf;
 
     stubEntry.Rename(name.String(), true);                       // Rename to "create_filename"
