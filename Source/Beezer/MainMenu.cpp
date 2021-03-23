@@ -155,8 +155,6 @@ MainMenu::MainMenu(BRect frame)
     BString strBuf = B_TRANSLATE("About");
     strBuf << " " << B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE) << B_UTF8_ELLIPSIS;
 
-    systemMenu->AddItem(new BMenuItem(B_TRANSLATE("Help"), new BMessage(M_FILE_HELP)));
-    systemMenu->AddSeparatorItem();
     systemMenu->AddItem(new BMenuItem(strBuf.String(), new BMessage(M_FILE_ABOUT)));
     systemMenu->AddItem(new BMenuItem(B_TRANSLATE("Settings…"), new BMessage(M_EDIT_PREFERENCES)));
 
@@ -168,6 +166,12 @@ MainMenu::MainMenu(BRect frame)
     // Convert the popup tools menu into a proper BMenu, mere type-casting won't work
     m_toolsMenu = _bzr()->BuildToolsMenu();
 
+    BMenu* helpMenu = new BMenu(B_TRANSLATE("Help"));
+    helpMenu->AddItem(new BMenuItem(B_TRANSLATE("Open manual"), new BMessage(M_HELP_MANUAL)));
+    helpMenu->AddSeparatorItem();
+    helpMenu->AddItem(new BMenuItem(B_TRANSLATE("Visit website"), new BMessage(M_HELP_WEBSITE)));
+    helpMenu->AddItem(new BMenuItem(B_TRANSLATE("Github page"), new BMessage(M_HELP_GITHUB)));
+
     AddItem(m_systemMenu);
     AddItem(m_fileMenu);
     AddItem(m_editMenu);
@@ -175,6 +179,7 @@ MainMenu::MainMenu(BRect frame)
     AddItem(m_toolsMenu);
     AddItem(m_viewMenu);
     AddItem(m_windowsMenu);
+    AddItem(helpMenu);
 
     m_archiveContextMenu = new BPopUpMenu("_cntxt", false, false);
     m_archiveContextMenu->AddItem(new BMenuItem(B_TRANSLATE("View"), new BMessage(M_ACTIONS_VIEW)));

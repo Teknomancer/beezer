@@ -36,8 +36,10 @@
 #define K_APP_AUTHOR_2                       "Chris Roberts"
 #define K_APP_AUTHOR_2_MAIL                  "<mail>"   // @todo
 
-#define K_APP_WEBSITE                        "sites.google.com/site/appbeezer"
-#define K_APP_WEBSITE_URL                    "http://sites.google.com/site/appbeezer"
+#define K_APP_WEBSITE                        "ramshankar.org/software/beezer/"
+#define K_APP_WEBSITE_URL                    "https://ramshankar.org/software/beezer/"
+
+#define K_APP_GITHUB_URL                     "https://github.com/Teknomancer/beezer"
 
 #define K_APP_COMPILE_STRING                 "__compiled_on__"
 

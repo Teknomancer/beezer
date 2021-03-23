@@ -141,7 +141,6 @@ M_FILE_CLOSE =                  'flcs',
 M_FILE_ARCHIVE_INFO =            'flai',
 M_FILE_PASSWORD =                'flpw',
 M_FILE_DELETE =                 'fldl',
-M_FILE_HELP =                   'flhl',
 M_FILE_ABOUT =                  'flab',
 M_FILE_QUIT =                   'flqt',
 
@@ -258,6 +257,10 @@ M_UPDATE_INTERFACE =             'upif',
 M_ADDON_HELP =                  'ahlp',
 M_ADDON_CREATE =                'adca',
 
-M_PREFS_HELP =                  'pffh';
+M_PREFS_HELP =                  'pffh',
+
+M_HELP_MANUAL =                 'hlpm',
+M_HELP_WEBSITE =                'hlpw',
+M_HELP_GITHUB =                 'hlpg';
 
 #endif /* _MSG_CONSTANTS_H */
