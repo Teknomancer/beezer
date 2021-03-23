@@ -233,8 +233,8 @@ void ArkInfoWindow::FillDetails()
     if (m_entry->Exists() == false)
     {
         Hide();
-        (new BAlert("error", B_TRANSLATE("Operation failed. The archive is missing."), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
-                    B_EVEN_SPACING, B_STOP_ALERT))->Go();
+        (new BAlert("Error", B_TRANSLATE("Operation failed. The archive is missing."), B_TRANSLATE("OK"),
+                    NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT))->Go();
         PostMessage(B_QUIT_REQUESTED);
     }
 
