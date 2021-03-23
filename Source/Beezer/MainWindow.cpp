@@ -1399,8 +1399,10 @@ void MainWindow::MessageReceived(BMessage* message)
 
         case M_SAVE_AS_DEFAULT:
         {
-            BAlert* alert = new BAlert(B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE), B_TRANSLATE("Save interface and folding settings as defaults?"), B_TRANSLATE("Don't save"),
-                                       B_TRANSLATE("Save"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
+            BAlert* alert = new BAlert(B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE),
+                                       B_TRANSLATE("Save interface and folding settings as defaults?"),
+                                       B_TRANSLATE("Cancel"), B_TRANSLATE("Save"), NULL,
+                                       B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
             alert->SetDefaultButton(alert->ButtonAt(1));
             alert->SetShortcut(0, B_ESCAPE);
             if (alert->Go() == 1)
@@ -1411,8 +1413,10 @@ void MainWindow::MessageReceived(BMessage* message)
 
         case M_SAVE_TO_ARCHIVE:
         {
-            BAlert* alert = new BAlert(B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE), B_TRANSLATE("Save interace and folding settings to the archive?"), B_TRANSLATE("Don't save"),
-                                       B_TRANSLATE("Save"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
+            BAlert* alert = new BAlert(B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE),
+                                       B_TRANSLATE("Save interace and folding settings to the archive?"),
+                                       B_TRANSLATE("Cancel"), B_TRANSLATE("Save"), NULL,
+                                       B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
             alert->SetDefaultButton(alert->ButtonAt(1));
             alert->SetShortcut(0, B_ESCAPE);
             alert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
@@ -1427,7 +1431,7 @@ void MainWindow::MessageReceived(BMessage* message)
         {
         	BString confirmStr(B_TRANSLATE("Save %archivetype% settings as defaults for %archivetype% files?"));
             confirmStr.ReplaceAll("%archivetype%", m_archiver->ArchiveType());
-            BAlert* alert = new BAlert(B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE), confirmStr, B_TRANSLATE("Don't save"),
+            BAlert* alert = new BAlert(B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE), confirmStr, B_TRANSLATE("Cancel"),
                                        B_TRANSLATE("Save"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
             alert->SetDefaultButton(alert->ButtonAt(1));
             alert->SetShortcut(0, B_ESCAPE);
@@ -1441,7 +1445,7 @@ void MainWindow::MessageReceived(BMessage* message)
         {
             BString confirmStr(B_TRANSLATE("Save %archivetype% settings to the archive?"));
             confirmStr.ReplaceAll("%archivetype%", m_archiver->ArchiveType());
-            BAlert* alert = new BAlert(B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE), confirmStr, B_TRANSLATE("Don't save"),
+            BAlert* alert = new BAlert(B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE), confirmStr, B_TRANSLATE("Cancel"),
                                        B_TRANSLATE("Save"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
             alert->SetDefaultButton(alert->ButtonAt(1));
             alert->SetShortcut(0, B_ESCAPE);

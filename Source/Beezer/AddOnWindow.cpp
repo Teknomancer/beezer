@@ -301,8 +301,9 @@ bool AddOnWindow::QuitRequested()
     {
         // We cannot pause the creation thread as we cannot get "zip", "gzip"s thread ID, atbest we can
         // only get thread ID of the thread that spawned zip etc., so forget it for the time being
-        BAlert* alert = new BAlert("Quit", B_TRANSLATE("Operation is in progress, force it to stop?"), B_TRANSLATE("Don't force"),
-                                   B_TRANSLATE("Force"), NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
+        BAlert* alert = new BAlert("Quit", B_TRANSLATE("Operation is in progress, force it to stop?"),
+                                   B_TRANSLATE("Cancel"), B_TRANSLATE("Force"), NULL,
+                                   B_WIDTH_AS_USUAL, B_WARNING_ALERT);
         alert->SetShortcut(0L, B_ESCAPE);
         alert->SetDefaultButton(alert->ButtonAt(1L));
         int32 index = alert->Go();
