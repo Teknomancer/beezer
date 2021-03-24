@@ -47,6 +47,12 @@ class ImageButton : public BView
                     textPosition textPos = kBelowIcon, bool borders = true, bool smallFont = true,
                     bool hoverHighlight = true, uint32 resizeMask = B_FOLLOW_LEFT | B_FOLLOW_TOP,
                     uint32 flags = B_WILL_DRAW);
+
+        ImageButton(const char* name, const char* text, BBitmap* bitmap, BBitmap* disabled,
+                    BMessage* message, bool popUpMenu, const rgb_color backColor,
+                    textPosition textPos = kBelowIcon, bool borders = true, bool smallFont = true,
+                    bool hoverHighlight = true, uint32 flags = B_WILL_DRAW);
+
         virtual ~ImageButton();
 
         // Inherited hooks
@@ -74,6 +80,8 @@ class ImageButton : public BView
         virtual void        GetMargin(float* width, float* height);
 
     protected:
+                void        Init(const char* text);
+
         // Protected hooks
         virtual void        DrawOutsideEdge(BRect rect);
         virtual void        DrawShinyEdge(BRect rect, bool isPressing);
