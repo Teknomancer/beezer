@@ -91,7 +91,7 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
 
     m_backView = new BevelView(Bounds(), "FileSplitterWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES,
                                B_WILL_DRAW);
-    m_backView->SetViewColor(K_BACKGROUND_COLOR);
+    m_backView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
     AddChild(m_backView);
 
     BFont font(be_plain_font);

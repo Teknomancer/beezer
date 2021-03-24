@@ -59,7 +59,7 @@ PrefsView::PrefsView(BRect frame, const char* title, const char* description)
     // member functions which they are supposed to use when needed
     m_margin = K_MARGIN + 2;
     m_vGap = 1;
-    SetViewColor(K_BACKGROUND_COLOR);
+    SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
     m_sectionFont = be_plain_font;
     m_sectionFont.SetFace(B_BOLD_FACE);
     // We are un-necessarily storing a BFont object for each PrefView but there isn't

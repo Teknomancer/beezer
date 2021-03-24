@@ -115,8 +115,8 @@ void ImageButton::Init(const char* text)
     m_fontPlacement = fontHeight.ascent + fontHeight.descent - 1;
 
     // Calculate the tinted colours for our edges
-    m_lightEdge = K_WHITE_COLOR;
-    m_lightEdge2 = m_backColor; m_lightEdge2.red -= 40; m_lightEdge2.green -= 40; m_lightEdge2.blue -= 40;
+    m_lightEdge = tint_color(m_backColor, B_LIGHTEN_2_TINT);
+    m_lightEdge2 = tint_color(m_backColor, B_DARKEN_1_TINT);
     m_darkEdge1 = tint_color(m_backColor, B_DARKEN_2_TINT);
     m_darkEdge2 = tint_color(m_backColor, B_DARKEN_4_TINT);
 }
@@ -222,13 +222,13 @@ void ImageButton::Draw(BRect updateRect)
     {
         BPoint origPt = PenLocation();
         MovePenBy(1, 1);
-        SetHighColor(K_WHITE_COLOR);
+        SetHighUIColor(B_CONTROL_TEXT_COLOR, B_DISABLED_MARK_TINT);
         if (m_buttonText != NULL)
             DrawString(m_buttonText);
         MovePenTo(origPt);
     }
 
-    SetHighColor(m_isEnabled == true ? K_BLACK_COLOR : tint_color(m_backColor, B_DISABLED_LABEL_TINT));
+    SetHighColor(m_isEnabled == true ? ui_color(B_CONTROL_TEXT_COLOR) : tint_color(m_backColor, B_DISABLED_LABEL_TINT));
     if (m_buttonText)
         DrawString(m_buttonText);
 
@@ -589,7 +589,7 @@ void ImageButton::PushButton(BRect rect)
         DrawBitmapAsync(m_disabledBitmap);
 
     SetDrawingMode(B_OP_COPY);
-    SetHighColor(K_BLACK_COLOR);
+    SetHighUIColor(B_CONTROL_TEXT_COLOR);
     SetLowColor(m_backColor);
     if (m_textPosition == kRightOfIcon)
     {

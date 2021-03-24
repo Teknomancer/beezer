@@ -130,7 +130,8 @@ AboutWindow::AboutWindow(const char* compileTimeStr)
     m_textView->MakeEditable(false);
     m_textView->SetAlignment(B_ALIGN_CENTER);
     m_textView->SetViewColor(m_backView->ViewColor());
-    m_textView->SetFontAndColor(be_plain_font, B_FONT_ALL, &K_BLACK_COLOR);
+    rgb_color textColor = ui_color(B_DOCUMENT_TEXT_COLOR);
+    m_textView->SetFontAndColor(be_plain_font, B_FONT_ALL, &textColor);
     m_textView->Hide();
 
     // Calculate no of '\n's to leave to make the text go to the bottom, calculate the no. of lines
