@@ -1,4 +1,4 @@
-1	English	x-vnd.Ram-Beezer	1601357822
+1	English	x-vnd.Ram-Beezer	3107473328
 Windows	PrefsViewWindows		Windows
 The order of joining is based on number suffixes in the filenames…	FileJoinerWindow		The order of joining is based on number suffixes in the filenames…
 Extract to	MainWindow		Extract to
@@ -6,7 +6,6 @@ Preparing to open…	MainWindow		Preparing to open…
 When %appname% starts:	PrefsViewMisc		When %appname% starts:
 Size	MainMenu		Size
 Save as defaults	MainMenu		Save as defaults
-Preferences	PrefsWindow		Preferences
 Drop files to create an archive.	AddOnWindow		Drop files to create an archive.
 %filename% is not an archive or is an unsupported type	MainWindow		%filename% is not an archive or is an unsupported type
 Default paths:	PrefsViewPaths		Default paths:
@@ -18,7 +17,7 @@ Prevents closing of this window before searching	SearchWindow		Prevents closing 
 New	MainWindow		New
 Favorite extract paths:	PrefsViewPaths		Favorite extract paths:
 Testing…	MainWindow		Testing…
-Fatal error, no add-ons found! You cannot create any archives using Beezer.	AddOnWindow		Fatal error, no add-ons found! You cannot create any archives using Beezer.
+Github page	MainMenu		Github page
 File number separator:	FileSplitterWindow		File number separator:
 _Create_	FileSplitterWindow	Prefix for stub files. The underscore at the beginning is to change the sort order	_Create_
 Error! Destination folder is incorrect.	AddOnWindow		Error! Destination folder is incorrect.
@@ -35,6 +34,7 @@ Archiver settings	PrefsViewState		Archiver settings
 OK	ArchiveMgr		OK
 Recent	PrefsViewRecent		Recent
 folder	BeezerListView		folder
+Open manual	MainMenu		Open manual
 Configure what to tag along with archives as attributes	PrefsViewState		Configure what to tag along with archives as attributes
 Path	MainMenu		Path
 Ask before replacing	PrefsViewAdd		Ask before replacing
@@ -55,7 +55,6 @@ Deleting…	MainWindow		Deleting…
 Show first level unfolded	MainMenu		Show first level unfolded
 View file	MainMenu		View file
 Archive Information	ArkInfoWindow		Archive Information
-Settings	MainMenu		Settings
 Stub folder not found.  Cannot create self-joining executable.	FileSplitterWindow		Stub folder not found.  Cannot create self-joining executable.
 Test completed successfully without any errors.\nDo you want to view a detailed report?	MainWindow		Test completed successfully without any errors.\nDo you want to view a detailed report?
 CRC	MainWindow		CRC
@@ -104,6 +103,7 @@ Method	MainMenu		Method
 Date	MainMenu		Date
 Windows	MainMenu		Windows
 Deselect folder	MainMenu		Deselect folder
+Failed to launch URL	Beezer		Failed to launch URL
 Extract archive	BeezerListView		Extract archive
 When last archive is closed:	PrefsViewMisc		When last archive is closed:
 Register %mimetype% and make %appname% the preferred app for this type?	Beezer		Register %mimetype% and make %appname% the preferred app for this type?
@@ -179,6 +179,7 @@ Folder for pieces:	FileSplitterWindow		Folder for pieces:
 Error in regular expression:	MainWindow		Error in regular expression:
 [ Programming ]	AboutWindow		[ Programming ]
 Settings	StartupWindow		Settings
+Settings	PrefsWindow		Settings
 Folder for output file:	FileJoinerWindow		Folder for output file:
 File Joiner	FileJoinerWindow		File Joiner
 Force	AddOnWindow		Force
@@ -341,8 +342,10 @@ Open destination folder after joining	FileJoinerWindow		Open destination folder 
 650 MiB - (CD)	FileSplitterWindow		650 MiB - (CD)
 700 MiB - (CD)	FileSplitterWindow		700 MiB - (CD)
 Error(s) found.	MainWindow		Error(s) found.
+Settings window	PrefsViewWindows		Settings window
 Archive type:	AddOnWindow		Archive type:
 You are opening %numfiles% files simultenously.  Are you sure you wish to proceed?	MainWindow		You are opening %numfiles% files simultenously.  Are you sure you wish to proceed?
+Visit website	MainMenu		Visit website
 This tool lets you join several files into a single file.	FileJoinerWindow		This tool lets you join several files into a single file.
 Add path:	PrefsViewPaths		Add path:
 Warning! File already exists and will be overwritten!	AddOnWindow		Warning! File already exists and will be overwritten!
@@ -352,6 +355,7 @@ Save	CommentWindow		Save
 to extract	BeezerListView		to extract
 Create self-joining executable	FileSplitterWindow		Create self-joining executable
 Preparing to add…	MainWindow		Preparing to add…
+Fatal error, no add-ons found! You cannot create any archives using %appname%.	AddOnWindow		Fatal error, no add-ons found! You cannot create any archives using %appname%.
 Column:	SearchWindow		Column:
 Selects all entries that don't match the search criteria i.e. inverts the result of the search	SearchWindow		Selects all entries that don't match the search criteria i.e. inverts the result of the search
 Adding…	MainWindow		Adding…
@@ -374,7 +378,6 @@ View selected file(s)	MainWindow		View selected file(s)
 Search window	PrefsViewWindows		Search window
 Done	MainWindow		Done
 Joining of the file was cancelled	FileJoinerWindow		Joining of the file was cancelled
-Preferences window	PrefsViewWindows		Preferences window
 Create a new archive	MainWindow		Create a new archive
 Create a new archive	StartupWindow		Create a new archive
 Add	PrefsViewAdd		Add
