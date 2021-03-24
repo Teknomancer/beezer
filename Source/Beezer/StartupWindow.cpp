@@ -76,16 +76,17 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
     BString welcome(B_TRANSLATE("Welcome to %appname%"));
     welcome.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
     m_headingView = new BStringView("StartupWindow:HeadingView", welcome);
-    m_headingView->SetFont(be_bold_font);
+    BFont font(be_bold_font);
+    font.SetSize(font.Size()+2);
+    m_headingView->SetFont(&font);
     m_headingView->SetHighColor(K_STARTUP_MAIN_HEADING);
-    m_headingView->SetLowColor(m_headingView->ViewColor());
 
     BView* sepViewLiteEdge = new BView("StartupWindow:SepViewLiteEdge", B_WILL_DRAW);
-    sepViewLiteEdge->SetViewUIColor(B_PANEL_BACKGROUND_COLOR, B_DARKEN_2_TINT);
+    sepViewLiteEdge->SetViewUIColor(B_PANEL_BACKGROUND_COLOR, B_LIGHTEN_1_TINT);
     sepViewLiteEdge->SetExplicitSize(BSize(B_SIZE_UNSET, 0));  // 0 height gives us 1 pixel
 
     BView* sepViewDarkEdge = new BView("StartupWindow:SepViewDarkEdge", B_WILL_DRAW);
-    sepViewDarkEdge->SetViewColor(K_WHITE_COLOR);
+    sepViewDarkEdge->SetViewUIColor(B_PANEL_BACKGROUND_COLOR, B_DARKEN_1_TINT);
     sepViewDarkEdge->SetExplicitSize(BSize(B_SIZE_UNSET, 0));  // 0 height gives us 1 pixel
 
 
@@ -123,8 +124,8 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
              .AddGlue()
              .End()
              .AddStrut(5)
-             .Add(sepViewLiteEdge, 0)
              .Add(sepViewDarkEdge, 0)
+             .Add(sepViewLiteEdge, 0)
              .AddStrut(5)
              .AddGlue()
              .AddGroup(B_HORIZONTAL)
