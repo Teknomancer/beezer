@@ -67,7 +67,7 @@
 
 StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
     : BWindow(BRect(10, 10, 0, 100), B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE), B_TITLED_WINDOW,
-              B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS),
+              B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS | B_CLOSE_ON_ESCAPE),
     m_recentMgr(recentMgr)
 {
     SetLayout(new BGroupLayout(B_VERTICAL, 0));
