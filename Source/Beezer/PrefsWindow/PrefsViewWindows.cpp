@@ -82,7 +82,7 @@ void PrefsViewWindows::Render()
     m_welcomeChk->ResizeToPreferred();
 
     m_prefsChk = new BCheckBox(BRect(m_margin, m_welcomeChk->Frame().bottom + m_vGap, 0, 0),
-                               "PrefsViewWindows:presfChk", B_TRANSLATE("Preferences window"), NULL);
+                               "PrefsViewWindows:presfChk", B_TRANSLATE("Settings window"), NULL);
     m_prefsChk->ResizeToPreferred();
 
     AddChild(m_searchChk);

@@ -64,7 +64,7 @@
 
 
 PrefsWindow::PrefsWindow()
-    : BWindow(BRect(0, 0, 570+50, 320+100), B_TRANSLATE("Preferences"), B_TITLED_WINDOW,
+    : BWindow(BRect(0, 0, 570+50, 320+100), B_TRANSLATE("Settings"), B_TITLED_WINDOW,
               B_NOT_ZOOMABLE | B_NOT_RESIZABLE),
     m_currentPanel(NULL)
 {
