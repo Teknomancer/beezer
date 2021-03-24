@@ -81,10 +81,12 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
     m_headingView->SetLowColor(m_headingView->ViewColor());
 
     BView* sepViewLiteEdge = new BView("StartupWindow:SepViewLiteEdge", B_WILL_DRAW);
-    sepViewLiteEdge->SetViewColor(tint_color(ui_color(B_PANEL_BACKGROUND_COLOR), B_DARKEN_2_TINT));
+    sepViewLiteEdge->SetViewUIColor(B_PANEL_BACKGROUND_COLOR, B_DARKEN_2_TINT);
+    sepViewLiteEdge->SetExplicitSize(BSize(B_SIZE_UNSET, 0));  // 0 height gives us 1 pixel
 
     BView* sepViewDarkEdge = new BView("StartupWindow:SepViewDarkEdge", B_WILL_DRAW);
     sepViewDarkEdge->SetViewColor(K_WHITE_COLOR);
+    sepViewDarkEdge->SetExplicitSize(BSize(B_SIZE_UNSET, 0));  // 0 height gives us 1 pixel
 
 
     BitmapPool* _bmps = _glob_bitmap_pool;
@@ -124,6 +126,7 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
              .Add(sepViewLiteEdge, 0)
              .Add(sepViewDarkEdge, 0)
              .AddStrut(5)
+             .AddGlue()
              .AddGroup(B_HORIZONTAL)
              .Add(m_createBtn)
              .Add(m_openBtn)
@@ -132,6 +135,7 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
              .Add(m_prefsBtn)
              .SetInsets(5, 5, 5, 5)
              .End()
+             .AddGlue()
             );
 
     // Setup the tooltips
@@ -212,16 +216,11 @@ void StartupWindow::MessageReceived(BMessage* message)
 
             m_recentMenu = m_recentMgr->BuildPopUpMenu(NULL, "refs", be_app);
 
-            // FIXME not sure what's up with these odd calculations.
-            // they y coordinate of the point should be recentRect.bottom
-            // but that puts the menu near the top
-            BRect recentRect(m_openRecentBtn->Frame());
-            BPoint point(recentRect.left, recentRect.bottom + recentRect.Height() - 4);
-            BPoint screenPt = point;
+            BPoint screenPt(0, m_openRecentBtn->Frame().bottom);
             BRect ignoreClickRect(m_openRecentBtn->Frame());
 
-            ConvertToScreen(&screenPt);
-            ConvertToScreen(&ignoreClickRect);
+            m_openRecentBtn->ConvertToScreen(&screenPt);
+            m_openRecentBtn->ConvertToScreen(&ignoreClickRect);
 
             m_recentMenu->SetAsyncAutoDestruct(true);
             m_recentMenu->Go(screenPt, true, true, ignoreClickRect, false);
