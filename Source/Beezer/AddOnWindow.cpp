@@ -80,7 +80,7 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
 {
     m_backView = new BevelView(Bounds(), "AddOnWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     AddChild(m_backView);
-    m_backView->SetViewColor(K_BACKGROUND_COLOR);
+    m_backView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
 
     // backViewMain will hold all controls that are to be shown when files/folders are really selected
     // otherwise it will be hidden and a message like "Drop files here to archive" will be shown using
@@ -88,7 +88,7 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
     m_backViewMain = new BevelView(Bounds().InsetByCopy(4, 2),
                                    "AddOnWindow:BackViewMain", btNoBevel, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_backView->AddChild(m_backViewMain);
-    m_backViewMain->SetViewColor(K_BACKGROUND_COLOR);
+    m_backViewMain->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
 
     float divider = 0;
     divider = MAX(divider, m_backViewMain->StringWidth(B_TRANSLATE("Archive name:")));

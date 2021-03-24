@@ -201,8 +201,8 @@ void PrefsWindow::SetActivePanel(PrefsView* activePanel)
         int32 dlen = strlen(m_currentPanel->Description());
         m_descTextView->SetText(descText.String());
         m_descTextView->SetFontAndColor(0, tlen, be_bold_font, B_FONT_ALL,    &(K_DEEP_RED_COLOR));
-        m_descTextView->SetFontAndColor(tlen, tlen+dlen+1, be_plain_font, B_FONT_ALL,
-                                        &(K_BLACK_COLOR));
+        rgb_color textColor = ui_color(B_DOCUMENT_TEXT_COLOR);
+        m_descTextView->SetFontAndColor(tlen, tlen+dlen+1, be_plain_font, B_FONT_ALL, &textColor);
     }
 
     m_currentPanel->Show();
@@ -213,7 +213,7 @@ void PrefsWindow::SetActivePanel(PrefsView* activePanel)
 void PrefsWindow::AddControls()
 {
     m_backView = new BevelView(Bounds(), "PrefsWindow:backView", btOutset, B_FOLLOW_ALL_SIDES);
-    m_backView->SetViewColor(K_BACKGROUND_COLOR);
+    m_backView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
     AddChild(m_backView);
 
     float margin = K_MARGIN + 2;

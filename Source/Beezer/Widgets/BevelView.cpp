@@ -41,19 +41,19 @@ BevelView::BevelView(BRect frame, const char* name, BevelType bevelMode, uint32 
     if (Parent())
         backColor = ViewColor();
     else
-        backColor = K_BACKGROUND_COLOR;
+        backColor = ui_color(B_PANEL_BACKGROUND_COLOR);
 
     switch (m_bevelType)
     {
         case btDeep: case btInset:
             m_darkEdge1 = tint_color(backColor, B_DARKEN_2_TINT);
             m_darkEdge2 = tint_color(backColor, B_DARKEN_3_TINT);
-            m_lightEdge = K_WHITE_COLOR;
+            m_lightEdge = tint_color(backColor, B_LIGHTEN_MAX_TINT);
             m_edgeThickness = m_bevelType == btInset ? btInsetThickness : btDeepThickness;
             break;
 
         case btOutset:
-            m_darkEdge1 = K_WHITE_COLOR;
+            m_darkEdge1 = tint_color(backColor, B_LIGHTEN_MAX_TINT);
             m_darkEdge2 = tint_color(backColor, B_DARKEN_3_TINT);
             m_lightEdge = tint_color(backColor, B_DARKEN_2_TINT);
             m_edgeThickness = btOutsetThickness;

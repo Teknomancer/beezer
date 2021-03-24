@@ -139,7 +139,7 @@ MainWindow::MainWindow(BRect frame, WindowMgr* windowMgr, RecentMgr* recentMgr,
 {
     // Setup the background view and the menu, add to window
     m_backView = new BView(Bounds(), "MainWindow:BackView", B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
-    m_backView->SetViewColor(K_BACKGROUND_COLOR);
+    m_backView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
 
     m_mainMenu = new MainMenu(Bounds());
     AddChild(m_mainMenu);
@@ -1567,7 +1567,7 @@ void MainWindow::AddInfoBar()
 
     m_infoBar = new InfoBar(BRect(0, m_toolBar->Frame().bottom + 1, Bounds().right,
                                   m_toolBar->Frame().bottom + 1 + K_INFOBAR_HEIGHT), slotPositions, "MainWindow:InfoBar",
-                            K_TOOLBAR_BACK_COLOR);
+                            ui_color(B_PANEL_BACKGROUND_COLOR));
     m_backView->AddChild(m_infoBar);
 }
 
@@ -1587,7 +1587,7 @@ void MainWindow::AddSplitterBar()
     m_splitPane->SetBarPosition(BPoint(Bounds().Width() * (75.0 / 100.0),
                                        Bounds().Height() * (62.0 / 100.0)));
     m_splitPane->SetViewTwoDetachable(true);
-    m_splitPane->SetViewColor(K_BACKGROUND_COLOR);
+    m_splitPane->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
 
     m_backView->AddChild(m_splitPane);
 }
@@ -1597,7 +1597,7 @@ void MainWindow::AddSplitterBar()
 void MainWindow::AddToolBar()
 {
     BRect buttonRect(0, 0, K_TOOLBAR_WIDTH + 8, 0);
-    rgb_color backColor = K_TOOLBAR_BACK_COLOR;
+    rgb_color backColor = ui_color(B_PANEL_BACKGROUND_COLOR);
 
     BitmapPool* _bmps = _glob_bitmap_pool;
 
@@ -1711,7 +1711,7 @@ void MainWindow::AddLogTextView()
     m_outputBackView = new BevelView(BRect(0, Bounds().bottom - (Bounds().Height() * (35.0 / 100.0)),
                                            Bounds().right, Bounds().bottom), "MainWindow:OutputBackView", btOutset,
                                      B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
-    m_outputBackView->SetViewColor(K_BACKGROUND_COLOR);
+    m_outputBackView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
 
     // Create an inset view just for looks
     BevelView* insetView = new BevelView(m_outputBackView->Bounds().InsetByCopy(K_MARGIN, K_MARGIN),
