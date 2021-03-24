@@ -64,7 +64,39 @@ ImageButton::ImageButton(BRect frame, const char* name, const char* text, BBitma
       m_mouseInside(false),
       m_textPosition(textPos)
 {
-    if (text != NULL)
+    Init(text);
+}
+
+
+ImageButton::ImageButton(const char* name, const char* text, BBitmap* smallIcon,
+                         BBitmap* disabled, BMessage* message, bool popUpMenu, const rgb_color bgColor,
+                         textPosition textPos, bool borders, bool smallFont, bool hoverHighlight,
+                         uint32 flags)
+    : BView(name, flags),
+      m_handler(NULL),
+      m_clickBitmap(smallIcon),
+      m_disabledBitmap(disabled),
+      m_clickMessage(message),
+      m_contextMenu(NULL),
+      m_backColor(bgColor),
+      m_drawingTriangle(false),
+      m_popUpMenu(popUpMenu),
+      m_isPushed(false),
+      m_isEnabled(true),
+      m_isClickable(true),
+      m_borders(borders),
+      m_smallFont(smallFont),
+      m_hoverHighlight(hoverHighlight),
+      m_mouseInside(false),
+      m_textPosition(textPos)
+{
+    Init(text);
+}
+
+
+void ImageButton::Init(const char* text)
+{
+	if (text != NULL)
     {
         m_buttonText = new char [strlen(text) + 1];
         strcpy(const_cast<char*>(m_buttonText), text);
@@ -88,7 +120,6 @@ ImageButton::ImageButton(BRect frame, const char* name, const char* text, BBitma
     m_darkEdge1 = tint_color(m_backColor, B_DARKEN_2_TINT);
     m_darkEdge2 = tint_color(m_backColor, B_DARKEN_4_TINT);
 }
-
 
 
 ImageButton::~ImageButton()

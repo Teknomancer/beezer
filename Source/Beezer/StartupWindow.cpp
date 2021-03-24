@@ -86,34 +86,32 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
     BView* sepViewDarkEdge = new BView("StartupWindow:SepViewDarkEdge", B_WILL_DRAW);
     sepViewDarkEdge->SetViewColor(K_WHITE_COLOR);
 
-    // FIXME this is a bogus rect used until ImageButton has been made more layout friendly
-    BRect buttonRect(0, 0, 1, 1);
 
     BitmapPool* _bmps = _glob_bitmap_pool;
 
-    m_createBtn = new ImageButton(buttonRect, "StartupWindow:New", B_TRANSLATE("New"),
-                                  _bmps->m_tbarNewBmp, NULL, new BMessage(M_FILE_NEW), false, ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon,
-                                  false, true, true, B_FOLLOW_H_CENTER);
+    m_createBtn = new ImageButton("StartupWindow:New", B_TRANSLATE("New"),
+                                  _bmps->m_tbarNewBmp, NULL, new BMessage(M_FILE_NEW), false,
+                                  ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon, false, true, true);
     m_createBtn->SetExplicitMinSize(BSize(K_TOOLBAR_WIDTH, -1));
 
-    m_openBtn = new ImageButton(buttonRect, "StartupWindow:Open", B_TRANSLATE("Open"),
-                                _bmps->m_tbarOpenBmp, NULL, new BMessage(M_FILE_OPEN), false, ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon,
-                                false, true, true, B_FOLLOW_H_CENTER);
+    m_openBtn = new ImageButton("StartupWindow:Open", B_TRANSLATE("Open"),
+                                _bmps->m_tbarOpenBmp, NULL, new BMessage(M_FILE_OPEN), false,
+                                ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon, false, true, true);
     m_openBtn->SetExplicitMinSize(BSize(K_TOOLBAR_WIDTH, -1));
 
-    m_openRecentBtn = new ImageButton(buttonRect, "StartupWindow:OpenRecent", B_TRANSLATE("Recent"),
+    m_openRecentBtn = new ImageButton("StartupWindow:OpenRecent", B_TRANSLATE("Recent"),
                                       _bmps->m_tbarOpenRecentBmp, NULL, new BMessage(M_FILE_OPEN_RECENT), false,
-                                      ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon, false, true, true, B_FOLLOW_H_CENTER);
+                                      ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon, false, true, true);
     m_openRecentBtn->SetExplicitMinSize(BSize(K_TOOLBAR_WIDTH, -1));
 
-    m_toolsBtn = new ImageButton(buttonRect, "StartupWindow:Tools", B_TRANSLATE("Tools"),
+    m_toolsBtn = new ImageButton("StartupWindow:Tools", B_TRANSLATE("Tools"),
                                  _bmps->m_tbarToolsBmp, NULL, new BMessage(M_TOOLS_LIST), false,
-                                 ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon, false, true, true, B_FOLLOW_H_CENTER);
+                                 ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon, false, true, true);
     m_toolsBtn->SetExplicitMinSize(BSize(K_TOOLBAR_WIDTH, -1));
 
-    m_prefsBtn = new ImageButton(buttonRect, "StartupWindow:Prefs", B_TRANSLATE("Settings"),
-                                 _bmps->m_tbarPrefsBmp, NULL, new BMessage(M_EDIT_PREFERENCES), false, ui_color(B_PANEL_BACKGROUND_COLOR),
-                                 kBelowIcon,    false, true, true, B_FOLLOW_H_CENTER);
+    m_prefsBtn = new ImageButton("StartupWindow:Prefs", B_TRANSLATE("Settings"),
+                                 _bmps->m_tbarPrefsBmp, NULL, new BMessage(M_EDIT_PREFERENCES), false,
+                                 ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon, false, true, true);
 
     AddChild(BGroupLayoutBuilder(B_VERTICAL, 0)
              .AddStrut(5)
