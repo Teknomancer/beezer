@@ -239,16 +239,11 @@ void StartupWindow::MessageReceived(BMessage* message)
             m_toolsMenu = _bzr()->BuildToolsPopUpMenu();
             m_toolsMenu->SetTargetForItems(be_app);         // send-directly to be_app object ;)
 
-            // FIXME not sure what's up with these odd calculations.
-            // they y coordinate of the point should be toolRect.bottom
-            // but that puts the menu near the top
-            BRect toolRect(m_toolsBtn->Frame());
-            BPoint point(toolRect.left, toolRect.bottom + toolRect.Height() - 4);
-            BPoint screenPt = point;
+            BPoint screenPt(0, m_toolsBtn->Frame().bottom);
             BRect ignoreClickRect(m_toolsBtn->Frame());
 
-            ConvertToScreen(&screenPt);
-            ConvertToScreen(&ignoreClickRect);
+            m_toolsBtn->ConvertToScreen(&screenPt);
+            m_toolsBtn->ConvertToScreen(&ignoreClickRect);
             m_toolsMenu->SetAsyncAutoDestruct(true);
             m_toolsMenu->Go(screenPt, true, true, ignoreClickRect, false);
             break;
