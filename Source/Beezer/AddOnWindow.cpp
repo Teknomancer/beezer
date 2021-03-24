@@ -65,6 +65,7 @@
 #define B_TRANSLATION_CONTEXT "AddOnWindow"
 #else
 #define B_TRANSLATE(x) x
+#define B_TRANSLATE_SYSTEM_NAME(x) x
 #endif
 
 
@@ -144,7 +145,9 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
     else
     {
         // We've seen enough there are no add-ons installed, no use proceeding!!! Call it quits NOW
-        (new BAlert("Error", B_TRANSLATE("Fatal error, no add-ons found! You cannot create any archives using Beezer."), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT))->Go();
+        BString alertStr(B_TRANSLATE("Fatal error, no add-ons found! You cannot create any archives using %appname%."));
+        alertStr.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
+        (new BAlert("Error", alertStr, B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT))->Go();
         PostMessage(B_QUIT_REQUESTED);
         Show();
         return;
