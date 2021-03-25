@@ -21,7 +21,8 @@ Beezer's official home page can be found here: https://ramshankar.org/software/b
 ## Build Instructions
 
 ```
-cmake Source/
+cd Source/
+cmake
 make
 ```
 Once the build succeeds, the binaries should be available in the `build` directory.
