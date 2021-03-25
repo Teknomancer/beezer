@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2009-2021, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
@@ -64,6 +64,10 @@ PrefsViewRecent::PrefsViewRecent(BRect frame)
 
 void PrefsViewRecent::Render()
 {
+    font_height fntHt;
+    be_plain_font->GetHeight(&fntHt);
+    float const lineHeight = fntHt.ascent + fntHt.descent + fntHt.leading;
+
     BStringView* arkStrView = new BStringView(BRect(m_margin, m_margin, 0, 0), NULL,
             B_TRANSLATE("Recent archives"));
     arkStrView->SetFont(&m_sectionFont);
@@ -74,7 +78,8 @@ void PrefsViewRecent::Render()
     strW += 6;
 
     m_recentArkView = new BTextControl(BRect(3 * m_margin, arkStrView->Frame().bottom + m_vGap + 2,
-                                       3 * m_margin + strW + StringWidth("WWW"), 0),
+                                       3 * m_margin + strW + StringWidth("WWW"),
+                                       arkStrView->Frame().bottom + m_vGap + 2 + lineHeight),
                                        "PrefsViewRecent:recentArkView", B_TRANSLATE("Number of recent archives"), NULL, NULL,
                                        B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
     m_recentArkView->TextView()->SetMaxBytes(2);
@@ -94,7 +99,8 @@ void PrefsViewRecent::Render()
     strW = StringWidth(B_TRANSLATE("Number of recent extract paths"));
     strW += 6;
     m_recentExtView = new BTextControl(BRect(3 * m_margin, extStrView->Frame().bottom + m_vGap + 2,
-                                       3 * m_margin + strW + StringWidth("WWW"), 0),
+                                       3 * m_margin + strW + StringWidth("WWW"),
+                                       extStrView->Frame().bottom + m_vGap + 2 + lineHeight),
                                        "PrefsViewRecent:recentExtView", B_TRANSLATE("Number of recent extract paths"), NULL, NULL,
                                        B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
     m_recentExtView->TextView()->SetMaxBytes(2);

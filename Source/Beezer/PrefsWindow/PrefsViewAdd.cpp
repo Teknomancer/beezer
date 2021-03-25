@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2009-2021, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
@@ -70,6 +70,10 @@ PrefsViewAdd::PrefsViewAdd(BRect frame)
 
 void PrefsViewAdd::Render()
 {
+    font_height fntHt;
+    be_plain_font->GetHeight(&fntHt);
+    float const lineHeight = fntHt.ascent + fntHt.descent + fntHt.leading;
+
     m_replaceMenu = new BPopUpMenu("");
     m_replaceMenu->AddItem(new BMenuItem(B_TRANSLATE("Never replace"), NULL));
     m_replaceMenu->AddItem(new BMenuItem(B_TRANSLATE("Ask before replacing"), NULL));
@@ -81,22 +85,20 @@ void PrefsViewAdd::Render()
                                     B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
     m_replaceField->SetDivider(StringWidth(m_replaceField->Label()) + StringWidth("W"));
 
-    font_height fntHt;
-    be_plain_font->GetHeight(&fntHt);
-
     m_warnMBChk = new BCheckBox(BRect(m_margin, 3 * m_margin + fntHt.ascent + fntHt.descent + m_vGap + 4, 0, 0),
                                 "PrefsViewAdd:warnMBChk", B_TRANSLATE("Confirm when adding more than "), new BMessage(M_WARN), B_FOLLOW_LEFT,
                                 B_WILL_DRAW | B_NAVIGABLE);
     m_warnMBChk->ResizeToPreferred();
 
     m_mbView = new BTextControl(BRect(m_warnMBChk->Frame().right, m_warnMBChk->Frame().top - 2,
-                                      m_warnMBChk->Frame().right + StringWidth("88888") + 4, 0), "PrefsViewAdd:mbView",
+                                      m_warnMBChk->Frame().right + StringWidth("88888") + 4,
+                                      m_warnMBChk->Frame().top - 2 + lineHeight), "PrefsViewAdd:mbView",
                                 NULL, NULL, NULL, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
     m_mbView->TextView()->DisallowChar(B_INSERT);
     m_mbView->TextView()->SetMaxBytes(4);
     m_mbView->SetDivider(0);
 
-    BStringView* mbStrView = new BStringView(BRect(m_mbView->Frame().right + 4, m_warnMBChk->Frame().top + 1,
+    BStringView* mbStrView = new BStringView(BRect(m_mbView->Frame().right + 4, m_warnMBChk->Frame().top + 2,
             0, 0), "PrefsViewAdd:mbStrView", B_TRANSLATE("MiB"), B_FOLLOW_LEFT, B_WILL_DRAW);
     mbStrView->ResizeToPreferred();
 
