@@ -13,9 +13,9 @@ archive.
    items into a pointer BList and folder items into another pointer BList. 
    Always, directory entries are made unique while file items are
    not unique. This is because archiving systems like "tar" (GNU) allows several 
-   files with the same name to exist (yes, in the same folder) in a tar archive. 
-   Since we must support these basic tar archives, we don't store only unique 
-   file names. Only directories are unique.
+   [files with the same name to exist](https://www.gnu.org/software/tar/manual/html_node/multiple.html)
+   (yes, in the same folder) in a tar archive. Since we must support these basic
+   tar archives, we don't store only unique file names. Only directories are unique.
 
 3. The BList is no longer sorted - this is because both files and folders
    are both added by looking up their parent in the hashtable. The parent will 
@@ -40,4 +40,3 @@ deleting items from archives, we update the fileList and folderList BLists of
 the Archiver class.
 
 \- Ramshankar.
-
