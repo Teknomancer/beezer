@@ -6,9 +6,6 @@ Things to do before creating an official release version of Beezer:
 
 * Make sure the `AppConstants.h` has the correct version number
 
-* Remove the `DDEBUG` flag in _BeIDE_.
-  This is a pain as it will cause a full rebuild when its turned back on, but don't do a release with debug symbols.
+* Ensure we do a release rather than a debug build. @todo Document cmake/make BUILD_TYPE?
 
-* Move any older versions of Beezer and its SoftwareValet package files to `_OlderVersions` folder located in this folder's parent folder.
-
-- Ramshankar
+\- Ramshankar
