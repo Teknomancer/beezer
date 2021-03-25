@@ -24,4 +24,4 @@ Beezer's official home page can be found here: https://ramshankar.org/software/b
 cmake Source/
 make
 ```
-The binary should be available in the "build/" folder.
+Once the build succeeds, the binaries should be available in the `build` directory.
