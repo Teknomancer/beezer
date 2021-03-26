@@ -9,8 +9,10 @@ cmake_install.cmake
 CMakeFiles
 install_manifest.txt
 compile_commands.json
+CMakeLists.txt.user
 Source/build
 .dir-locals.el
+.ignore
 GPATH
 GRTAGS
 GTAGS
