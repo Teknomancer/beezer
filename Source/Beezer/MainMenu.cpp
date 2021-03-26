@@ -177,7 +177,6 @@ MainMenu::MainMenu(BRect frame)
     selectAllItem->SetShortcut('A', 0);
 
     m_foldingMenu->SetRadioMode(true);
-    m_foldingMenu->ItemAt(3)->SetMarked(true);
 
     startupFoldedItem->SetMarked(true);
     viewToolbarItem->SetMarked(true);
