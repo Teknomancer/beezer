@@ -164,8 +164,7 @@ MainMenu::MainMenu(BRect frame)
             .AddSeparator()
             .AddItem(B_TRANSLATE("Visit website"), M_HELP_WEBSITE)
             .AddItem(B_TRANSLATE("Github page"), M_HELP_GITHUB)
-        .End()
-    .End();
+        .End();
 
 
     SetRecentMenu(new BMenu(B_TRANSLATE("Open")));
