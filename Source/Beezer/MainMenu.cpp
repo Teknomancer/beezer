@@ -28,6 +28,7 @@
  */
 
 #include <Application.h>
+#include <LayoutBuilder.h>
 #include <Menu.h>
 #include <MenuItem.h>
 #include <PopUpMenu.h>
@@ -57,145 +58,152 @@
 MainMenu::MainMenu(BRect frame)
     : BMenuBar(frame, "MainMenu", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_ITEMS_IN_ROW, true)
 {
-    m_recentMenu = NULL;
-    m_extractPathsMenu = NULL;
+    BString bufStr(B_TRANSLATE("About"));
+    bufStr << " " << B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE) << B_UTF8_ELLIPSIS;
 
-    m_fileMenu = new BMenu(B_TRANSLATE("File"));
-    m_fileMenu->AddItem(new BMenuItem(B_TRANSLATE("New"), new BMessage(M_FILE_NEW), 'N'));
+    BMenu* appMenu = new BMenu(B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
+    BLayoutBuilder::Menu<>(appMenu)
+        .AddItem(bufStr, M_FILE_ABOUT)
+        .AddItem(B_TRANSLATE("Settings…"), M_EDIT_PREFERENCES)
+        .AddSeparator()
+        .AddItem(B_TRANSLATE("Quit"), M_FILE_QUIT, 'Q');
+
+    // keep track of these temporarily so we can call SetMarked()
+    BMenuItem* startupFoldedItem = NULL,
+             * viewToolbarItem = NULL,
+             * viewInfobarItem = NULL,
+             * viewActionLogItem = NULL;
+
+    BLayoutBuilder::Menu<>(this)
+        .AddItem(new BitmapMenuItem(appMenu, _glob_bitmap_pool->m_smallAppIcon))
+        .AddMenu(B_TRANSLATE("File"))
+            .GetMenu(m_fileMenu)
+            .AddItem(B_TRANSLATE("New"), M_FILE_NEW, 'N')
+            .AddMenu(B_TRANSLATE("Open"))
+                .GetMenu(m_recentMenu)
+            .End()
+            .AddItem(B_TRANSLATE("Close"), M_FILE_CLOSE, 'W')
+            .AddSeparator()
+            .AddItem(B_TRANSLATE("Delete"), M_FILE_DELETE)
+            .AddItem(B_TRANSLATE("Archive info"), M_FILE_ARCHIVE_INFO)
+            .AddSeparator()
+            .AddItem(B_TRANSLATE("Password"), M_FILE_PASSWORD)
+        .End()
+        .AddMenu(B_TRANSLATE("Edit"))
+            .GetMenu(m_editMenu)
+            .AddItem(B_TRANSLATE("Copy"), M_EDIT_COPY, 'C')
+            .AddSeparator()
+            .AddMenu(B_TRANSLATE("Select all"))
+                .AddItem(B_TRANSLATE("Folders"), M_EDIT_SELECT_ALL_DIRS)
+                .AddItem(B_TRANSLATE("Files"), M_EDIT_DESELECT_ALL_FILES)
+            .End()
+            .AddItem(B_TRANSLATE("Deselect all"), M_EDIT_DESELECT_ALL)
+            .AddItem(B_TRANSLATE("Invert selection"), M_EDIT_INVERT_SELECTION, 'I', B_SHIFT_KEY)
+            .AddSeparator()
+            .AddItem(B_TRANSLATE("Expand all"), M_EDIT_EXPAND_ALL)
+            .AddItem(B_TRANSLATE("Expand selected"), M_EDIT_EXPAND_SELECTED)
+            .AddItem(B_TRANSLATE("Collapse all"), M_EDIT_COLLAPSE_ALL)
+            .AddItem(B_TRANSLATE("Collapse selected"), M_EDIT_COLLAPSE_SELECTED)
+        .End()
+        .AddMenu(B_TRANSLATE("Actions"))
+            .GetMenu(m_actionsMenu)
+            .AddItem(B_TRANSLATE("Extract"), M_ACTIONS_EXTRACT, 'X')
+            .AddMenu(B_TRANSLATE(S_EXTRACT_TO))
+                .GetMenu(m_extractPathsMenu)
+            .End()
+            .AddItem(B_TRANSLATE("View file"), M_ACTIONS_VIEW, 'V')
+            .AddItem(B_TRANSLATE("Open with…"), M_ACTIONS_OPEN_WITH, 'O')
+            .AddSeparator()
+            .AddItem(B_TRANSLATE("Test"), M_ACTIONS_TEST, 'T')
+            .AddItem(B_TRANSLATE("Search archive"), M_ACTIONS_SEARCH_ARCHIVE, 'F')
+            .AddItem(B_TRANSLATE("Comment"), M_ACTIONS_COMMENT, 'C', B_SHIFT_KEY)
+            .AddSeparator()
+            .AddItem(B_TRANSLATE("Delete"), M_ACTIONS_DELETE, 'D')
+            .AddItem(B_TRANSLATE("Create folder"), M_ACTIONS_CREATE_FOLDER, 'M')
+            .AddItem(B_TRANSLATE("Add"), M_ACTIONS_ADD, 'A', B_SHIFT_KEY)
+        .End()
+        .AddMenu(_bzr()->BuildToolsMenu())
+            .GetMenu(m_toolsMenu)
+        .End()
+        .AddMenu(B_TRANSLATE("View"))
+            .GetMenu(m_viewMenu)
+            .AddItem(B_TRANSLATE("Save as defaults"), M_SAVE_AS_DEFAULT)
+            .AddItem(B_TRANSLATE("Save to archive"), M_SAVE_TO_ARCHIVE)
+            .AddSeparator()
+            .AddItem(B_TRANSLATE("Toolbar"), M_TOGGLE_TOOLBAR)
+            .GetItem(viewToolbarItem)
+            .AddItem(B_TRANSLATE("Infobar"), M_TOGGLE_TOOLBAR)
+            .GetItem(viewInfobarItem)
+            .AddItem(B_TRANSLATE("Action log"), M_TOGGLE_TOOLBAR)
+            .GetItem(viewActionLogItem)
+            .AddMenu(B_TRANSLATE("Columns"))
+                .GetMenu(m_columnsSubMenu)
+                .AddItem(B_TRANSLATE("Name"), M_TOGGLE_COLUMN_NAME).SetEnabled(false)
+                .AddItem(B_TRANSLATE("Size"), M_TOGGLE_COLUMN_SIZE)
+                .AddItem(B_TRANSLATE("Packed"), M_TOGGLE_COLUMN_PACKED)
+                .AddItem(B_TRANSLATE("Ratio"), M_TOGGLE_COLUMN_RATIO)
+                .AddItem(B_TRANSLATE("Path"), M_TOGGLE_COLUMN_PATH)
+                .AddItem(B_TRANSLATE("Date"), M_TOGGLE_COLUMN_DATE)
+                .AddItem(B_TRANSLATE("Method"), M_TOGGLE_COLUMN_METHOD)
+                .AddItem(B_TRANSLATE("CRC"), M_TOGGLE_COLUMN_CRC)
+            .End()
+            .AddMenu(B_TRANSLATE("While opening"))
+                .GetMenu(m_foldingMenu)
+                .AddItem(B_TRANSLATE("Show all items folded"), (BMessage*)NULL)
+                .AddItem(B_TRANSLATE("Show first level unfolded"), (BMessage*)NULL)
+                .AddItem(B_TRANSLATE("Show first 2 levels unfolded"), (BMessage*)NULL)
+                .AddItem(B_TRANSLATE("Show all items unfolded"), (BMessage*)NULL)
+                .GetItem(startupFoldedItem)
+            .End()
+        .End()
+        .AddMenu(B_TRANSLATE("Windows"))
+            .GetMenu(m_windowsMenu)
+        .End()
+        .AddMenu(B_TRANSLATE("Help"))
+            .AddItem(B_TRANSLATE("Open manual"), M_HELP_MANUAL)
+            .AddSeparator()
+            .AddItem(B_TRANSLATE("Visit website"), M_HELP_WEBSITE)
+            .AddItem(B_TRANSLATE("Github page"), M_HELP_GITHUB)
+        .End()
+    .End();
+
+
     SetRecentMenu(new BMenu(B_TRANSLATE("Open")));
 
-    m_fileMenu->AddItem(new BMenuItem(B_TRANSLATE("Close"), new BMessage(M_FILE_CLOSE), 'W'));
-    m_fileMenu->AddSeparatorItem();
-    m_fileMenu->AddItem(new BMenuItem(B_TRANSLATE("Delete"), new BMessage(M_FILE_DELETE)));
-    m_fileMenu->AddItem(new BMenuItem(B_TRANSLATE("Archive info"), new BMessage(M_FILE_ARCHIVE_INFO)));
-    m_fileMenu->AddSeparatorItem();
-    m_fileMenu->AddItem(new BMenuItem(B_TRANSLATE("Password"), new BMessage(M_FILE_PASSWORD)));
+    SetExtractPathsMenu(new BMenu(B_TRANSLATE(S_EXTRACT_TO)));
 
-
-    m_editMenu = new BMenu(B_TRANSLATE("Edit"));
-    m_editMenu->AddItem(new BMenuItem(B_TRANSLATE("Copy"), new BMessage(M_EDIT_COPY), 'C'));
-    m_editMenu->AddSeparatorItem();
-    m_selectAllMenu = new BMenu(B_TRANSLATE("Select all"));
-    m_selectAllMenu->AddItem(new BMenuItem(B_TRANSLATE("Folders"), new BMessage(M_EDIT_SELECT_ALL_DIRS)));
-    m_selectAllMenu->AddItem(new BMenuItem(B_TRANSLATE("Files"), new BMessage(M_EDIT_SELECT_ALL_FILES)));
-    m_editMenu->AddItem(m_selectAllMenu);
     BMenuItem* selectAllItem = m_editMenu->FindItem(B_TRANSLATE("Select all"));
     selectAllItem->SetMessage(new BMessage(M_EDIT_SELECT_ALL));
     selectAllItem->SetShortcut('A', 0);
 
-    m_editMenu->AddItem(new BMenuItem(B_TRANSLATE("Deselect all"), new BMessage(M_EDIT_DESELECT_ALL)));
-    m_editMenu->AddItem(new BMenuItem(B_TRANSLATE("Invert selection"), new BMessage(M_EDIT_INVERT_SELECTION), 'I',
-                                      B_SHIFT_KEY));
-    m_editMenu->AddSeparatorItem();
-    m_editMenu->AddItem(new BMenuItem(B_TRANSLATE("Expand all"), new BMessage(M_EDIT_EXPAND_ALL)));
-    m_editMenu->AddItem(new BMenuItem(B_TRANSLATE("Expand selected"), new BMessage(M_EDIT_EXPAND_SELECTED)));
-    m_editMenu->AddItem(new BMenuItem(B_TRANSLATE("Collapse all"), new BMessage(M_EDIT_COLLAPSE_ALL)));
-    m_editMenu->AddItem(new BMenuItem(B_TRANSLATE("Collapse selected"), new BMessage(M_EDIT_COLLAPSE_SELECTED)));
+    m_foldingMenu->SetRadioMode(true);
+    m_foldingMenu->ItemAt(3)->SetMarked(true);
 
-    m_actionsMenu = new BMenu(B_TRANSLATE("Actions"));
-    m_actionsMenu->AddItem(new BMenuItem(B_TRANSLATE("Extract"), new BMessage(M_ACTIONS_EXTRACT), 'X'));
-    SetExtractPathsMenu(new BMenu(B_TRANSLATE(S_EXTRACT_TO)));
-
-    m_actionsMenu->AddItem(new BMenuItem(B_TRANSLATE("View file"), new BMessage(M_ACTIONS_VIEW), 'V'));
-    m_actionsMenu->AddItem(new BMenuItem(B_TRANSLATE("Open with…"), new BMessage(M_ACTIONS_OPEN_WITH), 'O'));
-    m_actionsMenu->AddSeparatorItem();
-    m_actionsMenu->AddItem(new BMenuItem(B_TRANSLATE("Test"), new BMessage(M_ACTIONS_TEST), 'T'));
-    m_actionsMenu->AddItem(new BMenuItem(B_TRANSLATE("Search archive"), new BMessage(M_ACTIONS_SEARCH_ARCHIVE), 'F'));
-    //m_actionsMenu->AddItem (new BMenuItem (str (S_DEEP_SEARCH), new BMessage (M_ACTIONS_DEEP_SEARCH), 'F',
-    //                  B_SHIFT_KEY));
-    m_actionsMenu->AddItem(new BMenuItem(B_TRANSLATE("Comment"), new BMessage(M_ACTIONS_COMMENT), 'C', B_SHIFT_KEY));
-    m_actionsMenu->AddSeparatorItem();
-    m_actionsMenu->AddItem(new BMenuItem(B_TRANSLATE("Delete"), new BMessage(M_ACTIONS_DELETE), 'D'));
-    //m_actionsMenu->AddItem (new BMenuItem (str (S_RENAME), new BMessage (M_ACTIONS_RENAME), 'E'));
-    m_actionsMenu->AddItem(new BMenuItem(B_TRANSLATE("Create folder"), new BMessage(M_ACTIONS_CREATE_FOLDER), 'M'));
-    m_actionsMenu->AddItem(new BMenuItem(B_TRANSLATE("Add"), new BMessage(M_ACTIONS_ADD), 'A', B_SHIFT_KEY));
-
-    m_viewMenu = new BMenu(B_TRANSLATE("View"));
-
-    m_viewMenu->AddItem(new BMenuItem(B_TRANSLATE("Save as defaults"), new BMessage(M_SAVE_AS_DEFAULT)));
-    m_viewMenu->AddItem(new BMenuItem(B_TRANSLATE("Save to archive"), new BMessage(M_SAVE_TO_ARCHIVE)));
-    m_viewMenu->AddSeparatorItem();
-
-    m_viewMenu->AddItem(new BMenuItem(B_TRANSLATE("Toolbar"), new BMessage(M_TOGGLE_TOOLBAR)));
-    m_viewMenu->FindItem(M_TOGGLE_TOOLBAR)->SetMarked(true);
-    m_viewMenu->AddItem(new BMenuItem(B_TRANSLATE("Infobar"), new BMessage(M_TOGGLE_INFOBAR)));
-    m_viewMenu->FindItem(M_TOGGLE_INFOBAR)->SetMarked(true);
-    m_viewMenu->AddItem(new BMenuItem(B_TRANSLATE("Action log"), new BMessage(M_TOGGLE_LOG)));
-    m_viewMenu->FindItem(M_TOGGLE_LOG)->SetMarked(true);
-
-    m_columnsSubMenu = new BMenu(B_TRANSLATE("Columns"));
-    m_columnsSubMenu->AddItem(new BMenuItem(B_TRANSLATE("Name"), new BMessage(M_TOGGLE_COLUMN_NAME)));
-    m_columnsSubMenu->ItemAt(0L)->SetEnabled(false);
-    m_columnsSubMenu->AddItem(new BMenuItem(B_TRANSLATE("Size"), new BMessage(M_TOGGLE_COLUMN_SIZE)));
-    m_columnsSubMenu->AddItem(new BMenuItem(B_TRANSLATE("Packed"), new BMessage(M_TOGGLE_COLUMN_PACKED)));
-    m_columnsSubMenu->AddItem(new BMenuItem(B_TRANSLATE("Ratio"), new BMessage(M_TOGGLE_COLUMN_RATIO)));
-    m_columnsSubMenu->AddItem(new BMenuItem(B_TRANSLATE("Path"), new BMessage(M_TOGGLE_COLUMN_PATH)));
-    m_columnsSubMenu->AddItem(new BMenuItem(B_TRANSLATE("Date"), new BMessage(M_TOGGLE_COLUMN_DATE)));
-    m_columnsSubMenu->AddItem(new BMenuItem(B_TRANSLATE("Method"), new BMessage(M_TOGGLE_COLUMN_METHOD)));
-    m_columnsSubMenu->AddItem(new BMenuItem(B_TRANSLATE("CRC"), new BMessage(M_TOGGLE_COLUMN_CRC)));
-    m_viewMenu->AddItem(m_columnsSubMenu);
-
+    startupFoldedItem->SetMarked(true);
+    viewToolbarItem->SetMarked(true);
+    viewInfobarItem->SetMarked(true);
+    viewActionLogItem->SetMarked(true);
     int32 columnCount = m_columnsSubMenu->CountItems();
     for (int32 i = 0; i < columnCount; i++)
         m_columnsSubMenu->ItemAt(i)->SetMarked(true);
 
-    m_foldingMenu = new BMenu(B_TRANSLATE("While opening"));
-    m_foldingMenu->SetRadioMode(true);
-    m_foldingMenu->AddItem(new BMenuItem(B_TRANSLATE("Show all items folded"), NULL));
-    m_foldingMenu->AddItem(new BMenuItem(B_TRANSLATE("Show first level unfolded"), NULL));
-    m_foldingMenu->AddItem(new BMenuItem(B_TRANSLATE("Show first 2 levels unfolded"), NULL));
-    m_foldingMenu->AddItem(new BMenuItem(B_TRANSLATE("Show all items unfolded"), NULL));
-    m_foldingMenu->ItemAt(3)->SetMarked(true);
-
-    m_viewMenu->AddItem(m_foldingMenu);
-
-    m_windowsMenu = new BMenu(B_TRANSLATE("Windows"));
-
-    BMenu* systemMenu = new BMenu("");
-    BString strBuf = B_TRANSLATE("About");
-    strBuf << " " << B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE) << B_UTF8_ELLIPSIS;
-
-    systemMenu->AddItem(new BMenuItem(strBuf.String(), new BMessage(M_FILE_ABOUT)));
-    systemMenu->AddItem(new BMenuItem(B_TRANSLATE("Settings…"), new BMessage(M_EDIT_PREFERENCES)));
-
-    systemMenu->AddSeparatorItem();
-    systemMenu->AddItem(new BMenuItem(B_TRANSLATE("Quit"), new BMessage(M_FILE_QUIT), 'Q'));
-
-    m_systemMenu = new BitmapMenuItem(systemMenu, _glob_bitmap_pool->m_smallAppIcon);
-
-    // Convert the popup tools menu into a proper BMenu, mere type-casting won't work
-    m_toolsMenu = _bzr()->BuildToolsMenu();
-
-    BMenu* helpMenu = new BMenu(B_TRANSLATE("Help"));
-    helpMenu->AddItem(new BMenuItem(B_TRANSLATE("Open manual"), new BMessage(M_HELP_MANUAL)));
-    helpMenu->AddSeparatorItem();
-    helpMenu->AddItem(new BMenuItem(B_TRANSLATE("Visit website"), new BMessage(M_HELP_WEBSITE)));
-    helpMenu->AddItem(new BMenuItem(B_TRANSLATE("Github page"), new BMessage(M_HELP_GITHUB)));
-
-    AddItem(m_systemMenu);
-    AddItem(m_fileMenu);
-    AddItem(m_editMenu);
-    AddItem(m_actionsMenu);
-    AddItem(m_toolsMenu);
-    AddItem(m_viewMenu);
-    AddItem(m_windowsMenu);
-    AddItem(helpMenu);
 
     m_archiveContextMenu = new BPopUpMenu("_cntxt", false, false);
-    m_archiveContextMenu->AddItem(new BMenuItem(B_TRANSLATE("View"), new BMessage(M_ACTIONS_VIEW)));
-    m_archiveContextMenu->AddItem(new BMenuItem(B_TRANSLATE("Open with"), new BMessage(M_ACTIONS_OPEN_WITH)));
-    m_archiveContextMenu->AddItem(new BMenuItem(B_TRANSLATE("Extract"), new BMessage(M_ACTIONS_EXTRACT_SELECTED)));
-    m_archiveContextMenu->AddItem(new BMenuItem(B_TRANSLATE("Delete"), new BMessage(M_ACTIONS_DELETE)));
-    m_archiveContextMenu->AddSeparatorItem();
-    m_archiveContextMenu->AddItem(new BMenuItem(B_TRANSLATE("Copy row as text"), new BMessage(M_CONTEXT_COPY)));
-    m_archiveContextMenu->AddSeparatorItem();
-    m_archiveContextMenu->AddItem(new BMenuItem(B_TRANSLATE("Select folder"), new BMessage(M_CONTEXT_SELECT)));
-    m_archiveContextMenu->AddItem(new BMenuItem(B_TRANSLATE("Deselect folder"), new BMessage(M_CONTEXT_DESELECT)));
+    BLayoutBuilder::Menu<>(m_archiveContextMenu)
+        .AddItem(B_TRANSLATE("View"), M_ACTIONS_VIEW)
+        .AddItem(B_TRANSLATE("Open with"), M_ACTIONS_OPEN_WITH)
+        .AddItem(B_TRANSLATE("Extract"), M_ACTIONS_EXTRACT_SELECTED)
+        .AddItem(B_TRANSLATE("Delete"), M_ACTIONS_DELETE)
+        .AddSeparator()
+        .AddItem(B_TRANSLATE("Copy row as text"), M_CONTEXT_COPY)
+        .AddSeparator()
+        .AddItem(B_TRANSLATE("Select folder"), M_CONTEXT_SELECT)
+        .AddItem(B_TRANSLATE("Deselect folder"), M_CONTEXT_DESELECT);
 
     m_logContextMenu = new BPopUpMenu("_cntxt", false, false);
-    m_logContextMenu->AddItem(new BMenuItem(B_TRANSLATE("Clear log"), new BMessage(M_LOG_CONTEXT_CLEAR)));
-    m_logContextMenu->AddItem(new BMenuItem(B_TRANSLATE("Copy log"), new BMessage(M_LOG_CONTEXT_COPY)));
-    //m_logContextMenu->AddItem (new BMenuItem (str (S_LOG_CONTEXT_SAVE), new BMessage (M_LOG_CONTEXT_SAVE)));
+    BLayoutBuilder::Menu<>(m_logContextMenu)
+        .AddItem(B_TRANSLATE("Clear log"), M_LOG_CONTEXT_CLEAR)
+        .AddItem(B_TRANSLATE("Copy log"), M_LOG_CONTEXT_COPY);
 }
 
 
@@ -222,7 +230,6 @@ void MainMenu::SetRecentMenu(BMenu* menu)
     BMenuItem* openItem = m_fileMenu->FindItem(B_TRANSLATE("Open"));
     openItem->SetMessage(new BMessage(M_FILE_OPEN));
     openItem->SetShortcut('O', 0);
-
 }
 
 
