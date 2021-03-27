@@ -236,7 +236,7 @@ AboutWindow::AboutWindow(const char* compileTimeStr)
     formatStr.ReplaceAll("%appauthor%", K_APP_AUTHOR);
     formatStr.ReplaceAll("%appauthor2%", K_APP_AUTHOR_2);
     formatStr.ReplaceAll("%authoremail%", K_APP_AUTHOR_MAIL);
-    formatStr.ReplaceAll("%appemail2%", K_APP_AUTHOR_2_MAIL);
+    formatStr.ReplaceAll("%author2email%", K_APP_AUTHOR_2_MAIL);
 
     formatStr.ReplaceAll("%hdr_builddate%", compileTimeStr);
     free((char*)compileTimeStr);                   // Free-this as we are passed a ptr in HEAP as per caller Beezer
