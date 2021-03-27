@@ -31,7 +31,6 @@ add_executable(Beezer
 		Beezer.cpp
 		BitmapPool.cpp
 		CommentWindow.cpp
-		LangStrings.cpp
 		LocalUtils.cpp
 		LogWindow.cpp
 		MainMenu.cpp

@@ -37,7 +37,7 @@
 #include <malloc.h>
 
 #include "AboutWindow.h"
-#include "LangStrings.h"
+#include "AppConstants.h"
 #include "UIConstants.h"
 
 #ifdef HAIKU_ENABLE_I18N
@@ -49,6 +49,90 @@
 #define B_TRANSLATE(x) x
 #endif
 
+
+//TODO add urlview credits, they seem to be missing
+const char* kAboutText =
+        "Version %appversion%\n"
+        "%hdr_debug%\n\n"
+        "Compiled on:\n%hdr_builddate%\n\n*  *  *\n\n\n\n\n\n\n\n\n\n"
+        "%hdr_programming%\n%appauthor%\n%authoremail%\n\n"
+        "%appauthor2%\n%author2email%\n\n*  *  *\n\n\n\n\n\n\n\n\n\n"
+        "%hdr_credits%\n\n"
+        "%hdr_clv%\nBrian Tietz\n\n"
+        "%hdr_splitview%\nYNOP Talton\n\n"
+        "%hdr_7zip%\nMarcin Konicki\n\n"
+        "%hdr_docupdates%\nhumdinger\n\n"
+        "Thank you for your contributions\n\n*  *  *\n\n\n\n\n\n\n\n\n\n"
+        "A special round of applause\n"
+        "to BeShare/IRC members:\n\n"
+        "Zartan\nxyphn\nBiPolar\nTechnix\ntschertel\nDaaT\nEsperantolo\nIcewarp\nAlienSoldier\nSoulbender\ndisreali\n"
+        "RepairmanJack\nJack Burton\nslaad\nBegasus\nWilliam Kakes\nJeremy Friesner\n"
+        "BeGeistert\nBGA\nhUMUNGUs\nmmu_man\nmahlzeit\nBryan\nPahtz\nfyysik\nSir Mik\nIngenu\nTenzin\nand "
+        "others…\n\n"
+        "for testing, feedback, suggestions\n"
+        "& some timely help as well… :)\n\n*  *  *\n\n\n\n\n\n\n\n\n\n"
+        "Also thanks to:\n\n"
+        "BeIDE\nbdb\nEvaluator\nRL's Icon Collection\nJess Tipton (BeWicked icons)\n\n"
+        "… for various reasons :^)\n\n*  *  *\n\n\n\n\n\n\n\n\n\n"
+        "%hdr_legal%\n\n"
+        "This program is distributed under\n"
+        "the 3-clause BSD license and the\n"
+        "the license is attached to each\n"
+        "source file of this program\n\n"
+
+        "For third party code, the license's\n"
+        "terms and conditions are explicitly\n"
+        "stated and the author disclaimed of\n"
+        "any and all liabilities\n\n"
+
+        "For the full license read the\n"
+        "License section of the documentation\n\n"
+        "*  *  *\n\n\n\n\n\n\n\n\n\n"
+
+        "%hdr_disclaimer%\n\n"
+        "Because the software is licensed\n"
+        "free of charge, there is no warranty\n"
+        "for the software. The copyright\n"
+        "holders and/or other parties provide\n"
+        "the software \"AS IS\" without warranty\n"
+        "of any kind, either expressed or\n"
+        "implied, including, but not limited to,\n"
+        "the implied warranties of merchantability\n"
+        "and fitness for a particular purpose.\n"
+        "The entire risk as to the quality and\n"
+        "performance of the software is with you.\n"
+        "Should the software prove defective, you\n"
+        "assume the cost of all necessary\n"
+        "servicing, repair or correction.\n\n"
+
+        "In no event will the copyright holder,\n"
+        "or any other party who may modify and/or\n"
+        "redistribute the software as permitted\n"
+        "above, be liable to you for damages,\n"
+        "including any general, special, incidental\n"
+        "or consequential damages arising out of\n"
+        "the use or inability to use the software\n"
+        "(including but not limited to the loss of\n"
+        "data or data being rendered inaccurate or\n"
+        "losses sustained by you or third parties\n"
+        "or a failure of the software to operate\n"
+        "with any other programs), even if such\n"
+        "holder or other party has been advised\n"
+        "of the possibility of such damages.\n\n\n\n\n\n\n\n\n"
+
+        "%hdr_thanks%\n\n"
+        "Be Inc., for making this OS\n"
+        "in the first place\n\n"
+        "Haiku Inc. for their efforts with\n"
+        "Haiku\n\n"
+        "BeBits.com, BeGroovy.com, BeZip.de and\n"
+        "other BeOS related sites for their\n"
+        "continued enthusiasm and effort!\n\n"
+        "BeOS, Haiku programmers, designers, artists for\n"
+        "their contributions to the OS' growth\n\n"
+        "and a big applause goes to the\n"
+        "community\n\n*  *  *\n\n\n\n\n\n\n\n\n\n"
+        "OK…\n\nYou can close this window now :)\n\n\n\n\n";
 
 MarqueeView::MarqueeView(BRect frame, const char* name, BRect textRect, uint32 resizeMask,
                          uint32 flags)
@@ -107,8 +191,8 @@ AboutWindow::AboutWindow(const char* compileTimeStr)
     if (titleBmp == NULL)
     {
         Hide();
-        (new BAlert("Error", B_TRANSLATE("An error was encountered while trying to load resources for the About window."), B_TRANSLATE("Close"), NULL, NULL,
-                    B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT))->Go();
+        (new BAlert("Error", B_TRANSLATE("An error was encountered while trying to load resources for the About window."),
+                    B_TRANSLATE("Close"), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT))->Go();
         PostMessage(B_QUIT_REQUESTED);
         Show();
         return;
@@ -141,27 +225,32 @@ AboutWindow::AboutWindow(const char* compileTimeStr)
     for (int32 i = 0; i < (int32)noOfLines; i++)
         m_lineFeeds << "\n";
 
-    BString formatStr = str(S_ABOUT_STRING);
+    BString formatStr(kAboutText);
 #ifdef DEBUG
-    formatStr.ReplaceAll("$DEBUG_BUILD$", B_TRANSLATE("Debug release"));
+    formatStr.ReplaceAll("%hdr_debug%", B_TRANSLATE("Debug release"));
 #else
-    formatStr.ReplaceAll("$DEBUG_BUILD$", B_TRANSLATE("Public release"));
+    formatStr.ReplaceAll("%hdr_debug%", B_TRANSLATE("Public release"));
 #endif
 
-    formatStr.ReplaceAll("$BUILD_DATE$", compileTimeStr);
+    formatStr.ReplaceAll("%appversion%", K_APP_VERSION);
+    formatStr.ReplaceAll("%appauthor%", K_APP_AUTHOR);
+    formatStr.ReplaceAll("%appauthor2%", K_APP_AUTHOR_2);
+    formatStr.ReplaceAll("%authoremail%", K_APP_AUTHOR_MAIL);
+    formatStr.ReplaceAll("%appemail2%", K_APP_AUTHOR_2_MAIL);
+
+    formatStr.ReplaceAll("%hdr_builddate%", compileTimeStr);
     free((char*)compileTimeStr);                   // Free-this as we are passed a ptr in HEAP as per caller Beezer
 
-    formatStr.ReplaceAll("$S_PROGRAMMING$", str(S_ABOUT_PROGRAMMING));
-    formatStr.ReplaceAll("$S_CREDITS$", str(S_ABOUT_CREDITS));
-    formatStr.ReplaceAll("$S_COLUMN_LIST_VIEW$", str(S_ABOUT_COLUMN_LIST_VIEW));
-    formatStr.ReplaceAll("$S_SPLITPANE$", str(S_ABOUT_SPLITPANE));
-    formatStr.ReplaceAll("$S_URLVIEW$", str(S_ABOUT_URLVIEW));
-    formatStr.ReplaceAll("$S_BESHARE$", str(S_ABOUT_BESHARE));
-    formatStr.ReplaceAll("$S_7ZIP$", str(S_ABOUT_7ZIP));
-    formatStr.ReplaceAll("$S_DOC_UPDATES$", str(S_ABOUT_DOC_UPDATES));    
-    formatStr.ReplaceAll("$S_LEGAL_MUMBO_JUMBO$", str(S_ABOUT_LEGAL_MUMBO_JUMBO));
-    formatStr.ReplaceAll("$S_DISCLAIMER$", str(S_ABOUT_DISCLAIMER));
-    formatStr.ReplaceAll("$S_SPECIAL_THANKS$", str(S_ABOUT_SPECIAL_THANKS));
+    formatStr.ReplaceAll("%hdr_programming%", B_TRANSLATE("[ Programming ]"));
+    formatStr.ReplaceAll("%hdr_credits%", B_TRANSLATE("CREDITS"));
+    formatStr.ReplaceAll("%hdr_clv%", B_TRANSLATE("[ ColumnListView ]"));
+    formatStr.ReplaceAll("%hdr_splitview%", B_TRANSLATE("[ SplitPane ]"));
+    formatStr.ReplaceAll("%hdr_urlview%", B_TRANSLATE("[ URLView ]"));
+    formatStr.ReplaceAll("%hdr_7zip%", B_TRANSLATE("[ 7zip Add-on ]"));
+    formatStr.ReplaceAll("%hdr_docupdates%", B_TRANSLATE("[ Documentation Updates ]"));
+    formatStr.ReplaceAll("%hdr_legal%", B_TRANSLATE("LEGAL MUMBO JUMBO"));
+    formatStr.ReplaceAll("%hdr_disclaimer%", B_TRANSLATE("[ Disclaimer ]"));
+    formatStr.ReplaceAll("%hdr_thanks%", B_TRANSLATE("SPECIAL THANKS TO"));
 
     m_creditsText = strdup(formatStr.String());
 
