@@ -72,8 +72,10 @@
 #define K_FILENAME_ATTRIBUTE                 "bzr:file"
 #define K_SEPARATOR_ATTRIBUTE                "bzr:sep"
 
-#ifdef __INTEL__
+#ifdef __i386__
 #define K_APP_VERSION                "0.99 (x86)"
+#elif __x86_64__
+#define K_APP_VERSION                "0.99 (x86_64)"
 #else
 #define K_APP_VERSION                "0.99 (ppc)"
 #endif
