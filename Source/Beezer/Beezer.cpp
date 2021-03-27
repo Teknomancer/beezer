@@ -553,6 +553,22 @@ void Beezer::UnRegisterWindow(bool closeApp)
 
 
 
+void Beezer::ArgvReceived(int32 argc, char** argv)
+{
+    for(int32 arg = 1; arg < argc; arg++)
+    {
+        BEntry entry(argv[arg], true);         // Traverse link
+        if (entry.InitCheck() == B_OK && entry.Exists())
+        {
+            entry_ref ref;
+            entry.GetRef(&ref);
+            RegisterWindow(&ref);
+        }
+    }
+}
+
+
+
 void Beezer::RefsReceived(BMessage* message)
 {
     uint32 type;
