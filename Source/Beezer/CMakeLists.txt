@@ -12,7 +12,6 @@ include_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/PrefsWindow
 		${CMAKE_CURRENT_SOURCE_DIR}/SplitView
 		${CMAKE_CURRENT_SOURCE_DIR}/SplitPane
-		${CMAKE_CURRENT_SOURCE_DIR}/URLView
 		${CMAKE_CURRENT_SOURCE_DIR}/Widgets
 )
 
@@ -69,7 +68,6 @@ add_executable(Beezer
 		PrefsWindow/PrefsWindow.cpp
 		RegExString/RegExString.cpp
 		SplitPane/SplitPane.cpp
-		URLView/URLView.cpp
 		Widgets/BarberPole.cpp
 		Widgets/BeezerListView.cpp
 		Widgets/BeezerStringView.cpp

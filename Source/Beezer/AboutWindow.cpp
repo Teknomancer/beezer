@@ -50,7 +50,7 @@
 #endif
 
 
-//TODO add urlview credits, they seem to be missing
+
 const char* kAboutText =
         "Version %appversion%\n"
         "%hdr_debug%\n\n"
@@ -245,7 +245,6 @@ AboutWindow::AboutWindow(const char* compileTimeStr)
     formatStr.ReplaceAll("%hdr_credits%", B_TRANSLATE("CREDITS"));
     formatStr.ReplaceAll("%hdr_clv%", B_TRANSLATE("[ ColumnListView ]"));
     formatStr.ReplaceAll("%hdr_splitview%", B_TRANSLATE("[ SplitPane ]"));
-    formatStr.ReplaceAll("%hdr_urlview%", B_TRANSLATE("[ URLView ]"));
     formatStr.ReplaceAll("%hdr_7zip%", B_TRANSLATE("[ 7zip Add-on ]"));
     formatStr.ReplaceAll("%hdr_docupdates%", B_TRANSLATE("[ Documentation Updates ]"));
     formatStr.ReplaceAll("%hdr_legal%", B_TRANSLATE("LEGAL MUMBO JUMBO"));
@@ -263,14 +262,12 @@ AboutWindow::AboutWindow(const char* compileTimeStr)
     int32 nSubHeadings = 8;
     BString subHeadings[] =
     {
-        B_TRANSLATE("[ Programming ]"),            // 0
-        B_TRANSLATE("[ ColumnListView ]"),         // 1
-        B_TRANSLATE("[ SplitPane ]"),              // 2
-        B_TRANSLATE("[ URLView ]"),                // 3
-        B_TRANSLATE("[ BeShare ]"),                // 4
-        B_TRANSLATE("[ 7zip Add-on ]"),            // 5
-        B_TRANSLATE("[ Documentation Updates ]"),  // 6
-        B_TRANSLATE("[ Disclaimer ]")              // 7
+        B_TRANSLATE("[ Programming ]"),
+        B_TRANSLATE("[ ColumnListView ]"),
+        B_TRANSLATE("[ SplitPane ]"),
+        B_TRANSLATE("[ 7zip Add-on ]"),
+        B_TRANSLATE("[ Documentation Updates ]"),
+        B_TRANSLATE("[ Disclaimer ]")
     };
 
     int32 nMainHeadings = 3;
