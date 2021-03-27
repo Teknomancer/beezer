@@ -203,6 +203,16 @@ void Beezer::ReadyToRun()
 
 
 
+void Beezer::AboutRequested()
+{
+    if (m_aboutWnd == NULL)
+        m_aboutWnd = new AboutWindow(CompileTimeString(false));
+    else
+        m_aboutWnd->Activate();
+}
+
+
+
 void Beezer::MessageReceived(BMessage* message)
 {
     switch (message->what)
@@ -210,16 +220,6 @@ void Beezer::MessageReceived(BMessage* message)
         case M_FILE_NEW:
         {
             ShowCreateFilePanel();
-            break;
-        }
-
-        case M_FILE_ABOUT:
-        {
-            if (m_aboutWnd == NULL)
-                m_aboutWnd = new AboutWindow(CompileTimeString(false));
-            else
-                m_aboutWnd->Activate();
-
             break;
         }
 
