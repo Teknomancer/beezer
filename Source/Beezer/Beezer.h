@@ -58,6 +58,7 @@ class Beezer : public BApplication
         virtual ~Beezer();
 
         // Inherited hooks
+        virtual void        AboutRequested();
         virtual void        MessageReceived(BMessage* message);
         virtual void        RefsReceived(BMessage* message);
         virtual void        ReadyToRun();

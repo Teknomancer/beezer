@@ -63,7 +63,7 @@ MainMenu::MainMenu(BRect frame)
 
     BMenu* appMenu = new BMenu(B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
     BLayoutBuilder::Menu<>(appMenu)
-        .AddItem(bufStr, M_FILE_ABOUT)
+        .AddItem(bufStr, B_ABOUT_REQUESTED)
         .AddItem(B_TRANSLATE("Settings…"), M_EDIT_PREFERENCES)
         .AddSeparator()
         .AddItem(B_TRANSLATE("Quit"), M_FILE_QUIT, 'Q');

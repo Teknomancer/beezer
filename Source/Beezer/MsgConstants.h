@@ -141,7 +141,6 @@ M_FILE_CLOSE =                  'flcs',
 M_FILE_ARCHIVE_INFO =            'flai',
 M_FILE_PASSWORD =                'flpw',
 M_FILE_DELETE =                 'fldl',
-M_FILE_ABOUT =                  'flab',
 M_FILE_QUIT =                   'flqt',
 
 M_EDIT_COPY =                   'edcp',
