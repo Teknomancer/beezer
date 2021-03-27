@@ -86,4 +86,10 @@ if(HAIKU_ENABLE_I18N STREQUAL "ON")
 	target_link_libraries(Beezer "localestub")
 endif()
 
+add_custom_target("symlink-docs-to-build-dir"
+	ALL
+	COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_CURRENT_SOURCE_DIR}/docs" "${BEEZER_BUILD_DIR}/docs"
+	SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/docs"
+	VERBATIM)
+
 add_subdirectory(TrackerAddOn)
