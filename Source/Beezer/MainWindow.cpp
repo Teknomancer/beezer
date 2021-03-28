@@ -2011,7 +2011,7 @@ void MainWindow::UpdateNewWindow()
 
 void MainWindow::UpdateRecentMenu()
 {
-    m_mainMenu->SetRecentMenu(m_recentMgr->BuildMenu(B_TRANSLATE("Open"), "refs", be_app));
+    m_mainMenu->SetRecentMenu(m_recentMgr->BuildMenu(B_TRANSLATE(S_OPEN), "refs", be_app));
     m_openButton->SetContextMenu(m_recentMgr->BuildPopUpMenu(NULL, "refs", be_app));
 }
 
