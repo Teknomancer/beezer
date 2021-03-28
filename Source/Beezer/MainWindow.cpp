@@ -410,8 +410,10 @@ void MainWindow::MessageReceived(BMessage* message)
                 if (msg->FindString(kErrorString, &errString) == B_OK)
                 {
                     m_logTextView->AddText(B_TRANSLATE("Error!"), false, false, false);
-                    BAlert* errAlert = new BAlert("Error", B_TRANSLATE("The archiver has encountered errors.  Do you want to view a detailed report?"), B_TRANSLATE("View report"),
-                                                  B_TRANSLATE("Cancel"), NULL, B_WIDTH_AS_USUAL,    B_EVEN_SPACING,    B_STOP_ALERT);
+                    BString alertStr(B_TRANSLATE("The archiver has encountered errors."));
+                    alertStr << "\n" << B_TRANSLATE("Do you want to view a detailed report?");
+                    BAlert* errAlert = new BAlert("Error", alertStr, B_TRANSLATE("View report"), B_TRANSLATE("Cancel"),
+                                                  NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
                     errAlert->SetDefaultButton(errAlert->ButtonAt(1L));
                     errAlert->SetShortcut(1L, B_ESCAPE);
                     errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
@@ -606,12 +608,13 @@ void MainWindow::MessageReceived(BMessage* message)
 
             if (fileCount > 10)
             {
-                BString confirmStr(B_TRANSLATE("You are opening %numfiles% files simultenously.  Are you sure you wish to proceed?"));
+                BString confirmStr(B_TRANSLATE("You are opening %numfiles% files simultenously."));
+                confirmStr << "\n" << B_TRANSLATE("Do you wish to continue?");
                 BString countBuf;
                 countBuf.SetToFormat("%ld", fileCount);
                 confirmStr.ReplaceAll("%numfiles%", countBuf);
-                BAlert* confirmAlert = new BAlert("Confirm", confirmStr, B_TRANSLATE("Continue"),
-                                                  B_TRANSLATE("No"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_WARNING_ALERT);
+                BAlert* confirmAlert = new BAlert("Confirm", confirmStr, B_TRANSLATE("Continue"), B_TRANSLATE("Cancel"),
+                                                  NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_WARNING_ALERT);
                 confirmAlert->SetShortcut(1, B_ESCAPE);
                 confirmAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                 confirmAlert->AddToSubset(this);
@@ -835,9 +838,9 @@ void MainWindow::MessageReceived(BMessage* message)
             if ((message->HasBool(kRoot) || message->HasPointer(kListItem)) &&
                     _prefs_add.FindBoolDef(kPfConfirmDropAdd, true))
             {
-                BAlert* confirmAlert = new BAlert("confirm", B_TRANSLATE("Proceed to add the dropped files to the archive?"), B_TRANSLATE("Continue"),
-                                                  B_TRANSLATE("No"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING,
-                                                  B_INFO_ALERT);
+                BAlert* confirmAlert = new BAlert("confirm", B_TRANSLATE("Proceed to add the dropped files to the archive?"),
+                                                  B_TRANSLATE("Continue"), B_TRANSLATE("Cancel"), NULL, B_WIDTH_AS_USUAL,
+                                                  B_EVEN_SPACING, B_INFO_ALERT);
                 confirmAlert->SetShortcut(1, B_ESCAPE);
                 confirmAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                 confirmAlert->AddToSubset(this);
@@ -852,10 +855,11 @@ void MainWindow::MessageReceived(BMessage* message)
                 // if more than "n" MB is being added, warn, get "n" from prefs or default to 100 MB
                 if (totalSize > _prefs_add.FindInt16Def(kPfWarnAmount, 100) * 1024 * 1024)
                 {
-                    BString confirmStr(B_TRANSLATE("Adding %size% of data could take some time.  Are you sure you wish to proceed?"));
+                    BString confirmStr(B_TRANSLATE("Adding %size% of data could take some time."));
+                    confirmStr << "\n" << B_TRANSLATE("Do you wish to continue?");
                     confirmStr.ReplaceAll("%size%", StringFromBytes(totalSize).String());
                     BAlert* confirmAlert = new BAlert("confirm", confirmStr, B_TRANSLATE("Continue"),
-                                                      B_TRANSLATE("No"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_WARNING_ALERT);
+                                                      B_TRANSLATE("Cancel"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_WARNING_ALERT);
                     confirmAlert->SetShortcut(1, B_ESCAPE);
                     confirmAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                     confirmAlert->AddToSubset(this);
