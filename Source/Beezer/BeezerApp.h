@@ -90,8 +90,7 @@ class BeezerApp : public BApplication
         void                InitPrefs();
         void                LoadArchivers();
         void                UnloadArchivers();
-        const char*         CompileTimeString(bool writeToResIfNeeded) const;
-        void                WriteToCTFile(BFile* ctFile, BString* compileTimeStr) const;
+        void                CompileTimeString(BString& output);
         void                ShowCreateFilePanel();
         int8                RegisterFileTypes() const;
 

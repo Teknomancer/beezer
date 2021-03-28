@@ -29,6 +29,7 @@
 
 #include <Bitmap.h>
 #include <Button.h>
+#include <DateTimeFormat.h>
 #include <Debug.h>
 #include <FilePanel.h>
 #include <FindDirectory.h>
@@ -46,7 +47,9 @@
 #include <fs_attr.h>
 #include <image.h>
 #include <os/add-ons/tracker/TrackerAddOn.h>
+#include <parsedate.h>
 
+#include <iomanip>
 #include <stdlib.h>
 
 #include "AboutWindow.h"
@@ -119,7 +122,6 @@ BeezerApp::BeezerApp()
     // Very important, critically ordered!
     InitPaths();
     InitPrefs();
-    CompileTimeString(true);
     _glob_bitmap_pool = new BitmapPool();
 
     // Load preferences, recents and all that stuff
@@ -210,7 +212,11 @@ void BeezerApp::ReadyToRun()
 void BeezerApp::AboutRequested()
 {
     if (m_aboutWnd == NULL)
-        m_aboutWnd = new AboutWindow(CompileTimeString(false));
+    {
+        BString compileStr;
+        CompileTimeString(compileStr);
+        m_aboutWnd = new AboutWindow(compileStr);
+    }
     else
         m_aboutWnd->Activate();
 }
@@ -737,114 +743,14 @@ void BeezerApp::InitPrefs()
 
 
 
-const char* BeezerApp::CompileTimeString(bool writeToResIfNeeded) const
+void BeezerApp::CompileTimeString(BString& output)
 {
-    bool expand_month = true;
-    bool strip_seconds = false;
-    bool twelve_hour = true;
+    BString buildStr(__DATE__);
+    buildStr << " " << __TIME__;
+    time_t t = parsedate(buildStr, -1);
 
-    const char* buildTime = __TIME__;
-    const char* buildDate = __DATE__;
-
-    char* month = new char[15];
-    int i = 0;
-    for (; i < 3; i++)
-        month[i] = buildDate[i];
-    month[i] = '\0';
-
-    if (expand_month)
-    {
-        if (strcmp(month, "Jan") == 0)           sprintf(month, "%s", "January ");
-        else if (strcmp(month, "Feb") == 0)    sprintf(month, "%s", "February ");
-        else if (strcmp(month, "Mar") == 0)    sprintf(month, "%s", "March ");
-        else if (strcmp(month, "Apr") == 0)    sprintf(month, "%s", "April ");
-        else if (strcmp(month, "May") == 0)    sprintf(month, "%s", "May ");
-        else if (strcmp(month, "Jun") == 0)    sprintf(month, "%s", "June ");
-        else if (strcmp(month, "Jul") == 0)    sprintf(month, "%s", "July ");
-        else if (strcmp(month, "Aug") == 0)    sprintf(month, "%s", "August ");
-        else if (strcmp(month, "Sep") == 0)    sprintf(month, "%s", "September ");
-        else if (strcmp(month, "Oct") == 0)    sprintf(month, "%s", "October ");
-        else if (strcmp(month, "Nov") == 0)    sprintf(month, "%s", "November ");
-        else if (strcmp(month, "Dec") == 0)    sprintf(month, "%s", "December ");
-    }
-
-    char* timestr = new char[12];
-    strcpy(timestr, buildTime);
-    if (strip_seconds)
-        timestr[5] = '\0';
-
-    if (twelve_hour)
-    {
-        for (int i = 0; i < 2; i++)
-            timestr[i] = buildTime[i];
-
-        if (atoi(timestr) > 12)
-        {
-            int twelvehr = atoi(timestr) - 12;
-            sprintf(timestr, "%d%s", twelvehr, timestr + 2);
-            strcat(timestr, " PM");
-        }
-        else
-            strcat(timestr, " AM");
-    }
-
-    BString compileTimeStr = buildDate + 3;
-    switch (*(buildDate + 5))
-    {
-        case '1': compileTimeStr.Insert("st", 3); break;
-        case '2': compileTimeStr.Insert("nd", 3); break;
-        case '3': compileTimeStr.Insert("rd", 3); break;
-        case '0': case '4': case '5':
-        case '6': case '7': case '8': case '9': compileTimeStr.Insert("th", 3); break;
-    }
-    compileTimeStr.Insert(month, 6);
-
-    // Aargh... we need to correct these :)
-    compileTimeStr.ReplaceFirst("12nd", "12th");
-    compileTimeStr.ReplaceFirst("13rd", "13th");
-    compileTimeStr.ReplaceFirst("11st", "11th");
-
-    while (compileTimeStr.ByteAt(0) == ' ')
-        compileTimeStr.Remove(0, 1);
-
-    compileTimeStr << ", " << timestr;
-
-    if (writeToResIfNeeded == true)
-    {
-        BString ctFileStr = m_settingsPathStr.String();
-        ctFileStr << "/" << K_COMPILED_TIME_FILE;
-        BFile ctFile(ctFileStr.String(), B_READ_WRITE);
-        if (ctFile.InitCheck() == B_OK)
-        {
-            off_t size;
-            ctFile.GetSize(&size);
-            char oldCompileTimeStr [size+1];
-            ssize_t amtRead = ctFile.Read(&oldCompileTimeStr, size);
-            oldCompileTimeStr[amtRead] = '0';
-            if (strncmp(oldCompileTimeStr, compileTimeStr.String(), amtRead) != 0)
-                WriteToCTFile(&ctFile, &compileTimeStr);
-        }
-        else
-        {
-            ctFile.SetTo(ctFileStr.String(), B_WRITE_ONLY | B_CREATE_FILE);
-            WriteToCTFile(&ctFile, &compileTimeStr);
-        }
-
-        ctFile.Unset();
-    }
-
-    return strdup(compileTimeStr.String());
-}
-
-
-
-void BeezerApp::WriteToCTFile(BFile* ctFile, BString* compileTimeStr) const
-{
-    // Only called by CompileTimeString() -- never call from anywhere else unless you know
-    // what you're doing
-    ctFile->SetSize(0);
-    ctFile->Seek(0, SEEK_SET);
-    ctFile->Write((void*)compileTimeStr->String(), compileTimeStr->Length());
+    if (BDateTimeFormat().Format(output, t, B_LONG_DATE_FORMAT, B_MEDIUM_TIME_FORMAT) != B_OK)
+        output = buildStr;
 }
 
 

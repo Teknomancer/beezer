@@ -43,7 +43,6 @@
 
 #define K_APP_COMPILE_STRING                 "__compiled_on__"
 
-#define K_COMPILED_TIME_FILE                 "_bzr_ctstamp.txt"
 #define K_RULE_FILE                          "_bzr_rules.txt"
 #define K_STUB_JOINER_FILE                   "stub_joiner"
 #define K_ARK_DIR_NAME                       "add-ons/"
