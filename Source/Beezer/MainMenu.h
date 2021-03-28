@@ -38,6 +38,7 @@ class BitmapMenuItem;
 // that it can find the menus to enable/disable them
 #define S_EXTRACT_TO "Extract to…"
 #define S_EXTRACT_SELECTED "Extract selected…"
+#define S_OPEN "Open…"
 
 
 class MainMenu : public BMenuBar

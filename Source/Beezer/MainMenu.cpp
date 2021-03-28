@@ -78,8 +78,8 @@ MainMenu::MainMenu(BRect frame)
         .AddItem(new BitmapMenuItem(appMenu, _glob_bitmap_pool->m_smallAppIcon))
         .AddMenu(B_TRANSLATE("File"))
             .GetMenu(m_fileMenu)
-            .AddItem(B_TRANSLATE("New"), M_FILE_NEW, 'N')
-            .AddMenu(B_TRANSLATE("Open"))
+            .AddItem(B_TRANSLATE("New…"), M_FILE_NEW, 'N')
+            .AddMenu(B_TRANSLATE(S_OPEN))
                 .GetMenu(m_recentMenu)
             .End()
             .AddItem(B_TRANSLATE("Close"), M_FILE_CLOSE, 'W')
@@ -167,7 +167,7 @@ MainMenu::MainMenu(BRect frame)
         .End();
 
 
-    SetRecentMenu(new BMenu(B_TRANSLATE("Open")));
+    SetRecentMenu(new BMenu(B_TRANSLATE(S_OPEN)));
 
     SetExtractPathsMenu(new BMenu(B_TRANSLATE(S_EXTRACT_TO)));
 
@@ -189,7 +189,7 @@ MainMenu::MainMenu(BRect frame)
     m_archiveContextMenu = new BPopUpMenu("_cntxt", false, false);
     BLayoutBuilder::Menu<>(m_archiveContextMenu)
         .AddItem(B_TRANSLATE("View"), M_ACTIONS_VIEW)
-        .AddItem(B_TRANSLATE("Open with"), M_ACTIONS_OPEN_WITH)
+        .AddItem(B_TRANSLATE("Open with…"), M_ACTIONS_OPEN_WITH)
         .AddItem(B_TRANSLATE("Extract"), M_ACTIONS_EXTRACT_SELECTED)
         .AddItem(B_TRANSLATE("Delete"), M_ACTIONS_DELETE)
         .AddSeparator()
@@ -225,7 +225,7 @@ void MainMenu::SetRecentMenu(BMenu* menu)
 
     m_recentMenu = menu;
     m_fileMenu->AddItem(m_recentMenu, 1);
-    BMenuItem* openItem = m_fileMenu->FindItem(B_TRANSLATE("Open"));
+    BMenuItem* openItem = m_fileMenu->FindItem(B_TRANSLATE(S_OPEN));
     openItem->SetMessage(new BMessage(M_FILE_OPEN));
     openItem->SetShortcut('O', 0);
 }
