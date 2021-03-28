@@ -49,9 +49,6 @@
 #include <os/add-ons/tracker/TrackerAddOn.h>
 #include <parsedate.h>
 
-#include <iomanip>
-#include <stdlib.h>
-
 #include "AboutWindow.h"
 #include "AddOnWindow.h"
 #include "Alert.h"
