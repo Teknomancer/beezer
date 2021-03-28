@@ -36,14 +36,12 @@ class BPopUpMenu;
 class BString;
 
 class Archiver;
-class Beezer;
 
 
 const char* const kLoaderFunc =        "load_archiver";
 
 extern BLocker _ark_locker;
 
-Beezer* _bzr();
 Archiver* ArchiverForMime(const char* mimeType);
 Archiver* ArchiverForType(const char* archiverType);
 BList ArchiversInstalled(BList* extensionStrings);

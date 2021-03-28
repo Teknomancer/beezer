@@ -40,7 +40,7 @@
 #include "AppConstants.h"
 #include "AppUtils.h"
 #include "ArchiverMgr.h"
-#include "Beezer.h"
+#include "BeezerApp.h"
 #include "BeezerStringView.h"
 #include "BevelView.h"
 #include "BitmapPool.h"

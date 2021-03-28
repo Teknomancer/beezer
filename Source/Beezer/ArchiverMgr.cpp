@@ -39,7 +39,7 @@
 
 #include "Archiver.h"
 #include "ArchiverMgr.h"
-#include "Beezer.h"
+#include "BeezerApp.h"
 #include "MsgConstants.h"
 
 
@@ -54,13 +54,6 @@
 
 
 BLocker _ark_locker("_ark_mgr_lock", true);
-
-
-
-Beezer* _bzr()
-{
-    return (Beezer*)be_app;
-}
 
 
 

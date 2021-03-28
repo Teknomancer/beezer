@@ -27,7 +27,7 @@ add_executable(Beezer
 		ArchiveRep.cpp
 		ArchiverMgr.cpp
 		ArkInfoWindow.cpp
-		Beezer.cpp
+		BeezerApp.cpp
 		BitmapPool.cpp
 		CommentWindow.cpp
 		LocalUtils.cpp

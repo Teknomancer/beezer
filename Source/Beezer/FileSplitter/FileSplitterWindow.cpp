@@ -49,7 +49,7 @@
 #include <malloc.h>
 #include <stdio.h>
 
-#include "Beezer.h"
+#include "BeezerApp.h"
 #include "BevelView.h"
 #include "BitmapPool.h"
 #include "FileSplitterWindow.h"
