@@ -185,8 +185,8 @@ void ProgressWindow::MessageReceived(BMessage* message)
         {
             message->what = B_UPDATE_STATUS_BAR;
 
-            char fileCountUpdateStr [60];
-            sprintf(fileCountUpdateStr, "%ld of %ld", m_progressCount++, m_fileCount);
+            BString fileCountUpdateStr;
+            fileCountUpdateStr.SetToFormat("%ld of %ld", m_progressCount++, m_fileCount);
             message->AddString("trailing_text", fileCountUpdateStr);
 
             const char* mainText;

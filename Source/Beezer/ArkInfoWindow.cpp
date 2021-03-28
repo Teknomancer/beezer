@@ -304,13 +304,8 @@ void ArkInfoWindow::FillDetails()
     if (ratio < 0)        // For pure .tar files we cannot compute ratio at all, if so don't report -ve
         buf = "n/a";
     else
-    {
-        char ratioBuf[10];
-        sprintf(ratioBuf, "%.1f", ratio);
+        buf.SetToFormat("%.1f%%", ratio);
 
-        buf = "";
-        buf << ratioBuf << "%";
-    }
 
     m_compressRatioBar->Update(ratio, NULL, buf.String());
 }

@@ -239,8 +239,6 @@ AboutWindow::AboutWindow(const char* compileTimeStr)
     formatStr.ReplaceAll("%author2email%", K_APP_AUTHOR_2_MAIL);
 
     formatStr.ReplaceAll("%hdr_builddate%", compileTimeStr);
-    free((char*)compileTimeStr);                   // Free-this as we are passed a ptr in HEAP as per caller Beezer
-
     formatStr.ReplaceAll("%hdr_programming%", B_TRANSLATE("[ Programming ]"));
     formatStr.ReplaceAll("%hdr_credits%", B_TRANSLATE("CREDITS"));
     formatStr.ReplaceAll("%hdr_clv%", B_TRANSLATE("[ ColumnListView ]"));
