@@ -27,8 +27,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _BEEZER_H
-#define _BEEZER_H
+#ifndef _BEEZERAPP_H
+#define _BEEZERAPP_H
 
 #include <Application.h>
 #include <FilePanel.h>
@@ -51,11 +51,12 @@ class StartupWindow;
 class WindowMgr;
 
 
-class Beezer : public BApplication
+
+class BeezerApp : public BApplication
 {
     public:
-        Beezer();
-        virtual ~Beezer();
+        BeezerApp();
+        virtual ~BeezerApp();
 
         // Inherited hooks
         virtual void        AboutRequested();
@@ -120,4 +121,8 @@ class Beezer : public BApplication
                             m_arkExtensions;
 };
 
-#endif /* _BEEZER_H */
+
+BeezerApp* _bzr();
+
+
+#endif /* _BEEZERAPP_H */

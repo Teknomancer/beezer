@@ -55,7 +55,7 @@
 #include "AppConstants.h"
 #include "AppUtils.h"
 #include "ArchiverMgr.h"
-#include "Beezer.h"
+#include "BeezerApp.h"
 #include "BitmapPool.h"
 #include "FileJoinerWindow.h"
 #include "FileSplitterWindow.h"
@@ -83,7 +83,14 @@
 #endif
 
 
-Beezer::Beezer()
+
+BeezerApp* _bzr()
+{
+    return dynamic_cast<BeezerApp*>(be_app);
+}
+
+
+BeezerApp::BeezerApp()
     : BApplication(K_APP_SIGNATURE),
       m_aboutWnd(NULL),
       m_startupWnd(NULL),
@@ -142,14 +149,11 @@ Beezer::Beezer()
 
     buf = B_TRANSLATE("File joiner"); buf << B_UTF8_ELLIPSIS;
     m_toolsMenu->AddItem(new BMenuItem(buf.String(), new BMessage(M_TOOLS_FILE_JOINER)));
-
-    // Start the message loop
-    Run();
 }
 
 
 
-Beezer::~Beezer()
+BeezerApp::~BeezerApp()
 {
     DeleteFilePanel(m_openFilePanel);
     DeleteFilePanel(m_createFilePanel);
@@ -182,7 +186,7 @@ Beezer::~Beezer()
 
 
 
-void Beezer::Quit()
+void BeezerApp::Quit()
 {
     if (CountWindows() > 0)
         for (int32 i = 0; i < CountWindows(); i++)
@@ -193,7 +197,7 @@ void Beezer::Quit()
 
 
 
-void Beezer::ReadyToRun()
+void BeezerApp::ReadyToRun()
 {
     if (m_nWindows == 0 && m_startupWnd == NULL && m_addOnWnd == NULL)
         m_startupWnd = new StartupWindow(m_recentMgr, true);
@@ -203,7 +207,7 @@ void Beezer::ReadyToRun()
 
 
 
-void Beezer::AboutRequested()
+void BeezerApp::AboutRequested()
 {
     if (m_aboutWnd == NULL)
         m_aboutWnd = new AboutWindow(CompileTimeString(false));
@@ -213,7 +217,7 @@ void Beezer::AboutRequested()
 
 
 
-void Beezer::MessageReceived(BMessage* message)
+void BeezerApp::MessageReceived(BMessage* message)
 {
     switch (message->what)
     {
@@ -503,7 +507,7 @@ void Beezer::MessageReceived(BMessage* message)
 
 
 
-MainWindow* Beezer::RegisterWindow(entry_ref* ref)
+MainWindow* BeezerApp::RegisterWindow(entry_ref* ref)
 {
     m_newWindowRect.OffsetBy(15, 15);
     if (m_newWindowRect.bottom >= BScreen().Frame().bottom || m_newWindowRect.right >= BScreen().Frame().right)
@@ -525,7 +529,7 @@ MainWindow* Beezer::RegisterWindow(entry_ref* ref)
 
 
 
-void Beezer::UnRegisterWindow(bool closeApp)
+void BeezerApp::UnRegisterWindow(bool closeApp)
 {
     // Decrement the REAL window count, if zero quit the entire app
     m_nWindows --;
@@ -553,7 +557,7 @@ void Beezer::UnRegisterWindow(bool closeApp)
 
 
 
-void Beezer::ArgvReceived(int32 argc, char** argv)
+void BeezerApp::ArgvReceived(int32 argc, char** argv)
 {
     for(int32 arg = 1; arg < argc; arg++)
     {
@@ -569,7 +573,7 @@ void Beezer::ArgvReceived(int32 argc, char** argv)
 
 
 
-void Beezer::RefsReceived(BMessage* message)
+void BeezerApp::RefsReceived(BMessage* message)
 {
     uint32 type;
     int32 count;
@@ -590,7 +594,7 @@ void Beezer::RefsReceived(BMessage* message)
 
 
 
-void Beezer::CreateFilePanel(BFilePanel*& panel, file_panel_mode mode)
+void BeezerApp::CreateFilePanel(BFilePanel*& panel, file_panel_mode mode)
 {
     if (!panel)
         panel = new BFilePanel(mode, &be_app_messenger, NULL, B_FILE_NODE, true);
@@ -598,7 +602,7 @@ void Beezer::CreateFilePanel(BFilePanel*& panel, file_panel_mode mode)
 
 
 
-void Beezer::DeleteFilePanel(BFilePanel*& panel)
+void BeezerApp::DeleteFilePanel(BFilePanel*& panel)
 {
     if (panel)
         delete panel;
@@ -608,7 +612,7 @@ void Beezer::DeleteFilePanel(BFilePanel*& panel)
 
 
 
-MainWindow* Beezer::WindowForRef(entry_ref* ref)
+MainWindow* BeezerApp::WindowForRef(entry_ref* ref)
 {
     // Find a window that has the corresponding ref already open. We will try as much as possible not
     // to have 2 copies of the same archive running in 2 different windows
@@ -628,7 +632,7 @@ MainWindow* Beezer::WindowForRef(entry_ref* ref)
 
 
 
-MainWindow* Beezer::CreateWindow(entry_ref* ref)
+MainWindow* BeezerApp::CreateWindow(entry_ref* ref)
 {
     // Increment real window count and unique window ID (we never decrement Window ID to keep it unique)
     m_nWindows++;
@@ -678,7 +682,7 @@ MainWindow* Beezer::CreateWindow(entry_ref* ref)
 
 
 
-inline void Beezer::InitPaths()
+inline void BeezerApp::InitPaths()
 {
     // Initialize paths (maybe we can get folder names from prefs someday)
     app_info appInfo;
@@ -712,7 +716,7 @@ inline void Beezer::InitPaths()
 
 
 
-void Beezer::InitPrefs()
+void BeezerApp::InitPrefs()
 {
     const char* dir = m_settingsPathStr.String();
     _prefs_colors.Init(dir, K_SETTINGS_COLORS);
@@ -733,7 +737,7 @@ void Beezer::InitPrefs()
 
 
 
-const char* Beezer::CompileTimeString(bool writeToResIfNeeded) const
+const char* BeezerApp::CompileTimeString(bool writeToResIfNeeded) const
 {
     bool expand_month = true;
     bool strip_seconds = false;
@@ -834,7 +838,7 @@ const char* Beezer::CompileTimeString(bool writeToResIfNeeded) const
 
 
 
-void Beezer::WriteToCTFile(BFile* ctFile, BString* compileTimeStr) const
+void BeezerApp::WriteToCTFile(BFile* ctFile, BString* compileTimeStr) const
 {
     // Only called by CompileTimeString() -- never call from anywhere else unless you know
     // what you're doing
@@ -845,7 +849,7 @@ void Beezer::WriteToCTFile(BFile* ctFile, BString* compileTimeStr) const
 
 
 
-void Beezer::ShowCreateFilePanel()
+void BeezerApp::ShowCreateFilePanel()
 {
     CreateFilePanel(m_createFilePanel, B_SAVE_PANEL);
     BWindow* panelWnd = m_createFilePanel->Window();
@@ -904,7 +908,7 @@ void Beezer::ShowCreateFilePanel()
 
 
 
-int8 Beezer::RegisterFileTypes() const
+int8 BeezerApp::RegisterFileTypes() const
 {
     const BString fileTypeFieldName = "BEOS:FILE_TYPES";
     app_info appInfo;
@@ -992,7 +996,7 @@ int8 Beezer::RegisterFileTypes() const
 
 
 
-BMenu* Beezer::BuildToolsMenu() const
+BMenu* BeezerApp::BuildToolsMenu() const
 {
     // We archive and instantiate menu because BMenu doesn't have copy constructor, and
     // neither do BMenuItems
@@ -1004,7 +1008,7 @@ BMenu* Beezer::BuildToolsMenu() const
 
 
 
-BPopUpMenu* Beezer::BuildToolsPopUpMenu() const
+BPopUpMenu* BeezerApp::BuildToolsPopUpMenu() const
 {
     // We archive and instantiate menu because BPopUpsMenu doesn't have copy constructor, and
     // neither do BMenuItems
@@ -1016,13 +1020,14 @@ BPopUpMenu* Beezer::BuildToolsPopUpMenu() const
 
 
 
-
-
 int main()
 {
     srand(0);
-    delete new Beezer();
-    return B_OK;
+
+    BeezerApp app;
+    app.Run();
+
+    return 0;
 }
 
 

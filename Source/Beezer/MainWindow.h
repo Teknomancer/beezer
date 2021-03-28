@@ -83,7 +83,7 @@ class MainWindow : public BWindow
 
     private:
         // Friends who can access private things
-        friend class        Beezer;
+        friend class        BeezerApp;
 
         // Thread functions
         static int32        _extractor(void* arg);

@@ -55,7 +55,7 @@
 #include "ArchiverMgr.h"
 #include "ArkInfoWindow.h"
 #include "BarberPole.h"
-#include "Beezer.h"
+#include "BeezerApp.h"
 #include "BeezerListView.h"
 #include "BevelView.h"
 #include "BitmapPool.h"

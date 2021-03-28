@@ -37,7 +37,7 @@
 
 #include "AppConstants.h"
 #include "ArchiverMgr.h"
-#include "Beezer.h"
+#include "BeezerApp.h"
 #include "BitmapMenuItem.h"
 #include "BitmapPool.h"
 #include "MainMenu.h"
