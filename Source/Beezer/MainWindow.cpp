@@ -3026,9 +3026,9 @@ void MainWindow::AddArchiverMenu()
 {
     if (m_createMode == false)
     {
-        m_archiver->SettingsMenu()->AddItem(new BMenuItem(B_TRANSLATE("Save as defaults"), new BMessage(M_SAVE_ARK_AS_DEFAULT)), 0);
-        m_archiver->SettingsMenu()->AddItem(new BMenuItem(B_TRANSLATE("Save to archive"), new BMessage(M_SAVE_ARK_TO_ARCHIVE)), 1);
-        m_archiver->SettingsMenu()->AddItem(new BSeparatorItem(), 2);
+        m_archiver->SettingsMenu()->AddSeparatorItem();
+        m_archiver->SettingsMenu()->AddItem(new BMenuItem(B_TRANSLATE("Save as defaults"), new BMessage(M_SAVE_ARK_AS_DEFAULT)));
+        m_archiver->SettingsMenu()->AddItem(new BMenuItem(B_TRANSLATE("Save to archive"), new BMessage(M_SAVE_ARK_TO_ARCHIVE)));
         m_mainMenu->AddItem(m_archiver->SettingsMenu(), m_mainMenu->IndexOf(m_mainMenu->m_toolsMenu) + 1);
     }
 }
