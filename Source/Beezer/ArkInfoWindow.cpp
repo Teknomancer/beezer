@@ -66,7 +66,7 @@
 
 ArkInfoWindow::ArkInfoWindow(BWindow* callerWindow, Archiver* archiver, BEntry* entry)
     : BWindow(BRect(30, 30, 440, 280), B_TRANSLATE("Archive Information"), B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
-              B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS),
+              B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS | B_CLOSE_ON_ESCAPE),
     m_archiver(archiver),
     m_entry(entry)
 {
