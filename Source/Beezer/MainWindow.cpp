@@ -410,7 +410,7 @@ void MainWindow::MessageReceived(BMessage* message)
                 if (msg->FindString(kErrorString, &errString) == B_OK)
                 {
                     m_logTextView->AddText(B_TRANSLATE("Error!"), false, false, false);
-                    BAlert* errAlert = new BAlert("Error", B_TRANSLATE("The archiver has encountered errors.\nDo you want to view a detailed report?"), B_TRANSLATE("View report"),
+                    BAlert* errAlert = new BAlert("Error", B_TRANSLATE("The archiver has encountered errors.  Do you want to view a detailed report?"), B_TRANSLATE("View report"),
                                                   B_TRANSLATE("Cancel"), NULL, B_WIDTH_AS_USUAL,    B_EVEN_SPACING,    B_STOP_ALERT);
                     errAlert->SetDefaultButton(errAlert->ButtonAt(1L));
                     errAlert->SetShortcut(1L, B_ESCAPE);
@@ -1029,7 +1029,7 @@ void MainWindow::MessageReceived(BMessage* message)
             if (result == BZR_CANCEL_ARCHIVER)
             {
                 BAlert* errAlert = new BAlert("Error",
-                                              B_TRANSLATE("A critical operation has been cancelled and the archive is in an unknown state.\n\nCannot continue, closing window…"),
+                                              B_TRANSLATE("A critical operation has been cancelled and the archive is in an unknown state.  Cannot continue, closing window…"),
                                               B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
                 errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                 errAlert->AddToSubset(this);
@@ -1466,10 +1466,11 @@ void MainWindow::MessageReceived(BMessage* message)
 
         case M_FILE_DELETE:
         {
-            BAlert* confirm = new BAlert("",
-                                         B_TRANSLATE("Delete this archive from disk?\nThis operation cannot be reverted."),
-                                         B_TRANSLATE("Cancel"), B_TRANSLATE("Delete"), B_TRANSLATE("Move to Trash"),
-                                         B_WIDTH_AS_USUAL, B_OFFSET_SPACING, B_WARNING_ALERT);
+            BString alertStr(B_TRANSLATE("Delete this archive from disk?"));
+            alertStr << "\n" << B_TRANSLATE("This operation cannot be reverted.");
+            BAlert* confirm = new BAlert("", alertStr, B_TRANSLATE("Cancel"), B_TRANSLATE("Delete"),
+                                         B_TRANSLATE("Move to Trash"), B_WIDTH_AS_USUAL, B_OFFSET_SPACING,
+                                         B_WARNING_ALERT);
             confirm->SetShortcut(0, B_ESCAPE);
             confirm->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
             confirm->AddToSubset(this);
@@ -2206,10 +2207,10 @@ void MainWindow::DeleteFilesFromArchive()
     // Now infobar will display incorrect (outdated) information
 
     // Ask confirmation!!
-    BAlert* warnAlert = new BAlert("Warning",
-                                   B_TRANSLATE("Delete the selected item(s)?\nThis operation cannot be reverted."),
-                                   B_TRANSLATE("Delete"), B_TRANSLATE("Cancel"), NULL, B_WIDTH_AS_USUAL,
-                                   B_EVEN_SPACING, B_WARNING_ALERT);
+    BString alertStr(B_TRANSLATE("Delete the selected item(s)?"));
+    alertStr << "\n" << B_TRANSLATE("This operation cannot be reverted.");
+    BAlert* warnAlert = new BAlert("Warning", alertStr, B_TRANSLATE("Delete"), B_TRANSLATE("Cancel"),
+                                   NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_WARNING_ALERT);
     warnAlert->SetDefaultButton(warnAlert->ButtonAt(1L));
     warnAlert->SetShortcut(1L, B_ESCAPE);
     warnAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
@@ -2269,9 +2270,10 @@ void MainWindow::DeleteDone(BMessage* message)
         case BZR_CANCEL_ARCHIVER:
         {
             // Cancelling a delete is painful
-            BAlert* errAlert = new BAlert("Error",
-                                          B_TRANSLATE("A critical operation has been cancelled and the archive is in an unknown state.\n\nCannot continue, closing window…"),
-                                          B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
+            BString alertStr(B_TRANSLATE("A critical operation has been cancelled and the archive is in an unknown state."));
+            alertStr << "\n" << B_TRANSLATE("Cannot continue, closing window…");
+            BAlert* errAlert = new BAlert("Error", alertStr, B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
+                                          B_EVEN_SPACING, B_STOP_ALERT);
             errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
             errAlert->AddToSubset(this);
             errAlert->Go();
@@ -2417,15 +2419,17 @@ void MainWindow::TestDone(BMessage* message)
                 BAlert* errAlert;
                 if (result == BZR_ERRSTREAM_FOUND)
                 {
-                    errAlert = new BAlert("Error",
-                                          B_TRANSLATE("The archiver has encountered errors while deleting.\nDo you want to view a detailed report?"),
-                                          B_TRANSLATE("View report"), B_TRANSLATE("Cancel"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
+                    BString alertStr(B_TRANSLATE("The archiver has encountered errors while deleting."));
+                    alertStr << "\n" << B_TRANSLATE("Do you want to view a detailed report?");
+                    errAlert = new BAlert("Error", alertStr, B_TRANSLATE("View report"), B_TRANSLATE("Cancel"),
+                                          NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
                 }
                 else
                 {
-                    errAlert = new BAlert("Result",
-                                          B_TRANSLATE("Test completed successfully without any errors.\nDo you want to view a detailed report?"),
-                                          B_TRANSLATE("View report"), B_TRANSLATE("OK"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
+                    BString alertStr(B_TRANSLATE("Test completed successfully without any errors."));
+                    alertStr << "\n" << B_TRANSLATE("Do you want to view a detailed report?");
+                    errAlert = new BAlert("Result", alertStr, B_TRANSLATE("View report"), B_TRANSLATE("OK"),
+                                          NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
                 }
 
                 errAlert->SetDefaultButton(errAlert->ButtonAt(1L));
@@ -2482,7 +2486,7 @@ void MainWindow::ExtractDone(BMessage* message)
             m_logTextView->AddText(B_TRANSLATE("Error (password protected file)"), true, true, true);
             if (message->HasBool(kFailOnNull) == false)
             {
-                BAlert* alert = new BAlert("Error", B_TRANSLATE("A password protection error has occurred.\nPlease set the correct password and retry"),
+                BAlert* alert = new BAlert("Error", B_TRANSLATE("A password protection error has occurred.  Please set the correct password and retry"),
                                            B_TRANSLATE("Cancel"), B_TRANSLATE("Set password…"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
                 if (alert->Go() == 1L)
                     PostMessage(M_FILE_PASSWORD);
@@ -4266,7 +4270,7 @@ void MainWindow::ShowArkPathError() const
 {
     m_logTextView->AddText(B_TRANSLATE("Couldn't initialize archive path."), true, true, true);
     BAlert* errAlert = new BAlert("Error",
-                                  B_TRANSLATE("Couldn't initialize archive path.\nThe location of the archive has been changed.\n\nEither the archive was deleted or moved to another location."),
+                                  B_TRANSLATE("Couldn't initialize archive path.  The location of the archive has been changed.  Either the archive was deleted or moved to another location."),
                                   B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
     errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
     errAlert->AddToSubset((BWindow*)this);
