@@ -613,7 +613,7 @@ void MainWindow::MessageReceived(BMessage* message)
                 BString countBuf;
                 countBuf.SetToFormat("%ld", fileCount);
                 confirmStr.ReplaceAll("%numfiles%", countBuf);
-                BAlert* confirmAlert = new BAlert("Confirm", confirmStr, B_TRANSLATE("Continue"), B_TRANSLATE("Cancel"),
+                BAlert* confirmAlert = new BAlert("Confirm", confirmStr, B_TRANSLATE("Open files"), B_TRANSLATE("Cancel"),
                                                   NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_WARNING_ALERT);
                 confirmAlert->SetShortcut(1, B_ESCAPE);
                 confirmAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
@@ -839,7 +839,7 @@ void MainWindow::MessageReceived(BMessage* message)
                     _prefs_add.FindBoolDef(kPfConfirmDropAdd, true))
             {
                 BAlert* confirmAlert = new BAlert("confirm", B_TRANSLATE("Proceed to add the dropped files to the archive?"),
-                                                  B_TRANSLATE("Continue"), B_TRANSLATE("Cancel"), NULL, B_WIDTH_AS_USUAL,
+                                                  B_TRANSLATE("Add files"), B_TRANSLATE("Cancel"), NULL, B_WIDTH_AS_USUAL,
                                                   B_EVEN_SPACING, B_INFO_ALERT);
                 confirmAlert->SetShortcut(1, B_ESCAPE);
                 confirmAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
@@ -858,12 +858,11 @@ void MainWindow::MessageReceived(BMessage* message)
                     BString confirmStr(B_TRANSLATE("Adding %size% of data could take some time."));
                     confirmStr << "\n" << B_TRANSLATE("Do you wish to continue?");
                     confirmStr.ReplaceAll("%size%", StringFromBytes(totalSize).String());
-                    BAlert* confirmAlert = new BAlert("confirm", confirmStr, B_TRANSLATE("Continue"),
+                    BAlert* confirmAlert = new BAlert("confirm", confirmStr, B_TRANSLATE("Add files"),
                                                       B_TRANSLATE("Cancel"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_WARNING_ALERT);
                     confirmAlert->SetShortcut(1, B_ESCAPE);
                     confirmAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                     confirmAlert->AddToSubset(this);
-                    delete[] confirmStr;
 
                     int32 ans = confirmAlert->Go();
                     if (ans == 1)
