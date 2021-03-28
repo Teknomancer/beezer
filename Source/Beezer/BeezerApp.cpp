@@ -961,8 +961,8 @@ int8 BeezerApp::RegisterFileTypes() const
                 int32 index = 2L;
                 if (skipFurtherAlerts == false)
                 {
-                    BAlert* confAlert = new BAlert("Mimetypes", buf.String(), B_TRANSLATE("No"), B_TRANSLATE("Yes, make it preferred"),
-                                                   B_TRANSLATE("Register all types!!"), B_WIDTH_AS_USUAL, B_OFFSET_SPACING,
+                    BAlert* confAlert = new BAlert("Mimetypes", buf.String(), B_TRANSLATE("Cancel"), B_TRANSLATE("Make it preferred"),
+                                                   B_TRANSLATE("Register all types!"), B_WIDTH_AS_USUAL, B_OFFSET_SPACING,
                                                    B_WARNING_ALERT);
                     confAlert->SetDefaultButton(confAlert->ButtonAt(1L));
                     index = confAlert->Go();
