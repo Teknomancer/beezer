@@ -70,10 +70,10 @@ void PrefsViewExtract::Render()
                                "PrefsViewExtract:closeChk", B_TRANSLATE("Close window after extracting"), NULL);
     m_closeChk->ResizeToPreferred();
 
-    BString s = B_TRANSLATE("Quit %apptitle% after extracting");
-    s.ReplaceAll("%apptitle%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
+    BString bufStr(B_TRANSLATE("Quit %appname% after extracting"));
+    bufStr.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
     m_quitChk = new BCheckBox(BRect(m_margin, m_closeChk->Frame().bottom + m_vGap, 0, 0),
-                              "PrefsViewExtract:closeChk", s.String(), NULL);
+                              "PrefsViewExtract:closeChk", bufStr, NULL);
     m_quitChk->ResizeToPreferred();
 
     m_dragChk = new BCheckBox(BRect(m_margin, m_quitChk->Frame().bottom + m_vGap, 0, 0),

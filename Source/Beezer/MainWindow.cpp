@@ -609,7 +609,7 @@ void MainWindow::MessageReceived(BMessage* message)
             if (fileCount > 10)
             {
                 BString confirmStr(B_TRANSLATE("You are opening %numfiles% files simultenously."));
-                confirmStr << "\n" << B_TRANSLATE("Do you wish to continue?");
+                confirmStr << "\n" << B_TRANSLATE("Do you want to continue?");
                 BString countBuf;
                 countBuf.SetToFormat("%ld", fileCount);
                 confirmStr.ReplaceAll("%numfiles%", countBuf);
@@ -838,7 +838,7 @@ void MainWindow::MessageReceived(BMessage* message)
             if ((message->HasBool(kRoot) || message->HasPointer(kListItem)) &&
                     _prefs_add.FindBoolDef(kPfConfirmDropAdd, true))
             {
-                BAlert* confirmAlert = new BAlert("confirm", B_TRANSLATE("Proceed to add the dropped files to the archive?"),
+                BAlert* confirmAlert = new BAlert("confirm", B_TRANSLATE("Continue adding the dropped files to the archive?"),
                                                   B_TRANSLATE("Add files"), B_TRANSLATE("Cancel"), NULL, B_WIDTH_AS_USUAL,
                                                   B_EVEN_SPACING, B_INFO_ALERT);
                 confirmAlert->SetShortcut(1, B_ESCAPE);
@@ -856,7 +856,7 @@ void MainWindow::MessageReceived(BMessage* message)
                 if (totalSize > _prefs_add.FindInt16Def(kPfWarnAmount, 100) * 1024 * 1024)
                 {
                     BString confirmStr(B_TRANSLATE("Adding %size% of data could take some time."));
-                    confirmStr << "\n" << B_TRANSLATE("Do you wish to continue?");
+                    confirmStr << "\n" << B_TRANSLATE("Do you want to continue?");
                     confirmStr.ReplaceAll("%size%", StringFromBytes(totalSize).String());
                     BAlert* confirmAlert = new BAlert("confirm", confirmStr, B_TRANSLATE("Add files"),
                                                       B_TRANSLATE("Cancel"), NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_WARNING_ALERT);
@@ -1031,9 +1031,10 @@ void MainWindow::MessageReceived(BMessage* message)
 
             if (result == BZR_CANCEL_ARCHIVER)
             {
-                BAlert* errAlert = new BAlert("Error",
-                                              B_TRANSLATE("A critical operation has been cancelled and the archive is in an unknown state.  Cannot continue, closing window…"),
-                                              B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
+                BString alertStr(B_TRANSLATE("Cannot continue."));
+                alertStr << "\n" << B_TRANSLATE("A critical operation has been cancelled and the archive is in an unknown state.");
+                BAlert* errAlert = new BAlert("Error", alertStr, B_TRANSLATE("Close Window"), NULL, NULL,
+                                              B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
                 errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                 errAlert->AddToSubset(this);
                 errAlert->Go();
@@ -2273,10 +2274,10 @@ void MainWindow::DeleteDone(BMessage* message)
         case BZR_CANCEL_ARCHIVER:
         {
             // Cancelling a delete is painful
-            BString alertStr(B_TRANSLATE("A critical operation has been cancelled and the archive is in an unknown state."));
-            alertStr << "\n" << B_TRANSLATE("Cannot continue, closing window…");
-            BAlert* errAlert = new BAlert("Error", alertStr, B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
-                                          B_EVEN_SPACING, B_STOP_ALERT);
+            BString alertStr(B_TRANSLATE("Cannot continue."));
+            alertStr << "\n" << B_TRANSLATE("A critical operation has been cancelled and the archive is in an unknown state.");
+            BAlert* errAlert = new BAlert("Error", alertStr, B_TRANSLATE("Close Window"), NULL, NULL,
+                                          B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
             errAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
             errAlert->AddToSubset(this);
             errAlert->Go();
@@ -2959,8 +2960,10 @@ void MainWindow::SetupArchiver(entry_ref* ref, char* mimeString)
             case BZR_BINARY_MISSING:           // Add-on couldn't trace its binary in the Binaries folder
             {
                 m_logTextView->AddText(B_TRANSLATE("Failed!"), false, false, false);
-                (new BAlert("Error", B_TRANSLATE("Archiver binary missing. Cannot continue."), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
-                            B_EVEN_SPACING, B_STOP_ALERT))->Go();
+                BString alertStr(B_TRANSLATE("Cannot continue."));
+                alertStr << "\n" << B_TRANSLATE("Archiver binary is missing.");
+                (new BAlert("Error", alertStr, B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING,
+                            B_STOP_ALERT))->Go();
 
                 PostMessage(M_FILE_CLOSE);
                 return;
@@ -2970,7 +2973,7 @@ void MainWindow::SetupArchiver(entry_ref* ref, char* mimeString)
             {
                 m_logTextView->AddText(B_TRANSLATE("Partially successful."), false, false, false);
                 (new BAlert("Error",
-                            B_TRANSLATE("Optional binary missing. Some features may not be available"),
+                            B_TRANSLATE("Optional binary is missing. Some features may not be available"),
                             B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
                             B_EVEN_SPACING, B_INFO_ALERT))->Go();
                 break;
@@ -3294,12 +3297,12 @@ bool MainWindow::ConfirmAddOperation(const char* addingUnderPath, BMessage* refs
                 bool showError = false;
                 if (existingEntrySuper && !addingEntrySuper)        // Trying to add file in place of folder
                 {
-                    confirmBufStr = B_TRANSLATE("Cannot add \"%s\" as a folder with the same name already exists.");
+                    confirmBufStr = B_TRANSLATE("Cannot add \"%name%\" as a folder with the same name already exists.");
                     showError = true;
                 }
                 else if (!existingEntrySuper && addingEntrySuper)    // Trying to add folder in place of file
                 {
-                    confirmBufStr = B_TRANSLATE("Cannot add \"%s\" as a file with the same name already exists.");
+                    confirmBufStr = B_TRANSLATE("Cannot add \"%name%\" as a file with the same name already exists.");
                     showError = true;
                 }
                 else if (existingEntrySuper && addingEntrySuper)    // Replacement of folder
@@ -3318,11 +3321,12 @@ bool MainWindow::ConfirmAddOperation(const char* addingUnderPath, BMessage* refs
                     }
 
                     // The warnType left is (1) i.e. to ask the user
-                    BString confirmBufStr = B_TRANSLATE("A folder named \"%s\" already exists. Replace it with the one being added?");
-                    confirmBufStr.ReplaceAll("%s", hashEntry->m_clvItem->GetColumnContentText(2));
+                    BString confirmBufStr = B_TRANSLATE("A folder named \"%name%\" already exists.");
+                    confirmBufStr << "\n" << B_TRANSLATE("Do you want to replace it?");
+                    confirmBufStr.ReplaceAll("%name%", hashEntry->m_clvItem->GetColumnContentText(2));
 
                     BAlert* confAlert = new BAlert("Confirm", confirmBufStr.String(), B_TRANSLATE("Cancel"),
-                                                   B_TRANSLATE("Skip"), B_TRANSLATE("Replace"), B_WIDTH_AS_USUAL,
+                                                   B_TRANSLATE("Skip"), B_TRANSLATE("Replace folder"), B_WIDTH_AS_USUAL,
                                                    B_EVEN_SPACING, B_INFO_ALERT);
                     confAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                     confAlert->AddToSubset(this);
@@ -3377,24 +3381,26 @@ bool MainWindow::ConfirmAddOperation(const char* addingUnderPath, BMessage* refs
                     strftime(dateTimeBuf, 256, "%b %d %Y, %I:%M:%S %p", &mod_tm);
                     strftime(existingTimeBuf, 256, "%b %d %Y, %I:%M:%S %p", &existingTime);
 
+                    confirmBufStr = B_TRANSLATE("File already exists…");
+
+                    // append ... \n\tname\n\t\t(size, date)
+                    confirmBufStr << "\n\t" << hashEntry->m_clvItem->GetColumnContentText(2) << "\n\t\t("
+                        << hashEntry->m_clvItem->GetColumnContentText(3) << ", " << existingTimeBuf << ")\n\n";
+
                     if (m_archiver->CanReplaceFiles() == true)
-                        confirmBufStr = B_TRANSLATE("You are trying to replace the file:\n\t%s1\n\t(%z1, %d1)\nwith:\n\t%s2\n\t(%z2, %d2)\n\nWould you like to replace it with the one you are adding?");
+                        confirmBufStr << B_TRANSLATE("Do you want to replace it with the file you are adding?");
                     else
-                        confirmBufStr = B_TRANSLATE("You are trying to add the file:\n\t%s1\n\t(%z1, %d1)\nwhile this:\n\t%s2\n\t(%z2, %d2)\nalready exists.\n\nAre you sure you wish to append another file with the same name?");
+                        confirmBufStr << B_TRANSLATE("Do you want to append another file with the same name?");
+
+                    // append ... \n\tname\n\t\t(size, date)
+                    confirmBufStr << "\n\t" << nameBuf << "\n\t\t(" << StringFromBytes(size).String() << ", " << dateTimeBuf << ")";
 
                     confirmBufStr.ReplaceAll("\t", "    ");
-                    confirmBufStr.ReplaceAll("%s1", hashEntry->m_clvItem->GetColumnContentText(2));
-                    confirmBufStr.ReplaceAll("%z1", hashEntry->m_clvItem->GetColumnContentText(3));
-                    confirmBufStr.ReplaceAll("%d1", existingTimeBuf);
-                    confirmBufStr.ReplaceAll("%s2", nameBuf);
-                    confirmBufStr.ReplaceAll("%z2", StringFromBytes(size).String());
-                    confirmBufStr.ReplaceAll("%d2", dateTimeBuf);
 
                     BAlert* confAlert = new BAlert("Confirm", confirmBufStr.String(), B_TRANSLATE("Cancel"),
                                                    B_TRANSLATE("Skip"),
-                                                   m_archiver->CanReplaceFiles() ? B_TRANSLATE("Replace") : B_TRANSLATE("Append"),
-                                                   B_WIDTH_AS_USUAL,
-                                                   B_EVEN_SPACING, B_INFO_ALERT);
+                                                   m_archiver->CanReplaceFiles() ? B_TRANSLATE("Replace file") : B_TRANSLATE("Append file"),
+                                                   B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
                     confAlert->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                     confAlert->AddToSubset(this);
                     int32 buttonIndex = confAlert->Go();
@@ -3410,7 +3416,7 @@ bool MainWindow::ConfirmAddOperation(const char* addingUnderPath, BMessage* refs
 
                 if (showError == true)
                 {
-                    confirmBufStr.ReplaceAll("%s", nameBuf);
+                    confirmBufStr.ReplaceAll("%name%", nameBuf);
 
                     BAlert* errAlert = new BAlert("Error", confirmBufStr.String(), B_TRANSLATE("OK"), NULL, NULL,
                                                   B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
