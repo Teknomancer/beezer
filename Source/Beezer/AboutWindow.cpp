@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -182,7 +182,7 @@ void MarqueeView::ScrollBy(float dh, float dv)
 
 
 
-AboutWindow::AboutWindow(const char* compileTimeStr)
+AboutWindow::AboutWindow(const char* versionStr, const char* compileTimeStr)
     : BWindow(BRect(0, 0, 319, 374), B_TRANSLATE("About"), B_MODAL_WINDOW,
               B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE | B_NOT_RESIZABLE)
 {
@@ -232,7 +232,7 @@ AboutWindow::AboutWindow(const char* compileTimeStr)
     formatStr.ReplaceAll("%hdr_debug%", B_TRANSLATE("Public release"));
 #endif
 
-    formatStr.ReplaceAll("%appversion%", K_APP_VERSION);
+    formatStr.ReplaceAll("%appversion%", versionStr);
     formatStr.ReplaceAll("%appauthor%", K_APP_AUTHOR);
     formatStr.ReplaceAll("%appauthor2%", K_APP_AUTHOR_2);
     formatStr.ReplaceAll("%authoremail%", K_APP_AUTHOR_MAIL);
