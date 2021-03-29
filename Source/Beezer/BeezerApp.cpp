@@ -758,30 +758,30 @@ void BeezerApp::VersionString(BString& output)
 {
     entry_ref appRef;
     status_t status = be_roster->FindApp(K_APP_SIGNATURE, &appRef);
-    if (status == B_OK)
+    if (status != B_OK)
     {
-        BFile file(&appRef, B_READ_ONLY);
-        BAppFileInfo appInfo(&file);
-        version_info verInfo;
-        if (appInfo.GetVersionInfo(&verInfo, B_APP_VERSION_KIND) != B_OK)
-        {
-            output = "<ERROR>";
-            return;
-        }
-
-        output = "";
-        output << verInfo.major << "." << verInfo.middle << "." << verInfo.minor << " ";
-#ifdef __386__
-        output << "(x86)";
-#elif __x86_64__
-        output << "(x86_64)";
-#else
-        output << "(unknown)";
-#endif
-
-    }
-    else
         output = "<ROSTER ERROR>";
+        return;
+    }
+
+    BFile file(&appRef, B_READ_ONLY);
+    BAppFileInfo appInfo(&file);
+    version_info verInfo;
+    if (appInfo.GetVersionInfo(&verInfo, B_APP_VERSION_KIND) != B_OK)
+    {
+        output = "<ERROR>";
+        return;
+    }
+
+    output = "";
+    output << verInfo.major << "." << verInfo.middle << "." << verInfo.minor << " ";
+#ifdef __386__
+    output << "(x86)";
+#elif __x86_64__
+    output << "(x86_64)";
+#else
+    output << "(unknown)";
+#endif
 }
 
 
