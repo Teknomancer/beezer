@@ -86,6 +86,18 @@ if(HAIKU_ENABLE_I18N STREQUAL "ON")
 	target_link_libraries(Beezer "localestub")
 endif()
 
+
+option(BEEZER_ENABLE_GIT_TAGGING "Set a BFS attribute on the executable with the git revision" ON)
+if(BEEZER_ENABLE_GIT_TAGGING STREQUAL "ON")
+add_custom_command(
+	TARGET Beezer
+	POST_BUILD
+	COMMAND sh -c "addattr -t string 'BEEZER:GIT_REVISION' `git describe --tags --dirty --always` '$<TARGET_FILE:Beezer>'"
+	VERBATIM
+	COMMENT "Setting git revision in Beezer attributes")
+endif()
+
+
 add_custom_target("symlink-docs-to-build-dir"
 	ALL
 	COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_CURRENT_SOURCE_DIR}/docs" "${BEEZER_BUILD_DIR}/docs"
