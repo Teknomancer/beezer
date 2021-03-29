@@ -3,7 +3,7 @@
 #
 
 #allow use of LOCATION property
-#cmake_policy(SET CMP0026 OLD)
+cmake_policy(SET CMP0026 OLD)
 
 
 #
@@ -110,12 +110,14 @@ function(haiku_compile_resource_def RDEF_SOURCE)
 	set(rsrcfile "${basename}.rsrc")
 	set(rsrcpath "${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${rsrcfile}.dir/${rsrcfile}")
 
-#	get_target_property(TARGET_PATH ${TARGET} LOCATION)
+	get_target_property(TARGET_PATH ${TARGET} LOCATION)
+	#FIXME we need the path to the target without generating a dependency on it
+	#set(TARGET_PATH $<TARGET_FILE:${TARGET}>)
 
 	add_custom_command(
 		OUTPUT ${rsrcpath}
 		COMMAND "rc" "-o" "${rsrcfile}" "${rdefpath}"
-		COMMAND "${CMAKE_COMMAND}" "-E" "remove" "-f" "${CMAKE_CURRENT_BINARY_DIR}/${TARGET}"
+		COMMAND "${CMAKE_COMMAND}" "-E" "remove" "-f" "${TARGET_PATH}"
 		DEPENDS ${rdefpath}
 		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${rsrcfile}.dir
 		COMMENT "Compiling resource ${rsrcfile}")
