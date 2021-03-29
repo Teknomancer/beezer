@@ -87,14 +87,15 @@ if(HAIKU_ENABLE_I18N STREQUAL "ON")
 endif()
 
 
-option(BEEZER_ENABLE_GIT_TAGGING "Set a BFS attribute on the executable with the git revision" ON)
-if(BEEZER_ENABLE_GIT_TAGGING STREQUAL "ON")
-add_custom_command(
-	TARGET Beezer
-	POST_BUILD
-	COMMAND sh -c "addattr -t string 'BEEZER:GIT_REVISION' `git describe --tags --dirty --always` '$<TARGET_FILE:Beezer>'"
-	VERBATIM
-	COMMENT "Setting git revision in Beezer attributes")
+option(BEEZER_ENABLE_BFS_TAGGING "Set BFS attributes on the executable with the git revision and Haiku version" ON)
+if(BEEZER_ENABLE_BFS_TAGGING STREQUAL "ON")
+	add_custom_command(
+		TARGET Beezer
+		POST_BUILD
+		COMMAND sh -c "addattr -t string 'BEEZER:GIT_REVISION' \"`git describe --tags --dirty --always`\" '$<TARGET_FILE:Beezer>'"
+		COMMAND sh -c "addattr -t string 'BEEZER:HAIKU_VERSION' \"`uname -v -p`\" '$<TARGET_FILE:Beezer>'"
+		VERBATIM
+		COMMENT "Adding extra BFS attributes")
 endif()
 
 
