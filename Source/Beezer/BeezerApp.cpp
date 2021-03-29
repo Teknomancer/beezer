@@ -285,14 +285,15 @@ void BeezerApp::MessageReceived(BMessage* message)
         {
             int8 regCount = RegisterFileTypes();
             BString buf;
-            if (regCount > 0) {
+            if (regCount > 0)
+            {
 	            buf = B_TRANSLATE("Completed registering of file types. Associated %count% file types with %appname%.");
 	            BString countBuf;
 	            countBuf.SetToFormat("%ld", regCount);
 	            buf.ReplaceAll("%count%", countBuf);
-            } else if (regCount == 0) {
-                buf = B_TRANSLATE("%appname% has already been associated with all supported archive types.");
             }
+            else if (regCount == 0)
+                buf = B_TRANSLATE("%appname% has already been associated with all supported archive types.");
 
             buf.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
 
@@ -498,10 +499,9 @@ void BeezerApp::MessageReceived(BMessage* message)
             char* pURL((char*) launchURL.String());
 
             status_t rc = be_roster->Launch("application/x-vnd.Be.URL.https", 1, &pURL);
-            if (rc != B_OK && rc != B_ALREADY_RUNNING) {
+            if (rc != B_OK && rc != B_ALREADY_RUNNING)
                 (new BAlert("Error", B_TRANSLATE("Failed to launch URL"), B_TRANSLATE("OK"),
                             NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT))->Go();
-            }
             break;
         }
 
@@ -537,7 +537,7 @@ MainWindow* BeezerApp::RegisterWindow(entry_ref* ref)
 void BeezerApp::UnRegisterWindow(bool closeApp)
 {
     // Decrement the REAL window count, if zero quit the entire app
-    m_nWindows --;
+    m_nWindows--;
 
     // If File->Quit or Close All from Deskbar, we will quit app, otherwise when File->Close is used
     // and if its the last window, bring back the startup window (if prefs allows it or else quit)
@@ -564,7 +564,7 @@ void BeezerApp::UnRegisterWindow(bool closeApp)
 
 void BeezerApp::ArgvReceived(int32 argc, char** argv)
 {
-    for(int32 arg = 1; arg < argc; arg++)
+    for (int32 arg = 1; arg < argc; arg++)
     {
         BEntry entry(argv[arg], true);         // Traverse link
         if (entry.InitCheck() == B_OK && entry.Exists())
@@ -757,8 +757,7 @@ void BeezerApp::CompileTimeString(BString& output)
 void BeezerApp::VersionString(BString& output)
 {
     entry_ref appRef;
-    status_t status = be_roster->FindApp(K_APP_SIGNATURE, &appRef);
-    if (status != B_OK)
+    if (be_roster->FindApp(K_APP_SIGNATURE, &appRef) != B_OK)
     {
         output = "<ROSTER ERROR>";
         return;
