@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -57,7 +57,7 @@ class MarqueeView : public BTextView
 class AboutWindow : public BWindow
 {
     public:
-        AboutWindow(const char* compileTimeStr);
+        AboutWindow(const char* versionStr, const char* compileTimeStr);
 
         // Inherited hooks
         virtual void        DispatchMessage(BMessage* message, BHandler* handler);

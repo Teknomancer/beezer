@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -91,6 +91,7 @@ class BeezerApp : public BApplication
         void                LoadArchivers();
         void                UnloadArchivers();
         void                CompileTimeString(BString& output);
+        void                VersionString(BString& output);
         void                ShowCreateFilePanel();
         int8                RegisterFileTypes() const;
 

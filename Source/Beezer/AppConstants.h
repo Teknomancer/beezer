@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -70,14 +70,6 @@
 #define K_ARK_ATTRIBUTE                      "bzr:ark"
 #define K_FILENAME_ATTRIBUTE                 "bzr:file"
 #define K_SEPARATOR_ATTRIBUTE                "bzr:sep"
-
-#ifdef __i386__
-#define K_APP_VERSION                "0.99 (x86)"
-#elif __x86_64__
-#define K_APP_VERSION                "0.99 (x86_64)"
-#else
-#define K_APP_VERSION                "0.99 (ppc)"
-#endif
 
 #define K_BARBERPOLE_PULSERATE                100000
 #define K_PROGRESS_DELAY                      70000
