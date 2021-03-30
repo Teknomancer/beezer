@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2014, Chris Roberts
+ * Copyright (c) 2014-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -49,7 +49,6 @@
 #include "HashTable.h"
 #include "ListEntry.h"
 #include "ArchiveEntry.h"
-#include "ListSorter.h"
 #include "MsgConstants.h"
 #include "AppConstants.h"
 
