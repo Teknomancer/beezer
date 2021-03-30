@@ -209,8 +209,15 @@ ArkInfoWindow::ArkInfoWindow(BWindow* callerWindow, Archiver* archiver, BEntry* 
     // Now that we have done w/ placing the cntrls, we will getinfo about the archive & write it to the cntrls
     FillDetails();
 
-    // Center window on-screen
-    CenterOnScreen();
+    if (callerWindow != NULL)
+    {
+        UpdateSizeLimits();
+        BRect callerRect(callerWindow->Frame());
+        BPoint windowPoint(callerRect.left + callerRect.Width()/2 - Bounds().Width()/2, callerRect.top + callerRect.Height()/2 - Bounds().Height()/2);
+        MoveTo(windowPoint);
+    }
+    else
+        CenterOnScreen();
 
     // Restore position from prefs (not size)
     BPoint pt;

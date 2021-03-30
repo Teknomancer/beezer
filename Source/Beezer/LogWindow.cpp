@@ -57,10 +57,17 @@ LogWindow::LogWindow(BWindow* callerWindow, const char* title, const char* logTe
 
     AddChild(scrollView);
 
-    AddShortcut('w', B_COMMAND_KEY, new BMessage(B_QUIT_REQUESTED));
+    AddShortcut('W', B_COMMAND_KEY, new BMessage(B_QUIT_REQUESTED));
 
-    // Center window on-screen
-    CenterOnScreen();
+    if (callerWindow != NULL)
+    {
+        UpdateSizeLimits();
+        BRect callerRect(callerWindow->Frame());
+        BPoint windowPoint(callerRect.left + callerRect.Width()/2 - Bounds().Width()/2, callerRect.top + callerRect.Height()/2 - Bounds().Height()/2);
+        MoveTo(windowPoint);
+    }
+    else
+        CenterOnScreen();
 
     // Load from prefs if it allows
     BRect frame;

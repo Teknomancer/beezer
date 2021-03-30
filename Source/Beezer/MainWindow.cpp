@@ -1194,6 +1194,7 @@ void MainWindow::MessageReceived(BMessage* message)
                 m_searchWnd->Show();
             }
             else
+                //TODO recenter on active window?
                 m_searchWnd->Activate();
 
             break;

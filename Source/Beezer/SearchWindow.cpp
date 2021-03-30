@@ -67,8 +67,8 @@
 
 SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
                            const BEntry* entry, const BList* columnList, const Archiver* ark)
-    : BWindow(BRect(30, 30, 440, 312), B_TRANSLATE("Search archive"), B_FLOATING_WINDOW_LOOK, B_MODAL_SUBSET_WINDOW_FEEL,
-              B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS),
+    : BWindow(BRect(0, 0, 300, 300), B_TRANSLATE("Search archive"), B_FLOATING_WINDOW_LOOK, B_MODAL_SUBSET_WINDOW_FEEL,
+              B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS | B_CLOSE_ON_ESCAPE),
     m_callerWindow(callerWindow),
     m_loadMessage(loadMessage)
 {
@@ -87,7 +87,7 @@ SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
     BRect windowrect;
     windowrect.left = -1;
 
-    if (m_loadMessage)
+    if (m_loadMessage != NULL)
     {
         m_loadMessage->FindString(kExpr, &searchText);
         m_loadMessage->FindInt32(kExprType, &exprType);
@@ -258,8 +258,18 @@ SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
 
     m_searchTextControl->MakeFocus(true);
 
-    // Center window on-screen
-    CenterOnScreen();
+    if (callerWindow != NULL && windowrect.left < 0)
+    {
+        UpdateSizeLimits();
+        BRect callerRect(callerWindow->Frame());
+        BPoint windowPoint(callerRect.left + callerRect.Width()/2 - Bounds().Width()/2, callerRect.top + callerRect.Height()/2 - Bounds().Height()/2);
+        // looks a bit better if we offset the window and don't cover the contents completely
+        windowPoint.x += 100;
+        windowPoint.y += 100;
+        MoveTo(windowPoint);
+    }
+    else
+        CenterOnScreen();
 
     // Move according to the previous position (if any)
     if (windowrect.left > 0)
@@ -270,6 +280,8 @@ SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
 
     // Assign tooltips
     SetToolTips();
+
+    AddShortcut('W', B_COMMAND_KEY, new BMessage(B_QUIT_REQUESTED));
 }
 
 
