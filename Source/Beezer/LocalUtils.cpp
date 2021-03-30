@@ -157,42 +157,6 @@ void TrackerOpenFolder(entry_ref* refToDir)
 
 
 
-BString CommaFormatString(off_t num)
-{
-    // Taken from OpenTracker iirc.
-    // Eg; if num is 2500 then its "2,500" is returned
-    char numStr[256];
-    sprintf(numStr, "%Ld", num);
-    uint32 length = strlen(numStr);
-
-    BString bytes;
-
-    if (length >= 4)
-    {
-        uint32 charsTillComma = length % 3;
-        if (charsTillComma == 0)
-            charsTillComma = 3;
-
-        uint32 numberIndex = 0;
-
-        while (numStr[numberIndex])
-        {
-            bytes += numStr[numberIndex++];
-            if (--charsTillComma == 0 && numStr[numberIndex])
-            {
-                bytes += ',';
-                charsTillComma = 3;
-            }
-        }
-    }
-    else
-        bytes = numStr;
-
-    return bytes;
-}
-
-
-
 BBitmap* ResBitmap(const char* name, uint32 type)
 {
     BAutolock autolocker(&_local_utils_locker);
