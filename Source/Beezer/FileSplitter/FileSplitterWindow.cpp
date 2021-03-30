@@ -27,42 +27,43 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Menu.h>
-#include <MenuField.h>
-#include <TextControl.h>
-#include <Button.h>
-#include <PopUpMenu.h>
-#include <MenuItem.h>
-#include <interface/StringView.h>
-#include <Bitmap.h>
-#include <CheckBox.h>
-#include <StatusBar.h>
-#include <FilePanel.h>
-#include <Path.h>
-#include <MenuBar.h>
 #include <Alert.h>
 #include <Application.h>
-#include <String.h>
+#include <Bitmap.h>
+#include <Button.h>
+#include <CheckBox.h>
 #include <File.h>
+#include <FilePanel.h>
+#include <Menu.h>
+#include <MenuBar.h>
+#include <MenuField.h>
+#include <MenuItem.h>
+#include <NumberFormat.h>
+#include <Path.h>
+#include <PopUpMenu.h>
 #include <Resources.h>
+#include <StatusBar.h>
+#include <String.h>
+#include <TextControl.h>
+#include <interface/StringView.h>
 
 #include <malloc.h>
 #include <stdio.h>
 
+#include "AppConstants.h"
+#include "ArchiverMgr.h"
 #include "BeezerApp.h"
 #include "BevelView.h"
 #include "BitmapPool.h"
-#include "FileSplitterWindow.h"
-#include "UIConstants.h"
-#include "StaticBitmapView.h"
-#include "LocalUtils.h"
-#include "SelectDirPanel.h"
-#include "MsgConstants.h"
 #include "FSUtils.h"
-#include "Shared.h"
+#include "FileSplitterWindow.h"
+#include "LocalUtils.h"
+#include "MsgConstants.h"
 #include "RecentMgr.h"
-#include "ArchiverMgr.h"
-#include "AppConstants.h"
+#include "SelectDirPanel.h"
+#include "Shared.h"
+#include "StaticBitmapView.h"
+#include "UIConstants.h"
 
 
 #ifdef HAIKU_ENABLE_I18N
@@ -785,7 +786,13 @@ void FileSplitterWindow::UpdateData()
 
         BString sizeStr = LocaleStringFromBytes(size);
         if (size > 1024L)
-            sizeStr << "  " << "(" << CommaFormatString(size) << " " << B_TRANSLATE("Bytes") << ")";
+        {
+            BString fmtStr;
+            if (BNumberFormat().Format(fmtStr, (double)size) != B_OK)
+                fmtStr = "???";
+
+            sizeStr << "  " << "(" << fmtStr << " " << B_TRANSLATE("bytes") << ")";
+        }
 
         m_sizeStr->SetText(sizeStr.String());
 
@@ -914,10 +921,8 @@ void FileSplitterWindow::CreateSelfJoiner()
     m_destDir.FindEntry(stubName, &stubEntry, true);         // add the resources to
     delete[] stubName;
 
-    char* buf = new char[B_FILE_NAME_LENGTH + 1];
     BString name = B_TRANSLATE_COMMENT("_Create_", "Prefix for stub files. The underscore at the beginning is to change the sort order");
-    name << m_fileEntry.GetName(buf);
-    delete[] buf;
+    name << m_fileEntry.Name();
 
     stubEntry.Rename(name.String(), true);                       // Rename to "create_filename"
 
