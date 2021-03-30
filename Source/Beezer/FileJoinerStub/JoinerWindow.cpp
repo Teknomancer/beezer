@@ -68,7 +68,7 @@ JoinerWindow::JoinerWindow()
               B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE | B_NOT_V_RESIZABLE)
 {
     m_backView = new BevelView(Bounds(), "JoinerWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
-    m_backView->SetViewColor(K_BACKGROUND_COLOR);
+    m_backView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
     AddChild(m_backView);
 
     m_statusBar = new BStatusBar(BRect(2 * K_MARGIN, 2 * K_MARGIN, Bounds().right - 2 * K_MARGIN, 0),
