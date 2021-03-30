@@ -134,4 +134,6 @@ add_custom_target("symlink-docs-to-build-dir"
 	SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/docs"
 	VERBATIM)
 
+
+add_subdirectory(FileJoinerStub)
 add_subdirectory(TrackerAddOn)
