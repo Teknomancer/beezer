@@ -126,4 +126,3 @@ endif()
 
 
 add_subdirectory(FileJoinerStub)
-add_subdirectory(TrackerAddOn)
