@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * Copyright (c) 2011, Marcin Konicki (aka ahwayakchih)
  * All rights reserved.
  *
@@ -118,7 +118,6 @@ status_t z7Archiver::ReadOpen(FILE* fp)
 
         struct tm timeStruct; time_t timeValue;
         MakeTime(&timeStruct, &timeValue, dayStr, monthStr, yearStr, hourStr, minuteStr, secondStr);
-        FormatDate(dateStr, 60, &timeStruct);
 
         // Check if it's directory
         if (strstr(attrStr, "D") != NULL)
@@ -126,13 +125,11 @@ status_t z7Archiver::ReadOpen(FILE* fp)
             // Beezer's window will not show empty directory if it doesn't have "/" at the and of name :(
             strcpy(pathStr + strlen(pathStr), "/");
 
-            m_entriesList.AddItem(new ArchiveEntry(true, pathStr, sizeStr, packedStr, dateStr, timeValue,
-                                                   "", ""));
+            m_entriesList.AddItem(new ArchiveEntry(true, pathStr, sizeStr, packedStr, timeValue, "", ""));
         }
         else
         {
-            m_entriesList.AddItem(new ArchiveEntry(false, pathStr, sizeStr, packedStr, dateStr, timeValue,
-                                                   "", ""));
+            m_entriesList.AddItem(new ArchiveEntry(false, pathStr, sizeStr, packedStr, timeValue, "", ""));
         }
     }
 

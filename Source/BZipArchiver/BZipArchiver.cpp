@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -129,13 +129,10 @@ status_t BZipArchiver::Open(entry_ref* ref, BMessage* fileList)
     else        // its a pure BZip2
     {
         // bzip2 does not list its file like gzip, so we fake it :)
-        char dateStr[60], sizeStr[30], pathStr[B_PATH_NAME_LENGTH];
+        char sizeStr[30], pathStr[B_PATH_NAME_LENGTH];
         time_t modTime;
-        tm mod_tm;
         BEntry archiveEntry(m_archivePath.Path(), true);
         archiveEntry.GetModificationTime(&modTime);
-        localtime_r(&modTime, &mod_tm);
-        FormatDate(dateStr, 60, &mod_tm);
 
         off_t size;
         BEntry deflatedEntry(destPath.String(), false);
@@ -147,8 +144,7 @@ status_t BZipArchiver::Open(entry_ref* ref, BMessage* fileList)
         BPath tempPath(destPath.String());
         strcpy(pathStr, tempPath.Leaf());
 
-        m_entriesList.AddItem(new ArchiveEntry(false, tempPath.Leaf(), sizeStr, "-", dateStr, modTime,
-                                               "-", "-"));
+        m_entriesList.AddItem(new ArchiveEntry(false, tempPath.Leaf(), sizeStr, "-", modTime, "-", "-"));
     }
 
 

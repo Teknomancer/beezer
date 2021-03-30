@@ -778,11 +778,3 @@ void Archiver::MakeTime(struct tm* timeStruct, time_t* timeValue, const char* da
     *timeValue = mktime(timeStruct);
 }
 
-
-
-void Archiver::FormatDate(char* dateStr, size_t bufSize, struct tm* timeStruct)
-{
-    strftime(dateStr, bufSize, "%d/%m/%Y, %I:%M %p", timeStruct);
-}
-
-

@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -99,7 +99,7 @@ status_t TarArchiver::ReadOpen(FILE* fp)
     uint16 len = B_PATH_NAME_LENGTH + 500;
     char lineString[len],
          permStr[15], ownerStr[100], sizeStr[15],
-         dayStr[5], monthStr[5], yearStr[8], hourStr[5], minuteStr[5], dateStr[80],
+         dayStr[5], monthStr[5], yearStr[8], hourStr[5], minuteStr[5],
          pathStr[2 * B_PATH_NAME_LENGTH + 10];
 
     while (fgets(lineString, len, fp))
@@ -112,7 +112,6 @@ status_t TarArchiver::ReadOpen(FILE* fp)
 
         struct tm timeStruct; time_t timeValue;
         MakeTime(&timeStruct, &timeValue, dayStr, monthStr, yearStr, hourStr, minuteStr, "00");
-        FormatDate(dateStr, 60, &timeStruct);
 
         // Bugfix workaround for files/folders with space before them
         BString pathString = pathStr;
@@ -131,13 +130,11 @@ status_t TarArchiver::ReadOpen(FILE* fp)
         uint16 pathLength = pathString.Length() - 1;
         if (pathString[pathLength] == '/' || permStr[0] == 'd')
         {
-            m_entriesList.AddItem(new ArchiveEntry(true, pathString.String(), sizeStr, sizeStr, dateStr,
-                                                   timeValue, "-", "-"));
+            m_entriesList.AddItem(new ArchiveEntry(true, pathString.String(), sizeStr, sizeStr, timeValue, "-", "-"));
         }
         else
         {
-            m_entriesList.AddItem(new ArchiveEntry(false, pathString.String(), sizeStr, sizeStr, dateStr,
-                                                   timeValue, "-", "-"));
+            m_entriesList.AddItem(new ArchiveEntry(false, pathString.String(), sizeStr, sizeStr, timeValue, "-", "-"));
         }
     }
 

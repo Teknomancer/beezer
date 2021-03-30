@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -88,7 +88,7 @@ status_t LhaArchiver::ReadOpen(FILE* fp)
     uint16 len = B_PATH_NAME_LENGTH + 500;
     char lineString[len],
          permStr[25], sizeStr[25], uidgidStr[20], methodStr[25], packedStr[25], ratioStr[15], dayStr[5],
-         monthStr[5], yearStr[8], hourStr[5], minuteStr[5], secondStr[5], dateStr[90], crcStr[25],
+         monthStr[5], yearStr[8], hourStr[5], minuteStr[5], secondStr[5], crcStr[25],
          pathStr[B_PATH_NAME_LENGTH + 1];
 
     // Lha doesn't report the time for files (only date) hence we use the modification time of the
@@ -143,19 +143,16 @@ status_t LhaArchiver::ReadOpen(FILE* fp)
         struct tm timeStruct; time_t timeValue;
         MakeTime(&timeStruct, &timeValue, dayStr, (char*)monthStrCorrect.String(), yearStr, hourStr,
                  minuteStr, secondStr);
-        FormatDate(dateStr, 60, &timeStruct);
 
         // Check to see if last char of pathStr = '/' add it as folder, else as a file
         uint16 pathLength = pathString.Length() - 1;
         if (pathString[pathLength] == '/' || permStr[0] == 'd')
         {
-            m_entriesList.AddItem(new ArchiveEntry(true, pathString.String(), sizeStr, packedStr, dateStr,
-                                                   timeValue, methodStr, crcStr));
+            m_entriesList.AddItem(new ArchiveEntry(true, pathString.String(), sizeStr, packedStr, timeValue, methodStr, crcStr));
         }
         else
         {
-            m_entriesList.AddItem(new ArchiveEntry(false, pathString.String(), sizeStr, packedStr, dateStr,
-                                                   timeValue, methodStr, crcStr));
+            m_entriesList.AddItem(new ArchiveEntry(false, pathString.String(), sizeStr, packedStr, timeValue, methodStr, crcStr));
         }
 
         fgets(lineString, len, fp);
