@@ -47,6 +47,8 @@ add_subdirectory(TrackerAddOn)
 
 add_subdirectory(Beezer)
 
+add_subdirectory(FileJoinerStub)
+
 add_custom_target("symlink-docs-to-build-dir"
 	ALL
 	COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_CURRENT_SOURCE_DIR}/../Docs/HelpManual" "${BEEZER_BUILD_DIR}/docs"

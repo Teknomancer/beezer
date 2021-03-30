@@ -4,15 +4,15 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BEEZER_BUILD_DIR})
 set(HAIKU_CATALOG_BUILD_DIR ${BEEZER_BUILD_DIR})
 
 include_directories(
-		${CMAKE_CURRENT_SOURCE_DIR}
-		${CMAKE_CURRENT_SOURCE_DIR}/Dialogs
-		${CMAKE_CURRENT_SOURCE_DIR}/FSUtils
-		${CMAKE_CURRENT_SOURCE_DIR}/RegExString
-		${CMAKE_CURRENT_SOURCE_DIR}/FileSplitter
-		${CMAKE_CURRENT_SOURCE_DIR}/FileJoiner
-		${CMAKE_CURRENT_SOURCE_DIR}/PrefsWindow
-		${CMAKE_CURRENT_SOURCE_DIR}/SplitPane
-		${CMAKE_CURRENT_SOURCE_DIR}/Widgets
+	${CMAKE_CURRENT_SOURCE_DIR}
+	${CMAKE_CURRENT_SOURCE_DIR}/Dialogs
+	${CMAKE_CURRENT_SOURCE_DIR}/FSUtils
+	${CMAKE_CURRENT_SOURCE_DIR}/RegExString
+	${CMAKE_CURRENT_SOURCE_DIR}/FileSplitter
+	${CMAKE_CURRENT_SOURCE_DIR}/FileJoiner
+	${CMAKE_CURRENT_SOURCE_DIR}/PrefsWindow
+	${CMAKE_CURRENT_SOURCE_DIR}/SplitPane
+	${CMAKE_CURRENT_SOURCE_DIR}/Widgets
 )
 
 if(HAIKU_ENABLE_I18N)
@@ -21,62 +21,62 @@ if(HAIKU_ENABLE_I18N)
 endif()
 
 add_executable(Beezer
-		Beezer.rdef
-		AboutWindow.cpp
-		AddOnWindow.cpp
-		ArchiveRep.cpp
-		ArchiverMgr.cpp
-		ArkInfoWindow.cpp
-		BeezerApp.cpp
-		BitmapPool.cpp
-		CommentWindow.cpp
-		LocalUtils.cpp
-		LogWindow.cpp
-		MainMenu.cpp
-		MainWindow.cpp
-		Preferences.cpp
-		ProgressWindow.cpp
-		RecentMgr.cpp
-		RuleMgr.cpp
-		SearchWindow.cpp
-		StartupWindow.cpp
-		StatusWindow.cpp
-		WindowMgr.cpp
-		../AppUtils/AppUtils.cpp
-		../Archiver/Archiver.cpp
-		../ArchiveEntry/ArchiveEntry.cpp
-		../HashTable/HashTable.cpp
-		../ListEntry/ListEntry.cpp
-		../PipeMgr/PipeMgr.cpp
-		Dialogs/InputAlert.cpp
-		Dialogs/SelectDirPanel.cpp
-		FileJoiner/FileJoinerWindow.cpp
-		FileJoiner/Joiner.cpp
-		FileSplitter/FileSplitterWindow.cpp
-		FSUtils/FSUtils.cpp
-		PrefsWindow/PrefsListItem.cpp
-		PrefsWindow/PrefsView.cpp
-		PrefsWindow/PrefsViewAdd.cpp
-		PrefsWindow/PrefsViewExtract.cpp
-		PrefsWindow/PrefsViewInterface.cpp
-		PrefsWindow/PrefsViewMisc.cpp
-		PrefsWindow/PrefsViewPaths.cpp
-		PrefsWindow/PrefsViewRecent.cpp
-		PrefsWindow/PrefsViewState.cpp
-		PrefsWindow/PrefsViewWindows.cpp
-		PrefsWindow/PrefsWindow.cpp
-		RegExString/RegExString.cpp
-		SplitPane/SplitPane.cpp
-		Widgets/BarberPole.cpp
-		Widgets/BeezerListView.cpp
-		Widgets/BeezerStringView.cpp
-		Widgets/BevelView.cpp
-		Widgets/BitmapMenuItem.cpp
-		Widgets/ImageButton.cpp
-		Widgets/InfoBar.cpp
-		Widgets/LogTextView.cpp
-		Widgets/StaticBitmapView.cpp
-		Widgets/ToolBar.cpp
+	Beezer.rdef
+	AboutWindow.cpp
+	AddOnWindow.cpp
+	ArchiveRep.cpp
+	ArchiverMgr.cpp
+	ArkInfoWindow.cpp
+	BeezerApp.cpp
+	BitmapPool.cpp
+	CommentWindow.cpp
+	LocalUtils.cpp
+	LogWindow.cpp
+	MainMenu.cpp
+	MainWindow.cpp
+	Preferences.cpp
+	ProgressWindow.cpp
+	RecentMgr.cpp
+	RuleMgr.cpp
+	SearchWindow.cpp
+	StartupWindow.cpp
+	StatusWindow.cpp
+	WindowMgr.cpp
+	../AppUtils/AppUtils.cpp
+	../Archiver/Archiver.cpp
+	../ArchiveEntry/ArchiveEntry.cpp
+	../HashTable/HashTable.cpp
+	../ListEntry/ListEntry.cpp
+	../PipeMgr/PipeMgr.cpp
+	Dialogs/InputAlert.cpp
+	Dialogs/SelectDirPanel.cpp
+	FileJoiner/FileJoinerWindow.cpp
+	FileJoiner/Joiner.cpp
+	FileSplitter/FileSplitterWindow.cpp
+	FSUtils/FSUtils.cpp
+	PrefsWindow/PrefsListItem.cpp
+	PrefsWindow/PrefsView.cpp
+	PrefsWindow/PrefsViewAdd.cpp
+	PrefsWindow/PrefsViewExtract.cpp
+	PrefsWindow/PrefsViewInterface.cpp
+	PrefsWindow/PrefsViewMisc.cpp
+	PrefsWindow/PrefsViewPaths.cpp
+	PrefsWindow/PrefsViewRecent.cpp
+	PrefsWindow/PrefsViewState.cpp
+	PrefsWindow/PrefsViewWindows.cpp
+	PrefsWindow/PrefsWindow.cpp
+	RegExString/RegExString.cpp
+	SplitPane/SplitPane.cpp
+	Widgets/BarberPole.cpp
+	Widgets/BeezerListView.cpp
+	Widgets/BeezerStringView.cpp
+	Widgets/BevelView.cpp
+	Widgets/BitmapMenuItem.cpp
+	Widgets/ImageButton.cpp
+	Widgets/InfoBar.cpp
+	Widgets/LogTextView.cpp
+	Widgets/StaticBitmapView.cpp
+	Widgets/ToolBar.cpp
 )
 
 target_link_libraries(Beezer "be" "tracker" "translation" "CLV")
@@ -123,6 +123,3 @@ if(BEEZER_EXE_ATTR_GIT)
 			COMMENT "Adding BEEZER:GIT_REVISION BFS attribute")
 	endif()
 endif()
-
-
-add_subdirectory(FileJoinerStub)
