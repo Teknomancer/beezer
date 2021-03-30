@@ -128,12 +128,5 @@ if(BEEZER_EXE_ATTR_GIT)
 endif()
 
 
-add_custom_target("symlink-docs-to-build-dir"
-	ALL
-	COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_CURRENT_SOURCE_DIR}/docs" "${BEEZER_BUILD_DIR}/docs"
-	SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/docs"
-	VERBATIM)
-
-
 add_subdirectory(FileJoinerStub)
 add_subdirectory(TrackerAddOn)
