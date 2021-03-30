@@ -8,11 +8,9 @@ include_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/Dialogs
 		${CMAKE_CURRENT_SOURCE_DIR}/FSUtils
 		${CMAKE_CURRENT_SOURCE_DIR}/RegExString
-		${CMAKE_CURRENT_SOURCE_DIR}/FileSplitterWindow
 		${CMAKE_CURRENT_SOURCE_DIR}/FileSplitter
 		${CMAKE_CURRENT_SOURCE_DIR}/FileJoiner
 		${CMAKE_CURRENT_SOURCE_DIR}/PrefsWindow
-		${CMAKE_CURRENT_SOURCE_DIR}/SplitView
 		${CMAKE_CURRENT_SOURCE_DIR}/SplitPane
 		${CMAKE_CURRENT_SOURCE_DIR}/Widgets
 )
@@ -52,10 +50,9 @@ add_executable(Beezer
 		../PipeMgr/PipeMgr.cpp
 		Dialogs/InputAlert.cpp
 		Dialogs/SelectDirPanel.cpp
-		FileSplitter/FileSplitterWindow.cpp
 		FileJoiner/FileJoinerWindow.cpp
 		FileJoiner/Joiner.cpp
-#		FileJoinerStub/JoinerWindow.cpp
+		FileSplitter/FileSplitterWindow.cpp
 		FSUtils/FSUtils.cpp
 		PrefsWindow/PrefsListItem.cpp
 		PrefsWindow/PrefsView.cpp
