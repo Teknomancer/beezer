@@ -102,8 +102,15 @@ StatusWindow::StatusWindow(const char* title, BWindow* callerWindow, const char*
 
     AddChild(layout);
 
-    // Center our window on screen
-    CenterOnScreen();
+    if (callerWindow != NULL)
+    {
+        UpdateSizeLimits();
+        BRect callerRect(callerWindow->Frame());
+        BPoint windowPoint(callerRect.left + callerRect.Width()/2 - Bounds().Width()/2, callerRect.top + callerRect.Height()/2 - Bounds().Height()/2);
+        MoveTo(windowPoint);
+    }
+    else
+        CenterOnScreen();
 
     SetPulseRate(K_BARBERPOLE_PULSERATE);
     m_barberPole->SetValue(true, true);

@@ -157,8 +157,15 @@ ProgressWindow::ProgressWindow(BWindow* callerWindow, BMessage* actionMessage,
              .SetInsets(4 * K_MARGIN, 2 * K_MARGIN, 4 * K_MARGIN, 2 * K_MARGIN)
             );
 
-    // Center window on-screen & set the constraints
-    CenterOnScreen();
+    if (callerWindow != NULL)
+    {
+        UpdateSizeLimits();
+        BRect callerRect(callerWindow->Frame());
+        BPoint windowPoint(callerRect.left + callerRect.Width()/2 - Bounds().Width()/2, callerRect.top + callerRect.Height()/2 + Bounds().Height()/2);
+        MoveTo(windowPoint);
+    }
+    else
+        CenterOnScreen();
 
     messenger = new BMessenger(this);
     m_messenger = messenger;
