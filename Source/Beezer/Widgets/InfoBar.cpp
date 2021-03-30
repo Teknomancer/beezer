@@ -29,6 +29,7 @@
 
 #include <Bitmap.h>
 #include <Message.h>
+#include <NumberFormat.h>
 #include <Window.h>
 
 #include <stdio.h>
@@ -136,9 +137,18 @@ void InfoBar::UpdateFilesDisplay(int32 selectedCount, int32 totalCount, bool set
     if (setTotalCount == true)
         m_filesTotal = totalCount;
 
-    char buf[strlen(B_TRANSLATE("Entries:")) + 50];
-    sprintf(buf, "%s%ld %s %ld", B_TRANSLATE("Entries:"), selectedCount, B_TRANSLATE_COMMENT("of", "ex: 7 of 9"), m_filesTotal);
-    m_filesStr->SetText(buf);
+    BString selectedStr, totalStr;
+    if (BNumberFormat().Format(selectedStr, selectedCount) != B_OK)
+        selectedStr = "???";
+
+    if (BNumberFormat().Format(totalStr, m_filesTotal) != B_OK)
+        totalStr = "???";
+
+    BString fileStr(B_TRANSLATE("Entries:"));
+    fileStr << " " << selectedStr << " " << B_TRANSLATE_COMMENT("of", "ex: 7 of 9") << " " << totalStr;
+
+    m_filesStr->SetText(fileStr);
+
     m_selectedFiles = selectedCount;
 }
 
@@ -149,27 +159,29 @@ void InfoBar::UpdateBytesDisplay(uint32 selectedBytes, uint32 totalBytes, bool s
     if (setTotalBytes == true)
         m_totalBytes = totalBytes;
 
-    int8 percent = m_totalBytes > 0 ? (int8)(selectedBytes / (float)m_totalBytes * 100) : 0;
-    char buf[strlen(B_TRANSLATE("Bytes:")) + 50];
-    sprintf(buf, "%s%ld %s %Ld (%d%%)", B_TRANSLATE("Bytes:"), selectedBytes, B_TRANSLATE_COMMENT("of", "ex: 7 of 9"), m_totalBytes, percent);
-    m_bytesStr->SetText(buf);
+    BString selectedStr, totalStr, percentStr;
+    if (BNumberFormat().Format(selectedStr, (double)selectedBytes) != B_OK)
+        selectedStr = "???";
+
+    if (BNumberFormat().Format(totalStr, (double)m_totalBytes) != B_OK)
+        totalStr = "???";
+
+    if (BNumberFormat().FormatPercent(percentStr, m_totalBytes > 0 ? static_cast<double>(selectedBytes) / static_cast<double>(m_totalBytes) : 0) != B_OK)
+        percentStr = "???";
+
+    BString sizeStr(B_TRANSLATE("Bytes:"));
+    sizeStr << " " << selectedStr << " " << B_TRANSLATE_COMMENT("of", "ex: 7 of 9") << " " << totalStr << " (" << percentStr << ")";
+
+    m_bytesStr->SetText(sizeStr);
+
     m_selectedBytes = selectedBytes;
 }
 
 
-
 void InfoBar::UpdateBy(int32 countBy, uint32 bytesBy)
 {
-    m_selectedFiles += countBy;
-    char buf[strlen(B_TRANSLATE("Entries:")) + 50];
-    sprintf(buf, "%s%ld %s %ld", B_TRANSLATE("Entries:"), m_selectedFiles, B_TRANSLATE_COMMENT("of", "ex: 7 of 9"), m_filesTotal);
-    m_filesStr->SetText(buf);
-
-    m_selectedBytes += bytesBy;
-    int8 percent = m_totalBytes > 0 ? (int8)(m_selectedBytes / (float)m_totalBytes * 100) : 0;
-    char buf2[strlen(B_TRANSLATE("Bytes:")) + 50];
-    sprintf(buf2, "%s%Ld %s %Ld (%d%%)", B_TRANSLATE("Bytes:"), m_selectedBytes, B_TRANSLATE_COMMENT("of", "ex: 7 of 9"), m_totalBytes, percent);
-    m_bytesStr->SetText(buf2);
+    UpdateFilesDisplay(m_selectedFiles + countBy, m_filesTotal, false);
+    UpdateBytesDisplay(m_selectedBytes + bytesBy, m_totalBytes, false);
 }
 
 
