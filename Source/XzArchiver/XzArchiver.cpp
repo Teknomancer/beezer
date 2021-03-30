@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -85,7 +85,7 @@ status_t XzArchiver::ReadOpen(FILE* fp)
     uint16 len = B_PATH_NAME_LENGTH + 500;
     char lineString[len],
          sizeStr[15], methodStr[15], packedStr[15], ratioStr[10], dayStr[5],
-         monthStr[5], hourStr[5], minuteStr[5], dateStr[80], crcStr[15],
+         monthStr[5], hourStr[5], minuteStr[5], crcStr[15],
          pathStr[B_PATH_NAME_LENGTH + 1];
 
     // Skip first header line
@@ -107,23 +107,18 @@ status_t XzArchiver::ReadOpen(FILE* fp)
         // hard-to-read output format etc, so we take the last modified time of the archive as the modified
         // time of the file inside it - this should be accurate
         time_t modTime;
-        tm mod_tm;
         BEntry archiveEntry(m_archivePath.Path(), true);
         archiveEntry.GetModificationTime(&modTime);
-        localtime_r(&modTime, &mod_tm);
-        FormatDate(dateStr, 60, &mod_tm);
 
         // Check to see if last char of pathStr = '/' add it as folder, else as a file
         uint16 pathLength = pathString.Length() - 1;
         if (pathString[pathLength] == '/')
         {
-            m_entriesList.AddItem(new ArchiveEntry(true, pathString.String(), sizeStr, packedStr, dateStr,
-                                                   modTime, methodStr, crcStr));
+            m_entriesList.AddItem(new ArchiveEntry(true, pathString.String(), sizeStr, packedStr, modTime, methodStr, crcStr));
         }
         else
         {
-            m_entriesList.AddItem(new ArchiveEntry(false, pathString.String(), sizeStr, packedStr, dateStr,
-                                                   modTime, methodStr, crcStr));
+            m_entriesList.AddItem(new ArchiveEntry(false, pathString.String(), sizeStr, packedStr, modTime, methodStr, crcStr));
         }
     }
 

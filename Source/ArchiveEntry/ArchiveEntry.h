@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2011, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -34,7 +35,7 @@ class ArchiveEntry
     public:
         ArchiveEntry();
         ArchiveEntry(bool dir, const char* pathStr, const char* sizeStr, const char* packedStr,
-                     const char* dateStr, time_t timeValue, const char* methodStr, const char* crcStr);
+                     time_t timeValue, const char* methodStr, const char* crcStr);
         ~ArchiveEntry();
 
         void              RecalculateRatio();

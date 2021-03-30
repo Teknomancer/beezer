@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -86,7 +86,7 @@ status_t ArjArchiver::ReadOpen(FILE* fp)
     uint16 len = B_PATH_NAME_LENGTH + 500;
     char lineString[len], fileCount[20], revisionStr[20],
          sizeStr[25], packedStr[25], ratioStr[15], dayStr[5], permStr[50],
-         monthStr[5], yearStr[8], hourStr[5], minuteStr[5], secondStr[5], dateStr[90], guaStr[25],
+         monthStr[5], yearStr[8], hourStr[5], minuteStr[5], secondStr[5], guaStr[25],
          bpmgsStr[20], osStr[30], osStr2[15], pathStr[B_PATH_NAME_LENGTH + 1];
 
     do
@@ -129,7 +129,6 @@ status_t ArjArchiver::ReadOpen(FILE* fp)
 
         struct tm timeStruct; time_t timeValue;
         MakeTime(&timeStruct, &timeValue, dayStr, monthStr, yearStr, hourStr, minuteStr, "00");
-        FormatDate(dateStr, 90, &timeStruct);
 
         BString pathString = pathStr;
 
@@ -138,13 +137,11 @@ status_t ArjArchiver::ReadOpen(FILE* fp)
         {
             // Critical we add '/' for empty folders as rar doesn't report folder names with '/'
             pathString << '/';
-            m_entriesList.AddItem(new ArchiveEntry(true, pathString.String(), sizeStr, packedStr, dateStr,
-                                                   timeValue, "-", "-"));
+            m_entriesList.AddItem(new ArchiveEntry(true, pathString.String(), sizeStr, packedStr, timeValue, "-", "-"));
         }
         else
         {
-            m_entriesList.AddItem(new ArchiveEntry(false, pathString.String(), sizeStr, packedStr, dateStr,
-                                                   timeValue, "-", "-"));
+            m_entriesList.AddItem(new ArchiveEntry(false, pathString.String(), sizeStr, packedStr, timeValue, "-", "-"));
         }
 
         fgets(lineString, len, fp);

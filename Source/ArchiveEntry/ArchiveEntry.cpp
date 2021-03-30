@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -27,12 +27,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <DateTimeFormat.h>
+#include <SupportDefs.h>
+
 #include <stdlib.h>
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
 
-#include <SupportDefs.h>
 
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
@@ -46,7 +48,7 @@ ArchiveEntry::ArchiveEntry()
 
 
 ArchiveEntry::ArchiveEntry(bool dir, const char* pathStr, const char* sizeStr, const char* packedStr,
-                           const char* dateStr, time_t timeValue, const char* methodStr, const char* crcStr)
+                           time_t timeValue, const char* methodStr, const char* crcStr)
     : m_dirStr(NULL)
 {
     m_isDir = dir;
@@ -62,7 +64,11 @@ ArchiveEntry::ArchiveEntry(bool dir, const char* pathStr, const char* sizeStr, c
         m_dirStr[len] = 0;
     }
 
-    m_dateStr = strdup(dateStr);
+    BString dateBuf;
+    if (BDateTimeFormat().Format(dateBuf, timeValue, B_SHORT_DATE_FORMAT, B_SHORT_TIME_FORMAT) != B_OK)
+        dateBuf = "???";
+
+    m_dateStr = strdup(dateBuf.String());
     m_timeValue = timeValue;
     m_sizeStr = strdup(sizeStr);
     m_packedStr = strdup(packedStr);

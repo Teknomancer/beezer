@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Ramshankar (aka Teknomancer)
- * Copyright (c) 2011-2015 Chris Roberts
+ * Copyright (c) 2011-2021 Chris Roberts
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -86,7 +86,7 @@ status_t RarArchiver::ReadOpen(FILE* fp)
     uint16 len = B_PATH_NAME_LENGTH + 500;
     char lineString[len],
          sizeStr[25], packedStr[25], ratioStr[15], dayStr[5], permStr[50],
-         monthStr[5], yearStr[8], hourStr[5], minuteStr[5], dateStr[90], crcStr[25],
+         monthStr[5], yearStr[8], hourStr[5], minuteStr[5], crcStr[25],
          pathStr[B_PATH_NAME_LENGTH + 1];
 
     bool parseLine = false;
@@ -104,7 +104,6 @@ status_t RarArchiver::ReadOpen(FILE* fp)
 
             struct tm timeStruct; time_t timeValue;
             MakeTime(&timeStruct, &timeValue, dayStr, monthStr, yearStr, hourStr, minuteStr, "00");
-            FormatDate(dateStr, 90, &timeStruct);
 
             if (permStr[0] == '*')
                 m_passwordRequired = true;
@@ -139,8 +138,7 @@ status_t RarArchiver::ReadOpen(FILE* fp)
             }
 
             if (!isDup)
-                m_entriesList.AddItem(new ArchiveEntry(isDir, pathString.String(), sizeStr, packedStr, dateStr,
-                                                   timeValue, "-", crcStr));
+                m_entriesList.AddItem(new ArchiveEntry(isDir, pathString.String(), sizeStr, packedStr, timeValue, "-", crcStr));
         }
     }
 
