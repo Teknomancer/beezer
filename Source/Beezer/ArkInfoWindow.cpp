@@ -271,11 +271,11 @@ void ArkInfoWindow::FillDetails()
     m_entry->GetCreationTime(&crTime);
 
     BString dateStr;
-    if (BDateTimeFormat().Format(dateStr, modTime, B_FULL_DATE_FORMAT, B_FULL_TIME_FORMAT) != B_OK)
+    if (BDateTimeFormat().Format(dateStr, modTime, B_FULL_DATE_FORMAT, B_LONG_TIME_FORMAT) != B_OK)
         dateStr = "<Error formatting date>";
     m_modifiedStr->SetText(dateStr);
 
-    if (BDateTimeFormat().Format(dateStr, crTime, B_FULL_DATE_FORMAT, B_FULL_TIME_FORMAT) != B_OK)
+    if (BDateTimeFormat().Format(dateStr, crTime, B_FULL_DATE_FORMAT, B_LONG_TIME_FORMAT) != B_OK)
         dateStr = "<Error formatting date>";
     m_createdStr->SetText(dateStr);
 
