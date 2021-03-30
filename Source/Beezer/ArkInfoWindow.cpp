@@ -32,10 +32,12 @@
 #include <Alert.h>
 #include <Bitmap.h>
 #include <Button.h>
+#include <DateTimeFormat.h>
 #include <Entry.h>
 #include <GridLayoutBuilder.h>
 #include <GroupLayoutBuilder.h>
 #include <List.h>
+#include <NumberFormat.h>
 #include <Path.h>
 #include <StatusBar.h>
 #include <String.h>
@@ -90,7 +92,9 @@ ArkInfoWindow::ArkInfoWindow(BWindow* callerWindow, Archiver* archiver, BEntry* 
 
     // Add the file name string view (align it vertically with the icon view)
     m_fileNameStr = new BStringView("ArkInfoWindow:FileNameView", "");
-    m_fileNameStr->SetFont(be_bold_font);
+    BFont font(be_bold_font);
+    font.SetSize(font.Size()+4);
+    m_fileNameStr->SetFont(&font);
 
     m_compressRatioBar = new BStatusBar("ArkInfoWindow:CompressRatioBar", B_TRANSLATE("Compression ratio:"), NULL);
     m_compressRatioBar->SetBarHeight(K_PROGRESSBAR_HEIGHT);
@@ -151,14 +155,14 @@ ArkInfoWindow::ArkInfoWindow(BWindow* callerWindow, Archiver* archiver, BEntry* 
     createdStr->SetAlignment(B_ALIGN_RIGHT);
     createdStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
-    m_createdStr = new BStringView("ArkInfoWindow:CreatedStr", "Thursday, 19 June 2003, 03:10:03 PM");
+    m_createdStr = new BStringView("ArkInfoWindow:CreatedStr", "");
     m_createdStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
     BStringView* modifiedStr = new BStringView("ArkInfoWindow:_ModifiedStr", B_TRANSLATE("Last modified:"));
     modifiedStr->SetAlignment(B_ALIGN_RIGHT);
     modifiedStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
-    m_modifiedStr = new BStringView("ArkInfoWindow:ModifiedStr", "Friday, 29 July 2003, 01:10:23 PM");
+    m_modifiedStr = new BStringView("ArkInfoWindow:ModifiedStr", "");
     m_modifiedStr->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
     BGridLayout* infoLayout = NULL;
@@ -242,17 +246,20 @@ void ArkInfoWindow::FillDetails()
     m_fileNameStr->SetText(nameBuf);
 
     BString buf;
-    buf = ""; buf << m_dirList->CountItems();
-    m_folderCountStr->SetText(buf.String());
+    if (BNumberFormat().Format(buf, m_dirList->CountItems()) != B_OK)
+        buf = "???";
+    m_folderCountStr->SetText(buf);
 
-    buf = ""; buf << m_fileList->CountItems();
-    m_fileCountStr->SetText(buf.String());
+    if (BNumberFormat().Format(buf, m_fileList->CountItems()) != B_OK)
+        buf = "???";
+    m_fileCountStr->SetText(buf);
 
-    buf = ""; buf << m_fileList->CountItems() + m_dirList->CountItems();
-    m_totalCountStr->SetText(buf.String());
+    if (BNumberFormat().Format(buf, m_fileList->CountItems() + m_dirList->CountItems()) != B_OK)
+        buf = "???";
+    m_totalCountStr->SetText(buf);
 
     buf = ""; buf << m_archiver->ArchiveType() << " " << B_TRANSLATE("archive");
-    m_typeStr->SetText(buf.String());
+    m_typeStr->SetText(buf);
 
     BEntry parent; BPath parentPath;
     m_entry->GetParent(&parent);
@@ -260,26 +267,28 @@ void ArkInfoWindow::FillDetails()
     m_pathStr->SetText(parentPath.Path());
 
     time_t modTime, crTime;
-    tm mod_tm, cr_tm;
     m_entry->GetModificationTime(&modTime);
     m_entry->GetCreationTime(&crTime);
-    localtime_r(&modTime, &mod_tm);
-    localtime_r(&crTime, &cr_tm);
 
-    char dateTimeBuf[256];
-    strftime(dateTimeBuf, 256, "%A, %B %d %Y, %I:%M:%S %p", &mod_tm);
-    m_modifiedStr->SetText(dateTimeBuf);
+    BString dateStr;
+    if (BDateTimeFormat().Format(dateStr, modTime, B_FULL_DATE_FORMAT, B_FULL_TIME_FORMAT) != B_OK)
+        dateStr = "<Error formatting date>";
+    m_modifiedStr->SetText(dateStr);
 
-    strftime(dateTimeBuf, 256, "%A, %B %d %Y, %I:%M:%S %p", &cr_tm);
-    m_createdStr->SetText(dateTimeBuf);
+    if (BDateTimeFormat().Format(dateStr, crTime, B_FULL_DATE_FORMAT, B_FULL_TIME_FORMAT) != B_OK)
+        dateStr = "<Error formatting date>";
+    m_createdStr->SetText(dateStr);
 
     off_t compressedSize;
     m_entry->GetSize(&compressedSize);
+    BString bytesStr;
+    if (BNumberFormat().Format(bytesStr, (double)compressedSize) != B_OK)
+        bytesStr = "???";
     buf = StringFromBytes(compressedSize);
     if (compressedSize >= 1024LL)
-        buf << " (" << CommaFormatString(compressedSize) << " " << B_TRANSLATE("bytes") << ")";
+        buf << " (" << bytesStr << " " << B_TRANSLATE("bytes") << ")";
 
-    m_compressedSizeStr->SetText(buf.String());
+    m_compressedSizeStr->SetText(buf);
 
     // Compute the inflated size from archive entries
     int32 count = m_fileList->CountItems();
@@ -291,11 +300,13 @@ void ArkInfoWindow::FillDetails()
             originalSize += item->m_length;
     }
 
+    if (BNumberFormat().Format(bytesStr, (double)originalSize) != B_OK)
+        bytesStr = "???";
     buf = StringFromBytes(originalSize);
     if (originalSize >= 1024LL)
-        buf << " (" << CommaFormatString(originalSize) << " bytes)";
+        buf << " (" << bytesStr << " " << B_TRANSLATE("bytes") << ")";
 
-    m_originalSizeStr->SetText(buf.String());
+    m_originalSizeStr->SetText(buf);
 
     // Compute compression ratio
     float ratio;
@@ -307,5 +318,5 @@ void ArkInfoWindow::FillDetails()
         buf.SetToFormat("%.1f%%", ratio);
 
 
-    m_compressRatioBar->Update(ratio, NULL, buf.String());
+    m_compressRatioBar->Update(ratio, NULL, buf);
 }
