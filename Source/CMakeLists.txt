@@ -43,6 +43,8 @@ add_subdirectory(XzArchiver)
 add_subdirectory(ZipArchiver)
 add_subdirectory(z7Archiver)
 
+add_subdirectory(TrackerAddOn)
+
 add_subdirectory(Beezer)
 
 add_custom_target("symlink-docs-to-build-dir"
