@@ -699,18 +699,18 @@ void Archiver::SaveSettingsMenu()
     BString settingsFilePath;
     BFile settingsFile;
 
-    // Remove the first 3 items which will be "Save as Defaults", "Save to archive" and separator item
+    // Remove the last 3 items which will be "Save as Defaults", "Save to archive" and separator item
     // Then save the rest of the items,
-    BMenuItem* item0 = m_settingsMenu->RemoveItem((int32)0);
-    BMenuItem* item1 = m_settingsMenu->RemoveItem((int32)0);
-    BMenuItem* item2 = m_settingsMenu->RemoveItem((int32)0);
+    BMenuItem* item0 = m_settingsMenu->RemoveItem(m_settingsMenu->CountItems() - 1);
+    BMenuItem* item1 = m_settingsMenu->RemoveItem(m_settingsMenu->CountItems() - 1);
+    BMenuItem* item2 = m_settingsMenu->RemoveItem(m_settingsMenu->CountItems() - 1);
 
     m_settingsMenu->Archive(&settingsMsg, true);
 
     // Restore menu to its original form
-    m_settingsMenu->AddItem(item0, 0);
-    m_settingsMenu->AddItem(item1, 1);
-    m_settingsMenu->AddItem(item2, 2);
+    m_settingsMenu->AddItem(item2);
+    m_settingsMenu->AddItem(item1);
+    m_settingsMenu->AddItem(item0);
 
     BString temp = m_typeStr;
     temp.ToLower();        // Use lowercase filenames :)
