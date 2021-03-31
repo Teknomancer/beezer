@@ -3676,9 +3676,9 @@ void MainWindow::SaveArchiverToArchive(BMessage* message)
     BMessage msg('arkv');
 
     // Remove "Save as default" "save to archive" and separator items
-    BMenuItem* item0 = settingsMenu->RemoveItem((int32)0);
-    BMenuItem* item1 = settingsMenu->RemoveItem((int32)0);
-    BMenuItem* item2 = settingsMenu->RemoveItem((int32)0);
+    BMenuItem* item0 = settingsMenu->RemoveItem(settingsMenu->CountItems() - 1);
+    BMenuItem* item1 = settingsMenu->RemoveItem(settingsMenu->CountItems() - 1);
+    BMenuItem* item2 = settingsMenu->RemoveItem(settingsMenu->CountItems() - 1);
 
     // If no "message" is passed save the current archiver menu
     if (!message)
@@ -3692,9 +3692,9 @@ void MainWindow::SaveArchiverToArchive(BMessage* message)
         msg = *message;
 
     // Restore menu to its original form
-    settingsMenu->AddItem(item0, 0);
-    settingsMenu->AddItem(item1, 1);
-    settingsMenu->AddItem(item2, 2);
+    settingsMenu->AddItem(item2);
+    settingsMenu->AddItem(item1);
+    settingsMenu->AddItem(item0);
 
     BNode archiveNode(&m_archiveEntry);
     ssize_t msgLength = msg.FlattenedSize();
