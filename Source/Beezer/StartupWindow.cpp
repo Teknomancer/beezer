@@ -41,7 +41,6 @@
 #include "AppUtils.h"
 #include "ArchiverMgr.h"
 #include "BeezerApp.h"
-#include "BeezerStringView.h"
 #include "BevelView.h"
 #include "BitmapPool.h"
 #include "FileSplitterWindow.h"
