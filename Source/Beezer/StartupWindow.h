@@ -35,7 +35,6 @@
 class BBitmap;
 class BPopUpMenu;
 
-class BeezerStringView;
 class BevelView;
 class ImageButton;
 class RecentMgr;
