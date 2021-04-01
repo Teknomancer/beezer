@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.19)
 
 project(BEEZER)
 
@@ -9,11 +9,15 @@ set(CMAKE_SHARED_MODULE_SUFFIX "")
 
 set(CMAKE_MODULE_PATH "${BEEZER_SOURCE_DIR}/CMakeModules")
 
+include(UseHaiku)
+
 set(BEEZER_BUILD_DIR ${BEEZER_BINARY_DIR}/build)
 
-set(BEEZER_BUILD_ADDONS_DIR ${BEEZER_BINARY_DIR}/build/add-ons)
+set(BEEZER_BUILD_ADDONS_DIR ${BEEZER_BUILD_DIR}/add-ons)
 
-include(UseHaiku)
+if(HAIKU_ENABLE_I18N)
+	set(HAIKU_CATALOG_BUILD_DIR ${BEEZER_BUILD_DIR})
+endif()
 
 include_directories(
 		"${BEEZER_SOURCE_DIR}/Archiver"
@@ -32,25 +36,24 @@ include_directories(
 
 add_subdirectory(ColumnListView)
 
-#arj support disabled until a proper package is created for Haiku
-#add_subdirectory(ArjArchiver)
+add_subdirectory(Beezer)
+add_subdirectory(TrackerAddOn)
+add_subdirectory(FileJoinerStub)
+
+#add_subdirectory(ArjArchiver) #arj support disabled until a proper package is created for Haiku
 add_subdirectory(BZipArchiver)
 add_subdirectory(GZipArchiver)
 add_subdirectory(LhaArchiver)
 add_subdirectory(RarArchiver)
 add_subdirectory(TarArchiver)
 add_subdirectory(XzArchiver)
-add_subdirectory(ZipArchiver)
 add_subdirectory(z7Archiver)
-
-add_subdirectory(TrackerAddOn)
-
-add_subdirectory(Beezer)
-
-add_subdirectory(FileJoinerStub)
+add_subdirectory(ZipArchiver)
 
 add_custom_target("symlink-docs-to-build-dir"
 	ALL
 	COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_CURRENT_SOURCE_DIR}/../Docs/HelpManual" "${BEEZER_BUILD_DIR}/docs"
 	SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/../Docs/HelpManual"
 	VERBATIM)
+
+set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES "${BEEZER_BUILD_DIR}/docs")

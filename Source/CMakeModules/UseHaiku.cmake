@@ -1,13 +1,30 @@
 #
 # - Haiku module for CMake
 #
+# Released under MIT license:
+#
+# Copyright (c) 2010-2021 Chris Roberts
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+# the Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
 
-#allow use of LOCATION property
-cmake_policy(SET CMP0026 OLD)
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 #
-# Use the standard non-packaged directory if no prefix was given to cmake
+#	Use the standard non-packaged directory if no prefix was given to cmake
 #
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 	execute_process(COMMAND finddir B_USER_NONPACKAGED_DIRECTORY OUTPUT_VARIABLE B_PREFIX OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -16,17 +33,23 @@ endif()
 
 
 #
-# Find the proper stdc++ library
+#	Find the proper stdc++ library
 #
 find_library(LIBSTDCPP NAMES "stdc++" "stdc++.r4")
 
 
 #
-# Add an option to control localization support
+#	Add our options to control localization & target BFS tagging
 #
 option(HAIKU_ENABLE_I18N "Enable Haiku localization support")
+option(HAIKU_ENABLE_TARGET_ATTRS "Enable setting custom BFS attributes on built targets" ON)
 
-if(HAIKU_ENABLE_I18N STREQUAL "ON")
+
+#
+#	Set up some top-level targets if localization is enabled
+#
+if(HAIKU_ENABLE_I18N)
+
 	add_custom_target("catkeys")
 	add_custom_target("catalogs")
 	add_custom_target("bindcatalogs")
@@ -34,12 +57,16 @@ if(HAIKU_ENABLE_I18N STREQUAL "ON")
 	  DEPENDS "catalogs"
 	  COMMAND "${CMAKE_COMMAND}" "-DCMAKE_INSTALL_COMPONENT=locales" "-P" "${CMAKE_BINARY_DIR}/cmake_install.cmake"
 	)
-	#TODO check if already set manually
-	set(CMAKE_INSTALL_LOCALEDIR "data/locale")
+
+	if (NOT DEFINED CMAKE_INSTALL_LOCALEDIR)
+		set(CMAKE_INSTALL_LOCALEDIR "data/locale")
+	endif()
+
 endif()
 
+
 #
-# Override the default add_executable() command and add our own.
+#	Override the default add_executable() command and add our own.
 #
 function(add_executable TARGET)
 
@@ -56,40 +83,66 @@ function(add_executable TARGET)
 	# Call the original function with the filtered source list.
 	_add_executable(${TARGET} ${REAL_SOURCES})
 
-	if(HAIKU_ENABLE_I18N STREQUAL "ON")
-		if(NOT DEFINED "${TARGET}-APP_MIME_SIG")
-			message(WARNING "No APP_MIME_SIG property for ${TARGET}. Using 'application/x-vnd.Foo-Bar'")
-			set("${TARGET}-APP_MIME_SIG" "application/x-vnd.Foo-Bar")
-		endif()
+	# rdef/rsrc targets must be added after the main target has been created with _add_executable()
+	foreach(rdef ${rdeflist})
+		haiku_add_resource_def(${TARGET} ${rdef})
+	endforeach()
 
-		haiku_generate_base_catkeys(${TARGET} ${REAL_SOURCES})
-		if(NOT DEFINED "${TARGET}-LOCALES")
-			message(WARNING "No LOCALES property for ${TARGET}. Using 'en'")
-			set("${TARGET}-LOCALES" "en")
-		endif()
+	# any precompiled resources that were given to us
+	foreach(rsrc ${rsrclist})
+		haiku_add_resource(${TARGET} ${rsrc})
+	endforeach()
 
-		haiku_compile_catalogs(${TARGET} "${${TARGET}-LOCALES}")
-		haiku_bind_catalogs(${TARGET} "${${TARGET}-LOCALES}")
-		haiku_install_catalogs(${TARGET} "${${TARGET}-LOCALES}")
+	haiku_mimeset_target(${TARGET})
 
-		add_compile_definitions("HAIKU_ENABLE_I18N")
+endfunction()
+
+
+#
+#	Adds the target to the top-level targets catkeys/catalogs/bindcatalogs/catalogsinstall
+#
+function(haiku_add_i18n TARGET)
+
+	if(NOT DEFINED "${TARGET}-APP_MIME_SIG")
+		message(WARNING "No APP_MIME_SIG property for ${TARGET}. Using 'application/x-vnd.Foo-Bar'")
+		set("${TARGET}-APP_MIME_SIG" "application/x-vnd.Foo-Bar")
 	endif()
 
-	# Rdef targets must be added after the main target has been created with _add_executable()
-	foreach(rdef ${rdeflist})
-		haiku_compile_resource_def(${rdef} rsrcpath)
-		list(APPEND rsrclist ${rsrcpath})
-	endforeach()
+	if(NOT DEFINED "${TARGET}-LOCALES")
+		message(WARNING "No LOCALES property for ${TARGET}. Using 'en'")
+		set("${TARGET}-LOCALES" "en")
+	endif()
 
-	# make sure rsrclist isn't empty
-	foreach(rsrc ${rsrclist})
-		get_filename_component(shortname ${rsrc} NAME)
-		add_custom_command(
-			TARGET ${TARGET}
-			POST_BUILD
-			COMMAND "xres" "-o" "$<TARGET_FILE:${TARGET}>" "${rsrc}"
-			COMMENT "Merging resources from ${shortname} into ${TARGET}")
-	endforeach()
+	haiku_generate_base_catkeys(${TARGET})
+	haiku_compile_catalogs(${TARGET} "${${TARGET}-LOCALES}")
+	haiku_bind_catalogs(${TARGET} "${${TARGET}-LOCALES}")
+	haiku_install_catalogs(${TARGET} "${${TARGET}-LOCALES}")
+
+	target_compile_definitions(${TARGET} PRIVATE "HAIKU_ENABLE_I18N")
+
+endfunction()
+
+
+#
+#	Add a post-build command to merge a resource file into the target
+#
+function(haiku_add_resource TARGET RSRC)
+
+	get_filename_component(shortname ${RSRC} NAME)
+
+	add_custom_command(
+		TARGET ${TARGET}
+		POST_BUILD
+		COMMAND "xres" "-o" "$<TARGET_FILE:${TARGET}>" "${RSRC}"
+		COMMENT "Merging resources from ${shortname} into ${TARGET}")
+
+endfunction()
+
+
+#
+#	Add a post-build command to run mimeset to the target
+#
+function(haiku_mimeset_target TARGET)
 
 	add_custom_command(
 		TARGET ${TARGET}
@@ -99,37 +152,76 @@ function(add_executable TARGET)
 
 endfunction()
 
-#
-# Compile a resource definition file(.rdef) to a resource file(.rsrc)
-#
-function(haiku_compile_resource_def RDEF_SOURCE)
 
+#
+#	Compile a resource definition file(.rdef) to a resource file(.rsrc)
+#
+function(haiku_add_resource_def TARGET RDEF_SOURCE)
+
+	haiku_compile_resource_def(${RDEF_SOURCE} RSRC_OUT)
+
+	get_filename_component(rsrc_target ${RSRC_OUT} NAME)
+
+	add_dependencies(${TARGET} ${rsrc_target})
+
+	haiku_add_resource(${TARGET} ${RSRC_OUT})
+
+	# somewhat ugly hack to avoid generating a dependency on the target
+	# like the regular $<TARGET_FILE> generator does
+	set(TARGET_PATH "$<TARGET_FILE_DIR:${TARGET}>/$<TARGET_FILE_NAME:${TARGET}>")
+	# remove the target(exe/lib) and force it to be rebuilt
+	add_custom_command(
+		OUTPUT "${RSRC_OUT}"
+		COMMAND "${CMAKE_COMMAND}" "-E" "remove" "-f" "${TARGET_PATH}"
+		APPEND)
+
+endfunction()
+
+
+#
+#	Compile a resource definition file(.rdef) to a resource file(.rsrc)
+#
+function(haiku_compile_resource_def RDEF_SOURCE RSRC_OUT)
+
+	get_filename_component(shortname ${RDEF_SOURCE} NAME)
 	get_filename_component(rdefpath ${RDEF_SOURCE} ABSOLUTE)
 	get_filename_component(basename ${RDEF_SOURCE} NAME_WE)
 
 	set(rsrcfile "${basename}.rsrc")
-	set(rsrcpath "${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${rsrcfile}.dir/${rsrcfile}")
-
-	get_target_property(TARGET_PATH ${TARGET} LOCATION)
-	#FIXME we need the path to the target without generating a dependency on it
-	#set(TARGET_PATH $<TARGET_FILE:${TARGET}>)
+	set(rsrcdir "${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${rsrcfile}.dir")
 
 	add_custom_command(
-		OUTPUT ${rsrcpath}
+		OUTPUT "${rsrcdir}/${rsrcfile}"
 		COMMAND "rc" "-o" "${rsrcfile}" "${rdefpath}"
-		COMMAND "${CMAKE_COMMAND}" "-E" "remove" "-f" "${TARGET_PATH}"
 		DEPENDS ${rdefpath}
-		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${rsrcfile}.dir
-		COMMENT "Compiling resource ${rsrcfile}")
+		WORKING_DIRECTORY ${rsrcdir}
+		COMMENT "Compiling resource definition ${shortname}")
 
-	add_custom_target(${rsrcfile} DEPENDS ${rsrcpath})
+	add_custom_target(${rsrcfile} DEPENDS "${rsrcdir}/${rsrcfile}")
 
 	set_source_files_properties(${rsrcfile} PROPERTIES GENERATED TRUE)
 
-	set(rsrcpath "${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${rsrcfile}.dir/${rsrcfile}" PARENT_SCOPE)
-	add_dependencies(${TARGET} ${rsrcfile})
+	set("${RSRC_OUT}" "${rsrcdir}/${rsrcfile}" PARENT_SCOPE)
 
 endfunction()
+
+
+#
+#	Add a BFS attribute to a built target
+#
+function(haiku_add_target_attr TARGET ANAME AVALUE)
+
+	#TODO allow overriding the working diretory
+	add_custom_command(
+		TARGET ${TARGET}
+		POST_BUILD
+		COMMAND sh -c "addattr -t string \"${ANAME}\" \"${AVALUE}\" '$<TARGET_FILE:${TARGET}>'"
+		WORKING_DIRECTORY $<TARGET_PROPERTY:${TARGET},SOURCE_DIR>
+		VERBATIM
+		COMMENT "Adding ${ANAME} BFS attribute to ${TARGET}")
+
+endfunction()
+
 
 #
 #	Regenerate the main locales/en.catkeys file for a target
@@ -137,6 +229,7 @@ endfunction()
 function(haiku_generate_base_catkeys TARGET)
 
 	haiku_get_app_mime_subtype("${${TARGET}-APP_MIME_SIG}" SUBTYPE)
+
 	add_custom_target(
 		"${TARGET}-generate-en.catkeys"
 		COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_SOURCE_DIR}/locales
@@ -153,10 +246,12 @@ function(haiku_generate_base_catkeys TARGET)
 
 endfunction()
 
+
 #
 #	Compile catkeys files into binary catalog files for a target
 #
 function(haiku_compile_catalogs TARGET)
+
 	haiku_get_app_mime_subtype("${${TARGET}-APP_MIME_SIG}" SUBTYPE)
 
 	if(DEFINED HAIKU_CATALOG_BUILD_DIR)
@@ -182,6 +277,7 @@ function(haiku_compile_catalogs TARGET)
 
 endfunction()
 
+
 #
 #	Compile and bind catkeys files directly into the target executable as resources
 #
@@ -201,10 +297,12 @@ function(haiku_bind_catalogs TARGET)
 
 endfunction()
 
+
 #
-# Generate install rules for catalog files
+#	Generate install rules for catalog files
 #
 function(haiku_install_catalogs TARGET)
+
 	haiku_get_app_mime_subtype("${${TARGET}-APP_MIME_SIG}" SUBTYPE)
 
 	if(DEFINED HAIKU_CATALOG_BUILD_DIR)
@@ -219,12 +317,15 @@ function(haiku_install_catalogs TARGET)
 			COMPONENT "locales"
 			EXCLUDE_FROM_ALL)
 	endforeach()
+
 endfunction()
 
+
 #
-# Split mimetype at last / if needed
+#	Split mimetype at last / if needed
 #
 function(haiku_get_app_mime_subtype APP_MIME_SIG OUTVAR)
+
 	# ensure that we have a shortened mimetype without the application/ prefix
 	# find the last / and split the mime string
 	string(FIND "${${TARGET}-APP_MIME_SIG}" "/" SUBPOS REVERSE)
@@ -232,7 +333,9 @@ function(haiku_get_app_mime_subtype APP_MIME_SIG OUTVAR)
 		set("${OUTVAR}" "${${TARGET}-APP_MIME_SIG}" PARENT_SCOPE)
 		return()
 	endif()
+
 	math(EXPR SUBPOS "${SUBPOS}+1")
 	string(SUBSTRING "${${TARGET}-APP_MIME_SIG}" "${SUBPOS}+1" "-1" SUBTYPE)
 	set("${OUTVAR}" "${SUBTYPE}" PARENT_SCOPE)
+
 endfunction()

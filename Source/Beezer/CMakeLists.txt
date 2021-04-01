@@ -1,7 +1,6 @@
 include(CMakeDependentOption)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BEEZER_BUILD_DIR})
-set(HAIKU_CATALOG_BUILD_DIR ${BEEZER_BUILD_DIR})
 
 include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}
@@ -14,11 +13,6 @@ include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}/SplitPane
 	${CMAKE_CURRENT_SOURCE_DIR}/Widgets
 )
-
-if(HAIKU_ENABLE_I18N)
-	set("Beezer-APP_MIME_SIG" "x-vnd.Ram-Beezer")
-	set("Beezer-LOCALES" "en")
-endif()
 
 add_executable(Beezer
 	Beezer.rdef
@@ -82,23 +76,18 @@ add_executable(Beezer
 target_link_libraries(Beezer "be" "tracker" "translation" "CLV")
 
 if(HAIKU_ENABLE_I18N)
+	set("Beezer-APP_MIME_SIG" "x-vnd.Ram-Beezer")
+	set("Beezer-LOCALES" "en")
 	target_link_libraries(Beezer "localestub")
+	haiku_add_i18n(Beezer)
 endif()
 
-
-option(BEEZER_EXE_ATTR_TAGGING "Enable setting BFS attributes with build information on the executable" ON)
-cmake_dependent_option(BEEZER_EXE_ATTR_HOST "Set a BFS attribute with the Haiku version of the build host" ON "BEEZER_EXE_ATTR_TAGGING" OFF)
-cmake_dependent_option(BEEZER_EXE_ATTR_GIT "Set a BFS attribute with the git revision" ON "BEEZER_EXE_ATTR_TAGGING" OFF)
-
+cmake_dependent_option(BEEZER_EXE_ATTR_HOST "Set a BFS attribute with the Haiku version of the build host" ON "HAIKU_ENABLE_TARGET_ATTRS" OFF)
 if(BEEZER_EXE_ATTR_HOST)
-	add_custom_command(
-		TARGET Beezer
-		POST_BUILD
-		COMMAND sh -c "addattr -t string 'BEEZER:HAIKU_VERSION' \"`uname -v -p`\" '$<TARGET_FILE:Beezer>'"
-		VERBATIM
-		COMMENT "Adding BEEZER:HAIKU_VERSION BFS attribute")
+	haiku_add_target_attr(Beezer "BEEZER:HAIKU_VERSION" "`uname -v -p`")
 endif()
 
+cmake_dependent_option(BEEZER_EXE_ATTR_GIT "Set a BFS attribute with the git revision" ON "HAIKU_ENABLE_TARGET_ATTRS" OFF)
 if(BEEZER_EXE_ATTR_GIT)
 	set(BEEZER_OVERRIDE_ATTR_GIT "" CACHE STRING "String to use as the git revision for the BFS attribute")
 
@@ -114,12 +103,6 @@ if(BEEZER_EXE_ATTR_GIT)
 	endif()
 
 	if(BEEZER_GIT_REVISION)
-		add_custom_command(
-			TARGET Beezer
-			POST_BUILD
-			COMMAND sh -c "addattr -t string 'BEEZER:GIT_REVISION' \"${BEEZER_GIT_REVISION}\" '$<TARGET_FILE:Beezer>'"
-			WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-			VERBATIM
-			COMMENT "Adding BEEZER:GIT_REVISION BFS attribute")
+		haiku_add_target_attr(Beezer "BEEZER:GIT_REVISION" "${BEEZER_GIT_REVISION}")
 	endif()
 endif()
