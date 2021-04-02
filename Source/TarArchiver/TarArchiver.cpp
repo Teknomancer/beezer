@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2009-2021, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
@@ -507,6 +507,35 @@ status_t TarArchiver::Create(BPath* archivePath, const char* relPath, BMessage* 
     }
 
     return result;
+}
+
+
+
+bool TarArchiver::IsTarArchive(const char *filePath) const
+{
+    // Update mime type of the file.
+    update_mime_info(filePath, false /* recursive */, true /* synchronous */, false /* force */);
+
+    // Get the updated mime type
+    BNode destNode(filePath);
+    BNodeInfo destNodeInfo(&destNode);
+    char mimeBuf[B_MIME_TYPE_LENGTH];
+    destNodeInfo.GetType(mimeBuf);
+
+    // Check if the mime type is that of a tar archive
+    for (int32 i = 0; i < m_mimeList.CountItems(); i++)
+    {
+        if (!strcmp(mimeBuf, (const char *)m_mimeList.ItemAtFast(i)))
+            return true;
+    }
+
+    // Check if the file extension is ".tar"
+    BString extensionStr = filePath;
+    int32 found = extensionStr.IFindLast(".tar");
+    if (found == extensionStr.Length() - 4)
+        return true;
+
+    return false;
 }
 
 

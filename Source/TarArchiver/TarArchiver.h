@@ -62,6 +62,8 @@ class TarArchiver : public Archiver
         status_t           Delete(char*& outputStr, BMessage* list, BMessenger* progress, volatile bool* cancel);
         status_t           ReadDelete(FILE* fp, char*& outputStr, BMessenger* progress, volatile bool* cancel);
 
+		bool			   IsTarArchive(const char *filePath) const;
+
         virtual BList      HiddenColumns(BList* columnList) const;
         virtual bool       CanReplaceFiles() const;
         virtual bool       CanPartiallyOpen() const;
