@@ -45,9 +45,23 @@
 #include <fstream>
 
 #include "XzArchiver.h"
-#include "XzStrings.h"
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
+
+
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "XzArchiver"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
+
+#define S_FASTEST "(fastest)"
+#define S_DEFAULT "(default)"
+#define S_BEST "(best)"
 
 
 
@@ -374,20 +388,27 @@ void XzArchiver::BuildDefaultMenu()
     m_settingsMenu = new BMenu(m_typeStr);
 
     // Build the compression-level sub-menu
-    ratioMenu = new BMenu(kCompressionLevel);
+    ratioMenu = new BMenu(B_TRANSLATE("Compression level"));
     ratioMenu->SetRadioMode(true);
 
-    ratioMenu->AddItem(new BMenuItem(kLevel1, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel2, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel3, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel4, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel5, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel6, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel7, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel8, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel9, NULL));
+    BString menuStr("1");
+    menuStr << " " << B_TRANSLATE(S_FASTEST);
+    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
+    ratioMenu->AddItem(new BMenuItem("2", NULL));
+    ratioMenu->AddItem(new BMenuItem("3", NULL));
+    ratioMenu->AddItem(new BMenuItem("4", NULL));
+    ratioMenu->AddItem(new BMenuItem("5", NULL));
+    menuStr = "6";
+    menuStr << " " << B_TRANSLATE(S_DEFAULT);
+    BMenuItem* defaultItem = new BMenuItem(menuStr, NULL);
+    ratioMenu->AddItem(defaultItem);
+    ratioMenu->AddItem(new BMenuItem("7", NULL));
+    ratioMenu->AddItem(new BMenuItem("8", NULL));
+    menuStr = "9";
+    menuStr << " " << B_TRANSLATE(S_BEST);
+    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
 
-    ratioMenu->FindItem(kLevel6)->SetMarked(true);
+    defaultItem->SetMarked(true);
 
     // Add sub-menus to settings menu
     m_settingsMenu->AddItem(ratioMenu);
@@ -439,7 +460,9 @@ void XzArchiver::CompressFromTemp()
 {
     // Get the compression ratio from the settings menu
     char level[10];
-    BMenu* ratioMenu = m_settingsMenu->FindItem(kLevel1)->Menu();
+    BString menuStr("1");
+    menuStr << " " << B_TRANSLATE(S_FASTEST);
+    BMenu* ratioMenu = m_settingsMenu->FindItem(menuStr)->Menu();
     sprintf(level, " -%ld ", 1 + ratioMenu->IndexOf(ratioMenu->FindMarked()));
 
     // Re-compress file, from .tar in temp to xz

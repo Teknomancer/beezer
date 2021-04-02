@@ -45,9 +45,28 @@
 #include <fstream>
 
 #include "RarArchiver.h"
-#include "RarStrings.h"
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
+
+
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "RarArchiver"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
+
+#define S_FASTEST "(fastest)"
+#define S_DEFAULT "(default)"
+#define S_BEST "(best)"
+#define S_NO_OVERWRITE "Never overwrite existing files"
+#define S_UPDATE_FILES "Update files, create if needed"
+#define S_FRESHEN_FILES "Freshen existing files, create none"
+#define S_KEEP_BROKEN "Keep broken extracted files"
+#define S_PROCESS_ATTRS "Process attributes"
 
 
 
@@ -218,11 +237,11 @@ status_t RarArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
 
     if (progress)        // Only enable extract options when user is NOT viewing
     {
-        if (m_settingsMenu->FindItem(kNoOverwrite)->IsMarked())
+        if (m_settingsMenu->FindItem(B_TRANSLATE(S_NO_OVERWRITE))->IsMarked())
             m_pipeMgr << "-o-";
-        else if (m_settingsMenu->FindItem(kUpdate)->IsMarked())
+        else if (m_settingsMenu->FindItem(B_TRANSLATE(S_UPDATE_FILES))->IsMarked())
             m_pipeMgr << "-u";
-        else if (m_settingsMenu->FindItem(kFreshen)->IsMarked())
+        else if (m_settingsMenu->FindItem(B_TRANSLATE(S_FRESHEN_FILES))->IsMarked())
             m_pipeMgr << "-f";
         else
             m_pipeMgr << "-o+";
@@ -230,10 +249,10 @@ status_t RarArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
     else
         m_pipeMgr << "-o+";
 
-    if (m_settingsMenu->FindItem(kKeepBroken)->IsMarked())
+    if (m_settingsMenu->FindItem(B_TRANSLATE(S_KEEP_BROKEN))->IsMarked())
         m_pipeMgr << "-kb";
 
-    if (m_settingsMenu->FindItem(kProcessAttributes)->IsMarked() == false)
+    if (m_settingsMenu->FindItem(B_TRANSLATE(S_PROCESS_ATTRS))->IsMarked() == false)
         m_pipeMgr << "-ee";
 
     if (Password().Length() > 0)
@@ -515,34 +534,34 @@ void RarArchiver::BuildDefaultMenu()
     m_settingsMenu = new BMenu(m_typeStr);
 
     // Build the "While Extracting" sub-menu
-    extractMenu = new BMenu(kExtracting);
+    extractMenu = new BMenu(B_TRANSLATE("While extracting"));
     extractMenu->SetRadioMode(true);
 
-    item = new BMenuItem(kAlwaysOverwrite, NULL);
+    item = new BMenuItem(B_TRANSLATE("Always overwrite (default)"), NULL);
     item->SetMarked(true);
     extractMenu->AddItem(item);
 
-    item = new BMenuItem(kNoOverwrite, NULL);
+    item = new BMenuItem(B_TRANSLATE(S_NO_OVERWRITE), NULL);
     item->SetMarked(false);
     extractMenu->AddItem(item);
 
-    item = new BMenuItem(kUpdate, NULL);
+    item = new BMenuItem(B_TRANSLATE(S_UPDATE_FILES), NULL);
     item->SetMarked(false);
     extractMenu->AddItem(item);
 
-    item = new BMenuItem(kFreshen, NULL);
+    item = new BMenuItem(B_TRANSLATE(S_FRESHEN_FILES), NULL);
     item->SetMarked(false);
     extractMenu->AddItem(item);
 
     // Build the "Other Options" sub-menu
-    othersMenu = new BMenu(kOtherOptions);
+    othersMenu = new BMenu(B_TRANSLATE("Other options"));
     othersMenu->SetRadioMode(false);
 
-    item = new BMenuItem(kProcessAttributes, new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(S_PROCESS_ATTRS), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(true);
     othersMenu->AddItem(item);
 
-    item = new BMenuItem(kKeepBroken, new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(S_KEEP_BROKEN), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(false);
     othersMenu->AddItem(item);
 

@@ -35,7 +35,7 @@ add_subdirectory(Beezer)
 add_subdirectory(TrackerAddOn)
 add_subdirectory(FileJoinerStub)
 
-#add_subdirectory(ArjArchiver) #arj support disabled until a proper package is created for Haiku
+add_subdirectory(ArjArchiver)
 add_subdirectory(BZipArchiver)
 add_subdirectory(GZipArchiver)
 add_subdirectory(LhaArchiver)

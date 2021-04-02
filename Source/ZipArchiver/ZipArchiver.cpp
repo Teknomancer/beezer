@@ -45,9 +45,29 @@
 #include <fstream>
 
 #include "ZipArchiver.h"
-#include "ZipStrings.h"
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
+
+
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "XzArchiver"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
+
+#define S_NONE "(none)"
+#define S_FASTEST "(fastest)"
+#define S_BEST_DEFAULT "(best,default)"
+#define S_DIR_RECURSE "Recurse into folders"
+#define S_DIR_EXTRACT "Extract folders"
+#define S_EXTRACT_ATTRS "Extract attributes"
+#define S_NO_OVERWRITE "Never overwrite existing files"
+#define S_UPDATE_FILES "Update files, create if needed"
+#define S_FRESHEN_FILES "Freshen existing files, create none"
 
 
 
@@ -220,22 +240,22 @@ status_t ZipArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
     // Setup argv, fill with selection names if needed
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_unzipPath;
-    if (m_settingsMenu->FindItem(kExtractAttribs)->IsMarked() == true)
+    if (m_settingsMenu->FindItem(B_TRANSLATE(S_EXTRACT_ATTRS))->IsMarked() == true)
         m_pipeMgr << "-o";
     else
         m_pipeMgr << "-Jo";
 
     // For normal quick-extraction i.e. with no Progressbar don't junk directories
-    if (m_settingsMenu->FindItem(kDirExtract)->IsMarked() == false && progress != NULL)
+    if (m_settingsMenu->FindItem(B_TRANSLATE(S_DIR_EXTRACT))->IsMarked() == false && progress != NULL)
         m_pipeMgr << "-j";
 
     if (progress)    // Use extract options only when user is NOT viewing
     {
-        if (m_settingsMenu->FindItem(kNoOverwrite)->IsMarked() == true)
+        if (m_settingsMenu->FindItem(B_TRANSLATE(S_NO_OVERWRITE))->IsMarked() == true)
             m_pipeMgr << "-n";
-        else if (m_settingsMenu->FindItem(kUpdate)->IsMarked() == true)
+        else if (m_settingsMenu->FindItem(B_TRANSLATE(S_UPDATE_FILES))->IsMarked() == true)
             m_pipeMgr << "-u";
-        else if (m_settingsMenu->FindItem(kUpdateOnly)->IsMarked() == true)
+        else if (m_settingsMenu->FindItem(B_TRANSLATE(S_FRESHEN_FILES))->IsMarked() == true)
             m_pipeMgr << "-f";
     }
 
@@ -577,11 +597,13 @@ status_t ZipArchiver::Add(bool createMode, const char* relativePath, BMessage* m
 
     m_pipeMgr.FlushArgs();
     char level[10];
-    BMenu* ratioMenu = m_settingsMenu->FindItem(kLevel0)->Menu();
+    BString menuStr("0");
+    menuStr << " " << B_TRANSLATE(S_NONE);
+    BMenu* ratioMenu = m_settingsMenu->FindItem(menuStr)->Menu();
 
     sprintf(level, "-%ld", ratioMenu->IndexOf(ratioMenu->FindMarked()));
     m_pipeMgr << m_zipPath << "-y" << level;
-    if (m_settingsMenu->FindItem(kDirRecurse)->IsMarked() == true)
+    if (m_settingsMenu->FindItem(B_TRANSLATE(S_DIR_RECURSE))->IsMarked() == true)
         m_pipeMgr << "-r";
 
     m_pipeMgr << m_archivePath.Path();
@@ -824,55 +846,62 @@ void ZipArchiver::BuildDefaultMenu()
     m_settingsMenu = new BMenu(m_typeStr);
 
     // Build the compression-level sub-menu (sorry we can't avoid using english strings here)
-    ratioMenu = new BMenu(kCompressionLevel);
+    ratioMenu = new BMenu(B_TRANSLATE("Compression level"));
     ratioMenu->SetRadioMode(true);
 
-    ratioMenu->AddItem(new BMenuItem(kLevel0, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel1, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel2, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel3, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel4, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel5, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel6, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel7, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel8, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel9, NULL));
+    BString menuStr("0");
+    menuStr << " " << B_TRANSLATE(S_NONE);
+    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
+    menuStr = "1";
+    menuStr << " " << B_TRANSLATE(S_FASTEST);
+    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
+    ratioMenu->AddItem(new BMenuItem("2", NULL));
+    ratioMenu->AddItem(new BMenuItem("3", NULL));
+    ratioMenu->AddItem(new BMenuItem("4", NULL));
+    ratioMenu->AddItem(new BMenuItem("5", NULL));
+    ratioMenu->AddItem(new BMenuItem("6", NULL));
+    ratioMenu->AddItem(new BMenuItem("7", NULL));
+    ratioMenu->AddItem(new BMenuItem("8", NULL));
+    menuStr = "9";
+    menuStr << " " << B_TRANSLATE(S_BEST_DEFAULT);
+    BMenuItem* defaultItem = new BMenuItem(menuStr, NULL);
+    ratioMenu->AddItem(defaultItem);
 
-    ratioMenu->FindItem(kLevel9)->SetMarked(true);
+    defaultItem->SetMarked(true);
 
     // Build the "While adding" sub-menu
-    addMenu = new BMenu(kAdding);
+    addMenu = new BMenu(B_TRANSLATE("While adding"));
     addMenu->SetRadioMode(false);
 
-    item = new BMenuItem(kArchiveAttribs, new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE("Add attributes"), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(true);
     addMenu->AddItem(item);
 
-    item = new BMenuItem(kDirRecurse, new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(S_DIR_RECURSE), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(true);
     addMenu->AddItem(item);
 
     // Build the extract sub-menu
-    extractMenu = new BMenu(kExtracting);
+    extractMenu = new BMenu(B_TRANSLATE("While extracting"));
     extractMenu->SetRadioMode(false);
 
-    item = new BMenuItem(kExtractAttribs, new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(S_EXTRACT_ATTRS), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(true);
     extractMenu->AddItem(item);
 
-    item = new BMenuItem(kDirExtract, new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(S_DIR_EXTRACT), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(true);
     extractMenu->AddItem(item);
 
-    item = new BMenuItem(kNoOverwrite, new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(S_NO_OVERWRITE), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(false);
     extractMenu->AddItem(item);
 
-    item = new BMenuItem(kUpdate, new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(S_UPDATE_FILES), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(false);
     extractMenu->AddItem(item);
 
-    item = new BMenuItem(kUpdateOnly, new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(S_FRESHEN_FILES), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(false);
     extractMenu->AddItem(item);
 

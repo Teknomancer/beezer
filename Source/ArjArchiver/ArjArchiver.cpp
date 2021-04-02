@@ -45,9 +45,27 @@
 #include <fstream>
 
 #include "ArjArchiver.h"
-#include "ArjStrings.h"
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
+
+
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "BZipArchiver"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
+
+#define S_NONE "(none)"
+#define S_FASTEST "(fastest)"
+#define S_BEST_DEFAULT "(best,default)"
+#define S_RECURSE_DIRS "Recurse into folders"
+#define S_UPDATE_FILES "Update files (new and newer)"
+#define S_FRESHEN_FILES "Freshen existing files"
+#define S_MULTI_VOLUMES "Enable multiple volumes"
 
 
 
@@ -55,8 +73,6 @@ Archiver* load_archiver()
 {
     return new ArjArchiver();
 }
-
-
 
 
 
@@ -226,13 +242,13 @@ status_t ArjArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
     // For quick-extraction (that is - viewing etc) don't process the below switches
     if (progress)
     {
-        if (m_settingsMenu->FindItem(kUpdate)->IsMarked() == true)
+        if (m_settingsMenu->FindItem(B_TRANSLATE(S_UPDATE_FILES))->IsMarked() == true)
             m_pipeMgr << "-u";
-        else if (m_settingsMenu->FindItem(kFreshen)->IsMarked() == true)
+        else if (m_settingsMenu->FindItem(B_TRANSLATE(S_FRESHEN_FILES))->IsMarked() == true)
             m_pipeMgr << "-f";
     }
 
-    if (m_settingsMenu->FindItem(kMultiVolume)->IsMarked() == true)
+    if (m_settingsMenu->FindItem(B_TRANSLATE(S_MULTI_VOLUMES))->IsMarked() == true)
         m_pipeMgr << "-v";
 
     m_pipeMgr << m_archivePath.Path() << dirPath.Path();
@@ -479,22 +495,26 @@ status_t ArjArchiver::Add(bool createMode, const char* relativePath, BMessage* m
     m_pipeMgr << m_arjPath << "a" << "-i";
 
     // Add addtime options
-    BMenu* ratioMenu = m_settingsMenu->FindItem(kLevel0)->Menu();
+    BString noneMenuStr("0");
+    noneMenuStr << " " << B_TRANSLATE(S_NONE);
+    BString fastestMenuStr("4");
+    fastestMenuStr << " " << B_TRANSLATE(S_FASTEST);
+    BMenu* ratioMenu = m_settingsMenu->FindItem(noneMenuStr)->Menu();
     BString level = ratioMenu->FindMarked()->Label();
-    if (level == kLevel0)
+    if (level == noneMenuStr)
         level = "-m0";
-    else if (level == kLevel1)
+    else if (level == "2")
         level = "-m4";
-    else if (level == kLevel2)
+    else if (level == "3")
         level = "-m3";
-    else if (level == kLevel1)
+    else if (level == fastestMenuStr)
         level = "-m2";
     else
         level = "-m1";
 
     m_pipeMgr << level.String();
 
-    if (m_settingsMenu->FindItem(kDirRecurse)->IsMarked())
+    if (m_settingsMenu->FindItem(B_TRANSLATE(S_RECURSE_DIRS))->IsMarked())
         m_pipeMgr << "-r";
 
     m_pipeMgr << m_archivePath.Path();
@@ -733,32 +753,39 @@ void ArjArchiver::BuildDefaultMenu()
     m_settingsMenu = new BMenu(m_typeStr);
 
     // Build the compression-level sub-menu (sorry we can't avoid using english strings here)
-    ratioMenu = new BMenu(kCompressionLevel);
+    ratioMenu = new BMenu(B_TRANSLATE("Compression level"));
     ratioMenu->SetRadioMode(true);
 
-    ratioMenu->AddItem(new BMenuItem(kLevel0, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel1, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel2, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel3, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel4, NULL));
+    BString menuStr("0");
+    menuStr << " " << B_TRANSLATE(S_NONE);
+    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
+    menuStr = "4";
+    menuStr << " " << B_TRANSLATE(S_FASTEST);
+    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
+    ratioMenu->AddItem(new BMenuItem("3", NULL));
+    ratioMenu->AddItem(new BMenuItem("2", NULL));
+    menuStr = "1";
+    menuStr << " " << B_TRANSLATE(S_BEST_DEFAULT);
+    BMenuItem* defaultItem = new BMenuItem(menuStr, NULL);
+    ratioMenu->AddItem(defaultItem);
 
-    ratioMenu->FindItem(kLevel4)->SetMarked(true);
+    defaultItem->SetMarked(true);
 
     // Build the "While adding" sub-menu
-    addMenu = new BMenu(kAdding);
+    addMenu = new BMenu(B_TRANSLATE("While adding"));
     addMenu->SetRadioMode(false);
 
-    item = new BMenuItem(kDirRecurse, new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(S_RECURSE_DIRS), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(true);
     addMenu->AddItem(item);
 
     // Build the extract sub-menu
-    extractMenu = new BMenu(kExtracting);
+    extractMenu = new BMenu(B_TRANSLATE("While extracting"));
     extractMenu->SetRadioMode(false);
 
-    extractMenu->AddItem(new BMenuItem(kUpdate, new BMessage(BZR_MENUITEM_SELECTED)));
-    extractMenu->AddItem(new BMenuItem(kFreshen, new BMessage(BZR_MENUITEM_SELECTED)));
-    item = new BMenuItem(kMultiVolume, new BMessage(BZR_MENUITEM_SELECTED));
+    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(S_UPDATE_FILES), new BMessage(BZR_MENUITEM_SELECTED)));
+    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(S_FRESHEN_FILES), new BMessage(BZR_MENUITEM_SELECTED)));
+    item = new BMenuItem(B_TRANSLATE(S_MULTI_VOLUMES), new BMessage(BZR_MENUITEM_SELECTED));
     extractMenu->AddItem(item);
     item->SetMarked(true);
 
