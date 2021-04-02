@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2009-2021, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011-2021, Chris Roberts
  * Copyright (c) 2011, Marcin Konicki (aka ahwayakchih)
  * All rights reserved.
@@ -147,9 +147,7 @@ status_t z7Archiver::ReadOpen(FILE* fp)
             m_entriesList.AddItem(new ArchiveEntry(true, pathStr, sizeStr, packedStr, timeValue, "", ""));
         }
         else
-        {
             m_entriesList.AddItem(new ArchiveEntry(false, pathStr, sizeStr, packedStr, timeValue, "", ""));
-        }
     }
 
     return BZR_DONE;
