@@ -176,7 +176,7 @@ char* RuleMgr::ValidateFileType(BPath* filePath) const
     status_t result = nodeInfo.SetType("application/octet-stream");
     update_mime_info(filePath->Path(), false, true, B_UPDATE_MIME_INFO_FORCE_UPDATE_ALL);
 
-    if (result != B_OK && extensionIndex >= 0L)
+    if (result == B_OK && extensionIndex >= 0L)
     {
         // If extension matched but not mime type return a mime type from the rule's list
         // This is for archives on , say, a CD without mime-types but with extensions
