@@ -38,6 +38,7 @@
 #include <Debug.h>
 #include <Autolock.h>
 
+#include <cassert>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -82,8 +83,7 @@ BString StringFromBytes(int64 v)
 
 inline uint64 DigitalUnitToBytes(char *str)
 {
-    if (!str)
-        return 0;
+    assert(str);
     if (!strcasecmp(str, "bytes") || !strcasecmp(str, "B"))
         return 1;
     if (!strcasecmp(str, "KB") || !strcasecmp(str, "KiB"))
@@ -103,10 +103,26 @@ inline uint64 DigitalUnitToBytes(char *str)
 
 BString StringFromDigitalSize(char *size, char *unit)
 {
-	uint64 const bytes = (uint64)(atof(size) * (double)DigitalUnitToBytes(unit));
-	BString bytesStr;
-	bytesStr << bytes;
-	return bytesStr;
+    char buf[128];
+    memset(&buf[0], 0, sizeof(buf));
+    assert(size);
+    assert(unit);
+
+    // Sometimes archivers comma-separate floating point numbers.
+    // But "atof" (below) doesn't understand ",". Therefore we need to feed
+    // sanitized floating point numbers (just digits and decimal) to "atof".
+    size_t i = 0;
+    while (*size)
+    {
+        if (isdigit(*size) || *size == '.')
+            buf[i++] = *size;
+        *size++;
+    }
+
+    uint64 const bytes = (uint64)(atof(buf) * (double)DigitalUnitToBytes(unit));
+    BString bytesStr;
+    bytesStr << bytes;
+    return bytesStr;
 }
 
 
@@ -140,14 +156,18 @@ int32 CountCharsInFront(char* str, char whatChar)
 
 
 
-bool StrEndsWith(char* str, char* end)
+bool StrEndsWith(const char* str, const char* end)
 {
+    assert(str);
+    assert(end);
     // Check if the given "str" ends with "end"
-    *str += strlen(str) - strlen(end) - 2;
-    if (strcmp(str, end) == 0)
+    size_t const endLen = strlen(end);
+    size_t const strLen = strlen(str);
+    if (endLen <= strLen)
+        str += strLen - endLen;
+    if (!strcmp(str, end))
         return true;
-    else
-        return false;
+    return false;
 }
 
 

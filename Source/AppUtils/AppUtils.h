@@ -51,7 +51,7 @@ extern char*          Extension(const char* fileName, int extLen);
 extern char*          ParentPath(const char* pathStr, bool truncateSlash);
 extern const char*    LeafFromPath(const char* path);
 extern const char*    FinalPathComponent(const char* path);
-extern bool           StrEndsWith(char* str, char* end);
+extern bool           StrEndsWith(const char* str, const char* end);
 extern BString        SupressWildcards(const char* str);
 extern BString        SupressWildcardSet(const char* str);
 
