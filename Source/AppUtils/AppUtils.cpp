@@ -80,6 +80,27 @@ BString StringFromBytes(int64 v)
 
 
 
+uint64 DigitalUnitToBytes(char *str)
+{
+    if (!str)
+        return 0;
+    if (!strcasecmp(str, "bytes") || !strcasecmp(str, "B"))
+        return 1;
+    if (!strcasecmp(str, "KB") || !strcasecmp(str, "KiB"))
+        return 1024;
+    if (!strcasecmp(str, "MB") || !strcasecmp(str, "MiB"))
+        return 1024ULL * 1024ULL;
+    if (!strcasecmp(str, "GB") || !strcasecmp(str, "GiB"))
+        return 1024ULL * 1024ULL * 1024ULL ;
+    if (!strcasecmp(str, "TB") || !strcasecmp(str, "TiB"))
+        return 1024ULL * 1024ULL * 1024ULL * 1024ULL ;
+    if (!strcasecmp(str, "PB") || !strcasecmp(str, "PiB"))
+        return 1024ULL * 1024ULL * 1024ULL * 1024ULL * 1024ULL;
+    return 0;
+}
+
+
+
 int32 LastOccurrence(const char* str, char whatChar)
 {
     // Move "str" to the last occurrence of "whatChar" also count and return number of occurrences
