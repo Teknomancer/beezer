@@ -112,7 +112,7 @@ BString StringFromDigitalSize(char *size, char *unit)
     // But "atof" (below) doesn't understand ",". Therefore we need to feed
     // sanitized floating point numbers (just digits and decimal) to "atof".
     size_t i = 0;
-    while (*size)
+    while (*size && i < sizeof(buf) - 1)
     {
         if (isdigit(*size) || *size == '.')
             buf[i++] = *size;
