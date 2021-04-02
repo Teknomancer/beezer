@@ -44,7 +44,7 @@ extern BLocker        _apputils_locker;
 
 // Global functions (these should never access data/resources defined outside them)
 extern BString        StringFromBytes(int64 bytes);
-extern uint64         DigitalUnitToBytes(char *str);
+extern BString        StringFromDigitalSize(char *size, char *unit);
 extern int32          CountCharsInFront(char* str, char whatChar);
 extern int32          LastOccurrence(const char* buffer, char whatChar);
 extern char*          Extension(const char* fileName, int extLen);

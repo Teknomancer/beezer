@@ -80,7 +80,7 @@ BString StringFromBytes(int64 v)
 
 
 
-uint64 DigitalUnitToBytes(char *str)
+inline uint64 DigitalUnitToBytes(char *str)
 {
     if (!str)
         return 0;
@@ -97,6 +97,16 @@ uint64 DigitalUnitToBytes(char *str)
     if (!strcasecmp(str, "PB") || !strcasecmp(str, "PiB"))
         return 1024ULL * 1024ULL * 1024ULL * 1024ULL * 1024ULL;
     return 0;
+}
+
+
+
+BString StringFromDigitalSize(char *size, char *unit)
+{
+	uint64 const bytes = (uint64)(atof(size) * (double)DigitalUnitToBytes(unit));
+	BString bytesStr;
+	bytesStr << bytes;
+	return bytesStr;
 }
 
 
