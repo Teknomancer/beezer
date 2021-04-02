@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2009-2021, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
@@ -108,23 +108,7 @@ status_t BZipArchiver::Open(entry_ref* ref, BMessage* fileList)
     m_pipeMgr << "/bin/sh" << "-c" << cmd.String();
     m_pipeMgr.Pipe();
 
-    // Now check if its a pure BZip file or a .tar.gz
-    update_mime_info(destPath.String(), false, true, false);
-    BNode destNode(destPath.String());
-    BNodeInfo destNodeInfo(&destNode);
-    char mimeBuf[B_MIME_TYPE_LENGTH];
-    destNodeInfo.GetType(mimeBuf);
-
-    // 0.08 -- Check if extension is ".tar"
-    bool isTarExtension = false;
-    BString extensionStr = destPath.String();
-    int32 found = extensionStr.IFindLast(".tar");
-    if (found == extensionStr.Length() - 4)
-        isTarExtension = true;
-
-    m_tarArk = false;
-    if (strcmp(mimeBuf, "application/tar") == 0 || strcmp(mimeBuf, "application/x-tar") == 0 ||
-            isTarExtension == true)
+    if (TarArchiver::IsTarArchive(destPath.String()))
     {
         m_tarArk = true;
         BEntry destEntry(destPath.String(), false);
@@ -136,29 +120,29 @@ status_t BZipArchiver::Open(entry_ref* ref, BMessage* fileList)
         m_archivePath.SetTo(ref);
         strcpy(m_arkFilePath, m_archivePath.Path());
         m_archiveRef = *ref;
+
         return exitCode;
     }
-    else        // its a pure BZip2
-    {
-        // bzip2 does not list its file like gzip, so we fake it :)
-        char sizeStr[30], pathStr[B_PATH_NAME_LENGTH];
-        time_t modTime;
-        BEntry archiveEntry(m_archivePath.Path(), true);
-        archiveEntry.GetModificationTime(&modTime);
 
-        off_t size;
-        BEntry deflatedEntry(destPath.String(), false);
-        if (deflatedEntry.Exists() == false)
-            return BZR_ERRSTREAM_FOUND;
+    // It's a "pure" BZip2.
+    // bzip2 does not list its file like gzip, so we fake it :)
+    m_tarArk = false;
+    char sizeStr[30], pathStr[B_PATH_NAME_LENGTH];
+    time_t modTime;
+    BEntry archiveEntry(m_archivePath.Path(), true);
+    archiveEntry.GetModificationTime(&modTime);
 
-        deflatedEntry.GetSize(&size);
-        sprintf(sizeStr, "%Ld", size);
-        BPath tempPath(destPath.String());
-        strcpy(pathStr, tempPath.Leaf());
+    off_t size;
+    BEntry deflatedEntry(destPath.String(), false);
+    if (deflatedEntry.Exists() == false)
+        return BZR_ERRSTREAM_FOUND;
 
-        m_entriesList.AddItem(new ArchiveEntry(false, tempPath.Leaf(), sizeStr, "-", modTime, "-", "-"));
-    }
+    deflatedEntry.GetSize(&size);
+    sprintf(sizeStr, "%Ld", size);
+    BPath tempPath(destPath.String());
+    strcpy(pathStr, tempPath.Leaf());
 
+    m_entriesList.AddItem(new ArchiveEntry(false, tempPath.Leaf(), sizeStr, "-", modTime, "-", "-"));
 
     return BZR_DONE;
 }
