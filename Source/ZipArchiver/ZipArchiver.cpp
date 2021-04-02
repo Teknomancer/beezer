@@ -78,8 +78,6 @@ Archiver* load_archiver()
 
 
 
-
-
 ZipArchiver::ZipArchiver()
 {
     // The list of supported mimetypes by this add-on, note the first (index 0) mime-type
@@ -117,11 +115,9 @@ status_t ZipArchiver::ReadOpen(FILE* fp)
          monthStr[5], yearStr[8], hourStr[5], minuteStr[5], crcStr[25],
          pathStr[B_PATH_NAME_LENGTH + 1];
 
-    do
-    {
+    do {
         fgets(lineString, len, fp);
-    }
-    while (!feof(fp) && (strstr(lineString, "--------") == NULL));
+    } while (!feof(fp) && (strstr(lineString, "--------") == NULL));
 
     fgets(lineString, len, fp);
 
@@ -131,27 +127,19 @@ status_t ZipArchiver::ReadOpen(FILE* fp)
 
         sscanf(lineString,
                " %[0-9]  %[^ ] %[0-9]  %[^ ]  %[0-9]-%[0-9]-%[0-9] %[0-9]:%[0-9]  %[^ ]%[^\n]",
-               sizeStr, methodStr, packedStr, ratioStr, monthStr, dayStr, yearStr, hourStr, minuteStr, crcStr,
-               pathStr);
+               sizeStr, methodStr, packedStr, ratioStr, monthStr, dayStr, yearStr, hourStr, minuteStr, crcStr, pathStr);
 
-        // Workaround bug fix, for paths with space before
-        BString pathString = pathStr;
-        pathString.Remove(0, 2);
+        const char *pathString = &pathStr[2];
 
-        struct tm timeStruct; time_t timeValue;
+        struct tm timeStruct;
+        time_t timeValue;
         MakeTime(&timeStruct, &timeValue, dayStr, monthStr, yearStr, hourStr, minuteStr, "00");
 
-        // Check to see if last char of pathStr = '/' add it as folder, else as a file
-        uint16 pathLength = pathString.Length() - 1;
-        if (pathString[pathLength] == '/')
-        {
-            m_entriesList.AddItem(new ArchiveEntry(true, pathString.String(), sizeStr, packedStr, timeValue, methodStr, crcStr));
-        }
+        if (StrEndsWith(pathString, "/"))
+            m_entriesList.AddItem(new ArchiveEntry(true, pathString, sizeStr, packedStr, timeValue, methodStr, crcStr));
         else
-        {
-            m_entriesList.AddItem(new ArchiveEntry(false, pathString.String(), sizeStr, packedStr, timeValue, methodStr, crcStr));
-        }
-
+            m_entriesList.AddItem(new ArchiveEntry(false, pathString, sizeStr, packedStr, timeValue, methodStr, crcStr));
+ 
         fgets(lineString, len, fp);
     }
 
