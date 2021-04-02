@@ -26,14 +26,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "ZstdArchiver.h"
+#include "ArchiveEntry.h"
+#include "AppUtils.h"
+
+#include <cassert>
 #include <NodeInfo.h>
 #include <Messenger.h>
 #include <Menu.h>
 #include <MenuItem.h>
 
-#include "ZstdArchiver.h"
-#include "ArchiveEntry.h"
-#include "AppUtils.h"
 
 
 #ifdef HAIKU_ENABLE_I18N
@@ -94,8 +96,7 @@ status_t ZstdArchiver::ReadOpen(FILE* fp)
     {
         lineString[strlen(lineString) - 1] = '\0';
 
-        sscanf(lineString,
-               " %[^ ] %[^ ] %[^ ] %[^ ] %[^ ] %[^ ] %[^ ] %[^ ]%[^\n]",
+        sscanf(lineString, " %[^ ] %[^ ] %[^ ] %[^ ] %[^ ] %[^ ] %[^ ] %[^ ] %[^\n]",
                framesStr, skipsStr, packedStr, packedUnitStr, sizeStr, sizeUnitStr, ratioStr, checkStr, pathStr);
 
         BString packedString = StringFromDigitalSize(packedStr, packedUnitStr);
@@ -108,10 +109,10 @@ status_t ZstdArchiver::ReadOpen(FILE* fp)
         BEntry archiveEntry(m_archivePath.Path(), true);
         archiveEntry.GetModificationTime(&modTime);
 
-        // Zstd only compresses files as a single block with multiple frames, but frames
-        // don't contain info. on filenames, types etc. so pathStr shouldn't never end with '/'
-        BString filenameStr = FinalPathComponent(pathStr);
-        m_entriesList.AddItem(new ArchiveEntry(false, filenameStr.String(), sizeString.String(), packedString.String(),
+        // Zstd is a block compresses that contains only one file/block, so the path cannot ever be a folder.
+        assert(!StrEndsWith(pathStr, "/"));
+        assert(FinalPathComponent(pathStr) == pathStr);
+        m_entriesList.AddItem(new ArchiveEntry(false, pathStr, sizeString.String(), packedString.String(),
                                                 modTime, "-", checkStr));
     }
 
