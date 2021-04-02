@@ -158,70 +158,55 @@ status_t GZipArchiver::Open(entry_ref* ref, BMessage* fileList)
     m_pipeMgr << "/bin/sh" << "-c" << cmd.String();
     m_pipeMgr.Pipe();
 
-    // Now check if its a pure GZip file or a .tar.gz
-    update_mime_info(destPath.String(), false, true, false);
-    BNode destNode(destPath.String());
-    BNodeInfo destNodeInfo(&destNode);
-    char mimeBuf[B_MIME_TYPE_LENGTH];
-    destNodeInfo.GetType(mimeBuf);
-
-    // 0.08 -- Check if extension is ".tar"
-    bool isTarExtension = false;
-    BString extensionStr = destPath.String();
-    int32 found = extensionStr.IFindLast(".tar");
-    if (found == extensionStr.Length() - 4)
-        isTarExtension = true;
-
-    m_tarArk = false;
-    if (strcmp(mimeBuf, "application/tar") == 0 || strcmp(mimeBuf, "application/x-tar") == 0 ||
-            isTarExtension == true)
+    if (TarArchiver::IsTarArchive(destPath.String()))
     {
         m_tarArk = true;
         BEntry destEntry(destPath.String(), false);
         entry_ref destRef;
         destEntry.GetRef(&destRef);
+
         status_t exitCode = TarArchiver::Open(&destRef, fileList);
 
         // Reset these as TarArchiver's Open() would have changed them
         m_archivePath.SetTo(ref);
         strcpy(m_arkFilePath, m_archivePath.Path());
         m_archiveRef = *ref;
+
         return exitCode;
     }
-    else        // its a pure GZip
-    {
-        m_pipeMgr.FlushArgs();
-        m_pipeMgr << m_gzipPath << "-lv" << m_archivePath.Leaf();
 
-        FILE* out, *err;
-        int outdes[2], errdes[2];
+    // It's a "pure" GZip.
+    m_tarArk = false;
+    m_pipeMgr.FlushArgs();
+    m_pipeMgr << m_gzipPath << "-lv" << m_archivePath.Leaf();
 
-        BPath parentPath;
-        m_archivePath.GetParent(&parentPath);
-        chdir(parentPath.Path());
-        thread_id tid = m_pipeMgr.Pipe(outdes, errdes);
+    FILE* out, *err;
+    int outdes[2], errdes[2];
 
-        if (tid == B_ERROR || tid == B_NO_MEMORY)
-            return B_ERROR;        // Handle unloadable error here
+    BPath parentPath;
+    m_archivePath.GetParent(&parentPath);
+    chdir(parentPath.Path());
+    thread_id tid = m_pipeMgr.Pipe(outdes, errdes);
 
-        status_t exitCode;
-        resume_thread(tid);
+    if (tid == B_ERROR || tid == B_NO_MEMORY)
+        return B_ERROR;        // Handle unloadable error here
 
-        close(errdes[1]);
-        close(outdes[1]);
+    status_t exitCode;
+    resume_thread(tid);
 
-        out = fdopen(outdes[0], "r");
-        exitCode = ReadOpen(out);
+    close(errdes[1]);
+    close(outdes[1]);
 
-        close(outdes[0]);
-        fclose(out);
+    out = fdopen(outdes[0], "r");
+    exitCode = ReadOpen(out);
 
-        err = fdopen(errdes[0], "r");
-        exitCode = Archiver::ReadErrStream(err, NULL);
-        close(errdes[0]);
-        fclose(err);
-    }
+    close(outdes[0]);
+    fclose(out);
 
+    err = fdopen(errdes[0], "r");
+    exitCode = Archiver::ReadErrStream(err, NULL);
+    close(errdes[0]);
+    fclose(err);
 
     return BZR_DONE;
 }
