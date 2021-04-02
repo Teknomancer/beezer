@@ -46,9 +46,23 @@
 #include <fstream>
 
 #include "LhaArchiver.h"
-#include "LhaStrings.h"
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
+
+
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "LhaArchiver"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
+
+#define S_FASTEST "(fastest)"
+#define S_BEST "(best)"
+#define S_LHARC_COMPAT "LHarc compatible format"
 
 
 
@@ -455,10 +469,12 @@ status_t LhaArchiver::Add(bool createMode, const char* relativePath, BMessage* m
     // deleted, (lha binary) deletes the archive itself
     m_pipeMgr.FlushArgs();
     char level[10];
-    BMenu* ratioMenu = m_settingsMenu->FindItem(kLevel0)->Menu();
+    BString menuStr("0");
+    menuStr << " " << B_TRANSLATE(S_FASTEST);
+    BMenu* ratioMenu = m_settingsMenu->FindItem(menuStr)->Menu();
 
     BString buf = "-a";
-    if (m_settingsMenu->FindItem(kGenericArk)->IsMarked() == true)
+    if (m_settingsMenu->FindItem(B_TRANSLATE(S_LHARC_COMPAT))->IsMarked() == true)
         buf << "g";
 
     sprintf(level, "%ld", ratioMenu->IndexOf(ratioMenu->FindMarked()));
@@ -719,20 +735,25 @@ void LhaArchiver::BuildDefaultMenu()
     m_settingsMenu = new BMenu(m_typeStr);
 
     // Build the header-level sub-menu
-    ratioMenu = new BMenu(kHeaderLevel);
+    ratioMenu = new BMenu(B_TRANSLATE("Header level"));
     ratioMenu->SetRadioMode(true);
 
-    ratioMenu->AddItem(new BMenuItem(kLevel0, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel1, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel2, NULL));
+    BString menuStr("0");
+    menuStr << " " << B_TRANSLATE(S_FASTEST);
+    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
+    ratioMenu->AddItem(new BMenuItem("1", NULL));
+    menuStr = "2";
+    menuStr << " " << B_TRANSLATE(S_BEST);
+    BMenuItem* defaultItem = new BMenuItem(menuStr, NULL);
+    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
 
-    ratioMenu->FindItem(kLevel2)->SetMarked(true);
+    defaultItem->SetMarked(true);
 
     // Build the "Other options" sub-menu
-    otherMenu = new BMenu(kOtherOptions);
+    otherMenu = new BMenu(B_TRANSLATE("Other settings"));
     otherMenu->SetRadioMode(false);
 
-    item = new BMenuItem(kGenericArk, new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(S_LHARC_COMPAT), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(false);
     otherMenu->AddItem(item);
 

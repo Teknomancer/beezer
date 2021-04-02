@@ -45,10 +45,31 @@
 #include <malloc.h>
 
 #include "z7Archiver.h"
-#include "z7Strings.h"
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
 
+
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "XzArchiver"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
+
+#define S_NONE "(none)"
+#define S_DEFAULT "(default)"
+#define S_BEST "(best)"
+
+//#define S_ARCHIVE_ATTRS "Add attributes"
+#define S_USE_SOLID_BLOCKS "Use solid blocks"
+#define S_USE_MULTI_THREAD "Use multi-threading (for multi-core CPUs)"
+#define S_OVERWRITE_FILES "Always overwrite (default)"
+#define S_NO_OVERWRITE "Never overwrite existing files"
+#define S_RENAME_EXISTING "Rename existing files"
+#define S_RENAME_EXTRACTED "Rename extracted files"
 
 
 Archiver* load_archiver()
@@ -207,11 +228,11 @@ status_t z7Archiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger*
 
     if (progress)    // Only enable extract options when user is NOT viewing
     {
-        if (m_settingsMenu->FindItem(kNoOverwrite)->IsMarked())
+        if (m_settingsMenu->FindItem(B_TRANSLATE(S_NO_OVERWRITE))->IsMarked())
             m_pipeMgr << "-aos";
-        else if (m_settingsMenu->FindItem(kRenameExisting)->IsMarked())
+        else if (m_settingsMenu->FindItem(B_TRANSLATE(S_RENAME_EXISTING))->IsMarked())
             m_pipeMgr << "-aot";
-        else if (m_settingsMenu->FindItem(kRenameExtracted)->IsMarked())
+        else if (m_settingsMenu->FindItem(B_TRANSLATE(S_RENAME_EXTRACTED))->IsMarked())
             m_pipeMgr << "-aou";
         else
             m_pipeMgr << "-aoa";
@@ -505,11 +526,13 @@ status_t z7Archiver::Add(bool createMode, const char* relativePath, BMessage* me
     m_pipeMgr.FlushArgs();
 
     char level[10];
-    BMenu* ratioMenu = m_settingsMenu->FindItem(kLevel0)->Menu();
+    BString menuStr("0");
+    menuStr << " " << B_TRANSLATE(S_NONE);
+    BMenu* ratioMenu = m_settingsMenu->FindItem(menuStr)->Menu();
     sprintf(level, "-mx%.1s", ratioMenu->FindMarked()->Label());
     m_pipeMgr << m_7zPath << "a" << level;
 
-    if (m_settingsMenu->FindItem(kMultiThreaded)->IsMarked() == true)
+    if (m_settingsMenu->FindItem(B_TRANSLATE(S_USE_MULTI_THREAD))->IsMarked() == true)
         m_pipeMgr << "-mmt";
 
     BString combo = Password();
@@ -523,7 +546,7 @@ status_t z7Archiver::Add(bool createMode, const char* relativePath, BMessage* me
     // Delete/update works only on whole solid block (so all files in such block have to be targetted).
     // Also files inside solid blocks do not show compressed size.
     // Of course using -msoff will not help with handling solid blocks in archives made by other apps.
-    if (m_settingsMenu->FindItem(kUseSolidBlocks)->IsMarked() == false)
+    if (m_settingsMenu->FindItem(B_TRANSLATE(S_USE_SOLID_BLOCKS))->IsMarked() == false)
         m_pipeMgr << "-ms=off";
 
     // 0.07: Added "-bd" switch to prevent percentage display in output
@@ -850,39 +873,47 @@ void z7Archiver::BuildDefaultMenu()
     m_settingsMenu = new BMenu(m_typeStr);
 
     // Build the header-level sub-menu
-    ratioMenu = new BMenu(kCompressionLevel);
+    ratioMenu = new BMenu(B_TRANSLATE("Compression level"));
     ratioMenu->SetRadioMode(true);
 
-    ratioMenu->AddItem(new BMenuItem(kLevel0, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel1, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel5, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel7, NULL));
-    ratioMenu->AddItem(new BMenuItem(kLevel9, NULL));
+    BString menuStr("0");
+    menuStr << " " << B_TRANSLATE(S_NONE);
+    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
+    ratioMenu->AddItem(new BMenuItem("1", NULL));
+    menuStr = "5";
+    menuStr << " " << B_TRANSLATE(S_DEFAULT);
+    BMenuItem* defaultItem = new BMenuItem(menuStr, NULL);
+    ratioMenu->AddItem(defaultItem);
+    ratioMenu->AddItem(new BMenuItem("7", NULL));
+    menuStr = "9";
+    menuStr << " " << B_TRANSLATE(S_BEST);
+    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
 
-    ratioMenu->FindItem(kLevel5)->SetMarked(true);
+    defaultItem->SetMarked(true);
 
     // Build the "While adding" sub-menu
-    addMenu = new BMenu(kAdding);
+    addMenu = new BMenu(B_TRANSLATE("While adding"));
     addMenu->SetRadioMode(false);
 
-    item = new BMenuItem(kUseSolidBlocks, new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(S_USE_SOLID_BLOCKS), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(false);
     addMenu->AddItem(item);
 
-    item = new BMenuItem(kMultiThreaded, new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(S_USE_MULTI_THREAD), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(true);
     addMenu->AddItem(item);
 
     // Build the "While extracting" sub-menu
-    extractMenu = new BMenu(kExtracting);
+    extractMenu = new BMenu(B_TRANSLATE("While extracting"));
     extractMenu->SetRadioMode(true);
 
-    extractMenu->AddItem(new BMenuItem(kOverwrite, NULL));
-    extractMenu->AddItem(new BMenuItem(kNoOverwrite, NULL));
-    extractMenu->AddItem(new BMenuItem(kRenameExisting, NULL));
-    extractMenu->AddItem(new BMenuItem(kRenameExtracted, NULL));
+    defaultItem = new BMenuItem(B_TRANSLATE(S_OVERWRITE_FILES), NULL);
+    extractMenu->AddItem(defaultItem);
+    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(S_NO_OVERWRITE), NULL));
+    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(S_RENAME_EXISTING), NULL));
+    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(S_RENAME_EXTRACTED), NULL));
 
-    extractMenu->FindItem(kOverwrite)->SetMarked(true);
+    defaultItem->SetMarked(true);
 
     // Add sub-menus to settings menu
     m_settingsMenu->AddItem(ratioMenu);

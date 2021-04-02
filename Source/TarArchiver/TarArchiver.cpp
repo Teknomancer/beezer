@@ -36,8 +36,6 @@
 #include <NodeInfo.h>
 #include <Messenger.h>
 #include <Directory.h>
-#include <Menu.h>
-#include <MenuItem.h>
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -47,6 +45,16 @@
 #include "TarArchiver.h"
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
+
+
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "TarArchiver"
+#else
+#define B_TRANSLATE(x) x
+#endif
 
 
 
