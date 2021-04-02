@@ -156,9 +156,7 @@ status_t ArjArchiver::ReadOpen(FILE* fp)
             m_entriesList.AddItem(new ArchiveEntry(true, pathString.String(), sizeStr, packedStr, timeValue, "-", "-"));
         }
         else
-        {
             m_entriesList.AddItem(new ArchiveEntry(false, pathString.String(), sizeStr, packedStr, timeValue, "-", "-"));
-        }
 
         fgets(lineString, len, fp);
         fgets(lineString, len, fp);
