@@ -188,7 +188,8 @@ const char* FinalPathComponent(const char* path)
     // for sake of speed.
     int32 len = strlen(path);
 
-    if (path[len - 1] == '/') len--;
+    if (path[len - 1] == '/')
+        len--;
 
     while (len > 0)
         if (path[--len] == '/')
