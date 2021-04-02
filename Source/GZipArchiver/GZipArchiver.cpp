@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2009-2021, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
@@ -69,7 +69,6 @@ Archiver* load_archiver()
 {
     return new GZipArchiver();
 }
-
 
 
 
@@ -506,5 +505,3 @@ bool GZipArchiver::CanAddFiles() const
     else
         return TarArchiver::CanAddFiles();
 }
-
-

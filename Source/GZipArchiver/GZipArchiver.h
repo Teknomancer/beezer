@@ -81,4 +81,4 @@ class GZipArchiver : public TarArchiver
         bool               m_tarArk;
 };
 
-#endif /* _ZIP_ARCHIVER_H */
+#endif /* _GZIP_ARCHIVER_H */
