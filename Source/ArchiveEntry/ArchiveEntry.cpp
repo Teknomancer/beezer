@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2009-2021, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
@@ -52,7 +52,7 @@ ArchiveEntry::ArchiveEntry(bool dir, const char* pathStr, const char* sizeStr, c
     : m_dirStr(NULL)
 {
     m_isDir = dir;
-    m_nameStr = strdup(LeafFromPath(pathStr));          // Never call FinalPathComponent here - only use
+    m_nameStr = strdup(LeafFromPath(pathStr));         // Never call FinalPathComponent here - only use
     m_pathStr = strdup(pathStr);                       // LeafFromPath() bug fixed
 
     // Get path of parent directory
