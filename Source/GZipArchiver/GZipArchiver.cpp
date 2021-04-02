@@ -115,8 +115,7 @@ status_t GZipArchiver::ReadOpen(FILE* fp)
                methodStr, crcStr, monthStr, dayStr, hourStr, minuteStr, packedStr, sizeStr, ratioStr,
                pathStr);
 
-        BString pathString = pathStr;
-        pathString.Remove(0, 1);
+        const char *pathString = &pathStr[1];
 
         // Ugly cruft -- gzip does NOT report the file time of the compressed file correctly - no year
         // hard-to-read output format etc, so we take the last modified time of the archive as the modified
@@ -125,16 +124,10 @@ status_t GZipArchiver::ReadOpen(FILE* fp)
         BEntry archiveEntry(m_archivePath.Path(), true);
         archiveEntry.GetModificationTime(&modTime);
 
-        // Check to see if last char of pathStr = '/' add it as folder, else as a file
-        uint16 pathLength = pathString.Length() - 1;
-        if (pathString[pathLength] == '/')
-        {
-            m_entriesList.AddItem(new ArchiveEntry(true, pathString.String(), sizeStr, packedStr, modTime, methodStr, crcStr));
-        }
+        if (StrEndsWith(pathString, "/"))
+            m_entriesList.AddItem(new ArchiveEntry(true, pathString, sizeStr, packedStr, modTime, methodStr, crcStr));
         else
-        {
-            m_entriesList.AddItem(new ArchiveEntry(false, pathString.String(), sizeStr, packedStr, modTime, methodStr, crcStr));
-        }
+            m_entriesList.AddItem(new ArchiveEntry(false, pathString, sizeStr, packedStr, modTime, methodStr, crcStr));
     }
 
     return BZR_DONE;
