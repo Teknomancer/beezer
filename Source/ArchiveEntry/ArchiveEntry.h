@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2021, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2009-2021, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
