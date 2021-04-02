@@ -98,13 +98,8 @@ status_t ZstdArchiver::ReadOpen(FILE* fp)
                " %[^ ] %[^ ] %[^ ] %[^ ] %[^ ] %[^ ] %[^ ] %[^ ]%[^\n]",
                framesStr, skipsStr, packedStr, packedUnitStr, sizeStr, sizeUnitStr, ratioStr, checkStr, pathStr);
 
-        uint64 const packedBytes = atof(packedStr) * (double)DigitalUnitToBytes(packedUnitStr);
-        uint64 const sizeBytes = atof(sizeStr) * (double)DigitalUnitToBytes(sizeUnitStr);
-
-        BString packedString;
-        packedString << packedBytes;
-        BString sizeString;
-        sizeString << sizeBytes;
+        BString packedString = StringFromDigitalSize(packedStr, packedUnitStr);
+        BString sizeString = StringFromDigitalSize(sizeStr, sizeUnitStr);
 
         // Ugly cruft -- zstd does NOT report the file time of the compressed file, so
         // we take the last modified time of the archive as the modified time of the file
