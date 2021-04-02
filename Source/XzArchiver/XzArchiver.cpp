@@ -33,6 +33,7 @@
 #include <Menu.h>
 #include <MenuItem.h>
 
+#include <cassert>
 #include <stdlib.h>
 #include <unistd.h>
 #include <malloc.h>
@@ -88,11 +89,10 @@ XzArchiver::XzArchiver()
 
 status_t XzArchiver::ReadOpen(FILE* fp)
 {
-    uint16 len = B_PATH_NAME_LENGTH + 500;
+    uint16 const len = B_PATH_NAME_LENGTH + 512;
     char lineString[len],
-         sizeStr[15], methodStr[15], packedStr[15], ratioStr[10], dayStr[5],
-         monthStr[5], hourStr[5], minuteStr[5], crcStr[15],
-         pathStr[B_PATH_NAME_LENGTH + 1];
+         strmsStr[16], blocksStr[16], packedStr[16], packedUnitStr[16], sizeStr[16], sizeUnitStr[16], ratioStr[16],
+         checkStr[16], pathStr[B_PATH_NAME_LENGTH + 1];
 
     // Skip first header line
     fgets(lineString, len, fp);
@@ -101,31 +101,25 @@ status_t XzArchiver::ReadOpen(FILE* fp)
     {
         lineString[strlen(lineString) - 1] = '\0';
 
-        sscanf(lineString,
-               "%[^ ] %[^ ] %[^ ] %[^ ] %[0-9]:%[0-9] %[0-9] %[0-9] %[^ ]%[^\n]",
-               methodStr, crcStr, monthStr, dayStr, hourStr, minuteStr, packedStr, sizeStr, ratioStr,
-               pathStr);
+        sscanf(lineString, " %[^ ] %[^ ] %[^ ] %[^ ] %[^ ] %[^ ] %[^ ] %[^ ]%[^\n]",
+               strmsStr, blocksStr, packedStr, packedUnitStr, sizeStr, sizeUnitStr, ratioStr, checkStr, pathStr);
 
-        BString pathString = pathStr;
-        pathString.Remove(0, 1);
+        const char *pathString = &pathStr[3];
 
-        // Ugly cruft -- gzip does NOT report the file time of the compressed file correctly - no year
-        // hard-to-read output format etc, so we take the last modified time of the archive as the modified
-        // time of the file inside it - this should be accurate
+        BString packedString = StringFromDigitalSize(packedStr, packedUnitStr);
+        BString sizeString = StringFromDigitalSize(sizeStr, sizeUnitStr);
+
+        // Ugly cruft -- xz does NOT report the file time of the compressed file correctly,
+        // so we take the last modified time of the archive as the modified time of the file inside it,
+        // this should be accurate
         time_t modTime;
         BEntry archiveEntry(m_archivePath.Path(), true);
         archiveEntry.GetModificationTime(&modTime);
 
-        // Check to see if last char of pathStr = '/' add it as folder, else as a file
-        uint16 pathLength = pathString.Length() - 1;
-        if (pathString[pathLength] == '/')
-        {
-            m_entriesList.AddItem(new ArchiveEntry(true, pathString.String(), sizeStr, packedStr, modTime, methodStr, crcStr));
-        }
-        else
-        {
-            m_entriesList.AddItem(new ArchiveEntry(false, pathString.String(), sizeStr, packedStr, modTime, methodStr, crcStr));
-        }
+        // Xz is a block compresses that contains only one file/block, so the path cannot ever be a folder.
+        assert(!StrEndsWith(pathString, "/"));
+        assert(FinalPathComponent(pathString) == pathString);
+        m_entriesList.AddItem(new ArchiveEntry(false, pathString, sizeString.String(), packedString.String(), modTime, checkStr, "-"));
     }
 
     return BZR_DONE;
@@ -167,7 +161,7 @@ status_t XzArchiver::Open(entry_ref* ref, BMessage* fileList)
 
     m_tarArk = false;
     m_pipeMgr.FlushArgs();
-    m_pipeMgr << m_xzPath << "-lv" << m_archivePath.Leaf();
+    m_pipeMgr << m_xzPath << "-lq" << m_archivePath.Leaf();
 
     FILE* out, *err;
     int outdes[2], errdes[2];
