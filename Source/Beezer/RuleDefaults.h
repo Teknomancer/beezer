@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2011, Chris Roberts
+ * Copyright (c) 2021, Ramshankar
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -71,6 +72,10 @@ application/x-xz=.txz\n\
 application/x-xz=.tar.xz\n\
 \n\
 application/x-arj-compressed=.arj\n\
+\n\
+application/x-zstd-compressed-tar=.tar.zst\n\
+application/x-zstd=.zst\n\
+application/x-zstd=.zstd\n\
 ";
 
 #endif  // _RULEDEFAULTS_H_

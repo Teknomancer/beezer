@@ -44,6 +44,7 @@ add_subdirectory(TarArchiver)
 add_subdirectory(XzArchiver)
 add_subdirectory(z7Archiver)
 add_subdirectory(ZipArchiver)
+add_subdirectory(ZstdArchiver)
 
 add_custom_target("symlink-docs-to-build-dir"
 	ALL
