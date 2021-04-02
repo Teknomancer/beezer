@@ -66,8 +66,6 @@ Archiver* load_archiver()
 
 
 
-
-
 XzArchiver::XzArchiver()
     : TarArchiver(true)
 {

@@ -67,8 +67,6 @@ Archiver* load_archiver()
 
 
 
-
-
 TarArchiver::TarArchiver()
 {
     // The list of supported mimetypes by this add-on, note the first (index 0) mime-type

@@ -79,8 +79,6 @@ Archiver* load_archiver()
 
 
 
-
-
 z7Archiver::z7Archiver()
 {
     // The list of supported mimetypes by this add-on, note the first (index 0) mime-type
