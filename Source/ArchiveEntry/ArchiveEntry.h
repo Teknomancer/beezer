@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2011-2021, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
@@ -44,8 +44,8 @@ class ArchiveEntry
         time_t            m_timeValue;
         char*             m_nameStr,
                           *m_pathStr,
-                          *m_sizeStr,
-                          *m_packedStr,
+                          *m_sizeStr,     // bytes as a string.
+                          *m_packedStr,   // bytes as a string.
                           *m_ratioStr,
                           *m_dateStr,
                           *m_methodStr,
