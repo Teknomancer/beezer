@@ -14,7 +14,7 @@ include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}/Widgets
 )
 
-add_executable(Beezer
+haiku_add_executable(Beezer
 	Beezer.rdef
 	AboutWindow.cpp
 	AddOnWindow.cpp

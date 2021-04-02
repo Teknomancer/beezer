@@ -12,7 +12,7 @@ if(HAIKU_ENABLE_I18N)
 	set("FileJoinerStub-LOCALES" "en")
 endif()
 
-add_executable(FileJoinerStub
+haiku_add_executable(FileJoinerStub
 	FileJoinerStub.rdef
 	JoinerStrings.cpp
 	JoinerStub.cpp
