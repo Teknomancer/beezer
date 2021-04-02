@@ -1,7 +1,7 @@
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BEEZER_BUILD_DIR}/TrackerAddOn)
 set(HAIKU_CATALOG_BUILD_DIR ${BEEZER_BUILD_DIR}/TrackerAddOn)
 
-add_executable(BeezerAddOn
+haiku_add_executable(BeezerAddOn
 	TrackerAddOn.rdef
 	TrackerAddOn.cpp
 )

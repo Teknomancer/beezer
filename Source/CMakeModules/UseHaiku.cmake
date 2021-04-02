@@ -66,9 +66,9 @@ endif()
 
 
 #
-#	Override the default add_executable() command and add our own.
+#	Convenience function to create an app with rdef/rsrc files
 #
-function(add_executable TARGET)
+function(haiku_add_executable TARGET)
 
 	foreach(arg ${ARGN})
 		if (${arg} MATCHES ".*rdef$")
@@ -81,7 +81,45 @@ function(add_executable TARGET)
 	endforeach()
 
 	# Call the original function with the filtered source list.
-	_add_executable(${TARGET} ${REAL_SOURCES})
+	add_executable(${TARGET} ${REAL_SOURCES})
+
+	# rdef/rsrc targets must be added after the main target has been created with _add_executable()
+	foreach(rdef ${rdeflist})
+		haiku_add_resource_def(${TARGET} ${rdef})
+	endforeach()
+
+	# any precompiled resources that were given to us
+	foreach(rsrc ${rsrclist})
+		haiku_add_resource(${TARGET} ${rsrc})
+	endforeach()
+
+	haiku_mimeset_target(${TARGET})
+
+endfunction()
+
+
+#
+#	Convenience function to create a shared object with rdef/rsrc files and no lib prefix or .so suffix
+#
+function(haiku_add_addon TARGET)
+
+	foreach(arg ${ARGN})
+		if (${arg} MATCHES ".*rdef$")
+			list(APPEND rdeflist ${arg})
+		elseif(${arg} MATCHES ".*rsrc$")
+			list(APPEND rsrclist "${CMAKE_CURRENT_SOURCE_DIR}/${arg}")
+		else()
+			list(APPEND REAL_SOURCES ${arg})
+		endif()
+	endforeach()
+
+	# Call the original function with the filtered source list.
+	add_library(${TARGET} MODULE ${REAL_SOURCES})
+
+	set_target_properties(${TARGET}
+		PROPERTIES
+		PREFIX ""
+		SUFFIX "")
 
 	# rdef/rsrc targets must be added after the main target has been created with _add_executable()
 	foreach(rdef ${rdeflist})

@@ -2,11 +2,6 @@ cmake_minimum_required(VERSION 3.19)
 
 project(BEEZER)
 
-#Override the default module naming scheme
-#so that we get foo instead of libfoo.so
-set(CMAKE_SHARED_MODULE_PREFIX "")
-set(CMAKE_SHARED_MODULE_SUFFIX "")
-
 set(CMAKE_MODULE_PATH "${BEEZER_SOURCE_DIR}/CMakeModules")
 
 include(UseHaiku)
