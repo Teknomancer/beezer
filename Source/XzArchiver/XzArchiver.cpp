@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, Ramshankar (aka Teknomancer)
+ * Copyright (c) 2009-2021, Ramshankar (aka Teknomancer)
  * Copyright (c) 2011-2021, Chris Roberts
  * All rights reserved.
  *
@@ -27,12 +27,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Debug.h>
-#include <Entry.h>
-#include <Message.h>
-#include <Path.h>
-#include <String.h>
-#include <File.h>
 #include <NodeInfo.h>
 #include <Messenger.h>
 #include <Directory.h>
@@ -186,7 +180,7 @@ status_t XzArchiver::Open(entry_ref* ref, BMessage* fileList)
         m_archiveRef = *ref;
         return exitCode;
     }
-    else        // its a pure GZip
+    else        // its a pure Xz
     {
         m_pipeMgr.FlushArgs();
         m_pipeMgr << m_xzPath << "-lv" << m_archivePath.Leaf();
