@@ -48,9 +48,9 @@ MimeRule::MimeRule(const char* mime, const char* extension)
 
 
 
-
-
 int32 RuleMgr::m_runCount = 0;
+
+
 
 RuleMgr::RuleMgr(BDirectory* ruleDir, const char* ruleFile)
 {

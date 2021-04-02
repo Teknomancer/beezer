@@ -72,7 +72,6 @@ Archiver* load_archiver()
 
 
 
-
 GZipArchiver::GZipArchiver()
     : TarArchiver(true)
 {
