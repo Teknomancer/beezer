@@ -289,5 +289,3 @@ BString SupressWildcardSet(const char* str)
     s.ReplaceAll("[", "\\[");
     return s;
 }
-
-
