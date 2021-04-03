@@ -59,6 +59,7 @@ class Archiver
 {
     public:
         Archiver();
+        Archiver(const char* addonImagePath);
         virtual ~Archiver();
 
         // Some must-call functions from the main app (to pass us some info)
@@ -87,6 +88,8 @@ class Archiver
         BString             Password() const;
 
         // Optionally-overridable functions
+        virtual status_t    LoadMetaData(const char* addonImagePath);
+        virtual BMessage*   GetRulesMessage();
         virtual void        BuildDefaultMenu();
         virtual BList       HiddenColumns(BList* columnList) const;
         virtual bool        SupportsComment() const;
@@ -150,6 +153,7 @@ class Archiver
         BBitmap*            BitmapForExtension(const char* str) const;
 
         // Private members
+        BMessage*           m_rulesMsg;
         HashTable*          m_hashTable;
         BString             m_password;
         const char*         m_cachedPath;
@@ -169,6 +173,6 @@ class Archiver
         int8                m_foldingLevel;
 };
 
-extern "C" _BZR_IMPEXP Archiver* load_archiver();
+extern "C" _BZR_IMPEXP Archiver* load_archiver(const char* addonImagePath);
 
 #endif /* _ARCHIVER_H */

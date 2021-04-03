@@ -53,25 +53,17 @@
 
 
 
-Archiver* load_archiver()
+Archiver* load_archiver(const char* addonImagePath)
 {
-    return new GZipArchiver();
+    return new GZipArchiver(addonImagePath);
 }
 
 
 
-GZipArchiver::GZipArchiver()
-    : TarArchiver(true)
+GZipArchiver::GZipArchiver(const char* addonImagePath)
+    : TarArchiver(addonImagePath)
 {
-    // The list of supported mimetypes by this add-on, note the first (index 0) mime-type
-    // in the list will be the one that will be used while creating files using this add-on
     m_tarArk = true;
-    m_mimeList.AddItem(strdup("application/x-gzip"));
-    m_mimeList.AddItem(strdup("application/x-gunzip"));
-    m_mimeList.AddItem(strdup("application/gzip"));
-    m_mimeList.AddItem(strdup("application/gunzip"));
-    SetArchiveType("gzip");
-    SetArchiveExtension(".tar.gz");
 
     if (GetBinaryPath(m_gzipPath, "gzip") == true)
         m_error = BZR_DONE;

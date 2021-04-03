@@ -71,24 +71,18 @@
 
 
 
-Archiver* load_archiver()
+Archiver* load_archiver(const char* addonImagePath)
 {
-    return new ZipArchiver();
+    return new ZipArchiver(addonImagePath);
 }
 
 
 
-ZipArchiver::ZipArchiver()
+ZipArchiver::ZipArchiver(const char* addonImagePath)
+    : Archiver(addonImagePath)
 {
-    // The list of supported mimetypes by this add-on, note the first (index 0) mime-type
-    // in the list will be the one that will be used while creating files using this add-on
-    m_mimeList.AddItem(strdup("application/zip"));
-    m_mimeList.AddItem(strdup("application/x-zip"));
-    m_mimeList.AddItem(strdup("application/x-zip-compressed"));
-    SetArchiveType("zip");
-    SetArchiveExtension(".zip");
 
-    if (   GetBinaryPath(m_unzipPath, "unzip") == true
+    if (GetBinaryPath(m_unzipPath, "unzip") == true
         && GetBinaryPath(m_zipPath, "zip") == true)
         m_error = BZR_DONE;
     else

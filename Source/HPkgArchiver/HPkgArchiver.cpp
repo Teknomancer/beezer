@@ -48,21 +48,16 @@
 // TODO: Update RuleDefaults.h
 // TODO: Update CMakeLists.txt
 
-Archiver* load_archiver()
+Archiver* load_archiver(const char* addonImagePath)
 {
-    return new HPkgArchiver();
+	return new HPkgArchiver(addonImagePath);
 }
 
 
 
-HPkgArchiver::HPkgArchiver()
+HPkgArchiver::HPkgArchiver(const char* addonImagePath)
+	: Archiver(addonImagepath)
 {
-    // The list of supported mimetypes by this add-on, note the first (index 0) mime-type
-    // in the list will be the one that will be used while creating files using this add-on
-    m_mimeList.AddItem(strdup("application/x-vnd.haiku-package"));
-    SetArchiveType("hpkg");
-    SetArchiveExtension(".hpkg");
-
     if (GetBinaryPath(m_hpkgPath, "package") == true)
 		m_error = BZR_DONE;
 	else

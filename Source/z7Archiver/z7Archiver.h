@@ -37,7 +37,7 @@ class BMessenger;
 class z7Archiver : public Archiver
 {
     public:
-        z7Archiver();
+        z7Archiver(const char* addonImagePath);
 
         // Overridables
         void               BuildDefaultMenu();

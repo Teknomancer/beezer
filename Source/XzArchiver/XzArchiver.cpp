@@ -54,22 +54,17 @@
 
 
 
-Archiver* load_archiver()
+Archiver* load_archiver(const char* addonImagePath)
 {
-    return new XzArchiver();
+    return new XzArchiver(addonImagePath);
 }
 
 
 
-XzArchiver::XzArchiver()
-    : TarArchiver(true)
+XzArchiver::XzArchiver(const char* addonImagePath)
+    : TarArchiver(addonImagePath)
 {
-    // The list of supported mimetypes by this add-on, note the first (index 0) mime-type
-    // in the list will be the one that will be used while creating files using this add-on
     m_tarArk = true;
-    m_mimeList.AddItem(strdup("application/x-xz"));
-    SetArchiveType("xz");
-    SetArchiveExtension(".tar.xz");
 
     if (GetBinaryPath(m_xzPath, "xz") == true)
         m_error = BZR_DONE;

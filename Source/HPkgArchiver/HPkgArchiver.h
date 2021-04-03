@@ -36,7 +36,7 @@ class BMessenger;
 class HPkgArchiver : public Archiver
 {
     public:
-        HPkgArchiver();
+        HPkgArchiver(const char* addonImagePath);
 
         // Overridables
         void               BuildDefaultMenu();

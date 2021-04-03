@@ -122,6 +122,15 @@ void RuleMgr::ReadRules(BEntry* rulesEntry)
 }
 
 
+status_t RuleMgr::AddMimeRule(const char *mime, const char *extension)
+{
+    if (mime == NULL || extension == NULL)
+        return B_ERROR;
+
+    m_ruleList->AddItem(new MimeRule(mime, extension));
+    return B_OK;
+}
+
 
 char* RuleMgr::ValidateFileType(BPath* filePath) const
 {

@@ -58,24 +58,17 @@
 
 
 
-Archiver* load_archiver()
+Archiver* load_archiver(const char* addonImagePath)
 {
-    return new RarArchiver();
+    return new RarArchiver(addonImagePath);
 }
 
 
 
-RarArchiver::RarArchiver()
+RarArchiver::RarArchiver(const char* addonImagePath)
+    : Archiver(addonImagePath)
 {
-    // The list of supported mimetypes by this add-on, note the first (index 0) mime-type
-    // in the list will be the one that will be used while creating files using this add-on
     m_passwordRequired = false;
-    m_mimeList.AddItem(strdup("application/x-rar"));
-    m_mimeList.AddItem(strdup("application/x-rar-compressed"));
-    m_mimeList.AddItem(strdup("application/rar"));
-    SetArchiveType("rar");
-    SetArchiveExtension(".rar");
-
     // Detect rar binary
     if (GetBinaryPath(m_unrarPath, "unrar") == true)
         m_error = BZR_DONE;

@@ -36,7 +36,7 @@ class BMessenger;
 class ZipArchiver : public Archiver
 {
     public:
-        ZipArchiver();
+        ZipArchiver(const char* addonImagePath);
 
         // Overridables
         void               BuildDefaultMenu();

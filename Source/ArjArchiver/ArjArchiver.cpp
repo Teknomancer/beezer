@@ -57,23 +57,16 @@
 
 
 
-Archiver* load_archiver()
+Archiver* load_archiver(const char* addonImagePath)
 {
-    return new ArjArchiver();
+    return new ArjArchiver(addonImagePath);
 }
 
 
 
-ArjArchiver::ArjArchiver()
+ArjArchiver::ArjArchiver(const char* addonImagePath)
+    : Archiver(addonImagePath)
 {
-    // The list of supported mimetypes by this add-on, note the first (index 0) mime-type
-    // in the list will be the one that will be used while creating files using this add-on
-    m_mimeList.AddItem(strdup("application/x-arj-compressed"));
-    m_mimeList.AddItem(strdup("application/x-arj"));
-    m_mimeList.AddItem(strdup("application/arj"));
-    SetArchiveType("arj");
-    SetArchiveExtension(".arj");
-
     // Detect arj binary
     if (GetBinaryPath(m_arjPath, "arj") == true)
         m_error = BZR_DONE;

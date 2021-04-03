@@ -36,7 +36,7 @@ class BMessenger;
 class ArjArchiver : public Archiver
 {
     public:
-        ArjArchiver();
+        ArjArchiver(const char* addonImagePath);
 
         // Overridables
         void                BuildDefaultMenu();

@@ -49,32 +49,17 @@
 
 
 #ifndef STATIC_LIB_BUILD
-Archiver* load_archiver()
+Archiver* load_archiver(const char* addonImagePath)
 {
-    return new TarArchiver();
+    return new TarArchiver(addonImagePath);
 }
 #endif
 
 
 
-TarArchiver::TarArchiver()
+TarArchiver::TarArchiver(const char* addonImagePath)
+    : Archiver(addonImagePath)
 {
-    // The list of supported mimetypes by this add-on, note the first (index 0) mime-type
-    // in the list will be the one that will be used while creating files using this add-on
-    m_mimeList.AddItem(strdup("application/tar"));
-    m_mimeList.AddItem(strdup("application/x-tar"));
-    SetArchiveType("tar");
-    SetArchiveExtension(".tar");
-
-    m_error = InitBinaryPath();
-}
-
-
-
-TarArchiver::TarArchiver(bool isBeingDerived)
-{
-    // This extra constructor is used by derived add-ons, here we
-    // don't add file-types and extensions
     m_error = InitBinaryPath();
 }
 

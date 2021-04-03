@@ -37,7 +37,7 @@ class BMessenger;
 class RarArchiver : public Archiver
 {
     public:
-        RarArchiver();
+        RarArchiver(const char* addonImagePath);
 
         // Overridables
         void               BuildDefaultMenu();
