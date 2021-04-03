@@ -88,7 +88,7 @@ class Archiver
 
         // Optionally-overridable functions
         virtual void        BuildDefaultMenu();
-        virtual BList        HiddenColumns(BList* columnList) const;
+        virtual BList       HiddenColumns(BList* columnList) const;
         virtual bool        SupportsComment() const;
         virtual bool        SupportsFolderEntity() const;
         virtual bool        CanReplaceFiles() const;
