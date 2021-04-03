@@ -26,15 +26,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <String.h>
+#include "PipeMgr.h"
 
 #include <image.h>
 #include <malloc.h>
-#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-
-#include "PipeMgr.h"
 
 
 

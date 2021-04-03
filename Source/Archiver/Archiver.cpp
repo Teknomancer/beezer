@@ -27,23 +27,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Application.h>
-#include <Bitmap.h>
-#include <Debug.h>
-#include <Directory.h>
-#include <File.h>
-#include <FindDirectory.h>
-#include <Menu.h>
-#include <List.h>
-#include <PathFinder.h>
-#include <Roster.h>
-#include <StringList.h>
-#include <Window.h>
-
-#include <strings.h>
-#include <stdlib.h>
-#include <signal.h>
-
 #include "Archiver.h"
 #include "AppUtils.h"
 #include "HashTable.h"
@@ -51,6 +34,11 @@
 #include "ArchiveEntry.h"
 #include "MsgConstants.h"
 #include "AppConstants.h"
+
+#include <Directory.h>
+#include <File.h>
+#include <PathFinder.h>
+#include <Menu.h>
 
 
 
@@ -777,4 +765,3 @@ void Archiver::MakeTime(struct tm* timeStruct, time_t* timeValue, const char* da
 
     *timeValue = mktime(timeStruct);
 }
-
