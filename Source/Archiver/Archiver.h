@@ -39,22 +39,21 @@
 #endif
 #endif
 
+#include "PipeMgr.h"
+#include "Shared.h"
+
 #include <List.h>
 #include <Message.h>
 #include <Entry.h>
 #include <Path.h>
-#include <String.h>
 
 #include <stdio.h>
 
-#include "PipeMgr.h"
-#include "Shared.h"
+class HashTable;
+class HashEntry;
 
 class BBitmap;
 class BMenu;
-
-class HashTable;
-class HashEntry;
 
 class Archiver
 {
@@ -109,15 +108,15 @@ class Archiver
         bool                GetBinaryPath(char* destPath, const char* binaryFileName) const;
 
         // Abstract functions
-        virtual status_t     Open(entry_ref* ref, BMessage* fileList = NULL) = 0;
-        virtual status_t     Test(char*& output, BMessenger* progressMsngr, volatile bool* cancel) = 0;
-        virtual status_t     Create(BPath* archivePath, const char* relativePath, BMessage* fileList,
-                                    BMessage* addedPaths, BMessenger* progressMsngr, volatile bool* cancel) = 0;
-        virtual status_t     Add(bool craeteMode, const char* relativePath, BMessage* fileList,
-                                 BMessage* addedPaths, BMessenger* progressMsngr, volatile bool* cancel) = 0;
-        virtual status_t     Delete(char*& output, BMessage* files, BMessenger* progress, volatile bool* cancel) = 0;
-        virtual status_t     Extract(entry_ref* destDir, BMessage* fileList, BMessenger* progressMsngr,
-                                     volatile bool* cancel) = 0;
+        virtual status_t    Open(entry_ref* ref, BMessage* fileList = NULL) = 0;
+        virtual status_t    Test(char*& output, BMessenger* progressMsngr, volatile bool* cancel) = 0;
+        virtual status_t    Create(BPath* archivePath, const char* relativePath, BMessage* fileList,
+                                   BMessage* addedPaths, BMessenger* progressMsngr, volatile bool* cancel) = 0;
+        virtual status_t    Add(bool craeteMode, const char* relativePath, BMessage* fileList,
+                                BMessage* addedPaths, BMessenger* progressMsngr, volatile bool* cancel) = 0;
+        virtual status_t    Delete(char*& output, BMessage* files, BMessenger* progress, volatile bool* cancel) = 0;
+        virtual status_t    Extract(entry_ref* destDir, BMessage* fileList, BMessenger* progressMsngr,
+                                    volatile bool* cancel) = 0;
 
     protected:
         // Protected functions
@@ -128,10 +127,10 @@ class Archiver
 
         // Protected members
         const char*         m_typeStr,
-              *m_extensionStr,
-              *m_settingsLangStr,
-              *m_settingsDirectoryPath,
-              *m_tempDirPath;
+                           *m_extensionStr,
+                           *m_settingsLangStr,
+                           *m_settingsDirectoryPath,
+                           *m_tempDirPath;
         bool                m_passwordRequired;
         BList               m_entriesList,
                             m_mimeList;
@@ -156,17 +155,17 @@ class Archiver
         const char*         m_cachedPath;
         BList               m_fileList,
                             m_folderList,
-                            *m_iconList;
+                           *m_iconList;
         BBitmap*            m_folderBmp,
-                            *m_binaryBmp,
-                            *m_htmlBmp,
-                            *m_textBmp,
-                            *m_sourceBmp,
-                            *m_audioBmp,
-                            *m_archiveBmp,
-                            *m_packageBmp,
-                            *m_pdfBmp,
-                            *m_imageBmp;
+                           *m_binaryBmp,
+                           *m_htmlBmp,
+                           *m_textBmp,
+                           *m_sourceBmp,
+                           *m_audioBmp,
+                           *m_archiveBmp,
+                           *m_packageBmp,
+                           *m_pdfBmp,
+                           *m_imageBmp;
         int8                m_foldingLevel;
 };
 
