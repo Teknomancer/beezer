@@ -36,7 +36,7 @@ class BMessenger;
 class ZstdArchiver : public TarArchiver
 {
     public:
-        ZstdArchiver();
+        ZstdArchiver(const char* addonImagePath);
 
         // Overridables
         void               BuildDefaultMenu();

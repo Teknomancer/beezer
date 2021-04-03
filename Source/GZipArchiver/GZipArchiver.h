@@ -36,7 +36,7 @@ class BMessenger;
 class GZipArchiver : public TarArchiver
 {
     public:
-        GZipArchiver();
+        GZipArchiver(const char* addonImagePath);
 
         // Overridables
         void               BuildDefaultMenu();

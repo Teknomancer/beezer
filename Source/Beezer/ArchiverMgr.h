@@ -36,6 +36,7 @@ class BPopUpMenu;
 class BString;
 
 class Archiver;
+class RuleMgr;
 
 
 const char* const kLoaderFunc =        "load_archiver";
@@ -46,6 +47,7 @@ Archiver* ArchiverForMime(const char* mimeType);
 Archiver* ArchiverForType(const char* archiverType);
 BList ArchiversInstalled(BList* extensionStrings);
 BPopUpMenu* BuildArchiveTypesMenu(BHandler* targetHandler, BList* extensionStrings);
+status_t MergeArchiverRules(RuleMgr* ruleMgr);
 Archiver* NewArchiver(const char* name, bool popupErrors, status_t* returnCode);
 
 #endif /* _ARCHIVER_MGR_H */

@@ -37,25 +37,47 @@
 
 #include <Directory.h>
 #include <File.h>
-#include <PathFinder.h>
 #include <Menu.h>
+#include <PathFinder.h>
+#include <Resources.h>
+#include <TypeConstants.h>
 
 
 
 Archiver::Archiver()
+    :
+    m_rulesMsg(new BMessage()),
+    m_settingsDirectoryPath(NULL),
+    m_settingsMenu(NULL),
+    m_cachedPath(NULL),
+    m_hashTable(NULL),
+    m_tempDirPath(NULL),
+    m_foldingLevel(3),
+    m_passwordRequired(false)
 {
-    m_settingsDirectoryPath = NULL;
-    m_settingsMenu = NULL;
-    m_cachedPath = NULL;
-    m_hashTable = NULL;
-    m_tempDirPath = NULL;
-    m_foldingLevel = 3;
-    m_passwordRequired = false;
-
     m_typeStr = strdup("");
     m_extensionStr = strdup("");
 }
 
+
+Archiver::Archiver(const char* addonImagePath)
+    :
+    m_rulesMsg(new BMessage()),
+    m_settingsDirectoryPath(NULL),
+    m_settingsMenu(NULL),
+    m_cachedPath(NULL),
+    m_hashTable(NULL),
+    m_tempDirPath(NULL),
+    m_foldingLevel(3),
+    m_passwordRequired(false)
+{
+    if (LoadMetaData(addonImagePath) != B_OK)
+    {
+        //TODO fill m_mimeList, m_rulesMsg,  and others or just set an error code?
+        m_typeStr = strdup("");
+        m_extensionStr = strdup("");
+    }
+}
 
 
 Archiver::~Archiver()
@@ -65,6 +87,7 @@ Archiver::~Archiver()
     // If the window relinquishes the menu from the Settings menu then we will need to delete
     // it, but this is not the case as one-window-one-addon ONLY is what main app follows
 
+    delete m_rulesMsg;
     free((char*)m_typeStr);
     free((char*)m_extensionStr);
     free((char*)m_settingsDirectoryPath);
@@ -84,6 +107,50 @@ Archiver::~Archiver()
     ResetCache();
 }
 
+
+status_t Archiver::LoadMetaData(const char* addonImagePath)
+{
+    BResources res(addonImagePath);
+    if (res.InitCheck() != B_OK)
+        return B_ERROR;
+
+    size_t dataSize;
+    const void* resData = res.LoadResource(B_MESSAGE_TYPE, "ArchiverMetaData", &dataSize);
+    if (resData == NULL)
+        return B_ERROR;
+
+    BMessage resMsg;
+    if (resMsg.Unflatten((const char*)resData) != B_OK)
+        return B_ERROR;
+
+    BString bufStr;
+    if (resMsg.FindString("type_name", &bufStr) == B_OK)
+        m_typeStr = strdup(bufStr.String());
+    else
+        m_typeStr = strdup("unknown");
+
+    if (resMsg.FindString("default_extension", &bufStr) == B_OK)
+        m_extensionStr = strdup(bufStr.String());
+    else
+        m_extensionStr = strdup("");
+
+    if (resMsg.FindMessage("rules", m_rulesMsg) == B_OK)
+    {
+        // populate our m_mimeList for convenient access to mimetypes
+        char* mimeType;
+        for (int32 idx = 0; m_rulesMsg->GetInfo(B_STRING_TYPE, idx, &mimeType, NULL, NULL) == B_OK; idx++)
+            m_mimeList.AddItem(strdup(mimeType));
+            //TODO filter duplicates from list
+    }
+
+    return B_OK;
+}
+
+
+BMessage* Archiver::GetRulesMessage()
+{
+    return m_rulesMsg;
+}
 
 
 inline void Archiver::ResetCache()

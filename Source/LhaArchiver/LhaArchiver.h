@@ -36,7 +36,7 @@ class BMessenger;
 class LhaArchiver : public Archiver
 {
     public:
-        LhaArchiver();
+        LhaArchiver(const char* addonImagePath);
 
         // Overridables
         void               BuildDefaultMenu();

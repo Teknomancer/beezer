@@ -36,8 +36,7 @@ class BMessenger;
 class TarArchiver : public Archiver
 {
     public:
-        TarArchiver();
-        TarArchiver(bool isBeingDerived);
+        TarArchiver(const char *addonImagePath);
 
         // Abstract Implementations & overridables
         status_t           Open(entry_ref* ref, BMessage* fileList);

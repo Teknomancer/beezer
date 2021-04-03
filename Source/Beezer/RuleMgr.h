@@ -50,6 +50,7 @@ class RuleMgr
 
         // Public hooks
         char*               ValidateFileType(BPath* filePath) const;
+        status_t            AddMimeRule(const char* mime, const char* extension);
 
     private:
         // Private hooks

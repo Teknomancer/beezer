@@ -12,6 +12,19 @@ resource app_version {
 	long_info = "Beezer BZip2 AddOn"
 };
 
+// resource id isn't important as long as it doesn't conflict with others
+// the 'ArchiverMetaData' name of the resource is required though
+resource(42, "ArchiverMetaData") message {
+	"type_name" = "bzip2",
+	"default_extension" = ".tar.bz2",
+	"rules" = message {
+		"application/x-bzip2" = ".bz2",
+		"application/x-bzip2" = ".tbz2",
+		"application/x-bzip2" = ".tar.bz2",
+		"application/bzip2" = ".bz2"
+	}
+};
+
 resource vector_icon {
 	$"6E6369660B03010000020006023CC7EE389BC0BA16573E39B04977C842ADC700"
 	$"FFF8EAFFF5DEAC020006023C96323A4D3FBAFC013D5A974B57A549844D00983F"

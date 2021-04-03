@@ -41,6 +41,7 @@
 #include "ArchiverMgr.h"
 #include "BeezerApp.h"
 #include "MsgConstants.h"
+#include "RuleMgr.h"
 
 
 #ifdef HAIKU_ENABLE_I18N
@@ -80,10 +81,10 @@ Archiver* ArchiverForMime(const char* mimeType)
         if (addonID > 0L)
         {
             // Archiver loaded successfully, now check if it supports the mimetype
-            Archiver *(*load_archiver)();
+            Archiver *(*load_archiver)(const char* addonImagePath);
             if (get_image_symbol(addonID, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
             {
-                Archiver* ark = (*load_archiver)();
+                Archiver* ark = (*load_archiver)(path.Path());
 
                 BList* mimeList = ark->MimeTypeList();
                 int32 supportedMimeCount = mimeList->CountItems();
@@ -129,10 +130,10 @@ BList ArchiversInstalled(BList* extensionStrings)
         if (addonID > 0L)
         {
             // Archiver loaded successfully, now check if it supports the mimetype
-            Archiver *(*load_archiver)();
+            Archiver *(*load_archiver)(const char* addonImagePath);
             if (get_image_symbol(addonID, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
             {
-                Archiver* ark = (*load_archiver)();
+                Archiver* ark = (*load_archiver)(path.Path());
                 installedArkList.AddItem((void*)strdup(ark->ArchiveType()));
                 if (extensionStrings)
                     extensionStrings->AddItem((void*)strdup(ark->ArchiveExtension()));
@@ -172,10 +173,10 @@ Archiver* ArchiverForType(const char* archiverType)
         if (addonID > 0L)
         {
             // Archiver loaded successfully, now check if it supports the mimetype
-            Archiver *(*load_archiver)();
+            Archiver *(*load_archiver)(const char* addonImagePath);
             if (get_image_symbol(addonID, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
             {
-                Archiver* ark = (*load_archiver)();
+                Archiver* ark = (*load_archiver)(path.Path());
                 if (strcmp(ark->ArchiveType(), archiverType) == 0)
                     return ark;
             }
@@ -186,6 +187,52 @@ Archiver* ArchiverForType(const char* archiverType)
     return NULL;
 }
 
+
+status_t MergeArchiverRules(RuleMgr* ruleMgr)
+{
+    // Finds an archiver given its name (archiverType and name is the same, eg: zip, tar etc)
+
+    // Operate in a critical section as we access global data like BDirectory of be_app
+    BAutolock autoLocker(_ark_locker);
+    if (autoLocker.IsLocked() == false)
+        return B_ERROR;
+
+    // Get the Archiver dir and the path of the Binaries dir (both from _bzr())
+    // Bug Fix: we dont ask the Window to pass these details to us anymore
+    BDirectory* archiversDir = &(_bzr()->m_addonsDir);
+    archiversDir->Rewind();
+
+    // Load/Unload all the add-ons and get the list of rules
+    BEntry entry;
+    while (archiversDir->GetNextEntry(&entry, true) == B_OK)
+    {
+        BPath path;
+        entry.GetPath(&path);
+
+        image_id addonID = load_add_on(path.Path());
+        if (addonID > 0L)
+        {
+            // Archiver loaded successfully, now check if it supports the mimetype
+            Archiver *(*load_archiver)(const char* addonImagePath);
+            if (get_image_symbol(addonID, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
+            {
+                Archiver* ark = (*load_archiver)(path.Path());
+                BMessage* rulesMsg = ark->GetRulesMessage();
+                char* mimeType;
+                // iterate our loaded mime rules and add them to the rule manager
+                for (int32 idx = 0; rulesMsg->GetInfo(B_STRING_TYPE, idx, &mimeType, NULL, NULL) == B_OK; idx++)
+                {
+                    const char* extension;
+                    rulesMsg->FindString(mimeType, &extension);
+                    ruleMgr->AddMimeRule(strdup(mimeType), strdup(extension));
+                }
+            }
+
+            unload_add_on(addonID);
+        }
+    }
+    return B_OK;
+}
 
 
 BPopUpMenu* BuildArchiveTypesMenu(BHandler* targetHandler, BList* arkExtensions)

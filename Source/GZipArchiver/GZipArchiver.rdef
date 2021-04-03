@@ -12,6 +12,21 @@ resource app_version {
 	long_info = "Beezer GZip AddOn"
 };
 
+// resource id isn't important as long as it doesn't conflict with others
+// the 'ArchiverMetaData' name of the resource is required though
+resource(42, "ArchiverMetaData") message {
+	"type_name" = "gzip",
+	"default_extension" = ".tar.gz",
+	"rules" = message {
+		"application/x-gzip" = ".gz",
+		"application/x-gzip" = ".tgz",
+		"application/x-gzip" = ".tar.gz",
+		"application/x-gunzip" = ".gz",
+		"application/gzip" = ".gz",
+		"application/gunzip" = ".gz"
+	}
+};
+
 resource vector_icon {
 	$"6E6369660B03010000020006023CC7EE389BC0BA16573E39B04977C842ADC700"
 	$"FFF8EAFFF5DEAC020006023C96323A4D3FBAFC013D5A974B57A549844D00983F"
