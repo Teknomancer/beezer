@@ -28,6 +28,7 @@
 
 #include <OS.h>
 #include <List.h>
+#include <String.h>
 #include <SupportDefs.h>
 
 class PipeMgr

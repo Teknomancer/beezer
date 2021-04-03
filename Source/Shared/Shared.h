@@ -60,5 +60,4 @@ const int64 kMaxFragmentCount =       32767;
 #define K_APP_SIGNATURE               "application/x-vnd.Ram-Beezer"
 #define K_JOINER_STUB_SIGNATURE       "application/x-vnd.Ram-FileJoiner"
 
-
 #endif /* _SHARED_H */
