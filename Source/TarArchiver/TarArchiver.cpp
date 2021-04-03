@@ -35,8 +35,6 @@
 #include <NodeInfo.h>
 #include <Messenger.h>
 
-#include <cassert>
-
 
 
 #ifdef HAIKU_ENABLE_I18N
