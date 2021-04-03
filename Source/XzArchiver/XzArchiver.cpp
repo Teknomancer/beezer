@@ -27,22 +27,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <NodeInfo.h>
-#include <Messenger.h>
-#include <Directory.h>
-#include <Menu.h>
-#include <MenuItem.h>
-
-#include <cassert>
-#include <stdlib.h>
-#include <unistd.h>
-#include <malloc.h>
-#include <fstream>
-
 #include "XzArchiver.h"
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
 
+#include <Messenger.h>
+#include <MenuItem.h>
+
+#include <cassert>
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
