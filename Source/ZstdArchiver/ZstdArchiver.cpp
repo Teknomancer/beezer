@@ -113,7 +113,7 @@ status_t ZstdArchiver::ReadOpen(FILE* fp)
         assert(!StrEndsWith(pathStr, "/"));
         assert(FinalPathComponent(pathStr) == pathStr);
         m_entriesList.AddItem(new ArchiveEntry(false, pathStr, sizeString.String(), packedString.String(),
-                                                modTime, "-", checkStr));
+                                                modTime, checkStr, "-"));
     }
 
     return BZR_DONE;
@@ -194,37 +194,34 @@ status_t ZstdArchiver::Open(entry_ref* ref, BMessage* fileList)
 status_t ZstdArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger* progress,
                                volatile bool* cancel)
 {
-    if (m_tarArk == false)
-    {
-        BPath destPath(refToDir);
-        if (strcmp(destPath.Path(), TempDirectoryPath()) == 0)
-            return BZR_DONE;        // as we already have unpacked it in temp, don't repeat
-        else
-        {
-            BString destFilePath = destPath.Path();
-            destFilePath << '/' << OutputFileName(m_archivePath.Leaf());
-
-            BString cmd;
-            cmd << "\"" << m_zstdPath << "\"" << " -c -d \"" << m_archivePath.Path() << "\" > " << "\"" <<
-            destFilePath.String() << "\"";
-
-            m_pipeMgr.FlushArgs();
-            m_pipeMgr << "/bin/sh" << "-c" << cmd.String();
-            m_pipeMgr.Pipe();
-
-            if (progress)
-                SendProgressMessage(progress);
-
-            return BZR_DONE;
-        }
-    }
-    else
+    if (m_tarArk == true)
     {
         m_archivePath = m_tarFilePath;
-        status_t exitCode = TarArchiver::Extract(refToDir, message, progress, cancel);
+        status_t const exitCode = TarArchiver::Extract(refToDir, message, progress, cancel);
         m_archivePath = m_arkFilePath;
+
         return exitCode;
     }
+
+    BPath destPath(refToDir);
+    if (strcmp(destPath.Path(), TempDirectoryPath()) == 0)
+        return BZR_DONE;        // as we already have unpacked it in temp, don't repeat
+
+    BString destFilePath = destPath.Path();
+    destFilePath << '/' << OutputFileName(m_archivePath.Leaf());
+
+    BString cmd;
+    cmd << "\"" << m_zstdPath << "\"" << " -c --no-progress -d \"" << m_archivePath.Path() << "\" > " << "\"" <<
+    destFilePath.String() << "\"";
+
+    m_pipeMgr.FlushArgs();
+    m_pipeMgr << "/bin/sh" << "-c" << cmd.String();
+    m_pipeMgr.Pipe();
+
+    if (progress)
+        SendProgressMessage(progress);
+
+    return BZR_DONE;
 }
 
 
