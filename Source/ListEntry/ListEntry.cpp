@@ -26,10 +26,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdlib.h>
-
 #include "ListEntry.h"
 #include "ColumnListView.h"
+
+#include <stdlib.h>
 
 
 

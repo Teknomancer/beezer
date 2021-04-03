@@ -30,9 +30,9 @@
 #define _HASH_TABLE_H
 
 #include <SupportDefs.h>
-#include <Message.h>
 
 class BList;
+class BMessage;
 
 class ListEntry;
 
@@ -86,8 +86,8 @@ class HashTable
                             m_itemCount;
 
         HashEntry**         m_table,
-                  *m_lastAddedEntry,
-                  *m_lastFoundEntry;
+                           *m_lastAddedEntry,
+                           *m_lastFoundEntry;
 };
 
 #endif /* _HASH_TABLE_H */

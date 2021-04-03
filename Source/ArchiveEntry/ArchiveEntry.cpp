@@ -27,17 +27,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <DateTimeFormat.h>
-#include <SupportDefs.h>
-
-#include <stdlib.h>
-#include <math.h>
-#include <stdio.h>
-#include <string.h>
-
-
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
+
+#include <DateTimeFormat.h>
+
+#include <stdio.h>
+
 
 
 
