@@ -29,7 +29,6 @@
 #ifndef _APP_UTILS_H
 #define _APP_UTILS_H
 
-#include <Entry.h>
 #include <String.h>
 
 class BBitmap;

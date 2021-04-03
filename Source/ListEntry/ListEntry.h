@@ -29,11 +29,11 @@
 #ifndef _LIST_ENTRY_H
 #define _LIST_ENTRY_H
 
-#include <String.h>
-
 #include "CLVEasyItem.h"
 
-const float           kListEntryHeight = 20.0f;
+#include <String.h>
+
+const float kListEntryHeight = 20.0f;
 
 class ListEntry : public CLVEasyItem
 {

@@ -26,11 +26,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <String.h>
-#include <List.h>
-
 #include "HashTable.h"
 #include "ListEntry.h"
+
+#include <Message.h>
+
+#include <string.h>
 
 
 
@@ -50,7 +51,6 @@ HashEntry::~HashEntry()
         delete[] m_pathStr;
     // m_clvItem will be deleted by MainWindow
 }
-
 
 
 
@@ -323,5 +323,3 @@ void HashTable::ResetCache(HashEntry* element)
     if (element == m_lastFoundEntry)
         m_lastFoundEntry = NULL;
 }
-
-
