@@ -28,25 +28,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Debug.h>
-#include <Entry.h>
-#include <Message.h>
-#include <Path.h>
-#include <String.h>
-#include <File.h>
-#include <NodeInfo.h>
-#include <Messenger.h>
-#include <Directory.h>
-#include <Menu.h>
-#include <MenuItem.h>
-
-#include <stdlib.h>
-#include <unistd.h>
-#include <malloc.h>
-
 #include "z7Archiver.h"
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
+
+#include <NodeInfo.h>
+#include <Messenger.h>
+#include <MenuItem.h>
+
 
 
 #ifdef HAIKU_ENABLE_I18N
