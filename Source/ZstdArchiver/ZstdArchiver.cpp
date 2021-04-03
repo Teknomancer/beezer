@@ -30,11 +30,10 @@
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
 
-#include <cassert>
-#include <NodeInfo.h>
 #include <Messenger.h>
-#include <Menu.h>
 #include <MenuItem.h>
+
+#include <cassert>
 
 
 
@@ -71,8 +70,9 @@ ZstdArchiver::ZstdArchiver()
     SetArchiveType("zstd");
     SetArchiveExtension(".tar.zst");
 
-    m_error = BZR_DONE;
-    if (IsBinaryFound(m_zstdPath, BZR_ARK) == false)
+    if (GetBinaryPath(m_zstdPath, "zstd") == true)
+        m_error = BZR_DONE;
+    else
     {
         m_error = BZR_BINARY_MISSING;
         return;
@@ -247,7 +247,7 @@ status_t ZstdArchiver::Test(char*& outputStr, BMessenger* progress, volatile boo
 
     if (tid == B_ERROR || tid == B_NO_MEMORY)
     {
-        outputStr = NULL;        // Handle unzip unloadable error here
+        outputStr = NULL;        // Handle zstd unloadable error here
         return B_ERROR;
     }
 

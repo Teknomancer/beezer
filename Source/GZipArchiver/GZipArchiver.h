@@ -29,11 +29,7 @@
 #ifndef _GZIP_ARCHIVER_H
 #define _GZIP_ARCHIVER_H
 
-#include <stdio.h>
-
 #include "TarArchiver.h"
-
-#define BZR_ARK                         "gzip"
 
 class BMessenger;
 

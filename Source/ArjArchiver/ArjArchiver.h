@@ -29,11 +29,7 @@
 #ifndef _ARJ_ARCHIVER_H
 #define _ARJ_ARCHIVER_H
 
-#include <stdio.h>
-
 #include "Archiver.h"
-
-#define BZR_ARK                         "arj"
 
 class BMessenger;
 

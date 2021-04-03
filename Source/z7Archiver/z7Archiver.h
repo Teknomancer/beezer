@@ -30,11 +30,7 @@
 #ifndef _7Z_ARCHIVER_H
 #define _7Z_ARCHIVER_H
 
-#include <stdio.h>
-
 #include "Archiver.h"
-
-#define BZR_ARK                         "7za"
 
 class BMessenger;
 

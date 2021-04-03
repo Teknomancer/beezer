@@ -29,13 +29,7 @@
 #ifndef _ZIP_ARCHIVER_H
 #define _ZIP_ARCHIVER_H
 
-#include <stdio.h>
-
 #include "Archiver.h"
-
-#define BZR_UNARK                      "unzip"
-#define BZR_ARK                        "zip"
-#define BZR_ZIPNOTE                    "zipnote"
 
 class BMessenger;
 

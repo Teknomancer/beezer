@@ -27,24 +27,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Debug.h>
-#include <Entry.h>
-#include <Message.h>
-#include <Path.h>
-#include <String.h>
-#include <File.h>
-#include <NodeInfo.h>
-#include <Messenger.h>
-#include <Directory.h>
-
-#include <stdlib.h>
-#include <unistd.h>
-#include <malloc.h>
-#include <fstream>
 
 #include "TarArchiver.h"
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
+
+#include <NodeInfo.h>
+#include <Messenger.h>
+
+#include <cassert>
+
 
 
 #ifdef HAIKU_ENABLE_I18N
@@ -76,12 +68,7 @@ TarArchiver::TarArchiver()
     SetArchiveType("tar");
     SetArchiveExtension(".tar");
 
-    m_error = BZR_DONE;
-    if (IsBinaryFound(m_tarPath, BZR_TAR) == false)
-    {
-        m_error = BZR_BINARY_MISSING;
-        return;
-    }
+    m_error = InitBinaryPath();
 }
 
 
@@ -90,12 +77,17 @@ TarArchiver::TarArchiver(bool isBeingDerived)
 {
     // This extra constructor is used by derived add-ons, here we
     // don't add file-types and extensions
-    m_error = BZR_DONE;
-    if (IsBinaryFound(m_tarPath, BZR_TAR) == false)
-    {
-        m_error = BZR_BINARY_MISSING;
-        return;
-    }
+    m_error = InitBinaryPath();
+}
+
+
+
+status_t TarArchiver::InitBinaryPath()
+{
+    if (GetBinaryPath(m_tarPath, "tar") == true)
+        return BZR_DONE;
+    else
+        return BZR_BINARY_MISSING;
 }
 
 
@@ -135,13 +127,9 @@ status_t TarArchiver::ReadOpen(FILE* fp)
         // Check to see if last char of pathStr = '/' add it as folder, else as a file
         uint16 pathLength = pathString.Length() - 1;
         if (pathString[pathLength] == '/' || permStr[0] == 'd')
-        {
             m_entriesList.AddItem(new ArchiveEntry(true, pathString.String(), sizeStr, sizeStr, timeValue, "-", "-"));
-        }
         else
-        {
             m_entriesList.AddItem(new ArchiveEntry(false, pathString.String(), sizeStr, sizeStr, timeValue, "-", "-"));
-        }
     }
 
     return BZR_DONE;

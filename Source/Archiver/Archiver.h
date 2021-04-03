@@ -100,13 +100,13 @@ class Archiver
         virtual bool        SupportsPassword() const;
         virtual bool        PasswordRequired() const;
         virtual bool        NeedsTempDirectory() const;
-        virtual status_t     GetComment(char*& commentStr);
-        virtual status_t     SetComment(char* commentStr, const char* tempDirPath);
+        virtual status_t    GetComment(char*& commentStr);
+        virtual status_t    SetComment(char* commentStr, const char* tempDirPath);
 
         // Helper functions
-        virtual status_t     ReadErrStream(FILE* fp, const char* escapeLine = NULL);
+        virtual status_t    ReadErrStream(FILE* fp, const char* escapeLine = NULL);
         virtual void        ReadStream(FILE* fp, BString& str) const;
-        bool                IsBinaryFound(char* path, const char* binaryFileName) const;
+        bool                GetBinaryPath(char* destPath, const char* binaryFileName) const;
 
         // Abstract functions
         virtual status_t     Open(entry_ref* ref, BMessage* fileList = NULL) = 0;

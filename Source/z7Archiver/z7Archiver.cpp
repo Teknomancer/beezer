@@ -90,9 +90,10 @@ z7Archiver::z7Archiver()
     SetArchiveType("7zip");
     SetArchiveExtension(".7z");
 
-    m_error = BZR_DONE;
     // Detect 7z binary
-    if (IsBinaryFound(m_7zPath, BZR_ARK) == false)
+    if (GetBinaryPath(m_7zPath, "7za") == true)
+        m_error = BZR_DONE;
+    else
     {
         m_error = BZR_BINARY_MISSING;
         return;
