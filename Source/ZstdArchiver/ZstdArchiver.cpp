@@ -202,26 +202,28 @@ status_t ZstdArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenge
 
         return exitCode;
     }
+    else
+    {
+        BPath destPath(refToDir);
+        if (strcmp(destPath.Path(), TempDirectoryPath()) == 0)
+            return BZR_DONE;        // as we already have unpacked it in temp, don't repeat
 
-    BPath destPath(refToDir);
-    if (strcmp(destPath.Path(), TempDirectoryPath()) == 0)
-        return BZR_DONE;        // as we already have unpacked it in temp, don't repeat
+        BString destFilePath = destPath.Path();
+        destFilePath << '/' << OutputFileName(m_archivePath.Leaf());
 
-    BString destFilePath = destPath.Path();
-    destFilePath << '/' << OutputFileName(m_archivePath.Leaf());
+        BString cmd;
+        cmd << "\"" << m_zstdPath << "\"" << " -c --no-progress -d \"" << m_archivePath.Path() << "\" > " << "\"" <<
+        destFilePath.String() << "\"";
 
-    BString cmd;
-    cmd << "\"" << m_zstdPath << "\"" << " -c --no-progress -d \"" << m_archivePath.Path() << "\" > " << "\"" <<
-    destFilePath.String() << "\"";
+        m_pipeMgr.FlushArgs();
+        m_pipeMgr << "/bin/sh" << "-c" << cmd.String();
+        m_pipeMgr.Pipe();
 
-    m_pipeMgr.FlushArgs();
-    m_pipeMgr << "/bin/sh" << "-c" << cmd.String();
-    m_pipeMgr.Pipe();
+        if (progress)
+            SendProgressMessage(progress);
 
-    if (progress)
-        SendProgressMessage(progress);
-
-    return BZR_DONE;
+        return BZR_DONE;
+    }
 }
 
 
