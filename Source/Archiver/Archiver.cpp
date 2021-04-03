@@ -623,11 +623,11 @@ status_t Archiver::SetComment(char* commentStr, const char* tempDirPath)
 
 
 
-bool Archiver::IsBinaryFound(char* filePath, const char* fileName) const
+bool Archiver::GetBinaryPath(char* destPath, const char* fileName) const
 {
     BStringList pathList;
     if (BPathFinder::FindPaths(B_FIND_PATH_BIN_DIRECTORY, fileName, B_FIND_PATH_EXISTING_ONLY, pathList) != B_OK) {
-        filePath[0] = '\0';
+        destPath[0] = '\0';
         return false;
     }
 
@@ -635,12 +635,12 @@ bool Archiver::IsBinaryFound(char* filePath, const char* fileName) const
     for (int32 index = 0; index < pathList.CountStrings(); index++) {
         BEntry entry(pathList.StringAt(index));
         if (entry.Exists()) {
-            strcpy(filePath, pathList.StringAt(index));
+            strcpy(destPath, pathList.StringAt(index));
             return true;
         }
     }
 
-    filePath[0] = '\0';
+    destPath[0] = '\0';
     return false;
 }
 

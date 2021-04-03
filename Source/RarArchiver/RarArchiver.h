@@ -30,11 +30,7 @@
 #ifndef _RAR_ARCHIVER_H
 #define _RAR_ARCHIVER_H
 
-#include <stdio.h>
-
 #include "Archiver.h"
-
-#define BZR_UNARK                      "unrar"
 
 class BMessenger;
 

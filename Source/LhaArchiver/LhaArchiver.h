@@ -29,11 +29,7 @@
 #ifndef _LHA_ARCHIVER_H
 #define _LHA_ARCHIVER_H
 
-#include <stdio.h>
-
 #include "Archiver.h"
-
-#define BZR_ARK                         "lha"
 
 class BMessenger;
 

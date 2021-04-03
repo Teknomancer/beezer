@@ -36,6 +36,8 @@
 
 #include <cassert>
 
+
+
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -69,8 +71,9 @@ XzArchiver::XzArchiver()
     SetArchiveType("xz");
     SetArchiveExtension(".tar.xz");
 
-    m_error = BZR_DONE;
-    if (IsBinaryFound(m_xzPath, BZR_ARK) == false)
+    if (GetBinaryPath(m_xzPath, "xz") == true)
+        m_error = BZR_DONE;
+    else
     {
         m_error = BZR_BINARY_MISSING;
         return;
@@ -465,5 +468,3 @@ bool XzArchiver::CanAddFiles() const
     else
         return TarArchiver::CanAddFiles();
 }
-
-

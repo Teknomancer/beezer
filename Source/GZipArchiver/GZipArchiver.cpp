@@ -27,26 +27,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Debug.h>
-#include <Entry.h>
-#include <Message.h>
-#include <Path.h>
-#include <String.h>
-#include <File.h>
-#include <NodeInfo.h>
-#include <Messenger.h>
-#include <Directory.h>
-#include <Menu.h>
-#include <MenuItem.h>
-
-#include <stdlib.h>
-#include <unistd.h>
-#include <malloc.h>
-#include <fstream>
-
 #include "GZipArchiver.h"
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
+
+#include <NodeInfo.h>
+#include <Messenger.h>
+#include <MenuItem.h>
+
 
 
 #ifdef HAIKU_ENABLE_I18N
@@ -85,8 +73,9 @@ GZipArchiver::GZipArchiver()
     SetArchiveType("gzip");
     SetArchiveExtension(".tar.gz");
 
-    m_error = BZR_DONE;
-    if (IsBinaryFound(m_gzipPath, BZR_ARK) == false)
+    if (GetBinaryPath(m_gzipPath, "gzip") == true)
+        m_error = BZR_DONE;
+    else
     {
         m_error = BZR_BINARY_MISSING;
         return;

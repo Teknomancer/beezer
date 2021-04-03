@@ -27,26 +27,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Debug.h>
-#include <Entry.h>
-#include <Message.h>
-#include <Path.h>
-#include <String.h>
-#include <File.h>
-#include <NodeInfo.h>
-#include <Messenger.h>
-#include <Directory.h>
-#include <Menu.h>
-#include <MenuItem.h>
-
-#include <stdlib.h>
-#include <unistd.h>
-#include <malloc.h>
-#include <fstream>
-
 #include "ArjArchiver.h"
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
+
+#include <NodeInfo.h>
+#include <Messenger.h>
+#include <MenuItem.h>
+
 
 
 #ifdef HAIKU_ENABLE_I18N
@@ -86,9 +74,10 @@ ArjArchiver::ArjArchiver()
     SetArchiveType("arj");
     SetArchiveExtension(".arj");
 
-    m_error = BZR_DONE;
     // Detect arj binary
-    if (IsBinaryFound(m_arjPath, BZR_ARK) == false)
+    if (GetBinaryPath(m_arjPath, "arj") == true)
+        m_error = BZR_DONE;
+    else
     {
         m_error = BZR_BINARY_MISSING;
         return;

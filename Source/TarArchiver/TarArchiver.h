@@ -29,11 +29,7 @@
 #ifndef _TAR_ARCHIVER_H
 #define _TAR_ARCHIVER_H
 
-#include <stdio.h>
-
 #include "Archiver.h"
-
-#define BZR_TAR                         "tar"
 
 class BMessenger;
 
@@ -69,6 +65,8 @@ class TarArchiver : public Archiver
         virtual bool       CanPartiallyOpen() const;
 
     private:
+        status_t           InitBinaryPath();
+
         char               m_tarPath[B_PATH_NAME_LENGTH];
 };
 

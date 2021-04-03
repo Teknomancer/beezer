@@ -88,17 +88,17 @@ ZipArchiver::ZipArchiver()
     SetArchiveType("zip");
     SetArchiveExtension(".zip");
 
-    m_error = BZR_DONE;
-    // Detect zip, unzip binary
-    if (IsBinaryFound(m_unzipPath, BZR_UNARK) == false ||
-            IsBinaryFound(m_zipPath, BZR_ARK) == false)
+    if (   GetBinaryPath(m_unzipPath, "unzip") == true
+        && GetBinaryPath(m_zipPath, "zip") == true)
+        m_error = BZR_DONE;
+    else
     {
         m_error = BZR_BINARY_MISSING;
         return;
     }
 
-    // Detect zipnote binary (optional)
-    if (IsBinaryFound(m_zipnotePath, BZR_ZIPNOTE) == false)
+    // Detect zipnote binary (optional, for zip comments)
+    if (GetBinaryPath(m_zipnotePath, "zipnote") == false)
     {
         m_error = BZR_OPTIONAL_BINARY_MISSING;
         m_zipnotePath[0] = '\0';

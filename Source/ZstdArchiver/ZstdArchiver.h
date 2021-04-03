@@ -29,11 +29,7 @@
 #ifndef _ZSTD_ARCHIVER_H
 #define _ZSTD_ARCHIVER_H
 
-#include <stdio.h>
-
 #include "TarArchiver.h"
-
-#define BZR_ARK                         "zstd"
 
 class BMessenger;
 

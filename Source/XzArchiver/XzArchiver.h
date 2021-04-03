@@ -30,11 +30,7 @@
 #ifndef _XZ_ARCHIVER_H
 #define _XZ_ARCHIVER_H
 
-#include <stdio.h>
-
 #include "TarArchiver.h"
-
-#define BZR_ARK                         "xz"
 
 class BMessenger;
 
