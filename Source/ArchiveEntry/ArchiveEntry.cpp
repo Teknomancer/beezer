@@ -8,6 +8,7 @@
 
 #include <DateTimeFormat.h>
 
+#include <stdlib.h> // needed for gcc2
 #include <stdio.h>
 
 
