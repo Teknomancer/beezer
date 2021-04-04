@@ -299,16 +299,20 @@ void Archiver::FillLists(BList* files, BList* dirs)
             if (entry->m_dirStr != NULL)
                 entry->m_dirStr[strlen(entry->m_dirStr) - 1] = '\0';
 
+            // Get size and packed as human-readable size strings (MiB, KiB etc).
+            unsigned long bytesSize = strtoul(entry->m_sizeStr, NULL, 10 /* radix */);
+            unsigned long packedSize = strtoul(entry->m_packedStr, NULL, 10 /* radix */);
+            BString const bytesStr = StringFromBytes(bytesSize);
+            BString const packedStr = StringFromBytes(packedSize);
+
             // Check for folders without any files, in which case ArchiveEntry will exist but will have its
             // fileName as "" (not NULL but "")
             BBitmap* icon = BitmapForExtension(entry->m_nameStr);
             ListEntry* listItem;
-            listItem = new ListEntry(0UL, false, false, icon, entry->m_nameStr,
-                                     StringFromBytes(atol(entry->m_sizeStr)).String(),
-                                     StringFromBytes(atol(entry->m_packedStr)).String(), entry->m_ratioStr,
-                                     entry->m_dirStr, entry->m_dateStr, entry->m_methodStr, entry->m_crcStr,
-                                     entry->m_dirStr, entry->m_pathStr, atol(entry->m_sizeStr),
-                                     atol(entry->m_packedStr), entry->m_timeValue);
+            listItem = new ListEntry(0, false, false, icon, entry->m_nameStr, bytesStr.String(), packedStr.String(),
+                                     entry->m_ratioStr, entry->m_dirStr, entry->m_dateStr, entry->m_methodStr,
+                                     entry->m_crcStr, entry->m_dirStr, entry->m_pathStr, bytesSize, packedSize,
+                                     entry->m_timeValue);
 
             // If file doesn't exist simply set its HashItem to have its listentry
             if (item != NULL)

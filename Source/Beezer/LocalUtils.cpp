@@ -171,22 +171,27 @@ int64 BytesFromString(char* text)
     if (!text)
         return 0;
 
+    // TODO: Fix this, use AppUtils::StringFromDigitalSize maybe.
     // Converts string to bytes, "text" needs to be 10.2 KB or 2 MB etc.
     char* end;
     double val;
 
     char* buffer = new char[strlen(text) + 1];
     strcpy(buffer, text);
-    val = strtod(buffer, &end);            // Bytes
+    val = strtod(buffer, &end);
 
-    if (strstr(buffer, "KiB"))                // KB
-        val *= kKBSize;
-    else if (strstr(buffer, "MiB"))            // MB
-        val *= kMBSize;
-    else if (strstr(buffer, "GiB"))            // GB
-        val *= kGBSize;
-    else if (strstr(buffer, "TiB"))            // TB
-        val *= kTBSize;
+    if (strstr(buffer, "KiB"))
+        val *= kKiBSize;
+    else if (strstr(buffer, "MiB"))
+        val *= kMiBSize;
+    else if (strstr(buffer, "GiB"))
+        val *= kGiBSize;
+    else if (strstr(buffer, "TiB"))
+        val *= kTiBSize;
+    else if (strstr(buffer, "PiB"))
+        val *= kPiBSize;
+    else if (strstr(buffer, "EiB"))
+        val *= kEiBSize;
 
     delete[] buffer;
     return (int64)val;
@@ -194,35 +199,33 @@ int64 BytesFromString(char* text)
 
 
 
-BString LocaleStringFromBytes(int64 v)
+BString LocaleStringFromBytes(uint64 val)
 {
-    // Redundant code !! Already exists in AppUtils, but including and using AppUtils from Beezer code-base
+    // TODO: Fix Redundant code.
+    // Already exists in AppUtils, but including and using AppUtils from Beezer code-base
     // is ugly, incorrect and may lead to broken implementation when AppUtils change etc, so repeat it here
     // later find a way to merge this function into AppUtils or LocalUtils --
 
     // OK this has now shifted from FileSplitterWindow to LocalUtils because it is needed in FileJoinerWindow
-    // as well, but currently this also exists in AppUtils, maybe it's better to have 2 versions of the same
-    // function for the reason mentioed above
-    BString str;
-    if (v > -1)
-    {
-        char buf[50];
-        if (v > (1024LL * 1024LL * 1024LL * 1024LL))
-            sprintf(buf, "%.2f %s", ((double)v) / (1024LL * 1024LL * 1024LL * 1024LL), B_TRANSLATE_COMMENT("TiB", "abbreviation of terrabyte"));
-        else if (v > (1024LL * 1024LL * 1024LL))
-            sprintf(buf, "%.2f %s", ((double)v) / (1024LL * 1024LL * 1024LL), B_TRANSLATE_COMMENT("GiB", "abbreviation of gigabyte"));
-        else if (v > (1024LL * 1024LL))
-            sprintf(buf, "%.2f %s", ((double)v) / (1024LL * 1024LL), B_TRANSLATE_COMMENT("MiB", "abbreviation of megabyte"));
-        else if (v > (1024LL))
-            sprintf(buf, "%.2f %s", ((double)v) / 1024LL, B_TRANSLATE_COMMENT("KiB", "abbreviation of kilobyte"));
-        else
-            sprintf(buf, "%Li %s", v, B_TRANSLATE("bytes"));
+    // as well, but currently this also exists in AppUtils.
 
-        str = buf;
-    }
+    char buf[64];
+    if (val < kKiBSize)
+        sprintf(buf, "%" B_PRIu64 " bytes");
+    else if (val < kMiBSize)
+        sprintf(buf, "%.2f %s", (double)val / kKiBSize, B_TRANSLATE_COMMENT("KiB", "abbreviation of kilobyte"));
+    else if (val < kGiBSize)
+        sprintf(buf, "%.2f %s", (double)val / kMiBSize, B_TRANSLATE_COMMENT("MiB", "abbreviation of megabyte"));
+    else if (val < kTiBSize)
+        sprintf(buf, "%.2f %s", (double)val / kGiBSize, B_TRANSLATE_COMMENT("GiB", "abbreviation of gigabyte"));
+    else if (val < kPiBSize)
+        sprintf(buf, "%.2f %s", (double)val / kTiBSize, B_TRANSLATE_COMMENT("TiB", "abbreviation of terrabyte"));
+    else if (val < kEiBSize)
+        sprintf(buf, "%.2f %s", (double)val / kPiBSize, B_TRANSLATE_COMMENT("PiB", "abbreviation of petabyte"));
     else
-        str = "-";
+        sprintf(buf, "%.2f %s", (double)val / kEiBSize, B_TRANSLATE_COMMENT("EiB", "abbreviation of exabyte"));
 
+    BString str(buf);
     return str;
 }
 

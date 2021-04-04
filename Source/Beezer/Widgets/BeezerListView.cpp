@@ -1023,7 +1023,7 @@ int BeezerListView::SortFunction(const CLVListItem* a, const CLVListItem* b, BLi
     int32 retValue = 0;
     switch (sortKey)
     {
-            // Name column
+        // Name column
         case 2:
         {
             retValue = strcasecmp(s1, s2);
@@ -1033,8 +1033,8 @@ int BeezerListView::SortFunction(const CLVListItem* a, const CLVListItem* b, BLi
         // Size and Packed Columns
         case 3: case 4:
         {
-            int64 valx = BytesFromString((char*)s1);
-            int64 valy = BytesFromString((char*)s2);
+            uint64 const valx = BytesFromString((char*)s1);
+            uint64 const valy = BytesFromString((char*)s2);
 
             if (valx < valy)
                 retValue = -1;

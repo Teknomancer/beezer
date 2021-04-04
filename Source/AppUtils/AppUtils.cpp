@@ -21,40 +21,33 @@
 #include <ctype.h>
 
 #include "AppUtils.h"
+#include "Shared.h"
 
 // Global object declares
 BLocker _apputils_locker("_app_utils_lock", true);
 
 
-
-BString StringFromBytes(int64 v)
+BString StringFromBytes(uint64 val)
 {
-    // Hacked from BeShare with minor changes -- many thanks to Jeremy Freisner,
-    // Don't bother about holding calculated constants for 1024*1024.. etc. as it will be optimized
-    // by the compiler
-    BString str;
-    if (v > -1)
-    {
-        char buf[50];
-        if (v > (1024LL * 1024LL * 1024LL * 1024LL))
-            sprintf(buf, "%.2f TiB", ((double)v) / (1024LL * 1024LL * 1024LL * 1024LL));
-        else if (v > (1024LL * 1024LL * 1024LL))
-            sprintf(buf, "%.2f GiB", ((double)v) / (1024LL * 1024LL * 1024LL));
-        else if (v > (1024LL * 1024LL))
-            sprintf(buf, "%.2f MiB", ((double)v) / (1024LL * 1024LL));
-        else if (v > (1024LL))
-            sprintf(buf, "%.2f KiB", ((double)v) / 1024LL);
-        else
-            sprintf(buf, "%Li bytes", v);
-
-        str = buf;
-    }
+    char buf[64];
+    if (val < kKiBSize)
+        sprintf(buf, "%" B_PRIu64 " bytes", val);
+    else if (val < kMiBSize)
+        sprintf(buf, "%.2f KiB", (double)val / kKiBSize);
+    else if (val < kGiBSize)
+        sprintf(buf, "%.2f MiB", (double)val / kMiBSize);
+    else if (val < kTiBSize)
+        sprintf(buf, "%.2f GiB", (double)val / kGiBSize);
+    else if (val < kPiBSize)
+        sprintf(buf, "%.2f TiB", (double)val / kTiBSize);
+    else if (val < kEiBSize)
+        sprintf(buf, "%.2f PiB", (double)val / kPiBSize);
     else
-        str = "-";
+        sprintf(buf, "%.2f EiB", (double)val / kEiBSize);
 
+    BString str(buf);
     return str;
 }
-
 
 
 inline uint64 DigitalUnitToBytes(char *str)
@@ -63,18 +56,19 @@ inline uint64 DigitalUnitToBytes(char *str)
     if (!strcasecmp(str, "bytes") || !strcasecmp(str, "B"))
         return 1;
     if (!strcasecmp(str, "KB") || !strcasecmp(str, "KiB"))
-        return 1024;
+        return kKiBSize;
     if (!strcasecmp(str, "MB") || !strcasecmp(str, "MiB"))
-        return 1024ULL * 1024ULL;
+        return kMiBSize;
     if (!strcasecmp(str, "GB") || !strcasecmp(str, "GiB"))
-        return 1024ULL * 1024ULL * 1024ULL ;
+        return kGiBSize;
     if (!strcasecmp(str, "TB") || !strcasecmp(str, "TiB"))
-        return 1024ULL * 1024ULL * 1024ULL * 1024ULL ;
+        return kTiBSize;
     if (!strcasecmp(str, "PB") || !strcasecmp(str, "PiB"))
-        return 1024ULL * 1024ULL * 1024ULL * 1024ULL * 1024ULL;
+        return kPiBSize;
+    if (!strcasecmp(str, "EB") || !strcasecmp(str, "EiB"))
+        return kEiBSize;
     return 0;
 }
-
 
 
 BString StringFromDigitalSize(char *size, char *unit)
@@ -102,7 +96,6 @@ BString StringFromDigitalSize(char *size, char *unit)
 }
 
 
-
 int8 MonthStrToNum(const char* month)
 {
     if (strcasecmp(month, "Jan") == 0) return 1;
@@ -122,7 +115,6 @@ int8 MonthStrToNum(const char* month)
 }
 
 
-
 int32 LastOccurrence(const char* str, char whatChar)
 {
     // Move "str" to the last occurrence of "whatChar" also count and return number of occurrences
@@ -139,7 +131,6 @@ int32 LastOccurrence(const char* str, char whatChar)
 }
 
 
-
 int32 CountCharsInFront(char* str, char whatChar)
 {
     // Simply count "whatChar"s in the beginning of "str" without modifying "str" pointer
@@ -149,7 +140,6 @@ int32 CountCharsInFront(char* str, char whatChar)
 
     return count;
 }
-
 
 
 bool StrEndsWith(const char* str, const char* end)
@@ -165,7 +155,6 @@ bool StrEndsWith(const char* str, const char* end)
         return true;
     return false;
 }
-
 
 
 const char* FinalPathComponent(const char* path)
@@ -198,7 +187,6 @@ const char* FinalPathComponent(const char* path)
 }
 
 
-
 const char* LeafFromPath(const char* path)
 {
     // Return the filename (pointer to where filename starts rather) from a full path string
@@ -213,7 +201,6 @@ const char* LeafFromPath(const char* path)
 
     return leafStr;
 }
-
 
 
 char* ParentPath(const char* pathStr, bool truncateSlash)
@@ -236,7 +223,6 @@ char* ParentPath(const char* pathStr, bool truncateSlash)
     parent[parentLen] = 0;
     return parent;
 }
-
 
 
 char* Extension(const char* fileName, int extLen)
@@ -268,7 +254,6 @@ char* Extension(const char* fileName, int extLen)
 }
 
 
-
 BString SupressWildcards(const char* str)
 {
     BString s = str;
@@ -276,7 +261,6 @@ BString SupressWildcards(const char* str)
     s.ReplaceAll("*", "\\*");
     return s;
 }
-
 
 
 BString SupressWildcardSet(const char* str)
