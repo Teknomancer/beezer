@@ -50,14 +50,12 @@ const char* kAboutText =
         "… for various reasons :^)\n\n*  *  *\n\n\n\n\n\n\n\n\n\n"
         "%hdr_legal%\n\n"
         "This program is distributed under\n"
-        "the 3-clause BSD license and the\n"
-        "the license is attached to each\n"
-        "source file of this program\n\n"
+        "the 3-clause BSD license.\n\n"
 
         "For third party code, the license's\n"
         "terms and conditions are explicitly\n"
         "stated and the author disclaimed of\n"
-        "any and all liabilities\n\n"
+        "any and all liabilities.\n\n"
 
         "For the full license read the\n"
         "License section of the documentation\n\n"
