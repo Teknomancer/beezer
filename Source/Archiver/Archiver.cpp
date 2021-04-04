@@ -138,9 +138,10 @@ status_t Archiver::LoadMetaData(const char* addonImagePath)
     {
         // populate our m_mimeList for convenient access to mimetypes
         char* mimeType;
+        // we aren't concerned with the count found for each mimetype as we don't need to loop through
+        // to get a list of extensions, we're only concerned with unique mimetypes
         for (int32 idx = 0; m_rulesMsg->GetInfo(B_STRING_TYPE, idx, &mimeType, NULL, NULL) == B_OK; idx++)
             m_mimeList.AddItem(strdup(mimeType));
-            //TODO filter duplicates from list
     }
 
     return B_OK;
