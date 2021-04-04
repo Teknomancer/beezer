@@ -44,22 +44,13 @@ class XzArchiver : public TarArchiver
 
         // Abstract Implementations & overridables
         status_t           Open(entry_ref* ref, BMessage* fileList);
-        status_t           ReadOpen(FILE* fp);
-
-        status_t           ReadExtract(FILE* fp, BMessenger* progress, volatile bool* cancel);
         status_t           Extract(entry_ref* dir, BMessage* list, BMessenger* progress, volatile bool* cancel);
-
         status_t           Test(char*& outputStr, BMessenger* progress, volatile bool* cancel);
-
-        status_t           ReadAdd(FILE* fp, BMessage* addedPaths, BMessenger* progress, volatile bool* cancel);
         status_t           Add(bool createMode, const char* relPath, BMessage* list, BMessage* addedPaths,
                                BMessenger* progress, volatile bool* cancel);
-
         status_t           Create(BPath* archivePath, const char* relPath, BMessage* fileList,
                                   BMessage* addedPaths, BMessenger* progress, volatile bool* cancel);
-
         status_t           Delete(char*& outputStr, BMessage* list, BMessenger* progress, volatile bool* cancel);
-        status_t           ReadDelete(FILE* fp, char*& outputStr,    BMessenger* progress, volatile bool* cancel);
 
         bool               NeedsTempDirectory() const;
         bool               CanAddFiles() const;
@@ -67,7 +58,11 @@ class XzArchiver : public TarArchiver
         BString            OutputFileName(const char* fullFileName) const;
 
     private:
-        // Private helper functions
+        status_t           ReadOpen(FILE* fp);
+        status_t           ReadExtract(FILE* fp, BMessenger* progress, volatile bool* cancel);
+        status_t           ReadAdd(FILE* fp, BMessage* addedPaths, BMessenger* progress, volatile bool* cancel);
+        status_t           ReadDelete(FILE* fp, char*& outputStr,    BMessenger* progress, volatile bool* cancel);
+
         void               CompressFromTemp();
         BString            InitTarFilePath(char* fileName);
         void               SendProgressMessage(BMessenger* progress) const;

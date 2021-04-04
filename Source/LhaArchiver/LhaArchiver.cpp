@@ -682,7 +682,7 @@ status_t LhaArchiver::Create(BPath* archivePath, const char* relPath, BMessage* 
 }
 
 
-
+// TODO: Move this to AppUtils
 int8 LhaArchiver::MonthStrToNum(const char* month) const
 {
     // Converts "Jan", "Feb" etc to 1, 2 etc.
