@@ -682,27 +682,6 @@ status_t LhaArchiver::Create(BPath* archivePath, const char* relPath, BMessage* 
 }
 
 
-// TODO: Move this to AppUtils
-int8 LhaArchiver::MonthStrToNum(const char* month) const
-{
-    // Converts "Jan", "Feb" etc to 1, 2 etc.
-    if (strcasecmp(month, "Jan") == 0) return 1;
-    if (strcasecmp(month, "Feb") == 0) return 2;
-    if (strcasecmp(month, "Mar") == 0) return 3;
-    if (strcasecmp(month, "Apr") == 0) return 4;
-    if (strcasecmp(month, "May") == 0) return 5;
-    if (strcasecmp(month, "Jun") == 0) return 6;
-    if (strcasecmp(month, "Jul") == 0) return 7;
-    if (strcasecmp(month, "Aug") == 0) return 8;
-    if (strcasecmp(month, "Sep") == 0) return 9;
-    if (strcasecmp(month, "Oct") == 0) return 10;
-    if (strcasecmp(month, "Nov") == 0) return 11;
-    if (strcasecmp(month, "Dec") == 0) return 12;
-
-    return 1;
-}
-
-
 
 void LhaArchiver::BuildDefaultMenu()
 {
