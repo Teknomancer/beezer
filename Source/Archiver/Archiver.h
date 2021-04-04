@@ -99,13 +99,11 @@ class Archiver
                                     volatile bool* cancel) = 0;
 
     protected:
-        // Protected functions
         void                TerminateThread(thread_id tid) const;
         void                FormatDate(char* dateStr, size_t bufSize, struct tm* timeStruct);
         void                MakeTime(struct tm* timeStruct, time_t* timeValue, const char* day, const char* month,
                                      const char* year, const char* hour, const char* min, const char* sec);
 
-        // Protected members
         const char*         m_typeStr,
                            *m_extensionStr,
                            *m_settingsLangStr,
@@ -122,14 +120,12 @@ class Archiver
         PipeMgr             m_pipeMgr;
 
     private:
-        // Private functions
         static int          CompareHashEntries(const void* a, const void* b);
         void                AddDirPathToTable(BList* dirList, const char* path);
         HashEntry*          AddFilePathToTable(BList* fileList, const char* path);
         void                ResetCache();
         BBitmap*            BitmapForExtension(const char* str) const;
 
-        // Private members
         BMessage*           m_rulesMsg;
         HashTable*          m_hashTable;
         BString             m_password;
