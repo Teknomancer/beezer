@@ -394,9 +394,13 @@ void CLVColumn::DrawColumnHeader(BView* view, BRect header_rect, bool sort_key, 
     if (label)
     {
         if (focus)
-            view->SetHighColor(BeFocusBlue);
+            // Modified by cpr to avoid hardcoded colors
+            //view->SetHighColor(BeFocusBlue);
+            view->SetHighUIColor(B_PANEL_TEXT_COLOR, B_LIGHTEN_1_TINT);
         else
-            view->SetHighColor(Black);
+            // Modified by cpr to avoid hardcoded colors
+            //view->SetHighColor(Black);
+            view->SetHighUIColor(B_PANEL_TEXT_COLOR);
 
         //Draw the label
         view->SetDrawingMode(B_OP_OVER);

@@ -20,10 +20,10 @@ BeezerStringView::BeezerStringView(BRect frame, const char* name, const char* la
       m_mouseTargetView(NULL),
       m_text(strdup(label)),
       m_oldText(NULL),
-      m_foreground((rgb_color){ 0, 0, 0, 255 }),
-      m_background((rgb_color){ 219, 219, 219, 255 })
+      m_foreground((rgb_color){ 0, 0, 0, 255 })
 {
     m_font = *be_plain_font;
+    m_foreground = ui_color(B_PANEL_TEXT_COLOR);
 }
 
 

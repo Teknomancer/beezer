@@ -311,7 +311,9 @@ void CLVEasyItem::DrawItemColumn(BView* owner, BRect item_column_rect, int32 col
             if (selected)                  // If part added by Ram
                 owner->SetHighColor(((ColumnListView*)owner)->ItemSelectForeColor());
             else
-                owner->SetHighColor(Black);
+                // Modified by cpr to avoid hardcoded colors
+                //owner->SetHighColor(Black);
+                owner->SetHighUIColor(B_PANEL_TEXT_COLOR);
         }
         else
         {
