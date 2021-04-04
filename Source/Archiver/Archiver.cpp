@@ -768,3 +768,15 @@ void Archiver::MakeTime(struct tm* timeStruct, time_t* timeValue, const char* da
 
     *timeValue = mktime(timeStruct);
 }
+
+
+time_t Archiver::ArchiveModificationTime() const
+{
+    time_t modTime;
+    BEntry entry(m_archivePath.Path(), true /* traverse link */);
+    if (entry.Exists() == true)
+        entry.GetModificationTime(&modTime);
+    else
+        modTime = 0;
+    return modTime;
+}

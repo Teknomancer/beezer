@@ -54,6 +54,9 @@ status_t ZstdArchiver::ReadOpen(FILE* fp)
          ratioStr[15], checkStr[15],
          pathStr[B_PATH_NAME_LENGTH + 1];
 
+    // zstd does not report the file time of compressed files so take the last modified time of the archive instead.
+    time_t const modTime = ArchiveModificationTime();
+
     // Skip first header line
     fgets(lineString, len, fp);
 
@@ -67,18 +70,11 @@ status_t ZstdArchiver::ReadOpen(FILE* fp)
         BString packedString = StringFromDigitalSize(packedStr, packedUnitStr);
         BString sizeString = StringFromDigitalSize(sizeStr, sizeUnitStr);
 
-        // Ugly cruft -- zstd does NOT report the file time of the compressed file, so
-        // we take the last modified time of the archive as the modified time of the file
-        // inside it - this should be accurate
-        time_t modTime;
-        BEntry archiveEntry(m_archivePath.Path(), true);
-        archiveEntry.GetModificationTime(&modTime);
-
         // Zstd is a block compresses that contains only one file/block, so the path cannot ever be a folder.
         assert(!StrEndsWith(pathStr, "/"));
         assert(FinalPathComponent(pathStr) == pathStr);
         m_entriesList.AddItem(new ArchiveEntry(false, pathStr, sizeString.String(), packedString.String(),
-                                                modTime, checkStr, "-"));
+                                               modTime, checkStr, "-"));
     }
 
     return BZR_DONE;

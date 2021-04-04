@@ -56,20 +56,16 @@ status_t LhaArchiver::ReadOpen(FILE* fp)
 
     // Lha doesn't report the time for files (only date) hence we use the modification time of the
     // archive along with the corresponding date reported by lha
-    time_t modTime;
+    time_t const modTime = ArchiveModificationTime();
     tm mod_tm;
-    BEntry archiveEntry(m_archivePath.Path(), true);
-    archiveEntry.GetModificationTime(&modTime);
     localtime_r(&modTime, &mod_tm);
     sprintf(hourStr, "%d", mod_tm.tm_hour);
     sprintf(minuteStr, "%d", mod_tm.tm_min);
     sprintf(secondStr, "%d", mod_tm.tm_sec);
 
-    do
-    {
+    do {
         fgets(lineString, len, fp);
-    }
-    while (!feof(fp) && (strstr(lineString, "----------") == NULL));
+    } while (!feof(fp) && (strstr(lineString, "----------") == NULL));
 
     fgets(lineString, len, fp);
 
@@ -110,13 +106,9 @@ status_t LhaArchiver::ReadOpen(FILE* fp)
         // Check to see if last char of pathStr = '/' add it as folder, else as a file
         uint16 pathLength = pathString.Length() - 1;
         if (pathString[pathLength] == '/' || permStr[0] == 'd')
-        {
             m_entriesList.AddItem(new ArchiveEntry(true, pathString.String(), sizeStr, packedStr, timeValue, methodStr, crcStr));
-        }
         else
-        {
             m_entriesList.AddItem(new ArchiveEntry(false, pathString.String(), sizeStr, packedStr, timeValue, methodStr, crcStr));
-        }
 
         fgets(lineString, len, fp);
     }

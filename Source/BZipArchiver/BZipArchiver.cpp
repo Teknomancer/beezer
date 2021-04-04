@@ -81,10 +81,8 @@ status_t BZipArchiver::Open(entry_ref* ref, BMessage* fileList)
     // bzip2 does not list its file like gzip, so we fake it :)
     m_tarArk = false;
     char sizeStr[30], pathStr[B_PATH_NAME_LENGTH];
-    time_t modTime;
-    BEntry archiveEntry(m_archivePath.Path(), true);
-    archiveEntry.GetModificationTime(&modTime);
 
+    time_t const modTime = ArchiveModificationTime();
     off_t size;
     BEntry deflatedEntry(destPath.String(), false);
     if (deflatedEntry.Exists() == false)
