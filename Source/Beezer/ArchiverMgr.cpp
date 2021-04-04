@@ -48,7 +48,7 @@
 #include <Catalog.h>
 
 #undef B_TRANSLATION_CONTEXT
-#define B_TRANSLATION_CONTEXT "ArchiveMgr"
+#define B_TRANSLATION_CONTEXT "ArchiverMgr"
 #else
 #define B_TRANSLATE(x) x
 #endif
@@ -219,12 +219,16 @@ status_t MergeArchiverRules(RuleMgr* ruleMgr)
                 Archiver* ark = (*load_archiver)(path.Path());
                 BMessage* rulesMsg = ark->GetRulesMessage();
                 char* mimeType;
+                int32 count = 0;
                 // iterate our loaded mime rules and add them to the rule manager
-                for (int32 idx = 0; rulesMsg->GetInfo(B_STRING_TYPE, idx, &mimeType, NULL, NULL) == B_OK; idx++)
+                for (int32 idx = 0; rulesMsg->GetInfo(B_STRING_TYPE, idx, &mimeType, NULL, &count) == B_OK; idx++)
                 {
                     const char* extension;
-                    rulesMsg->FindString(mimeType, &extension);
-                    ruleMgr->AddMimeRule(strdup(mimeType), strdup(extension));
+                    for (int32 subidx = 0; subidx < count; subidx++)
+                    {
+                        rulesMsg->FindString(mimeType, subidx, &extension);
+                        ruleMgr->AddMimeRule(strdup(mimeType), strdup(extension));
+                    }
                 }
             }
 
