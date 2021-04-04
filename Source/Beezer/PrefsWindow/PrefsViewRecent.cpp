@@ -46,7 +46,6 @@ void PrefsViewRecent::Render()
             B_TRANSLATE("Recent archives"));
     arkStrView->SetFont(&m_sectionFont);
     arkStrView->ResizeToPreferred();
-    arkStrView->SetLowColor(ViewColor());
 
     float strW = StringWidth(B_TRANSLATE("Number of recent archives"));
     strW += 6;
@@ -68,7 +67,6 @@ void PrefsViewRecent::Render()
             NULL, B_TRANSLATE("Recent extract paths"));
     extStrView->SetFont(&m_sectionFont);
     extStrView->ResizeToPreferred();
-    extStrView->SetLowColor(ViewColor());
 
     strW = StringWidth(B_TRANSLATE("Number of recent extract paths"));
     strW += 6;

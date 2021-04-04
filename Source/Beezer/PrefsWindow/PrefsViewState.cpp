@@ -40,7 +40,6 @@ void PrefsViewState::Render()
             B_TRANSLATE("Store automatically"));
     storeStrView->SetFont(&m_sectionFont);
     storeStrView->ResizeToPreferred();
-    storeStrView->SetLowColor(ViewColor());
 
     m_storeUIChk = new BCheckBox(BRect(3 * m_margin, storeStrView->Frame().bottom + m_vGap, 0, 0),
                                  "PrefsViewState:storeUIChk", B_TRANSLATE("Interface state"), NULL);
@@ -54,7 +53,6 @@ void PrefsViewState::Render()
             m_storeArkChk->Frame().Height() / 2, 0, 0), NULL, B_TRANSLATE("Restore automatically"));
     restoreStrView->SetFont(&m_sectionFont);
     restoreStrView->ResizeToPreferred();
-    restoreStrView->SetLowColor(ViewColor());
 
     m_restoreUIChk = new BCheckBox(BRect(3 * m_margin, restoreStrView->Frame().bottom + m_vGap, 0, 0),
                                    "PrefsViewState:restoreUIChk", B_TRANSLATE("Interface state"), NULL);

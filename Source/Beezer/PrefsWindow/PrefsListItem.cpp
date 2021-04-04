@@ -83,13 +83,13 @@ void PrefsListItem::DrawItem(BView* owner, BRect frame, bool complete)
         {
             owner->SetHighColor(owner->ViewColor());
             owner->FillRect(frame);
-            owner->SetHighColor(0, 0, 0, 255);
+            owner->SetHighUIColor(B_CONTROL_TEXT_COLOR);
             if (m_makeBold)
                 owner->SetFont(be_plain_font);
         }
     }
     else
-        owner->SetHighColor(182, 182, 182, 255);
+        owner->SetHighUIColor(B_CONTROL_TEXT_COLOR, B_DISABLED_LABEL_TINT);
 
     if (m_bitmap)
     {

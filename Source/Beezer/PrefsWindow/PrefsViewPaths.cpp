@@ -80,7 +80,6 @@ void PrefsViewPaths::Render()
             B_TRANSLATE("Default paths:"));
     defaultStrView->SetFont(&m_sectionFont);
     defaultStrView->ResizeToPreferred();
-    defaultStrView->SetLowColor(ViewColor());
 
     int8 dividerStrCount = 3;
     BString dividerStrings[] =
@@ -166,7 +165,6 @@ void PrefsViewPaths::Render()
             B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
     favStrView->SetFont(&m_sectionFont);
     favStrView->ResizeToPreferred();
-    favStrView->SetLowColor(ViewColor());
 
     m_genChk = new BCheckBox(BRect(3 * m_margin, favStrView->Frame().bottom, 0, 0),
                              "PrefsViewPaths:genChk", B_TRANSLATE("List more paths (using archive name)"), NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP,
