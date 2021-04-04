@@ -139,6 +139,9 @@ BeezerApp::BeezerApp()
 
     m_ruleMgr = new RuleMgr(&m_settingsDir, K_RULE_FILE);
 
+    // load the archivers and merge their internal rules list
+    MergeArchiverRules(m_ruleMgr);
+
     if (_prefs_misc.FindBoolDef(kPfMimeOnStartup, false))
         RegisterFileTypes();
 
