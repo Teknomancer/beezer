@@ -9,6 +9,7 @@
 #include <DateTimeFormat.h>
 
 #include <stdio.h>
+#include <stdlib.h> // needed for gcc2
 
 
 ArchiveEntry::ArchiveEntry()
