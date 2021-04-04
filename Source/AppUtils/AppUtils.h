@@ -18,7 +18,7 @@ const char* const kTrackerSignature = "application/x-vnd.Be-TRAK";
 extern BLocker        _apputils_locker;
 
 // Global functions (these should never access data/resources defined outside them)
-extern BString        StringFromBytes(int64 bytes);
+extern BString        StringFromBytes(uint64 bytes);
 extern BString        StringFromDigitalSize(char *size, char *unit);
 extern int8           MonthStrToNum(const char* month);
 extern int32          CountCharsInFront(char* str, char whatChar);

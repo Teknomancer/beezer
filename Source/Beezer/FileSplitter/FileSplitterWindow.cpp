@@ -773,7 +773,7 @@ void FileSplitterWindow::UpdateData()
         m_sizeStr->SetText(sizeStr.String());
 
         // Determine the size of each piece that the user has selected in bytes
-        int64 fragmentSize = 0;
+        uint64 fragmentSize = 0;
         if (m_customSizeView->IsEnabled())
         {
             BString val;
