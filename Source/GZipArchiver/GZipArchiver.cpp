@@ -54,6 +54,9 @@ status_t GZipArchiver::ReadOpen(FILE* fp)
          monthStr[5], hourStr[5], minuteStr[5], crcStr[15],
          pathStr[B_PATH_NAME_LENGTH + 1];
 
+    // gzip does not report the file time of compressed files so take the last modified time of the archive instead.
+    time_t const modTime = ArchiveModificationTime();
+
     // Skip first header line
     fgets(lineString, len, fp);
 
@@ -67,13 +70,6 @@ status_t GZipArchiver::ReadOpen(FILE* fp)
                pathStr);
 
         const char *pathString = &pathStr[1];
-
-        // Ugly cruft -- gzip does NOT report the file time of the compressed file correctly - no year
-        // hard-to-read output format etc, so we take the last modified time of the archive as the modified
-        // time of the file inside it - this should be accurate
-        time_t modTime;
-        BEntry archiveEntry(m_archivePath.Path(), true);
-        archiveEntry.GetModificationTime(&modTime);
 
         if (StrEndsWith(pathString, "/"))
             m_entriesList.AddItem(new ArchiveEntry(true, pathString, sizeStr, packedStr, modTime, methodStr, crcStr));

@@ -103,6 +103,7 @@ class Archiver
         void                FormatDate(char* dateStr, size_t bufSize, struct tm* timeStruct);
         void                MakeTime(struct tm* timeStruct, time_t* timeValue, const char* day, const char* month,
                                      const char* year, const char* hour, const char* min, const char* sec);
+        time_t              ArchiveModificationTime() const;
 
         const char*         m_typeStr,
                            *m_extensionStr,

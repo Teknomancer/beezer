@@ -54,6 +54,9 @@ status_t XzArchiver::ReadOpen(FILE* fp)
          strmsStr[16], blocksStr[16], packedStr[16], packedUnitStr[16], sizeStr[16], sizeUnitStr[16], ratioStr[16],
          checkStr[16], pathStr[B_PATH_NAME_LENGTH + 1];
 
+    // zstd does not report the file time of compressed files so take the last modified time of the archive instead.
+    time_t const modTime = ArchiveModificationTime();
+
     // Skip first header line
     fgets(lineString, len, fp);
 
@@ -68,13 +71,6 @@ status_t XzArchiver::ReadOpen(FILE* fp)
 
         BString packedString = StringFromDigitalSize(packedStr, packedUnitStr);
         BString sizeString = StringFromDigitalSize(sizeStr, sizeUnitStr);
-
-        // Ugly cruft -- xz does NOT report the file time of the compressed file correctly,
-        // so we take the last modified time of the archive as the modified time of the file inside it,
-        // this should be accurate
-        time_t modTime;
-        BEntry archiveEntry(m_archivePath.Path(), true);
-        archiveEntry.GetModificationTime(&modTime);
 
         // Xz is a block compresses that contains only one file/block, so the path cannot ever be a folder.
         assert(!StrEndsWith(pathString, "/"));
