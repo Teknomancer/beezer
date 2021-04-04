@@ -61,8 +61,6 @@ class LhaArchiver : public Archiver
         status_t           ReadTest(FILE* fp, char*& outputStr, BMessenger* progress, volatile bool* cancel);
         status_t           ReadDelete(FILE* fp, char*& outputStr,    BMessenger* progress, volatile bool* cancel);
 
-        // TODO: Move this to AppUtils
-        int8               MonthStrToNum(const char* month) const;
         void               SetMimeType();
 
         char               m_lhaPath[B_PATH_NAME_LENGTH];
