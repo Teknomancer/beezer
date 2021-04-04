@@ -15,7 +15,7 @@ class PrefsView;
 
 #define M_CLOSE_PREFS              'clpf'
 #define M_SAVE_PREFS               'svpf'
-#define M_PREFS_PANEL_SELECTED      'pspf'
+#define M_PREFS_PANEL_SELECTED     'pspf'
 
 class PrefsWindow : public BWindow
 {

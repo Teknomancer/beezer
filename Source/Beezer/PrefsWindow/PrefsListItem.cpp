@@ -16,7 +16,6 @@
 #include "UIConstants.h"
 
 
-
 PrefsListItem::PrefsListItem(const char* text, BBitmap* bmp, bool makeBold)
     : BStringItem(text)
 {
@@ -36,12 +35,10 @@ PrefsListItem::PrefsListItem(const char* text, BBitmap* bmp, bool makeBold)
 }
 
 
-
 PrefsListItem::~PrefsListItem()
 {
     // and NO we don't delete m_bitmap as its allocated/de-allocated by calling side
 }
-
 
 
 void PrefsListItem::DrawItem(BView* owner, BRect frame, bool complete)
@@ -119,10 +116,7 @@ void PrefsListItem::DrawItem(BView* owner, BRect frame, bool complete)
 }
 
 
-
 float PrefsListItem::FontHeight() const
 {
     return m_fontDelta * 2;
 }
-
-

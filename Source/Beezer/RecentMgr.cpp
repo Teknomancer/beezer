@@ -24,7 +24,6 @@ BLocker _recent_locker("_recent_mgr_lock", true);
 int32 RecentMgr::m_maxInternalCount = 99;
 
 
-
 RecentMgr::RecentMgr(int32 maxNumPaths, Preferences* pref, RecentItemType allowedPathType, bool showFullPath)
 {
     m_maxNumPaths = maxNumPaths;
@@ -36,7 +35,6 @@ RecentMgr::RecentMgr(int32 maxNumPaths, Preferences* pref, RecentItemType allowe
 }
 
 
-
 RecentMgr::~RecentMgr()
 {
     SavePrefs();
@@ -46,12 +44,10 @@ RecentMgr::~RecentMgr()
 }
 
 
-
 void RecentMgr::SetMaxPaths(int32 maxNumPaths)
 {
     m_maxNumPaths = maxNumPaths;
 }
-
 
 
 void RecentMgr::SetShowFullPath(bool showFullPath)
@@ -60,12 +56,10 @@ void RecentMgr::SetShowFullPath(bool showFullPath)
 }
 
 
-
 void RecentMgr::SetCommand(uint32 command)
 {
     m_command = command;
 }
-
 
 
 void RecentMgr::AddPath(const char* path)
@@ -93,7 +87,6 @@ void RecentMgr::AddPath(const char* path)
 }
 
 
-
 void RecentMgr::RemovePath(const char* path)
 {
     BAutolock codeLock(_recent_locker);
@@ -104,7 +97,6 @@ void RecentMgr::RemovePath(const char* path)
 }
 
 
-
 BMenu* RecentMgr::BuildMenu(const char* menuName, const char* fieldName, BHandler* targetForItems)
 {
     BMenu* recentMenu = new BMenu(menuName);
@@ -113,14 +105,12 @@ BMenu* RecentMgr::BuildMenu(const char* menuName, const char* fieldName, BHandle
 }
 
 
-
 BPopUpMenu* RecentMgr::BuildPopUpMenu(const char* menuName, const char* fieldName, BHandler* targetForItems)
 {
     BPopUpMenu* recentMenu = new BPopUpMenu(menuName, false, false);
     FillMenu(recentMenu, fieldName, targetForItems);
     return recentMenu;
 }
-
 
 
 void RecentMgr::UpdateMenu(BMenu* recentMenu, const char* fieldName, BHandler* targetForItems)
@@ -133,7 +123,6 @@ void RecentMgr::UpdateMenu(BMenu* recentMenu, const char* fieldName, BHandler* t
 
     FillMenu(recentMenu, fieldName, targetForItems);
 }
-
 
 
 void RecentMgr::FillMenu(BMenu* menu, const char* fieldName, BHandler* target)
@@ -186,7 +175,6 @@ void RecentMgr::FillMenu(BMenu* menu, const char* fieldName, BHandler* target)
 }
 
 
-
 void RecentMgr::SavePrefs()
 {
     // Save the recent path to preferences
@@ -207,7 +195,6 @@ void RecentMgr::SavePrefs()
 }
 
 
-
 void RecentMgr::LoadPrefs()
 {
     if (!m_prefs)
@@ -218,5 +205,3 @@ void RecentMgr::LoadPrefs()
     while (m_prefs->FindString(kPfRecentPath, i++, &path) == B_OK)
         m_paths.AddItem((void*)strdup(path));
 }
-
-

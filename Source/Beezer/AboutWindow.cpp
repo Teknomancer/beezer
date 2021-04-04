@@ -25,8 +25,6 @@
 #define B_TRANSLATE(x) x
 #endif
 
-
-
 const char* kAboutText =
         "Version %appversion%\n"
         "%hdr_debug%\n\n"
@@ -110,6 +108,7 @@ const char* kAboutText =
         "community\n\n*  *  *\n\n\n\n\n\n\n\n\n\n"
         "OK…\n\nYou can close this window now :)\n\n\n\n\n";
 
+
 MarqueeView::MarqueeView(BRect frame, const char* name, BRect textRect, uint32 resizeMask,
                          uint32 flags)
     : BTextView(frame, name, textRect, resizeMask, flags)
@@ -117,7 +116,6 @@ MarqueeView::MarqueeView(BRect frame, const char* name, BRect textRect, uint32 r
     m_curPos = Bounds().top;
     m_rightEdge = Bounds().right;
 }
-
 
 
 MarqueeView::MarqueeView(BRect frame, const char* name, BRect textRect, const BFont* initialFont,
@@ -129,14 +127,12 @@ MarqueeView::MarqueeView(BRect frame, const char* name, BRect textRect, const BF
 }
 
 
-
 void MarqueeView::ScrollTo(float x, float y)
 {
     // Reset curPos
     m_curPos = y;
     return BTextView::ScrollTo(x, y);
 }
-
 
 
 void MarqueeView::ScrollBy(float dh, float dv)
@@ -153,9 +149,6 @@ void MarqueeView::ScrollBy(float dh, float dv)
     SetDrawingMode(B_OP_COPY);
     return BTextView::ScrollBy(dh, dv);
 }
-
-
-
 
 
 AboutWindow::AboutWindow(const char* versionStr, const char* compileTimeStr)
@@ -282,13 +275,11 @@ AboutWindow::AboutWindow(const char* versionStr, const char* compileTimeStr)
 }
 
 
-
 void AboutWindow::Quit()
 {
     be_app_messenger.SendMessage(M_CLOSE_ABOUT);
     return BWindow::Quit();
 }
-
 
 
 void AboutWindow::DispatchMessage(BMessage* message, BHandler* handler)
@@ -306,7 +297,6 @@ void AboutWindow::DispatchMessage(BMessage* message, BHandler* handler)
 
     BWindow::DispatchMessage(message, handler);
 }
-
 
 
 int32 AboutWindow::_scroller(void* data)
@@ -348,5 +338,3 @@ int32 AboutWindow::_scroller(void* data)
 
     return 0;
 }
-
-

@@ -11,7 +11,6 @@
 #include <Directory.h>
 #include <MenuItem.h>
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -21,14 +20,15 @@
 #define B_TRANSLATE(x) x
 #endif
 
+
 // TODO: Update RuleDefaults.h
 // TODO: Update CMakeLists.txt
+
 
 Archiver* load_archiver(const char* addonImagePath)
 {
 	return new HPkgArchiver(addonImagePath);
 }
-
 
 
 HPkgArchiver::HPkgArchiver(const char* addonImagePath)
@@ -42,7 +42,6 @@ HPkgArchiver::HPkgArchiver(const char* addonImagePath)
         return;
     }
 }
-
 
 
 status_t HPkgArchiver::ReadOpen(FILE* fp, const char* metaInfo)
@@ -74,7 +73,6 @@ status_t HPkgArchiver::ReadOpen(FILE* fp, const char* metaInfo)
     
     return BZR_ERRSTREAM_FOUND;
 }
-
 
 
 status_t HPkgArchiver::Open(entry_ref* ref, BMessage* fileList)
@@ -153,13 +151,11 @@ status_t HPkgArchiver::Open(entry_ref* ref, BMessage* fileList)
 }
 
 
-
 status_t HPkgArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger* progress,
                               volatile bool* cancel)
 {
     return BZR_NOT_SUPPORTED;
 }
-
 
 
 status_t HPkgArchiver::ReadExtract(FILE* fp, BMessenger* progress, volatile bool* cancel)
@@ -168,19 +164,16 @@ status_t HPkgArchiver::ReadExtract(FILE* fp, BMessenger* progress, volatile bool
 }
 
 
-
 status_t HPkgArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool* cancel)
 {
     return BZR_NOT_SUPPORTED;
 }
 
 
-
 status_t HPkgArchiver::ReadTest(FILE* fp, char*& outputStr, BMessenger* progress, volatile bool* cancel)
 {
     return BZR_NOT_SUPPORTED;
 }
-
 
 
 status_t HPkgArchiver::Add(bool createMode, const char* relativePath, BMessage* message, BMessage* addedPaths,
@@ -190,7 +183,6 @@ status_t HPkgArchiver::Add(bool createMode, const char* relativePath, BMessage* 
 }
 
 
-
 status_t HPkgArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* progress,
                              volatile bool* cancel)
 {
@@ -198,13 +190,11 @@ status_t HPkgArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* p
 }
 
 
-
 status_t HPkgArchiver::Create(BPath* archivePath, const char* relPath, BMessage* fileList, BMessage* addedPaths,
                              BMessenger* progress, volatile bool* cancel)
 {
     return BZR_NOT_SUPPORTED;
 }
-
 
 
 void HPkgArchiver::BuildDefaultMenu()

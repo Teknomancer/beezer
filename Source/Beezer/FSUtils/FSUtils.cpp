@@ -31,7 +31,6 @@ typedef struct stat StatStruct;
 BLocker _fs_utils_locker("_fs_utils_lock", true);
 
 
-
 status_t CopyDirectory(BEntry* srcDir, BDirectory* destDir, BMessenger* progress, volatile bool* cancel)
 {
     BAutolock autoLocker(&_fs_utils_locker);
@@ -80,7 +79,6 @@ status_t CopyDirectory(BEntry* srcDir, BDirectory* destDir, BMessenger* progress
 }
 
 
-
 void GetDirectoryInfo(BEntry* srcDir, int32& fileCount, int32& folderCount, off_t& totalSize,
                       volatile bool* cancel)
 {
@@ -114,7 +112,6 @@ void GetDirectoryInfo(BEntry* srcDir, int32& fileCount, int32& folderCount, off_
 }
 
 
-
 void RemoveDirectory(BDirectory* dir)
 {
     BAutolock autoLocker(&_fs_utils_locker);
@@ -139,7 +136,6 @@ void RemoveDirectory(BDirectory* dir)
     if (entry.Exists())
         entry.Remove();
 }
-
 
 
 BString CreateTempDirectory(const char* prefix, BDirectory** createdDir, bool createNow)
@@ -167,7 +163,6 @@ BString CreateTempDirectory(const char* prefix, BDirectory** createdDir, bool cr
 
     return tempDirName;
 }
-
 
 
 status_t CopyFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress,    volatile bool* cancel)
@@ -274,7 +269,6 @@ status_t CopyFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress,  
 }
 
 
-
 void CopyAttributes(BNode* srcNode, BNode* destNode, void* buffer, size_t bufSize)
 {
     srcNode->RewindAttrs();
@@ -303,7 +297,6 @@ void CopyAttributes(BNode* srcNode, BNode* destNode, void* buffer, size_t bufSiz
         }
     }
 }
-
 
 
 status_t SplitFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress, uint64 fragmentSize,
@@ -454,5 +447,3 @@ status_t SplitFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress, 
 
     return BZR_DONE;
 }
-
-

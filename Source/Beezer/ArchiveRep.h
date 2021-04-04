@@ -23,14 +23,14 @@ class ArchiveRep
         // Additional Hooks
         Archiver*           Ark() const;
         thread_id           ThreadID() const;
-        virtual status_t     InitArchiver(entry_ref* ref, char* mimeString);
-        virtual status_t     InitArchiver(const char* name, bool popupErrors);
-        virtual status_t     Open();
-        virtual status_t     Open(BMessage* message);
-        virtual status_t     Test();
-        virtual status_t     Test(BMessage* message);
-        virtual status_t     Count(BMessage* message);
-        virtual status_t     Create(BMessage* message);
+        virtual status_t    InitArchiver(entry_ref* ref, char* mimeString);
+        virtual status_t    InitArchiver(const char* name, bool popupErrors);
+        virtual status_t    Open();
+        virtual status_t    Open(BMessage* message);
+        virtual status_t    Test();
+        virtual status_t    Test(BMessage* message);
+        virtual status_t    Count(BMessage* message);
+        virtual status_t    Create(BMessage* message);
 
     protected:
         // Protected hooks

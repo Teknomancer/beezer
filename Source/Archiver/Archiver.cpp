@@ -18,8 +18,6 @@
 #include <Resources.h>
 #include <TypeConstants.h>
 
-#include <stdlib.h> // needed for gcc2
-
 
 Archiver::Archiver()
     :
@@ -141,12 +139,10 @@ inline void Archiver::ResetCache()
 }
 
 
-
 status_t Archiver::InitCheck() const
 {
     return m_error;
 }
-
 
 
 void Archiver::SetFoldingLevel(int8 level)
@@ -155,19 +151,16 @@ void Archiver::SetFoldingLevel(int8 level)
 }
 
 
-
 void Archiver::SetTempDirectoryPath(const char* path)
 {
     m_tempDirPath = strdup(path);
 }
 
 
-
 const char* Archiver::TempDirectoryPath() const
 {
     return m_tempDirPath;
 }
-
 
 
 void Archiver::SetArchiveType(const char* type)
@@ -177,12 +170,10 @@ void Archiver::SetArchiveType(const char* type)
 }
 
 
-
 const char* Archiver::ArchiveType() const
 {
     return m_typeStr;
 }
-
 
 
 void Archiver::SetArchiveExtension(const char* extension)
@@ -192,12 +183,10 @@ void Archiver::SetArchiveExtension(const char* extension)
 }
 
 
-
 const char* Archiver::ArchiveExtension() const
 {
     return m_extensionStr;
 }
-
 
 
 HashTable* Archiver::Table() const
@@ -206,19 +195,16 @@ HashTable* Archiver::Table() const
 }
 
 
-
 BList* Archiver::MimeTypeList() const
 {
     return const_cast<BList*>(&m_mimeList);
 }
 
 
-
 BMessage* Archiver::ErrorMessage() const
 {
     return const_cast<BMessage*>(&m_errorDetails);
 }
-
 
 
 void Archiver::SetIconList(BList* list)
@@ -239,13 +225,11 @@ void Archiver::SetIconList(BList* list)
 }
 
 
-
 void Archiver::GetLists(BList*& fileList, BList*& folderList) const
 {
     fileList = (BList*)&m_fileList;
     folderList = (BList*)&m_folderList;
 }
-
 
 
 void Archiver::TerminateThread(thread_id tid) const
@@ -254,7 +238,6 @@ void Archiver::TerminateThread(thread_id tid) const
     if (get_thread_info(tid, &t_info) == B_OK)         // Verify if thread is still running then terminate
         send_signal((pid_t)tid, SIGTERM);
 }
-
 
 
 void Archiver::FillLists(BList* files, BList* dirs)
@@ -374,14 +357,12 @@ void Archiver::FillLists(BList* files, BList* dirs)
 }
 
 
-
 inline int Archiver::CompareHashEntries(const void* a, const void* b)
 {
     HashEntry* x(reinterpret_cast<HashEntry*>(&a));
     HashEntry* y(reinterpret_cast<HashEntry*>(&b));
     return strcasecmp(x->m_pathStr, y->m_pathStr);
 }
-
 
 
 void Archiver::AddDirPathToTable(BList* dirList, const char* path)
@@ -421,7 +402,6 @@ void Archiver::AddDirPathToTable(BList* dirList, const char* path)
 }
 
 
-
 HashEntry* Archiver::AddFilePathToTable(BList* fileList, const char* path)
 {
     // Try and insert the file's path into the hash table
@@ -449,7 +429,6 @@ HashEntry* Archiver::AddFilePathToTable(BList* fileList, const char* path)
 
     return NULL;
 }
-
 
 
 BBitmap* Archiver::BitmapForExtension(const char* str) const
@@ -490,7 +469,6 @@ BBitmap* Archiver::BitmapForExtension(const char* str) const
 }
 
 
-
 status_t Archiver::ReadErrStream(FILE* fp, const char* escapeSeq)
 {
     // Read entire stream into a BString, check for errors
@@ -513,7 +491,6 @@ status_t Archiver::ReadErrStream(FILE* fp, const char* escapeSeq)
 }
 
 
-
 void Archiver::ReadStream(FILE* fp, BString& str) const
 {
     // Read entire stream into a BString
@@ -528,7 +505,6 @@ void Archiver::ReadStream(FILE* fp, BString& str) const
 }
 
 
-
 BList Archiver::HiddenColumns(BList* columns) const
 {
     // By default return all columns as available (ie empty hidden list) columns for the archiver
@@ -539,14 +515,12 @@ BList Archiver::HiddenColumns(BList* columns) const
 }
 
 
-
 bool Archiver::SupportsComment() const
 {
     // By default we don't support comments - Derived classes will override as necessary
     // Zip, for instance, will override this function and return true - others like gzip won't
     return false;
 }
-
 
 
 bool Archiver::CanDeleteFiles() const
@@ -556,7 +530,6 @@ bool Archiver::CanDeleteFiles() const
 }
 
 
-
 bool Archiver::CanAddEmptyFolders() const
 {
     // Arj for example, can't add empty folders, hence will override this and return false
@@ -564,13 +537,11 @@ bool Archiver::CanAddEmptyFolders() const
 }
 
 
-
 bool Archiver::CanAddFiles() const
 {
     // Gzip, bzip2 for example, can't add files, hence they will override this and return false
     return true;
 }
-
 
 
 bool Archiver::CanReplaceFiles() const
@@ -581,14 +552,12 @@ bool Archiver::CanReplaceFiles() const
 }
 
 
-
 bool Archiver::CanPartiallyOpen() const
 {
     // Tar, for example, needs to reload everytime a file is added (appended) which will override this
     // and return false
     return true;
 }
-
 
 
 bool Archiver::NeedsTempDirectory() const
@@ -598,7 +567,6 @@ bool Archiver::NeedsTempDirectory() const
     // gzip as it works on a temp dir unlike zip
     return false;
 }
-
 
 
 bool Archiver::SupportsFolderEntity() const
@@ -613,12 +581,10 @@ bool Archiver::SupportsFolderEntity() const
 }
 
 
-
 void Archiver::SetPassword(const char* password)
 {
     m_password = password;
 }
-
 
 
 BString Archiver::Password() const
@@ -627,12 +593,10 @@ BString Archiver::Password() const
 }
 
 
-
 bool Archiver::SupportsPassword() const
 {
     return false;
 }
-
 
 
 bool Archiver::PasswordRequired() const
@@ -644,7 +608,6 @@ bool Archiver::PasswordRequired() const
 }
 
 
-
 status_t Archiver::GetComment(char*& commentStr)
 {
     commentStr = NULL;
@@ -652,12 +615,10 @@ status_t Archiver::GetComment(char*& commentStr)
 }
 
 
-
 status_t Archiver::SetComment(char* commentStr, const char* tempDirPath)
 {
     return BZR_DONE;
 }
-
 
 
 bool Archiver::GetBinaryPath(char* destPath, const char* fileName) const
@@ -682,7 +643,6 @@ bool Archiver::GetBinaryPath(char* destPath, const char* fileName) const
 }
 
 
-
 void Archiver::SetSettingsDirectoryPath(const char* path)
 {
     if (m_settingsDirectoryPath != NULL)
@@ -692,12 +652,10 @@ void Archiver::SetSettingsDirectoryPath(const char* path)
 }
 
 
-
 BMenu* Archiver::SettingsMenu() const
 {
     return m_settingsMenu;
 }
-
 
 
 void Archiver::SetSettingsMenu(BMenu* menu)
@@ -708,12 +666,10 @@ void Archiver::SetSettingsMenu(BMenu* menu)
 }
 
 
-
 void Archiver::BuildDefaultMenu()
 {
     // Empty implementation (i.e. m_settingsMenu will be NULL if control comes here)
 }
-
 
 
 void Archiver::SaveSettingsMenu()
@@ -763,7 +719,6 @@ void Archiver::SaveSettingsMenu()
 }
 
 
-
 void Archiver::LoadSettingsMenu()
 {
     // Load settings file of archiver
@@ -787,7 +742,6 @@ void Archiver::LoadSettingsMenu()
     else
         BuildDefaultMenu();
 }
-
 
 
 void Archiver::MakeTime(struct tm* timeStruct, time_t* timeValue, const char* day, const char* month,

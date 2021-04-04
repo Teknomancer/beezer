@@ -19,18 +19,18 @@ class BevelView;
 class SelectDirPanel;
 class RecentMgr;
 
-#define M_SPLIT_NOW                      'splt'
+#define M_SPLIT_NOW                       'splt'
 #define M_SELECT_SPLIT_FILE               'file'
 #define M_SELECT_SPLIT_FOLDER             'fold'
 #define M_SPLIT_FILE_SELECTED             'fise'
 #define M_SPLIT_FOLDER_SELECTED           'flse'
-#define M_CUSTOM_SIZE                    'cuss'
-#define M_PREDEFINED_SIZE                'pres'
-#define M_UPDATE_DATA                    'updd'
+#define M_CUSTOM_SIZE                     'cuss'
+#define M_PREDEFINED_SIZE                 'pres'
+#define M_UPDATE_DATA                     'updd'
 #define M_OPERATION_COMPLETE              'opcc'
 #define M_SEPARATOR_CHANGED               'spch'
 
-#define K_WINDOW                        "split_wnd"
+#define K_WINDOW                          "split_wnd"
 
 class FileSplitterWindow : public BWindow
 {
@@ -66,10 +66,10 @@ class FileSplitterWindow : public BWindow
         BPopUpMenu*         m_sizePopUp,
                             *m_prefixPopUp,
                             *m_separatorPopUp;
-        BTextControl*        m_filePathView,
-                             *m_folderPathView,
-                             *m_customSizeView,
-                             *m_separatorView;
+        BTextControl*       m_filePathView,
+                            *m_folderPathView,
+                            *m_customSizeView,
+                            *m_separatorView;
         BButton*            m_selectFileBtn,
                             *m_selectFolderBtn,
                             *m_splitBtn;
@@ -82,7 +82,7 @@ class FileSplitterWindow : public BWindow
                             *m_closeChk;
         BStatusBar*         m_statusBar;
 
-        SelectDirPanel*      m_dirPanel;
+        SelectDirPanel*     m_dirPanel;
         BFilePanel*         m_filePanel;
 
         float               m_hideProgress,
@@ -95,7 +95,7 @@ class FileSplitterWindow : public BWindow
         uint64              m_fragmentSize;
         uint16              m_fragmentCount;
         char*               m_sepString;
-        volatile bool        m_cancel;
+        volatile bool       m_cancel;
         bool                m_splitInProgress,
                             m_quitNow;
         BMessenger*         m_messenger;

@@ -16,9 +16,9 @@ class BTextControl;
 
 #define M_ALL_ENTRIES            '_all'
 #define M_VISIBLE_ENTRIES        '_vsb'
-#define M_SELECTED_ENTRIES        '_sel'
+#define M_SELECTED_ENTRIES       '_sel'
 #define M_SEARCH_CLICKED         '_scl'
-#define M_SEARCH_TEXT_MODIFIED    'stmf'
+#define M_SEARCH_TEXT_MODIFIED   'stmf'
 #define M_SEARCH_CLOSED          'Xsrc'
 
 class SearchWindow : public BWindow
@@ -41,13 +41,13 @@ class SearchWindow : public BWindow
         // Private members
         BList               m_tmpList;
         BWindow*            m_callerWindow;
-        BTextControl*        m_searchTextControl;
+        BTextControl*       m_searchTextControl;
         BButton*            m_searchBtn;
         BMenuField*         m_columnField,
                             *m_matchField;
-        BRadioButton*        m_allEntriesOpt,
-                             *m_visibleEntriesOpt,
-                             *m_selEntriesOpt;
+        BRadioButton*       m_allEntriesOpt,
+                            *m_visibleEntriesOpt,
+                            *m_selEntriesOpt;
         BCheckBox*          m_addToSelChk,
                             *m_ignoreCaseChk,
                             *m_invertChk,

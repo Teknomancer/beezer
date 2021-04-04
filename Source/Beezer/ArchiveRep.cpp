@@ -22,13 +22,11 @@
 #include "MsgConstants.h"
 
 
-
 ArchiveRep::ArchiveRep()
 {
     m_tempDir = NULL;
     m_archiver = NULL;
 }
-
 
 
 ArchiveRep::~ArchiveRep()
@@ -43,7 +41,6 @@ ArchiveRep::~ArchiveRep()
         free((char*)m_tempDirPath);
     }
 }
-
 
 
 status_t ArchiveRep::InitArchiver(const char* name, bool popupErrors)
@@ -62,7 +59,6 @@ status_t ArchiveRep::InitArchiver(const char* name, bool popupErrors)
     }
     return result;
 }
-
 
 
 status_t ArchiveRep::InitArchiver(entry_ref* ref, char* mimeString)
@@ -112,7 +108,6 @@ status_t ArchiveRep::InitArchiver(entry_ref* ref, char* mimeString)
 }
 
 
-
 const char* ArchiveRep::MakeTempDirectory()
 {
     if (m_tempDir == NULL)
@@ -122,12 +117,10 @@ const char* ArchiveRep::MakeTempDirectory()
 }
 
 
-
 Archiver* ArchiveRep::Ark() const
 {
     return m_archiver;
 }
-
 
 
 thread_id ArchiveRep::ThreadID() const
@@ -136,14 +129,12 @@ thread_id ArchiveRep::ThreadID() const
 }
 
 
-
 void ArchiveRep::CleanMessage(BMessage* message)
 {
     // Backward compatibility: remove old fields and add-in our new ones
     message->RemoveName(kArchiverPtr);
     message->AddPointer(kArchiverPtr, (void*)m_archiver);
 }
-
 
 
 status_t ArchiveRep::Open(BMessage* message)
@@ -155,14 +146,12 @@ status_t ArchiveRep::Open(BMessage* message)
 }
 
 
-
 status_t ArchiveRep::Open()
 {
     entry_ref ref;
     m_archiveEntry.GetRef(&ref);
     return m_archiver->Open(&ref);
 }
-
 
 
 status_t ArchiveRep::Test()
@@ -172,7 +161,6 @@ status_t ArchiveRep::Test()
 }
 
 
-
 status_t ArchiveRep::Test(BMessage* message)
 {
     CleanMessage(message);
@@ -180,7 +168,6 @@ status_t ArchiveRep::Test(BMessage* message)
     resume_thread(m_thread);
     return B_OK;
 }
-
 
 
 status_t ArchiveRep::Count(BMessage* message)
@@ -193,7 +180,6 @@ status_t ArchiveRep::Count(BMessage* message)
 }
 
 
-
 status_t ArchiveRep::Create(BMessage* message)
 {
     CleanMessage(message);
@@ -203,7 +189,6 @@ status_t ArchiveRep::Create(BMessage* message)
     resume_thread(m_thread);
     return B_OK;
 }
-
 
 
 int32 ArchiveRep::_opener(void* arg)
@@ -226,7 +211,6 @@ int32 ArchiveRep::_opener(void* arg)
     looper->PostMessage(&backMessage);
     return result;
 }
-
 
 
 int32 ArchiveRep::_tester(void* arg)
@@ -257,7 +241,6 @@ int32 ArchiveRep::_tester(void* arg)
 
     return result;
 }
-
 
 
 int32 ArchiveRep::_counter(void* arg)
@@ -316,7 +299,6 @@ int32 ArchiveRep::_counter(void* arg)
 }
 
 
-
 int32 ArchiveRep::_adder(void* arg)
 {
     // Thread that does adding of files to archive
@@ -359,5 +341,3 @@ int32 ArchiveRep::_adder(void* arg)
 
     return result;
 }
-
-

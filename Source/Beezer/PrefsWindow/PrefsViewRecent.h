@@ -20,8 +20,8 @@ class PrefsViewRecent : public PrefsView
     private:
         // Private members
         BCheckBox*          m_showPathChk;
-        BTextControl*        m_recentArkView,
-                             *m_recentExtView;
+        BTextControl*       m_recentArkView,
+                            *m_recentExtView;
 
 };
 

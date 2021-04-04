@@ -32,7 +32,7 @@ class BarberPole : public BevelView
                             m_y;
         bool                m_animate;
 
-        typedef BevelView    _inherited;
+        typedef BevelView   _inherited;
 };
 
 #endif /* _BARBER_POLE_H */

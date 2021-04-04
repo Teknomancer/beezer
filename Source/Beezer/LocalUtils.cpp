@@ -40,7 +40,6 @@
 BLocker _local_utils_locker("_local_utils_lock", true);
 
 
-
 bool OpenEntry(const char* tempDirPath, const char* entryPath, bool openWith)
 {
     BString extractedFilePath;
@@ -86,7 +85,6 @@ bool OpenEntry(const char* tempDirPath, const char* entryPath, bool openWith)
 }
 
 
-
 bool TrackerOpenWith(entry_ref* ref)
 {
     // Pass message to Tracker to display the "Open With" dialog for the file
@@ -117,7 +115,6 @@ bool TrackerOpenWith(entry_ref* ref)
 }
 
 
-
 void TrackerOpenFolder(entry_ref* refToDir)
 {
     BEntry entry(refToDir);
@@ -130,7 +127,6 @@ void TrackerOpenFolder(entry_ref* refToDir)
             BMessenger(K_TRACKER_SIGNATURE).SendMessage(&trakMsg);
     }
 }
-
 
 
 BBitmap* ResBitmap(const char* name, uint32 type)
@@ -165,7 +161,6 @@ BBitmap* ResBitmap(const char* name, uint32 type)
 }
 
 
-
 int64 BytesFromString(char* text)
 {
     if (!text)
@@ -198,7 +193,6 @@ int64 BytesFromString(char* text)
 }
 
 
-
 BString LocaleStringFromBytes(uint64 val)
 {
     // TODO: Fix Redundant code.
@@ -228,7 +222,6 @@ BString LocaleStringFromBytes(uint64 val)
     BString str(buf);
     return str;
 }
-
 
 
 // Currently un-used, will use when we do dynamic column resizes
@@ -311,7 +304,6 @@ BString LocaleStringFromBytes(uint64 val)
 //}
 
 
-
 void SetTargetForMenuRecursive(BMenu* menu, BHandler* target)
 {
     BAutolock autolocker(&_local_utils_locker);
@@ -329,5 +321,3 @@ void SetTargetForMenuRecursive(BMenu* menu, BHandler* target)
             SetTargetForMenuRecursive(subMenu, target);
     }
 }
-
-

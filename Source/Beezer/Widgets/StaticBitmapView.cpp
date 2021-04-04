@@ -18,12 +18,10 @@ StaticBitmapView::StaticBitmapView(BRect frame, const char* name, BBitmap* bmp,
 }
 
 
-
 StaticBitmapView::~StaticBitmapView()
 {
     delete m_bitmap;
 }
-
 
 
 void StaticBitmapView::AttachedToWindow()
@@ -32,12 +30,9 @@ void StaticBitmapView::AttachedToWindow()
 }
 
 
-
 void StaticBitmapView::Draw(BRect updateRect)
 {
     SetHighColor(ViewColor());
     FillRect(updateRect);
     DrawBitmap(m_bitmap);
 }
-
-

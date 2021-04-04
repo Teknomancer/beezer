@@ -15,7 +15,6 @@
 #include "RuleMgr.h"
 
 
-
 MimeRule::MimeRule(const char* mime, const char* extension)
 {
     m_mime = mime;
@@ -23,9 +22,7 @@ MimeRule::MimeRule(const char* mime, const char* extension)
 }
 
 
-
 int32 RuleMgr::m_runCount = 0;
-
 
 
 RuleMgr::RuleMgr(BDirectory* ruleDir, const char* ruleFile)
@@ -52,12 +49,10 @@ RuleMgr::RuleMgr(BDirectory* ruleDir, const char* ruleFile)
 }
 
 
-
 RuleMgr::~RuleMgr()
 {
     delete m_ruleList;
 }
-
 
 
 void RuleMgr::ReadRules(BEntry* rulesEntry)
@@ -172,5 +167,3 @@ char* RuleMgr::ValidateFileType(BPath* filePath) const
     // If no mime-type or extension matched, return NULL
     return NULL;
 }
-
-

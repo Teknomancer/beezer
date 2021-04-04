@@ -10,7 +10,6 @@
 #include <string.h>
 
 
-
 HashEntry::HashEntry()
 {
     m_pathStr = NULL;
@@ -20,15 +19,12 @@ HashEntry::HashEntry()
 }
 
 
-
 HashEntry::~HashEntry()
 {
     if (m_pathStr != NULL)
         delete[] m_pathStr;
     // m_clvItem will be deleted by MainWindow
 }
-
-
 
 
 HashTable::HashTable(int32 sizeOfTable)
@@ -41,12 +37,10 @@ HashTable::HashTable(int32 sizeOfTable)
 }
 
 
-
 HashTable::~HashTable()
 {
     DeleteTable();
 }
-
 
 
 int32 HashTable::OptimalSize(int32 minSize)
@@ -60,7 +54,6 @@ int32 HashTable::OptimalSize(int32 minSize)
 }
 
 
-
 void HashTable::InitializeTable()
 {
     // Very important we initialize NULL (zero) pointers so our "for" loops works
@@ -68,7 +61,6 @@ void HashTable::InitializeTable()
     m_lastAddedEntry = NULL;
     m_lastFoundEntry = NULL;
 }
-
 
 
 void HashTable::DeleteTable()
@@ -91,12 +83,10 @@ void HashTable::DeleteTable()
 }
 
 
-
 int32 HashTable::CountItems() const
 {
     return m_itemCount;
 }
-
 
 
 int32 HashTable::Hash(const char* str) const
@@ -108,7 +98,6 @@ int32 HashTable::Hash(const char* str) const
 
     return (h % m_tableSize);
 }
-
 
 
 HashEntry* HashTable::ForceInsert(const char* str, bool copyInput)
@@ -132,7 +121,6 @@ HashEntry* HashTable::ForceInsert(const char* str, bool copyInput)
 
     return bucket;
 }
-
 
 
 HashEntry* HashTable::LookUp(const char* str, bool insert, bool* wasFound, bool copyInput)
@@ -160,7 +148,6 @@ HashEntry* HashTable::LookUp(const char* str, bool insert, bool* wasFound, bool 
 
     return ForceInsert(str, copyInput);
 }
-
 
 
 int32 HashTable::FindUnder(BMessage* message, const char* fieldName, const char* directoryPath,
@@ -197,7 +184,6 @@ int32 HashTable::FindUnder(BMessage* message, const char* fieldName, const char*
 }
 
 
-
 bool HashTable::IsFound(const char* str)
 {
     // Just find if "str" is found, don't add
@@ -206,7 +192,6 @@ bool HashTable::IsFound(const char* str)
 
     return isFound;
 }
-
 
 
 HashEntry* HashTable::Find(const char* str)
@@ -222,12 +207,10 @@ HashEntry* HashTable::Find(const char* str)
 }
 
 
-
 HashEntry* HashTable::Insert(char* str, bool* wasFound, bool copyItem)
 {
     return LookUp(str, true, wasFound, copyItem);
 }
-
 
 
 bool HashTable::Delete(HashEntry* entry)
@@ -235,7 +218,6 @@ bool HashTable::Delete(HashEntry* entry)
     // Delete the given entry without destroying links
     return Delete((char*)entry->m_pathStr);
 }
-
 
 
 bool HashTable::Delete(char* str)
@@ -270,12 +252,10 @@ bool HashTable::Delete(char* str)
 }
 
 
-
 HashEntry* HashTable::LastAddedEntry() const
 {
     return m_lastAddedEntry;
 }
-
 
 
 HashEntry* HashTable::ItemAt(int32 bucket) const
@@ -284,12 +264,10 @@ HashEntry* HashTable::ItemAt(int32 bucket) const
 }
 
 
-
 int32 HashTable::TableSize() const
 {
     return m_tableSize;
 }
-
 
 
 void HashTable::ResetCache(HashEntry* element)

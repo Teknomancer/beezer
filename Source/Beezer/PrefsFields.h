@@ -11,7 +11,7 @@
 // constants (as compilers can't pick them up)
 
 const char
-*const kPfRecentPath =               "pfRecent",                  // Recentpaths
+*const kPfRecentPath =               "pfRecent",                // Recentpaths
 
 *const kPfOpen =                     "pfOpen",                  // Extract
 *const kPfClose =                    "pfClose",
@@ -23,7 +23,7 @@ const char
 *const kPfRestoreUI =                "pfRestoreUI",
 *const kPfRestoreArk =               "pfRestoreArk",
 
-*const kPfSearchWnd =                "pfSearchWnd",               // Windows
+*const kPfSearchWnd =                "pfSearchWnd",             // Windows
 *const kPfSearchWndFrame =           "pfSearchWndFrame",
 *const kPfCommentWnd =               "pfCommentWnd",
 *const kPfCommentWndFrame =          "pfCommentWndFrame",
@@ -43,7 +43,7 @@ const char
 *const kPfFavPathsMsg =              "pfFavPathsMsg",
 *const kPfGenPath =                  "pfGenPath",
 
-*const kPfShowPathInRecent =         "pfShowPath",               // Recent
+*const kPfShowPathInRecent =         "pfShowPath",              // Recent
 *const kPfNumRecentArk =             "pfnArchives",
 *const kPfNumRecentExt =             "pfnExtracts",
 
@@ -53,12 +53,12 @@ const char
 *const kPfSortAfterAdd =             "pfSortAfterAdd",
 *const kPfConfirmDropAdd =           "pfConfirmDropAdd",
 
-*const kPfFullLengthBars =           "pfFullLengthBars",           // Interface
+*const kPfFullLengthBars =           "pfFullLengthBars",        // Interface
 *const kPfActFore =                  "pfActFore",
 *const kPfActBack =                  "pfActBack",
 *const kPfColorIndex =               "pfColIndex",
 
-*const kPfPrefPanelIndex =           "pfPanelIndex",               // Miscellaneous
+*const kPfPrefPanelIndex =           "pfPanelIndex",            // Miscellaneous
 *const kPfStartup =                  "pfStartupAction",
 *const kPfWelcomeOnQuit =            "pfWelcomeOnQuit",
 *const kPfShowCommentOnOpen =        "pfShowCommentOpen",

@@ -28,7 +28,6 @@
 #include "PrefsWindow.h"
 #include "UIConstants.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -99,7 +98,6 @@ PrefsWindow::PrefsWindow()
 }
 
 
-
 void PrefsWindow::Quit()
 {
     _prefs_misc.SetInt8(kPfPrefPanelIndex, m_listView->CurrentSelection(0));
@@ -110,7 +108,6 @@ void PrefsWindow::Quit()
     be_app_messenger.SendMessage(M_CLOSE_PREFS);
     return BWindow::Quit();
 }
-
 
 
 void PrefsWindow::MessageReceived(BMessage* message)
@@ -163,7 +160,6 @@ void PrefsWindow::MessageReceived(BMessage* message)
 }
 
 
-
 void PrefsWindow::SetActivePanel(PrefsView* activePanel)
 {
     m_currentPanel->Hide();
@@ -183,7 +179,6 @@ void PrefsWindow::SetActivePanel(PrefsView* activePanel)
 
     m_currentPanel->Show();
 }
-
 
 
 void PrefsWindow::AddControls()
@@ -247,5 +242,3 @@ void PrefsWindow::AddControls()
     m_backView->AddChild(discardBtn);
     m_backView->AddChild(helpBtn);
 }
-
-

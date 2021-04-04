@@ -17,14 +17,13 @@ class BarberPole;
 class BevelView;
 
 #define M_CLOSE_ADDON            'adtx'
-#define M_FILENAME_CHANGED        'fnch'
+#define M_FILENAME_CHANGED       'fnch'
 
-const rgb_color
-SC_READY =                  { 0, 128, 0, 255 },
-         SC_NOT_READY =               { 0, 0, 0, 255 },
-         SC_DIR_MISSING =           { 182, 0, 0, 255 },
-         SC_OVERWRITE =                { 128, 0, 0, 255 },
-         SC_BUSY =                  { 0,  0, 128, 255 };
+const rgb_color SC_READY = { 0, 128, 0, 255 },
+         SC_NOT_READY =    { 0, 0, 0, 255 },
+         SC_DIR_MISSING =  { 182, 0, 0, 255 },
+         SC_OVERWRITE =    { 128, 0, 0, 255 },
+         SC_BUSY =         { 0,  0, 128, 255 };
 
 class AddOnWindow : public BWindow
 {

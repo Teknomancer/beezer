@@ -12,8 +12,6 @@
 #include <Messenger.h>
 #include <MenuItem.h>
 
-
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -23,25 +21,23 @@
 #define B_TRANSLATE(x) x
 #endif
 
-
-#define S_NONE "(none)"
-#define S_DEFAULT "(default)"
-#define S_BEST "(best)"
+#define S_NONE          "(none)"
+#define S_DEFAULT       "(default)"
+#define S_BEST          "(best)"
 
 //#define S_ARCHIVE_ATTRS "Add attributes"
-#define S_USE_SOLID_BLOCKS "Use solid blocks"
-#define S_USE_MULTI_THREAD "Use multi-threading (for multi-core CPUs)"
-#define S_OVERWRITE_FILES "Always overwrite (default)"
-#define S_NO_OVERWRITE "Never overwrite existing files"
-#define S_RENAME_EXISTING "Rename existing files"
-#define S_RENAME_EXTRACTED "Rename extracted files"
+#define S_USE_SOLID_BLOCKS      "Use solid blocks"
+#define S_USE_MULTI_THREAD      "Use multi-threading (for multi-core CPUs)"
+#define S_OVERWRITE_FILES       "Always overwrite (default)"
+#define S_NO_OVERWRITE          "Never overwrite existing files"
+#define S_RENAME_EXISTING       "Rename existing files"
+#define S_RENAME_EXTRACTED      "Rename extracted files"
 
 
 Archiver* load_archiver(const char* addonImagePath)
 {
     return new z7Archiver(addonImagePath);
 }
-
 
 
 z7Archiver::z7Archiver(const char* addonImagePath)
@@ -56,7 +52,6 @@ z7Archiver::z7Archiver(const char* addonImagePath)
         return;
     }
 }
-
 
 
 status_t z7Archiver::ReadOpen(FILE* fp)
@@ -112,7 +107,6 @@ status_t z7Archiver::ReadOpen(FILE* fp)
 }
 
 
-
 status_t z7Archiver::Open(entry_ref* ref, BMessage* fileList)
 {
     m_archiveRef = *ref;
@@ -143,7 +137,6 @@ status_t z7Archiver::Open(entry_ref* ref, BMessage* fileList)
 
     return exitCode;
 }
-
 
 
 status_t z7Archiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger* progress,
@@ -247,7 +240,6 @@ status_t z7Archiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger*
 }
 
 
-
 status_t z7Archiver::ReadExtract(FILE* fp, BMessenger* progress, volatile bool* cancel)
 {
     status_t exitCode = BZR_DONE;
@@ -296,7 +288,6 @@ status_t z7Archiver::ReadExtract(FILE* fp, BMessenger* progress, volatile bool* 
 
     return exitCode;
 }
-
 
 
 status_t z7Archiver::Test(char*& outputStr, BMessenger* progress, volatile bool* cancel)
@@ -351,7 +342,6 @@ status_t z7Archiver::Test(char*& outputStr, BMessenger* progress, volatile bool*
 
     return exitCode;
 }
-
 
 
 status_t z7Archiver::ReadTest(FILE* fp, char*& outputStr, BMessenger* progress, volatile bool* cancel)
@@ -430,13 +420,11 @@ status_t z7Archiver::ReadTest(FILE* fp, char*& outputStr, BMessenger* progress, 
 }
 
 
-
 bool z7Archiver::SupportsFolderEntity() const
 {
     // p7zip will delete whole folder with it's content given folder name
     return true;
 }
-
 
 
 bool z7Archiver::CanReplaceFiles() const
@@ -448,7 +436,6 @@ bool z7Archiver::CanReplaceFiles() const
 }
 
 
-
 bool z7Archiver::CanPartiallyOpen() const
 {
     // TODO: when p7zip gets fixed output for progress info, and we can be sure about file names (right now it
@@ -458,12 +445,10 @@ bool z7Archiver::CanPartiallyOpen() const
 }
 
 
-
 bool z7Archiver::SupportsPassword() const
 {
     return true;
 }
-
 
 
 status_t z7Archiver::Add(bool createMode, const char* relativePath, BMessage* message, BMessage* addedPaths,
@@ -551,7 +536,6 @@ status_t z7Archiver::Add(bool createMode, const char* relativePath, BMessage* me
     SetMimeType();
     return exitCode;
 }
-
 
 
 status_t z7Archiver::ReadAdd(FILE* fp, BMessage* addedPaths, BMessenger* progress, volatile bool* cancel)
@@ -689,7 +673,6 @@ status_t z7Archiver::ReadAdd(FILE* fp, BMessage* addedPaths, BMessenger* progres
 }
 
 
-
 status_t z7Archiver::Delete(char*& outputStr, BMessage* message, BMessenger* progress,
                             volatile bool* cancel)
 {
@@ -757,7 +740,6 @@ status_t z7Archiver::Delete(char*& outputStr, BMessage* message, BMessenger* pro
 }
 
 
-
 status_t z7Archiver::ReadDelete(FILE* fp, char*& outputStr, BMessenger* progress,
                                 volatile bool* cancel)
 {
@@ -792,7 +774,6 @@ status_t z7Archiver::ReadDelete(FILE* fp, char*& outputStr, BMessenger* progress
 }
 
 
-
 status_t z7Archiver::Create(BPath* archivePath, const char* relPath, BMessage* fileList, BMessage* addedPaths,
                             BMessenger* progress, volatile bool* cancel)
 {
@@ -814,7 +795,6 @@ status_t z7Archiver::Create(BPath* archivePath, const char* relPath, BMessage* f
 
     return result;
 }
-
 
 
 void z7Archiver::BuildDefaultMenu()
@@ -876,7 +856,6 @@ void z7Archiver::BuildDefaultMenu()
 }
 
 
-
 void z7Archiver::SetMimeType()
 {
     // It seems the 7zip binary resets the mime-type of archives to "application/octet-stream", after
@@ -888,5 +867,3 @@ void z7Archiver::SetMimeType()
         nodeInfo.SetType((const char*)m_mimeList.ItemAtFast(0L));
     }
 }
-
-

@@ -14,7 +14,7 @@ class BStatusBar;
 class BButton;
 class BMessenger;
 
-#define M_CANCEL               'canc'
+#define M_CANCEL                'canc'
 #define M_OPERATION_COMPLETE    'opcc'
 
 const char* const kResult =     "result";

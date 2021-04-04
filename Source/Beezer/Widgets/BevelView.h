@@ -37,7 +37,7 @@ class BevelView : public BView
         virtual void        AttachedToWindow();
 
         // Additional hooks
-        float                EdgeThickness() const;
+        float               EdgeThickness() const;
 
     private:
         // Private members

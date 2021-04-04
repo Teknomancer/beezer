@@ -48,7 +48,6 @@
 #include "UIConstants.h"
 #include "WindowMgr.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -58,7 +57,6 @@
 #define B_TRANSLATE(x) x
 #define B_TRANSLATE_SYSTEM_NAME(x) x
 #endif
-
 
 
 BeezerApp* _bzr()
@@ -131,7 +129,6 @@ BeezerApp::BeezerApp()
 }
 
 
-
 BeezerApp::~BeezerApp()
 {
     DeleteFilePanel(m_openFilePanel);
@@ -164,7 +161,6 @@ BeezerApp::~BeezerApp()
 }
 
 
-
 void BeezerApp::Quit()
 {
     if (CountWindows() > 0)
@@ -175,7 +171,6 @@ void BeezerApp::Quit()
 }
 
 
-
 void BeezerApp::ReadyToRun()
 {
     if (m_nWindows == 0 && m_startupWnd == NULL && m_addOnWnd == NULL)
@@ -183,7 +178,6 @@ void BeezerApp::ReadyToRun()
 
     return BApplication::ReadyToRun();
 }
-
 
 
 void BeezerApp::AboutRequested()
@@ -198,7 +192,6 @@ void BeezerApp::AboutRequested()
     else
         m_aboutWnd->Activate();
 }
-
 
 
 void BeezerApp::MessageReceived(BMessage* message)
@@ -490,7 +483,6 @@ void BeezerApp::MessageReceived(BMessage* message)
 }
 
 
-
 MainWindow* BeezerApp::RegisterWindow(entry_ref* ref)
 {
     m_newWindowRect.OffsetBy(15, 15);
@@ -510,7 +502,6 @@ MainWindow* BeezerApp::RegisterWindow(entry_ref* ref)
 
     return CreateWindow(ref);
 }
-
 
 
 void BeezerApp::UnRegisterWindow(bool closeApp)
@@ -540,7 +531,6 @@ void BeezerApp::UnRegisterWindow(bool closeApp)
 }
 
 
-
 void BeezerApp::ArgvReceived(int32 argc, char** argv)
 {
     for (int32 arg = 1; arg < argc; arg++)
@@ -554,7 +544,6 @@ void BeezerApp::ArgvReceived(int32 argc, char** argv)
         }
     }
 }
-
 
 
 void BeezerApp::RefsReceived(BMessage* message)
@@ -577,13 +566,11 @@ void BeezerApp::RefsReceived(BMessage* message)
 }
 
 
-
 void BeezerApp::CreateFilePanel(BFilePanel*& panel, file_panel_mode mode)
 {
     if (!panel)
         panel = new BFilePanel(mode, &be_app_messenger, NULL, B_FILE_NODE, true);
 }
-
 
 
 void BeezerApp::DeleteFilePanel(BFilePanel*& panel)
@@ -593,7 +580,6 @@ void BeezerApp::DeleteFilePanel(BFilePanel*& panel)
 
     panel = NULL;
 }
-
 
 
 MainWindow* BeezerApp::WindowForRef(entry_ref* ref)
@@ -613,7 +599,6 @@ MainWindow* BeezerApp::WindowForRef(entry_ref* ref)
 
     return NULL;
 }
-
 
 
 MainWindow* BeezerApp::CreateWindow(entry_ref* ref)
@@ -665,7 +650,6 @@ MainWindow* BeezerApp::CreateWindow(entry_ref* ref)
 }
 
 
-
 inline void BeezerApp::InitPaths()
 {
     // Initialize paths (maybe we can get folder names from prefs someday)
@@ -699,7 +683,6 @@ inline void BeezerApp::InitPaths()
 }
 
 
-
 void BeezerApp::InitPrefs()
 {
     const char* dir = m_settingsPathStr.String();
@@ -720,7 +703,6 @@ void BeezerApp::InitPrefs()
 }
 
 
-
 void BeezerApp::CompileTimeString(BString& output)
 {
     BString buildStr(__DATE__);
@@ -730,7 +712,6 @@ void BeezerApp::CompileTimeString(BString& output)
     if (BDateTimeFormat().Format(output, t, B_LONG_DATE_FORMAT, B_MEDIUM_TIME_FORMAT) != B_OK)
         output = buildStr;
 }
-
 
 
 void BeezerApp::VersionString(BString& output)
@@ -821,7 +802,6 @@ void BeezerApp::ShowCreateFilePanel()
 }
 
 
-
 int8 BeezerApp::RegisterFileTypes() const
 {
     const BString fileTypeFieldName = "BEOS:FILE_TYPES";
@@ -909,7 +889,6 @@ int8 BeezerApp::RegisterFileTypes() const
 }
 
 
-
 BMenu* BeezerApp::BuildToolsMenu() const
 {
     // We archive and instantiate menu because BMenu doesn't have copy constructor, and
@@ -919,7 +898,6 @@ BMenu* BeezerApp::BuildToolsMenu() const
 
     return new BMenu(&toolsMenuMsg);
 }
-
 
 
 BPopUpMenu* BeezerApp::BuildToolsPopUpMenu() const
@@ -933,7 +911,6 @@ BPopUpMenu* BeezerApp::BuildToolsPopUpMenu() const
 }
 
 
-
 int main()
 {
     srand(0);
@@ -943,5 +920,3 @@ int main()
 
     return 0;
 }
-
-

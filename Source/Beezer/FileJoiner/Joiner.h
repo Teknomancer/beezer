@@ -30,5 +30,4 @@ extern "C" _JOINER_IMPEXP void JoinCopyAttributes(BNode* srcNode, BNode* destNod
 extern "C" _JOINER_IMPEXP void FindChunks(const char* firstChunkPathStr, const char* separator, int32& fileCount,
         off_t& totalSize, volatile bool* cancel);
 
-
 #endif /* _JOINER_H */

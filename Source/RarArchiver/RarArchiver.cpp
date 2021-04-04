@@ -22,23 +22,20 @@
 #define B_TRANSLATE(x) x
 #endif
 
-
-#define S_FASTEST "(fastest)"
-#define S_DEFAULT "(default)"
-#define S_BEST "(best)"
-#define S_NO_OVERWRITE "Never overwrite existing files"
-#define S_UPDATE_FILES "Update files, create if needed"
-#define S_FRESHEN_FILES "Freshen existing files, create none"
-#define S_KEEP_BROKEN "Keep broken extracted files"
-#define S_PROCESS_ATTRS "Process attributes"
-
+#define S_FASTEST           "(fastest)"
+#define S_DEFAULT           "(default)"
+#define S_BEST              "(best)"
+#define S_NO_OVERWRITE      "Never overwrite existing files"
+#define S_UPDATE_FILES      "Update files, create if needed"
+#define S_FRESHEN_FILES     "Freshen existing files, create none"
+#define S_KEEP_BROKEN       "Keep broken extracted files"
+#define S_PROCESS_ATTRS     "Process attributes"
 
 
 Archiver* load_archiver(const char* addonImagePath)
 {
     return new RarArchiver(addonImagePath);
 }
-
 
 
 RarArchiver::RarArchiver(const char* addonImagePath)
@@ -54,7 +51,6 @@ RarArchiver::RarArchiver(const char* addonImagePath)
         return;
     }
 }
-
 
 
 status_t RarArchiver::ReadOpen(FILE* fp)
@@ -122,7 +118,6 @@ status_t RarArchiver::ReadOpen(FILE* fp)
 }
 
 
-
 status_t RarArchiver::Open(entry_ref* ref, BMessage* fileList)
 {
     m_archiveRef = *ref;
@@ -157,7 +152,6 @@ status_t RarArchiver::Open(entry_ref* ref, BMessage* fileList)
 
     return exitCode;
 }
-
 
 
 status_t RarArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger* progress,
@@ -276,7 +270,6 @@ status_t RarArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
 }
 
 
-
 status_t RarArchiver::ReadExtract(FILE* fp, BMessenger* progress, volatile bool* cancel)
 {
     // Reads output of rar while extracting files and updates progress window (thru messenger)
@@ -311,7 +304,6 @@ status_t RarArchiver::ReadExtract(FILE* fp, BMessenger* progress, volatile bool*
 
     return BZR_DONE;
 }
-
 
 
 status_t RarArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool* cancel)
@@ -381,7 +373,6 @@ status_t RarArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool
 }
 
 
-
 status_t RarArchiver::ReadTest(FILE* fp, char*& outputStr, BMessenger* progress, volatile bool* cancel)
 {
     // Simply read the entire output of the test process and dump it to the error window (though it need not
@@ -441,13 +432,11 @@ status_t RarArchiver::ReadTest(FILE* fp, char*& outputStr, BMessenger* progress,
 }
 
 
-
 bool RarArchiver::SupportsComment() const
 {
     //TODO Rar does support comments but it's going to take some work to parse it out of the unrar listing
     return false;
 }
-
 
 
 bool RarArchiver::CanPartiallyOpen() const
@@ -458,13 +447,11 @@ bool RarArchiver::CanPartiallyOpen() const
 }
 
 
-
 status_t RarArchiver::Add(bool createMode, const char* relativePath, BMessage* message, BMessage* addedPaths,
                           BMessenger* progress, volatile bool* cancel)
 {
     return BZR_NOT_SUPPORTED;
 }
-
 
 
 status_t RarArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* progress,
@@ -474,13 +461,11 @@ status_t RarArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* pr
 }
 
 
-
 status_t RarArchiver::Create(BPath* archivePath, const char* relPath, BMessage* fileList, BMessage* addedPaths,
                              BMessenger* progress, volatile bool* cancel)
 {
     return BZR_NOT_SUPPORTED;
 }
-
 
 
 void RarArchiver::BuildDefaultMenu()
@@ -528,7 +513,6 @@ void RarArchiver::BuildDefaultMenu()
 }
 
 
-
 void RarArchiver::SetMimeType()
 {
     // It seems the lha binary resets the mime-type of archives to "application/octet-stream", after
@@ -542,7 +526,6 @@ void RarArchiver::SetMimeType()
 }
 
 
-
 bool RarArchiver::NeedsTempDirectory() const
 {
     // The comments need temp directory
@@ -550,12 +533,10 @@ bool RarArchiver::NeedsTempDirectory() const
 }
 
 
-
 bool RarArchiver::SupportsPassword() const
 {
     return true;
 }
-
 
 
 bool RarArchiver::CanDeleteFiles() const

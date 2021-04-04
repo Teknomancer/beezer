@@ -18,7 +18,6 @@
 #include "PrefsViewRecent.h"
 #include "UIConstants.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -35,7 +34,6 @@ PrefsViewRecent::PrefsViewRecent(BRect frame)
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Recent", 20, 20));
     Render();
 }
-
 
 
 void PrefsViewRecent::Render()
@@ -92,7 +90,6 @@ void PrefsViewRecent::Render()
 }
 
 
-
 void PrefsViewRecent::Save()
 {
     _prefs_recent.SetBool(kPfShowPathInRecent, IsChecked(m_showPathChk));
@@ -100,7 +97,6 @@ void PrefsViewRecent::Save()
     _prefs_recent.SetInt8(kPfNumRecentExt, (int8)abs(atoi(m_recentExtView->Text())));
     _prefs_state.WritePrefs();
 }
-
 
 
 void PrefsViewRecent::Load()
@@ -123,5 +119,3 @@ void PrefsViewRecent::Load()
     buf << num;
     m_recentExtView->SetText(buf.String());
 }
-
-

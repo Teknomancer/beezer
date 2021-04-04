@@ -11,8 +11,6 @@
 #include <Messenger.h>
 #include <MenuItem.h>
 
-
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -23,17 +21,15 @@
 #endif
 
 
-#define S_FASTEST "(fastest)"
-#define S_BEST "(best)"
-#define S_LHARC_COMPAT "LHarc compatible format"
-
+#define S_FASTEST       "(fastest)"
+#define S_BEST          "(best)"
+#define S_LHARC_COMPAT  "LHarc compatible format"
 
 
 Archiver* load_archiver(const char* addonImagePath)
 {
     return new LhaArchiver(addonImagePath);
 }
-
 
 
 LhaArchiver::LhaArchiver(const char* addonImagePath)
@@ -48,7 +44,6 @@ LhaArchiver::LhaArchiver(const char* addonImagePath)
         return;
     }
 }
-
 
 
 status_t LhaArchiver::ReadOpen(FILE* fp)
@@ -130,7 +125,6 @@ status_t LhaArchiver::ReadOpen(FILE* fp)
 }
 
 
-
 status_t LhaArchiver::Open(entry_ref* ref, BMessage* fileList)
 {
     m_archiveRef = *ref;
@@ -165,7 +159,6 @@ status_t LhaArchiver::Open(entry_ref* ref, BMessage* fileList)
 
     return exitCode;
 }
-
 
 
 status_t LhaArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger* progress,
@@ -247,7 +240,6 @@ status_t LhaArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
 }
 
 
-
 status_t LhaArchiver::ReadExtract(FILE* fp, BMessenger* progress, volatile bool* cancel)
 {
     // Reads output of lha while extracting files and updates progress window (thru messenger)
@@ -279,7 +271,6 @@ status_t LhaArchiver::ReadExtract(FILE* fp, BMessenger* progress, volatile bool*
 
     return BZR_DONE;
 }
-
 
 
 status_t LhaArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool* cancel)
@@ -342,7 +333,6 @@ status_t LhaArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool
 }
 
 
-
 status_t LhaArchiver::ReadTest(FILE* fp, char*& outputStr, BMessenger* progress, volatile bool* cancel)
 {
     // Simply read the entire output of the test process and dump it to the error window (though it need not
@@ -397,7 +387,6 @@ status_t LhaArchiver::ReadTest(FILE* fp, char*& outputStr, BMessenger* progress,
 }
 
 
-
 bool LhaArchiver::SupportsFolderEntity() const
 {
     // This means lha binary will not delete entire folders given the folder name, we need to be
@@ -406,14 +395,12 @@ bool LhaArchiver::SupportsFolderEntity() const
 }
 
 
-
 bool LhaArchiver::CanPartiallyOpen() const
 {
     // Here is why we cannot partially open - the lha binary does NOT report adding of folders (or its
     // content) when both files & folders are being added, hence we need to reload each time - oh well
     return false;
 }
-
 
 
 status_t LhaArchiver::Add(bool createMode, const char* relativePath, BMessage* message, BMessage* addedPaths,
@@ -487,7 +474,6 @@ status_t LhaArchiver::Add(bool createMode, const char* relativePath, BMessage* m
 }
 
 
-
 status_t LhaArchiver::ReadAdd(FILE* fp, BMessage* addedPaths, BMessenger* progress, volatile bool* cancel)
 {
     // Read output while adding files to archive
@@ -533,7 +519,6 @@ status_t LhaArchiver::ReadAdd(FILE* fp, BMessage* addedPaths, BMessenger* progre
 
     return exitCode;
 }
-
 
 
 status_t LhaArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* progress,
@@ -605,7 +590,6 @@ status_t LhaArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* pr
 }
 
 
-
 status_t LhaArchiver::ReadDelete(FILE* fp, char*& outputStr, BMessenger* progress,
                                  volatile bool* cancel)
 {
@@ -634,7 +618,6 @@ status_t LhaArchiver::ReadDelete(FILE* fp, char*& outputStr, BMessenger* progres
 }
 
 
-
 status_t LhaArchiver::Create(BPath* archivePath, const char* relPath, BMessage* fileList, BMessage* addedPaths,
                              BMessenger* progress, volatile bool* cancel)
 {
@@ -656,7 +639,6 @@ status_t LhaArchiver::Create(BPath* archivePath, const char* relPath, BMessage* 
 
     return result;
 }
-
 
 
 void LhaArchiver::BuildDefaultMenu()
@@ -696,7 +678,6 @@ void LhaArchiver::BuildDefaultMenu()
 }
 
 
-
 void LhaArchiver::SetMimeType()
 {
     // It seems the lha binary resets the mime-type of archives to "application/octet-stream", after
@@ -708,5 +689,3 @@ void LhaArchiver::SetMimeType()
         nodeInfo.SetType((const char*)m_mimeList.ItemAtFast(0L));
     }
 }
-
-

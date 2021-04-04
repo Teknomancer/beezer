@@ -17,7 +17,6 @@
 #include "UIConstants.h"
 
 
-
 ImageButton::ImageButton(BRect frame, const char* name, const char* text, BBitmap* smallIcon,
                          BBitmap* disabled, BMessage* message, bool popUpMenu, const rgb_color bgColor,
                          textPosition textPos, bool borders, bool smallFont, bool hoverHighlight, uint32 resizeMask,
@@ -107,7 +106,6 @@ ImageButton::~ImageButton()
 }
 
 
-
 void ImageButton::SetContextMenu(BPopUpMenu* menu)
 {
     if (m_contextMenu)
@@ -117,7 +115,6 @@ void ImageButton::SetContextMenu(BPopUpMenu* menu)
     m_popUpMenu = true;
     Invalidate();
 }
-
 
 
 void ImageButton::Draw(BRect updateRect)
@@ -218,7 +215,6 @@ void ImageButton::Draw(BRect updateRect)
 }
 
 
-
 void ImageButton::DrawContextMenuTriangle(BPoint topLeftPoint)
 {
     // Draws the down-pointing triangle
@@ -252,7 +248,6 @@ void ImageButton::DrawContextMenuTriangle(BPoint topLeftPoint)
     bottomMiddlePoint.x ++;
     StrokeLine(topRightPoint, bottomMiddlePoint);
 }
-
 
 
 void ImageButton::MouseMoved(BPoint point, uint32 status, const BMessage* dragInfo)
@@ -334,7 +329,6 @@ void ImageButton::MouseMoved(BPoint point, uint32 status, const BMessage* dragIn
 }
 
 
-
 void ImageButton::DrawOutsideEdge(BRect bounds)
 {
     if (m_borders == false)
@@ -347,7 +341,6 @@ void ImageButton::DrawOutsideEdge(BRect bounds)
     StrokeLine(BPoint(0, 0), BPoint(bounds.right, 0));
     StrokeLine(BPoint(0, 0), BPoint(0, bounds.bottom));
 }
-
 
 
 void ImageButton::DrawShinyEdge(BRect bounds, bool isPressing)
@@ -400,7 +393,6 @@ void ImageButton::DrawShinyEdge(BRect bounds, bool isPressing)
 }
 
 
-
 void ImageButton::MouseDown(BPoint point)
 {
     SetMouseEventMask(B_POINTER_EVENTS, B_LOCK_WINDOW_FOCUS | B_SUSPEND_VIEW_FOCUS);
@@ -439,7 +431,6 @@ void ImageButton::MouseDown(BPoint point)
 
     return;
 }
-
 
 
 void ImageButton::MouseUp(BPoint point)
@@ -510,7 +501,6 @@ void ImageButton::MouseUp(BPoint point)
 
     return BView::MouseUp(point);
 }
-
 
 
 void ImageButton::PushButton(BRect rect)
@@ -603,7 +593,6 @@ void ImageButton::PushButton(BRect rect)
 }
 
 
-
 void ImageButton::GetPreferredSize(float* width, float* height)
 {
     if (m_buttonText == NULL)
@@ -649,7 +638,6 @@ void ImageButton::GetPreferredSize(float* width, float* height)
 }
 
 
-
 void ImageButton::AttachedToWindow()
 {
     // BugFix: for the first-time flicker problem - set the parent's view color here
@@ -658,7 +646,6 @@ void ImageButton::AttachedToWindow()
     ResizeToPreferred();
     BView::AttachedToWindow();
 }
-
 
 
 status_t ImageButton::SetMargin(float width, float height)
@@ -686,14 +673,12 @@ status_t ImageButton::SetMargin(float width, float height)
 }
 
 
-
 void ImageButton::GetMargin(float* width, float* height)
 {
     // Write the current margin values to width and height
     *width = m_marginWidth;
     *height = m_marginHeight;
 }
-
 
 
 void ImageButton::SetEnabled(bool enable)
@@ -708,12 +693,10 @@ void ImageButton::SetEnabled(bool enable)
 }
 
 
-
 bool ImageButton::IsEnabled() const
 {
     return m_isEnabled;
 }
-
 
 
 void ImageButton::SetMessage(BMessage* msg)
@@ -725,12 +708,10 @@ void ImageButton::SetMessage(BMessage* msg)
 }
 
 
-
 BMessage* ImageButton::Message() const
 {
     return m_clickMessage;
 }
-
 
 
 void ImageButton::HighlightNow(bool isPressing)
@@ -742,7 +723,6 @@ void ImageButton::HighlightNow(bool isPressing)
         DrawShinyEdge(rect, isPressing);
     }
 }
-
 
 
 void ImageButton::WindowActivated(bool state)
@@ -766,14 +746,12 @@ void ImageButton::WindowActivated(bool state)
 }
 
 
-
 void ImageButton::SetBorderPadding(float horizontal, float vertical)
 {
     m_marginWidth = horizontal >= 0 && horizontal <= 6 ? horizontal + 1 : m_marginWidth;
     m_marginHeight = vertical >= 0 && vertical <= 6 ? vertical + 1 : m_marginHeight;
     Invalidate(Bounds());
 }
-
 
 
 void ImageButton::GetBorderPadding(float* horizontal, float* vertical)
@@ -783,19 +761,16 @@ void ImageButton::GetBorderPadding(float* horizontal, float* vertical)
 }
 
 
-
 void ImageButton::SetClickable(bool clickable)
 {
     m_isClickable = clickable;
 }
 
 
-
 bool ImageButton::IsClickable() const
 {
     return m_isClickable;
 }
-
 
 
 void ImageButton::ShowContextMenu(BPoint point)
@@ -842,10 +817,7 @@ void ImageButton::ShowContextMenu(BPoint point)
 }
 
 
-
 void ImageButton::SetTarget(const BHandler* handler)
 {
     m_handler = const_cast<BHandler*>(handler);
 }
-
-

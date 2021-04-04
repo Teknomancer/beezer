@@ -6,7 +6,6 @@
 #include "UIConstants.h"
 
 
-
 BevelView::BevelView(BRect frame, const char* name, BevelType bevelMode, uint32 resizeMask, uint32 flags)
     : BView(frame, name, resizeMask, flags | B_FRAME_EVENTS)
 {
@@ -48,7 +47,6 @@ BevelView::BevelView(BRect frame, const char* name, BevelType bevelMode, uint32 
 
     m_cachedRect = Bounds();
 }
-
 
 
 void BevelView::Draw(BRect updateRect)
@@ -93,7 +91,6 @@ void BevelView::Draw(BRect updateRect)
 }
 
 
-
 void BevelView::FrameResized(float newWidth, float newHeight)
 {
     // Cached drawing. Draw only when the "extra" area
@@ -118,12 +115,10 @@ void BevelView::FrameResized(float newWidth, float newHeight)
 }
 
 
-
 float BevelView::EdgeThickness() const
 {
     return m_edgeThickness;
 }
-
 
 
 void BevelView::AttachedToWindow()
@@ -133,5 +128,3 @@ void BevelView::AttachedToWindow()
 
     BView::AttachedToWindow();
 }
-
-

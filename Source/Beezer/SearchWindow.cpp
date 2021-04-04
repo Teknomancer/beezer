@@ -30,7 +30,6 @@
 #include "StaticBitmapView.h"
 #include "UIConstants.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -261,7 +260,6 @@ SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
 }
 
 
-
 void SearchWindow::Quit()
 {
     BMessage msg;
@@ -270,7 +268,6 @@ void SearchWindow::Quit()
     m_callerWindow->PostMessage(&msg);
     BWindow::Quit();
 }
-
 
 
 void SearchWindow::MessageReceived(BMessage* message)
@@ -336,7 +333,6 @@ void SearchWindow::MessageReceived(BMessage* message)
 }
 
 
-
 int32 SearchWindow::ExpressionType() const
 {
     // Return the expression code from the menu field object m_matchField (assumed looper locked)
@@ -362,7 +358,6 @@ int32 SearchWindow::ExpressionType() const
 }
 
 
-
 CLVColumn* SearchWindow::Column() const
 {
     // Return the pointer to the column that is selected in the m_columnField menu
@@ -374,7 +369,6 @@ CLVColumn* SearchWindow::Column() const
 
     return (CLVColumn*)m_tmpList.ItemAtFast(index);
 }
-
 
 
 void SearchWindow::SetToolTips()
@@ -395,7 +389,6 @@ void SearchWindow::SetToolTips()
 }
 
 
-
 void SearchWindow::GetSettings(BMessage& msg, uint32 msgwhat) const
 {
     msg.what = msgwhat;
@@ -410,5 +403,3 @@ void SearchWindow::GetSettings(BMessage& msg, uint32 msgwhat) const
     msg.AddBool(kPersistent, m_persistentChk->Value() == B_CONTROL_OFF ? false : true);
     msg.AddRect(kWindowRect, Frame());
 }
-
-

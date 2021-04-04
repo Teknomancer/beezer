@@ -3,6 +3,7 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
+// TODO: Cleanup headers
 #include <View.h>
 #include <Application.h>
 #include <StatusBar.h>
@@ -26,7 +27,6 @@
 #include "AppConstants.h"
 
 #include "Shared.h"
-
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -91,14 +91,12 @@ JoinerWindow::JoinerWindow()
 }
 
 
-
 bool JoinerWindow::QuitRequested()
 {
     m_cancel = true;
     be_app->PostMessage(B_QUIT_REQUESTED);
     return BWindow::QuitRequested();
 }
-
 
 
 void JoinerWindow::MessageReceived(BMessage* message)
@@ -144,7 +142,6 @@ void JoinerWindow::MessageReceived(BMessage* message)
             return BWindow::MessageReceived(message);
     }
 }
-
 
 
 status_t JoinerWindow::ReadSelf()
@@ -203,9 +200,6 @@ status_t JoinerWindow::ReadSelf()
 }
 
 
-
-
-
 int32 JoinerWindow::_joiner(void* arg)
 {
     JoinerWindow* wnd = (JoinerWindow*)arg;
@@ -219,5 +213,3 @@ int32 JoinerWindow::_joiner(void* arg)
 
     return result;
 }
-
-

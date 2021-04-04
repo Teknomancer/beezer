@@ -24,7 +24,6 @@
 #include "ArchiveEntry.h"
 #include "AppUtils.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -34,24 +33,21 @@
 #define B_TRANSLATE(x) x
 #endif
 
-
-#define S_NONE "(none)"
-#define S_FASTEST "(fastest)"
-#define S_BEST_DEFAULT "(best,default)"
-#define S_DIR_RECURSE "Recurse into folders"
-#define S_DIR_EXTRACT "Extract folders"
-#define S_EXTRACT_ATTRS "Extract attributes"
-#define S_NO_OVERWRITE "Never overwrite existing files"
-#define S_UPDATE_FILES "Update files, create if needed"
-#define S_FRESHEN_FILES "Freshen existing files, create none"
-
+#define S_NONE              "(none)"
+#define S_FASTEST           "(fastest)"
+#define S_BEST_DEFAULT      "(best,default)"
+#define S_DIR_RECURSE       "Recurse into folders"
+#define S_DIR_EXTRACT       "Extract folders"
+#define S_EXTRACT_ATTRS     "Extract attributes"
+#define S_NO_OVERWRITE      "Never overwrite existing files"
+#define S_UPDATE_FILES      "Update files, create if needed"
+#define S_FRESHEN_FILES     "Freshen existing files, create none"
 
 
 Archiver* load_archiver(const char* addonImagePath)
 {
     return new ZipArchiver(addonImagePath);
 }
-
 
 
 ZipArchiver::ZipArchiver(const char* addonImagePath)
@@ -74,7 +70,6 @@ ZipArchiver::ZipArchiver(const char* addonImagePath)
         m_zipnotePath[0] = '\0';
     }
 }
-
 
 
 status_t ZipArchiver::ReadOpen(FILE* fp)
@@ -115,7 +110,6 @@ status_t ZipArchiver::ReadOpen(FILE* fp)
 
     return BZR_DONE;
 }
-
 
 
 status_t ZipArchiver::Open(entry_ref* ref, BMessage* fileList)
@@ -164,7 +158,6 @@ status_t ZipArchiver::Open(entry_ref* ref, BMessage* fileList)
 
     return exitCode;
 }
-
 
 
 status_t ZipArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger* progress,
@@ -264,7 +257,6 @@ status_t ZipArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
 }
 
 
-
 status_t ZipArchiver::ReadExtract(FILE* fp, BMessenger* progress, volatile bool* cancel)
 {
     // Reads output of unzip while extracting files and updates progress window (thru messenger)
@@ -296,7 +288,6 @@ status_t ZipArchiver::ReadExtract(FILE* fp, BMessenger* progress, volatile bool*
 
     return BZR_DONE;
 }
-
 
 
 status_t ZipArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool* cancel)
@@ -336,7 +327,6 @@ status_t ZipArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool
 
     return exitCode;
 }
-
 
 
 status_t ZipArchiver::ReadTest(FILE* fp, char*& outputStr, BMessenger* progress, volatile bool* cancel)
@@ -425,7 +415,6 @@ status_t ZipArchiver::ReadTest(FILE* fp, char*& outputStr, BMessenger* progress,
 }
 
 
-
 status_t ZipArchiver::GetComment(char*& commentStr)
 {
     // Setup the comment retreiving process
@@ -463,7 +452,6 @@ status_t ZipArchiver::GetComment(char*& commentStr)
 
     return BZR_DONE;
 }
-
 
 
 status_t ZipArchiver::SetComment(char* commentStr, const char* tempDirPath)
@@ -523,7 +511,6 @@ status_t ZipArchiver::SetComment(char* commentStr, const char* tempDirPath)
 }
 
 
-
 bool ZipArchiver::SupportsComment() const
 {
     // First let us check if the system has "zipnote" binary - this is what we will use to WRITE comments
@@ -532,14 +519,12 @@ bool ZipArchiver::SupportsComment() const
 }
 
 
-
 bool ZipArchiver::SupportsFolderEntity() const
 {
     // This means zip binary will not delete entire folders given the folder name, we need to be
     // passed either a wildcard like folder/* or each entry inside the folder
     return false;
 }
-
 
 
 status_t ZipArchiver::Add(bool createMode, const char* relativePath, BMessage* message, BMessage* addedPaths,
@@ -617,7 +602,6 @@ status_t ZipArchiver::Add(bool createMode, const char* relativePath, BMessage* m
 }
 
 
-
 status_t ZipArchiver::ReadAdd(FILE* fp, BMessage* addedPaths, BMessenger* progress, volatile bool* cancel)
 {
     // Read output while adding files to archive
@@ -659,7 +643,6 @@ status_t ZipArchiver::ReadAdd(FILE* fp, BMessage* addedPaths, BMessenger* progre
 
     return exitCode;
 }
-
 
 
 status_t ZipArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* progress,
@@ -738,7 +721,6 @@ status_t ZipArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* pr
 }
 
 
-
 status_t ZipArchiver::ReadDelete(FILE* fp, char*& outputStr, BMessenger* progress,
                                  volatile bool* cancel)
 {
@@ -771,7 +753,6 @@ status_t ZipArchiver::ReadDelete(FILE* fp, char*& outputStr, BMessenger* progres
 }
 
 
-
 status_t ZipArchiver::Create(BPath* archivePath, const char* relPath, BMessage* fileList, BMessage* addedPaths,
                              BMessenger* progress, volatile bool* cancel)
 {
@@ -791,7 +772,6 @@ status_t ZipArchiver::Create(BPath* archivePath, const char* relPath, BMessage* 
 
     return result;
 }
-
 
 
 void ZipArchiver::BuildDefaultMenu()
@@ -868,5 +848,3 @@ void ZipArchiver::BuildDefaultMenu()
     m_settingsMenu->AddItem(addMenu);
     m_settingsMenu->AddItem(extractMenu);
 }
-
-

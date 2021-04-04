@@ -23,7 +23,6 @@
 #include "PrefsViewMisc.h"
 #include "UIConstants.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -41,7 +40,6 @@ PrefsViewMisc::PrefsViewMisc(BRect frame)
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs", 20, 20));
     Render();
 }
-
 
 
 void PrefsViewMisc::Render()
@@ -121,7 +119,6 @@ void PrefsViewMisc::Render()
 }
 
 
-
 void PrefsViewMisc::Save()
 {
     _prefs_misc.SetBool(kPfWelcomeOnQuit, m_quitPopUp->ItemAt(0)->IsMarked());
@@ -135,7 +132,6 @@ void PrefsViewMisc::Save()
 
     _prefs_misc.WritePrefs();
 }
-
 
 
 void PrefsViewMisc::Load()
@@ -168,13 +164,11 @@ void PrefsViewMisc::Load()
 }
 
 
-
 void PrefsViewMisc::AttachedToWindow()
 {
     m_mimeBtn->SetTarget(this);
     return PrefsView::AttachedToWindow();
 }
-
 
 
 void PrefsViewMisc::MessageReceived(BMessage* message)
@@ -192,5 +186,3 @@ void PrefsViewMisc::MessageReceived(BMessage* message)
             break;
     }
 }
-
-

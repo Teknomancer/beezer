@@ -28,7 +28,7 @@ class BeezerStringView : public BView
 
         // Additional hooks
         virtual void        SetText(const char* text);
-        virtual const char*  Text() const;
+        virtual const char* Text() const;
         virtual void        SendMouseEventsTo(BView* targetView);
 
     protected:

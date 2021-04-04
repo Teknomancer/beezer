@@ -14,25 +14,17 @@
 #include "BeezerStringView.h"
 
 
-
 BeezerStringView::BeezerStringView(BRect frame, const char* name, const char* label,
                                    uint32 rmask, uint32 flags)
     : BView(frame, name, rmask, flags),
       m_mouseTargetView(NULL),
       m_text(strdup(label)),
       m_oldText(NULL),
-      m_foreground((rgb_color)
-{
-    0, 0, 0, 255
-}),
-m_background((rgb_color)
-{
-    219, 219, 219, 255
-})
+      m_foreground((rgb_color){ 0, 0, 0, 255 }),
+      m_background((rgb_color){ 219, 219, 219, 255 })
 {
     m_font = *be_plain_font;
 }
-
 
 
 BeezerStringView::~BeezerStringView()
@@ -45,7 +37,6 @@ BeezerStringView::~BeezerStringView()
 }
 
 
-
 void BeezerStringView::Draw(BRect frame)
 {
     RenderView();
@@ -53,13 +44,11 @@ void BeezerStringView::Draw(BRect frame)
 }
 
 
-
 void BeezerStringView::Invalidate(BRect invalRect)
 {
     RenderView();
     BView::Invalidate(invalRect);
 }
-
 
 
 void BeezerStringView::RenderView(bool firstTime)
@@ -86,7 +75,6 @@ void BeezerStringView::RenderView(bool firstTime)
 }
 
 
-
 void BeezerStringView::SetText(const char* text)
 {
     // Delete the previous text if any
@@ -101,12 +89,10 @@ void BeezerStringView::SetText(const char* text)
 }
 
 
-
 const char* BeezerStringView::Text() const
 {
     return const_cast<const char*>(m_text);
 }
-
 
 
 void BeezerStringView::AttachedToWindow()
@@ -131,13 +117,11 @@ void BeezerStringView::AttachedToWindow()
 }
 
 
-
 void BeezerStringView::SetHighColor(rgb_color a_color)
 {
     m_foreground = a_color;
     BView::SetHighColor(a_color);
 }
-
 
 
 void BeezerStringView::SetHighColor(uchar r, uchar g, uchar b, uchar a)
@@ -150,13 +134,11 @@ void BeezerStringView::SetHighColor(uchar r, uchar g, uchar b, uchar a)
 }
 
 
-
 void BeezerStringView::SetFont(const BFont* font, uint32 mask)
 {
     m_font = *font;
     BView::SetFont(font, mask);
 }
-
 
 
 void BeezerStringView::GetPreferredSize(float* width, float* height)
@@ -168,12 +150,10 @@ void BeezerStringView::GetPreferredSize(float* width, float* height)
 }
 
 
-
 void BeezerStringView::SendMouseEventsTo(BView* view)
 {
     m_mouseTargetView = view;
 }
-
 
 
 void BeezerStringView::MouseDown(BPoint point)
@@ -183,5 +163,3 @@ void BeezerStringView::MouseDown(BPoint point)
 
     return BView::MouseDown(point);
 }
-
-

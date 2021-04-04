@@ -206,7 +206,7 @@ class MainWindow : public BWindow
         ProgressWindow*     m_progressWnd;
         StatusWindow*       m_statusWnd;
         volatile bool       m_publicThreadCancel,
-                 m_criticalSection;
+                            m_criticalSection;
         BMenuBar*           m_addPanelMenuBar;
 };
 

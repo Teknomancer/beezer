@@ -15,7 +15,6 @@
 #include "PrefsViewExtract.h"
 #include "UIConstants.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -33,7 +32,6 @@ PrefsViewExtract::PrefsViewExtract(BRect frame)
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Extract", 20, 20));
     Render();
 }
-
 
 
 void PrefsViewExtract::Render()
@@ -64,7 +62,6 @@ void PrefsViewExtract::Render()
 }
 
 
-
 void PrefsViewExtract::Save()
 {
     _prefs_extract.SetBool(kPfOpen, IsChecked(m_openFolderChk));
@@ -76,7 +73,6 @@ void PrefsViewExtract::Save()
 }
 
 
-
 void PrefsViewExtract::Load()
 {
     m_openFolderChk->SetValue(_prefs_extract.FindBoolDef(kPfOpen, true));
@@ -84,5 +80,3 @@ void PrefsViewExtract::Load()
     m_quitChk->SetValue(_prefs_extract.FindBoolDef(kPfQuit, false));
     m_dragChk->SetValue(_prefs_extract.FindBoolDef(kPfDrag, true));
 }
-
-

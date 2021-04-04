@@ -33,7 +33,6 @@
 #include "PrefsFields.h"
 #include "UIConstants.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -273,7 +272,6 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
 }
 
 
-
 bool AddOnWindow::QuitRequested()
 {
     if (m_inProgress == true && m_quitNow == false)    // m_quitNow is checked so this isn't called twice
@@ -302,7 +300,6 @@ bool AddOnWindow::QuitRequested()
 }
 
 
-
 void AddOnWindow::Quit()
 {
     m_cancel = true;
@@ -312,7 +309,6 @@ void AddOnWindow::Quit()
     be_app_messenger.SendMessage(M_CLOSE_ADDON);
     return BWindow::Quit();
 }
-
 
 
 void AddOnWindow::MessageReceived(BMessage* message)
@@ -466,7 +462,6 @@ void AddOnWindow::MessageReceived(BMessage* message)
 }
 
 
-
 void AddOnWindow::EnableControls(bool enable)
 {
     m_fileName->SetEnabled(enable);
@@ -477,7 +472,6 @@ void AddOnWindow::EnableControls(bool enable)
 
     m_password->SetEnabled(enable);
 }
-
 
 
 void AddOnWindow::CreateArchiveRepAndMenus()
@@ -532,7 +526,6 @@ void AddOnWindow::CreateArchiveRepAndMenus()
 }
 
 
-
 bool AddOnWindow::ReplaceExtensionWith(const char* newExt)
 {
     int32 start, end;
@@ -579,7 +572,6 @@ bool AddOnWindow::ReplaceExtensionWith(const char* newExt)
 }
 
 
-
 void AddOnWindow::UpdateStatus(const char* text)
 {
     if (strcmp(text, B_TRANSLATE("Warning! File already exists and will be overwritten!")) == 0)
@@ -596,7 +588,6 @@ void AddOnWindow::UpdateStatus(const char* text)
     m_statusStr->SetText(text);
     m_statusStr->ResizeToPreferred();
 }
-
 
 
 void AddOnWindow::ValidateData()
@@ -641,7 +632,6 @@ void AddOnWindow::ValidateData()
     else
         m_createBtn->SetEnabled(false);
 }
-
 
 
 void AddOnWindow::RefsReceived(BMessage* message)
@@ -691,5 +681,3 @@ void AddOnWindow::RefsReceived(BMessage* message)
     m_refsMessage = *message;
     m_readyMode = true;
 }
-
-

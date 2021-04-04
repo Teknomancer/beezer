@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BSD-3-Clause
-// Copyright (c) 2002 Ramshankar (aka Teknomancer).
+// Copyright (c) 2005 Ramshankar (aka Teknomancer).
 // All rights reserved.
 
 #include <Roster.h>
@@ -13,13 +13,11 @@
 #include "Shared.h"
 
 
-
 void process_refs(entry_ref dirRef, BMessage* message, void* reserved)
 {
     message->what = M_LAUNCH_TRACKER_ADDON;
     be_roster->Launch(K_APP_SIGNATURE, message);
 }
-
 
 
 int main()
@@ -35,5 +33,3 @@ int main()
     system(str.String());
     return 0;
 }
-
-

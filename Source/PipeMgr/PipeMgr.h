@@ -25,8 +25,8 @@ class PipeMgr
         void               PrintToStream() const;
 
         // Custom operators
-        PipeMgr& operator   << (const char* arg);
-        PipeMgr& operator   << (BString arg);
+        PipeMgr& operator  << (const char* arg);
+        PipeMgr& operator  << (BString arg);
 
     protected:
         // Protected members

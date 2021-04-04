@@ -27,7 +27,6 @@
 #include "StartupWindow.h"
 #include "UIConstants.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -145,7 +144,6 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
 }
 
 
-
 bool StartupWindow::QuitRequested()
 {
     if (_prefs_windows.FindBoolDef(kPfWelcomeWnd, true))
@@ -155,13 +153,11 @@ bool StartupWindow::QuitRequested()
 }
 
 
-
 void StartupWindow::Quit()
 {
     be_app_messenger.SendMessage(M_CLOSE_STARTUP);
     return BWindow::Quit();
 }
-
 
 
 void StartupWindow::MessageReceived(BMessage* message)
@@ -237,5 +233,3 @@ void StartupWindow::MessageReceived(BMessage* message)
             BWindow::MessageReceived(message);
     }
 }
-
-

@@ -25,7 +25,6 @@
 #include "PrefsViewInterface.h"
 #include "UIConstants.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -35,10 +34,8 @@
 #define B_TRANSLATE(x) x
 #endif
 
-
-#define M_COLOR_CHANGE        'clch'
+#define M_COLOR_CHANGE       'clch'
 #define M_ITEM_CHANGE        'itch'
-
 
 
 PrefsViewInterface::PrefsViewInterface(BRect frame)
@@ -47,7 +44,6 @@ PrefsViewInterface::PrefsViewInterface(BRect frame)
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Interface", 20, 20));
     Render();
 }
-
 
 
 void PrefsViewInterface::Render()
@@ -140,7 +136,6 @@ void PrefsViewInterface::Render()
 }
 
 
-
 void PrefsViewInterface::Save()
 {
     _prefs_interface.SetBool(kPfFullLengthBars, IsChecked(m_fullLengthBarsChk));
@@ -177,7 +172,6 @@ void PrefsViewInterface::Save()
 }
 
 
-
 void PrefsViewInterface::Load()
 {
     m_fullLengthBarsChk->SetValue(_prefs_interface.FindBoolDef(kPfFullLengthBars, false));
@@ -211,14 +205,12 @@ void PrefsViewInterface::Load()
 }
 
 
-
 void PrefsViewInterface::AttachedToWindow()
 {
     m_colorControl->SetTarget(this);
     m_colorPopUp->SetTargetForItems(this);
     return PrefsView::AttachedToWindow();
 }
-
 
 
 void PrefsViewInterface::MessageReceived(BMessage* message)
@@ -256,13 +248,11 @@ void PrefsViewInterface::MessageReceived(BMessage* message)
 }
 
 
-
 void PrefsViewInterface::UpdateColorWell()
 {
     m_colorWell->SetViewColor(m_colorControl->ValueAsColor());
     m_colorWell->Invalidate();
 }
-
 
 
 void PrefsViewInterface::UpdateColorControl(BMenuItem* item)
@@ -277,7 +267,6 @@ void PrefsViewInterface::UpdateColorControl(BMenuItem* item)
 }
 
 
-
 bool PrefsViewInterface::FindBoolDef(BMessage* msg, const char* name, bool defaultValue)
 {
     // Because we are loading from ANOTHER settings file (via a BMessage and not Preferences class)!!
@@ -289,5 +278,3 @@ bool PrefsViewInterface::FindBoolDef(BMessage* msg, const char* name, bool defau
     else
         return defaultValue;
 }
-
-

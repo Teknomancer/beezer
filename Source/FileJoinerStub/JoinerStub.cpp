@@ -9,13 +9,11 @@
 #include "Shared.h"
 
 
-
 JoinerStub::JoinerStub()
     : BApplication(K_JOINER_STUB_SIGNATURE)
 {
     Run();
 }
-
 
 
 void JoinerStub::ReadyToRun()
@@ -26,13 +24,8 @@ void JoinerStub::ReadyToRun()
 }
 
 
-
-
-
 int main()
 {
     delete new JoinerStub();
     return B_OK;
 }
-
-

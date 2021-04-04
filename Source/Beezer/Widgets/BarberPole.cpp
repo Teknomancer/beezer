@@ -12,7 +12,6 @@
 #include "LocalUtils.h"
 
 
-
 BarberPole::BarberPole(BRect frame, const char* name)
     : BevelView(frame, name, btInset, B_FOLLOW_LEFT, B_WILL_DRAW | B_PULSE_NEEDED)
 {
@@ -26,7 +25,6 @@ BarberPole::BarberPole(BRect frame, const char* name)
 }
 
 
-
 void BarberPole::Draw(BRect updateRect)
 {
     DrawBitmap(m_poleImage, BPoint(m_edgeThickness, -m_y));
@@ -34,12 +32,10 @@ void BarberPole::Draw(BRect updateRect)
 }
 
 
-
 void BarberPole::Pulse()
 {
     Animate();
 }
-
 
 
 void BarberPole::GetPreferredSize(float* width, float* height)
@@ -54,12 +50,10 @@ void BarberPole::GetPreferredSize(float* width, float* height)
 }
 
 
-
 float BarberPole::Width() const
 {
     return m_poleImage->Bounds().Width() + 2 * m_edgeThickness;
 }
-
 
 
 void BarberPole::AttachedToWindow()
@@ -67,7 +61,6 @@ void BarberPole::AttachedToWindow()
     ResizeToPreferred();
     BevelView::AttachedToWindow();
 }
-
 
 
 void BarberPole::SetValue(bool animate, bool adjustPulse)
@@ -88,12 +81,10 @@ void BarberPole::SetValue(bool animate, bool adjustPulse)
 }
 
 
-
 bool BarberPole::IsAnimating() const
 {
     return m_animate;
 }
-
 
 
 void BarberPole::Animate()
@@ -106,5 +97,3 @@ void BarberPole::Animate()
     if (m_animate)
         Invalidate();
 }
-
-
