@@ -30,9 +30,7 @@
 #define B_TRANSLATE(x) x
 #endif
 
-
 #define M_WARN               'warn'
-
 
 
 PrefsViewAdd::PrefsViewAdd(BRect frame)
@@ -41,7 +39,6 @@ PrefsViewAdd::PrefsViewAdd(BRect frame)
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Add", 20, 20));
     Render();
 }
-
 
 
 void PrefsViewAdd::Render()
@@ -98,13 +95,11 @@ void PrefsViewAdd::Render()
 }
 
 
-
 void PrefsViewAdd::AttachedToWindow()
 {
     m_warnMBChk->SetTarget(this);
     return PrefsView::AttachedToWindow();
 }
-
 
 
 void PrefsViewAdd::Save()
@@ -116,7 +111,6 @@ void PrefsViewAdd::Save()
     _prefs_add.SetBool(kPfConfirmDropAdd, IsChecked(m_dropChk));
     _prefs_state.WritePrefs();
 }
-
 
 
 void PrefsViewAdd::Load()
@@ -138,7 +132,6 @@ void PrefsViewAdd::Load()
 }
 
 
-
 void PrefsViewAdd::MessageReceived(BMessage* message)
 {
     switch (message->what)
@@ -156,10 +149,7 @@ void PrefsViewAdd::MessageReceived(BMessage* message)
 }
 
 
-
 void PrefsViewAdd::ToggleMBView(bool enable)
 {
     m_mbView->SetEnabled(enable);
 }
-
-

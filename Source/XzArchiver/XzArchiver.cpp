@@ -12,8 +12,6 @@
 
 #include <cassert>
 
-
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -23,18 +21,15 @@
 #define B_TRANSLATE(x) x
 #endif
 
-
-#define S_FASTEST "(fastest)"
-#define S_DEFAULT "(default)"
-#define S_BEST "(best)"
-
+#define S_FASTEST       "(fastest)"
+#define S_DEFAULT       "(default)"
+#define S_BEST          "(best)"
 
 
 Archiver* load_archiver(const char* addonImagePath)
 {
     return new XzArchiver(addonImagePath);
 }
-
 
 
 XzArchiver::XzArchiver(const char* addonImagePath)
@@ -50,7 +45,6 @@ XzArchiver::XzArchiver(const char* addonImagePath)
         return;
     }
 }
-
 
 
 status_t XzArchiver::ReadOpen(FILE* fp)
@@ -90,7 +84,6 @@ status_t XzArchiver::ReadOpen(FILE* fp)
 
     return BZR_DONE;
 }
-
 
 
 status_t XzArchiver::Open(entry_ref* ref, BMessage* fileList)
@@ -161,7 +154,6 @@ status_t XzArchiver::Open(entry_ref* ref, BMessage* fileList)
 }
 
 
-
 status_t XzArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger* progress,
                              volatile bool* cancel)
 {
@@ -197,7 +189,6 @@ status_t XzArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger*
         return exitCode;
     }
 }
-
 
 
 status_t XzArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool* cancel)
@@ -247,7 +238,6 @@ status_t XzArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool*
 }
 
 
-
 status_t XzArchiver::Add(bool createMode, const char* relativePath, BMessage* message, BMessage* addedPaths,
                          BMessenger* progress, volatile bool* cancel)
 {
@@ -265,7 +255,6 @@ status_t XzArchiver::Add(bool createMode, const char* relativePath, BMessage* me
 }
 
 
-
 status_t XzArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* progress,
                             volatile bool* cancel)
 {
@@ -281,7 +270,6 @@ status_t XzArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* pro
     else
         return BZR_NOT_SUPPORTED;
 }
-
 
 
 status_t XzArchiver::Create(BPath* archivePath, const char* relPath, BMessage* fileList, BMessage* addedPaths,
@@ -310,12 +298,10 @@ status_t XzArchiver::Create(BPath* archivePath, const char* relPath, BMessage* f
 }
 
 
-
 bool XzArchiver::NeedsTempDirectory() const
 {
     return true;
 }
-
 
 
 void XzArchiver::BuildDefaultMenu()
@@ -351,7 +337,6 @@ void XzArchiver::BuildDefaultMenu()
 }
 
 
-
 BString XzArchiver::OutputFileName(const char* fullFileName) const
 {
     // Given a full filename (with extension) this function removes
@@ -378,7 +363,6 @@ BString XzArchiver::OutputFileName(const char* fullFileName) const
 }
 
 
-
 BList XzArchiver::HiddenColumns(BList* columns) const
 {
     if (m_tarArk == true)
@@ -389,7 +373,6 @@ BList XzArchiver::HiddenColumns(BList* columns) const
         return noHiddenColumns;
     }
 }
-
 
 
 void XzArchiver::CompressFromTemp()
@@ -412,7 +395,6 @@ void XzArchiver::CompressFromTemp()
 }
 
 
-
 BString XzArchiver::InitTarFilePath(char* leaf)
 {
     BString destPath = TempDirectoryPath();
@@ -422,14 +404,12 @@ BString XzArchiver::InitTarFilePath(char* leaf)
 }
 
 
-
 void XzArchiver::SendProgressMessage(BMessenger* progress) const
 {
     BMessage updateMessage(BZR_UPDATE_PROGRESS), reply('DUMB');
     updateMessage.AddFloat("delta", 1.0f);
     progress->SendMessage(&updateMessage, &reply);
 }
-
 
 
 bool XzArchiver::CanAddFiles() const

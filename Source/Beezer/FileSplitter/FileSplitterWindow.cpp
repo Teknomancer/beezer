@@ -41,7 +41,6 @@
 #include "StaticBitmapView.h"
 #include "UIConstants.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -54,8 +53,9 @@
 
 
 FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
-    : BWindow(BRect(10, 10, 540, 350), B_TRANSLATE("File Splitter"), B_TITLED_WINDOW,
-              B_NOT_ZOOMABLE | B_NOT_V_RESIZABLE | B_ASYNCHRONOUS_CONTROLS),
+    :
+    BWindow(BRect(10, 10, 540, 350), B_TRANSLATE("File Splitter"), B_TITLED_WINDOW,
+            B_NOT_ZOOMABLE | B_NOT_V_RESIZABLE | B_ASYNCHRONOUS_CONTROLS),
     m_dirPanel(NULL),
     m_filePanel(NULL),
     m_sepString(NULL),
@@ -381,7 +381,6 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
 }
 
 
-
 FileSplitterWindow::~FileSplitterWindow()
 {
     if (m_dirPanel)
@@ -395,7 +394,6 @@ FileSplitterWindow::~FileSplitterWindow()
 
     delete m_messenger;
 }
-
 
 
 bool FileSplitterWindow::QuitRequested()
@@ -427,13 +425,11 @@ bool FileSplitterWindow::QuitRequested()
 }
 
 
-
 void FileSplitterWindow::Quit()
 {
     be_app_messenger.SendMessage(M_CLOSE_FILE_SPLITTER);
     return BWindow::Quit();
 }
-
 
 
 void FileSplitterWindow::MessageReceived(BMessage* message)
@@ -704,7 +700,6 @@ void FileSplitterWindow::MessageReceived(BMessage* message)
 }
 
 
-
 void FileSplitterWindow::ToggleWindowHeight(bool expand)
 {
     float start = m_hideProgress;
@@ -730,7 +725,6 @@ void FileSplitterWindow::ToggleWindowHeight(bool expand)
         UpdateIfNeeded();
     }
 }
-
 
 
 void FileSplitterWindow::UpdateData()
@@ -864,13 +858,11 @@ void FileSplitterWindow::UpdateData()
 }
 
 
-
 void FileSplitterWindow::UpdateRecentMenus()
 {
     m_recentSplitFiles->UpdateMenu(m_fileMenu, kRecentSplitFile, this);
     m_recentSplitDirs->UpdateMenu(m_folderMenu, kRecentSplitDir, this);
 }
-
 
 
 void FileSplitterWindow::CreateSelfJoiner()
@@ -915,9 +907,6 @@ void FileSplitterWindow::CreateSelfJoiner()
 }
 
 
-
-
-
 int32 FileSplitterWindow::_splitter(void* arg)
 {
     // The thread that does controls the split process
@@ -933,5 +922,3 @@ int32 FileSplitterWindow::_splitter(void* arg)
 
     return result;
 }
-
-

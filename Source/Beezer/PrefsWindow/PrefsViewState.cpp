@@ -15,7 +15,6 @@
 #include "PrefsViewState.h"
 #include "UIConstants.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -75,7 +74,6 @@ void PrefsViewState::Render()
 }
 
 
-
 void PrefsViewState::Save()
 {
     _prefs_state.SetBool(kPfStoreUI, IsChecked(m_storeUIChk));
@@ -87,7 +85,6 @@ void PrefsViewState::Save()
 }
 
 
-
 void PrefsViewState::Load()
 {
     m_storeUIChk->SetValue(_prefs_state.FindBoolDef(kPfStoreUI, false));
@@ -95,5 +92,3 @@ void PrefsViewState::Load()
     m_storeArkChk->SetValue(_prefs_state.FindBoolDef(kPfStoreArk, false));
     m_restoreArkChk->SetValue(_prefs_state.FindBoolDef(kPfRestoreArk, true));
 }
-
-

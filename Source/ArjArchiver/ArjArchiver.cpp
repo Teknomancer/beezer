@@ -11,8 +11,6 @@
 #include <Messenger.h>
 #include <MenuItem.h>
 
-
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -21,7 +19,6 @@
 #else
 #define B_TRANSLATE(x) x
 #endif
-
 
 #define S_NONE "(none)"
 #define S_FASTEST "(fastest)"
@@ -32,12 +29,10 @@
 #define S_MULTI_VOLUMES "Enable multiple volumes"
 
 
-
 Archiver* load_archiver(const char* addonImagePath)
 {
     return new ArjArchiver(addonImagePath);
 }
-
 
 
 ArjArchiver::ArjArchiver(const char* addonImagePath)
@@ -52,7 +47,6 @@ ArjArchiver::ArjArchiver(const char* addonImagePath)
         return;
     }
 }
-
 
 
 status_t ArjArchiver::ReadOpen(FILE* fp)
@@ -125,7 +119,6 @@ status_t ArjArchiver::ReadOpen(FILE* fp)
 }
 
 
-
 status_t ArjArchiver::Open(entry_ref* ref, BMessage* fileList)
 {
     m_archiveRef = *ref;
@@ -162,9 +155,7 @@ status_t ArjArchiver::Open(entry_ref* ref, BMessage* fileList)
 }
 
 
-
-status_t ArjArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger* progress,
-                              volatile bool* cancel)
+status_t ArjArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger* progress, volatile bool* cancel)
 {
     BEntry dirEntry;
     entry_ref dirRef;
@@ -254,7 +245,6 @@ status_t ArjArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
 }
 
 
-
 status_t ArjArchiver::ReadExtract(FILE* fp, BMessenger* progress, volatile bool* cancel)
 {
     // Reads output of arj while extracting files and updates progress window (thru messenger)
@@ -302,7 +292,6 @@ status_t ArjArchiver::ReadExtract(FILE* fp, BMessenger* progress, volatile bool*
 
     return BZR_DONE;
 }
-
 
 
 status_t ArjArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool* cancel)
@@ -365,7 +354,6 @@ status_t ArjArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool
 }
 
 
-
 status_t ArjArchiver::ReadTest(FILE* fp, char*& outputStr, BMessenger* progress, volatile bool* cancel)
 {
     // Simply read the entire output of the test process and dump it to the error window (though it need not
@@ -425,12 +413,10 @@ status_t ArjArchiver::ReadTest(FILE* fp, char*& outputStr, BMessenger* progress,
 }
 
 
-
 bool ArjArchiver::SupportsFolderEntity() const
 {
     return false;
 }
-
 
 
 bool ArjArchiver::CanPartiallyOpen() const
@@ -439,7 +425,6 @@ bool ArjArchiver::CanPartiallyOpen() const
     // content) when both files & folders are being added, hence we need to reload each time - oh well
     return false;
 }
-
 
 
 status_t ArjArchiver::Add(bool createMode, const char* relativePath, BMessage* message, BMessage* addedPaths,
@@ -527,7 +512,6 @@ status_t ArjArchiver::Add(bool createMode, const char* relativePath, BMessage* m
 }
 
 
-
 status_t ArjArchiver::ReadAdd(FILE* fp, BMessage* addedPaths, BMessenger* progress, volatile bool* cancel)
 {
     // Read output while adding files to archive
@@ -573,7 +557,6 @@ status_t ArjArchiver::ReadAdd(FILE* fp, BMessage* addedPaths, BMessenger* progre
 
     return exitCode;
 }
-
 
 
 status_t ArjArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* progress,
@@ -646,7 +629,6 @@ status_t ArjArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* pr
 }
 
 
-
 status_t ArjArchiver::ReadDelete(FILE* fp, char*& outputStr, BMessenger* progress,
                                  volatile bool* cancel)
 {
@@ -675,7 +657,6 @@ status_t ArjArchiver::ReadDelete(FILE* fp, char*& outputStr, BMessenger* progres
 }
 
 
-
 status_t ArjArchiver::Create(BPath* archivePath, const char* relPath, BMessage* fileList, BMessage* addedPaths,
                              BMessenger* progress, volatile bool* cancel)
 {
@@ -697,7 +678,6 @@ status_t ArjArchiver::Create(BPath* archivePath, const char* relPath, BMessage* 
 
     return result;
 }
-
 
 
 void ArjArchiver::BuildDefaultMenu()
@@ -752,7 +732,6 @@ void ArjArchiver::BuildDefaultMenu()
 }
 
 
-
 void ArjArchiver::SetMimeType()
 {
     // It seems the arj binary resets the mime-type of archives to "application/octet-stream", after
@@ -766,13 +745,11 @@ void ArjArchiver::SetMimeType()
 }
 
 
-
 bool ArjArchiver::CanAddEmptyFolders() const
 {
     // :( this is courtesy of the arj format itself
     return false;
 }
-
 
 
 BList ArjArchiver::HiddenColumns(BList* columns) const
@@ -785,5 +762,3 @@ BList ArjArchiver::HiddenColumns(BList* columns) const
     // Now list has 0-method 1-crc <-- these columns are to be hidden
     return availList;
 }
-
-

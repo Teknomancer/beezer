@@ -27,15 +27,15 @@ class PrefsViewAdd : public PrefsView
 
     private:
         // Private hook
-        void               ToggleMBView(bool enable);
+        void                ToggleMBView(bool enable);
 
         // Private members
-        BMenuField*           m_replaceField;
-        BPopUpMenu*           m_replaceMenu;
-        BCheckBox*           m_warnMBChk,
-                             *m_sortChk,
-                             *m_dropChk;
-        BTextControl*        m_mbView;
+        BMenuField*         m_replaceField;
+        BPopUpMenu*         m_replaceMenu;
+        BCheckBox*          m_warnMBChk,
+                            *m_sortChk,
+                            *m_dropChk;
+        BTextControl*       m_mbView;
 };
 
 #endif /* _PREFS_VIEW_ADD_H */

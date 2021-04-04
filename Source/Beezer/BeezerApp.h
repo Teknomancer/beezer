@@ -26,8 +26,6 @@ class RuleMgr;
 class StartupWindow;
 class WindowMgr;
 
-
-
 class BeezerApp : public BApplication
 {
     public:

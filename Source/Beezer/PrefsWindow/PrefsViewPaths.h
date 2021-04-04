@@ -36,14 +36,14 @@ class PrefsViewPaths : public PrefsView
         BMessage*           m_message;
         BMessenger*         m_messenger;
         BFilePanel*         m_openPanel;
-        BTextControl*        m_openPathView,
-                             *m_addPathView,
-                             *m_extractPathView;
+        BTextControl*       m_openPathView,
+                            *m_addPathView,
+                            *m_extractPathView;
         BButton*            m_openPathBtn,
                             *m_addPathBtn,
                             *m_extractPathBtn;
-        BRadioButton*        m_arkDirOpt,
-                             *m_useDirOpt;
+        BRadioButton*       m_arkDirOpt,
+                            *m_useDirOpt;
         BCheckBox*          m_genChk;
         BListView*          m_favListView;
         BScrollView*        m_scrollView;

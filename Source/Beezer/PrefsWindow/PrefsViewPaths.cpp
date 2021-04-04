@@ -28,7 +28,6 @@
 #include "Shared.h"
 #include "UIConstants.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -40,18 +39,17 @@
 
 
 #define M_PATH_SELECTED               'pths'
-#define M_SELECT_OPEN_PATH           'sopp'
-#define M_SELECT_ADD_PATH           'sadp'
-#define M_SELECT_EXTRACT_PATH        'setp'
-#define M_USE_DIR                  'used'
-#define M_ARK_DIR                  'arkd'
-#define M_ADD_CLICKED               'addd'
-#define M_REMOVE_CLICKED           'remc'
+#define M_SELECT_OPEN_PATH            'sopp'
+#define M_SELECT_ADD_PATH             'sadp'
+#define M_SELECT_EXTRACT_PATH         'setp'
+#define M_USE_DIR                     'used'
+#define M_ARK_DIR                     'arkd'
+#define M_ADD_CLICKED                 'addd'
+#define M_REMOVE_CLICKED              'remc'
 
 const char* const kTextCtrlPtr =    "txtctrptr";
 const char* const kListCtrlPtr =    "lstctrptr";
-const char* const kArkDir =           ":arkdir:";
-
+const char* const kArkDir =         ":arkdir:";
 
 
 PrefsViewPaths::PrefsViewPaths(BRect frame)
@@ -65,7 +63,6 @@ PrefsViewPaths::PrefsViewPaths(BRect frame)
 }
 
 
-
 PrefsViewPaths::~PrefsViewPaths()
 {
     delete m_messenger;
@@ -75,7 +72,6 @@ PrefsViewPaths::~PrefsViewPaths()
     delete m_addBmp;
     delete m_removeBmp;
 }
-
 
 
 void PrefsViewPaths::Render()
@@ -221,7 +217,6 @@ void PrefsViewPaths::Render()
 }
 
 
-
 void PrefsViewPaths::Save()
 {
     _prefs_paths.SetString(kPfDefOpenPath, m_openPathView->Text());
@@ -237,7 +232,6 @@ void PrefsViewPaths::Save()
     _prefs_paths.SetBool(kPfGenPath, IsChecked(m_genChk));
     _prefs_paths.WritePrefs();
 }
-
 
 
 void PrefsViewPaths::Load()
@@ -277,7 +271,6 @@ void PrefsViewPaths::Load()
 }
 
 
-
 void PrefsViewPaths::AttachedToWindow()
 {
     m_messenger = new BMessenger(this);
@@ -290,7 +283,6 @@ void PrefsViewPaths::AttachedToWindow()
     m_removeBtn->SetTarget(this);
     PrefsView::AttachedToWindow();
 }
-
 
 
 void PrefsViewPaths::MessageReceived(BMessage* message)
@@ -422,11 +414,8 @@ void PrefsViewPaths::MessageReceived(BMessage* message)
 }
 
 
-
 void PrefsViewPaths::ToggleExtractPathView(bool enable)
 {
     m_extractPathView->SetEnabled(enable);
     m_extractPathBtn->SetEnabled(enable);
 }
-
-

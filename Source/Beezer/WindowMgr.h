@@ -30,7 +30,7 @@ class WindowMgr
         // Private members
         BList*             m_windowList;
 
-        static int32        m_runCount;
+        static int32       m_runCount;
 };
 
 #endif /* _WINDOW_MGR_H */

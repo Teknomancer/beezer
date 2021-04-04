@@ -21,7 +21,7 @@ class StaticBitmapView : public BView
         virtual void        AttachedToWindow();
 
     private:
-        BBitmap*           m_bitmap;
+        BBitmap*            m_bitmap;
 };
 
 #endif /* _STATIC_BITMAP_VIEW_H */

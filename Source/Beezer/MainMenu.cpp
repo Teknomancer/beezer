@@ -19,7 +19,6 @@
 #include "MainMenu.h"
 #include "MsgConstants.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -181,7 +180,6 @@ MainMenu::MainMenu(BRect frame)
 }
 
 
-
 MainMenu::~MainMenu()
 {
     delete m_archiveContextMenu;
@@ -190,7 +188,6 @@ MainMenu::~MainMenu()
     delete m_logContextMenu;
     m_logContextMenu = NULL;
 }
-
 
 
 void MainMenu::SetRecentMenu(BMenu* menu)
@@ -207,12 +204,10 @@ void MainMenu::SetRecentMenu(BMenu* menu)
 }
 
 
-
 BMenu* MainMenu::RecentMenu() const
 {
     return m_recentMenu;
 }
-
 
 
 void MainMenu::SetExtractPathsMenu(BMenu* menu)
@@ -231,7 +226,6 @@ void MainMenu::SetExtractPathsMenu(BMenu* menu)
     menu->Archive(&archiveMessage, true);
     SetExtractSelPathsMenu(new BMenu(&archiveMessage));
 }
-
 
 
 void MainMenu::SetExtractSelPathsMenu(BMenu* menu)
@@ -253,10 +247,7 @@ void MainMenu::SetExtractSelPathsMenu(BMenu* menu)
 }
 
 
-
 BMenu* MainMenu::ExtractPathsMenu() const
 {
     return m_extractPathsMenu;
 }
-
-

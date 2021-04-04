@@ -40,7 +40,7 @@ class PrefsViewInterface : public PrefsView
                             *m_foldingPopUp;
         BMenuField*         m_colorField,
                             *m_foldingField;
-        BColorControl*       m_colorControl;
+        BColorControl*      m_colorControl;
         rgb_color           m_actFore,
                             m_actBack;
 };

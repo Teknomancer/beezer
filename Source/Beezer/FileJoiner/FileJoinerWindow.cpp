@@ -36,7 +36,6 @@
 #include "Joiner.h"
 #include "Shared.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -49,8 +48,9 @@
 
 
 FileJoinerWindow::FileJoinerWindow(RecentMgr* dirs)
-    : BWindow(BRect(10, 10, 520, 300), B_TRANSLATE("File Joiner"), B_TITLED_WINDOW,
-              B_NOT_ZOOMABLE | B_NOT_V_RESIZABLE | B_ASYNCHRONOUS_CONTROLS),
+    :
+    BWindow(BRect(10, 10, 520, 300), B_TRANSLATE("File Joiner"), B_TITLED_WINDOW,
+            B_NOT_ZOOMABLE | B_NOT_V_RESIZABLE | B_ASYNCHRONOUS_CONTROLS),
     m_filePanel(NULL),
     m_dirPanel(NULL),
     m_calcSize(false),
@@ -307,12 +307,10 @@ FileJoinerWindow::FileJoinerWindow(RecentMgr* dirs)
 }
 
 
-
 FileJoinerWindow::~FileJoinerWindow()
 {
     delete m_messenger;
 }
-
 
 
 void FileJoinerWindow::Quit()
@@ -320,7 +318,6 @@ void FileJoinerWindow::Quit()
     be_app_messenger.SendMessage(M_CLOSE_FILE_JOINER);
     return BWindow::Quit();
 }
-
 
 
 bool FileJoinerWindow::QuitRequested()
@@ -350,7 +347,6 @@ bool FileJoinerWindow::QuitRequested()
     else
         return BWindow::QuitRequested();
 }
-
 
 
 void FileJoinerWindow::MessageReceived(BMessage* message)
@@ -593,12 +589,10 @@ void FileJoinerWindow::MessageReceived(BMessage* message)
 }
 
 
-
 void FileJoinerWindow::UpdateRecentMenus()
 {
     m_recentSplitDirs->UpdateMenu(m_folderMenu, kRecentSplitDir, this);
 }
-
 
 
 void FileJoinerWindow::UpdateData()
@@ -626,7 +620,6 @@ void FileJoinerWindow::UpdateData()
 }
 
 
-
 void FileJoinerWindow::RefreshInfo()
 {
     if (m_calcSize == true)
@@ -652,7 +645,6 @@ void FileJoinerWindow::RefreshInfo()
 }
 
 
-
 void FileJoinerWindow::GetDirectoryInfo(BEntry* srcDir, int32& fileCount, off_t& totalSize,
                                         volatile bool* cancel)
 {
@@ -675,7 +667,6 @@ void FileJoinerWindow::GetDirectoryInfo(BEntry* srcDir, int32& fileCount, off_t&
         }
     }
 }
-
 
 
 void FileJoinerWindow::DeleteChunks(const char* firstChunkPathStr, const char* separator)
@@ -717,7 +708,6 @@ void FileJoinerWindow::DeleteChunks(const char* firstChunkPathStr, const char* s
 }
 
 
-
 void FileJoinerWindow::ToggleWindowHeight(bool expand)
 {
     float start = m_hideProgress;
@@ -743,10 +733,6 @@ void FileJoinerWindow::ToggleWindowHeight(bool expand)
         UpdateIfNeeded();
     }
 }
-
-
-
-
 
 
 int32 FileJoinerWindow::_calcsize(void* arg)
@@ -787,7 +773,6 @@ int32 FileJoinerWindow::_calcsize(void* arg)
 }
 
 
-
 int32 FileJoinerWindow::_joiner(void* arg)
 {
     // The thread that does controls the split process
@@ -802,5 +787,3 @@ int32 FileJoinerWindow::_joiner(void* arg)
 
     return result;
 }
-
-

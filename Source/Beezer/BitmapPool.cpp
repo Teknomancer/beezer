@@ -17,7 +17,6 @@ BitmapPool* _glob_bitmap_pool;
 int32 BitmapPool::m_runCount = 0;
 
 
-
 BitmapPool::BitmapPool()
 {
     // The purpose of this BitmapPool is to maintain a global list of bitmap images, inorder
@@ -86,7 +85,6 @@ BitmapPool::BitmapPool()
 }
 
 
-
 BitmapPool::~BitmapPool()
 {
     // This is fun :)
@@ -151,6 +149,7 @@ BBitmap* BitmapPool::LoadSystemVector(const char* mimestring, int width, int hei
 
     return icon;
 }
+
 
 BBitmap* BitmapPool::LoadAppVector(const char* resource, int width, int height)
 {

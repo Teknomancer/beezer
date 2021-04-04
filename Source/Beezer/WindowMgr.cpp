@@ -16,7 +16,6 @@ int32 WindowMgr::m_runCount = 0;
 BLocker _wnd_locker("_window_mgr_lock", true);
 
 
-
 WindowMgr::WindowMgr()
 {
     // You only need one instance per application - critical for proper window management
@@ -27,12 +26,10 @@ WindowMgr::WindowMgr()
 }
 
 
-
 WindowMgr::~WindowMgr()
 {
     delete m_windowList;
 }
-
 
 
 bool WindowMgr::AddWindow(BWindow* wnd)
@@ -45,7 +42,6 @@ bool WindowMgr::AddWindow(BWindow* wnd)
 
     return false;
 }
-
 
 
 bool WindowMgr::RemoveWindow(BWindow* wnd)
@@ -63,19 +59,16 @@ bool WindowMgr::RemoveWindow(BWindow* wnd)
 }
 
 
-
 BWindow* WindowMgr::WindowAt(int32 index) const
 {
     return reinterpret_cast<BWindow*>(m_windowList->ItemAtFast(index));
 }
 
 
-
 int32 WindowMgr::CountWindows() const
 {
     return m_windowList->CountItems();
 }
-
 
 
 void WindowMgr::UpdateFrom(BWindow* sourceWnd, bool updateBeApp)
@@ -88,7 +81,6 @@ void WindowMgr::UpdateFrom(BWindow* sourceWnd, bool updateBeApp)
     msg.AddPointer(kWindowList, reinterpret_cast<void**>(&m_windowList));
     UpdateFrom(sourceWnd, &msg, updateBeApp);
 }
-
 
 
 void WindowMgr::UpdateFrom(BWindow* sourceWnd, BMessage* message, bool updateBeApp)
@@ -111,5 +103,3 @@ void WindowMgr::UpdateFrom(BWindow* sourceWnd, BMessage* message, bool updateBeA
     if (updateBeApp)
         be_app->PostMessage(message);
 }
-
-

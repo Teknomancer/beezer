@@ -21,7 +21,6 @@
 #include "PrefsFields.h"
 #include "UIConstants.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -31,7 +30,6 @@
 #define B_TRANSLATE(x) x
 #define B_TRANSLATE_COMMENT(x, y) x
 #endif
-
 
 // Initialize static non-integral vars here to make c++11 happy
 // while avoiding the use of constexpr which would break gcc2
@@ -55,12 +53,10 @@ InfoBar::InfoBar(BRect frame, BList* slotPositions, const char* name, rgb_color 
 }
 
 
-
 InfoBar::~InfoBar()
 {
     delete m_slotPositions;
 }
-
 
 
 void InfoBar::AttachedToWindow()
@@ -107,7 +103,6 @@ void InfoBar::AttachedToWindow()
 }
 
 
-
 void InfoBar::UpdateFilesDisplay(int32 selectedCount, int32 totalCount, bool setTotalCount)
 {
     if (setTotalCount == true)
@@ -127,7 +122,6 @@ void InfoBar::UpdateFilesDisplay(int32 selectedCount, int32 totalCount, bool set
 
     m_selectedFiles = selectedCount;
 }
-
 
 
 void InfoBar::UpdateBytesDisplay(uint32 selectedBytes, uint32 totalBytes, bool setTotalBytes)
@@ -161,7 +155,6 @@ void InfoBar::UpdateBy(int32 countBy, uint32 bytesBy)
 }
 
 
-
 void InfoBar::Draw(BRect updateRect)
 {
     // Erase the old border (efficiently)
@@ -174,7 +167,6 @@ void InfoBar::Draw(BRect updateRect)
 
     BView::Draw(updateRect);
 }
-
 
 
 inline void InfoBar::RenderEdges()
@@ -205,7 +197,6 @@ inline void InfoBar::RenderEdges()
 }
 
 
-
 void InfoBar::MouseDown(BPoint point)
 {
     // Right click detection
@@ -219,7 +210,6 @@ void InfoBar::MouseDown(BPoint point)
 
     BView::MouseDown(point);
 }
-
 
 
 void InfoBar::Toggle()
@@ -260,7 +250,6 @@ void InfoBar::Toggle()
     notifierMessage.AddFloat(kBarHeight, unHiddenHeight);
     Window()->PostMessage(&notifierMessage);
 }
-
 
 
 void InfoBar::AddSeparatorItem(float x, bool finalSeparator)
@@ -316,19 +305,16 @@ void InfoBar::AddSeparatorItem(float x, bool finalSeparator)
 }
 
 
-
 bool InfoBar::IsShown() const
 {
     return !m_isHidden;
 }
 
 
-
 BarberPole* InfoBar::LoadIndicator() const
 {
     return m_barberPole;
 }
-
 
 
 float InfoBar::Height() const
@@ -338,7 +324,6 @@ float InfoBar::Height() const
     else
         return Frame().Height();
 }
-
 
 
 void InfoBar::Redraw()
@@ -361,5 +346,3 @@ void InfoBar::Redraw()
 
     Invalidate();
 }
-
-

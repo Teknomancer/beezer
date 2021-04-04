@@ -64,7 +64,6 @@
 #include "UIConstants.h"
 #include "WindowMgr.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -75,9 +74,9 @@
 #define B_TRANSLATE_SYSTEM_NAME(x) x
 #endif
 
-
 // Note: Don't let BeIDE sort function popups if we want these pragmas to work
 #pragma mark --- Inherited Hooks ---
+
 
 MainWindow::MainWindow(BRect frame, WindowMgr* windowMgr, RecentMgr* recentMgr,
                        RecentMgr* extractMgr, RuleMgr* ruleMgr)
@@ -147,7 +146,6 @@ MainWindow::MainWindow(BRect frame, WindowMgr* windowMgr, RecentMgr* recentMgr,
 }
 
 
-
 MainWindow::~MainWindow()
 {
     // Do it in the destructor so that when LARGE temp dir exists, the window will appear closed
@@ -161,7 +159,6 @@ MainWindow::~MainWindow()
 }
 
 
-
 bool MainWindow::QuitRequested()
 {
     if (m_criticalSection)
@@ -169,7 +166,6 @@ bool MainWindow::QuitRequested()
 
     return BWindow::QuitRequested();
 }
-
 
 
 void MainWindow::Quit()
@@ -238,7 +234,6 @@ void MainWindow::Quit()
 
     return BWindow::Quit();
 }
-
 
 
 void MainWindow::MessageReceived(BMessage* message)
@@ -1506,14 +1501,12 @@ void MainWindow::MessageReceived(BMessage* message)
 }
 
 
-
 void MainWindow::Show()
 {
     m_logTextView->MakeFocus(false);
     m_listView->MakeFocus(true);
     BWindow::Show();
 }
-
 
 
 void MainWindow::FrameResized(float newWidth, float newHeight)
@@ -1537,9 +1530,9 @@ void MainWindow::FrameResized(float newWidth, float newHeight)
 }
 
 
-
 #pragma mark -
 #pragma mark --- Interface Functions ---
+
 
 void MainWindow::AddInfoBar()
 {
@@ -1553,7 +1546,6 @@ void MainWindow::AddInfoBar()
                             ui_color(B_PANEL_BACKGROUND_COLOR));
     m_backView->AddChild(m_infoBar);
 }
-
 
 
 void MainWindow::AddSplitterBar()
@@ -1574,7 +1566,6 @@ void MainWindow::AddSplitterBar()
 
     m_backView->AddChild(m_splitPane);
 }
-
 
 
 void MainWindow::AddToolBar()
@@ -1645,7 +1636,6 @@ void MainWindow::AddToolBar()
 }
 
 
-
 void MainWindow::AddListView()
 {
     // Just an initial setup of the ColumnListView to keep the window constructor fairly clear
@@ -1687,7 +1677,6 @@ void MainWindow::AddListView()
 }
 
 
-
 void MainWindow::AddLogTextView()
 {
     // Setup the output text view's background (parent) view (AddChild done by SplitPane)
@@ -1716,7 +1705,6 @@ void MainWindow::AddLogTextView()
 }
 
 
-
 void MainWindow::ToggleColumn(CLVColumn* col, BMessage* message)
 {
     // Toggle the column & menu item (the message is passed to us when the BMenuItem is clicked)
@@ -1742,7 +1730,6 @@ void MainWindow::ToggleColumn(CLVColumn* col, BMessage* message)
 }
 
 
-
 void MainWindow::ToggleToolBar()
 {
     m_mainMenu->m_viewMenu->FindItem(M_TOGGLE_TOOLBAR)->SetMarked(!(m_toolBar->IsShown()));
@@ -1750,13 +1737,11 @@ void MainWindow::ToggleToolBar()
 }
 
 
-
 void MainWindow::ToggleInfoBar()
 {
     m_mainMenu->m_viewMenu->FindItem(M_TOGGLE_INFOBAR)->SetMarked(!(m_infoBar->IsShown()));
     m_infoBar->Toggle();
 }
-
 
 
 void MainWindow::ToggleActionLog()
@@ -1781,7 +1766,6 @@ void MainWindow::ToggleActionLog()
 }
 
 
-
 void MainWindow::AdjustColumns()
 {
     // Hide columns that the archiver doesn't have info about
@@ -1799,9 +1783,9 @@ void MainWindow::AdjustColumns()
 }
 
 
-
 #pragma mark -
 #pragma mark --- Update Functions ---
+
 
 void MainWindow::UpdateListView(bool invalidate)
 {
@@ -1817,7 +1801,6 @@ void MainWindow::UpdateListView(bool invalidate)
 }
 
 
-
 void MainWindow::UpdateFileSelectNeeders(bool enable)
 {
     // Items that should be enabled when file items are selected, disabled otherwise
@@ -1827,13 +1810,11 @@ void MainWindow::UpdateFileSelectNeeders(bool enable)
 }
 
 
-
 void MainWindow::UpdateFocusNeeders(bool enable)
 {
     // When listview has focus- enable/disable according to selection - otherwise enable
     m_mainMenu->m_editMenu->FindItem(M_EDIT_COPY)->SetEnabled(enable);
 }
-
 
 
 void MainWindow::UpdateSelectNeeders(bool enable)
@@ -1844,7 +1825,6 @@ void MainWindow::UpdateSelectNeeders(bool enable)
     m_mainMenu->m_actionsMenu->FindItem(M_ACTIONS_DELETE)->SetEnabled(enable);
     m_deleteButton->SetEnabled(enable);
 }
-
 
 
 void MainWindow::UpdateListItemNeeders(bool enable)
@@ -1860,14 +1840,12 @@ void MainWindow::UpdateListItemNeeders(bool enable)
 }
 
 
-
 void MainWindow::UpdateFolderSelectNeeders(bool enable)
 {
     // Items that should enabled when folder items are selected, disabled otherwsie
     m_mainMenu->m_editMenu->FindItem(M_EDIT_EXPAND_SELECTED)->SetEnabled(enable);
     m_mainMenu->m_editMenu->FindItem(M_EDIT_COLLAPSE_SELECTED)->SetEnabled(enable);
 }
-
 
 
 void MainWindow::UpdateValidArchiveNeeders(bool enable)
@@ -1910,14 +1888,12 @@ void MainWindow::UpdateValidArchiveNeeders(bool enable)
 }
 
 
-
 void MainWindow::UpdateInfoBar(int32 count, int64 bytes) const
 {
     // The below "false" indicate NOT to change the total count/bytes
     m_infoBar->UpdateFilesDisplay(count, 0, false);
     m_infoBar->UpdateBytesDisplay(bytes, 0, false);
 }
-
 
 
 void MainWindow::UpdateUIAsPerSelection()
@@ -1950,7 +1926,6 @@ void MainWindow::UpdateUIAsPerSelection()
 }
 
 
-
 void MainWindow::UpdateWindowManager(bool isClosing)
 {
     if (isClosing)
@@ -1961,7 +1936,6 @@ void MainWindow::UpdateWindowManager(bool isClosing)
         m_windowMgr->UpdateFrom(dynamic_cast<BWindow*>(this), false);
     }
 }
-
 
 
 void MainWindow::ActivateUIForValidArchive()
@@ -1979,7 +1953,6 @@ void MainWindow::ActivateUIForValidArchive()
 }
 
 
-
 void MainWindow::UpdateNewWindow()
 {
     m_recentMgr->AddPath(m_archivePath.Path());
@@ -1990,13 +1963,11 @@ void MainWindow::UpdateNewWindow()
 }
 
 
-
 void MainWindow::UpdateRecentMenu()
 {
     m_mainMenu->SetRecentMenu(m_recentMgr->BuildMenu(B_TRANSLATE(S_OPEN), "refs", be_app));
     m_openButton->SetContextMenu(m_recentMgr->BuildPopUpMenu(NULL, "refs", be_app));
 }
-
 
 
 void MainWindow::UpdateExtractMenu()
@@ -2017,7 +1988,6 @@ void MainWindow::UpdateExtractMenu()
 
     m_mainMenu->m_actionsMenu->FindItem(B_TRANSLATE(S_EXTRACT_SELECTED))->SetEnabled(enable);
 }
-
 
 
 void MainWindow::UpdateWindowsMenu()
@@ -2045,7 +2015,6 @@ void MainWindow::UpdateWindowsMenu()
 }
 
 
-
 void MainWindow::SetBusyState(bool on) const
 {
     // Note - the BarberPole() will NOT adjust pulse when it stops animating
@@ -2058,9 +2027,9 @@ void MainWindow::SetBusyState(bool on) const
 }
 
 
-
 #pragma mark -
 #pragma mark --- Delete Functions ----
+
 
 void MainWindow::ClearDeleteLists()
 {
@@ -2078,7 +2047,6 @@ void MainWindow::ClearDeleteLists()
         m_deleteDirList = NULL;
     }
 }
-
 
 
 void MainWindow::DeleteFilesFromArchive()
@@ -2229,7 +2197,6 @@ void MainWindow::DeleteFilesFromArchive()
 }
 
 
-
 void MainWindow::CancelDelete()
 {
     m_deleteFileList->MakeEmpty();        // Very important or else ClearDeleteList() will delete selected
@@ -2239,7 +2206,6 @@ void MainWindow::CancelDelete()
     m_listView->SendSelectionMessage(true);
     m_listView->SelectionChanged();
 }
-
 
 
 void MainWindow::DeleteDone(BMessage* message)
@@ -2285,7 +2251,6 @@ void MainWindow::DeleteDone(BMessage* message)
             break;
     }
 }
-
 
 
 void MainWindow::DeleteUpdate()
@@ -2349,9 +2314,9 @@ void MainWindow::DeleteUpdate()
 }
 
 
-
 #pragma mark -
 #pragma mark --- Test Functions ---
+
 
 void MainWindow::TestArchive()
 {
@@ -2376,7 +2341,6 @@ void MainWindow::TestArchive()
     thread_id tst_id = spawn_thread(_tester, "_tester", B_NORMAL_PRIORITY, (void*)threadInfo);
     resume_thread(tst_id);
 }
-
 
 
 void MainWindow::TestDone(BMessage* message)
@@ -2439,9 +2403,9 @@ void MainWindow::TestDone(BMessage* message)
 }
 
 
-
 #pragma mark -
 #pragma mark --- Extract Functions ---
+
 
 void MainWindow::ExtractDone(BMessage* message)
 {
@@ -2558,7 +2522,6 @@ void MainWindow::ExtractDone(BMessage* message)
 }
 
 
-
 void MainWindow::ExtractArchive(entry_ref refToDir, bool fullArchive)
 {
     // Setup extraction process
@@ -2666,7 +2629,6 @@ void MainWindow::ExtractArchive(entry_ref refToDir, bool fullArchive)
 }
 
 
-
 bool MainWindow::IsExtractPathValid(const char* path, bool throwAlertErrorIfAny) const
 {
     BEntry dirEntry(path, true);
@@ -2689,7 +2651,6 @@ bool MainWindow::IsExtractPathValid(const char* path, bool throwAlertErrorIfAny)
 
     return true;
 }
-
 
 
 void MainWindow::SetupExtractPanel(BMessage* extractMessage)
@@ -2723,9 +2684,9 @@ void MainWindow::SetupExtractPanel(BMessage* extractMessage)
 }
 
 
-
 #pragma mark -
 #pragma mark --- Open Functions ---
+
 
 int32 MainWindow::AddFolderToMessage(ListEntry* item, BMessage* message, bool countOnlyFiles,
                                      BList* fileList, BList* dirList, bool skipFiles)
@@ -2776,7 +2737,6 @@ int32 MainWindow::AddFolderToMessage(ListEntry* item, BMessage* message, bool co
 }
 
 
-
 int32 MainWindow::AddFoldersFromList(int32 index, int32* totalItems)
 {
     // Add split folders at a time, then we will be called again (MessageReceived:M_ADD_ITEMS), Any messages
@@ -2824,7 +2784,6 @@ int32 MainWindow::AddFoldersFromList(int32 index, int32* totalItems)
         return i;
     }
 }
-
 
 
 int32 MainWindow::AddItemsFromList(int32 index, int32* totalItems)
@@ -2880,7 +2839,6 @@ int32 MainWindow::AddItemsFromList(int32 index, int32* totalItems)
         return i;
     }
 }
-
 
 
 void MainWindow::SetupArchiver(entry_ref* ref, char* mimeString)
@@ -2964,7 +2922,6 @@ void MainWindow::SetupArchiver(entry_ref* ref, char* mimeString)
 }
 
 
-
 void MainWindow::InitArchiver()
 {
     m_archiver->SetFoldingLevel(m_foldingLevel);
@@ -3000,7 +2957,6 @@ void MainWindow::InitArchiver()
 }
 
 
-
 void MainWindow::AddArchiverMenu()
 {
     if (m_createMode == false)
@@ -3011,7 +2967,6 @@ void MainWindow::AddArchiverMenu()
         m_mainMenu->AddItem(m_archiver->SettingsMenu(), m_mainMenu->IndexOf(m_mainMenu->m_toolsMenu) + 1);
     }
 }
-
 
 
 void MainWindow::OpenArchive()
@@ -3076,7 +3031,6 @@ void MainWindow::OpenArchive()
 }
 
 
-
 void MainWindow::OpenArchivePartTwo(status_t result)
 {
     if (m_statusWnd)
@@ -3094,9 +3048,9 @@ void MainWindow::OpenArchivePartTwo(status_t result)
 }
 
 
-
 #pragma mark -
 #pragma mark -- Add Functions ---
+
 
 int32 MainWindow::AddFoldersFromList(BList* folderList, int32 index)
 {
@@ -3155,7 +3109,6 @@ int32 MainWindow::AddFoldersFromList(BList* folderList, int32 index)
         return j;
     }
 }
-
 
 
 int32 MainWindow::AddItemsFromList(BList* fileList, int32 index)
@@ -3221,7 +3174,6 @@ int32 MainWindow::AddItemsFromList(BList* fileList, int32 index)
         return j;
     }
 }
-
 
 
 bool MainWindow::ConfirmAddOperation(const char* addingUnderPath, BMessage* refsMessage, int32* countL,
@@ -3411,7 +3363,6 @@ bool MainWindow::ConfirmAddOperation(const char* addingUnderPath, BMessage* refs
 }
 
 
-
 void MainWindow::SetupAddPanel()
 {
     if (m_addPanel == NULL)
@@ -3469,7 +3420,6 @@ void MainWindow::SetupAddPanel()
         m_addPanel->Window()->Unlock();
     }
 }
-
 
 
 void MainWindow::AddNewFolder()
@@ -3595,9 +3545,9 @@ void MainWindow::AddNewFolder()
 }
 
 
-
 #pragma mark -
 #pragma mark -- State Functions ---
+
 
 void MainWindow::SaveSettingsAsDefaults() const
 {
@@ -3610,7 +3560,6 @@ void MainWindow::SaveSettingsAsDefaults() const
     BFile file(path.String(), B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE);
     msg.Flatten(&file);
 }
-
 
 
 void MainWindow::SaveSettingsToArchive(BMessage* message)
@@ -3638,7 +3587,6 @@ void MainWindow::SaveSettingsToArchive(BMessage* message)
         archiveNode.WriteAttr(K_UI_ATTRIBUTE, B_MESSAGE_TYPE, 0, msgBuf, msgLength);
     delete[] msgBuf;
 }
-
 
 
 void MainWindow::SaveArchiverToArchive(BMessage* message)
@@ -3681,7 +3629,6 @@ void MainWindow::SaveArchiverToArchive(BMessage* message)
 }
 
 
-
 BMenu* MainWindow::LoadArchiverFromArchive(entry_ref* ref)
 {
     // Load archiver settings from archive's attribute -- this function should probably be named
@@ -3712,7 +3659,6 @@ BMenu* MainWindow::LoadArchiverFromArchive(entry_ref* ref)
 }
 
 
-
 void MainWindow::LoadSettingsFromArchive(entry_ref* ref)
 {
     // This function is usually called even before the window's Show()
@@ -3740,7 +3686,6 @@ void MainWindow::LoadSettingsFromArchive(entry_ref* ref)
 }
 
 
-
 void MainWindow::LoadDefaultSettings()
 {
     // Public function as it is called from BApp object
@@ -3758,7 +3703,6 @@ void MainWindow::LoadDefaultSettings()
 }
 
 
-
 void MainWindow::CacheState(BMessage** cache, BMessage* msg)
 {
     // Cache the UI state message in a cached member variable
@@ -3770,7 +3714,6 @@ void MainWindow::CacheState(BMessage** cache, BMessage* msg)
 
     *cache = new BMessage(*msg);
 }
-
 
 
 void MainWindow::SetState(BMessage* msg)
@@ -3822,7 +3765,6 @@ void MainWindow::SetState(BMessage* msg)
 }
 
 
-
 void MainWindow::GetState(BMessage& msg) const
 {
     // Store interface state, folding state to message
@@ -3842,9 +3784,9 @@ void MainWindow::GetState(BMessage& msg) const
 }
 
 
-
 #pragma mark -
 #pragma mark -- Thread Functions ---
+
 
 int32 MainWindow::_viewer(void* arg)
 {
@@ -3918,7 +3860,6 @@ int32 MainWindow::_viewer(void* arg)
 }
 
 
-
 int32 MainWindow::_counter(void* arg)
 {
     // Thread that does getting information about a directory
@@ -3976,7 +3917,6 @@ int32 MainWindow::_counter(void* arg)
 
     return BZR_DONE;
 }
-
 
 
 int32 MainWindow::_copier(void* arg)
@@ -4042,7 +3982,6 @@ int32 MainWindow::_copier(void* arg)
 }
 
 
-
 int32 MainWindow::_extractor(void* arg)
 {
     // Thread that does extraction
@@ -4081,7 +4020,6 @@ int32 MainWindow::_extractor(void* arg)
 
     return result;
 }
-
 
 
 int32 MainWindow::_adder(void* arg)
@@ -4123,7 +4061,6 @@ int32 MainWindow::_adder(void* arg)
 }
 
 
-
 int32 MainWindow::_deletor(void* arg)
 {
     // Thread that does the deleting of files from archive
@@ -4156,7 +4093,6 @@ int32 MainWindow::_deletor(void* arg)
 }
 
 
-
 int32 MainWindow::_tester(void* arg)
 {
     // Thread that does the testing
@@ -4187,7 +4123,6 @@ int32 MainWindow::_tester(void* arg)
 }
 
 
-
 int32 MainWindow::_opener(void* arg)
 {
     // Thread that does the opening
@@ -4210,9 +4145,9 @@ int32 MainWindow::_opener(void* arg)
 }
 
 
-
 #pragma mark -
 #pragma mark --- Miscellaneous ---
+
 
 void MainWindow::EditComment(bool failIfNoComment)
 {
@@ -4229,7 +4164,6 @@ void MainWindow::EditComment(bool failIfNoComment)
 }
 
 
-
 const char* MainWindow::MakeTempDirectory()
 {
     if (m_tempDir == NULL)
@@ -4237,7 +4171,6 @@ const char* MainWindow::MakeTempDirectory()
 
     return m_tempDirPath;
 }
-
 
 
 void MainWindow::EmptyListViewIfNeeded()
@@ -4249,7 +4182,6 @@ void MainWindow::EmptyListViewIfNeeded()
             delete m_listView->RemoveItem((int32)0);
     }
 }
-
 
 
 void MainWindow::ShowArkPathError() const
@@ -4265,7 +4197,6 @@ void MainWindow::ShowArkPathError() const
 }
 
 
-
 void MainWindow::ShowOpNotSupported() const
 {
     m_logTextView->AddText(B_TRANSLATE("Operation unavailable."), true, false, false);
@@ -4277,7 +4208,6 @@ void MainWindow::ShowOpNotSupported() const
 }
 
 
-
 void MainWindow::ShowReadOnlyError() const
 {
     BAlert* errAlert = new BAlert("Cannot operate", B_TRANSLATE("The archive is read-only, or is in a read-only partition."),
@@ -4286,7 +4216,6 @@ void MainWindow::ShowReadOnlyError() const
     errAlert->AddToSubset((BWindow*)this);
     errAlert->Go();
 }
-
 
 
 bool MainWindow::CanAddFiles() const
@@ -4300,7 +4229,6 @@ bool MainWindow::CanAddFiles() const
 
     return true;
 }
-
 
 
 bool MainWindow::CanWriteArchive() const
@@ -4320,7 +4248,6 @@ bool MainWindow::CanWriteArchive() const
 
     return true;
 }
-
 
 
 void MainWindow::AddDynamicExtractPaths(BMenu* menu) const
@@ -4346,7 +4273,6 @@ void MainWindow::AddDynamicExtractPaths(BMenu* menu) const
     if (menu->CountItems() > addedCount)
         menu->AddItem(new BSeparatorItem(), addedCount);
 }
-
 
 
 void MainWindow::AddFavouriteExtractPaths(BMenu* menu) const
@@ -4382,7 +4308,6 @@ void MainWindow::AddFavouriteExtractPaths(BMenu* menu) const
             menu->AddItem(new BSeparatorItem(), addedCount);
     }
 }
-
 
 
 BString MainWindow::StrippedArchiveName() const
@@ -4477,5 +4402,3 @@ BString MainWindow::StrippedArchiveName() const
 
     return archiveName;
 }
-
-

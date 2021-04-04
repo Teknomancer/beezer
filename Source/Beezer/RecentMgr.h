@@ -6,7 +6,6 @@
 #ifndef _RECENT_MGR_H
 #define _RECENT_MGR_H
 
-
 class BLocker;
 class BPopUpMenu;
 
@@ -54,7 +53,7 @@ class RecentMgr
         bool                m_showFullPath;
         int32               m_maxNumPaths;
         uint32              m_command;
-        RecentItemType       m_type;
+        RecentItemType      m_type;
 };
 
 #endif /* _RECENT_MGR_H */

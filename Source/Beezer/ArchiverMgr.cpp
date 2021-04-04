@@ -19,7 +19,6 @@
 #include "MsgConstants.h"
 #include "RuleMgr.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -29,9 +28,7 @@
 #define B_TRANSLATE(x) x
 #endif
 
-
 BLocker _ark_locker("_ark_mgr_lock", true);
-
 
 
 Archiver* ArchiverForMime(const char* mimeType)
@@ -81,7 +78,6 @@ Archiver* ArchiverForMime(const char* mimeType)
 }
 
 
-
 BList ArchiversInstalled(BList* extensionStrings)
 {
     // Operate in a critical section as we access global data like BDirectory of be_app
@@ -121,7 +117,6 @@ BList ArchiversInstalled(BList* extensionStrings)
 
     return installedArkList;
 }
-
 
 
 Archiver* ArchiverForType(const char* archiverType)
@@ -238,7 +233,6 @@ BPopUpMenu* BuildArchiveTypesMenu(BHandler* targetHandler, BList* arkExtensions)
 }
 
 
-
 Archiver* NewArchiver(const char* name, bool popupErrors, status_t* returnCode)
 {
     // Operate in a critical section as we access global data like BDirectory of be_app
@@ -280,5 +274,3 @@ Archiver* NewArchiver(const char* name, bool popupErrors, status_t* returnCode)
     *returnCode = result;
     return ark;
 }
-
-

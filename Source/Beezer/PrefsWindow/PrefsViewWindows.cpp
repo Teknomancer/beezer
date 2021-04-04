@@ -15,7 +15,6 @@
 #include "PrefsViewWindows.h"
 #include "UIConstants.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -32,7 +31,6 @@ PrefsViewWindows::PrefsViewWindows(BRect frame)
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Windows", 20, 20));
     Render();
 }
-
 
 
 void PrefsViewWindows::Render()
@@ -71,7 +69,6 @@ void PrefsViewWindows::Render()
 }
 
 
-
 void PrefsViewWindows::Save()
 {
     _prefs_windows.SetBool(kPfSearchWnd, IsChecked(m_searchChk));
@@ -84,7 +81,6 @@ void PrefsViewWindows::Save()
 }
 
 
-
 void PrefsViewWindows::Load()
 {
     m_searchChk->SetValue(_prefs_windows.FindBoolDef(kPfSearchWnd, false));
@@ -94,5 +90,3 @@ void PrefsViewWindows::Load()
     m_welcomeChk->SetValue(_prefs_windows.FindBoolDef(kPfWelcomeWnd, true));
     m_prefsChk->SetValue(_prefs_windows.FindBoolDef(kPfPrefsWnd, true));
 }
-
-

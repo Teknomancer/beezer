@@ -15,7 +15,6 @@ class BevelView;
 class ImageButton;
 class RecentMgr;
 
-
 #define M_CLOSE_STARTUP 'stcl'
 
 class StartupWindow : public BWindow
@@ -30,15 +29,15 @@ class StartupWindow : public BWindow
 
     protected:
         // Protected members
-        BStringView*    m_headingView;
-        ImageButton*    m_createBtn,
-                        *m_openBtn,
-                        *m_openRecentBtn,
-                        *m_toolsBtn,
-                        *m_prefsBtn;
-        RecentMgr*      m_recentMgr;
-        BPopUpMenu*     m_recentMenu,
-                        *m_toolsMenu;
+        BStringView*        m_headingView;
+        ImageButton*        m_createBtn,
+                            *m_openBtn,
+                            *m_openRecentBtn,
+                            *m_toolsBtn,
+                            *m_prefsBtn;
+        RecentMgr*          m_recentMgr;
+        BPopUpMenu*         m_recentMenu,
+                            *m_toolsMenu;
 };
 
 #endif /* _STARTUP_WINDOW_H */

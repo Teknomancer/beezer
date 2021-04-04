@@ -10,18 +10,15 @@
 #include <stdio.h>
 
 
-
 PipeMgr::PipeMgr()
 {
 }
-
 
 
 PipeMgr::~PipeMgr()
 {
     FlushArgs();
 }
-
 
 
 void PipeMgr::FlushArgs()
@@ -33,12 +30,10 @@ void PipeMgr::FlushArgs()
 }
 
 
-
 status_t PipeMgr::AddArg(const char* arg)
 {
     return (m_argList.AddItem(reinterpret_cast<void*>(strdup(arg))) == true ? B_OK : B_ERROR);
 }
-
 
 
 thread_id PipeMgr::Pipe(int* outdes, int* errdes) const
@@ -73,7 +68,6 @@ thread_id PipeMgr::Pipe(int* outdes, int* errdes) const
 }
 
 
-
 status_t PipeMgr::Pipe(int* outdes) const
 {
     int errdes[2];
@@ -82,7 +76,6 @@ status_t PipeMgr::Pipe(int* outdes) const
     close(errdes[1]);
     return tid;
 }
-
 
 
 void PipeMgr::Pipe() const
@@ -98,13 +91,11 @@ void PipeMgr::Pipe() const
 }
 
 
-
 PipeMgr& PipeMgr::operator << (const char* arg)
 {
     AddArg(arg);
     return *this;
 }
-
 
 
 PipeMgr& PipeMgr::operator << (BString arg)
@@ -114,12 +105,9 @@ PipeMgr& PipeMgr::operator << (BString arg)
 }
 
 
-
 void PipeMgr::PrintToStream() const
 {
     for (int32 i = 0L; i < m_argList.CountItems(); i++)
         printf("%s ", (char*)m_argList.ItemAtFast(i));
     printf("\n");
 }
-
-

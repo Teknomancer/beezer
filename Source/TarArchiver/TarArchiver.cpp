@@ -10,8 +10,6 @@
 #include <NodeInfo.h>
 #include <Messenger.h>
 
-
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -22,14 +20,12 @@
 #endif
 
 
-
 #ifndef STATIC_LIB_BUILD
 Archiver* load_archiver(const char* addonImagePath)
 {
     return new TarArchiver(addonImagePath);
 }
 #endif
-
 
 
 TarArchiver::TarArchiver(const char* addonImagePath)
@@ -39,7 +35,6 @@ TarArchiver::TarArchiver(const char* addonImagePath)
 }
 
 
-
 status_t TarArchiver::InitBinaryPath()
 {
     if (GetBinaryPath(m_tarPath, "tar") == true)
@@ -47,7 +42,6 @@ status_t TarArchiver::InitBinaryPath()
     else
         return BZR_BINARY_MISSING;
 }
-
 
 
 status_t TarArchiver::ReadOpen(FILE* fp)
@@ -94,7 +88,6 @@ status_t TarArchiver::ReadOpen(FILE* fp)
 }
 
 
-
 status_t TarArchiver::Open(entry_ref* ref, BMessage* fileList)
 {
     m_archiveRef = *ref;
@@ -133,7 +126,6 @@ status_t TarArchiver::Open(entry_ref* ref, BMessage* fileList)
 
     return exitCode;
 }
-
 
 
 status_t TarArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger* progress,
@@ -214,7 +206,6 @@ status_t TarArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
 }
 
 
-
 status_t TarArchiver::ReadExtract(FILE* fp, BMessenger* progress, volatile bool* cancel)
 {
     // Reads output while extracting files and updates progress window (thru messenger)
@@ -244,12 +235,10 @@ status_t TarArchiver::ReadExtract(FILE* fp, BMessenger* progress, volatile bool*
 }
 
 
-
 status_t TarArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool* cancel)
 {
     return BZR_NOT_SUPPORTED;
 }
-
 
 
 status_t TarArchiver::Add(bool createMode, const char* relativePath, BMessage* message, BMessage* addedPaths,
@@ -317,7 +306,6 @@ status_t TarArchiver::Add(bool createMode, const char* relativePath, BMessage* m
 }
 
 
-
 status_t TarArchiver::ReadAdd(FILE* fp, BMessage* addedPaths, BMessenger* progress, volatile bool* cancel)
 {
     // Read output while adding files to archive
@@ -350,7 +338,6 @@ status_t TarArchiver::ReadAdd(FILE* fp, BMessage* addedPaths, BMessenger* progre
 
     return exitCode;
 }
-
 
 
 status_t TarArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* progress,
@@ -420,7 +407,6 @@ status_t TarArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* pr
 }
 
 
-
 status_t TarArchiver::ReadDelete(FILE* fp, char*& outputStr, BMessenger* progress,
                                  volatile bool* cancel)
 {
@@ -430,7 +416,6 @@ status_t TarArchiver::ReadDelete(FILE* fp, char*& outputStr, BMessenger* progres
 
     return BZR_DONE;
 }
-
 
 
 status_t TarArchiver::Create(BPath* archivePath, const char* relPath, BMessage* fileList, BMessage* addedPaths,
@@ -452,7 +437,6 @@ status_t TarArchiver::Create(BPath* archivePath, const char* relPath, BMessage* 
 
     return result;
 }
-
 
 
 bool TarArchiver::IsTarArchive(const char *filePath) const
@@ -483,7 +467,6 @@ bool TarArchiver::IsTarArchive(const char *filePath) const
 }
 
 
-
 BList TarArchiver::HiddenColumns(BList* columns) const
 {
     // Indices are: 0-name 1-size 2-packed 3-ratio 4-path 5-date 6-method 7-crc
@@ -499,17 +482,13 @@ BList TarArchiver::HiddenColumns(BList* columns) const
 }
 
 
-
 bool TarArchiver::CanReplaceFiles() const
 {
     return false;
 }
 
 
-
 bool TarArchiver::CanPartiallyOpen() const
 {
     return false;
 }
-
-

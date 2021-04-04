@@ -8,13 +8,11 @@
 #include <Bitmap.h>
 
 
-
 BitmapMenuItem::BitmapMenuItem(BMenu* subMenu, BBitmap* bitmap)
     : BMenuItem(subMenu),
       m_bitmap(bitmap)
 {
 }
-
 
 
 void BitmapMenuItem::DrawContent()
@@ -24,7 +22,6 @@ void BitmapMenuItem::DrawContent()
     menu->DrawBitmap(m_bitmap, ContentLocation());
     menu->SetDrawingMode(B_OP_COPY);
 }
-
 
 
 void BitmapMenuItem::GetContentSize(float* width, float* height)

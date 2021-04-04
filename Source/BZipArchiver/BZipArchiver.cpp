@@ -11,8 +11,6 @@
 #include <Messenger.h>
 #include <MenuItem.h>
 
-
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -22,18 +20,15 @@
 #define B_TRANSLATE(x) x
 #endif
 
-
-#define S_FASTEST "(fastest)"
-#define S_DEFAULT "(default)"
-#define S_BEST "(best)"
-
+#define S_FASTEST       "(fastest)"
+#define S_DEFAULT       "(default)"
+#define S_BEST          "(best)"
 
 
 Archiver* load_archiver(const char* addonImagePath)
 {
     return new BZipArchiver(addonImagePath);
 }
-
 
 
 BZipArchiver::BZipArchiver(const char* addonImagePath)
@@ -49,7 +44,6 @@ BZipArchiver::BZipArchiver(const char* addonImagePath)
         return;
     }
 }
-
 
 
 status_t BZipArchiver::Open(entry_ref* ref, BMessage* fileList)
@@ -107,7 +101,6 @@ status_t BZipArchiver::Open(entry_ref* ref, BMessage* fileList)
 }
 
 
-
 status_t BZipArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger* progress,
                                volatile bool* cancel)
 {
@@ -143,7 +136,6 @@ status_t BZipArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenge
         return exitCode;
     }
 }
-
 
 
 status_t BZipArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool* cancel)
@@ -193,7 +185,6 @@ status_t BZipArchiver::Test(char*& outputStr, BMessenger* progress, volatile boo
 }
 
 
-
 status_t BZipArchiver::Add(bool createMode, const char* relativePath, BMessage* message, BMessage* addedPaths,
                            BMessenger* progress, volatile bool* cancel)
 {
@@ -211,7 +202,6 @@ status_t BZipArchiver::Add(bool createMode, const char* relativePath, BMessage* 
 }
 
 
-
 status_t BZipArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* progress,
                               volatile bool* cancel)
 {
@@ -227,7 +217,6 @@ status_t BZipArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* p
     else
         return BZR_NOT_SUPPORTED;
 }
-
 
 
 status_t BZipArchiver::Create(BPath* archivePath, const char* relPath, BMessage* fileList, BMessage* addedPaths,
@@ -256,12 +245,10 @@ status_t BZipArchiver::Create(BPath* archivePath, const char* relPath, BMessage*
 }
 
 
-
 bool BZipArchiver::NeedsTempDirectory() const
 {
     return true;
 }
-
 
 
 void BZipArchiver::BuildDefaultMenu()
@@ -297,7 +284,6 @@ void BZipArchiver::BuildDefaultMenu()
 }
 
 
-
 BString BZipArchiver::OutputFileName(const char* fullFileName) const
 {
     // Given a full filename (with extension) this function removes
@@ -324,7 +310,6 @@ BString BZipArchiver::OutputFileName(const char* fullFileName) const
 }
 
 
-
 BList BZipArchiver::HiddenColumns(BList* columns) const
 {
     if (m_tarArk == true)
@@ -344,7 +329,6 @@ BList BZipArchiver::HiddenColumns(BList* columns) const
         return availList;
     }
 }
-
 
 
 void BZipArchiver::CompressFromTemp()
@@ -367,7 +351,6 @@ void BZipArchiver::CompressFromTemp()
 }
 
 
-
 BString BZipArchiver::InitTarFilePath(char* leaf)
 {
     BString destPath = TempDirectoryPath();
@@ -375,7 +358,6 @@ BString BZipArchiver::InitTarFilePath(char* leaf)
     strcpy(m_tarFilePath, destPath.String());
     return destPath;
 }
-
 
 
 void BZipArchiver::SendProgressMessage(BMessenger* progress) const
@@ -386,7 +368,6 @@ void BZipArchiver::SendProgressMessage(BMessenger* progress) const
 }
 
 
-
 bool BZipArchiver::CanAddFiles() const
 {
     if (m_tarArk == false)
@@ -394,5 +375,3 @@ bool BZipArchiver::CanAddFiles() const
     else
         return TarArchiver::CanAddFiles();
 }
-
-

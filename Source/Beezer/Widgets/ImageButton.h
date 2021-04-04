@@ -56,7 +56,7 @@ class ImageButton : public BView
         virtual void        GetMargin(float* width, float* height);
 
     protected:
-                void        Init(const char* text);
+        void                Init(const char* text);
 
         // Protected hooks
         virtual void        DrawOutsideEdge(BRect rect);

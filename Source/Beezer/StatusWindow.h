@@ -20,7 +20,7 @@ class StatusWindow : public BWindow
         virtual void        MessageReceived(BMessage* message);
 
     private:
-        BarberPole*        m_barberPole;
+        BarberPole*         m_barberPole;
         volatile bool*      m_cancel;
 };
 

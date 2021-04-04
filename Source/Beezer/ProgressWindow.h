@@ -31,7 +31,7 @@ class ProgressWindow : public BWindow
         int32               m_fileCount,
                             m_progressCount;
         char                m_updateText[B_PATH_NAME_LENGTH + 1];
-        volatile bool        m_cancel;
+        volatile bool       m_cancel;
         BMessenger*         m_messenger;
 };
 

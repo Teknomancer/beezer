@@ -13,7 +13,6 @@
 #include "PrefsView.h"
 #include "UIConstants.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -45,7 +44,6 @@ PrefsView::PrefsView(BRect frame, const char* title, const char* description)
 }
 
 
-
 PrefsView::~PrefsView()
 {
     if (m_descriptionStr)
@@ -58,19 +56,16 @@ PrefsView::~PrefsView()
 }
 
 
-
 const char* PrefsView::Description() const
 {
     return m_descriptionStr;
 }
 
 
-
 const char* PrefsView::Title() const
 {
     return m_titleStr;
 }
-
 
 
 bool PrefsView::IsChecked(BCheckBox* chkBox) const
@@ -81,7 +76,6 @@ bool PrefsView::IsChecked(BCheckBox* chkBox) const
     else
         return false;
 }
-
 
 
 void PrefsView::AddRevertButton()
@@ -95,7 +89,6 @@ void PrefsView::AddRevertButton()
 }
 
 
-
 void PrefsView::DeleteBitmap()
 {
     if (m_bitmap != NULL)
@@ -106,13 +99,11 @@ void PrefsView::DeleteBitmap()
 }
 
 
-
 void PrefsView::SetBitmap(BBitmap* bmp)
 {
     DeleteBitmap();
     m_bitmap = bmp;
 }
-
 
 
 BBitmap* PrefsView::Bitmap() const
@@ -121,12 +112,10 @@ BBitmap* PrefsView::Bitmap() const
 }
 
 
-
 void PrefsView::Render()
 {
     // Derived class will override this, deliberately not made abstract
 }
-
 
 
 void PrefsView::Save()
@@ -135,10 +124,7 @@ void PrefsView::Save()
 }
 
 
-
 void PrefsView::Load()
 {
     // Derived class will override this, deliberately not made abstract
 }
-
-

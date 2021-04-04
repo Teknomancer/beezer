@@ -12,7 +12,6 @@
 #include "InputAlert.h"
 
 
-
 InputAlert::InputAlert(const char* title, const char* text, const char* initialText, bool hideTyping,
                        const char* button1, const char* button2, const char* button3, button_width width,
                        alert_type type)
@@ -22,7 +21,6 @@ InputAlert::InputAlert(const char* title, const char* text, const char* initialT
 }
 
 
-
 InputAlert::InputAlert(const char* title, const char* text, const char* initialText, bool hideTyping,
                        const char* button1, const char* button2, const char* button3, button_width width,
                        button_spacing spacing, alert_type type)
@@ -30,7 +28,6 @@ InputAlert::InputAlert(const char* title, const char* text, const char* initialT
 {
     InitInputAlert(title, text, initialText, hideTyping);
 }
-
 
 
 void InputAlert::InitInputAlert(const char* title, const char* label, const char* initialText, bool hideTyping)
@@ -98,7 +95,6 @@ void InputAlert::InitInputAlert(const char* title, const char* label, const char
 }
 
 
-
 BMessage InputAlert::GetInput(BWindow* window)
 {
     // Show and thus start the message loop.
@@ -122,7 +118,6 @@ BMessage InputAlert::GetInput(BWindow* window)
     msg.AddString(kInputText, m_inputText);
     return msg;
 }
-
 
 
 void InputAlert::MessageReceived(BMessage* message)
@@ -158,11 +153,8 @@ void InputAlert::MessageReceived(BMessage* message)
 }
 
 
-
 BTextControl* InputAlert::TextControl() const
 {
     // Return pointer to our BTextControl incase caller needs to fiddle with it
     return m_inputBox;
 }
-
-

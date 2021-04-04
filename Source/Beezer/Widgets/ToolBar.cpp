@@ -14,12 +14,11 @@
 #include "ToolBar.h"
 #include "UIConstants.h"
 
-
 // Initialize static non-integral vars here to make c++11 happy
 // while avoiding the use of constexpr which would break gcc2
-const float  ToolBar::mk_vertSpacing = 3;
-const float  ToolBar::mk_horizSpacing = 2;
-const float  ToolBar::mk_Border = 2;
+const float ToolBar::mk_vertSpacing = 3;
+const float ToolBar::mk_horizSpacing = 2;
+const float ToolBar::mk_Border = 2;
 
 
 ToolBar::ToolBar(BRect frame, const char* name, rgb_color backColor)
@@ -38,11 +37,9 @@ ToolBar::ToolBar(BRect frame, const char* name, rgb_color backColor)
 }
 
 
-
 ToolBar::~ToolBar()
 {
 }
-
 
 
 void ToolBar::AttachedToWindow()
@@ -54,7 +51,6 @@ void ToolBar::AttachedToWindow()
     m_darkEdge2 = tint_color(ViewColor(), B_DARKEN_2_TINT);
     m_darkEdge3 = tint_color(ViewColor(), B_DARKEN_3_TINT);
 }
-
 
 
 void ToolBar::AddItem(ImageButton* button)
@@ -70,7 +66,6 @@ void ToolBar::AddItem(ImageButton* button)
 }
 
 
-
 void ToolBar::Draw(BRect updateRect)
 {
     // Erase the old border (efficiently)
@@ -83,7 +78,6 @@ void ToolBar::Draw(BRect updateRect)
 
     _inherited::Draw(updateRect);
 }
-
 
 
 inline void ToolBar::RenderEdges()
@@ -113,7 +107,6 @@ inline void ToolBar::RenderEdges()
 
     EndLineArray();
 }
-
 
 
 float ToolBar::AddSeparatorItem(bool finalSeparator)
@@ -169,13 +162,11 @@ float ToolBar::AddSeparatorItem(bool finalSeparator)
 }
 
 
-
 BRect ToolBar::InnerFrame()
 {
     BRect bounds(Bounds());
     return BRect(bounds.left, bounds.top, bounds.left + m_ptToDraw.x, bounds.bottom);
 }
-
 
 
 void ToolBar::MouseDown(BPoint point)
@@ -191,7 +182,6 @@ void ToolBar::MouseDown(BPoint point)
 
     _inherited::MouseDown(point);
 }
-
 
 
 void ToolBar::Toggle()
@@ -232,12 +222,10 @@ void ToolBar::Toggle()
 }
 
 
-
 bool ToolBar::IsShown() const
 {
     return !m_isHidden;
 }
-
 
 
 void ToolBar::SetEnabled(bool enable)
@@ -252,12 +240,10 @@ void ToolBar::SetEnabled(bool enable)
 }
 
 
-
 bool ToolBar::IsEnabled() const
 {
     return m_isEnabled;
 }
-
 
 
 float ToolBar::Height() const
@@ -267,7 +253,6 @@ float ToolBar::Height() const
     else
         return Frame().Height();
 }
-
 
 
 void ToolBar::Redraw()
@@ -290,5 +275,3 @@ void ToolBar::Redraw()
 
     Invalidate();
 }
-
-

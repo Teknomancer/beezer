@@ -11,8 +11,6 @@
 
 #include <cassert>
 
-
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -22,17 +20,15 @@
 #define B_TRANSLATE(x) x
 #endif
 
-#define S_FASTEST "(fastest)"
-#define S_DEFAULT "(default)"
-#define S_BEST "(best)"
-
+#define S_FASTEST       "(fastest)"
+#define S_DEFAULT       "(default)"
+#define S_BEST          "(best)"
 
 
 Archiver* load_archiver(const char* addonImagePath)
 {
     return new ZstdArchiver(addonImagePath);
 }
-
 
 
 ZstdArchiver::ZstdArchiver(const char* addonImagePath)
@@ -48,7 +44,6 @@ ZstdArchiver::ZstdArchiver(const char* addonImagePath)
         return;
     }
 }
-
 
 
 status_t ZstdArchiver::ReadOpen(FILE* fp)
@@ -88,7 +83,6 @@ status_t ZstdArchiver::ReadOpen(FILE* fp)
 
     return BZR_DONE;
 }
-
 
 
 status_t ZstdArchiver::Open(entry_ref* ref, BMessage* fileList)
@@ -160,7 +154,6 @@ status_t ZstdArchiver::Open(entry_ref* ref, BMessage* fileList)
 }
 
 
-
 status_t ZstdArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger* progress,
                                volatile bool* cancel)
 {
@@ -195,7 +188,6 @@ status_t ZstdArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenge
         return BZR_DONE;
     }
 }
-
 
 
 status_t ZstdArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool* cancel)
@@ -245,7 +237,6 @@ status_t ZstdArchiver::Test(char*& outputStr, BMessenger* progress, volatile boo
 }
 
 
-
 status_t ZstdArchiver::Add(bool createMode, const char* relativePath, BMessage* message, BMessage* addedPaths,
                            BMessenger* progress, volatile bool* cancel)
 {
@@ -263,7 +254,6 @@ status_t ZstdArchiver::Add(bool createMode, const char* relativePath, BMessage* 
 }
 
 
-
 status_t ZstdArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* progress,
                               volatile bool* cancel)
 {
@@ -279,7 +269,6 @@ status_t ZstdArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* p
     else
         return BZR_NOT_SUPPORTED;
 }
-
 
 
 status_t ZstdArchiver::Create(BPath* archivePath, const char* relPath, BMessage* fileList, BMessage* addedPaths,
@@ -308,12 +297,10 @@ status_t ZstdArchiver::Create(BPath* archivePath, const char* relPath, BMessage*
 }
 
 
-
 bool ZstdArchiver::NeedsTempDirectory() const
 {
     return true;
 }
-
 
 
 void ZstdArchiver::BuildDefaultMenu()
@@ -352,7 +339,6 @@ void ZstdArchiver::BuildDefaultMenu()
 }
 
 
-
 BString ZstdArchiver::OutputFileName(const char* fullFileName) const
 {
     // Given a full filename (with extension) this function removes
@@ -373,7 +359,6 @@ BString ZstdArchiver::OutputFileName(const char* fullFileName) const
 }
 
 
-
 BList ZstdArchiver::HiddenColumns(BList* columns) const
 {
     if (m_tarArk == true)
@@ -384,7 +369,6 @@ BList ZstdArchiver::HiddenColumns(BList* columns) const
         return noHiddenColumns;
     }
 }
-
 
 
 void ZstdArchiver::CompressFromTemp()
@@ -410,7 +394,6 @@ void ZstdArchiver::CompressFromTemp()
 }
 
 
-
 BString ZstdArchiver::InitTarFilePath(char* leaf)
 {
     BString destPath = TempDirectoryPath();
@@ -420,14 +403,12 @@ BString ZstdArchiver::InitTarFilePath(char* leaf)
 }
 
 
-
 void ZstdArchiver::SendProgressMessage(BMessenger* progress) const
 {
     BMessage updateMessage(BZR_UPDATE_PROGRESS), reply('DUMB');
     updateMessage.AddFloat("delta", 1.0f);
     progress->SendMessage(&updateMessage, &reply);
 }
-
 
 
 bool ZstdArchiver::CanAddFiles() const

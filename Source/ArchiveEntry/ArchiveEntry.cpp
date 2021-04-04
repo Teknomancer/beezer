@@ -8,16 +8,12 @@
 
 #include <DateTimeFormat.h>
 
-#include <stdlib.h> // needed for gcc2
 #include <stdio.h>
-
-
 
 
 ArchiveEntry::ArchiveEntry()
 {
 }
-
 
 
 ArchiveEntry::ArchiveEntry(bool dir, const char* pathStr, const char* sizeStr, const char* packedStr,
@@ -61,7 +57,6 @@ ArchiveEntry::ArchiveEntry(bool dir, const char* pathStr, const char* sizeStr, c
 }
 
 
-
 ArchiveEntry::~ArchiveEntry()
 {
     if (m_nameStr) free(m_nameStr);
@@ -76,8 +71,8 @@ ArchiveEntry::~ArchiveEntry()
 }
 
 
-
-void ArchiveEntry::RecalculateRatio() {
+void ArchiveEntry::RecalculateRatio()
+{
     float ratio = 100 * (atof(m_sizeStr) - atof(m_packedStr));
     if (ratio > 0)    // to prevent 0 bytes 0 packed files (like those in BeBookmarks.zip)
         ratio /= atof(m_sizeStr);

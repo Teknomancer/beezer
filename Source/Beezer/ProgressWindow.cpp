@@ -24,7 +24,6 @@
 #include "StaticBitmapView.h"
 #include "UIConstants.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -152,12 +151,10 @@ ProgressWindow::ProgressWindow(BWindow* callerWindow, BMessage* actionMessage,
 }
 
 
-
 ProgressWindow::~ProgressWindow()
 {
     delete m_messenger;
 }
-
 
 
 void ProgressWindow::MessageReceived(BMessage* message)
@@ -217,5 +214,3 @@ void ProgressWindow::MessageReceived(BMessage* message)
         }
     }
 }
-
-

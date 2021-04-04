@@ -31,19 +31,16 @@ Preferences _prefs_colors,
             _prefs_recent_splitdirs;
 
 
-
 Preferences::Preferences(const char* dir, const char* file)
 {
     Init(dir, file);
 }
 
 
-
 Preferences::Preferences()
     : m_prefsPathStr(NULL)
 {
 }
-
 
 
 Preferences::~Preferences()
@@ -54,7 +51,6 @@ Preferences::~Preferences()
 }
 
 
-
 void Preferences::FreePathString()
 {
     if (m_prefsPathStr)
@@ -62,7 +58,6 @@ void Preferences::FreePathString()
 
     m_prefsPathStr = NULL;
 }
-
 
 
 void Preferences::Init(const char* dir, const char* file)
@@ -75,7 +70,6 @@ void Preferences::Init(const char* dir, const char* file)
 }
 
 
-
 void Preferences::SetLocation(const char* path)
 {
     FreePathString();
@@ -83,12 +77,10 @@ void Preferences::SetLocation(const char* path)
 }
 
 
-
 const char* Preferences::Location() const
 {
     return m_prefsPathStr;
 }
-
 
 
 void Preferences::WritePrefs()
@@ -112,7 +104,6 @@ void Preferences::WritePrefs()
 }
 
 
-
 void Preferences::ReadPrefs()
 {
     // Load "prefs" from the preferences file
@@ -124,7 +115,6 @@ void Preferences::ReadPrefs()
 }
 
 
-
 status_t Preferences::SetBool(const char* name, bool b)
 {
     if (HasBool(name) == true)
@@ -132,7 +122,6 @@ status_t Preferences::SetBool(const char* name, bool b)
 
     return AddBool(name, b);
 }
-
 
 
 status_t Preferences::SetInt8(const char* name, int8 i)
@@ -144,7 +133,6 @@ status_t Preferences::SetInt8(const char* name, int8 i)
 }
 
 
-
 status_t Preferences::SetInt16(const char* name, int16 i)
 {
     if (HasInt16(name) == true)
@@ -152,7 +140,6 @@ status_t Preferences::SetInt16(const char* name, int16 i)
 
     return AddInt16(name, i);
 }
-
 
 
 status_t Preferences::SetInt32(const char* name, int32 i)
@@ -164,7 +151,6 @@ status_t Preferences::SetInt32(const char* name, int32 i)
 }
 
 
-
 status_t Preferences::SetInt64(const char* name, int64 i)
 {
     if (HasInt64(name) == true)
@@ -172,7 +158,6 @@ status_t Preferences::SetInt64(const char* name, int64 i)
 
     return AddInt64(name, i);
 }
-
 
 
 status_t Preferences::SetFloat(const char* name, float f)
@@ -184,7 +169,6 @@ status_t Preferences::SetFloat(const char* name, float f)
 }
 
 
-
 status_t Preferences::SetDouble(const char* name, double f)
 {
     if (HasDouble(name) == true)
@@ -192,7 +176,6 @@ status_t Preferences::SetDouble(const char* name, double f)
 
     return AddDouble(name, f);
 }
-
 
 
 status_t Preferences::SetString(const char* name, const char* s)
@@ -204,7 +187,6 @@ status_t Preferences::SetString(const char* name, const char* s)
 }
 
 
-
 status_t Preferences::SetPoint(const char* name, BPoint p)
 {
     if (HasPoint(name) == true)
@@ -212,7 +194,6 @@ status_t Preferences::SetPoint(const char* name, BPoint p)
 
     return AddPoint(name, p);
 }
-
 
 
 status_t Preferences::SetRect(const char* name, BRect r)
@@ -224,7 +205,6 @@ status_t Preferences::SetRect(const char* name, BRect r)
 }
 
 
-
 status_t Preferences::SetMessage(const char* name, const BMessage* message)
 {
     if (HasMessage(name) == true)
@@ -232,7 +212,6 @@ status_t Preferences::SetMessage(const char* name, const BMessage* message)
 
     return AddMessage(name, message);
 }
-
 
 
 status_t Preferences::SetColor(const char* name, rgb_color& col)
@@ -243,7 +222,6 @@ status_t Preferences::SetColor(const char* name, rgb_color& col)
 }
 
 
-
 status_t Preferences::SetFlat(const char* name, const BFlattenable* obj)
 {
     if (HasFlat(name, obj) == true)
@@ -251,7 +229,6 @@ status_t Preferences::SetFlat(const char* name, const BFlattenable* obj)
 
     return AddFlat(name, (BFlattenable*) obj);
 }
-
 
 
 bool Preferences::FindBoolDef(const char* name, bool defaultValue)
@@ -265,7 +242,6 @@ bool Preferences::FindBoolDef(const char* name, bool defaultValue)
 }
 
 
-
 int8 Preferences::FindInt8Def(const char* name, int8 defaultValue)
 {
     int8 v;
@@ -277,7 +253,6 @@ int8 Preferences::FindInt8Def(const char* name, int8 defaultValue)
 }
 
 
-
 int16 Preferences::FindInt16Def(const char* name, int16 defaultValue)
 {
     int16 v;
@@ -287,7 +262,6 @@ int16 Preferences::FindInt16Def(const char* name, int16 defaultValue)
     else
         return defaultValue;
 }
-
 
 
 rgb_color Preferences::FindColorDef(const char* name, rgb_color defaultValue)
@@ -307,5 +281,3 @@ rgb_color Preferences::FindColorDef(const char* name, rgb_color defaultValue)
 
     return retCol;
 }
-
-

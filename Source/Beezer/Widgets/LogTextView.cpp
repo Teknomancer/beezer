@@ -16,13 +16,11 @@
 #include "MsgConstants.h"
 
 
-
 LogTextView::LogTextView(BRect frame, const char* name, uint32 resizeMask, uint32 flags)
     : BTextView(frame, name, kInternalTextRect, resizeMask, flags)
 {
     InitSelf();
 }
-
 
 
 LogTextView::LogTextView(BRect frame, const char* name, const BFont* initialFont,
@@ -31,7 +29,6 @@ LogTextView::LogTextView(BRect frame, const char* name, const BFont* initialFont
 {
     InitSelf();
 }
-
 
 
 void LogTextView::InitSelf()
@@ -45,12 +42,10 @@ void LogTextView::InitSelf()
 }
 
 
-
 void LogTextView::SetContextMenu(BPopUpMenu* contextMenu)
 {
     m_contextMenu = contextMenu;
 }
-
 
 
 void LogTextView::AddText(const char* text, bool newLine, bool capitalizeFirstLetter, bool trimLeadingSpaces)
@@ -84,7 +79,6 @@ void LogTextView::AddText(const char* text, bool newLine, bool capitalizeFirstLe
 }
 
 
-
 void LogTextView::MouseDown(BPoint point)
 {
     BMessage* msg = Window()->CurrentMessage();
@@ -107,7 +101,6 @@ void LogTextView::MouseDown(BPoint point)
     else           // Bug Fix -- else added, otherwise selection will take place after RIGHT-click
         BTextView::MouseDown(point);
 }
-
 
 
 void LogTextView::Copy()
@@ -147,11 +140,8 @@ void LogTextView::Copy()
 }
 
 
-
 void LogTextView::MakeFocus(bool focused)
 {
     Window()->PostMessage(M_GOT_FOCUS);
     return BTextView::MakeFocus(focused);
 }
-
-

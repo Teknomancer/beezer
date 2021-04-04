@@ -11,8 +11,6 @@
 #include <Messenger.h>
 #include <MenuItem.h>
 
-
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -22,18 +20,15 @@
 #define B_TRANSLATE(x) x
 #endif
 
-
-#define S_FASTEST "(fastest)"
-#define S_DEFAULT "(default)"
-#define S_BEST "(best)"
-
+#define S_FASTEST       "(fastest)"
+#define S_DEFAULT       "(default)"
+#define S_BEST          "(best)"
 
 
 Archiver* load_archiver(const char* addonImagePath)
 {
     return new GZipArchiver(addonImagePath);
 }
-
 
 
 GZipArchiver::GZipArchiver(const char* addonImagePath)
@@ -49,7 +44,6 @@ GZipArchiver::GZipArchiver(const char* addonImagePath)
         return;
     }
 }
-
 
 
 status_t GZipArchiver::ReadOpen(FILE* fp)
@@ -89,7 +83,6 @@ status_t GZipArchiver::ReadOpen(FILE* fp)
 
     return BZR_DONE;
 }
-
 
 
 status_t GZipArchiver::Open(entry_ref* ref, BMessage* fileList)
@@ -161,7 +154,6 @@ status_t GZipArchiver::Open(entry_ref* ref, BMessage* fileList)
 }
 
 
-
 status_t GZipArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger* progress,
                                volatile bool* cancel)
 {
@@ -197,7 +189,6 @@ status_t GZipArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenge
         return exitCode;
     }
 }
-
 
 
 status_t GZipArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool* cancel)
@@ -247,7 +238,6 @@ status_t GZipArchiver::Test(char*& outputStr, BMessenger* progress, volatile boo
 }
 
 
-
 status_t GZipArchiver::Add(bool createMode, const char* relativePath, BMessage* message, BMessage* addedPaths,
                            BMessenger* progress, volatile bool* cancel)
 {
@@ -265,7 +255,6 @@ status_t GZipArchiver::Add(bool createMode, const char* relativePath, BMessage* 
 }
 
 
-
 status_t GZipArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* progress,
                               volatile bool* cancel)
 {
@@ -281,7 +270,6 @@ status_t GZipArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* p
     else
         return BZR_NOT_SUPPORTED;
 }
-
 
 
 status_t GZipArchiver::Create(BPath* archivePath, const char* relPath, BMessage* fileList, BMessage* addedPaths,
@@ -310,12 +298,10 @@ status_t GZipArchiver::Create(BPath* archivePath, const char* relPath, BMessage*
 }
 
 
-
 bool GZipArchiver::NeedsTempDirectory() const
 {
     return true;
 }
-
 
 
 void GZipArchiver::BuildDefaultMenu()
@@ -351,7 +337,6 @@ void GZipArchiver::BuildDefaultMenu()
 }
 
 
-
 BString GZipArchiver::OutputFileName(const char* fullFileName) const
 {
     // Given a full filename (with extension) this function removes
@@ -378,7 +363,6 @@ BString GZipArchiver::OutputFileName(const char* fullFileName) const
 }
 
 
-
 BList GZipArchiver::HiddenColumns(BList* columns) const
 {
     if (m_tarArk == true)
@@ -389,7 +373,6 @@ BList GZipArchiver::HiddenColumns(BList* columns) const
         return noHiddenColumns;
     }
 }
-
 
 
 void GZipArchiver::CompressFromTemp()
@@ -412,7 +395,6 @@ void GZipArchiver::CompressFromTemp()
 }
 
 
-
 BString GZipArchiver::InitTarFilePath(char* leaf)
 {
     BString destPath = TempDirectoryPath();
@@ -422,14 +404,12 @@ BString GZipArchiver::InitTarFilePath(char* leaf)
 }
 
 
-
 void GZipArchiver::SendProgressMessage(BMessenger* progress) const
 {
     BMessage updateMessage(BZR_UPDATE_PROGRESS), reply('DUMB');
     updateMessage.AddFloat("delta", 1.0f);
     progress->SendMessage(&updateMessage, &reply);
 }
-
 
 
 bool GZipArchiver::CanAddFiles() const

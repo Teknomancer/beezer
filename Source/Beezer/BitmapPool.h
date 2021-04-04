@@ -48,7 +48,6 @@ class BitmapPool
                             *m_largeAppIcon;
 
     private:
-
         static int32        m_runCount;
 };
 

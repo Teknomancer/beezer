@@ -8,7 +8,6 @@
 
 #include <Window.h>
 
-
 class BFont;
 
 class LogWindow : public BWindow

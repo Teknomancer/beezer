@@ -31,7 +31,6 @@
 #include "StaticBitmapView.h"
 #include "UIConstants.h"
 
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 

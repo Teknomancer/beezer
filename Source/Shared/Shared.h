@@ -5,7 +5,8 @@
 #ifndef _SHARED_H
 #define _SHARED_H
 
-// IMPORTANT NOTE:: Everytime you add a new constant to this file,
+// NOTE:
+// Everytime you add a new constant to this file,
 // make sure it is NOT already defined by doing a text search. It
 // would be extremely difficult to trace bugs arising from duplicate
 // constants (as compilers can't pick them up)
