@@ -11,7 +11,7 @@
 #include <Messenger.h>
 #include <MenuItem.h>
 
-
+#include <stdlib.h> // needed for gcc2
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
