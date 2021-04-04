@@ -95,8 +95,8 @@ status_t ZstdArchiver::Open(entry_ref* ref, BMessage* fileList)
     m_pipeMgr << "/bin/sh" << "-c" << cmd.String();
     m_pipeMgr.Pipe();
 
-	if (TarArchiver::IsTarArchive(destPath.String()))
-	{
+    if (TarArchiver::IsTarArchive(destPath.String()))
+    {
         m_tarArk = true;
         BEntry destEntry(destPath.String(), false);
         entry_ref destRef;
