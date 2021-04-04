@@ -52,9 +52,12 @@ CLVColumnLabelView::CLVColumnLabelView(BRect Bounds, ColumnListView* parent, con
       fDragGroups(10)
 {
     SetFont(Font);
-    SetViewColor(BeBackgroundGrey);
-    SetLowColor(BeBackgroundGrey);
-    SetHighColor(Black);
+    // Modified by cpr to avoid hardcoded colors
+    //SetViewColor(BeBackgroundGrey);
+    //SetLowColor(BeBackgroundGrey);
+    //SetHighColor(Black);
+    AdoptSystemColors();
+
     fParent = parent;
     fDisplayList = &fParent->fColumnDisplayList;
     fColumnClicked = NULL;

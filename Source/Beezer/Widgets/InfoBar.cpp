@@ -62,7 +62,7 @@ InfoBar::~InfoBar()
 void InfoBar::AttachedToWindow()
 {
     SetViewColor(m_backColor);
-    m_lightEdge = tint_color(ViewColor(), B_LIGHTEN_MAX_TINT);
+    m_lightEdge = tint_color(ViewColor(), B_LIGHTEN_2_TINT);
     m_darkEdge1 = tint_color(ViewColor(), B_DARKEN_1_TINT);
     m_darkEdge1.red -= 10; m_darkEdge1.green -= 10; m_darkEdge1.blue -= 10;
     m_darkEdge2 = tint_color(ViewColor(), B_DARKEN_2_TINT);
