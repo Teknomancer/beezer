@@ -56,7 +56,6 @@ void PrefsViewInterface::Render()
             m_margin + 2 * m_vGap, 0, 0), NULL, B_TRANSLATE("Configure colors:"));
     colorStrView->SetFont(&m_sectionFont);
     colorStrView->ResizeToPreferred();
-    colorStrView->SetLowColor(ViewColor());
 
     BevelView* outerView =     new BevelView(BRect(3 * m_margin, colorStrView->Frame().bottom + m_margin,
             3 * m_margin + 30, colorStrView->Frame().bottom + m_margin + 30),
@@ -67,7 +66,6 @@ void PrefsViewInterface::Render()
                                   outerView->Frame().Height() - boundary), "PrefsViewInterface:colorWell",
                             B_FOLLOW_LEFT, B_WILL_DRAW);
     outerView->AddChild(m_colorWell);
-    m_colorWell->SetViewColor(0, 0, 0, 255);
 
     m_colorPopUp = new BPopUpMenu("");
     m_colorField = new BMenuField(BRect(outerView->Frame().right + 3 * m_margin,
@@ -87,7 +85,6 @@ void PrefsViewInterface::Render()
             2 * m_margin + 2 * m_vGap, 0, 0), NULL, B_TRANSLATE("Default interface settings:"));
     defStrView->SetFont(&m_sectionFont);
     defStrView->ResizeToPreferred();
-    defStrView->SetLowColor(ViewColor());
 
     m_toolbarChk = new BCheckBox(BRect(3 * m_margin, defStrView->Frame().bottom + m_vGap, 0, 0),
                                  "PrefsViewInterface:toolbarChk", B_TRANSLATE("Show toolbar"), NULL);
