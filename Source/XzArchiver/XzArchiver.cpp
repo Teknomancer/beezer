@@ -54,7 +54,7 @@ status_t XzArchiver::ReadOpen(FILE* fp)
          strmsStr[16], blocksStr[16], packedStr[16], packedUnitStr[16], sizeStr[16], sizeUnitStr[16], ratioStr[16],
          checkStr[16], pathStr[B_PATH_NAME_LENGTH + 1];
 
-    // zstd does not report the file time of compressed files so take the last modified time of the archive instead.
+    // xz does not report the file time of compressed files so take the last modified time of the archive instead.
     time_t const modTime = ArchiveModificationTime();
 
     // Skip first header line
