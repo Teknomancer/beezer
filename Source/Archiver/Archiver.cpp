@@ -18,6 +18,8 @@
 #include <Resources.h>
 #include <TypeConstants.h>
 
+#include <stdlib.h> // needed for gcc2
+
 
 Archiver::Archiver()
     :
