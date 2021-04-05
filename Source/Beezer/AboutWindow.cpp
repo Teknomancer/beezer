@@ -23,6 +23,7 @@
 #define B_TRANSLATION_CONTEXT "AboutWindow"
 #else
 #define B_TRANSLATE(x) x
+#define B_TRANSLATE_COMMENT(x, y) x
 #define B_TRANSLATE_CONTEXT(x, y) x
 #endif
 
