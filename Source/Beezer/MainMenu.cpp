@@ -26,6 +26,7 @@
 #define B_TRANSLATION_CONTEXT "MainMenu"
 #else
 #define B_TRANSLATE(x) x
+#define B_TRANSLATE_CONTEXT(x, y) x
 #define B_TRANSLATE_SYSTEM_NAME(x) x
 #endif
 
@@ -33,7 +34,7 @@
 MainMenu::MainMenu(BRect frame)
     : BMenuBar(frame, "MainMenu", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_ITEMS_IN_ROW, true)
 {
-    BString bufStr(B_TRANSLATE("About"));
+    BString bufStr(B_TRANSLATE_COMMENT("About", "for menu item: About Beezer"));
     bufStr << " " << B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE) << B_UTF8_ELLIPSIS;
 
     BMenu* appMenu = new BMenu(B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
@@ -59,7 +60,7 @@ MainMenu::MainMenu(BRect frame)
             .End()
             .AddItem(B_TRANSLATE("Close"), M_FILE_CLOSE, 'W')
             .AddSeparator()
-            .AddItem(B_TRANSLATE("Delete"), M_FILE_DELETE)
+            .AddItem(B_TRANSLATE_CONTEXT("Delete", K_I18N_COMMON), M_FILE_DELETE)
             .AddItem(B_TRANSLATE("Archive information"), M_FILE_ARCHIVE_INFO, 'I')
             .AddSeparator()
             .AddItem(B_TRANSLATE("Password…"), M_FILE_PASSWORD)
@@ -80,7 +81,7 @@ MainMenu::MainMenu(BRect frame)
             .AddItem(B_TRANSLATE("Collapse all"), M_EDIT_COLLAPSE_ALL)
             .AddItem(B_TRANSLATE("Collapse selected"), M_EDIT_COLLAPSE_SELECTED)
         .End()
-        .AddMenu(B_TRANSLATE("View"))
+        .AddMenu(B_TRANSLATE_CONTEXT("View", K_I18N_COMMON))
             .GetMenu(m_viewMenu)
             .AddItem(B_TRANSLATE("Toolbar"), M_TOGGLE_TOOLBAR)
             .GetItem(viewToolbarItem)
@@ -90,14 +91,14 @@ MainMenu::MainMenu(BRect frame)
             .GetItem(viewActionLogItem)
             .AddMenu(B_TRANSLATE("Columns"))
                 .GetMenu(m_columnsSubMenu)
-                .AddItem(B_TRANSLATE("Name"), M_TOGGLE_COLUMN_NAME).SetEnabled(false)
-                .AddItem(B_TRANSLATE("Size"), M_TOGGLE_COLUMN_SIZE)
-                .AddItem(B_TRANSLATE("Packed"), M_TOGGLE_COLUMN_PACKED)
-                .AddItem(B_TRANSLATE("Ratio"), M_TOGGLE_COLUMN_RATIO)
-                .AddItem(B_TRANSLATE("Path"), M_TOGGLE_COLUMN_PATH)
-                .AddItem(B_TRANSLATE("Date"), M_TOGGLE_COLUMN_DATE)
-                .AddItem(B_TRANSLATE("Method"), M_TOGGLE_COLUMN_METHOD)
-                .AddItem(B_TRANSLATE("CRC"), M_TOGGLE_COLUMN_CRC)
+                .AddItem(B_TRANSLATE_CONTEXT("Name", K_I18N_COMMON), M_TOGGLE_COLUMN_NAME).SetEnabled(false)
+                .AddItem(B_TRANSLATE_CONTEXT("Size", K_I18N_COMMON), M_TOGGLE_COLUMN_SIZE)
+                .AddItem(B_TRANSLATE_CONTEXT("Packed", K_I18N_COMMON), M_TOGGLE_COLUMN_PACKED)
+                .AddItem(B_TRANSLATE_CONTEXT("Ratio", K_I18N_COMMON), M_TOGGLE_COLUMN_RATIO)
+                .AddItem(B_TRANSLATE_CONTEXT("Path", K_I18N_COMMON), M_TOGGLE_COLUMN_PATH)
+                .AddItem(B_TRANSLATE_CONTEXT("Date", K_I18N_COMMON), M_TOGGLE_COLUMN_DATE)
+                .AddItem(B_TRANSLATE_CONTEXT("Method", K_I18N_COMMON), M_TOGGLE_COLUMN_METHOD)
+                .AddItem(B_TRANSLATE_CONTEXT("CRC", K_I18N_COMMON), M_TOGGLE_COLUMN_CRC)
             .End()
             .AddMenu(B_TRANSLATE("While opening"))
                 .GetMenu(m_foldingMenu)
@@ -131,10 +132,10 @@ MainMenu::MainMenu(BRect frame)
         .AddMenu(_bzr()->BuildToolsMenu())
             .GetMenu(m_toolsMenu)
         .End()
-        .AddMenu(B_TRANSLATE("Windows"))
+        .AddMenu(B_TRANSLATE_CONTEXT("Windows", K_I18N_COMMON))
             .GetMenu(m_windowsMenu)
         .End()
-        .AddMenu(B_TRANSLATE("Help"))
+        .AddMenu(B_TRANSLATE_CONTEXT("Help", K_I18N_COMMON))
             .AddItem(B_TRANSLATE("Open manual"), M_HELP_MANUAL)
             .AddSeparator()
             .AddItem(B_TRANSLATE("Visit website"), M_HELP_WEBSITE)

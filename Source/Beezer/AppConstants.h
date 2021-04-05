@@ -17,7 +17,8 @@
 
 #define K_APP_GITHUB_URL                     "https://github.com/Teknomancer/beezer"
 
-#define K_APP_COMPILE_STRING                 "__compiled_on__"
+// the common translation context for strings repeated across the app
+#define K_I18N_COMMON                        "Common"
 
 #define K_RULE_FILE                          "_bzr_rules.txt"
 #define K_STUB_JOINER_FILE                   "FileJoinerStub"

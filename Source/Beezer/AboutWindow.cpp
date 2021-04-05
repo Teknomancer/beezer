@@ -23,6 +23,7 @@
 #define B_TRANSLATION_CONTEXT "AboutWindow"
 #else
 #define B_TRANSLATE(x) x
+#define B_TRANSLATE_CONTEXT(x, y) x
 #endif
 
 const char* kAboutText =
@@ -150,7 +151,7 @@ void MarqueeView::ScrollBy(float dh, float dv)
 
 
 AboutWindow::AboutWindow(const char* versionStr, const char* compileTimeStr)
-    : BWindow(BRect(0, 0, 319, 374), B_TRANSLATE("About"), B_MODAL_WINDOW,
+    : BWindow(BRect(0, 0, 319, 374), B_TRANSLATE_COMMENT("About", "title of the window"), B_MODAL_WINDOW,
               B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE | B_NOT_RESIZABLE)
 {
     // Create the BBitmap objects and set its data with error checking
@@ -159,7 +160,8 @@ AboutWindow::AboutWindow(const char* versionStr, const char* compileTimeStr)
     {
         Hide();
         (new BAlert("Error", B_TRANSLATE("An error was encountered while trying to load resources for the About window."),
-                    B_TRANSLATE("Close"), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT))->Go();
+                    B_TRANSLATE_CONTEXT("Close window", K_I18N_COMMON), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING,
+                    B_STOP_ALERT))->Go();
         PostMessage(B_QUIT_REQUESTED);
         Show();
         return;

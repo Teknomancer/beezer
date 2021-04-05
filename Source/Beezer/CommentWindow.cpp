@@ -13,6 +13,7 @@
 #include <malloc.h>
 #include <string.h>
 
+#include "AppConstants.h"
 #include "BitmapPool.h"
 #include "CommentWindow.h"
 #include "LocalUtils.h"
@@ -29,6 +30,7 @@
 #define B_TRANSLATION_CONTEXT "CommentWindow"
 #else
 #define B_TRANSLATE(x) x
+#define B_TRANSLATE_CONTEXT(x, y) x
 #endif
 
 
@@ -84,9 +86,11 @@ CommentWindow::CommentWindow(BWindow* callerWindow, const char* archiveName, con
 
     AddChild(scrollView);
 
-    BButton* saveButton = new BButton("CommentWindow:SaveButton", B_TRANSLATE("Save"), new BMessage(M_SAVE_COMMENT));
+    BButton* saveButton = new BButton("CommentWindow:SaveButton", B_TRANSLATE_CONTEXT("Save", K_I18N_COMMON),
+                                      new BMessage(M_SAVE_COMMENT));
 
-    BButton* closeButton = new BButton("CommentWindow:CloseButton", B_TRANSLATE("Close"), new BMessage(B_QUIT_REQUESTED));
+    BButton* closeButton = new BButton("CommentWindow:CloseButton", B_TRANSLATE_CONTEXT("Close window", K_I18N_COMMON),
+                                       new BMessage(B_QUIT_REQUESTED));
 
     AddChild(BGroupLayoutBuilder(B_HORIZONTAL)
              .AddGlue()

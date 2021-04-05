@@ -22,11 +22,13 @@
 #define B_TRANSLATION_CONTEXT "PrefsViewWindows"
 #else
 #define B_TRANSLATE(x) x
+#define B_TRANSLATE_CONTEXT(x, y) x
 #endif
 
 
 PrefsViewWindows::PrefsViewWindows(BRect frame)
-    : PrefsView(frame, B_TRANSLATE("Windows"), B_TRANSLATE("Configure remembering of windows' settings"))
+    : PrefsView(frame, B_TRANSLATE_CONTEXT("Windows", K_I18N_COMMON),
+                B_TRANSLATE("Configure remembering of windows' settings"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Windows", 20, 20));
     Render();
@@ -48,7 +50,7 @@ void PrefsViewWindows::Render()
     m_commentChk->ResizeToPreferred();
 
     m_arkInfoChk = new BCheckBox(BRect(m_margin, m_commentChk->Frame().bottom + m_vGap, 0, 0),
-                                 "PrefsViewWindows:arkInfoChk", B_TRANSLATE("Archive info window"), NULL);
+                                 "PrefsViewWindows:arkInfoChk", B_TRANSLATE("Archive information window"), NULL);
     m_arkInfoChk->ResizeToPreferred();
 
     m_welcomeChk = new BCheckBox(BRect(m_margin, m_arkInfoChk->Frame().bottom + m_vGap, 0, 0),
