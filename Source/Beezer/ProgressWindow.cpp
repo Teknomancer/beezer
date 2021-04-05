@@ -31,6 +31,7 @@
 #define B_TRANSLATION_CONTEXT "ProgressWindow"
 #else
 #define B_TRANSLATE(x) x
+#define B_TRANSLATE_CONTEXT(x, y) x
 #endif
 
 
@@ -105,7 +106,8 @@ ProgressWindow::ProgressWindow(BWindow* callerWindow, BMessage* actionMessage,
     m_statusBar->SetMaxValue(fileCount);
     m_fileCount = fileCount;
 
-    m_cancelButton = new BButton("ProgressWindow:CancelButton", B_TRANSLATE("Cancel"), new BMessage(M_STOP_OPERATION));
+    m_cancelButton = new BButton("ProgressWindow:CancelButton", B_TRANSLATE_CONTEXT("Cancel", K_I18N_COMMON),
+                                 new BMessage(M_STOP_OPERATION));
 
     // FIXME? this doesn't show up unless the SetValue call is changed below
     // leaving it as is for now

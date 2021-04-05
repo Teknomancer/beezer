@@ -49,6 +49,7 @@
 #else
 #define B_TRANSLATE(x) x
 #define B_TRANSLATE_COMMENT(x, y) x
+#define B_TRANSLATE_CONTEXT(x, y) x
 #endif
 
 
@@ -403,8 +404,8 @@ bool FileSplitterWindow::QuitRequested()
         suspend_thread(m_thread);
 
         BAlert* alert = new BAlert("Quit", B_TRANSLATE("Splitting is in progress. Force it to stop?"),
-                                   B_TRANSLATE("Cancel"), B_TRANSLATE("Force"), NULL,
-                                   B_WIDTH_AS_USUAL, B_WARNING_ALERT);
+                                   B_TRANSLATE_CONTEXT("Cancel", K_I18N_COMMON), B_TRANSLATE_CONTEXT("Force stop", K_I18N_COMMON),
+                                   NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
         alert->SetShortcut(0L, B_ESCAPE);
         alert->SetDefaultButton(alert->ButtonAt(1L));
         int32 index = alert->Go();
@@ -448,7 +449,7 @@ void FileSplitterWindow::MessageReceived(BMessage* message)
                 m_cancel = false;
                 m_thread = spawn_thread(_splitter, "_splitter", B_NORMAL_PRIORITY, (void*)this);
                 resume_thread(m_thread);
-                m_splitBtn->SetLabel(B_TRANSLATE("Cancel"));
+                m_splitBtn->SetLabel(B_TRANSLATE_CONTEXT("Cancel", K_I18N_COMMON));
                 m_splitInProgress = true;
                 m_splitBtn->MakeDefault(false);
             }
@@ -490,18 +491,18 @@ void FileSplitterWindow::MessageReceived(BMessage* message)
             BAlert* alert = NULL;
             if (result == BZR_DONE)
             {
-                alert = new BAlert("Done", B_TRANSLATE("The file has been successfully split!"), B_TRANSLATE("OK"), NULL, NULL,
-                                   B_WIDTH_AS_USUAL, B_INFO_ALERT);
+                alert = new BAlert("Done", B_TRANSLATE("The file has been successfully split!"),
+                                   B_TRANSLATE_CONTEXT("OK", K_I18N_COMMON), NULL, NULL, B_WIDTH_AS_USUAL, B_INFO_ALERT);
             }
             else if (result == BZR_CANCEL)
             {
-                alert = new BAlert("Cancel", B_TRANSLATE("Splitting of the file was cancelled"), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
-                                   B_WARNING_ALERT);
+                alert = new BAlert("Cancel", B_TRANSLATE("Splitting of the file was cancelled"),
+                                   B_TRANSLATE_CONTEXT("OK", K_I18N_COMMON), NULL, NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
             }
             else
             {
-                alert = new BAlert("Error", B_TRANSLATE("An unknown error occured while splitting the file."), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL,
-                                   B_STOP_ALERT);
+                alert = new BAlert("Error", B_TRANSLATE("An unknown error occured while splitting the file."),
+                                   B_TRANSLATE_CONTEXT("OK", K_I18N_COMMON), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
             }
 
             if (result == BZR_DONE && m_createChk->Value() == B_CONTROL_ON)
@@ -761,7 +762,7 @@ void FileSplitterWindow::UpdateData()
             if (BNumberFormat().Format(fmtStr, (double)size) != B_OK)
                 fmtStr = "???";
 
-            sizeStr << "  " << "(" << fmtStr << " " << B_TRANSLATE("bytes") << ")";
+            sizeStr << "  " << "(" << fmtStr << " " << B_TRANSLATE_CONTEXT("bytes", K_I18N_COMMON) << ")";
         }
 
         m_sizeStr->SetText(sizeStr.String());
@@ -872,7 +873,7 @@ void FileSplitterWindow::CreateSelfJoiner()
     if (stubDir->IsDirectory() == false)
     {
         BAlert* err = new BAlert("Error", B_TRANSLATE("Stub folder not found.  Cannot create self-joining executable."),
-                                 B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
+                                 B_TRANSLATE_CONTEXT("OK", K_I18N_COMMON), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
         err->Go();
         return;
     }

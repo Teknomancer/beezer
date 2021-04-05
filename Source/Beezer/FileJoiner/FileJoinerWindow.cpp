@@ -6,7 +6,7 @@
 #include <Application.h>
 #include <Font.h>
 #include <Bitmap.h>
-#include <interface/StringView.h>
+#include <StringView.h>
 #include <TextControl.h>
 #include <Menu.h>
 #include <MenuField.h>
@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "AppConstants.h"
 #include "FileJoinerWindow.h"
 #include "BevelView.h"
 #include "BitmapPool.h"
@@ -43,6 +44,7 @@
 #define B_TRANSLATION_CONTEXT "FileJoinerWindow"
 #else
 #define B_TRANSLATE(x) x
+#define B_TRANSLATE_CONTEXT(x, y) x
 #define B_TRANSLATE_SYSTEM_NAME(x) x
 #endif
 
@@ -327,8 +329,8 @@ bool FileJoinerWindow::QuitRequested()
         suspend_thread(m_thread);
 
         BAlert* alert = new BAlert("Quit", B_TRANSLATE("Joining is in progress.  Force it to stop?"),
-                                   B_TRANSLATE("Cancel"), B_TRANSLATE("Force"), NULL,
-                                   B_WIDTH_AS_USUAL, B_WARNING_ALERT);
+                                   B_TRANSLATE_CONTEXT("Cancel", K_I18N_COMMON), B_TRANSLATE_CONTEXT("Force stop", K_I18N_COMMON),
+                                   NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
         alert->SetShortcut(0L, B_ESCAPE);
         alert->SetDefaultButton(alert->ButtonAt(1L));
         int32 index = alert->Go();
@@ -365,7 +367,7 @@ void FileJoinerWindow::MessageReceived(BMessage* message)
                 m_cancel = false;
                 m_thread = spawn_thread(_joiner, "_joiner", B_NORMAL_PRIORITY, (void*)this);
                 resume_thread(m_thread);
-                m_joinBtn->SetLabel(B_TRANSLATE("Cancel"));
+                m_joinBtn->SetLabel(B_TRANSLATE_CONTEXT("Cancel", K_I18N_COMMON));
                 m_joinInProgress = true;
                 m_joinBtn->MakeDefault(false);
             }
@@ -521,17 +523,17 @@ void FileJoinerWindow::MessageReceived(BMessage* message)
             if (result == BZR_DONE)
             {
                 alert = new BAlert("Done", B_TRANSLATE("The file was successfully joined!"),
-                                   B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_INFO_ALERT);
+                                   B_TRANSLATE_CONTEXT("OK", K_I18N_COMMON), NULL, NULL, B_WIDTH_AS_USUAL, B_INFO_ALERT);
             }
             else if (result == BZR_CANCEL)
             {
                 alert = new BAlert("Cancel", B_TRANSLATE("Joining of the file was cancelled"),
-                                   B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
+                                   B_TRANSLATE_CONTEXT("OK", K_I18N_COMMON), NULL, NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
             }
             else
             {
                 alert = new BAlert("Error", B_TRANSLATE("An unknown error occured while joining the files."),
-                                   B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
+                                   B_TRANSLATE_CONTEXT("OK", K_I18N_COMMON), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
             }
 
             // Incase of no-errors with input files and output dirs, save them to recent lists

@@ -25,11 +25,13 @@
 #define B_TRANSLATION_CONTEXT "PrefsViewRecent"
 #else
 #define B_TRANSLATE(x) x
+#define B_TRANSLATE_CONTEXT(x, y) x
 #endif
 
 
 PrefsViewRecent::PrefsViewRecent(BRect frame)
-    : PrefsView(frame, B_TRANSLATE("Recent"), B_TRANSLATE("Configure recent archives & extract locations"))
+    : PrefsView(frame, B_TRANSLATE_CONTEXT("Recent", K_I18N_COMMON),
+                B_TRANSLATE("Configure recent archives & extract locations"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Recent", 20, 20));
     Render();

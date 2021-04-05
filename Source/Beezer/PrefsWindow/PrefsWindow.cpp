@@ -11,6 +11,7 @@
 #include <String.h>
 #include <TextView.h>
 
+#include "AppConstants.h"
 #include "BevelView.h"
 #include "BitmapPool.h"
 #include "MsgConstants.h"
@@ -35,11 +36,12 @@
 #define B_TRANSLATION_CONTEXT "PrefsWindow"
 #else
 #define B_TRANSLATE(x) x
+#define B_TRANSLATE_CONTEXT(x, y) x
 #endif
 
 
 PrefsWindow::PrefsWindow()
-    : BWindow(BRect(0, 0, 570+50, 320+100), B_TRANSLATE("Settings"), B_TITLED_WINDOW,
+    : BWindow(BRect(0, 0, 570+50, 320+100), B_TRANSLATE_CONTEXT("Settings", K_I18N_COMMON), B_TITLED_WINDOW,
               B_NOT_ZOOMABLE | B_NOT_RESIZABLE),
     m_currentPanel(NULL)
 {
@@ -73,7 +75,7 @@ PrefsWindow::PrefsWindow()
             listItem->SetHeight(listItem->Height() + 6);
     }
 
-    // Critical order
+    // Critical order
     m_listView->SetSelectionMessage(new BMessage(M_PREFS_PANEL_SELECTED));
     m_listView->SetTarget(this);
     if (m_panelList.CountItems() >= 0)
@@ -231,12 +233,12 @@ void PrefsWindow::AddControls()
 
     BButton* saveBtn = new BButton(BRect(discardBtn->Frame().right + margin, discardBtn->Frame().top,
                                          discardBtn->Frame().right + margin + K_BUTTON_WIDTH, discardBtn->Frame().bottom),
-                                   "PrefsWindow:saveBtn", B_TRANSLATE("Save"), new BMessage(M_SAVE_PREFS),
+                                   "PrefsWindow:saveBtn", B_TRANSLATE_CONTEXT("Save", K_I18N_COMMON), new BMessage(M_SAVE_PREFS),
                                    B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
 
     BButton* helpBtn = new BButton(BRect(Bounds().right - margin - K_BUTTON_WIDTH, discardBtn->Frame().top,
                                          Bounds().right - margin, discardBtn->Frame().bottom), "PrefsWindow:helpBtn",
-                                   B_TRANSLATE("Help"), new BMessage(M_PREFS_HELP), B_FOLLOW_LEFT,
+                                   B_TRANSLATE_CONTEXT("Help", K_I18N_COMMON), new BMessage(M_PREFS_HELP), B_FOLLOW_LEFT,
                                    B_WILL_DRAW | B_NAVIGABLE);
     m_backView->AddChild(saveBtn);
     m_backView->AddChild(discardBtn);
