@@ -60,12 +60,41 @@ status_t HPkgArchiver::ReadOpen(FILE* fp, const char* metaInfo)
         char lineString[len],
              sizeStr[64], yearStr[8], monthStr[8], dayStr[8], hourStr[8], minuteStr[8], secondStr[8], attrStr[16],
              leafStr[B_FILE_NAME_LENGTH + 1];
-        
+
+        const char colPadStr[] = "  ";                  // whitespace padding prior to each distinct column.
+        uint8 const colPadLen = sizeof(colPadStr) - 1;
+
+        uint8 const dateTimeLen = sizeof("YYYY-MM-DD HH:MM:SS") - 1;
+        uint8 const dateTimePaddedLen = colPadLen + dateTimeLen;
+
+        uint8 const permLen = sizeof("lrwxrwxrwx") - 1;
+        uint8 const permPaddedLen = colPadLen + permLen;
+
         while (!feof(fp) && fgets(lineString, len, fp))
         {
             lineString[strlen(lineString) - 1] = '\0';
 
-            printf("line='%s'\n", lineString);
+            BString permStr;
+            BString lineStr = lineString;
+
+            // Could this be a symlink?
+            int32 found = lineStr.FindLast("  -> ");
+            if (found > permPaddedLen + dateTimePaddedLen /* + length of file name and file size could be included but don't know file name yet. */)
+            {
+                // Try get file permissions
+                lineStr.CopyInto(permStr, found - permPaddedLen, permPaddedLen);
+                if (permStr.StartsWith(colPadStr, colPadLen) == true)
+                {
+                    permStr.Remove(0, colPadLen);
+                    if (permStr[0] == 'l')
+                    {
+                        // Yes this looks like a symlink indeed.
+                        // TODO: Discard rest of path and continue.
+                    }
+                }
+            }
+
+            // TODO: Parse as regular file/directory (i.e. non-symlink).
         }
     }
 
