@@ -1487,8 +1487,8 @@ void MainWindow::MessageReceived(BMessage* message)
 
             int32 buttonIndex;
             const char* password;
-            if (msg.FindInt32(kButtonIndex, &buttonIndex) == B_OK &&
-                    msg.FindString(kInputText, &password) == B_OK)
+            if (msg.FindInt32(InputAlert::kButtonIndex, &buttonIndex) == B_OK &&
+                    msg.FindString(InputAlert::kInputText, &password) == B_OK)
             {
                 if (buttonIndex == 2L)
                     m_archiver->SetPassword(password);
@@ -3476,9 +3476,9 @@ void MainWindow::AddNewFolder()
             parentPath = selectedItem->m_fullPath.String();
     }
     else
-        parentPath = B_TRANSLATE(":Root:");
+        parentPath = B_TRANSLATE("(root of the archive)");
 
-	createDirStr << "\n   " << parentPath << "\n";
+	createDirStr << "\n" << parentPath << "\n";
     InputAlert* dirAlert = new InputAlert(createDirStr.String(), B_TRANSLATE("New folder name:"), "", false,
                                           B_TRANSLATE(skCancelString), B_TRANSLATE("Create folder"));
     dirAlert->SetDefaultButton(dirAlert->ButtonAt(1L));
@@ -3493,8 +3493,8 @@ void MainWindow::AddNewFolder()
 
     int32 buttonIndex;
     const char* folderName;
-    if (msg.FindInt32(kButtonIndex, &buttonIndex) == B_OK &&
-            msg.FindString(kInputText, &folderName) == B_OK)
+    if (msg.FindInt32(InputAlert::kButtonIndex, &buttonIndex) == B_OK &&
+            msg.FindString(InputAlert::kInputText, &folderName) == B_OK)
     {
         if (buttonIndex == 1L)
         {

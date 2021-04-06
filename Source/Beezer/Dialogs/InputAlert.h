@@ -12,17 +12,6 @@ class BString;
 class BStringView;
 class BTextControl;
 
-#define kInputText        "input_field"
-#define kButtonIndex      "button_index"
-
-enum
-{
-    kButton0 = '_b0_',
-    kButton1 = '_b1_',
-    kButton2 = '_b2_',
-    kInputBox = '_ip_'
-};
-
 class InputAlert : public BAlert
 {
     public:
@@ -40,18 +29,17 @@ class InputAlert : public BAlert
         BMessage            GetInput(BWindow* window);
         BTextControl*       TextControl() const;
 
-        // Static constants
-        static const uint32 kInputMessage = 'inpt';
+        static const uint32 kInputMessage;
+        static const char*  kInputText;
+        static const char*  kButtonIndex;
 
     private:
-        // Private hooks
         void                InitInputAlert(const char* title, const char* label, const char* initialText,
                                            bool hideTyping);
 
-        // Private members
+        BButton*            m_LastButton;
         BTextControl*       m_inputBox;
         BStringView*        m_bytesView;
-        BButton*            m_farRightButton;
         BString             m_inputText;
         volatile bool       m_isQuitting;
         int32               m_buttonIndex;
