@@ -3,15 +3,12 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
+#include "PrefsView.h"
+#include "UIConstants.h"
+
 #include <Bitmap.h>
 #include <Button.h>
 #include <CheckBox.h>
-
-#include <string.h>
-#include <malloc.h>
-
-#include "PrefsView.h"
-#include "UIConstants.h"
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -24,47 +21,40 @@
 
 
 PrefsView::PrefsView(BRect frame, const char* title, const char* description)
-    : BevelView(frame, NULL, btInset, B_FOLLOW_LEFT, B_WILL_DRAW)
+    : BevelView(frame, NULL, btInset, B_FOLLOW_LEFT, B_WILL_DRAW),
+    m_revertBtn(NULL),
+    m_margin(K_MARGIN + 2),         // For use in inherited classes - to provide consistency among them we give these
+    m_vGap(1),                      // member functions which they are supposed to use when needed
+    m_sectionFont(be_plain_font),
+    m_titleStr(title),
+    m_descriptionStr(description),
+    m_bitmap(NULL)
 {
-    m_descriptionStr = strdup(description);
-    m_titleStr = strdup(title);
-    m_bitmap = NULL;
-
-    // For use in inherited classes - to provide consistency among them we give these
-    // member functions which they are supposed to use when needed
-    m_margin = K_MARGIN + 2;
-    m_vGap = 1;
     SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
-    m_sectionFont = be_plain_font;
-    m_sectionFont.SetFace(B_BOLD_FACE);
+
     // We are un-necessarily storing a BFont object for each PrefView but there isn't
     // any easy way out (static BFont didn't worked and crashed on initialization)
     // we can do one thing though - add a BFont parameter to ever PrefView derived
     // class and make it pass that to us, but thats a bore too
+    m_sectionFont.SetFace(B_BOLD_FACE);
 }
 
 
 PrefsView::~PrefsView()
 {
-    if (m_descriptionStr)
-        free((char*)m_descriptionStr);
-
-    if (m_titleStr)
-        free((char*)m_titleStr);
-
     DeleteBitmap();
 }
 
 
 const char* PrefsView::Description() const
 {
-    return m_descriptionStr;
+    return m_descriptionStr.String();
 }
 
 
 const char* PrefsView::Title() const
 {
-    return m_titleStr;
+    return m_titleStr.String();
 }
 
 

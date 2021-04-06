@@ -8,7 +8,10 @@
 
 #include "BevelView.h"
 
-#define M_REVERT           'pfrv'
+#include <Font.h>
+#include <String.h>
+
+const uint32 M_REVERT = 'pfrv';
 
 class BBitmap;
 class BButton;
@@ -20,7 +23,6 @@ class PrefsView : public BevelView
         PrefsView(BRect frame, const char* title, const char* description);
         virtual ~PrefsView();
 
-        // Additional hooks
         const char*         Description() const;
         const char*         Title() const;
         virtual bool        IsChecked(BCheckBox* chkBox) const;
@@ -28,26 +30,23 @@ class PrefsView : public BevelView
         virtual void        Save();
         virtual void        Load();
         virtual void        SetBitmap(BBitmap* bmp);
-        virtual BBitmap*     Bitmap() const;
+        virtual BBitmap*    Bitmap() const;
 
     protected:
-        // Protected hooks
         void                AddRevertButton();
 
-        // Protected members
         BButton*            m_revertBtn;
         float               m_margin;
         float               m_vGap;
         BFont               m_sectionFont;
 
     private:
-        // Private hooks
         void                DeleteBitmap();
 
-        // Private members
-        const char*         m_titleStr;
-        const char*         m_descriptionStr;
+        BString             m_titleStr;
+        BString             m_descriptionStr;
         BBitmap*            m_bitmap;
 };
 
 #endif /* _PREFS_VIEW_H */
+
