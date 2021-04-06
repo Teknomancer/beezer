@@ -6,16 +6,31 @@
 #include <Button.h>
 #include <String.h>
 #include <TextControl.h>
+#include <Layout.h>
+#include <GroupLayout.h>
+#include <SpaceLayoutItem.h>
 
+#include <cassert>
 #include <string.h>
 
 #include "InputAlert.h"
+#include "UIConstants.h"
+
+static const uint32 kButton0    = '_b0_';
+static const uint32 kButton2    = '_b2_';
+static const uint32 kButton1    = '_b1_';
+static const uint32 kInputBox   = '_ip_';
+
+const uint32 InputAlert::kInputMessage      = 'inpt';
+const char* InputAlert::kInputText          = "input_field";
+const char* InputAlert::kButtonIndex        = "button_index";
 
 
 InputAlert::InputAlert(const char* title, const char* text, const char* initialText, bool hideTyping,
                        const char* button1, const char* button2, const char* button3, button_width width,
                        alert_type type)
     : BAlert(title, "\n\n", button1, button2, button3, width, type)
+    , m_LastButton(NULL)
 {
     InitInputAlert(title, text, initialText, hideTyping);
 }
@@ -25,6 +40,7 @@ InputAlert::InputAlert(const char* title, const char* text, const char* initialT
                        const char* button1, const char* button2, const char* button3, button_width width,
                        button_spacing spacing, alert_type type)
     : BAlert(title, "\n\n", button1, button2, button3, width, spacing, type)
+    , m_LastButton(NULL)
 {
     InitInputAlert(title, text, initialText, hideTyping);
 }
@@ -32,54 +48,42 @@ InputAlert::InputAlert(const char* title, const char* text, const char* initialT
 
 void InputAlert::InitInputAlert(const char* title, const char* label, const char* initialText, bool hideTyping)
 {
+    font_height fntHt;
+    be_plain_font->GetHeight(&fntHt);
+    float lineHeight = fntHt.ascent + fntHt.descent + fntHt.leading;
+
     BTextView* textView = TextView();
-    BView* parent = textView->Parent();
     textView->SetText(title);
-
-    float height = textView->TextHeight(0, 2E6) + 6;
-    float width = 0;
-    int numlines = textView->CountLines();
-    int linewidth;
-
-    for (int i = 0; i < numlines; i++)
-        if ((linewidth = int (textView->LineWidth(i))) > width)
-            width = linewidth;
-
-    textView->ResizeTo(width + 2, height);
 
     // Do our own Go() type function. Nice workaround used - See MessageReceived() and GetInput()
     // work in conjunction. Not too much CPU usage infact. What we do here is we erase BAlert's
     // button message and assign our own. Then trap it in MessageReceived and set "m_inputText"
     // then set "m_isQuitting" to true so that our GetInput() function adds the "m_inputText" to be
     // returned, then quit using the PostMessage() call.
-    BButton* button0 = (BButton*)parent->FindView("_b0_");
-    BButton* button1 = (BButton*)parent->FindView("_b1_");
-    BButton* button2 = (BButton*)parent->FindView("_b2_");
-    float extremeRight = 200;
+    BButton* button0 = ButtonAt(0);
+    BButton* button1 = ButtonAt(1);
+    BButton* button2 = ButtonAt(2);
     if (button0)
     {
         button0->SetMessage(new BMessage(kButton0));
-        extremeRight = button0->Frame().right;
-        m_farRightButton = button0;
+        m_LastButton = button0;
     }
 
     if (button1)
     {
         button1->SetMessage(new BMessage(kButton1));
-        extremeRight = button1->Frame().right;
-        m_farRightButton = button1;
+        m_LastButton = button1;
     }
 
     if (button2)
     {
         button2->SetMessage(new BMessage(kButton2));
-        extremeRight = button2->Frame().right;
-        m_farRightButton = button2;
+        m_LastButton = button2;
     }
+    assert(m_LastButton);
 
-    m_inputBox = new BTextControl(BRect(textView->Frame().left, textView->Frame().bottom,
-                                        extremeRight, 0), "_textInput_", label, NULL, NULL, B_FOLLOW_LEFT,
-                                  B_WILL_DRAW | B_NAVIGABLE);
+    m_inputBox = new BTextControl(BRect(K_MARGIN, K_MARGIN, 400, 2 * K_MARGIN + lineHeight),
+                                  "_textInput_", label, NULL, NULL, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
 
     m_inputBox->SetDivider(m_inputBox->StringWidth(label) + 10);
     m_inputBox->SetModificationMessage(new BMessage(kInputBox));
@@ -87,10 +91,26 @@ void InputAlert::InitInputAlert(const char* title, const char* label, const char
     m_inputBox->SetText(initialText);
 
     if (strlen(initialText) == 0)
-        m_farRightButton->SetEnabled(false);
+        m_LastButton->SetEnabled(false);
 
-    parent->Window()->ResizeBy(0, m_farRightButton->Frame().Height() + m_inputBox->Frame().Height());
-    parent->AddChild(m_inputBox);
+    BView* parentView = FindView("_tv_");
+    assert(parentView);
+    BWindow *parentWindow = parentView->Window();
+    assert(parentWindow);
+
+    BLayout* layout = GetLayout();
+    assert(layout);
+    BView* alertView = FindView("TAlertView");
+    assert(alertView);
+    BGroupLayout *group = (BGroupLayout*)layout;
+    group->SetOrientation(B_VERTICAL);
+    group->SetSpacing(K_MARGIN * 2);
+    int32 const textViewIndex = layout->IndexOfView(alertView);
+
+    layout->AddView(textViewIndex + 1, m_inputBox);
+
+    parentWindow->ResizeTo(m_inputBox->Frame().Width(), 180);
+    parentWindow->CenterOnScreen();
     m_inputBox->MakeFocus(true);
 }
 
@@ -140,9 +160,9 @@ void InputAlert::MessageReceived(BMessage* message)
         {
             int32 len = strlen(m_inputBox->Text());
             if (len > 0L)
-                m_farRightButton->SetEnabled(true);
+                m_LastButton->SetEnabled(true);
             else
-                m_farRightButton->SetEnabled(false);
+                m_LastButton->SetEnabled(false);
             break;
         }
 
