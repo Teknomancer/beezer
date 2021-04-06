@@ -44,6 +44,7 @@ class BitmapPool
                             *m_tbarAddBmp,
                             *m_tbarDeleteDisabledBmp,
                             *m_tbarDeleteBmp,
+                            *m_tbarHelpBmp,
                             *m_smallAppIcon,
                             *m_largeAppIcon;
 

@@ -89,6 +89,13 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
     m_prefsBtn = new ImageButton("StartupWindow:Prefs", B_TRANSLATE(skSettingsString),
                                  _bmps->m_tbarPrefsBmp, NULL, new BMessage(M_EDIT_PREFERENCES), false,
                                  ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon, false, true, true);
+    //TODO this causes the items to be shifted down, need to investigate
+    //m_prefsBtn->SetExplicitMinSize(BSize(K_TOOLBAR_WIDTH, -1));
+
+    m_helpBtn = new ImageButton("StartupWindow:Help", B_TRANSLATE(skHelpString),
+                                 _bmps->m_tbarHelpBmp, NULL, new BMessage(M_HELP_MANUAL), false,
+                                 ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon, false, true, true);
+    m_helpBtn->SetExplicitMinSize(BSize(K_TOOLBAR_WIDTH, -1));
 
     AddChild(BGroupLayoutBuilder(B_VERTICAL, 0)
              .AddStrut(5)
@@ -108,6 +115,7 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
              .Add(m_openRecentBtn)
              .Add(m_toolsBtn)
              .Add(m_prefsBtn)
+             .Add(m_helpBtn)
              .SetInsets(5, 5, 5, 5)
              .End()
              .AddGlue()
@@ -119,6 +127,7 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
     m_openRecentBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Open a recently viewed archive")));
     m_prefsBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Edit application settings")));
     m_toolsBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Additional tools")));
+    m_helpBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Open the help manual")));
 
     // Center window on-screen
     CenterOnScreen();
@@ -165,7 +174,7 @@ void StartupWindow::MessageReceived(BMessage* message)
 {
     switch (message->what)
     {
-        case M_FILE_OPEN: case M_FILE_NEW: case M_EDIT_PREFERENCES:
+        case M_FILE_OPEN: case M_FILE_NEW: case M_EDIT_PREFERENCES: case M_HELP_MANUAL:
         {
             be_app_messenger.SendMessage(message);
             break;
