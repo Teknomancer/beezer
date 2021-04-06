@@ -3,13 +3,11 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <Button.h>
-#include <Path.h>
-#include <String.h>
-#include <Window.h>
-
 #include "SelectDirPanel.h"
 
+#include <Button.h>
+#include <Window.h>
+#include <Path.h>
 
 
 SelectDirPanel::SelectDirPanel(file_panel_mode mode, BMessenger* target, const entry_ref* start_directory,
@@ -38,11 +36,9 @@ SelectDirPanel::SelectDirPanel(file_panel_mode mode, BMessenger* target, const e
 }
 
 
-
 SelectDirPanel::~SelectDirPanel()
 {
 }
-
 
 
 void SelectDirPanel::SetCurrentDirButton(const char* label)
@@ -52,7 +48,6 @@ void SelectDirPanel::SetCurrentDirButton(const char* label)
 }
 
 
-
 void SelectDirPanel::SelectionChanged()
 {
     UpdateButton();
@@ -60,13 +55,11 @@ void SelectDirPanel::SelectionChanged()
 }
 
 
-
 void SelectDirPanel::Refresh()
 {
     UpdateButton();
     BFilePanel::Refresh();
 }
-
 
 
 void SelectDirPanel::UpdateButton()
@@ -94,7 +87,6 @@ void SelectDirPanel::UpdateButton()
 }
 
 
-
 void SelectDirPanel::SetMessage(BMessage* msg)
 {
     BMessage* curDirMsg = new BMessage(*msg);
@@ -103,7 +95,6 @@ void SelectDirPanel::SetMessage(BMessage* msg)
 
     BFilePanel::SetMessage(msg);
 }
-
 
 
 void SelectDirPanel::SendMessage(const BMessenger* target, BMessage* message)
@@ -118,5 +109,3 @@ void SelectDirPanel::SendMessage(const BMessenger* target, BMessage* message)
     if (entry.IsDirectory() == true)
         return BFilePanel::SendMessage(target, message);
 }
-
-
