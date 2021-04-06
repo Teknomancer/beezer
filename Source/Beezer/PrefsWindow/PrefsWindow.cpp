@@ -67,10 +67,7 @@ PrefsWindow::PrefsWindow()
         m_listView->AddItem(listItem);
 
         if (prefPanel->Bitmap())
-        {
-            listItem->SetHeight
-            (MAX(prefPanel->Bitmap()->Bounds().Height() + 6, listItem->FontHeight() * 2 + 3));
-        }
+            listItem->SetHeight(MAX(prefPanel->Bitmap()->Bounds().Height() + 6, listItem->FontHeight() * 2 + 3));
         else
             listItem->SetHeight(listItem->Height() + 6);
     }
