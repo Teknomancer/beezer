@@ -3,18 +3,15 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
+#include "InputAlert.h"
+#include "UIConstants.h"
+
 #include <Button.h>
-#include <String.h>
 #include <TextControl.h>
 #include <Layout.h>
 #include <GroupLayout.h>
-#include <SpaceLayoutItem.h>
 
 #include <cassert>
-#include <string.h>
-
-#include "InputAlert.h"
-#include "UIConstants.h"
 
 static const uint32 kButton0    = '_b0_';
 static const uint32 kButton2    = '_b2_';
@@ -61,20 +58,20 @@ void InputAlert::InitInputAlert(const char* title, const char* label, const char
     // then set "m_isQuitting" to true so that our GetInput() function adds the "m_inputText" to be
     // returned, then quit using the PostMessage() call.
     BButton* button0 = ButtonAt(0);
-    BButton* button1 = ButtonAt(1);
-    BButton* button2 = ButtonAt(2);
     if (button0)
     {
         button0->SetMessage(new BMessage(kButton0));
         m_LastButton = button0;
     }
 
+    BButton* button1 = ButtonAt(1);
     if (button1)
     {
         button1->SetMessage(new BMessage(kButton1));
         m_LastButton = button1;
     }
 
+    BButton* button2 = ButtonAt(2);
     if (button2)
     {
         button2->SetMessage(new BMessage(kButton2));
