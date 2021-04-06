@@ -10,11 +10,6 @@
 
 class BitmapMenuItem;
 
-// these menu titles are shared with MainWindow.cpp and must be consistent so
-// that it can find the menus to enable/disable them
-#define S_EXTRACT_TO         "Extract to…"
-#define S_EXTRACT_SELECTED   "Extract selected…"
-#define S_OPEN               "Open…"
 
 class MainMenu : public BMenuBar
 {

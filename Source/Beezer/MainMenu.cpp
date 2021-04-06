@@ -41,7 +41,7 @@ MainMenu::MainMenu(BRect frame)
     BMenu* appMenu = new BMenu(B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
     BLayoutBuilder::Menu<>(appMenu)
         .AddItem(bufStr, B_ABOUT_REQUESTED)
-        .AddItem(B_TRANSLATE("Settings…"), M_EDIT_PREFERENCES)
+        .AddItem(B_TRANSLATE("Settings" B_UTF8_ELLIPSIS), M_EDIT_PREFERENCES)
         .AddSeparator()
         .AddItem(B_TRANSLATE("Quit"), M_FILE_QUIT, 'Q');
 
@@ -55,8 +55,8 @@ MainMenu::MainMenu(BRect frame)
         .AddItem(new BitmapMenuItem(appMenu, _glob_bitmap_pool->m_smallAppIcon))
         .AddMenu(B_TRANSLATE("File"))
             .GetMenu(m_fileMenu)
-            .AddItem(B_TRANSLATE("New…"), M_FILE_NEW, 'N')
-            .AddMenu(B_TRANSLATE(S_OPEN))
+            .AddItem(B_TRANSLATE("New" B_UTF8_ELLIPSIS), M_FILE_NEW, 'N')
+            .AddMenu(B_TRANSLATE(skOpenMenuString))
                 .GetMenu(m_recentMenu)
             .End()
             .AddItem(B_TRANSLATE("Close"), M_FILE_CLOSE, 'W')
@@ -64,7 +64,7 @@ MainMenu::MainMenu(BRect frame)
             .AddItem(B_TRANSLATE(skDeleteString), M_FILE_DELETE)
             .AddItem(B_TRANSLATE("Archive information"), M_FILE_ARCHIVE_INFO, 'I')
             .AddSeparator()
-            .AddItem(B_TRANSLATE("Password…"), M_FILE_PASSWORD)
+            .AddItem(B_TRANSLATE("Password" B_UTF8_ELLIPSIS), M_FILE_PASSWORD)
         .End()
         .AddMenu(B_TRANSLATE("Edit"))
             .GetMenu(m_editMenu)
@@ -116,19 +116,19 @@ MainMenu::MainMenu(BRect frame)
         .AddMenu(B_TRANSLATE("Actions"))
             .GetMenu(m_actionsMenu)
             .AddItem(B_TRANSLATE(skExtractString), M_ACTIONS_EXTRACT, 'X')
-            .AddMenu(B_TRANSLATE(S_EXTRACT_TO))
+            .AddMenu(B_TRANSLATE(skExtractToString))
                 .GetMenu(m_extractPathsMenu)
             .End()
             .AddItem(B_TRANSLATE("View file"), M_ACTIONS_VIEW, 'V')
-            .AddItem(B_TRANSLATE("Open with…"), M_ACTIONS_OPEN_WITH, 'O')
+            .AddItem(B_TRANSLATE("Open with" B_UTF8_ELLIPSIS), M_ACTIONS_OPEN_WITH, 'O')
             .AddSeparator()
             .AddItem(B_TRANSLATE("Test"), M_ACTIONS_TEST, 'T')
-            .AddItem(B_TRANSLATE("Search archive…"), M_ACTIONS_SEARCH_ARCHIVE, 'F')
+            .AddItem(B_TRANSLATE("Search archive" B_UTF8_ELLIPSIS), M_ACTIONS_SEARCH_ARCHIVE, 'F')
             .AddItem(B_TRANSLATE(skCommentString), M_ACTIONS_COMMENT, 'C', B_SHIFT_KEY)
             .AddSeparator()
-            .AddItem(B_TRANSLATE("Add…"), M_ACTIONS_ADD, 'A', B_SHIFT_KEY)
+            .AddItem(B_TRANSLATE("Add" B_UTF8_ELLIPSIS), M_ACTIONS_ADD, 'A', B_SHIFT_KEY)
             .AddItem(B_TRANSLATE(skDeleteString), M_ACTIONS_DELETE, 'D')
-            .AddItem(B_TRANSLATE("Create folder…"), M_ACTIONS_CREATE_FOLDER, 'M')
+            .AddItem(B_TRANSLATE("Create folder" B_UTF8_ELLIPSIS), M_ACTIONS_CREATE_FOLDER, 'M')
         .End()
         .AddMenu(_bzr()->BuildToolsMenu())
             .GetMenu(m_toolsMenu)
@@ -144,9 +144,9 @@ MainMenu::MainMenu(BRect frame)
         .End();
 
 
-    SetRecentMenu(new BMenu(B_TRANSLATE(S_OPEN)));
+    SetRecentMenu(new BMenu(B_TRANSLATE(skOpenMenuString)));
 
-    SetExtractPathsMenu(new BMenu(B_TRANSLATE(S_EXTRACT_TO)));
+    SetExtractPathsMenu(new BMenu(B_TRANSLATE(skExtractToString)));
 
     BMenuItem* selectAllItem = m_editMenu->FindItem(B_TRANSLATE(skSelectAllString));
     selectAllItem->SetMessage(new BMessage(M_EDIT_SELECT_ALL));
@@ -166,9 +166,9 @@ MainMenu::MainMenu(BRect frame)
     m_archiveContextMenu = new BPopUpMenu("_cntxt", false, false);
     BLayoutBuilder::Menu<>(m_archiveContextMenu)
         .AddItem(B_TRANSLATE("View file"), M_ACTIONS_VIEW)
-        .AddItem(B_TRANSLATE("Open with…"), M_ACTIONS_OPEN_WITH)
-        .AddItem(B_TRANSLATE("Extract"), M_ACTIONS_EXTRACT_SELECTED)
-        .AddItem(B_TRANSLATE("Delete"), M_ACTIONS_DELETE)
+        .AddItem(B_TRANSLATE("Open with" B_UTF8_ELLIPSIS), M_ACTIONS_OPEN_WITH)
+        .AddItem(B_TRANSLATE(skExtractString), M_ACTIONS_EXTRACT_SELECTED)
+        .AddItem(B_TRANSLATE(skDeleteString), M_ACTIONS_DELETE)
         .AddSeparator()
         .AddItem(B_TRANSLATE("Copy row as text"), M_CONTEXT_COPY)
         .AddSeparator()
@@ -200,7 +200,7 @@ void MainMenu::SetRecentMenu(BMenu* menu)
 
     m_recentMenu = menu;
     m_fileMenu->AddItem(m_recentMenu, 1);
-    BMenuItem* openItem = m_fileMenu->FindItem(B_TRANSLATE(S_OPEN));
+    BMenuItem* openItem = m_fileMenu->FindItem(B_TRANSLATE(skOpenMenuString));
     openItem->SetMessage(new BMessage(M_FILE_OPEN));
     openItem->SetShortcut('O', 0);
 }
@@ -220,7 +220,7 @@ void MainMenu::SetExtractPathsMenu(BMenu* menu)
 
     m_extractPathsMenu = menu;
     m_actionsMenu->AddItem(m_extractPathsMenu, 1);
-    BMenuItem* extractItem = m_actionsMenu->FindItem(B_TRANSLATE(S_EXTRACT_TO));
+    BMenuItem* extractItem = m_actionsMenu->FindItem(B_TRANSLATE(skExtractToString));
     extractItem->SetMessage(new BMessage(M_ACTIONS_EXTRACT_TO));
     extractItem->SetShortcut('X', B_SHIFT_KEY);
 
@@ -239,8 +239,8 @@ void MainMenu::SetExtractSelPathsMenu(BMenu* menu)
 
     m_extractSelPathsMenu = menu;
     m_actionsMenu->AddItem(m_extractSelPathsMenu, 2);
-    menu->Superitem()->SetLabel(B_TRANSLATE(S_EXTRACT_SELECTED));
-    BMenuItem* extractItem = m_actionsMenu->FindItem(B_TRANSLATE(S_EXTRACT_SELECTED));
+    menu->Superitem()->SetLabel(B_TRANSLATE(skExtractSelectedString));
+    BMenuItem* extractItem = m_actionsMenu->FindItem(B_TRANSLATE(skExtractSelectedString));
     if (extractItem)
     {
         extractItem->SetMessage(new BMessage(M_ACTIONS_EXTRACT_SELECTED));
