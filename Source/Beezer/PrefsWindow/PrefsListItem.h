@@ -6,9 +6,11 @@
 #ifndef _PREFS_LIST_ITEM_H
 #define _PREFS_LIST_ITEM_H
 
+#include <GraphicsDefs.h>
 #include <StringItem.h>
 
 class BView;
+class BBitmap;
 
 class PrefsListItem : public BStringItem
 {
@@ -18,13 +20,11 @@ class PrefsListItem : public BStringItem
 
         // Inherited hooks
         virtual void        DrawItem(BView* owner, BRect frame, bool complete = false);
-        virtual float        FontHeight() const;
+        virtual float       FontHeight() const;
 
     private:
-        // Private members
         float               m_fontDelta;
         bool                m_makeBold;
-        const char*         m_label;
         BBitmap*            m_bitmap;
         rgb_color           m_selBackColor,
                             m_selTextColor;
