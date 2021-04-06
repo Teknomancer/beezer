@@ -14,6 +14,7 @@
 #include "AppConstants.h"
 #include "BevelView.h"
 #include "BitmapPool.h"
+#include "CommonStrings.h"
 #include "MsgConstants.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
@@ -36,12 +37,11 @@
 #define B_TRANSLATION_CONTEXT "PrefsWindow"
 #else
 #define B_TRANSLATE(x) x
-#define B_TRANSLATE_CONTEXT(x, y) x
 #endif
 
 
 PrefsWindow::PrefsWindow()
-    : BWindow(BRect(0, 0, 570+50, 320+100), B_TRANSLATE_CONTEXT("Settings", K_I18N_COMMON), B_TITLED_WINDOW,
+    : BWindow(BRect(0, 0, 570+50, 320+100), B_TRANSLATE(skSettingsString), B_TITLED_WINDOW,
               B_NOT_ZOOMABLE | B_NOT_RESIZABLE),
     m_currentPanel(NULL)
 {
@@ -174,7 +174,7 @@ void PrefsWindow::SetActivePanel(PrefsView* activePanel)
         int32 tlen = strlen(m_currentPanel->Title());
         int32 dlen = strlen(m_currentPanel->Description());
         m_descTextView->SetText(descText.String());
-        m_descTextView->SetFontAndColor(0, tlen, be_bold_font, B_FONT_ALL,    &(K_DEEP_RED_COLOR));
+        m_descTextView->SetFontAndColor(0, tlen, be_bold_font, B_FONT_ALL, &(K_DEEP_RED_COLOR));
         rgb_color textColor = ui_color(B_DOCUMENT_TEXT_COLOR);
         m_descTextView->SetFontAndColor(tlen, tlen+dlen+1, be_plain_font, B_FONT_ALL, &textColor);
     }
@@ -233,12 +233,12 @@ void PrefsWindow::AddControls()
 
     BButton* saveBtn = new BButton(BRect(discardBtn->Frame().right + margin, discardBtn->Frame().top,
                                          discardBtn->Frame().right + margin + K_BUTTON_WIDTH, discardBtn->Frame().bottom),
-                                   "PrefsWindow:saveBtn", B_TRANSLATE_CONTEXT("Save", K_I18N_COMMON), new BMessage(M_SAVE_PREFS),
+                                   "PrefsWindow:saveBtn", B_TRANSLATE(skSaveString), new BMessage(M_SAVE_PREFS),
                                    B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
 
     BButton* helpBtn = new BButton(BRect(Bounds().right - margin - K_BUTTON_WIDTH, discardBtn->Frame().top,
                                          Bounds().right - margin, discardBtn->Frame().bottom), "PrefsWindow:helpBtn",
-                                   B_TRANSLATE_CONTEXT("Help", K_I18N_COMMON), new BMessage(M_PREFS_HELP), B_FOLLOW_LEFT,
+                                   B_TRANSLATE(skHelpString), new BMessage(M_PREFS_HELP), B_FOLLOW_LEFT,
                                    B_WILL_DRAW | B_NAVIGABLE);
     m_backView->AddChild(saveBtn);
     m_backView->AddChild(discardBtn);

@@ -23,6 +23,7 @@
 #include <stdlib.h>
 
 #include "AppConstants.h"
+#include "CommonStrings.h"
 #include "LocalUtils.h"
 #include "Shared.h"
 
@@ -207,17 +208,17 @@ BString LocaleStringFromBytes(uint64 val)
     if (val < kKiBSize)
         sprintf(buf, "%" B_PRIu64 " bytes");
     else if (val < kMiBSize)
-        sprintf(buf, "%.2f %s", (double)val / kKiBSize, B_TRANSLATE_CONTEXT("KiB", K_I18N_COMMON));
+        sprintf(buf, "%.2f %s", (double)val / kKiBSize, B_TRANSLATE(skKilobyteString));
     else if (val < kGiBSize)
-        sprintf(buf, "%.2f %s", (double)val / kMiBSize, B_TRANSLATE_CONTEXT("MiB", K_I18N_COMMON));
+        sprintf(buf, "%.2f %s", (double)val / kMiBSize, B_TRANSLATE(skMegabyteString));
     else if (val < kTiBSize)
-        sprintf(buf, "%.2f %s", (double)val / kGiBSize, B_TRANSLATE_CONTEXT("GiB", K_I18N_COMMON));
+        sprintf(buf, "%.2f %s", (double)val / kGiBSize, B_TRANSLATE(skGigabyteString));
     else if (val < kPiBSize)
-        sprintf(buf, "%.2f %s", (double)val / kTiBSize, B_TRANSLATE_ALL("TiB", K_I18N_COMMON, "abbreviation of terrabyte"));
+        sprintf(buf, "%.2f %s", (double)val / kTiBSize, B_TRANSLATE(skTerrabyteString));
     else if (val < kEiBSize)
-        sprintf(buf, "%.2f %s", (double)val / kPiBSize, B_TRANSLATE_ALL("PiB", K_I18N_COMMON, "abbreviation of petabyte"));
+        sprintf(buf, "%.2f %s", (double)val / kPiBSize, B_TRANSLATE(skPetabyteString));
     else
-        sprintf(buf, "%.2f %s", (double)val / kEiBSize, B_TRANSLATE_ALL("EiB", K_I18N_COMMON, "abbreviation of exabyte"));
+        sprintf(buf, "%.2f %s", (double)val / kEiBSize, B_TRANSLATE(skExabyteString));
 
     BString str(buf);
     return str;

@@ -27,6 +27,7 @@
 #include "ArchiverMgr.h"
 #include "BarberPole.h"
 #include "BevelView.h"
+#include "CommonStrings.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
 #include "Preferences.h"
@@ -40,7 +41,6 @@
 #define B_TRANSLATION_CONTEXT "AddOnWindow"
 #else
 #define B_TRANSLATE(x) x
-#define B_TRANSLATE_CONTEXT(x, y) x
 #define B_TRANSLATE_SYSTEM_NAME(x) x
 #endif
 
@@ -69,7 +69,7 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
     float divider = 0;
     divider = MAX(divider, m_backViewMain->StringWidth(B_TRANSLATE("Archive name:")));
     divider = MAX(divider, m_backViewMain->StringWidth(B_TRANSLATE("Archive type:")));
-    divider = MAX(divider, m_backViewMain->StringWidth(B_TRANSLATE_CONTEXT("Password:", K_I18N_COMMON)));
+    divider = MAX(divider, m_backViewMain->StringWidth(B_TRANSLATE(skPasswordString)));
     divider += 10;
 
     m_fileName = new BTextControl(BRect(K_MARGIN, 2 * K_MARGIN, 0, 0), "AddOnWindow:fileName",
@@ -123,7 +123,7 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
         // We've seen enough there are no add-ons installed, no use proceeding!!! Call it quits NOW
         BString alertStr(B_TRANSLATE("Fatal error, no add-ons found! You cannot create any archives using %appname%."));
         alertStr.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
-        (new BAlert("Error", alertStr, B_TRANSLATE_CONTEXT("Close window", K_I18N_COMMON), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT))->Go();
+        (new BAlert("Error", alertStr, B_TRANSLATE(skCloseWindowString), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT))->Go();
         PostMessage(B_QUIT_REQUESTED);
         Show();
         return;
@@ -158,14 +158,14 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
 
     m_helpBtn = new BButton(BRect(K_MARGIN, sepView2->Frame().bottom - K_MARGIN - K_BUTTON_HEIGHT,
                                   K_MARGIN + K_BUTTON_WIDTH, sepView2->Frame().bottom - K_MARGIN),
-                            "AddOnWindow:HelpButton", B_TRANSLATE_CONTEXT("Help", K_I18N_COMMON), new BMessage(M_ADDON_HELP),
+                            "AddOnWindow:HelpButton", B_TRANSLATE(skHelpString), new BMessage(M_ADDON_HELP),
                             B_FOLLOW_LEFT | B_FOLLOW_BOTTOM, B_WILL_DRAW | B_NAVIGABLE);
     m_backView->AddChild(m_helpBtn);
 
     m_createBtn = new BButton(BRect(Bounds().right - K_MARGIN - 4 - K_BUTTON_WIDTH,
                                     sepView2->Frame().bottom - K_MARGIN - K_BUTTON_HEIGHT - 4,
                                     Bounds().right - K_MARGIN - 4, sepView2->Frame().bottom - K_MARGIN - 4),
-                              "AddOnWindow:CreateBtn", B_TRANSLATE_CONTEXT("Create", K_I18N_COMMON), new BMessage(M_ADDON_CREATE),
+                              "AddOnWindow:CreateBtn", B_TRANSLATE(skCreateString), new BMessage(M_ADDON_CREATE),
                               B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW | B_NAVIGABLE);
     m_backView->AddChild(m_createBtn);
     m_createBtn->MakeDefault(true);
@@ -280,7 +280,7 @@ bool AddOnWindow::QuitRequested()
         // We cannot pause the creation thread as we cannot get "zip", "gzip"s thread ID, atbest we can
         // only get thread ID of the thread that spawned zip etc., so forget it for the time being
         BAlert* alert = new BAlert("Quit", B_TRANSLATE("Operation is in progress, force it to stop?"),
-                                   B_TRANSLATE_CONTEXT("Cancel", K_I18N_COMMON), B_TRANSLATE_CONTEXT("Force stop", K_I18N_COMMON), NULL,
+                                   B_TRANSLATE(skCancelString), B_TRANSLATE(skForceStopString), NULL,
                                    B_WIDTH_AS_USUAL, B_WARNING_ALERT);
         alert->SetShortcut(0L, B_ESCAPE);
         alert->SetDefaultButton(alert->ButtonAt(1L));
@@ -344,7 +344,7 @@ void AddOnWindow::MessageReceived(BMessage* message)
                 {
                     m_inProgress = true;
                     UpdateStatus(B_TRANSLATE("Adding files to the archive"));
-                    m_createBtn->SetLabel(B_TRANSLATE_CONTEXT("Cancel", K_I18N_COMMON));
+                    m_createBtn->SetLabel(B_TRANSLATE(skCancelString));
                     m_createBtn->MakeDefault(false);
                     m_cancel = false;
                     EnableControls(false);
@@ -394,7 +394,7 @@ void AddOnWindow::MessageReceived(BMessage* message)
                 m_cancel = true;
                 m_inProgress = false;
                 m_createBtn->MakeDefault(true);
-                m_createBtn->SetLabel(B_TRANSLATE_CONTEXT("Create", K_I18N_COMMON));
+                m_createBtn->SetLabel(B_TRANSLATE(skCreateString));
 
                 EnableControls(true);
                 PostMessage(B_QUIT_REQUESTED);

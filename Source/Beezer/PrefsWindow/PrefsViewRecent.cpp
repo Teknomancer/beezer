@@ -11,6 +11,7 @@
 #include <stdlib.h>
 
 #include "AppConstants.h"
+#include "CommonStrings.h"
 #include "BitmapPool.h"
 #include "LocalUtils.h"
 #include "Preferences.h"
@@ -25,12 +26,11 @@
 #define B_TRANSLATION_CONTEXT "PrefsViewRecent"
 #else
 #define B_TRANSLATE(x) x
-#define B_TRANSLATE_CONTEXT(x, y) x
 #endif
 
 
 PrefsViewRecent::PrefsViewRecent(BRect frame)
-    : PrefsView(frame, B_TRANSLATE_CONTEXT("Recent", K_I18N_COMMON),
+    : PrefsView(frame, B_TRANSLATE(skRecentString),
                 B_TRANSLATE("Configure recent archives & extract locations"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Recent", 20, 20));

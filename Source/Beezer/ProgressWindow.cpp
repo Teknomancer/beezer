@@ -18,6 +18,7 @@
 #include "BarberPole.h"
 #include "BevelView.h"
 #include "BitmapPool.h"
+#include "CommonStrings.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
 #include "ProgressWindow.h"
@@ -31,7 +32,6 @@
 #define B_TRANSLATION_CONTEXT "ProgressWindow"
 #else
 #define B_TRANSLATE(x) x
-#define B_TRANSLATE_CONTEXT(x, y) x
 #endif
 
 
@@ -106,7 +106,7 @@ ProgressWindow::ProgressWindow(BWindow* callerWindow, BMessage* actionMessage,
     m_statusBar->SetMaxValue(fileCount);
     m_fileCount = fileCount;
 
-    m_cancelButton = new BButton("ProgressWindow:CancelButton", B_TRANSLATE_CONTEXT("Cancel", K_I18N_COMMON),
+    m_cancelButton = new BButton("ProgressWindow:CancelButton", B_TRANSLATE(skCancelString),
                                  new BMessage(M_STOP_OPERATION));
 
     // FIXME? this doesn't show up unless the SetValue call is changed below

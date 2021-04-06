@@ -11,6 +11,7 @@
 #include "AppConstants.h"
 #include "BarberPole.h"
 #include "BitmapPool.h"
+#include "CommonStrings.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
 #include "StaticBitmapView.h"
@@ -24,7 +25,6 @@
 #define B_TRANSLATION_CONTEXT "StatusWindow"
 #else
 #define B_TRANSLATE(x) x
-#define B_TRANSLATE_CONTEXT(x, y) x
 #endif
 
 
@@ -72,7 +72,7 @@ StatusWindow::StatusWindow(const char* title, BWindow* callerWindow, const char*
     if (cancel)
         layout.Add(BGroupLayoutBuilder(B_HORIZONTAL, 0)
                    .AddGlue()
-                   .Add(new BButton("StatusWindow:CancelButton", B_TRANSLATE_CONTEXT("Cancel", K_I18N_COMMON), new BMessage(M_STOP_OPERATION)))
+                   .Add(new BButton("StatusWindow:CancelButton", B_TRANSLATE(skCancelString), new BMessage(M_STOP_OPERATION)))
                    .AddGlue()
                   );
 

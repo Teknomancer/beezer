@@ -16,6 +16,7 @@
 
 #include "AppConstants.h"
 #include "ArchiverMgr.h"
+#include "CommonStrings.h"
 #include "BeezerApp.h"
 #include "BitmapPool.h"
 #include "LocalUtils.h"
@@ -32,7 +33,6 @@
 #define B_TRANSLATION_CONTEXT "PrefsViewInterface"
 #else
 #define B_TRANSLATE(x) x
-#define B_TRANSLATE_CONTEXT(x, y) x
 #endif
 
 #define M_COLOR_CHANGE       'clch'
@@ -100,10 +100,10 @@ void PrefsViewInterface::Render()
     m_actionLogChk->ResizeToPreferred();
 
     m_foldingPopUp = new BPopUpMenu("");
-    m_foldingPopUp->AddItem(new BMenuItem(B_TRANSLATE_CONTEXT("Show all items folded", K_I18N_COMMON), NULL));
-    m_foldingPopUp->AddItem(new BMenuItem(B_TRANSLATE_CONTEXT("Show first level unfolded", K_I18N_COMMON), NULL));
-    m_foldingPopUp->AddItem(new BMenuItem(B_TRANSLATE_CONTEXT("Show first 2 levels unfolded", K_I18N_COMMON), NULL));
-    m_foldingPopUp->AddItem(new BMenuItem(B_TRANSLATE_CONTEXT("Show all items unfolded", K_I18N_COMMON), NULL));
+    m_foldingPopUp->AddItem(new BMenuItem(B_TRANSLATE(skAllFoldedString), NULL));
+    m_foldingPopUp->AddItem(new BMenuItem(B_TRANSLATE(skFirstUnfoldedString), NULL));
+    m_foldingPopUp->AddItem(new BMenuItem(B_TRANSLATE(skTwoUnfoldedString), NULL));
+    m_foldingPopUp->AddItem(new BMenuItem(B_TRANSLATE(skAllUnfoldedString), NULL));
     m_foldingPopUp->ItemAt(3)->SetMarked(true);
 
     float maxW = MAX(StringWidth(B_TRANSLATE("Show infobar")), StringWidth(B_TRANSLATE("Show toolbar")));

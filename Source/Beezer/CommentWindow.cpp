@@ -16,6 +16,7 @@
 #include "AppConstants.h"
 #include "BitmapPool.h"
 #include "CommentWindow.h"
+#include "CommonStrings.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
 #include "Preferences.h"
@@ -30,13 +31,12 @@
 #define B_TRANSLATION_CONTEXT "CommentWindow"
 #else
 #define B_TRANSLATE(x) x
-#define B_TRANSLATE_CONTEXT(x, y) x
 #endif
 
 
 CommentWindow::CommentWindow(BWindow* callerWindow, const char* archiveName, const char* commentText,
                              BFont* displayFont)
-    : BWindow(BRect(0, 0, 590, 290), B_TRANSLATE_CONTEXT("Comment", K_I18N_COMMON), B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
+    : BWindow(BRect(0, 0, 590, 290), B_TRANSLATE(skCommentString), B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
               B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS)
 {
     m_callerWindow = callerWindow;
@@ -86,10 +86,10 @@ CommentWindow::CommentWindow(BWindow* callerWindow, const char* archiveName, con
 
     AddChild(scrollView);
 
-    BButton* saveButton = new BButton("CommentWindow:SaveButton", B_TRANSLATE_CONTEXT("Save", K_I18N_COMMON),
+    BButton* saveButton = new BButton("CommentWindow:SaveButton", B_TRANSLATE(skSaveString),
                                       new BMessage(M_SAVE_COMMENT));
 
-    BButton* closeButton = new BButton("CommentWindow:CloseButton", B_TRANSLATE_CONTEXT("Close window", K_I18N_COMMON),
+    BButton* closeButton = new BButton("CommentWindow:CloseButton", B_TRANSLATE(skCloseWindowString),
                                        new BMessage(B_QUIT_REQUESTED));
 
     AddChild(BGroupLayoutBuilder(B_HORIZONTAL)

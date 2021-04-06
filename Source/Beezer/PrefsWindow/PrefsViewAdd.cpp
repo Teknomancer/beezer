@@ -15,6 +15,7 @@
 
 #include "AppConstants.h"
 #include "BitmapPool.h"
+#include "CommonStrings.h"
 #include "LocalUtils.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
@@ -28,14 +29,13 @@
 #define B_TRANSLATION_CONTEXT "PrefsViewAdd"
 #else
 #define B_TRANSLATE(x) x
-#define B_TRANSLATE_CONTEXT(x) x
 #endif
 
 #define M_WARN               'warn'
 
 
 PrefsViewAdd::PrefsViewAdd(BRect frame)
-    : PrefsView(frame, B_TRANSLATE_CONTEXT("Add", K_I18N_COMMON), B_TRANSLATE("Settings related to adding entries to archives"))
+    : PrefsView(frame, B_TRANSLATE(skAddString), B_TRANSLATE("Settings related to adding entries to archives"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Add", 20, 20));
     Render();

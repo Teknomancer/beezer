@@ -16,6 +16,7 @@
 #include "BeezerApp.h"
 #include "BitmapMenuItem.h"
 #include "BitmapPool.h"
+#include "CommonStrings.h"
 #include "MainMenu.h"
 #include "MsgConstants.h"
 
@@ -27,7 +28,6 @@
 #else
 #define B_TRANSLATE(x) x
 #define B_TRANSLATE_COMMENT(x, y) x
-#define B_TRANSLATE_CONTEXT(x, y) x
 #define B_TRANSLATE_SYSTEM_NAME(x) x
 #endif
 
@@ -35,7 +35,7 @@
 MainMenu::MainMenu(BRect frame)
     : BMenuBar(frame, "MainMenu", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_ITEMS_IN_ROW, true)
 {
-    BString bufStr(B_TRANSLATE_CONTEXT("About", K_I18N_COMMON));
+    BString bufStr(B_TRANSLATE(skAboutString));
     bufStr << " " << B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE) << B_UTF8_ELLIPSIS;
 
     BMenu* appMenu = new BMenu(B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
@@ -61,7 +61,7 @@ MainMenu::MainMenu(BRect frame)
             .End()
             .AddItem(B_TRANSLATE("Close"), M_FILE_CLOSE, 'W')
             .AddSeparator()
-            .AddItem(B_TRANSLATE_CONTEXT("Delete", K_I18N_COMMON), M_FILE_DELETE)
+            .AddItem(B_TRANSLATE(skDeleteString), M_FILE_DELETE)
             .AddItem(B_TRANSLATE("Archive information"), M_FILE_ARCHIVE_INFO, 'I')
             .AddSeparator()
             .AddItem(B_TRANSLATE("Password…"), M_FILE_PASSWORD)
@@ -70,7 +70,7 @@ MainMenu::MainMenu(BRect frame)
             .GetMenu(m_editMenu)
             .AddItem(B_TRANSLATE("Copy"), M_EDIT_COPY, 'C')
             .AddSeparator()
-            .AddMenu(B_TRANSLATE_CONTEXT("Select all", K_I18N_COMMON))
+            .AddMenu(B_TRANSLATE(skSelectAllString))
                 .AddItem(B_TRANSLATE_COMMENT("Folders", "for 'Select all' menu"), M_EDIT_SELECT_ALL_DIRS)
                 .AddItem(B_TRANSLATE_COMMENT("Files", "for 'Select all' menu"), M_EDIT_DESELECT_ALL_FILES)
             .End()
@@ -82,7 +82,7 @@ MainMenu::MainMenu(BRect frame)
             .AddItem(B_TRANSLATE("Collapse all"), M_EDIT_COLLAPSE_ALL)
             .AddItem(B_TRANSLATE("Collapse selected"), M_EDIT_COLLAPSE_SELECTED)
         .End()
-        .AddMenu(B_TRANSLATE_CONTEXT("View", K_I18N_COMMON))
+        .AddMenu(B_TRANSLATE(skViewString))
             .GetMenu(m_viewMenu)
             .AddItem(B_TRANSLATE("Toolbar"), M_TOGGLE_TOOLBAR)
             .GetItem(viewToolbarItem)
@@ -92,30 +92,30 @@ MainMenu::MainMenu(BRect frame)
             .GetItem(viewActionLogItem)
             .AddMenu(B_TRANSLATE("Columns"))
                 .GetMenu(m_columnsSubMenu)
-                .AddItem(B_TRANSLATE_CONTEXT("Name", K_I18N_COMMON), M_TOGGLE_COLUMN_NAME).SetEnabled(false)
-                .AddItem(B_TRANSLATE_CONTEXT("Size", K_I18N_COMMON), M_TOGGLE_COLUMN_SIZE)
-                .AddItem(B_TRANSLATE_CONTEXT("Packed", K_I18N_COMMON), M_TOGGLE_COLUMN_PACKED)
-                .AddItem(B_TRANSLATE_CONTEXT("Ratio", K_I18N_COMMON), M_TOGGLE_COLUMN_RATIO)
-                .AddItem(B_TRANSLATE_CONTEXT("Path", K_I18N_COMMON), M_TOGGLE_COLUMN_PATH)
-                .AddItem(B_TRANSLATE_CONTEXT("Date", K_I18N_COMMON), M_TOGGLE_COLUMN_DATE)
-                .AddItem(B_TRANSLATE_CONTEXT("Method", K_I18N_COMMON), M_TOGGLE_COLUMN_METHOD)
-                .AddItem(B_TRANSLATE_CONTEXT("CRC", K_I18N_COMMON), M_TOGGLE_COLUMN_CRC)
+                .AddItem(B_TRANSLATE(skNameString), M_TOGGLE_COLUMN_NAME).SetEnabled(false)
+                .AddItem(B_TRANSLATE(skSizeString), M_TOGGLE_COLUMN_SIZE)
+                .AddItem(B_TRANSLATE(skPackedString), M_TOGGLE_COLUMN_PACKED)
+                .AddItem(B_TRANSLATE(skRatioString), M_TOGGLE_COLUMN_RATIO)
+                .AddItem(B_TRANSLATE(skPathString), M_TOGGLE_COLUMN_PATH)
+                .AddItem(B_TRANSLATE(skDateString), M_TOGGLE_COLUMN_DATE)
+                .AddItem(B_TRANSLATE(skMethodString), M_TOGGLE_COLUMN_METHOD)
+                .AddItem(B_TRANSLATE(skCRCString), M_TOGGLE_COLUMN_CRC)
             .End()
             .AddMenu(B_TRANSLATE("While opening"))
                 .GetMenu(m_foldingMenu)
-                .AddItem(B_TRANSLATE_CONTEXT("Show all items folded", K_I18N_COMMON), (BMessage*)NULL)
-                .AddItem(B_TRANSLATE_CONTEXT("Show first level unfolded", K_I18N_COMMON), (BMessage*)NULL)
-                .AddItem(B_TRANSLATE_CONTEXT("Show first 2 levels unfolded", K_I18N_COMMON), (BMessage*)NULL)
-                .AddItem(B_TRANSLATE_CONTEXT("Show all items unfolded", K_I18N_COMMON), (BMessage*)NULL)
+                .AddItem(B_TRANSLATE(skAllFoldedString), (BMessage*)NULL)
+                .AddItem(B_TRANSLATE(skFirstUnfoldedString), (BMessage*)NULL)
+                .AddItem(B_TRANSLATE(skTwoUnfoldedString), (BMessage*)NULL)
+                .AddItem(B_TRANSLATE(skAllUnfoldedString), (BMessage*)NULL)
                 .GetItem(startupFoldedItem)
             .End()
             .AddSeparator()
-            .AddItem(B_TRANSLATE_CONTEXT("Save as defaults", K_I18N_COMMON), M_SAVE_AS_DEFAULT)
-            .AddItem(B_TRANSLATE_CONTEXT("Save to archive", K_I18N_COMMON), M_SAVE_TO_ARCHIVE)
+            .AddItem(B_TRANSLATE(skSaveAsDefaultsString), M_SAVE_AS_DEFAULT)
+            .AddItem(B_TRANSLATE(skSaveToArchiveString), M_SAVE_TO_ARCHIVE)
         .End()
         .AddMenu(B_TRANSLATE("Actions"))
             .GetMenu(m_actionsMenu)
-            .AddItem(B_TRANSLATE_CONTEXT("Extract", K_I18N_COMMON), M_ACTIONS_EXTRACT, 'X')
+            .AddItem(B_TRANSLATE(skExtractString), M_ACTIONS_EXTRACT, 'X')
             .AddMenu(B_TRANSLATE(S_EXTRACT_TO))
                 .GetMenu(m_extractPathsMenu)
             .End()
@@ -124,19 +124,19 @@ MainMenu::MainMenu(BRect frame)
             .AddSeparator()
             .AddItem(B_TRANSLATE("Test"), M_ACTIONS_TEST, 'T')
             .AddItem(B_TRANSLATE("Search archive…"), M_ACTIONS_SEARCH_ARCHIVE, 'F')
-            .AddItem(B_TRANSLATE_CONTEXT("Comment", K_I18N_COMMON), M_ACTIONS_COMMENT, 'C', B_SHIFT_KEY)
+            .AddItem(B_TRANSLATE(skCommentString), M_ACTIONS_COMMENT, 'C', B_SHIFT_KEY)
             .AddSeparator()
             .AddItem(B_TRANSLATE("Add…"), M_ACTIONS_ADD, 'A', B_SHIFT_KEY)
-            .AddItem(B_TRANSLATE_CONTEXT("Delete", K_I18N_COMMON), M_ACTIONS_DELETE, 'D')
+            .AddItem(B_TRANSLATE(skDeleteString), M_ACTIONS_DELETE, 'D')
             .AddItem(B_TRANSLATE("Create folder…"), M_ACTIONS_CREATE_FOLDER, 'M')
         .End()
         .AddMenu(_bzr()->BuildToolsMenu())
             .GetMenu(m_toolsMenu)
         .End()
-        .AddMenu(B_TRANSLATE_CONTEXT("Windows", K_I18N_COMMON))
+        .AddMenu(B_TRANSLATE(skWindowsString))
             .GetMenu(m_windowsMenu)
         .End()
-        .AddMenu(B_TRANSLATE_CONTEXT("Help", K_I18N_COMMON))
+        .AddMenu(B_TRANSLATE(skHelpString))
             .AddItem(B_TRANSLATE("Open manual"), M_HELP_MANUAL)
             .AddSeparator()
             .AddItem(B_TRANSLATE("Visit website"), M_HELP_WEBSITE)
@@ -148,7 +148,7 @@ MainMenu::MainMenu(BRect frame)
 
     SetExtractPathsMenu(new BMenu(B_TRANSLATE(S_EXTRACT_TO)));
 
-    BMenuItem* selectAllItem = m_editMenu->FindItem(B_TRANSLATE_CONTEXT("Select all", K_I18N_COMMON));
+    BMenuItem* selectAllItem = m_editMenu->FindItem(B_TRANSLATE(skSelectAllString));
     selectAllItem->SetMessage(new BMessage(M_EDIT_SELECT_ALL));
     selectAllItem->SetShortcut('A', 0);
 

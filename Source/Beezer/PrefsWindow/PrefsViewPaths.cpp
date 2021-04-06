@@ -19,6 +19,7 @@
 
 #include "AppConstants.h"
 #include "BitmapPool.h"
+#include "CommonStrings.h"
 #include "ImageButton.h"
 #include "LocalUtils.h"
 #include "Preferences.h"
@@ -35,7 +36,6 @@
 #define B_TRANSLATION_CONTEXT "PrefsViewPaths"
 #else
 #define B_TRANSLATE(x) x
-#define B_TRANSLATE_CONTEXT(x, y) x
 #endif
 
 
@@ -104,7 +104,7 @@ void PrefsViewPaths::Render()
     m_openPathView->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
     m_openPathView->TextView()->DisallowChar(B_INSERT);
 
-    BString buttonText = B_TRANSLATE_CONTEXT("Select", K_I18N_COMMON);
+    BString buttonText = B_TRANSLATE(skSelectString);
     m_openPathBtn = new BButton(BRect(m_openPathView->Frame().right + m_margin, m_openPathView->Frame().top - 4,
                                       m_openPathView->Frame().right + m_margin + K_BUTTON_WIDTH,
                                       m_openPathView->Frame().top - 4 + K_BUTTON_HEIGHT), "PrefsViewPaths:openPathBtn",
@@ -355,7 +355,7 @@ void PrefsViewPaths::MessageReceived(BMessage* message)
                     {
                         BString errString = B_TRANSLATE("%filepath% is already present in your favorites");
                         errString.ReplaceAll("%filepath%", existingPath.String());
-                        BAlert* errAlert = new BAlert("Error", errString.String(), B_TRANSLATE_CONTEXT("OK", K_I18N_COMMON),
+                        BAlert* errAlert = new BAlert("Error", errString.String(), B_TRANSLATE(skOKString),
                                                       NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
                         errAlert->SetShortcut(0L, B_ESCAPE);
                         errAlert->Go();
