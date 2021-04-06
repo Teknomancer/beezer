@@ -34,7 +34,8 @@ class StartupWindow : public BWindow
                             *m_openBtn,
                             *m_openRecentBtn,
                             *m_toolsBtn,
-                            *m_prefsBtn;
+                            *m_prefsBtn,
+                            *m_helpBtn;
         RecentMgr*          m_recentMgr;
         BPopUpMenu*         m_recentMenu,
                             *m_toolsMenu;
