@@ -2,30 +2,21 @@
 // Copyright (c) 2002 Ramshankar (aka Teknomancer).
 // All rights reserved.
 
-#include <Entry.h>
-#include <Node.h>
-#include <Message.h>
-#include <Messenger.h>
-#include <File.h>
-#include <Directory.h>
-#include <FindDirectory.h>
-#include <SymLink.h>
-#include <Locker.h>
-#include <Autolock.h>
-#include <String.h>
-#include <Path.h>
-#include <Debug.h>
-
-#include <fs_attr.h>
-
-#include <sys/stat.h>
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "FSUtils.h"
 #include "Shared.h"
 
-typedef struct stat StatStruct;
+#include <Autolock.h>
+#include <Directory.h>
+#include <File.h>
+#include <FindDirectory.h>
+#include <Messenger.h>
+#include <Path.h>
+#include <SymLink.h>
+
+#include <fs_attr.h>
+#include <stdio.h>
+#include <stdlib.h>     // required for gcc2?
+#include <sys/stat.h>
 
 // Global object declares
 BLocker _fs_utils_locker("_fs_utils_lock", true);
@@ -91,7 +82,7 @@ void GetDirectoryInfo(BEntry* srcDir, int32& fileCount, int32& folderCount, off_
 
     // The fileCount, folderCount, totalSize must be initialized to zero before this function
     // is called (for the first time in its recursion - i.e. from the calling program)
-    folderCount++;
+    ++folderCount;
     BDirectory dir(srcDir);
     BEntry entry;
     while (dir.GetNextEntry(&entry, false) == B_OK)
@@ -103,7 +94,7 @@ void GetDirectoryInfo(BEntry* srcDir, int32& fileCount, int32& folderCount, off_
         {
             off_t size;
             entry.GetSize(&size);
-            fileCount ++;
+            ++fileCount;
             totalSize += size;
         }
         else
@@ -199,7 +190,7 @@ status_t CopyFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress,  
     }
     else if (srcEntry->IsFile())               // Handle copying of file
     {
-        StatStruct srcStat;
+        struct stat srcStat;
         BFile srcFile(srcEntry, B_READ_ONLY);
         srcFile.GetStat(&srcStat);
 
@@ -214,17 +205,17 @@ status_t CopyFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress,  
             system_info sysInfo;
             get_system_info(&sysInfo);
 
-            size_t freeSize = static_cast<size_t>((sysInfo.max_pages - sysInfo.used_pages) * B_PAGE_SIZE);
-            bufSize = freeSize / 4;                      // take 1/4 of RAM max
+            size_t const freeSize = static_cast<size_t>((sysInfo.max_pages - sysInfo.used_pages) * B_PAGE_SIZE);
+            bufSize = freeSize / 4;                     // take 1/4 of RAM max
             bufSize -= bufSize % (16 * 1024);           // Round to 16 KB boundaries
             if (bufSize < kMinBufferSize)               // at least kMinBufferSize
                 bufSize = kMinBufferSize;
-            else if (bufSize > kMaxBufferSize)           // no more than kMaxBufferSize
+            else if (bufSize > kMaxBufferSize)          // no more than kMaxBufferSize
                 bufSize = kMaxBufferSize;
         }
 
         BFile destFile;
-        status_t err = destFile.SetTo(destDir, destLeaf, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE);
+        status_t const err = destFile.SetTo(destDir, destLeaf, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE);
         if (err != B_OK) return err;
 
         char* buffer = new char[bufSize];
@@ -241,7 +232,7 @@ status_t CopyFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress,  
                 return BZR_CANCEL;
             }
 
-            ssize_t bytes = srcFile.Read(buffer, bufSize);
+            ssize_t const bytes = srcFile.Read(buffer, bufSize);
             if (bytes > 0)
             {
                 ssize_t updateBytes = 0;
@@ -322,13 +313,13 @@ status_t SplitFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress, 
     while (numerator > 0)
     {
         numerator /= 10;
-        width++;
+        ++width;
     }
 
     if (width == 1)        // Minimum is 01, 02, 03... not 1, 2, 3 even when pieces are less than 10
-        width++;
+        ++width;
 
-    StatStruct srcStat;
+    struct stat srcStat;
     BFile srcFile(srcEntry, B_READ_ONLY);
     srcFile.GetStat(&srcStat);
 
@@ -343,7 +334,7 @@ status_t SplitFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress, 
         system_info sysInfo;
         get_system_info(&sysInfo);
 
-        size_t freeSize = static_cast<size_t>((sysInfo.max_pages - sysInfo.used_pages) * B_PAGE_SIZE);
+        size_t const freeSize = static_cast<size_t>((sysInfo.max_pages - sysInfo.used_pages) * B_PAGE_SIZE);
         bufSize = freeSize / 4;                      // take 1/4 of RAM max
         bufSize -= bufSize % (16 * 1024);           // Round to 16 KB boundaries
         if (bufSize < kMinBufferSize)               // at least kMinBufferSize
@@ -363,8 +354,8 @@ status_t SplitFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress, 
         sprintf(bufFileName, "%s%s%0*d", destLeaf, sepString, width, i + 1);
         BString destFileName = bufFileName;
 
-        status_t err = destFile.SetTo(destDir, destFileName.String(),
-                                      B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE);
+        status_t const err = destFile.SetTo(destDir, destFileName.String(),
+                                            B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE);
 
         if (err != B_OK)
             return BZR_ERROR;
@@ -394,7 +385,6 @@ status_t SplitFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress, 
             //         so it will write 1 MB, then another 1 MB, but no we must write only 0.4 MB
             //         -- the below check does that, i.e. sets buffersize as 0.4 MB
             // Thus change buffersize to write denominations less than buffersize :)
-
             if (fragmentSize - bytesWritten < bufSize)
                 bufSize = fragmentSize - bytesWritten;
 
@@ -428,7 +418,7 @@ status_t SplitFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress, 
         {
             sprintf(bufFileName, "%s%s%0*d", destLeaf, sepString, width, 1);
             destFile.Unset();
-            status_t err = destFile.SetTo(destDir, bufFileName, B_READ_WRITE);
+            status_t const err = destFile.SetTo(destDir, bufFileName, B_READ_WRITE);
 
             if (err == B_OK)
                 CopyAttributes(&srcFile, &destFile, buffer, bufSize);
