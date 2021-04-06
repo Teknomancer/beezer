@@ -18,6 +18,7 @@
 #include "BeezerApp.h"
 #include "BevelView.h"
 #include "BitmapPool.h"
+#include "CommonStrings.h"
 #include "FileSplitterWindow.h"
 #include "ImageButton.h"
 #include "MsgConstants.h"
@@ -34,7 +35,6 @@
 #define B_TRANSLATION_CONTEXT "StartupWindow"
 #else
 #define B_TRANSLATE(x) x
-#define B_TRANSLATE_CONTEXT(x) x
 #define B_TRANSLATE_SYSTEM_NAME(x) x
 #endif
 
@@ -66,27 +66,27 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
 
     BitmapPool* _bmps = _glob_bitmap_pool;
 
-    m_createBtn = new ImageButton("StartupWindow:New", B_TRANSLATE_CONTEXT("New", K_I18N_COMMON),
+    m_createBtn = new ImageButton("StartupWindow:New", B_TRANSLATE(skNewString),
                                   _bmps->m_tbarNewBmp, NULL, new BMessage(M_FILE_NEW), false,
                                   ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon, false, true, true);
     m_createBtn->SetExplicitMinSize(BSize(K_TOOLBAR_WIDTH, -1));
 
-    m_openBtn = new ImageButton("StartupWindow:Open", B_TRANSLATE_CONTEXT("Open", K_I18N_COMMON),
+    m_openBtn = new ImageButton("StartupWindow:Open", B_TRANSLATE(skOpenString),
                                 _bmps->m_tbarOpenBmp, NULL, new BMessage(M_FILE_OPEN), false,
                                 ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon, false, true, true);
     m_openBtn->SetExplicitMinSize(BSize(K_TOOLBAR_WIDTH, -1));
 
-    m_openRecentBtn = new ImageButton("StartupWindow:OpenRecent", B_TRANSLATE_CONTEXT("Recent", K_I18N_COMMON),
+    m_openRecentBtn = new ImageButton("StartupWindow:OpenRecent", B_TRANSLATE(skRecentString),
                                       _bmps->m_tbarOpenRecentBmp, NULL, new BMessage(M_FILE_OPEN_RECENT), false,
                                       ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon, false, true, true);
     m_openRecentBtn->SetExplicitMinSize(BSize(K_TOOLBAR_WIDTH, -1));
 
-    m_toolsBtn = new ImageButton("StartupWindow:Tools", B_TRANSLATE_CONTEXT("Tools", K_I18N_COMMON),
+    m_toolsBtn = new ImageButton("StartupWindow:Tools", B_TRANSLATE(skToolsString),
                                  _bmps->m_tbarToolsBmp, NULL, new BMessage(M_TOOLS_LIST), false,
                                  ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon, false, true, true);
     m_toolsBtn->SetExplicitMinSize(BSize(K_TOOLBAR_WIDTH, -1));
 
-    m_prefsBtn = new ImageButton("StartupWindow:Prefs", B_TRANSLATE_CONTEXT("Settings", K_I18N_COMMON),
+    m_prefsBtn = new ImageButton("StartupWindow:Prefs", B_TRANSLATE(skSettingsString),
                                  _bmps->m_tbarPrefsBmp, NULL, new BMessage(M_EDIT_PREFERENCES), false,
                                  ui_color(B_PANEL_BACKGROUND_COLOR), kBelowIcon, false, true, true);
 
@@ -115,7 +115,7 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
 
     // Setup the tooltips
     m_createBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Create a new archive")));
-    m_openBtn->SetToolTip(const_cast<char*>(B_TRANSLATE_CONTEXT("Open an existing archive", K_I18N_COMMON)));
+    m_openBtn->SetToolTip(const_cast<char*>(B_TRANSLATE(skOpenExistingString)));
     m_openRecentBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Open a recently viewed archive")));
     m_prefsBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Edit application settings")));
     m_toolsBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Additional tools")));

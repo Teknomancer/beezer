@@ -24,6 +24,7 @@
 #include "Archiver.h"
 #include "ArkInfoWindow.h"
 #include "BitmapPool.h"
+#include "CommonStrings.h"
 #include "HashTable.h"
 #include "ListEntry.h"
 #include "LocalUtils.h"
@@ -39,7 +40,6 @@
 #define B_TRANSLATION_CONTEXT "ArkInfoWindow"
 #else
 #define B_TRANSLATE(x) x
-#define B_TRANSLATE_CONTEXT(x, y) x
 #endif
 
 
@@ -221,7 +221,7 @@ void ArkInfoWindow::FillDetails()
     if (m_entry->Exists() == false)
     {
         Hide();
-        (new BAlert("Error", B_TRANSLATE("Operation failed. The archive is missing."), B_TRANSLATE_CONTEXT("Close window", K_I18N_COMMON),
+        (new BAlert("Error", B_TRANSLATE("Operation failed. The archive is missing."), B_TRANSLATE(skCloseWindowString),
                     NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT))->Go();
         PostMessage(B_QUIT_REQUESTED);
     }
@@ -270,7 +270,7 @@ void ArkInfoWindow::FillDetails()
         bytesStr = "???";
     buf = StringFromBytes(compressedSize);
     if (compressedSize >= 1024LL)
-        buf << " (" << bytesStr << " " << B_TRANSLATE_CONTEXT("bytes", K_I18N_COMMON) << ")";
+        buf << " (" << bytesStr << " " << B_TRANSLATE(skbytesString) << ")";
 
     m_compressedSizeStr->SetText(buf);
 
@@ -288,7 +288,7 @@ void ArkInfoWindow::FillDetails()
         bytesStr = "???";
     buf = StringFromBytes(originalSize);
     if (originalSize >= 1024LL)
-        buf << " (" << bytesStr << " " << B_TRANSLATE_CONTEXT("bytes", K_I18N_COMMON) << ")";
+        buf << " (" << bytesStr << " " << B_TRANSLATE(skbytesString) << ")";
 
     m_originalSizeStr->SetText(buf);
 

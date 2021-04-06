@@ -31,6 +31,7 @@
 #include "BeezerApp.h"
 #include "BevelView.h"
 #include "BitmapPool.h"
+#include "CommonStrings.h"
 #include "FSUtils.h"
 #include "FileSplitterWindow.h"
 #include "LocalUtils.h"
@@ -210,10 +211,10 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
     // !! IMPORTANT !! Order is very critical, if the order below changes, the change must also be reflected
     // in "UpdateData()" function
     m_prefixPopUp = new BPopUpMenu("SizePrefix", true, true);
-    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE_CONTEXT("Bytes", K_I18N_COMMON), new BMessage(M_UPDATE_DATA)));
-    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE_CONTEXT("KiB", K_I18N_COMMON), new BMessage(M_UPDATE_DATA)));
-    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE_CONTEXT("MiB", K_I18N_COMMON), new BMessage(M_UPDATE_DATA)));
-    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE_CONTEXT("GiB", K_I18N_COMMON), new BMessage(M_UPDATE_DATA)));
+    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE(skBytesString), new BMessage(M_UPDATE_DATA)));
+    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE(skKilobyteString), new BMessage(M_UPDATE_DATA)));
+    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE(skMegabyteString), new BMessage(M_UPDATE_DATA)));
+    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE(skGigabyteString), new BMessage(M_UPDATE_DATA)));
     m_prefixPopUp->ItemAt(2L)->SetMarked(true);
     m_prefixField = new BMenuField(BRect(m_customSizeView->Frame().right + K_MARGIN,
                                          m_customSizeView->Frame().top - 2, m_innerView->Frame().right - K_MARGIN, 0),
@@ -404,7 +405,7 @@ bool FileSplitterWindow::QuitRequested()
         suspend_thread(m_thread);
 
         BAlert* alert = new BAlert("Quit", B_TRANSLATE("Splitting is in progress. Force it to stop?"),
-                                   B_TRANSLATE_CONTEXT("Cancel", K_I18N_COMMON), B_TRANSLATE_CONTEXT("Force stop", K_I18N_COMMON),
+                                   B_TRANSLATE(skCancelString), B_TRANSLATE(skForceStopString),
                                    NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
         alert->SetShortcut(0L, B_ESCAPE);
         alert->SetDefaultButton(alert->ButtonAt(1L));
@@ -449,7 +450,7 @@ void FileSplitterWindow::MessageReceived(BMessage* message)
                 m_cancel = false;
                 m_thread = spawn_thread(_splitter, "_splitter", B_NORMAL_PRIORITY, (void*)this);
                 resume_thread(m_thread);
-                m_splitBtn->SetLabel(B_TRANSLATE_CONTEXT("Cancel", K_I18N_COMMON));
+                m_splitBtn->SetLabel(B_TRANSLATE(skCancelString));
                 m_splitInProgress = true;
                 m_splitBtn->MakeDefault(false);
             }
@@ -492,17 +493,17 @@ void FileSplitterWindow::MessageReceived(BMessage* message)
             if (result == BZR_DONE)
             {
                 alert = new BAlert("Done", B_TRANSLATE("The file has been successfully split!"),
-                                   B_TRANSLATE_CONTEXT("OK", K_I18N_COMMON), NULL, NULL, B_WIDTH_AS_USUAL, B_INFO_ALERT);
+                                   B_TRANSLATE(skOKString), NULL, NULL, B_WIDTH_AS_USUAL, B_INFO_ALERT);
             }
             else if (result == BZR_CANCEL)
             {
                 alert = new BAlert("Cancel", B_TRANSLATE("Splitting of the file was cancelled"),
-                                   B_TRANSLATE_CONTEXT("OK", K_I18N_COMMON), NULL, NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
+                                   B_TRANSLATE(skOKString), NULL, NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
             }
             else
             {
                 alert = new BAlert("Error", B_TRANSLATE("An unknown error occured while splitting the file."),
-                                   B_TRANSLATE_CONTEXT("OK", K_I18N_COMMON), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
+                                   B_TRANSLATE(skOKString), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
             }
 
             if (result == BZR_DONE && m_createChk->Value() == B_CONTROL_ON)
@@ -601,10 +602,10 @@ void FileSplitterWindow::MessageReceived(BMessage* message)
                 m_dirPanel = new SelectDirPanel(B_OPEN_PANEL, new BMessenger(this), NULL, B_DIRECTORY_NODE,
                                                 false, new BMessage(M_SPLIT_FOLDER_SELECTED), NULL, true, false);
 
-                m_dirPanel->SetButtonLabel(B_DEFAULT_BUTTON, B_TRANSLATE_CONTEXT("Select", K_I18N_COMMON));
+                m_dirPanel->SetButtonLabel(B_DEFAULT_BUTTON, B_TRANSLATE(skSelectString));
                 m_dirPanel->Window()->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                 m_dirPanel->Window()->AddToSubset(this);
-                m_dirPanel->SetCurrentDirButton(B_TRANSLATE_CONTEXT("Select", K_I18N_COMMON));
+                m_dirPanel->SetCurrentDirButton(B_TRANSLATE(skSelectString));
 
                 if (m_dirPanel->Window()->LockLooper())
                 {
@@ -762,7 +763,7 @@ void FileSplitterWindow::UpdateData()
             if (BNumberFormat().Format(fmtStr, (double)size) != B_OK)
                 fmtStr = "???";
 
-            sizeStr << "  " << "(" << fmtStr << " " << B_TRANSLATE_CONTEXT("bytes", K_I18N_COMMON) << ")";
+            sizeStr << "  " << "(" << fmtStr << " " << B_TRANSLATE(skbytesString) << ")";
         }
 
         m_sizeStr->SetText(sizeStr.String());
@@ -777,10 +778,10 @@ void FileSplitterWindow::UpdateData()
 
             switch (m_prefixPopUp->IndexOf(m_prefixPopUp->FindMarked()))
             {
-                case 0: val << B_TRANSLATE_CONTEXT("bytes", K_I18N_COMMON); break;
-                case 1: val << B_TRANSLATE_CONTEXT("KiB", K_I18N_COMMON); break;
-                case 2: val << B_TRANSLATE_CONTEXT("MiB", K_I18N_COMMON); break;
-                case 3: val << B_TRANSLATE_CONTEXT("GiB", K_I18N_COMMON); break;
+                case 0: val << B_TRANSLATE(skbytesString); break;
+                case 1: val << B_TRANSLATE(skKilobyteString); break;
+                case 2: val << B_TRANSLATE(skMegabyteString); break;
+                case 3: val << B_TRANSLATE(skGigabyteString); break;
             }
 
             fragmentSize = BytesFromString((char*)val.String());
@@ -873,7 +874,7 @@ void FileSplitterWindow::CreateSelfJoiner()
     if (stubDir->IsDirectory() == false)
     {
         BAlert* err = new BAlert("Error", B_TRANSLATE("Stub folder not found.  Cannot create self-joining executable."),
-                                 B_TRANSLATE_CONTEXT("OK", K_I18N_COMMON), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
+                                 B_TRANSLATE(skOKString), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
         err->Go();
         return;
     }
