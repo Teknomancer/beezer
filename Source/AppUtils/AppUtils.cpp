@@ -2,26 +2,15 @@
 // Copyright (c) 2002 Ramshankar (aka Teknomancer).
 // All rights reserved.
 
-#include <Bitmap.h>
-#include <Resources.h>
-#include <Application.h>
-#include <Roster.h>
-#include <Directory.h>
-#include <FindDirectory.h>
-#include <Path.h>
-#include <String.h>
+#include "AppUtils.h"
+#include "Shared.h"
+
 #include <Locker.h>
-#include <Debug.h>
-#include <Autolock.h>
 
 #include <cassert>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-
-#include "AppUtils.h"
-#include "Shared.h"
 
 // Global object declares
 BLocker _apputils_locker("_app_utils_lock", true);
