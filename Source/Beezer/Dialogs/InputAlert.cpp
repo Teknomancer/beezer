@@ -13,14 +13,14 @@
 
 #include <cassert>
 
-static const uint32 kButton0    = '_b0_';
-static const uint32 kButton2    = '_b2_';
-static const uint32 kButton1    = '_b1_';
-static const uint32 kInputBox   = '_ip_';
+static const uint32 kButton0  = '_b0_';
+static const uint32 kButton2  = '_b2_';
+static const uint32 kButton1  = '_b1_';
+static const uint32 kInputBox = '_ip_';
 
-const uint32 InputAlert::kInputMessage      = 'inpt';
-const char* InputAlert::kInputText          = "input_field";
-const char* InputAlert::kButtonIndex        = "button_index";
+const uint32 InputAlert::kInputMessage = 'inpt';
+const char* InputAlert::kInputText     = "input_field";
+const char* InputAlert::kButtonIndex   = "button_index";
 
 
 InputAlert::InputAlert(const char* title, const char* text, const char* initialText, bool hideTyping,
