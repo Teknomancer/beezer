@@ -53,7 +53,7 @@ void PrefsViewMisc::Render()
 
     // Add the startup fields
     m_startupPopUp = new BPopUpMenu("");
-    m_startupField = new BMenuField(BRect(m_margin, m_margin, Frame().Width(), 0),
+    m_startupField = new BMenuField(BRect(m_margin, m_margin, Bounds().right - m_margin, 0),
                                     "PrefsViewMisc:startupField", buf2.String(), (BMenu*)m_startupPopUp,
                                     B_FOLLOW_LEFT, B_WILL_DRAW);
     m_startupField->SetDivider(maxWidth);
@@ -66,7 +66,7 @@ void PrefsViewMisc::Render()
 
     // Add the quit fields
     m_quitPopUp = new BPopUpMenu("");
-    m_quitField = new BMenuField(BRect(m_margin, m_startupField->Frame().top + m_vGap, Frame().Width(), 0),
+    m_quitField = new BMenuField(BRect(m_margin, m_startupField->Frame().top + m_vGap, Bounds().right - m_margin, 0),
                                  "PrefsViewMisc:quitField", B_TRANSLATE("When last archive is closed:"), (BMenu*)m_quitPopUp,
                                  B_FOLLOW_LEFT, B_WILL_DRAW);
     m_quitField->SetDivider(maxWidth);
@@ -99,7 +99,7 @@ void PrefsViewMisc::Render()
 
     m_arkTypePopUp = new BPopUpMenu("");
     m_arkTypeField = new BMenuField(BRect(m_margin, m_mimeBtn->Frame().bottom + 2 * m_margin,
-                                          Frame().Width(), 0), "PrefsViewMisc:arkTypeField", B_TRANSLATE("Default archiver:"),
+                                          Bounds().right - m_margin, 0), "PrefsViewMisc:arkTypeField", B_TRANSLATE("Default archiver:"),
                                     (BMenu*)m_arkTypePopUp, B_FOLLOW_LEFT, B_WILL_DRAW);
     m_arkTypeField->SetDivider(be_plain_font->StringWidth(B_TRANSLATE("Default archiver:")) + 5);
 
