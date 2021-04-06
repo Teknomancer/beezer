@@ -4,6 +4,7 @@
 // All rights reserved.
 
 #include "FileSplitterWindow.h"
+#include "AppConstants.h"
 #include "BeezerApp.h"
 #include "BevelView.h"
 #include "BitmapPool.h"
