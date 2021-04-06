@@ -26,7 +26,7 @@ int main()
     str << "\n" << "© 2005 Ramshankar.\n\n";
     str << "This must be placed in:\n";
     str << "/boot/home/config/add-ons/Tracker\n\n";
-    str << "To use this add-on choose the files you with to archive, right-click them and choose this add-on…";
+    str << "To use this add-on choose the files you with to archive, right-click them and choose this add-on" B_UTF8_ELLIPSIS;
 
     str.Prepend("alert \"");
     str.Append("\"");

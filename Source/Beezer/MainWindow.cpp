@@ -605,7 +605,7 @@ void MainWindow::MessageReceived(BMessage* message)
             entry_ref tempDirRef;
             tempDirEntry.GetRef(&tempDirRef);
 
-            m_statusWnd = new StatusWindow(B_TRANSLATE("Extracting…"), this, B_TRANSLATE("Please wait…"), &m_publicThreadCancel);
+            m_statusWnd = new StatusWindow(B_TRANSLATE("Extracting" B_UTF8_ELLIPSIS), this, B_TRANSLATE("Please wait" B_UTF8_ELLIPSIS), &m_publicThreadCancel);
 
             viewMsg->AddPointer(kWindowPtr, (void*)this);
             viewMsg->AddPointer(kArchiverPtr, (void*)m_archiver);
@@ -674,7 +674,7 @@ void MainWindow::MessageReceived(BMessage* message)
             bool allFiles = true;
             BMenu* sourceMenu = source->Menu();
             if (sourceMenu && sourceMenu->Superitem() && strcmp(sourceMenu->Superitem()->Label(),
-                    B_TRANSLATE(S_EXTRACT_SELECTED)) == 0)
+                    B_TRANSLATE(skExtractSelectedString)) == 0)
             {
                 allFiles = false;
             }
@@ -789,7 +789,7 @@ void MainWindow::MessageReceived(BMessage* message)
             // While this thread counts the directories and files sizes in message, we setup a blocker-status
             // window so that it shows barber pole PLUS blocks our MainWindow preventing the user from
             // doing other operations (2-in-1) ! Plus user can cancel the operation - (3-in-1) !! Yay!
-            m_statusWnd = new StatusWindow(B_TRANSLATE("Preparing to add…"), this, B_TRANSLATE("Gathering information"),
+            m_statusWnd = new StatusWindow(B_TRANSLATE("Preparing to add" B_UTF8_ELLIPSIS), this, B_TRANSLATE("Gathering information"),
                                            &m_publicThreadCancel);
 
             BMessage* countMsg = new BMessage(*message);
@@ -902,8 +902,8 @@ void MainWindow::MessageReceived(BMessage* message)
 
                 copyMsg->AddString(kTempPath, copyToDir.String());
                 copyMsg->AddString(kLaunchDir, m_tempDirPath);
-                copyMsg->AddString(kProgressAction, B_TRANSLATE("Copying…"));
-                copyMsg->AddString(kPreparing, B_TRANSLATE("Preparing to add…"));
+                copyMsg->AddString(kProgressAction, B_TRANSLATE("Copying" B_UTF8_ELLIPSIS));
+                copyMsg->AddString(kPreparing, B_TRANSLATE("Preparing to add" B_UTF8_ELLIPSIS));
                 copyMsg->AddPointer(kSuperItem, (void*)selectedItem);         // Will be used in M_ADD_DONE
                 copyMsg->AddString(kSuperItemPath, itemPath);                // Will be used in _copier
 
@@ -913,7 +913,7 @@ void MainWindow::MessageReceived(BMessage* message)
                 copyMsg->AddPointer(kCancel, (void*)cancel);
                 copyMsg->AddPointer(kWindowPtr, (void*)this);
 
-                m_logTextView->AddText(B_TRANSLATE("Preparing to add…"), true, false, false);
+                m_logTextView->AddText(B_TRANSLATE("Preparing to add" B_UTF8_ELLIPSIS), true, false, false);
                 m_logTextView->AddText(" ", false, false, false);
                 resume_thread(spawn_thread(_copier, "_copier", B_NORMAL_PRIORITY, (void*)copyMsg));
             }
@@ -977,8 +977,8 @@ void MainWindow::MessageReceived(BMessage* message)
 
             addMsg->what = M_ACTIONS_ADD;
             addMsg->RemoveName(kProgressAction);
-            addMsg->AddString(kProgressAction, B_TRANSLATE("Adding…"));
-            addMsg->AddString(kPreparing, B_TRANSLATE("Preparing to add…"));
+            addMsg->AddString(kProgressAction, B_TRANSLATE("Adding" B_UTF8_ELLIPSIS));
+            addMsg->AddString(kPreparing, B_TRANSLATE("Preparing to add" B_UTF8_ELLIPSIS));
 
             m_progressWnd = new ProgressWindow(this, addMsg, messenger, cancel);
 
@@ -993,7 +993,7 @@ void MainWindow::MessageReceived(BMessage* message)
                 m_archiveEntry.Remove();    // Overwrite existing file if any
 
             SetTitle(m_archivePath.Leaf());
-            m_logTextView->AddText(B_TRANSLATE("Adding…"), true, false, false);
+            m_logTextView->AddText(B_TRANSLATE("Adding" B_UTF8_ELLIPSIS), true, false, false);
             m_logTextView->AddText(" ", false, false, false);
             resume_thread(spawn_thread(_adder, "_adder", B_NORMAL_PRIORITY, (void*)addMsg));
             break;
@@ -1198,7 +1198,7 @@ void MainWindow::MessageReceived(BMessage* message)
             message->FindBool(kPersistent, &persistent);
 
             // Add logtext view descriptive text
-            BString searchText = B_TRANSLATE("Searching for \"%searchstring%\"…");
+            BString searchText = B_TRANSLATE("Searching for \"%searchstring%\"" B_UTF8_ELLIPSIS);
             searchText << " ";
             searchText.ReplaceFirst("%searchstring%", message->FindString(kExpr));
             m_logTextView->AddText(searchText.String(), true, true, false);
@@ -1283,7 +1283,7 @@ void MainWindow::MessageReceived(BMessage* message)
             const char* comment = NULL;
             message->FindString(kCommentContent, &comment);
 
-            m_statusWnd = new StatusWindow(B_TRANSLATE("Saving comment…"), this, B_TRANSLATE("Please wait…"), NULL);
+            m_statusWnd = new StatusWindow(B_TRANSLATE("Saving comment" B_UTF8_ELLIPSIS), this, B_TRANSLATE("Please wait" B_UTF8_ELLIPSIS), NULL);
             m_archiver->SetComment(const_cast<char*>(comment), MakeTempDirectory());
             update_mime_info(m_archivePath.Path(), false, true, true);
             m_statusWnd->PostMessage(M_CLOSE);
@@ -1595,7 +1595,7 @@ void MainWindow::AddToolBar()
                                      new BMessage(M_ACTIONS_SEARCH_ARCHIVE), false, backColor, kBelowIcon);
     m_searchButton->SetToolTip(const_cast<char*>(B_TRANSLATE("Search for files in the archive")));
 
-    m_extractButton = new ImageButton(buttonRect, "MainWindow:Extact", B_TRANSLATE("Extract"),
+    m_extractButton = new ImageButton(buttonRect, "MainWindow:Extact", B_TRANSLATE(skExtractString),
                                       _bmps->m_tbarExtractBmp, _bmps->m_tbarExtractDisabledBmp,
                                       new BMessage(M_ACTIONS_EXTRACT), true, backColor, kBelowIcon);
     m_extractButton->SetEnabled(false);
@@ -1826,7 +1826,7 @@ void MainWindow::UpdateFocusNeeders(bool enable)
 void MainWindow::UpdateSelectNeeders(bool enable)
 {
     // Items that should be enabled when any item is selected, disabled when no selection
-    m_mainMenu->m_actionsMenu->FindItem(B_TRANSLATE(S_EXTRACT_SELECTED))->SetEnabled(enable);
+    m_mainMenu->m_actionsMenu->FindItem(B_TRANSLATE(skExtractSelectedString))->SetEnabled(enable);
     m_mainMenu->m_editMenu->FindItem(M_EDIT_COPY)->SetEnabled(enable);
     m_mainMenu->m_actionsMenu->FindItem(M_ACTIONS_DELETE)->SetEnabled(enable);
     m_deleteButton->SetEnabled(enable);
@@ -1862,12 +1862,12 @@ void MainWindow::UpdateValidArchiveNeeders(bool enable)
     m_searchButton->SetEnabled(enable);
 
     m_mainMenu->m_actionsMenu->FindItem(M_ACTIONS_EXTRACT)->SetEnabled(enable);
-    m_mainMenu->m_actionsMenu->FindItem(B_TRANSLATE(S_EXTRACT_TO))->SetEnabled(enable);
+    m_mainMenu->m_actionsMenu->FindItem(B_TRANSLATE(skExtractToString))->SetEnabled(enable);
 
     if (enable == true)
-        m_mainMenu->m_actionsMenu->FindItem(B_TRANSLATE(S_EXTRACT_SELECTED))->SetEnabled(m_listView->HasSelection());
+        m_mainMenu->m_actionsMenu->FindItem(B_TRANSLATE(skExtractSelectedString))->SetEnabled(m_listView->HasSelection());
     else
-        m_mainMenu->m_actionsMenu->FindItem(B_TRANSLATE(S_EXTRACT_SELECTED))->SetEnabled(false);
+        m_mainMenu->m_actionsMenu->FindItem(B_TRANSLATE(skExtractSelectedString))->SetEnabled(false);
 
     // Comments-alone we will handle it differently - first the format must support comments,
     BMenuItem* item = m_mainMenu->m_actionsMenu->FindItem(M_ACTIONS_COMMENT);
@@ -1971,14 +1971,14 @@ void MainWindow::UpdateNewWindow()
 
 void MainWindow::UpdateRecentMenu()
 {
-    m_mainMenu->SetRecentMenu(m_recentMgr->BuildMenu(B_TRANSLATE(S_OPEN), "refs", be_app));
+    m_mainMenu->SetRecentMenu(m_recentMgr->BuildMenu(B_TRANSLATE(skOpenMenuString), "refs", be_app));
     m_openButton->SetContextMenu(m_recentMgr->BuildPopUpMenu(NULL, "refs", be_app));
 }
 
 
 void MainWindow::UpdateExtractMenu()
 {
-    BMenu* menu = m_extractMgr->BuildMenu(B_TRANSLATE(S_EXTRACT_TO), kPath, NULL);
+    BMenu* menu = m_extractMgr->BuildMenu(B_TRANSLATE(skExtractToString), kPath, NULL);
     AddFavouriteExtractPaths(menu);
     AddDynamicExtractPaths(menu);
 
@@ -1986,13 +1986,13 @@ void MainWindow::UpdateExtractMenu()
     AddFavouriteExtractPaths((BMenu*)popupMenu);
     AddDynamicExtractPaths((BMenu*)popupMenu);
 
-    BMenuItem* item = m_mainMenu->m_actionsMenu->FindItem(B_TRANSLATE(S_EXTRACT_SELECTED));
+    BMenuItem* item = m_mainMenu->m_actionsMenu->FindItem(B_TRANSLATE(skExtractSelectedString));
     bool enable = item->IsEnabled();
 
     m_mainMenu->SetExtractPathsMenu(menu);
     m_extractButton->SetContextMenu(popupMenu);
 
-    m_mainMenu->m_actionsMenu->FindItem(B_TRANSLATE(S_EXTRACT_SELECTED))->SetEnabled(enable);
+    m_mainMenu->m_actionsMenu->FindItem(B_TRANSLATE(skExtractSelectedString))->SetEnabled(enable);
 }
 
 
@@ -2076,7 +2076,7 @@ void MainWindow::DeleteFilesFromArchive()
     m_deleteDirList = new BList(m_listView->FullListSelectionCount());
 
     m_publicThreadCancel = false;        // Reset this
-    m_statusWnd = new StatusWindow(B_TRANSLATE("Preparing to delete…"), this,
+    m_statusWnd = new StatusWindow(B_TRANSLATE("Preparing to delete" B_UTF8_ELLIPSIS), this,
                                    B_TRANSLATE("Gathering information"), &m_publicThreadCancel);
 
     ListEntry* selEntry(NULL);
@@ -2181,8 +2181,8 @@ void MainWindow::DeleteFilesFromArchive()
     }
 
     msg->AddInt32(kCount, count);
-    msg->AddString(kPreparing, B_TRANSLATE("Preparing to delete…"));
-    msg->AddString(kProgressAction, B_TRANSLATE("Deleting…"));
+    msg->AddString(kPreparing, B_TRANSLATE("Preparing to delete" B_UTF8_ELLIPSIS));
+    msg->AddString(kProgressAction, B_TRANSLATE("Deleting" B_UTF8_ELLIPSIS));
 
     // Proceed to remove files
     BMessenger* messenger(NULL);
@@ -2197,7 +2197,7 @@ void MainWindow::DeleteFilesFromArchive()
     threadInfo->AddMessage(kFileList, msg);
     delete msg;
 
-    m_logTextView->AddText(B_TRANSLATE("Deleting…"), true, false, false);
+    m_logTextView->AddText(B_TRANSLATE("Deleting" B_UTF8_ELLIPSIS), true, false, false);
 
     resume_thread(spawn_thread(_deletor, "_deletor", B_NORMAL_PRIORITY, (void*)threadInfo));
 }
@@ -2331,8 +2331,8 @@ void MainWindow::TestArchive()
     volatile bool* cancel;
 
     msg.AddInt32(kCount, m_fileList->CountItems());
-    msg.AddString(kPreparing, B_TRANSLATE("Preparing to test…"));
-    msg.AddString(kProgressAction, B_TRANSLATE("Testing…"));
+    msg.AddString(kPreparing, B_TRANSLATE("Preparing to test" B_UTF8_ELLIPSIS));
+    msg.AddString(kProgressAction, B_TRANSLATE("Testing" B_UTF8_ELLIPSIS));
 
     BMessenger* messenger = NULL;
     m_progressWnd = new ProgressWindow(this, &msg, messenger, cancel);
@@ -2343,7 +2343,7 @@ void MainWindow::TestArchive()
     threadInfo->AddPointer(kArchiverPtr, (void*)m_archiver);
     threadInfo->AddPointer(kCancel, (void*)cancel);
 
-    m_logTextView->AddText(B_TRANSLATE("Testing…"));
+    m_logTextView->AddText(B_TRANSLATE("Testing" B_UTF8_ELLIPSIS));
     thread_id tst_id = spawn_thread(_tester, "_tester", B_NORMAL_PRIORITY, (void*)threadInfo);
     resume_thread(tst_id);
 }
@@ -2439,7 +2439,7 @@ void MainWindow::ExtractDone(BMessage* message)
             {
                 BAlert* alert = new BAlert("Error",
                                            B_TRANSLATE("A password protection error has occurred.  Please set the correct password and retry"),
-                                           B_TRANSLATE(skCancelString), B_TRANSLATE("Set password…"),
+                                           B_TRANSLATE(skCancelString), B_TRANSLATE("Set password" B_UTF8_ELLIPSIS),
                                            NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT);
                 if (alert->Go() == 1L)
                     PostMessage(M_FILE_PASSWORD);
@@ -2609,8 +2609,8 @@ void MainWindow::ExtractArchive(entry_ref refToDir, bool fullArchive)
         msg.AddInt32(kCount, fileCount);
     }
 
-    msg.AddString(kPreparing, B_TRANSLATE("Preparing to extract…"));
-    msg.AddString(kProgressAction, B_TRANSLATE("Extracting…"));
+    msg.AddString(kPreparing, B_TRANSLATE("Preparing to extract" B_UTF8_ELLIPSIS));
+    msg.AddString(kProgressAction, B_TRANSLATE("Extracting" B_UTF8_ELLIPSIS));
 
     BMessenger* messenger(NULL);
     volatile bool* cancel;
@@ -2854,7 +2854,7 @@ int32 MainWindow::AddItemsFromList(int32 index, int32* totalItems)
 void MainWindow::SetupArchiver(entry_ref* ref, char* mimeString)
 {
     // Initialise archiver based either on ref, or on the passed-in mimeString
-    m_logTextView->AddText(B_TRANSLATE("Detecting format…"), true, false, false);
+    m_logTextView->AddText(B_TRANSLATE("Detecting format" B_UTF8_ELLIPSIS), true, false, false);
     char type[B_MIME_TYPE_LENGTH];
     if (ref)
     {
@@ -2896,7 +2896,7 @@ void MainWindow::SetupArchiver(entry_ref* ref, char* mimeString)
     }
 
     m_logTextView->AddText(B_TRANSLATE("Done."), false, false, false);
-    m_logTextView->AddText(B_TRANSLATE("Verifying archiver…"), true, false, false);
+    m_logTextView->AddText(B_TRANSLATE("Verifying archiver" B_UTF8_ELLIPSIS), true, false, false);
     if ((errCode = m_archiver->InitCheck()) != BZR_DONE)    // Type is supported,
     {
         // but add-on has error initializing
@@ -2991,7 +2991,7 @@ void MainWindow::OpenArchive()
     if (m_archiver == NULL)
         return;
 
-    m_logTextView->AddText(B_TRANSLATE("Loading archive…"));
+    m_logTextView->AddText(B_TRANSLATE("Loading archive" B_UTF8_ELLIPSIS));
     UpdateIfNeeded();
 
     BMessage* openMsg = new BMessage('open');
@@ -3010,7 +3010,7 @@ void MainWindow::OpenArchive()
     // which would lead to the worker thread not being quit. Otherwise it does a normal open
 
     m_criticalSection = true;        // Tells QuitRequested() not to grant permission to close window
-    m_statusWnd = new StatusWindow(B_TRANSLATE("Preparing to open…"), this, B_TRANSLATE("Please wait…"), NULL, false);
+    m_statusWnd = new StatusWindow(B_TRANSLATE("Preparing to open" B_UTF8_ELLIPSIS), this, B_TRANSLATE("Please wait" B_UTF8_ELLIPSIS), NULL, false);
     thread_id tid = spawn_thread(_opener, "_opener", B_NORMAL_PRIORITY, (void*)openMsg);
     resume_thread(tid);
     while (1)
@@ -3320,7 +3320,7 @@ bool MainWindow::ConfirmAddOperation(const char* addingUnderPath, BMessage* refs
                     strftime(dateTimeBuf, 256, "%b %d %Y, %I:%M:%S %p", &mod_tm);
                     strftime(existingTimeBuf, 256, "%b %d %Y, %I:%M:%S %p", &existingTime);
 
-                    confirmBufStr = B_TRANSLATE("File already exists…");
+                    confirmBufStr = B_TRANSLATE("File already exists" B_UTF8_ELLIPSIS);
 
                     // append ... \n\tname\n\t\t(size, date)
                     confirmBufStr << "\n\t" << hashEntry->m_clvItem->GetColumnContentText(2) << "\n\t\t("
@@ -3498,8 +3498,8 @@ void MainWindow::AddNewFolder()
     {
         if (buttonIndex == 1L)
         {
-            m_statusWnd = new StatusWindow(B_TRANSLATE("Creating folder…"), this,
-                                           B_TRANSLATE("Please wait…"), NULL);
+            m_statusWnd = new StatusWindow(B_TRANSLATE("Creating folder" B_UTF8_ELLIPSIS), this,
+                                           B_TRANSLATE("Please wait" B_UTF8_ELLIPSIS), NULL);
 
             MakeTempDirectory();
             BString mkdirPath = m_tempDirPath;
@@ -3527,7 +3527,7 @@ void MainWindow::AddNewFolder()
                 return;
             }
 
-            m_logTextView->AddText(B_TRANSLATE("Creating folder…"), true, false, false);
+            m_logTextView->AddText(B_TRANSLATE("Creating folder" B_UTF8_ELLIPSIS), true, false, false);
             m_logTextView->AddText(" ", false, false, false);
 
             create_directory(mkdirPath.String(), 0777);

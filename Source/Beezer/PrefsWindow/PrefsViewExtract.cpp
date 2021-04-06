@@ -8,6 +8,7 @@
 #include <String.h>
 
 #include "AppConstants.h"
+#include "CommonStrings.h"
 #include "BitmapPool.h"
 #include "LocalUtils.h"
 #include "Preferences.h"
@@ -27,7 +28,7 @@
 
 
 PrefsViewExtract::PrefsViewExtract(BRect frame)
-    : PrefsView(frame, B_TRANSLATE("Extract"), B_TRANSLATE("Extraction related settings"))
+    : PrefsView(frame, B_TRANSLATE(skExtractString), B_TRANSLATE("Extraction related settings"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Extract", 20, 20));
     Render();
