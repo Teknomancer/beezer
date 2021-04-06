@@ -3,41 +3,37 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <Bitmap.h>
-#include <Region.h>
-#include <View.h>
-
-#include <string.h>
-#include <malloc.h>
-
+#include "PrefsListItem.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
-#include "PrefsListItem.h"
 #include "UIConstants.h"
+
+#include <Bitmap.h>
+#include <View.h>
 
 
 PrefsListItem::PrefsListItem(const char* text, BBitmap* bmp, bool makeBold)
-    : BStringItem(text)
+    : BStringItem(text),
+    m_fontDelta(0),
+    m_makeBold(makeBold),
+    m_bitmap(bmp),
+    m_selBackColor {0,0,0,0},
+    m_selTextColor {0,0,0,0}
 {
     font_height fntHt;
-    be_plain_font->GetHeight(&fntHt);
-    m_fontDelta = fntHt.ascent / 2;
-    m_makeBold = makeBold;
-    m_bitmap = bmp;
-    if (m_makeBold == false)
-        m_fontDelta = 3;
-
-    rgb_color actFore = _prefs_interface.FindColorDef(kPfActFore, K_ACTIVE_FORE_COLOR);
-    rgb_color actBack = _prefs_interface.FindColorDef(kPfActBack, K_ACTIVE_SELECT_COLOR);
-
-    m_selTextColor = actFore;
-    m_selBackColor = actBack;
+    if (makeBold == true)
+        be_bold_font->GetHeight(&fntHt);
+    else
+        be_plain_font->GetHeight(&fntHt);
+    m_fontDelta = fntHt.ascent / 2 ;
+    m_selTextColor = _prefs_interface.FindColorDef(kPfActFore, K_ACTIVE_FORE_COLOR);
+    m_selBackColor = _prefs_interface.FindColorDef(kPfActBack, K_ACTIVE_SELECT_COLOR);
 }
 
 
 PrefsListItem::~PrefsListItem()
 {
-    // and NO we don't delete m_bitmap as its allocated/de-allocated by calling side
+    // and NO we don't delete m_bitmap as its allocated/de-allocated by the caller.
 }
 
 
@@ -45,8 +41,7 @@ void PrefsListItem::DrawItem(BView* owner, BRect frame, bool complete)
 {
     if (IsSelected() || complete)
     {
-        rgb_color color;
-        color = IsSelected() ? m_selBackColor : owner->ViewColor();
+        rgb_color const color =  IsSelected() ? m_selBackColor : owner->ViewColor();
         owner->SetHighColor(color);
         owner->FillRect(frame);
         owner->SetLowColor(color);
@@ -93,9 +88,8 @@ void PrefsListItem::DrawItem(BView* owner, BRect frame, bool complete)
 
     if (m_bitmap)
     {
-        float bmpWidth = m_bitmap->Bounds().Width();
-        float bmpHeight = m_bitmap->Bounds().Height();
-        float itemWidth = (frame.right - frame.left);
+        float const bmpWidth = m_bitmap->Bounds().Width();
+        float const bmpHeight = m_bitmap->Bounds().Height();
 
         // Draw bitmap at center of item
         owner->SetDrawingMode(B_OP_ALPHA);
