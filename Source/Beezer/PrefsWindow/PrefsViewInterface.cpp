@@ -70,7 +70,7 @@ void PrefsViewInterface::Render()
 
     m_colorPopUp = new BPopUpMenu("");
     m_colorField = new BMenuField(BRect(outerView->Frame().right + 3 * m_margin,
-                                        outerView->Frame().top + 2, Frame().Width(), 0),
+                                        outerView->Frame().top + 2, Bounds().right - m_margin, 0),
                                   "PrefsViewInterface:colorField", NULL, (BMenu*)m_colorPopUp, B_FOLLOW_LEFT,
                                   B_WILL_DRAW);
     m_colorPopUp->AddItem(new BMenuItem(B_TRANSLATE("Selected text color"), new BMessage(M_ITEM_CHANGE)));
