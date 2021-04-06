@@ -3,6 +3,23 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
+// TODO: Cleanup headers and constants
+#include "FileSplitterWindow.h"
+#include "AppConstants.h"
+#include "ArchiverMgr.h"
+#include "BeezerApp.h"
+#include "BevelView.h"
+#include "BitmapPool.h"
+#include "CommonStrings.h"
+#include "FSUtils.h"
+#include "LocalUtils.h"
+#include "MsgConstants.h"
+#include "RecentMgr.h"
+#include "SelectDirPanel.h"
+#include "Shared.h"
+#include "StaticBitmapView.h"
+#include "UIConstants.h"
+
 #include <Alert.h>
 #include <Application.h>
 #include <Bitmap.h>
@@ -26,22 +43,6 @@
 #include <malloc.h>
 #include <stdio.h>
 
-#include "AppConstants.h"
-#include "ArchiverMgr.h"
-#include "BeezerApp.h"
-#include "BevelView.h"
-#include "BitmapPool.h"
-#include "CommonStrings.h"
-#include "FSUtils.h"
-#include "FileSplitterWindow.h"
-#include "LocalUtils.h"
-#include "MsgConstants.h"
-#include "RecentMgr.h"
-#include "SelectDirPanel.h"
-#include "Shared.h"
-#include "StaticBitmapView.h"
-#include "UIConstants.h"
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -52,6 +53,19 @@
 #define B_TRANSLATE_COMMENT(x, y) x
 #define B_TRANSLATE_CONTEXT(x, y) x
 #endif
+
+#define M_SPLIT_NOW                       'splt'
+#define M_SELECT_SPLIT_FILE               'file'
+#define M_SELECT_SPLIT_FOLDER             'fold'
+#define M_SPLIT_FILE_SELECTED             'fise'
+#define M_SPLIT_FOLDER_SELECTED           'flse'
+#define M_CUSTOM_SIZE                     'cuss'
+#define M_PREDEFINED_SIZE                 'pres'
+#define M_UPDATE_DATA                     'updd'
+#define M_OPERATION_COMPLETE              'opcc'
+#define M_SEPARATOR_CHANGED               'spch'
+
+#define K_WINDOW                          "split_wnd"
 
 
 FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
