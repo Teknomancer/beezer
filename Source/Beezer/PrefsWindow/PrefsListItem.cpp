@@ -22,7 +22,13 @@ PrefsListItem::PrefsListItem(const char* text, BBitmap* bmp, bool makeBold)
 {
     font_height fntHt;
     if (makeBold == true)
-        be_bold_font->GetHeight(&fntHt);
+    {
+        // Don't use be_bold_font as that's used for window titles,
+        // we just want the existing font to be bold.
+        BFont boldFont(be_plain_font);
+        boldFont.SetFace(B_BOLD_FACE);
+        boldFont.GetHeight(&fntHt);
+    }
     else
         be_plain_font->GetHeight(&fntHt);
     m_fontDelta = fntHt.ascent / 2 ;
@@ -72,14 +78,18 @@ void PrefsListItem::DrawItem(BView* owner, BRect frame, bool complete)
         {
             owner->SetHighColor(m_selTextColor);
             if (m_makeBold)
-                owner->SetFont(be_bold_font);
+            {
+                BFont boldFont(be_plain_font);
+                boldFont.SetFace(B_BOLD_FACE);
+                owner->SetFont(&boldFont);
+            }
         }
         else
         {
             owner->SetHighColor(owner->ViewColor());
             owner->FillRect(frame);
             owner->SetHighUIColor(B_CONTROL_TEXT_COLOR);
-            if (m_makeBold)
+            if (m_makeBold)            // Reset to regular font when not selected
                 owner->SetFont(be_plain_font);
         }
     }
