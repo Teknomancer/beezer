@@ -5,7 +5,6 @@
 #ifndef _COMMON_STRINGS_H
 #define _COMMON_STRINGS_H
 
-#include "AppConstants.h"
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
