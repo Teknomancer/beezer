@@ -7,6 +7,9 @@
 #define _SELECT_DIR_PANEL_H
 
 #include <FilePanel.h>
+#include <String.h>
+
+class BButton;
 
 class SelectDirPanel : public BFilePanel
 {
@@ -27,11 +30,9 @@ class SelectDirPanel : public BFilePanel
         void               UpdateButton();
 
     protected:
-        // Protected hooks
         void               SendMessage(const BMessenger* target, BMessage* message);
 
     private:
-        // Private members
         BString            m_buttonLabel,
                            m_buttonName;
         BButton*           m_curDirBtn;
