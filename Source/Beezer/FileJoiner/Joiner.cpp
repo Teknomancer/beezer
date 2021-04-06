@@ -20,11 +20,11 @@ status_t JoinFile(const char* firstChunkPathStr, const char* outputDir, const ch
                   BMessenger* progress, volatile bool* cancel)
 {
     BString firstChunkPath = firstChunkPathStr;
-    int32 index = firstChunkPath.FindLast('/');
+    int32 const index = firstChunkPath.FindLast('/');
     BString dirString;
     firstChunkPath.CopyInto(dirString, 0, index);
 
-    int32 index2 = firstChunkPath.FindLast(separator);
+    int32 const index2 = firstChunkPath.FindLast(separator);
     if (index2 <= 0 || index2 < index)
         return BZR_ERROR;
 
@@ -34,7 +34,7 @@ status_t JoinFile(const char* firstChunkPathStr, const char* outputDir, const ch
     BString numberString;
     firstChunkPath.CopyInto(numberString, index2 + strlen(separator), firstChunkPath.Length() - index2);
 
-    int8 width = numberString.Length();
+    int8 const width = numberString.Length();
 
     BString curFileName = baseName;
     curFileName << separator << numberString;
@@ -43,7 +43,7 @@ status_t JoinFile(const char* firstChunkPathStr, const char* outputDir, const ch
     BString outputFilePath = outputDir;
     outputFilePath << "/" << baseName;
     BFile destFile;
-    status_t err = destFile.SetTo(outputFilePath.String(), B_WRITE_ONLY | B_CREATE_FILE | B_ERASE_FILE);
+    status_t const err = destFile.SetTo(outputFilePath.String(), B_WRITE_ONLY | B_CREATE_FILE | B_ERASE_FILE);
     BDirectory destDir(dirString.String());
     if (err != B_OK)
         return BZR_ERROR;
@@ -59,7 +59,6 @@ status_t JoinFile(const char* firstChunkPathStr, const char* outputDir, const ch
     const size_t kMaxBufferSize = 1024 * 1024;
 
     size_t bufSize = kMinBufferSize;
-
     if (bufSize < srcStat.st_size)
     {
         // File is bigger than buffer size; find an optimal buffer size for copying
@@ -67,11 +66,11 @@ status_t JoinFile(const char* firstChunkPathStr, const char* outputDir, const ch
         get_system_info(&sysInfo);
 
         size_t freeSize = static_cast<size_t>((sysInfo.max_pages - sysInfo.used_pages) * B_PAGE_SIZE);
-        bufSize = freeSize / 4;                      // take 1/4 of RAM max
+        bufSize = freeSize / 4;                     // take 1/4 of RAM max
         bufSize -= bufSize % (16 * 1024);           // Round to 16 KB boundaries
         if (bufSize < kMinBufferSize)               // at least kMinBufferSize
             bufSize = kMinBufferSize;
-        else if (bufSize > kMaxBufferSize)           // no more than kMaxBufferSize
+        else if (bufSize > kMaxBufferSize)          // no more than kMaxBufferSize
             bufSize = kMaxBufferSize;
     }
 
@@ -177,11 +176,11 @@ void FindChunks(const char* firstChunkPathStr, const char* separator, int32& fil
                 off_t& totalSize, volatile bool* cancel)
 {
     BString firstChunkPath = firstChunkPathStr;
-    int32 index = firstChunkPath.FindLast('/');
+    int32 const index = firstChunkPath.FindLast('/');
     BString dirString;
     firstChunkPath.CopyInto(dirString, 0, index);
 
-    int32 index2 = firstChunkPath.FindLast(separator);
+    int32 const index2 = firstChunkPath.FindLast(separator);
     if (index2 <= 0 || index2 < index)
         return;
 
@@ -191,7 +190,7 @@ void FindChunks(const char* firstChunkPathStr, const char* separator, int32& fil
     BString numberString;
     firstChunkPath.CopyInto(numberString, index2 + strlen(separator), firstChunkPath.Length() - index2);
 
-    int8 width = numberString.Length();
+    int8 const width = numberString.Length();
 
     BString curFileName = baseName;
     curFileName << separator << numberString;
@@ -200,7 +199,7 @@ void FindChunks(const char* firstChunkPathStr, const char* separator, int32& fil
     BEntry chunkEntry;
     off_t size;
     uint16 start = atoi(numberString.String());     // start from the number they choose eg 2 or 3
-    // uint16 start = 1;                         // always start with 1 as the first file number
+    // uint16 start = 1;                            // always start with 1 as the first file number
     // Determine what is to be done, either 1 or the number user chooses
     while (dir.FindEntry(curFileName.String(), &chunkEntry, false) == B_OK)
     {
