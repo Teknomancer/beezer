@@ -69,7 +69,7 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
     float divider = 0;
     divider = MAX(divider, m_backViewMain->StringWidth(B_TRANSLATE("Archive name:")));
     divider = MAX(divider, m_backViewMain->StringWidth(B_TRANSLATE("Archive type:")));
-    divider = MAX(divider, m_backViewMain->StringWidth(B_TRANSLATE("Password:")));
+    divider = MAX(divider, m_backViewMain->StringWidth(B_TRANSLATE_CONTEXT("Password:", K_I18N_COMMON)));
     divider += 10;
 
     m_fileName = new BTextControl(BRect(K_MARGIN, 2 * K_MARGIN, 0, 0), "AddOnWindow:fileName",
@@ -394,7 +394,7 @@ void AddOnWindow::MessageReceived(BMessage* message)
                 m_cancel = true;
                 m_inProgress = false;
                 m_createBtn->MakeDefault(true);
-                m_createBtn->SetLabel(B_TRANSLATE("Create"));
+                m_createBtn->SetLabel(B_TRANSLATE_CONTEXT("Create", K_I18N_COMMON));
 
                 EnableControls(true);
                 PostMessage(B_QUIT_REQUESTED);

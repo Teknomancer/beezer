@@ -21,6 +21,7 @@
 #include "CLVColumn.h"
 #include "RegExString.h"
 
+#include "AppConstants.h"
 #include "Archiver.h"
 #include "BevelView.h"
 #include "BitmapPool.h"
@@ -37,6 +38,7 @@
 #define B_TRANSLATION_CONTEXT "SearchWindow"
 #else
 #define B_TRANSLATE(x) x
+#define B_TRANSLATE_CONTEXT(x, y) x
 #endif
 
 
@@ -143,7 +145,7 @@ SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
 
     // Setup the scope group box
     BBox* scopeBox = new BBox("SearchWindow:ScopeBox");
-    scopeBox->SetLabel(B_TRANSLATE("Search"));
+    scopeBox->SetLabel(B_TRANSLATE_CONTEXT("Search", K_I18N_COMMON));
     scopeBox->SetFont(be_plain_font);
 
     // Draw the radio buttons inside the group box (co-ordinates are relative to the group box)
@@ -200,7 +202,7 @@ SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
     optionsBox->AddChild(view);
 
     // Render the search button
-    m_searchBtn = new BButton("SearchWindow:SearchBtn", B_TRANSLATE("Search"), new BMessage(M_SEARCH_CLICKED));
+    m_searchBtn = new BButton("SearchWindow:SearchBtn", B_TRANSLATE_CONTEXT("Search", K_I18N_COMMON), new BMessage(M_SEARCH_CLICKED));
     m_searchBtn->MakeDefault(true);
     m_searchBtn->SetEnabled(searchText ? true : false);
 

@@ -127,7 +127,7 @@ FileJoinerWindow::FileJoinerWindow(RecentMgr* dirs)
     m_selectFileBtn = new BButton(BRect(m_innerView->Frame().Width() - K_MARGIN - K_BUTTON_WIDTH,
                                         m_filePathView->Frame().top - 4, m_innerView->Frame().Width() - K_MARGIN,
                                         m_filePathView->Frame().top - 4 + K_BUTTON_HEIGHT), "FileJoinerWindow:SelectFileBtn",
-                                  B_TRANSLATE("Select…"), new BMessage(M_SELECT_JOIN_FILE), B_FOLLOW_RIGHT,
+                                  B_TRANSLATE_CONTEXT("Select…", "FileJoiner/Splitter"), new BMessage(M_SELECT_JOIN_FILE), B_FOLLOW_RIGHT,
                                   B_WILL_DRAW | B_NAVIGABLE);
     m_innerView->AddChild(m_selectFileBtn);
 
@@ -155,8 +155,8 @@ FileJoinerWindow::FileJoinerWindow(RecentMgr* dirs)
     float divider;
     divider = MAX(K_MARGIN + m_innerView->StringWidth(m_folderPathView->Label()),
                   m_folderField->Frame().right);
-    divider = MAX(divider, K_MARGIN + m_innerView->StringWidth(B_TRANSLATE("File number separator:")));
-    divider = MAX(divider, K_MARGIN + m_backView->StringWidth(B_TRANSLATE("Number of pieces:")));
+    divider = MAX(divider, K_MARGIN + m_innerView->StringWidth(B_TRANSLATE_CONTEXT("File number separator:", "FileJoiner/Splitter")));
+    divider = MAX(divider, K_MARGIN + m_backView->StringWidth(B_TRANSLATE_CONTEXT("Number of pieces:", "FileJoiner/Splitter")));
     m_filePathView->SetDivider(divider);
     m_folderPathView->SetDivider(0);
     m_folderPathView->MoveTo(m_filePathView->Frame().left + divider + 1, m_folderPathView->Frame().top);
@@ -425,10 +425,10 @@ void FileJoinerWindow::MessageReceived(BMessage* message)
                 m_dirPanel = new SelectDirPanel(B_OPEN_PANEL, new BMessenger(this), NULL, B_DIRECTORY_NODE,
                                                 false, new BMessage(M_JOIN_FOLDER_SELECTED), NULL, true, false);
 
-                m_dirPanel->SetButtonLabel(B_DEFAULT_BUTTON, B_TRANSLATE("Select"));
+                m_dirPanel->SetButtonLabel(B_DEFAULT_BUTTON, B_TRANSLATE_CONTEXT("Select", K_I18N_COMMON));
                 m_dirPanel->Window()->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                 m_dirPanel->Window()->AddToSubset(this);
-                m_dirPanel->SetCurrentDirButton(B_TRANSLATE("Select"));
+                m_dirPanel->SetCurrentDirButton(B_TRANSLATE_CONTEXT("Select", K_I18N_COMMON));
 
                 if (m_dirPanel->Window()->LockLooper())
                 {

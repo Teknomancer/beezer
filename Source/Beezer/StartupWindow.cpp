@@ -34,6 +34,7 @@
 #define B_TRANSLATION_CONTEXT "StartupWindow"
 #else
 #define B_TRANSLATE(x) x
+#define B_TRANSLATE_CONTEXT(x) x
 #define B_TRANSLATE_SYSTEM_NAME(x) x
 #endif
 
@@ -114,7 +115,7 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
 
     // Setup the tooltips
     m_createBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Create a new archive")));
-    m_openBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Open an existing archive")));
+    m_openBtn->SetToolTip(const_cast<char*>(B_TRANSLATE_CONTEXT("Open an existing archive", K_I18N_COMMON)));
     m_openRecentBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Open a recently viewed archive")));
     m_prefsBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Edit application settings")));
     m_toolsBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Additional tools")));

@@ -138,9 +138,9 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
     float maxWidth = MAX(m_folderField->Frame().Width(), m_fileField->Frame().Width());
     maxWidth = MAX(maxWidth, m_backView->StringWidth(B_TRANSLATE("Size of pieces:")));
     maxWidth = MAX(maxWidth, m_backView->StringWidth(B_TRANSLATE("Custom size:")));
-    maxWidth = MAX(maxWidth, m_backView->StringWidth(B_TRANSLATE("Number of pieces:")));
+    maxWidth = MAX(maxWidth, m_backView->StringWidth(B_TRANSLATE_CONTEXT("Number of pieces:", "FileJoiner/Splitter")));
     maxWidth = MAX(maxWidth, m_backView->StringWidth(B_TRANSLATE("File size:")));
-    maxWidth = MAX(maxWidth, m_backView->StringWidth(B_TRANSLATE("File number separator:")));
+    maxWidth = MAX(maxWidth, m_backView->StringWidth(B_TRANSLATE_CONTEXT("File number separator:", "FileJoiner/Splitter")));
     maxWidth += 2 * K_MARGIN;
 
     m_filePathView = new BTextControl(BRect(maxWidth, m_fileField->Frame().top + 2,
@@ -164,7 +164,7 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
                                         m_filePathView->Frame().top - 4,
                                         m_filePathView->Frame().right + K_MARGIN + K_BUTTON_WIDTH,
                                         m_filePathView->Frame().top - 4 + K_BUTTON_HEIGHT),
-                                  "FileSplitterWindow:SelectFileBtn", B_TRANSLATE("Select…"),
+                                  "FileSplitterWindow:SelectFileBtn", B_TRANSLATE_CONTEXT("Select…", "FileJoiner/Splitter"),
                                   new BMessage(M_SELECT_SPLIT_FILE), B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
     m_innerView->AddChild(m_filePathView);
     m_innerView->AddChild(m_selectFileBtn);
@@ -210,10 +210,10 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
     // !! IMPORTANT !! Order is very critical, if the order below changes, the change must also be reflected
     // in "UpdateData()" function
     m_prefixPopUp = new BPopUpMenu("SizePrefix", true, true);
-    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE("Bytes"), new BMessage(M_UPDATE_DATA)));
-    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE("KiB"), new BMessage(M_UPDATE_DATA)));
-    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE("MiB"), new BMessage(M_UPDATE_DATA)));
-    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE("GiB"), new BMessage(M_UPDATE_DATA)));
+    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE_CONTEXT("Bytes", K_I18N_COMMON), new BMessage(M_UPDATE_DATA)));
+    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE_CONTEXT("KiB", K_I18N_COMMON), new BMessage(M_UPDATE_DATA)));
+    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE_CONTEXT("MiB", K_I18N_COMMON), new BMessage(M_UPDATE_DATA)));
+    m_prefixPopUp->AddItem(new BMenuItem(B_TRANSLATE_CONTEXT("GiB", K_I18N_COMMON), new BMessage(M_UPDATE_DATA)));
     m_prefixPopUp->ItemAt(2L)->SetMarked(true);
     m_prefixField = new BMenuField(BRect(m_customSizeView->Frame().right + K_MARGIN,
                                          m_customSizeView->Frame().top - 2, m_innerView->Frame().right - K_MARGIN, 0),
@@ -601,10 +601,10 @@ void FileSplitterWindow::MessageReceived(BMessage* message)
                 m_dirPanel = new SelectDirPanel(B_OPEN_PANEL, new BMessenger(this), NULL, B_DIRECTORY_NODE,
                                                 false, new BMessage(M_SPLIT_FOLDER_SELECTED), NULL, true, false);
 
-                m_dirPanel->SetButtonLabel(B_DEFAULT_BUTTON, B_TRANSLATE("Select"));
+                m_dirPanel->SetButtonLabel(B_DEFAULT_BUTTON, B_TRANSLATE_CONTEXT("Select", K_I18N_COMMON));
                 m_dirPanel->Window()->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                 m_dirPanel->Window()->AddToSubset(this);
-                m_dirPanel->SetCurrentDirButton(B_TRANSLATE("Select"));
+                m_dirPanel->SetCurrentDirButton(B_TRANSLATE_CONTEXT("Select", K_I18N_COMMON));
 
                 if (m_dirPanel->Window()->LockLooper())
                 {
@@ -777,10 +777,10 @@ void FileSplitterWindow::UpdateData()
 
             switch (m_prefixPopUp->IndexOf(m_prefixPopUp->FindMarked()))
             {
-                case 0: val << "bytes"; break;
-                case 1: val << "KiB"; break;
-                case 2: val << "MiB"; break;
-                case 3: val << "GiB"; break;
+                case 0: val << B_TRANSLATE_CONTEXT("bytes", K_I18N_COMMON); break;
+                case 1: val << B_TRANSLATE_CONTEXT("KiB", K_I18N_COMMON); break;
+                case 2: val << B_TRANSLATE_CONTEXT("MiB", K_I18N_COMMON); break;
+                case 3: val << B_TRANSLATE_CONTEXT("GiB", K_I18N_COMMON); break;
             }
 
             fragmentSize = BytesFromString((char*)val.String());

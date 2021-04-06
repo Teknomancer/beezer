@@ -207,17 +207,17 @@ BString LocaleStringFromBytes(uint64 val)
     if (val < kKiBSize)
         sprintf(buf, "%" B_PRIu64 " bytes");
     else if (val < kMiBSize)
-        sprintf(buf, "%.2f %s", (double)val / kKiBSize, B_TRANSLATE_COMMENT("KiB", "abbreviation of kilobyte"));
+        sprintf(buf, "%.2f %s", (double)val / kKiBSize, B_TRANSLATE_CONTEXT("KiB", K_I18N_COMMON));
     else if (val < kGiBSize)
-        sprintf(buf, "%.2f %s", (double)val / kMiBSize, B_TRANSLATE_COMMENT("MiB", "abbreviation of megabyte"));
+        sprintf(buf, "%.2f %s", (double)val / kMiBSize, B_TRANSLATE_CONTEXT("MiB", K_I18N_COMMON));
     else if (val < kTiBSize)
-        sprintf(buf, "%.2f %s", (double)val / kGiBSize, B_TRANSLATE_COMMENT("GiB", "abbreviation of gigabyte"));
+        sprintf(buf, "%.2f %s", (double)val / kGiBSize, B_TRANSLATE_CONTEXT("GiB", K_I18N_COMMON));
     else if (val < kPiBSize)
-        sprintf(buf, "%.2f %s", (double)val / kTiBSize, B_TRANSLATE_COMMENT("TiB", "abbreviation of terrabyte"));
+        sprintf(buf, "%.2f %s", (double)val / kTiBSize, B_TRANSLATE_ALL("TiB", K_I18N_COMMON, "abbreviation of terrabyte"));
     else if (val < kEiBSize)
-        sprintf(buf, "%.2f %s", (double)val / kPiBSize, B_TRANSLATE_COMMENT("PiB", "abbreviation of petabyte"));
+        sprintf(buf, "%.2f %s", (double)val / kPiBSize, B_TRANSLATE_ALL("PiB", K_I18N_COMMON, "abbreviation of petabyte"));
     else
-        sprintf(buf, "%.2f %s", (double)val / kEiBSize, B_TRANSLATE_COMMENT("EiB", "abbreviation of exabyte"));
+        sprintf(buf, "%.2f %s", (double)val / kEiBSize, B_TRANSLATE_ALL("EiB", K_I18N_COMMON, "abbreviation of exabyte"));
 
     BString str(buf);
     return str;
