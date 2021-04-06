@@ -3,40 +3,31 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <Application.h>
-#include <Font.h>
-#include <Bitmap.h>
-#include <StringView.h>
-#include <TextControl.h>
-#include <Menu.h>
-#include <MenuField.h>
-#include <String.h>
-#include <Button.h>
-#include <FilePanel.h>
-#include <Entry.h>
-#include <Path.h>
-#include <CheckBox.h>
-#include <Alert.h>
-#include <StatusBar.h>
-
-#include <stdlib.h>
-#include <stdio.h>
-
-#include "AppConstants.h"
 #include "FileJoinerWindow.h"
+#include "AppConstants.h"
 #include "BevelView.h"
 #include "BitmapPool.h"
 #include "CommonStrings.h"
-#include "UIConstants.h"
-#include "MsgConstants.h"
-#include "StaticBitmapView.h"
-#include "LocalUtils.h"
-#include "SelectDirPanel.h"
 #include "FSUtils.h"
-#include "RecentMgr.h"
-
+#include "UIConstants.h"
 #include "Joiner.h"
+#include "LocalUtils.h"
+#include "MsgConstants.h"
+#include "RecentMgr.h"
 #include "Shared.h"
+#include "StaticBitmapView.h"
+#include "SelectDirPanel.h"
+
+#include <Alert.h>
+#include <Application.h>
+#include <Bitmap.h>
+#include <Button.h>
+#include <CheckBox.h>
+#include <MenuField.h>
+#include <Path.h>
+#include <StatusBar.h>
+#include <StringView.h>
+#include <TextControl.h>
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -48,6 +39,20 @@
 #define B_TRANSLATE_CONTEXT(x, y) x
 #define B_TRANSLATE_SYSTEM_NAME(x) x
 #endif
+
+#include <stdlib.h>     // required for gcc2?
+#include <stdio.h>
+
+#define M_SELECT_JOIN_FILE               'sljf'
+#define M_SELECT_JOIN_FOLDER             'sldr'
+#define M_JOIN_FILE_SELECTED             'jfsl'
+#define M_JOIN_FOLDER_SELECTED           'jfsd'
+#define M_UPDATE_DATA                    'updd'
+#define M_SEPARATOR_CHANGED              'spch'
+#define M_CALC_COMPLETE                  'calc'
+#define M_REFRESH_INFO                   'reff'
+#define M_JOIN_NOW                       'join'
+#define M_OPERATION_COMPLETE             'opcc'
 
 
 FileJoinerWindow::FileJoinerWindow(RecentMgr* dirs)

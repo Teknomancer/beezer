@@ -20,17 +20,6 @@ class BevelView;
 class SelectDirPanel;
 class RecentMgr;
 
-#define M_SELECT_JOIN_FILE               'sljf'
-#define M_SELECT_JOIN_FOLDER             'sldr'
-#define M_JOIN_FILE_SELECTED             'jfsl'
-#define M_JOIN_FOLDER_SELECTED           'jfsd'
-#define M_UPDATE_DATA                    'updd'
-#define M_SEPARATOR_CHANGED              'spch'
-#define M_CALC_COMPLETE                  'calc'
-#define M_REFRESH_INFO                   'reff'
-#define M_JOIN_NOW                       'join'
-#define M_OPERATION_COMPLETE             'opcc'
-
 class FileJoinerWindow : public BWindow
 {
     public:
