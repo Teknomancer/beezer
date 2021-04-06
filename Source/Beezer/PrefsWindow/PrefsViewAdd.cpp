@@ -3,24 +3,20 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
+#include "PrefsViewAdd.h"
+#include "BitmapPool.h"
+#include "CommonStrings.h"
+#include "Preferences.h"
+#include "PrefsFields.h"
+
 #include <CheckBox.h>
 #include <MenuField.h>
 #include <MenuItem.h>
 #include <PopUpMenu.h>
-#include <String.h>
 #include <StringView.h>
 #include <TextControl.h>
 
-#include <stdlib.h>
-
-#include "AppConstants.h"
-#include "BitmapPool.h"
-#include "CommonStrings.h"
-#include "LocalUtils.h"
-#include "Preferences.h"
-#include "PrefsFields.h"
-#include "PrefsViewAdd.h"
-#include "UIConstants.h"
+#include <stdlib.h>     // required for gcc2?
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -31,7 +27,7 @@
 #define B_TRANSLATE(x) x
 #endif
 
-#define M_WARN               'warn'
+static const uint32 M_WARN = 'warn';
 
 
 PrefsViewAdd::PrefsViewAdd(BRect frame)
@@ -72,8 +68,8 @@ void PrefsViewAdd::Render()
     m_mbView->TextView()->SetMaxBytes(4);
     m_mbView->SetDivider(0);
 
-    BStringView* mbStrView = new BStringView(BRect(m_mbView->Frame().right + 4, m_warnMBChk->Frame().top + 2,
-            0, 0), "PrefsViewAdd:mbStrView", B_TRANSLATE("MiB"), B_FOLLOW_LEFT, B_WILL_DRAW);
+    BStringView* mbStrView = new BStringView(BRect(m_mbView->Frame().right + 4, m_warnMBChk->Frame().top + 2, 0, 0),
+                                             "PrefsViewAdd:mbStrView", B_TRANSLATE("MiB"), B_FOLLOW_LEFT, B_WILL_DRAW);
     mbStrView->ResizeToPreferred();
 
     m_dropChk = new BCheckBox(BRect(m_margin,    m_warnMBChk->Frame().bottom + m_vGap, 0, 0),
@@ -118,13 +114,13 @@ void PrefsViewAdd::Load()
 {
     m_replaceMenu->ItemAt(_prefs_add.FindInt8Def(kPfReplaceFiles, 1))->SetMarked(true);
 
-    bool warn = _prefs_add.FindBoolDef(kPfWarnBeforeAdd, true);
+    bool const warn = _prefs_add.FindBoolDef(kPfWarnBeforeAdd, true);
     m_warnMBChk->SetValue(warn);
     if (!warn)
         ToggleMBView(false);
 
     BString buf;
-    int16 mbSize = _prefs_add.FindInt16Def(kPfWarnAmount, 100);
+    int16 const mbSize = _prefs_add.FindInt16Def(kPfWarnAmount, 100);
     buf << mbSize;
     m_mbView->SetText(buf.String());
 
