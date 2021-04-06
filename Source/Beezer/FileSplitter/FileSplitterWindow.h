@@ -6,31 +6,24 @@
 #ifndef _FILE_SPLITTER_WINDOW_H
 #define _FILE_SPLITTER_WINDOW_H
 
-#include <Window.h>
+#include <Entry.h>
+#include <Directory.h>
 #include <String.h>
+#include <Window.h>
 
-class BStringView;
+class BButton;
 class BCheckBox;
-class BTextControl;
+class BFilePanel;
+class BMenu;
+class BMenuField;
+class BPopUpMenu;
 class BStatusBar;
-class BString;
+class BStringView;
+class BTextControl;
 
 class BevelView;
 class SelectDirPanel;
 class RecentMgr;
-
-#define M_SPLIT_NOW                       'splt'
-#define M_SELECT_SPLIT_FILE               'file'
-#define M_SELECT_SPLIT_FOLDER             'fold'
-#define M_SPLIT_FILE_SELECTED             'fise'
-#define M_SPLIT_FOLDER_SELECTED           'flse'
-#define M_CUSTOM_SIZE                     'cuss'
-#define M_PREDEFINED_SIZE                 'pres'
-#define M_UPDATE_DATA                     'updd'
-#define M_OPERATION_COMPLETE              'opcc'
-#define M_SEPARATOR_CHANGED               'spch'
-
-#define K_WINDOW                          "split_wnd"
 
 class FileSplitterWindow : public BWindow
 {
