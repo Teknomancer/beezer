@@ -5,15 +5,10 @@
 #include "AppUtils.h"
 #include "Shared.h"
 
-#include <Locker.h>
-
 #include <cassert>
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-
-// Global object declares
-BLocker _apputils_locker("_app_utils_lock", true);
 
 
 BString StringFromBytes(uint64 val)
