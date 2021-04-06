@@ -43,16 +43,16 @@
 #include <stdlib.h>     // required for gcc2?
 #include <stdio.h>
 
-#define M_SELECT_JOIN_FILE               'sljf'
-#define M_SELECT_JOIN_FOLDER             'sldr'
-#define M_JOIN_FILE_SELECTED             'jfsl'
-#define M_JOIN_FOLDER_SELECTED           'jfsd'
-#define M_UPDATE_DATA                    'updd'
-#define M_SEPARATOR_CHANGED              'spch'
-#define M_CALC_COMPLETE                  'calc'
-#define M_REFRESH_INFO                   'reff'
-#define M_JOIN_NOW                       'join'
-#define M_OPERATION_COMPLETE             'opcc'
+const uint32 M_SELECT_JOIN_FILE     = 'sljf';
+const uint32 M_SELECT_JOIN_FOLDER   = 'sldr';
+const uint32 M_JOIN_FILE_SELECTED   = 'jfsl';
+const uint32 M_JOIN_FOLDER_SELECTED = 'jfsd';
+const uint32 M_UPDATE_DATA          = 'updd';
+const uint32 M_SEPARATOR_CHANGED    = 'spch';
+const uint32 M_CALC_COMPLETE        = 'calc';
+const uint32 M_REFRESH_INFO         = 'reff';
+const uint32 M_JOIN_NOW             = 'join';
+const uint32 M_OPERATION_COMPLETE   = 'opcc';
 
 
 FileJoinerWindow::FileJoinerWindow(RecentMgr* dirs)
