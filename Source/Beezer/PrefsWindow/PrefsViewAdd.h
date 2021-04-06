@@ -26,10 +26,8 @@ class PrefsViewAdd : public PrefsView
         virtual void        Load();
 
     private:
-        // Private hook
         void                ToggleMBView(bool enable);
 
-        // Private members
         BMenuField*         m_replaceField;
         BPopUpMenu*         m_replaceMenu;
         BCheckBox*          m_warnMBChk,
