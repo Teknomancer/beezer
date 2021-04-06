@@ -2,25 +2,18 @@
 // Copyright (c) 2002 Ramshankar (aka Teknomancer).
 // All rights reserved.
 
+#include "Joiner.h"
+#include "Shared.h"
+
 #include <Messenger.h>
 #include <String.h>
 #include <File.h>
-#include <Entry.h>
-#include <Path.h>
-#include <Node.h>
 #include <Directory.h>
 #include <Debug.h>
 
-#include <sys/stat.h>
 #include <fs_attr.h>
 
-#include <stdlib.h>
-#include <stdio.h>
-
-#include "Shared.h"
-#include "Joiner.h"
-
-typedef struct stat StatStruct;
+#include <stdlib.h>     // required for gcc2?
 
 
 status_t JoinFile(const char* firstChunkPathStr, const char* outputDir, const char* separator,
@@ -58,7 +51,7 @@ status_t JoinFile(const char* firstChunkPathStr, const char* outputDir, const ch
     // Determine buffer size used for copying file -- this is not inside the loop because all
     // files being joined are of the same size
     BEntry chunkEntry(firstChunkPathStr, false);
-    StatStruct srcStat;
+    struct stat srcStat;
     BFile srcFile(firstChunkPathStr, B_READ_ONLY);
     srcFile.GetStat(&srcStat);
 
