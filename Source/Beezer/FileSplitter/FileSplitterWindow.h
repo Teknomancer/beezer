@@ -47,25 +47,17 @@ class FileSplitterWindow : public BWindow
         static int32        _splitter(void* data);
 
         // Private members
-        BevelView*          m_backView,
-                            *m_innerView;
+        BevelView*          m_backView;
         BMenu*              m_fileMenu,
                             *m_folderMenu;
-        BMenuField*         m_fileField,
-                            *m_folderField,
-                            *m_sizeField,
-                            *m_prefixField,
-                            *m_separatorField;
+        BMenuField*         m_prefixField;
         BPopUpMenu*         m_sizePopUp,
-                            *m_prefixPopUp,
-                            *m_separatorPopUp;
+                            *m_prefixPopUp;
         BTextControl*       m_filePathView,
                             *m_folderPathView,
                             *m_customSizeView,
                             *m_separatorView;
-        BButton*            m_selectFileBtn,
-                            *m_selectFolderBtn,
-                            *m_splitBtn;
+        BButton*            m_splitBtn;
         BStringView*        m_descStr,
                             *m_descStr2,
                             *m_piecesStr,
