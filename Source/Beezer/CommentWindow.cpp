@@ -36,7 +36,7 @@
 
 CommentWindow::CommentWindow(BWindow* callerWindow, const char* archiveName, const char* commentText,
                              BFont* displayFont)
-    : BWindow(BRect(0, 0, 590, 290), B_TRANSLATE("Comment"), B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
+    : BWindow(BRect(0, 0, 590, 290), B_TRANSLATE_CONTEXT("Comment", K_I18N_COMMON), B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
               B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS)
 {
     m_callerWindow = callerWindow;

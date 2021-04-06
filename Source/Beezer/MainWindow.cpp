@@ -1588,9 +1588,9 @@ void MainWindow::AddToolBar()
 
     m_openButton = new ImageButton(buttonRect, "MainWindow:Open", B_TRANSLATE_CONTEXT("Open", K_I18N_COMMON), _bmps->m_tbarOpenBmp,
                                    NULL, new BMessage(M_FILE_OPEN), true, backColor, kBelowIcon);
-    m_openButton->SetToolTip(const_cast<char*>(B_TRANSLATE("Open an existing archive")));
+    m_openButton->SetToolTip(const_cast<char*>(B_TRANSLATE_CONTEXT("Open an existing archive", K_I18N_COMMON)));
 
-    m_searchButton = new ImageButton(buttonRect, "MainWindow:Search", B_TRANSLATE("Search"),
+    m_searchButton = new ImageButton(buttonRect, "MainWindow:Search", B_TRANSLATE_CONTEXT("Search", K_I18N_COMMON),
                                      _bmps->m_tbarSearchBmp, _bmps->m_tbarSearchDisabledBmp,
                                      new BMessage(M_ACTIONS_SEARCH_ARCHIVE), false, backColor, kBelowIcon);
     m_searchButton->SetToolTip(const_cast<char*>(B_TRANSLATE("Search for files in the archive")));
@@ -1613,7 +1613,7 @@ void MainWindow::AddToolBar()
     m_addButton->SetEnabled(false);
     m_addButton->SetToolTip(const_cast<char*>(B_TRANSLATE("Add files to archive")));
 
-    m_deleteButton = new ImageButton(buttonRect, "MainWindow:Delete", B_TRANSLATE("Delete"),
+    m_deleteButton = new ImageButton(buttonRect, "MainWindow:Delete", B_TRANSLATE_CONTEXT("Delete", K_I18N_COMMON),
                                      _bmps->m_tbarDeleteBmp, _bmps->m_tbarDeleteDisabledBmp,
                                      new BMessage(M_ACTIONS_DELETE), false, backColor, kBelowIcon);
     m_deleteButton->SetEnabled(false);
@@ -1840,7 +1840,7 @@ void MainWindow::UpdateListItemNeeders(bool enable)
     m_mainMenu->m_editMenu->FindItem(M_EDIT_COLLAPSE_SELECTED)->SetEnabled(enable);
     m_mainMenu->m_editMenu->FindItem(M_EDIT_EXPAND_ALL)->SetEnabled(enable);
     m_mainMenu->m_editMenu->FindItem(M_EDIT_COLLAPSE_ALL)->SetEnabled(enable);
-    m_mainMenu->m_editMenu->FindItem(B_TRANSLATE("Select all"))->SetEnabled(enable);
+    m_mainMenu->m_editMenu->FindItem(B_TRANSLATE_CONTEXT("Select all", K_I18N_COMMON))->SetEnabled(enable);
     m_mainMenu->m_editMenu->FindItem(M_EDIT_DESELECT_ALL)->SetEnabled(enable);
     m_mainMenu->m_editMenu->FindItem(M_EDIT_INVERT_SELECTION)->SetEnabled(enable);
 }
@@ -2242,7 +2242,7 @@ void MainWindow::DeleteDone(BMessage* message)
                 DeleteUpdate();
             }
             else
-                m_logTextView->AddText(B_TRANSLATE("Error(s) found."),    false, false, false);
+                m_logTextView->AddText(B_TRANSLATE("Error(s) found."), false, false, false);
             break;
         }
 
@@ -2671,7 +2671,7 @@ void MainWindow::SetupExtractPanel(BMessage* extractMessage)
     {
         m_extractToPanel = new SelectDirPanel(B_OPEN_PANEL, new BMessenger(this), 0,
                                               B_DIRECTORY_NODE, false, NULL);
-        m_extractToPanel->SetButtonLabel(B_DEFAULT_BUTTON, B_TRANSLATE("Extract"));
+        m_extractToPanel->SetButtonLabel(B_DEFAULT_BUTTON, B_TRANSLATE_CONTEXT("Extract", K_I18N_COMMON));
         m_extractToPanel->Window()->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
         m_extractToPanel->Window()->AddToSubset(this);
         m_extractToPanel->SetCurrentDirButton(B_TRANSLATE("Extract to"));
@@ -2972,8 +2972,8 @@ void MainWindow::AddArchiverMenu()
     if (m_createMode == false)
     {
         m_archiver->SettingsMenu()->AddSeparatorItem();
-        m_archiver->SettingsMenu()->AddItem(new BMenuItem(B_TRANSLATE("Save as defaults"), new BMessage(M_SAVE_ARK_AS_DEFAULT)));
-        m_archiver->SettingsMenu()->AddItem(new BMenuItem(B_TRANSLATE("Save to archive"), new BMessage(M_SAVE_ARK_TO_ARCHIVE)));
+        m_archiver->SettingsMenu()->AddItem(new BMenuItem(B_TRANSLATE_CONTEXT("Save as defaults", K_I18N_COMMON), new BMessage(M_SAVE_ARK_AS_DEFAULT)));
+        m_archiver->SettingsMenu()->AddItem(new BMenuItem(B_TRANSLATE_CONTEXT("Save to archive", K_I18N_COMMON), new BMessage(M_SAVE_ARK_TO_ARCHIVE)));
         m_mainMenu->AddItem(m_archiver->SettingsMenu(), m_mainMenu->IndexOf(m_mainMenu->m_toolsMenu) + 1);
     }
 }
@@ -3402,10 +3402,9 @@ void MainWindow::SetupAddPanel()
         if (m_archiver && m_archiver->SupportsPassword() && m_addPanel->Window()->LockLooper())
         {
             BButton* button = (BButton*)m_addPanel->Window()->FindView("cancel button");
-            BTextControl* pwdText = new BTextControl(BRect(10, button->Frame().top + 2,
-                    10 + 150, 0), "pwdText",
-                    B_TRANSLATE("Password:"), NULL, NULL,
-                    B_FOLLOW_LEFT | B_FOLLOW_BOTTOM, B_WILL_DRAW);
+            BTextControl* pwdText = new BTextControl(BRect(10, button->Frame().top + 2, 10 + 150, 0),
+                                                     "pwdText", B_TRANSLATE_CONTEXT("Password:", K_I18N_COMMON),
+                                                     NULL, NULL, B_FOLLOW_LEFT | B_FOLLOW_BOTTOM, B_WILL_DRAW);
             m_addPanel->Window()->ChildAt(0)->AddChild(pwdText);
             pwdText->SetDivider(pwdText->StringWidth(pwdText->Label()) + 1);
             pwdText->TextView()->HideTyping(true);

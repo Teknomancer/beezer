@@ -104,7 +104,7 @@ void PrefsViewPaths::Render()
     m_openPathView->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
     m_openPathView->TextView()->DisallowChar(B_INSERT);
 
-    BString buttonText = B_TRANSLATE("Select");
+    BString buttonText = B_TRANSLATE_CONTEXT("Select", K_I18N_COMMON);
     m_openPathBtn = new BButton(BRect(m_openPathView->Frame().right + m_margin, m_openPathView->Frame().top - 4,
                                       m_openPathView->Frame().right + m_margin + K_BUTTON_WIDTH,
                                       m_openPathView->Frame().top - 4 + K_BUTTON_HEIGHT), "PrefsViewPaths:openPathBtn",

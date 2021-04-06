@@ -242,7 +242,7 @@ void ArkInfoWindow::FillDetails()
         buf = "???";
     m_totalCountStr->SetText(buf);
 
-    buf = ""; buf << m_archiver->ArchiveType() << " " << B_TRANSLATE("archive");
+    buf = ""; buf << m_archiver->ArchiveType() << " " << B_TRANSLATE_COMMENT("archive", "ex: zip archive, tar archive, ...");
     m_typeStr->SetText(buf);
 
     BEntry parent; BPath parentPath;
@@ -288,7 +288,7 @@ void ArkInfoWindow::FillDetails()
         bytesStr = "???";
     buf = StringFromBytes(originalSize);
     if (originalSize >= 1024LL)
-        buf << " (" << bytesStr << " " << B_TRANSLATE("bytes") << ")";
+        buf << " (" << bytesStr << " " << B_TRANSLATE_CONTEXT("bytes", K_I18N_COMMON) << ")";
 
     m_originalSizeStr->SetText(buf);
 

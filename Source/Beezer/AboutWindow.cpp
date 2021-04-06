@@ -152,7 +152,7 @@ void MarqueeView::ScrollBy(float dh, float dv)
 
 
 AboutWindow::AboutWindow(const char* versionStr, const char* compileTimeStr)
-    : BWindow(BRect(0, 0, 319, 374), B_TRANSLATE_COMMENT("About", "title of the window"), B_MODAL_WINDOW,
+    : BWindow(BRect(0, 0, 319, 374), B_TRANSLATE_CONTEXT("About", K_I18N_COMMON), B_MODAL_WINDOW,
               B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE | B_NOT_RESIZABLE)
 {
     // Create the BBitmap objects and set its data with error checking

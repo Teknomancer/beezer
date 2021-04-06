@@ -757,7 +757,7 @@ void BeezerApp::ShowCreateFilePanel()
 
         BView* backView = panelWnd->ChildAt(0L);
         BButton* saveBtn = (BButton*)panelWnd->FindView("default button");
-        saveBtn->SetLabel(B_TRANSLATE("Create"));
+        saveBtn->SetLabel(B_TRANSLATE_CONTEXT("Create", K_I18N_COMMON));
         BTextControl* textField = (BTextControl*)panelWnd->FindView("text view");
         textField->ResizeBy(-20, 0);
         textField->TextView()->DisallowChar('*');
