@@ -32,11 +32,10 @@ class FileJoinerWindow : public BWindow
         virtual void        MessageReceived(BMessage* message);
 
     private:
-        // Private threads
+        // Threads
         static int32        _calcsize(void* arg);
         static int32        _joiner(void* arg);
 
-        // Private hooks
         void                UpdateData();
         void                UpdateRecentMenus();
         void                RefreshInfo();
@@ -45,7 +44,6 @@ class FileJoinerWindow : public BWindow
         void                DeleteChunks(const char* firstChunkPathStr, const char* separator);
         void                ToggleWindowHeight(bool expand);
 
-        // Private members
         BevelView*          m_backView,
                             *m_innerView;
         BStringView*        m_descStr,
