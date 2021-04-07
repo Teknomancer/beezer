@@ -14,15 +14,15 @@ SelectDirPanel::SelectDirPanel(file_panel_mode mode, BMessenger* target, const e
                                uint32 node_flavors, bool allow_multiple_selection, BMessage* message, BRefFilter* filter,
                                bool modal, bool hide_when_done)
     : BFilePanel(mode, target, start_directory, B_DIRECTORY_NODE, allow_multiple_selection, message, filter,
-                 modal, hide_when_done)
+                 modal, hide_when_done),
+    m_buttonLabel(NULL),
+    m_buttonName(strdup("bzr:special_button"))
 {
-    m_buttonName = "bzr:special_button";
-
     Window()->LockLooper();
 
     BButton* cancelBtn = (BButton*)Window()->FindView("cancel button");
     m_curDirBtn = new BButton(BRect(cancelBtn->Frame().left - 20 - 185, cancelBtn->Frame().top,
-                                    cancelBtn->Frame().left - 20, cancelBtn->Frame().bottom), m_buttonName.String(),
+                                    cancelBtn->Frame().left - 20, cancelBtn->Frame().bottom), m_buttonName,
                               NULL, message, B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW | B_NAVIGABLE);
     m_curDirBtn->SetTarget(target->Target(NULL));
 
@@ -38,12 +38,15 @@ SelectDirPanel::SelectDirPanel(file_panel_mode mode, BMessenger* target, const e
 
 SelectDirPanel::~SelectDirPanel()
 {
+    free(m_buttonLabel);
+    free(m_buttonName);
 }
 
 
 void SelectDirPanel::SetCurrentDirButton(const char* label)
 {
-    m_buttonLabel = label;
+    if (label)
+        m_buttonLabel = strdup(label);
     UpdateButton();
 }
 
@@ -72,7 +75,7 @@ void SelectDirPanel::UpdateButton()
     btnLabel << " " << '\'' << dirPath.Leaf() << '\'';
 
     Window()->LockLooper();
-    BButton* curDirBtn = (BButton*)Window()->FindView(m_buttonName.String());
+    BButton* curDirBtn = (BButton*)Window()->FindView(m_buttonName);
     if (curDirBtn)
     {
         curDirBtn->SetLabel(btnLabel.String());
