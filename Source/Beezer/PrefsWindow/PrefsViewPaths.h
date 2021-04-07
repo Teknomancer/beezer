@@ -8,6 +8,7 @@
 
 #include "PrefsView.h"
 
+class BListView;
 class BFilePanel;
 class BRadioButton;
 class BTextControl;

@@ -3,8 +3,17 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
+#include "PrefsViewPaths.h"
+#include "BitmapPool.h"
+#include "CommonStrings.h"
+#include "ImageButton.h"
+#include "Preferences.h"
+#include "PrefsFields.h"
+#include "PrefsListItem.h"
+#include "Shared.h"
+#include "UIConstants.h"
+
 #include <Alert.h>
-#include <Bitmap.h>
 #include <Button.h>
 #include <CheckBox.h>
 #include <FilePanel.h>
@@ -12,22 +21,8 @@
 #include <Path.h>
 #include <RadioButton.h>
 #include <ScrollView.h>
-#include <String.h>
 #include <StringView.h>
 #include <TextControl.h>
-#include <Window.h>
-
-#include "AppConstants.h"
-#include "BitmapPool.h"
-#include "CommonStrings.h"
-#include "ImageButton.h"
-#include "LocalUtils.h"
-#include "Preferences.h"
-#include "PrefsFields.h"
-#include "PrefsListItem.h"
-#include "PrefsViewPaths.h"
-#include "Shared.h"
-#include "UIConstants.h"
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -38,19 +33,18 @@
 #define B_TRANSLATE(x) x
 #endif
 
+static const uint32 M_PATH_SELECTED       = 'pths';
+static const uint32 M_SELECT_OPEN_PATH    = 'sopp';
+static const uint32 M_SELECT_ADD_PATH     = 'sadp';
+static const uint32 M_SELECT_EXTRACT_PATH = 'setp';
+static const uint32 M_USE_DIR             = 'used';
+static const uint32 M_ARK_DIR             = 'arkd';
+static const uint32 M_ADD_CLICKED         = 'addd';
+static const uint32 M_REMOVE_CLICKED      = 'remc';
 
-#define M_PATH_SELECTED               'pths'
-#define M_SELECT_OPEN_PATH            'sopp'
-#define M_SELECT_ADD_PATH             'sadp'
-#define M_SELECT_EXTRACT_PATH         'setp'
-#define M_USE_DIR                     'used'
-#define M_ARK_DIR                     'arkd'
-#define M_ADD_CLICKED                 'addd'
-#define M_REMOVE_CLICKED              'remc'
-
-const char* const kTextCtrlPtr =    "txtctrptr";
-const char* const kListCtrlPtr =    "lstctrptr";
-const char* const kArkDir =         ":arkdir:";
+static const char* const kTextCtrlPtr = "txtctrptr";
+static const char* const kListCtrlPtr = "lstctrptr";
+static const char* const kArkDir      = ":arkdir:";
 
 
 PrefsViewPaths::PrefsViewPaths(BRect frame)
@@ -78,7 +72,7 @@ PrefsViewPaths::~PrefsViewPaths()
 void PrefsViewPaths::Render()
 {
     BStringView* defaultStrView = new BStringView(BRect(m_margin, m_margin, 0, 0), NULL,
-            B_TRANSLATE("Default paths:"));
+                                                  B_TRANSLATE("Default paths:"));
     defaultStrView->SetFont(&m_sectionFont);
     defaultStrView->ResizeToPreferred();
 
@@ -125,16 +119,16 @@ void PrefsViewPaths::Render()
                                B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
 
     BStringView* extractStrView = new BStringView(BRect(m_addPathView->Frame().left,
-            m_addPathView->Frame().bottom + 2 * m_vGap + 10,
-            m_addPathView->Frame().left + StringWidth(B_TRANSLATE("Extract path:")), 0),
-            "PrefsViewPaths:extractStrView", B_TRANSLATE("Extract path:"),
-            B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
+                                                        m_addPathView->Frame().bottom + 2 * m_vGap + 10,
+                                                        m_addPathView->Frame().left + StringWidth(B_TRANSLATE("Extract path:")), 0),
+                                                  "PrefsViewPaths:extractStrView", B_TRANSLATE("Extract path:"),
+                                                  B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
     extractStrView->ResizeToPreferred();
 
     m_arkDirOpt = new BRadioButton(BRect(extractStrView->Frame().left + 3 * m_margin,
-                                         extractStrView->Frame().bottom + m_vGap, 0, 0), "PrefsViewPaths:arkDirOpt",
-                                   B_TRANSLATE("Same folder as source (archive) file"), new BMessage(M_ARK_DIR), B_FOLLOW_LEFT | B_FOLLOW_TOP,
-                                   B_WILL_DRAW | B_NAVIGABLE);
+                                         extractStrView->Frame().bottom + m_vGap, 0, 0),
+                                   "PrefsViewPaths:arkDirOpt", B_TRANSLATE("Same folder as source (archive) file"),
+                                   new BMessage(M_ARK_DIR), B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
     m_arkDirOpt->ResizeToPreferred();
 
     m_useDirOpt = new BRadioButton(BRect(m_arkDirOpt->Frame().left, m_arkDirOpt->Frame().bottom + m_vGap + 1,
@@ -146,9 +140,9 @@ void PrefsViewPaths::Render()
     float strW = m_useDirOpt->Frame().right;
     strW = MAX(m_useDirOpt->Frame().right + 4, 3 * m_margin + divider);
 
-    m_extractPathView = new BTextControl(BRect(strW, m_arkDirOpt->Frame().bottom + m_vGap,
-                                         m_addPathView->Frame().right, 0), "PrefsViewPaths:extractPathView", NULL,
-                                         NULL, NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
+    m_extractPathView = new BTextControl(BRect(strW, m_arkDirOpt->Frame().bottom + m_vGap, m_addPathView->Frame().right, 0),
+                                         "PrefsViewPaths:extractPathView", NULL, NULL, NULL,
+                                         B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
     m_extractPathView->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
     m_extractPathView->TextView()->DisallowChar(B_INSERT);
 
@@ -161,15 +155,16 @@ void PrefsViewPaths::Render()
                                    B_WILL_DRAW | B_NAVIGABLE);
 
     BStringView* favStrView = new BStringView(BRect(defaultStrView->Frame().left,
-            m_extractPathView->Frame().bottom + m_margin + m_vGap + 8, 0, 0),
-            "PrefsViewPaths:favStrView", B_TRANSLATE("Favorite extract paths:"),
-            B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
+                                                    m_extractPathView->Frame().bottom + m_margin + m_vGap + 8,
+                                                    0, 0),
+                                              "PrefsViewPaths:favStrView", B_TRANSLATE("Favorite extract paths:"),
+                                              B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
     favStrView->SetFont(&m_sectionFont);
     favStrView->ResizeToPreferred();
 
     m_genChk = new BCheckBox(BRect(3 * m_margin, favStrView->Frame().bottom, 0, 0),
-                             "PrefsViewPaths:genChk", B_TRANSLATE("List more paths (using archive name)"), NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP,
-                             B_WILL_DRAW | B_NAVIGABLE);
+                             "PrefsViewPaths:genChk", B_TRANSLATE("List more paths (using archive name)"),
+                             NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
     m_genChk->ResizeToPreferred();
 
     m_favListView = new BListView(BRect(5  * m_margin, favStrView->Frame().bottom + m_vGap + m_margin,
@@ -288,7 +283,10 @@ void PrefsViewPaths::MessageReceived(BMessage* message)
 {
     switch (message->what)
     {
-        case M_SELECT_OPEN_PATH: case M_SELECT_ADD_PATH: case M_SELECT_EXTRACT_PATH: case M_ADD_CLICKED:
+        case M_SELECT_OPEN_PATH:
+        case M_SELECT_ADD_PATH:
+        case M_SELECT_EXTRACT_PATH:
+        case M_ADD_CLICKED:
         {
             if (m_openPanel == NULL)
             {
@@ -393,8 +391,8 @@ void PrefsViewPaths::MessageReceived(BMessage* message)
 
         case M_REMOVE_CLICKED:
         {
-            int32 selIndex = m_favListView->CurrentSelection(0L);
-            if (selIndex >= 0L)
+            int32 const selIndex = m_favListView->CurrentSelection(0L);
+            if (selIndex >= 0)
             {
                 m_favListView->RemoveItem(selIndex);
                 if (m_favListView->CountItems() - 1 >= selIndex)
@@ -402,7 +400,6 @@ void PrefsViewPaths::MessageReceived(BMessage* message)
                 else if (m_favListView->CountItems() > 0)
                     m_favListView->Select(m_favListView->CountItems() - 1, false);
             }
-
             break;
         }
 
