@@ -10,6 +10,7 @@
 #include "PrefsFields.h"
 
 #include <CheckBox.h>
+#include <LayoutBuilder.h>
 #include <MenuField.h>
 #include <MenuItem.h>
 #include <PopUpMenu.h>
@@ -40,9 +41,6 @@ PrefsViewAdd::PrefsViewAdd(BRect frame)
 
 void PrefsViewAdd::Render()
 {
-    font_height fntHt;
-    be_plain_font->GetHeight(&fntHt);
-    float const lineHeight = fntHt.ascent + fntHt.descent + fntHt.leading;
 
     m_replaceMenu = new BPopUpMenu("");
     m_replaceMenu->AddItem(new BMenuItem(B_TRANSLATE("Never replace"), NULL));
@@ -50,45 +48,46 @@ void PrefsViewAdd::Render()
     m_replaceMenu->AddItem(new BMenuItem(B_TRANSLATE("Without asking"), NULL));
     m_replaceMenu->AddItem(new BMenuItem(B_TRANSLATE("When new file is more recent"), NULL));
 
-    m_replaceField = new BMenuField(BRect(m_margin, m_margin, Bounds().right - m_margin, 0),
-                                    "PrefsViewAdd:replaceField", B_TRANSLATE("Replace files:"), (BMenu*)m_replaceMenu,
-                                    B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
+    m_replaceField = new BMenuField("PrefsViewAdd:replaceField", B_TRANSLATE("Replace files:"), (BMenu*)m_replaceMenu,
+                                    B_WILL_DRAW | B_NAVIGABLE);
     m_replaceField->SetDivider(StringWidth(m_replaceField->Label()) + StringWidth("W"));
 
-    m_warnMBChk = new BCheckBox(BRect(m_margin, 3 * m_margin + fntHt.ascent + fntHt.descent + m_vGap + 4, 0, 0),
-                                "PrefsViewAdd:warnMBChk", B_TRANSLATE("Confirm when adding more than "), new BMessage(M_WARN), B_FOLLOW_LEFT,
+    m_warnMBChk = new BCheckBox("PrefsViewAdd:warnMBChk", B_TRANSLATE("Confirm when adding more than "), new BMessage(M_WARN),
                                 B_WILL_DRAW | B_NAVIGABLE);
-    m_warnMBChk->ResizeToPreferred();
 
-    m_mbView = new BTextControl(BRect(m_warnMBChk->Frame().right, m_warnMBChk->Frame().top - 2,
-                                      m_warnMBChk->Frame().right + StringWidth("88888") + 4,
-                                      m_warnMBChk->Frame().top - 2 + lineHeight), "PrefsViewAdd:mbView",
-                                NULL, NULL, NULL, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
+    m_mbView = new BTextControl("PrefsViewAdd:mbView", NULL, NULL, NULL, B_WILL_DRAW | B_NAVIGABLE);
     m_mbView->TextView()->DisallowChar(B_INSERT);
     m_mbView->TextView()->SetMaxBytes(4);
     m_mbView->SetDivider(0);
 
-    BStringView* mbStrView = new BStringView(BRect(m_mbView->Frame().right + 4, m_warnMBChk->Frame().top + 2, 0, 0),
-                                             "PrefsViewAdd:mbStrView", B_TRANSLATE("MiB"), B_FOLLOW_LEFT, B_WILL_DRAW);
-    mbStrView->ResizeToPreferred();
+    BStringView* mbStrView = new BStringView("PrefsViewAdd:mbStrView", BZ_TRANSLATE_COMMON(skMegabyteString), B_WILL_DRAW);
 
-    m_dropChk = new BCheckBox(BRect(m_margin,    m_warnMBChk->Frame().bottom + m_vGap, 0, 0),
-                              "PrefsViewAdd:dropChk", B_TRANSLATE("Confirm when adding through drag 'n drop"), NULL, B_FOLLOW_LEFT,
+    m_dropChk = new BCheckBox("PrefsViewAdd:dropChk", B_TRANSLATE("Confirm when adding through drag 'n drop"), NULL,
                               B_WILL_DRAW | B_NAVIGABLE);
-    m_dropChk->ResizeToPreferred();
 
-    m_sortChk = new BCheckBox(BRect(m_margin, m_dropChk->Frame().bottom + m_vGap, 0, 0),
-                              "PrefsViewAdd:sortChk", B_TRANSLATE("Sort after add (n/a for reloading archivers)"), NULL, B_FOLLOW_LEFT,
+    m_sortChk = new BCheckBox("PrefsViewAdd:sortChk", B_TRANSLATE("Sort after add (n/a for reloading archivers)"), NULL,
                               B_WILL_DRAW | B_NAVIGABLE);
-    m_sortChk->ResizeToPreferred();
 
-    AddChild(m_replaceField);
-    AddChild(m_warnMBChk);
-    AddChild(m_mbView);
-    AddChild(mbStrView);
-    AddChild(m_dropChk);
-    AddChild(m_sortChk);
-    AddRevertButton();
+    BLayoutBuilder::Group<> builder = BLayoutBuilder::Group<>(this, B_VERTICAL, B_USE_HALF_ITEM_SPACING);
+    builder
+        .SetInsets(m_margin)
+        .AddGroup(B_HORIZONTAL)
+            // put it in a group with glue so that it doesn't extend the entire length
+            .Add(m_replaceField)
+            .AddGlue()
+        .End()
+        .AddGroup(B_HORIZONTAL, 0) // 0 spacing so the text/textcontrol is close to each other
+            .Add(m_warnMBChk)
+            .Add(m_mbView)
+            .Add(mbStrView)
+            .AddGlue()
+        .End()
+        .Add(m_dropChk)
+        .Add(m_sortChk)
+        .AddGlue() // add some free space at the bottom
+        .End();
+
+    AddRevertButton(builder);
 }
 
 
