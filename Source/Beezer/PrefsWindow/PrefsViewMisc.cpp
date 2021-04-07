@@ -15,6 +15,7 @@
 #include <Application.h>
 #include <Button.h>
 #include <CheckBox.h>
+#include <LayoutBuilder.h>
 #include <MenuField.h>
 #include <MenuItem.h>
 #include <PopUpMenu.h>
@@ -40,78 +41,69 @@ PrefsViewMisc::PrefsViewMisc(BRect frame)
 
 void PrefsViewMisc::Render()
 {
-    BString buf2 = B_TRANSLATE("When %appname% starts:");
-    buf2.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
-    buf2 << " ";
-
-    float maxWidth = MAX(be_plain_font->StringWidth(B_TRANSLATE("When last archive is closed:")),
-                         be_plain_font->StringWidth(buf2.String())) + 5;
+    BString bufStr(B_TRANSLATE("When %appname% starts:"));
+    bufStr.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
 
     // Add the startup fields
     m_startupPopUp = new BPopUpMenu("");
-    m_startupField = new BMenuField(BRect(m_margin, m_margin, Bounds().right - m_margin, 0),
-                                    "PrefsViewMisc:startupField", buf2.String(), (BMenu*)m_startupPopUp,
-                                    B_FOLLOW_LEFT, B_WILL_DRAW);
-    m_startupField->SetDivider(maxWidth);
-    m_startupField->SetAlignment(B_ALIGN_RIGHT);
+    m_startupField = new BMenuField("PrefsViewMisc:startupField", bufStr, (BMenu*)m_startupPopUp, B_WILL_DRAW);
     m_startupPopUp->AddItem(new BMenuItem(B_TRANSLATE("Show welcome window"), NULL));
     m_startupPopUp->AddItem(new BMenuItem(B_TRANSLATE("Show create archive panel"), NULL));
     m_startupPopUp->AddItem(new BMenuItem(B_TRANSLATE("Show open archive panel"), NULL));
-    m_startupPopUp->ResizeToPreferred();
-
 
     // Add the quit fields
     m_quitPopUp = new BPopUpMenu("");
-    m_quitField = new BMenuField(BRect(m_margin, m_startupField->Frame().top + m_vGap, Bounds().right - m_margin, 0),
-                                 "PrefsViewMisc:quitField", B_TRANSLATE("When last archive is closed:"), (BMenu*)m_quitPopUp,
-                                 B_FOLLOW_LEFT, B_WILL_DRAW);
-    m_quitField->SetDivider(maxWidth);
-    m_quitField->SetAlignment(B_ALIGN_RIGHT);
+    m_quitField = new BMenuField("PrefsViewMisc:quitField", B_TRANSLATE("When last archive is closed:"), (BMenu*)m_quitPopUp,
+                                 B_WILL_DRAW);
     m_quitPopUp->AddItem(new BMenuItem(B_TRANSLATE("Show welcome window"), NULL));
 
-    BString buf = B_TRANSLATE("Quit %appname%");
-    buf.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
-
-    m_quitPopUp->AddItem(new BMenuItem(buf.String(), NULL));
-    m_quitPopUp->ResizeToPreferred();
-    m_quitField->MoveBy(0, m_quitPopUp->Frame().Height() - m_margin - m_vGap);
+    bufStr = B_TRANSLATE("Quit %appname%");
+    bufStr.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
+    m_quitPopUp->AddItem(new BMenuItem(bufStr, NULL));
 
     // Add other controls
-    m_commentChk = new BCheckBox(BRect(m_margin, 2 * m_quitPopUp->Frame().Height(), 0, 0),
-                                 "PrefsViewMisc:commentChk", B_TRANSLATE("Show comments (if any) after opening an archive"),
-                                 NULL, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
-    m_commentChk->ResizeToPreferred();
+    m_commentChk = new BCheckBox("PrefsViewMisc:commentChk", B_TRANSLATE("Show comments (if any) after opening an archive"),
+                                 NULL, B_WILL_DRAW | B_NAVIGABLE);
 
-    m_mimeChk = new BCheckBox(BRect(m_margin, m_commentChk->Frame().bottom + m_vGap, 0, 0),
-                              "PrefsViewMisc:mimeChk", B_TRANSLATE("Check file types at startup"), NULL, B_FOLLOW_LEFT,
+    m_mimeChk = new BCheckBox("PrefsViewMisc:mimeChk", B_TRANSLATE("Check file types at startup"), NULL,
                               B_WILL_DRAW | B_NAVIGABLE);
-    m_mimeChk->ResizeToPreferred();
 
-    float btnWidth = MAX(K_BUTTON_WIDTH, StringWidth(B_TRANSLATE("Register file types now")) + 22);
-    m_mimeBtn = new BButton(BRect(5 * m_margin, m_mimeChk->Frame().bottom + m_vGap + 2,
-                                  5 * m_margin + btnWidth, m_mimeChk->Frame().bottom + m_vGap + 2 + K_BUTTON_HEIGHT),
-                            "PrefsViewMisc:mimeBtn", B_TRANSLATE("Register file types now"), new BMessage(M_REGISTER_TYPES),
-                            B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
+    m_mimeBtn = new BButton("PrefsViewMisc:mimeBtn", B_TRANSLATE("Register file types now"), new BMessage(M_REGISTER_TYPES),
+                            B_WILL_DRAW | B_NAVIGABLE);
 
     m_arkTypePopUp = new BPopUpMenu("");
-    m_arkTypeField = new BMenuField(BRect(m_margin, m_mimeBtn->Frame().bottom + 2 * m_margin,
-                                          Bounds().right - m_margin, 0), "PrefsViewMisc:arkTypeField", B_TRANSLATE("Default archiver:"),
-                                    (BMenu*)m_arkTypePopUp, B_FOLLOW_LEFT, B_WILL_DRAW);
-    m_arkTypeField->SetDivider(be_plain_font->StringWidth(B_TRANSLATE("Default archiver:")) + 5);
+    m_arkTypeField = new BMenuField("PrefsViewMisc:arkTypeField", B_TRANSLATE("Default archiver:"), (BMenu*)m_arkTypePopUp,
+                                    B_WILL_DRAW);
 
     m_arkTypes = ArchiversInstalled(NULL);
     for (int32 i = 0; i < m_arkTypes.CountItems(); i++)
         m_arkTypePopUp->AddItem(new BMenuItem((const char*)m_arkTypes.ItemAtFast(i), NULL));
 
-    m_arkTypePopUp->ResizeToPreferred();
+    BLayoutBuilder::Group<> builder = BLayoutBuilder::Group<>(this, B_VERTICAL, B_USE_HALF_ITEM_SPACING);
+    builder
+        .SetInsets(m_margin)
+            .AddGrid(0.0, B_USE_SMALL_SPACING)
+                .AddMenuField(m_startupField, 0, 0, B_ALIGN_RIGHT)
+                .AddMenuField(m_quitField, 0, 1, B_ALIGN_RIGHT)
+            .AddGlue(2, 0, 1, 2) // so the menufields don't extend the entire width
+            .End()
+        .AddStrut(m_margin) // spacer between sections
+        .Add(m_commentChk)
+        .Add(m_mimeChk)
+        .AddGroup(B_HORIZONTAL)
+            .AddStrut(m_margin)
+            .Add(m_mimeBtn)
+            .AddGlue() // padding on the right to push the button left
+        .End()
+        .AddStrut(m_margin) // spacer between sections
+        .AddGroup(B_HORIZONTAL, 0)
+            .Add(m_arkTypeField)
+            .AddGlue(2.0) // so the menufield doesn't extend the entire width
+        .End()
+        .AddGlue() // add some extra space at the bottom
+        .End();
 
-    AddChild(m_quitField);
-    AddChild(m_startupField);
-    AddChild(m_commentChk);
-    AddChild(m_mimeChk);
-    AddChild(m_mimeBtn);
-    AddChild(m_arkTypeField);
-    AddRevertButton();
+    AddRevertButton(builder);
 }
 
 
