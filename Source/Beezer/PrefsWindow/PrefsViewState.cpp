@@ -9,6 +9,7 @@
 #include "PrefsFields.h"
 
 #include <CheckBox.h>
+#include <LayoutBuilder.h>
 #include <StringView.h>
 
 #ifdef HAIKU_ENABLE_I18N
@@ -29,42 +30,53 @@ PrefsViewState::PrefsViewState(BRect frame)
 }
 
 
-
 void PrefsViewState::Render()
 {
-    BStringView* storeStrView = new BStringView(BRect(m_margin, m_margin, 0, 0), NULL,
-            B_TRANSLATE("Store automatically"));
+    BStringView* storeStrView = new BStringView(NULL, B_TRANSLATE("Store automatically"));
     storeStrView->SetFont(&m_sectionFont);
-    storeStrView->ResizeToPreferred();
 
-    m_storeUIChk = new BCheckBox(BRect(3 * m_margin, storeStrView->Frame().bottom + m_vGap, 0, 0),
-                                 "PrefsViewState:storeUIChk", B_TRANSLATE("Interface state"), NULL);
-    m_storeUIChk->ResizeToPreferred();
+    m_storeUIChk = new BCheckBox("PrefsViewState:storeUIChk", B_TRANSLATE("Interface state"), NULL);
 
-    m_storeArkChk = new BCheckBox(BRect(3 * m_margin, m_storeUIChk->Frame().bottom + m_vGap, 0, 0),
-                                  "PrefsViewState:storeArkChk", B_TRANSLATE("Archiver settings"), NULL);
-    m_storeArkChk->ResizeToPreferred();
+    m_storeArkChk = new BCheckBox("PrefsViewState:storeArkChk", B_TRANSLATE("Archiver settings"), NULL);
 
-    BStringView* restoreStrView = new BStringView(BRect(m_margin, m_storeArkChk->Frame().bottom + m_vGap +
-            m_storeArkChk->Frame().Height() / 2, 0, 0), NULL, B_TRANSLATE("Restore automatically"));
+    BStringView* restoreStrView = new BStringView(NULL, B_TRANSLATE("Restore automatically"));
     restoreStrView->SetFont(&m_sectionFont);
-    restoreStrView->ResizeToPreferred();
 
-    m_restoreUIChk = new BCheckBox(BRect(3 * m_margin, restoreStrView->Frame().bottom + m_vGap, 0, 0),
-                                   "PrefsViewState:restoreUIChk", B_TRANSLATE("Interface state"), NULL);
-    m_restoreUIChk->ResizeToPreferred();
+    m_restoreUIChk = new BCheckBox("PrefsViewState:restoreUIChk", B_TRANSLATE("Interface state"), NULL);
 
-    m_restoreArkChk = new BCheckBox(BRect(3 * m_margin, m_restoreUIChk->Frame().bottom + m_vGap, 0, 0),
-                                    "PrefsViewState:restoreArkChk", B_TRANSLATE("Archiver settings"), NULL);
-    m_restoreArkChk->ResizeToPreferred();
+    m_restoreArkChk = new BCheckBox("PrefsViewState:restoreArkChk", B_TRANSLATE("Archiver settings"), NULL);
 
-    AddChild(storeStrView);
-    AddChild(m_storeUIChk);
-    AddChild(m_storeArkChk);
-    AddChild(restoreStrView);
-    AddChild(m_restoreUIChk);
-    AddChild(m_restoreArkChk);
-    AddRevertButton();
+
+    BLayoutBuilder::Group<> builder = BLayoutBuilder::Group<>(this, B_VERTICAL, B_USE_HALF_ITEM_SPACING);
+    builder
+        .SetInsets(m_margin)
+        .Add(storeStrView)
+        .AddGroup(B_HORIZONTAL)
+            .AddStrut(m_margin)
+            .Add(m_storeUIChk)
+            .AddGlue()
+        .End()
+        .AddGroup(B_HORIZONTAL)
+            .AddStrut(m_margin)
+            .Add(m_storeArkChk)
+            .AddGlue()
+        .End()
+        .AddStrut(m_margin) // small space between sections
+        .Add(restoreStrView)
+        .AddGroup(B_HORIZONTAL)
+            .AddStrut(m_margin)
+            .Add(m_restoreUIChk)
+            .AddGlue()
+        .End()
+        .AddGroup(B_HORIZONTAL)
+            .AddStrut(m_margin)
+            .Add(m_restoreArkChk)
+            .AddGlue()
+        .End()
+        .AddGlue() // add some extra space at the bottom
+        .End();
+
+    AddRevertButton(builder);
 }
 
 
