@@ -3,15 +3,7 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <Application.h>
-#include <Bitmap.h>
-#include <Button.h>
-#include <ListView.h>
-#include <ScrollView.h>
-#include <String.h>
-#include <TextView.h>
-
-#include "AppConstants.h"
+#include "PrefsWindow.h"
 #include "BevelView.h"
 #include "BitmapPool.h"
 #include "CommonStrings.h"
@@ -27,8 +19,13 @@
 #include "PrefsViewRecent.h"
 #include "PrefsViewState.h"
 #include "PrefsViewWindows.h"
-#include "PrefsWindow.h"
 #include "UIConstants.h"
+
+#include <Application.h>
+#include <Bitmap.h>
+#include <Button.h>
+#include <ListView.h>
+#include <ScrollView.h>
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>

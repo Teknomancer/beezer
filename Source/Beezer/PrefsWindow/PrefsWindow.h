@@ -13,9 +13,9 @@ class BTextView;
 class BevelView;
 class PrefsView;
 
-#define M_CLOSE_PREFS              'clpf'
-#define M_SAVE_PREFS               'svpf'
-#define M_PREFS_PANEL_SELECTED     'pspf'
+const uint32 M_CLOSE_PREFS          = 'clpf';
+const uint32 M_SAVE_PREFS           = 'svpf';
+const uint32 M_PREFS_PANEL_SELECTED = 'pspf';
 
 class PrefsWindow : public BWindow
 {
@@ -27,11 +27,9 @@ class PrefsWindow : public BWindow
         virtual void        MessageReceived(BMessage* message);
 
     private:
-        // Private hooks
         void                AddControls();
         void                SetActivePanel(PrefsView* panel);
 
-        // Private members
         BRect               m_panelFrame;
         BList               m_panelList;
         PrefsView*          m_currentPanel;
