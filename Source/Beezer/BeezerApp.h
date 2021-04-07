@@ -11,6 +11,7 @@
 
 class BDirectory;
 class BFile;
+class BMenu;
 class BMenuField;
 class BPopUpMenu;
 class BString;

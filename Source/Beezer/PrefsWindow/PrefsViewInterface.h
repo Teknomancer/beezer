@@ -8,8 +8,10 @@
 
 #include "PrefsView.h"
 
+class BPopUpMenu;
 class BColorControl;
 class BMenuItem;
+class BMenuField;
 
 class PrefsViewInterface : public PrefsView
 {
@@ -25,12 +27,10 @@ class PrefsViewInterface : public PrefsView
         virtual void        Load();
 
     private:
-        // Private hooks
         void                UpdateColorWell();
         void                UpdateColorControl(BMenuItem* item);
         bool                FindBoolDef(BMessage* msg, const char* name, bool defaultValue);
 
-        // Private members
         BCheckBox*          m_fullLengthBarsChk,
                             *m_toolbarChk,
                             *m_infobarChk,

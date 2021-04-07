@@ -9,7 +9,6 @@
 class BList;
 class BLocker;
 class BPopUpMenu;
-class BString;
 
 class Archiver;
 class RuleMgr;
