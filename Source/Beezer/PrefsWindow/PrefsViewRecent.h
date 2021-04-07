@@ -18,7 +18,6 @@ class PrefsViewRecent : public PrefsView
         virtual void        Load();
 
     private:
-        // Private members
         BCheckBox*          m_showPathChk;
         BTextControl*       m_recentArkView,
                             *m_recentExtView;

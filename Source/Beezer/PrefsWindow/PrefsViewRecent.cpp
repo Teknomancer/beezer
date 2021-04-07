@@ -3,21 +3,17 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
+#include "PrefsViewRecent.h"
+#include "CommonStrings.h"
+#include "BitmapPool.h"
+#include "Preferences.h"
+#include "PrefsFields.h"
+
 #include <CheckBox.h>
-#include <String.h>
 #include <StringView.h>
 #include <TextControl.h>
 
 #include <stdlib.h>
-
-#include "AppConstants.h"
-#include "CommonStrings.h"
-#include "BitmapPool.h"
-#include "LocalUtils.h"
-#include "Preferences.h"
-#include "PrefsFields.h"
-#include "PrefsViewRecent.h"
-#include "UIConstants.h"
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
