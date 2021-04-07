@@ -125,7 +125,7 @@ BMessage InputAlert::GetInput(BWindow* window)
         if (window)
             window->UpdateIfNeeded();
 
-        snooze(10000);
+        snooze(50000);
     }
 
     // OK time to return the things we need to
