@@ -15,6 +15,12 @@
 #define B_TRANSLATE_MARK(x) x
 #endif
 
+// for some reason Haiku doesn't have a B_TRANSLATE_NOCOLLECT_CONTEXT variant of the macro
+// so we use the ALL version with an empty comment
+#ifndef BZ_TRANSLATE_COMMON
+#define BZ_TRANSLATE_COMMON(x) B_TRANSLATE_NOCOLLECT_ALL(x, "Common", "")
+#endif
+
 /*
 *    These strings are shared across multiple source files.  Most of them are
 *    here to reduce duplicates and make it easier to translate.  Some are also

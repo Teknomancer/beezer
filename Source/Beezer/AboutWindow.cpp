@@ -152,7 +152,7 @@ void MarqueeView::ScrollBy(float dh, float dv)
 
 
 AboutWindow::AboutWindow(const char* versionStr, const char* compileTimeStr)
-    : BWindow(BRect(0, 0, 319, 374), B_TRANSLATE(skAboutString), B_MODAL_WINDOW,
+    : BWindow(BRect(0, 0, 319, 374), BZ_TRANSLATE_COMMON(skAboutString), B_MODAL_WINDOW,
               B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE | B_NOT_RESIZABLE)
 {
     // Create the BBitmap objects and set its data with error checking
@@ -161,7 +161,7 @@ AboutWindow::AboutWindow(const char* versionStr, const char* compileTimeStr)
     {
         Hide();
         (new BAlert("Error", B_TRANSLATE("An error was encountered while trying to load resources for the About window."),
-                    B_TRANSLATE(skCloseWindowString), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING,
+                    BZ_TRANSLATE_COMMON(skCloseWindowString), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING,
                     B_STOP_ALERT))->Go();
         PostMessage(B_QUIT_REQUESTED);
         Show();

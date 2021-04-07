@@ -335,7 +335,7 @@ bool FileJoinerWindow::QuitRequested()
         suspend_thread(m_thread);
 
         BAlert* alert = new BAlert("Quit", B_TRANSLATE("Joining is in progress.  Force it to stop?"),
-                                   B_TRANSLATE(skCancelString), B_TRANSLATE(skForceStopString),
+                                   BZ_TRANSLATE_COMMON(skCancelString), BZ_TRANSLATE_COMMON(skForceStopString),
                                    NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
         alert->SetShortcut(0L, B_ESCAPE);
         alert->SetDefaultButton(alert->ButtonAt(1L));
@@ -373,7 +373,7 @@ void FileJoinerWindow::MessageReceived(BMessage* message)
                 m_cancel = false;
                 m_thread = spawn_thread(_joiner, "_joiner", B_NORMAL_PRIORITY, (void*)this);
                 resume_thread(m_thread);
-                m_joinBtn->SetLabel(B_TRANSLATE(skCancelString));
+                m_joinBtn->SetLabel(BZ_TRANSLATE_COMMON(skCancelString));
                 m_joinInProgress = true;
                 m_joinBtn->MakeDefault(false);
             }
@@ -431,10 +431,10 @@ void FileJoinerWindow::MessageReceived(BMessage* message)
                 m_dirPanel = new SelectDirPanel(B_OPEN_PANEL, new BMessenger(this), NULL, B_DIRECTORY_NODE,
                                                 false, new BMessage(M_JOIN_FOLDER_SELECTED), NULL, true, false);
 
-                m_dirPanel->SetButtonLabel(B_DEFAULT_BUTTON, B_TRANSLATE(skSelectString));
+                m_dirPanel->SetButtonLabel(B_DEFAULT_BUTTON, BZ_TRANSLATE_COMMON(skSelectString));
                 m_dirPanel->Window()->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
                 m_dirPanel->Window()->AddToSubset(this);
-                m_dirPanel->SetCurrentDirButton(B_TRANSLATE(skSelectString));
+                m_dirPanel->SetCurrentDirButton(BZ_TRANSLATE_COMMON(skSelectString));
 
                 if (m_dirPanel->Window()->LockLooper())
                 {
@@ -529,17 +529,17 @@ void FileJoinerWindow::MessageReceived(BMessage* message)
             if (result == BZR_DONE)
             {
                 alert = new BAlert("Done", B_TRANSLATE("The file was successfully joined!"),
-                                   B_TRANSLATE(skOKString), NULL, NULL, B_WIDTH_AS_USUAL, B_INFO_ALERT);
+                                   BZ_TRANSLATE_COMMON(skOKString), NULL, NULL, B_WIDTH_AS_USUAL, B_INFO_ALERT);
             }
             else if (result == BZR_CANCEL)
             {
                 alert = new BAlert("Cancel", B_TRANSLATE("Joining of the file was cancelled"),
-                                   B_TRANSLATE(skOKString), NULL, NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
+                                   BZ_TRANSLATE_COMMON(skOKString), NULL, NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
             }
             else
             {
                 alert = new BAlert("Error", B_TRANSLATE("An unknown error occured while joining the files."),
-                                   B_TRANSLATE(skOKString), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
+                                   BZ_TRANSLATE_COMMON(skOKString), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
             }
 
             // Incase of no-errors with input files and output dirs, save them to recent lists

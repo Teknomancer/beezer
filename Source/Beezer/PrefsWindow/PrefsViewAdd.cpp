@@ -31,7 +31,7 @@ static const uint32 M_WARN = 'warn';
 
 
 PrefsViewAdd::PrefsViewAdd(BRect frame)
-    : PrefsView(frame, B_TRANSLATE(skAddString), B_TRANSLATE("Settings related to adding entries to archives"))
+    : PrefsView(frame, BZ_TRANSLATE_COMMON(skAddString), B_TRANSLATE("Settings related to adding entries to archives"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Add", 20, 20));
     Render();
