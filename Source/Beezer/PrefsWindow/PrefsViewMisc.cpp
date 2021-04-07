@@ -85,15 +85,17 @@ void PrefsViewMisc::Render()
             .AddGrid(0.0, B_USE_SMALL_SPACING)
                 .AddMenuField(m_startupField, 0, 0, B_ALIGN_RIGHT)
                 .AddMenuField(m_quitField, 0, 1, B_ALIGN_RIGHT)
-            .AddGlue(2, 0, 1, 2) // so the menufields don't extend the entire width
+                .AddGlue(2, 0, 1, 2) // so the menufields don't extend the entire width
             .End()
         .AddStrut(m_margin) // spacer between sections
         .Add(m_commentChk)
-        .Add(m_mimeChk)
-        .AddGroup(B_HORIZONTAL)
-            .AddStrut(m_margin)
-            .Add(m_mimeBtn)
-            .AddGlue() // padding on the right to push the button left
+        .AddGroup(B_VERTICAL, 0) // vertical group with no spacing to get the checkbox and button closer
+            .Add(m_mimeChk)
+            .AddGroup(B_HORIZONTAL)
+                .AddStrut(m_margin)
+                .Add(m_mimeBtn)
+                .AddGlue() // padding on the right to push the button left
+            .End()
         .End()
         .AddStrut(m_margin) // spacer between sections
         .AddGroup(B_HORIZONTAL, 0)
