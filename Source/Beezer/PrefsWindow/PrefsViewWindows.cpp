@@ -10,6 +10,8 @@
 #include "PrefsFields.h"
 
 #include <CheckBox.h>
+#include <LayoutBuilder.h>
+
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -32,37 +34,31 @@ PrefsViewWindows::PrefsViewWindows(BRect frame)
 
 void PrefsViewWindows::Render()
 {
-    m_searchChk = new BCheckBox(BRect(m_margin, m_margin, 0, 0), "PrefsViewWindows:searchChk",
-                                B_TRANSLATE("Search window"), NULL);
-    m_searchChk->ResizeToPreferred();
+    m_searchChk = new BCheckBox("PrefsViewWindows:searchChk", B_TRANSLATE("Search window"), NULL);
 
-    m_logChk = new BCheckBox(BRect(m_margin, m_searchChk->Frame().bottom + m_vGap, 0, 0),
-                             "PrefsViewWindows:logChk", B_TRANSLATE("Log window"), NULL);
-    m_logChk->ResizeToPreferred();
+    m_logChk = new BCheckBox("PrefsViewWindows:logChk", B_TRANSLATE("Log window"), NULL);
 
-    m_commentChk = new BCheckBox(BRect(m_margin, m_logChk->Frame().bottom + m_vGap, 0, 0),
-                                 "PrefsViewWindows:commentChk", B_TRANSLATE("Comment window"), NULL);
-    m_commentChk->ResizeToPreferred();
+    m_commentChk = new BCheckBox("PrefsViewWindows:commentChk", B_TRANSLATE("Comment window"), NULL);
 
-    m_arkInfoChk = new BCheckBox(BRect(m_margin, m_commentChk->Frame().bottom + m_vGap, 0, 0),
-                                 "PrefsViewWindows:arkInfoChk", B_TRANSLATE("Archive information window"), NULL);
-    m_arkInfoChk->ResizeToPreferred();
+    m_arkInfoChk = new BCheckBox("PrefsViewWindows:arkInfoChk", B_TRANSLATE("Archive information window"), NULL);
 
-    m_welcomeChk = new BCheckBox(BRect(m_margin, m_arkInfoChk->Frame().bottom + m_vGap, 0, 0),
-                                 "PrefsViewWindows:welcomeChk", B_TRANSLATE("Welcome window"), NULL);
-    m_welcomeChk->ResizeToPreferred();
+    m_welcomeChk = new BCheckBox("PrefsViewWindows:welcomeChk", B_TRANSLATE("Welcome window"), NULL);
 
-    m_prefsChk = new BCheckBox(BRect(m_margin, m_welcomeChk->Frame().bottom + m_vGap, 0, 0),
-                               "PrefsViewWindows:presfChk", B_TRANSLATE("Settings window"), NULL);
-    m_prefsChk->ResizeToPreferred();
+    m_prefsChk = new BCheckBox("PrefsViewWindows:presfChk", B_TRANSLATE("Settings window"), NULL);
 
-    AddChild(m_searchChk);
-    AddChild(m_logChk);
-    AddChild(m_commentChk);
-    AddChild(m_arkInfoChk);
-    AddChild(m_welcomeChk);
-    AddChild(m_prefsChk);
-    AddRevertButton();
+    BLayoutBuilder::Group<> builder = BLayoutBuilder::Group<>(this, B_VERTICAL, B_USE_HALF_ITEM_SPACING);
+    builder
+        .SetInsets(m_margin)
+        .Add(m_searchChk)
+        .Add(m_logChk)
+        .Add(m_commentChk)
+        .Add(m_arkInfoChk)
+        .Add(m_welcomeChk)
+        .Add(m_prefsChk)
+        .AddGlue() // add some free space at the bottom
+        .End();
+
+    AddRevertButton(builder);
 }
 
 
