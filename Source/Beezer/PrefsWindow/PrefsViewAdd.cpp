@@ -50,7 +50,6 @@ void PrefsViewAdd::Render()
 
     m_replaceField = new BMenuField("PrefsViewAdd:replaceField", B_TRANSLATE("Replace files:"), (BMenu*)m_replaceMenu,
                                     B_WILL_DRAW | B_NAVIGABLE);
-    m_replaceField->SetDivider(StringWidth(m_replaceField->Label()) + StringWidth("W"));
 
     m_warnMBChk = new BCheckBox("PrefsViewAdd:warnMBChk", B_TRANSLATE("Confirm when adding more than "), new BMessage(M_WARN),
                                 B_WILL_DRAW | B_NAVIGABLE);
@@ -58,9 +57,6 @@ void PrefsViewAdd::Render()
     m_mbView = new BTextControl("PrefsViewAdd:mbView", NULL, NULL, NULL, B_WILL_DRAW | B_NAVIGABLE);
     m_mbView->TextView()->DisallowChar(B_INSERT);
     m_mbView->TextView()->SetMaxBytes(4);
-    m_mbView->SetDivider(0);
-    //TODO it would be nice to set a smaller size but it causes rendering issues with the layout
-    m_mbView->SetExplicitMaxSize(BSize(StringWidth("9999999999"), B_SIZE_UNSET));
 
     BStringView* mbStrView = new BStringView("PrefsViewAdd:mbStrView", BZ_TRANSLATE_COMMON(skMegabyteString), B_WILL_DRAW);
 
@@ -69,6 +65,12 @@ void PrefsViewAdd::Render()
 
     m_sortChk = new BCheckBox("PrefsViewAdd:sortChk", B_TRANSLATE("Sort after add (n/a for reloading archivers)"), NULL,
                               B_WILL_DRAW | B_NAVIGABLE);
+
+    BLayoutItem* mbLabel = m_mbView->CreateLabelLayoutItem();
+    BLayoutItem* mbInput = m_mbView->CreateTextViewLayoutItem();
+    // add a few extra 9's to account for the border of the text input
+    mbInput->SetExplicitMinSize(BSize(StringWidth("9999"), B_SIZE_UNSET));
+    mbInput->SetExplicitMaxSize(BSize(StringWidth("999999"), B_SIZE_UNSET));
 
     BLayoutBuilder::Group<> builder = BLayoutBuilder::Group<>(this, B_VERTICAL, B_USE_HALF_ITEM_SPACING);
     builder
@@ -80,7 +82,8 @@ void PrefsViewAdd::Render()
         .End()
         .AddGroup(B_HORIZONTAL, 0) // 0 spacing so the text/textcontrol is close to each other
             .Add(m_warnMBChk)
-            .Add(m_mbView)
+            .Add(mbLabel)
+            .Add(mbInput)
             .Add(mbStrView)
             .AddGlue()
         .End()
