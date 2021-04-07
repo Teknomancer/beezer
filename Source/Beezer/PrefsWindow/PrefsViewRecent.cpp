@@ -10,6 +10,7 @@
 #include "PrefsFields.h"
 
 #include <CheckBox.h>
+#include <LayoutBuilder.h>
 #include <StringView.h>
 #include <TextControl.h>
 
@@ -36,53 +37,67 @@ PrefsViewRecent::PrefsViewRecent(BRect frame)
 
 void PrefsViewRecent::Render()
 {
-    font_height fntHt;
-    be_plain_font->GetHeight(&fntHt);
-    float const lineHeight = fntHt.ascent + fntHt.descent + fntHt.leading;
 
-    BStringView* arkStrView = new BStringView(BRect(m_margin, m_margin, 0, 0), NULL,
-            B_TRANSLATE("Recent archives"));
+    BStringView* arkStrView = new BStringView(NULL, B_TRANSLATE("Recent archives"));
     arkStrView->SetFont(&m_sectionFont);
-    arkStrView->ResizeToPreferred();
 
-    float strW = StringWidth(B_TRANSLATE("Number of recent archives"));
-    strW += 6;
-
-    m_recentArkView = new BTextControl(BRect(3 * m_margin, arkStrView->Frame().bottom + m_vGap + 2,
-                                       3 * m_margin + strW + StringWidth("WWW"),
-                                       arkStrView->Frame().bottom + m_vGap + 2 + lineHeight),
-                                       "PrefsViewRecent:recentArkView", B_TRANSLATE("Number of recent archives"), NULL, NULL,
-                                       B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
+    m_recentArkView = new BTextControl("PrefsViewRecent:recentArkView", B_TRANSLATE("Number of recent archives"), NULL, NULL,
+                                       B_WILL_DRAW | B_NAVIGABLE);
     m_recentArkView->TextView()->SetMaxBytes(2);
     m_recentArkView->TextView()->DisallowChar(B_INSERT);
-    m_recentArkView->SetDivider(strW);
 
-    m_showPathChk = new BCheckBox(BRect(3 * m_margin, m_recentArkView->Frame().bottom + m_vGap + 2, 0, 0),
-                                  "PrefsViewRecent:showPathChk", B_TRANSLATE("Show full path in recent archives"), NULL);
-    m_showPathChk->ResizeToPreferred();
+    m_showPathChk = new BCheckBox("PrefsViewRecent:showPathChk", B_TRANSLATE("Show full path in recent archives"), NULL);
 
-    BStringView* extStrView = new BStringView(BRect(m_margin, m_showPathChk->Frame().bottom + m_vGap + 8, 0, 0),
-            NULL, B_TRANSLATE("Recent extract paths"));
+    BStringView* extStrView = new BStringView(NULL, B_TRANSLATE("Recent extract paths"));
     extStrView->SetFont(&m_sectionFont);
-    extStrView->ResizeToPreferred();
 
-    strW = StringWidth(B_TRANSLATE("Number of recent extract paths"));
-    strW += 6;
-    m_recentExtView = new BTextControl(BRect(3 * m_margin, extStrView->Frame().bottom + m_vGap + 2,
-                                       3 * m_margin + strW + StringWidth("WWW"),
-                                       extStrView->Frame().bottom + m_vGap + 2 + lineHeight),
-                                       "PrefsViewRecent:recentExtView", B_TRANSLATE("Number of recent extract paths"), NULL, NULL,
-                                       B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
+    m_recentExtView = new BTextControl("PrefsViewRecent:recentExtView", B_TRANSLATE("Number of recent extract paths"), NULL, NULL,
+                                       B_WILL_DRAW | B_NAVIGABLE);
     m_recentExtView->TextView()->SetMaxBytes(2);
     m_recentExtView->TextView()->DisallowChar(B_INSERT);
-    m_recentExtView->SetDivider(strW);
 
-    AddChild(arkStrView);
-    AddChild(m_recentArkView);
-    AddChild(m_showPathChk);
-    AddChild(extStrView);
-    AddChild(m_recentExtView);
-    AddRevertButton();
+    // split the BTextControls so that we have finer control over the size and layout
+    BLayoutItem* recentArkLabel = m_recentArkView->CreateLabelLayoutItem();
+    BLayoutItem* recentArkInput = m_recentArkView->CreateTextViewLayoutItem();
+    recentArkInput->SetExplicitMinSize(BSize(StringWidth("999"), B_SIZE_UNSET));
+    recentArkInput->SetExplicitMaxSize(BSize(StringWidth("99999"), B_SIZE_UNSET));
+
+    BLayoutItem* recentExtLabel = m_recentExtView->CreateLabelLayoutItem();
+    BLayoutItem* recentExtInput = m_recentExtView->CreateTextViewLayoutItem();
+    recentExtInput->SetExplicitMaxSize(BSize(StringWidth("999"), B_SIZE_UNSET));
+    recentExtInput->SetExplicitMinSize(BSize(StringWidth("99999"), B_SIZE_UNSET));
+
+    BLayoutBuilder::Group<> builder = BLayoutBuilder::Group<>(this, B_VERTICAL, B_USE_HALF_ITEM_SPACING);
+    builder
+        .SetInsets(m_margin)
+        .Add(arkStrView)
+        .AddGroup(B_HORIZONTAL)
+            .AddStrut(m_margin)
+            .AddGroup(B_HORIZONTAL, 0)
+                .Add(recentArkLabel)
+                .Add(recentArkInput)
+            .End()
+            .AddGlue()
+        .End()
+        .AddGroup(B_HORIZONTAL)
+            .AddStrut(m_margin)
+            .Add(m_showPathChk)
+            .AddGlue()
+        .End()
+        .Add(extStrView)
+        .AddGroup(B_HORIZONTAL)
+        .SetInsets(0)
+            .AddStrut(m_margin)
+            .AddGroup(B_HORIZONTAL, 0)
+                .Add(recentExtLabel)
+                .Add(recentExtInput)
+            .End()
+            .AddGlue()
+        .End()
+        .AddGlue() // add some extra space at the bottom
+        .End();
+
+    AddRevertButton(builder);
 }
 
 
