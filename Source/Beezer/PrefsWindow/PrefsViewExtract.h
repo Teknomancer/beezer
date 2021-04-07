@@ -18,7 +18,6 @@ class PrefsViewExtract : public PrefsView
         virtual void        Load();
 
     private:
-        // Private members
         BCheckBox*          m_openFolderChk,
                             *m_closeChk,
                             *m_quitChk,
