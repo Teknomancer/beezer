@@ -40,6 +40,7 @@
 #define B_TRANSLATION_CONTEXT "ArkInfoWindow"
 #else
 #define B_TRANSLATE(x) x
+#define B_TRANSLATE_COMMENT(x, y) x
 #endif
 
 
