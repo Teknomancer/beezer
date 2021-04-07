@@ -64,8 +64,8 @@ void PrefsViewRecent::Render()
 
     BLayoutItem* recentExtLabel = m_recentExtView->CreateLabelLayoutItem();
     BLayoutItem* recentExtInput = m_recentExtView->CreateTextViewLayoutItem();
-    recentExtInput->SetExplicitMaxSize(BSize(StringWidth("999"), B_SIZE_UNSET));
-    recentExtInput->SetExplicitMinSize(BSize(StringWidth("99999"), B_SIZE_UNSET));
+    recentExtInput->SetExplicitMinSize(BSize(StringWidth("999"), B_SIZE_UNSET));
+    recentExtInput->SetExplicitMaxSize(BSize(StringWidth("99999"), B_SIZE_UNSET));
 
     BLayoutBuilder::Group<> builder = BLayoutBuilder::Group<>(this, B_VERTICAL, B_USE_HALF_ITEM_SPACING);
     builder
@@ -84,6 +84,7 @@ void PrefsViewRecent::Render()
             .Add(m_showPathChk)
             .AddGlue()
         .End()
+        .AddStrut(m_margin) // add a small spacer between sections
         .Add(extStrView)
         .AddGroup(B_HORIZONTAL)
             .AddStrut(m_margin)
