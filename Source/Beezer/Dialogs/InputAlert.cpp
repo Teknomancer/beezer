@@ -27,7 +27,6 @@ InputAlert::InputAlert(const char* title, const char* text, const char* initialT
                        const char* button1, const char* button2, const char* button3, button_width width,
                        alert_type type)
     : BAlert(title, "\n\n", button1, button2, button3, width, type)
-    , m_LastButton(NULL)
 {
     InitInputAlert(title, text, initialText, hideTyping);
 }
@@ -37,7 +36,6 @@ InputAlert::InputAlert(const char* title, const char* text, const char* initialT
                        const char* button1, const char* button2, const char* button3, button_width width,
                        button_spacing spacing, alert_type type)
     : BAlert(title, "\n\n", button1, button2, button3, width, spacing, type)
-    , m_LastButton(NULL)
 {
     InitInputAlert(title, text, initialText, hideTyping);
 }
@@ -155,8 +153,8 @@ void InputAlert::MessageReceived(BMessage* message)
 
         case kInputBox:
         {
-            int32 len = strlen(m_inputBox->Text());
-            if (len > 0L)
+            int32 const len = strlen(m_inputBox->Text());
+            if (len > 0)
                 m_LastButton->SetEnabled(true);
             else
                 m_LastButton->SetEnabled(false);

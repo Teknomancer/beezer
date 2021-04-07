@@ -8,7 +8,6 @@
 
 #include <Alert.h>
 
-class BString;
 class BStringView;
 class BTextControl;
 
@@ -40,9 +39,10 @@ class InputAlert : public BAlert
         BButton*            m_LastButton;
         BTextControl*       m_inputBox;
         BStringView*        m_bytesView;
-        BString             m_inputText;
+        const char*         m_inputText;
         volatile bool       m_isQuitting;
         int32               m_buttonIndex;
+
 };
 
 #endif /* _INPUT_ALERT_H */
