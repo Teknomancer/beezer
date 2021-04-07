@@ -7,7 +7,6 @@
 #define _SELECT_DIR_PANEL_H
 
 #include <FilePanel.h>
-#include <String.h>
 
 class BButton;
 
@@ -33,8 +32,8 @@ class SelectDirPanel : public BFilePanel
         void               SendMessage(const BMessenger* target, BMessage* message);
 
     private:
-        BString            m_buttonLabel,
-                           m_buttonName;
+        char*              m_buttonLabel,
+                           *m_buttonName;
         BButton*           m_curDirBtn;
 };
 
