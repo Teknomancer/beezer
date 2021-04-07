@@ -59,6 +59,8 @@ void PrefsViewAdd::Render()
     m_mbView->TextView()->DisallowChar(B_INSERT);
     m_mbView->TextView()->SetMaxBytes(4);
     m_mbView->SetDivider(0);
+    //TODO it would be nice to set a smaller size but it causes rendering issues with the layout
+    m_mbView->SetExplicitMaxSize(BSize(StringWidth("9999999999"), B_SIZE_UNSET));
 
     BStringView* mbStrView = new BStringView("PrefsViewAdd:mbStrView", BZ_TRANSLATE_COMMON(skMegabyteString), B_WILL_DRAW);
 
