@@ -7,6 +7,11 @@
 
 #include "PrefsView.h"
 
+#include <List.h>
+
+class BPopUpMenu;
+class BMenuField;
+
 class PrefsViewMisc : public PrefsView
 {
     public:
@@ -21,7 +26,6 @@ class PrefsViewMisc : public PrefsView
         virtual void        Load();
 
     private:
-        // Private members
         BCheckBox*          m_commentChk,
                             *m_mimeChk;
         BButton*            m_mimeBtn;

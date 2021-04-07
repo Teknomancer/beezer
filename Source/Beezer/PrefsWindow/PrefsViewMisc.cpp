@@ -3,25 +3,21 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
+#include "PrefsViewMisc.h"
+#include "AppConstants.h"
+#include "ArchiverMgr.h"
+#include "BitmapPool.h"
+#include "MsgConstants.h"
+#include "Preferences.h"
+#include "PrefsFields.h"
+#include "UIConstants.h"
+
 #include <Application.h>
 #include <Button.h>
 #include <CheckBox.h>
 #include <MenuField.h>
 #include <MenuItem.h>
 #include <PopUpMenu.h>
-#include <String.h>
-#include <StringView.h>
-#include <TextControl.h>
-
-#include "AppConstants.h"
-#include "ArchiverMgr.h"
-#include "BitmapPool.h"
-#include "LocalUtils.h"
-#include "MsgConstants.h"
-#include "Preferences.h"
-#include "PrefsFields.h"
-#include "PrefsViewMisc.h"
-#include "UIConstants.h"
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
