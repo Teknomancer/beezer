@@ -9,6 +9,8 @@
 #include <Bitmap.h>
 #include <Button.h>
 #include <CheckBox.h>
+#include <LayoutBuilder.h>
+
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -75,6 +77,22 @@ void PrefsView::AddRevertButton()
                                     Bounds().bottom - m_margin - 1), "PrefsView:defaultBtn", B_TRANSLATE("Revert"),
                               new BMessage(M_REVERT), B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
     AddChild(m_revertBtn);
+    m_revertBtn->SetTarget(this);
+}
+
+
+void PrefsView::AddRevertButton(BLayoutBuilder::Group<>& builder)
+{
+    m_revertBtn = new BButton(BRect(Bounds().right - m_margin - K_BUTTON_WIDTH,
+                                    Bounds().bottom - m_margin - K_BUTTON_HEIGHT - 1, Bounds().right - m_margin,
+                                    Bounds().bottom - m_margin - 1), "PrefsView:defaultBtn", B_TRANSLATE("Revert"),
+                              new BMessage(M_REVERT), B_FOLLOW_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
+
+    builder.AddGroup(B_HORIZONTAL)
+        .AddGlue()  // glue first adds padding and moves the button to the right
+        .Add(m_revertBtn)
+        .End();
+
     m_revertBtn->SetTarget(this);
 }
 

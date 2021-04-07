@@ -9,6 +9,7 @@
 #include "BevelView.h"
 
 #include <Font.h>
+#include <LayoutBuilder.h>
 #include <String.h>
 
 const uint32 M_REVERT = 'pfrv';
@@ -34,6 +35,7 @@ class PrefsView : public BevelView
 
     protected:
         void                AddRevertButton();
+        void                AddRevertButton(BLayoutBuilder::Group<>& builder);
 
         BButton*            m_revertBtn;
         float               m_margin;
