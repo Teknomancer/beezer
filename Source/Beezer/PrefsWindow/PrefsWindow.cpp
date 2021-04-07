@@ -41,7 +41,7 @@
 
 
 PrefsWindow::PrefsWindow()
-    : BWindow(BRect(0, 0, 570+50, 320+100), B_TRANSLATE(skSettingsString), B_TITLED_WINDOW,
+    : BWindow(BRect(0, 0, 570+50, 320+100), BZ_TRANSLATE_COMMON(skSettingsString), B_TITLED_WINDOW,
               B_NOT_ZOOMABLE | B_NOT_RESIZABLE),
     m_currentPanel(NULL)
 {
@@ -230,12 +230,12 @@ void PrefsWindow::AddControls()
 
     BButton* saveBtn = new BButton(BRect(discardBtn->Frame().right + margin, discardBtn->Frame().top,
                                          discardBtn->Frame().right + margin + K_BUTTON_WIDTH, discardBtn->Frame().bottom),
-                                   "PrefsWindow:saveBtn", B_TRANSLATE(skSaveString), new BMessage(M_SAVE_PREFS),
+                                   "PrefsWindow:saveBtn", BZ_TRANSLATE_COMMON(skSaveString), new BMessage(M_SAVE_PREFS),
                                    B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
 
     BButton* helpBtn = new BButton(BRect(Bounds().right - margin - K_BUTTON_WIDTH, discardBtn->Frame().top,
                                          Bounds().right - margin, discardBtn->Frame().bottom), "PrefsWindow:helpBtn",
-                                   B_TRANSLATE(skHelpString), new BMessage(M_PREFS_HELP), B_FOLLOW_LEFT,
+                                   BZ_TRANSLATE_COMMON(skHelpString), new BMessage(M_PREFS_HELP), B_FOLLOW_LEFT,
                                    B_WILL_DRAW | B_NAVIGABLE);
     m_backView->AddChild(saveBtn);
     m_backView->AddChild(discardBtn);

@@ -36,7 +36,7 @@
 
 CommentWindow::CommentWindow(BWindow* callerWindow, const char* archiveName, const char* commentText,
                              BFont* displayFont)
-    : BWindow(BRect(0, 0, 590, 290), B_TRANSLATE(skCommentString), B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
+    : BWindow(BRect(0, 0, 590, 290), BZ_TRANSLATE_COMMON(skCommentString), B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
               B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS)
 {
     m_callerWindow = callerWindow;
@@ -86,10 +86,10 @@ CommentWindow::CommentWindow(BWindow* callerWindow, const char* archiveName, con
 
     AddChild(scrollView);
 
-    BButton* saveButton = new BButton("CommentWindow:SaveButton", B_TRANSLATE(skSaveString),
+    BButton* saveButton = new BButton("CommentWindow:SaveButton", BZ_TRANSLATE_COMMON(skSaveString),
                                       new BMessage(M_SAVE_COMMENT));
 
-    BButton* closeButton = new BButton("CommentWindow:CloseButton", B_TRANSLATE(skCloseWindowString),
+    BButton* closeButton = new BButton("CommentWindow:CloseButton", BZ_TRANSLATE_COMMON(skCloseWindowString),
                                        new BMessage(B_QUIT_REQUESTED));
 
     AddChild(BGroupLayoutBuilder(B_HORIZONTAL)

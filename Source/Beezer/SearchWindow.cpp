@@ -145,7 +145,7 @@ SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
 
     // Setup the scope group box
     BBox* scopeBox = new BBox("SearchWindow:ScopeBox");
-    scopeBox->SetLabel(B_TRANSLATE(skSearchString));
+    scopeBox->SetLabel(BZ_TRANSLATE_COMMON(skSearchString));
     scopeBox->SetFont(be_plain_font);
 
     // Draw the radio buttons inside the group box (co-ordinates are relative to the group box)
@@ -202,7 +202,7 @@ SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
     optionsBox->AddChild(view);
 
     // Render the search button
-    m_searchBtn = new BButton("SearchWindow:SearchBtn", B_TRANSLATE(skSearchString), new BMessage(M_SEARCH_CLICKED));
+    m_searchBtn = new BButton("SearchWindow:SearchBtn", BZ_TRANSLATE_COMMON(skSearchString), new BMessage(M_SEARCH_CLICKED));
     m_searchBtn->MakeDefault(true);
     m_searchBtn->SetEnabled(searchText ? true : false);
 
