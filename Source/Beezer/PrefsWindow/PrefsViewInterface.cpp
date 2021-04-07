@@ -3,17 +3,7 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <CheckBox.h>
-#include <ColorControl.h>
-#include <Debug.h>
-#include <File.h>
-#include <MenuField.h>
-#include <MenuItem.h>
-#include <PopUpMenu.h>
-#include <String.h>
-#include <StringView.h>
-#include <Window.h>
-
+#include "PrefsViewInterface.h"
 #include "AppConstants.h"
 #include "ArchiverMgr.h"
 #include "CommonStrings.h"
@@ -23,8 +13,15 @@
 #include "MsgConstants.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
-#include "PrefsViewInterface.h"
 #include "UIConstants.h"
+
+#include <CheckBox.h>
+#include <ColorControl.h>
+#include <File.h>
+#include <MenuField.h>
+#include <MenuItem.h>
+#include <PopUpMenu.h>
+#include <StringView.h>
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -35,8 +32,8 @@
 #define B_TRANSLATE(x) x
 #endif
 
-#define M_COLOR_CHANGE       'clch'
-#define M_ITEM_CHANGE        'itch'
+static const uint32 M_COLOR_CHANGE = 'clch';
+static const uint32 M_ITEM_CHANGE  = 'itch';
 
 
 PrefsViewInterface::PrefsViewInterface(BRect frame)
@@ -53,19 +50,19 @@ void PrefsViewInterface::Render()
                                         B_TRANSLATE("Full length toolbar & infobar"), NULL);
     m_fullLengthBarsChk->ResizeToPreferred();
 
-    BStringView* colorStrView = new BStringView(BRect(m_margin, m_fullLengthBarsChk->Frame().bottom +
-            m_margin + 2 * m_vGap, 0, 0), NULL, B_TRANSLATE("Configure colors:"));
+    BStringView* colorStrView = new BStringView(BRect(m_margin, m_fullLengthBarsChk->Frame().bottom + m_margin + 2 * m_vGap, 0, 0),
+                                                NULL, B_TRANSLATE("Configure colors:"));
     colorStrView->SetFont(&m_sectionFont);
     colorStrView->ResizeToPreferred();
 
-    BevelView* outerView =     new BevelView(BRect(3 * m_margin, colorStrView->Frame().bottom + m_margin,
-            3 * m_margin + 30, colorStrView->Frame().bottom + m_margin + 30),
-            "PrefsViewInterface:outerView", btDeep, B_FOLLOW_LEFT, B_WILL_DRAW);
+    BevelView* outerView =     new BevelView(BRect(3 * m_margin, colorStrView->Frame().bottom + m_margin, 3 * m_margin + 30,
+                                                   colorStrView->Frame().bottom + m_margin + 30),
+                                             "PrefsViewInterface:outerView", btDeep, B_FOLLOW_LEFT, B_WILL_DRAW);
     float boundary = outerView->EdgeThickness();
 
     m_colorWell = new BView(BRect(boundary, boundary, outerView->Frame().Width() - boundary,
-                                  outerView->Frame().Height() - boundary), "PrefsViewInterface:colorWell",
-                            B_FOLLOW_LEFT, B_WILL_DRAW);
+                                  outerView->Frame().Height() - boundary),
+                            "PrefsViewInterface:colorWell", B_FOLLOW_LEFT, B_WILL_DRAW);
     outerView->AddChild(m_colorWell);
 
     m_colorPopUp = new BPopUpMenu("");
@@ -78,12 +75,11 @@ void PrefsViewInterface::Render()
     m_colorPopUp->ResizeToPreferred();
 
     m_colorControl = new BColorControl(BPoint(3 * m_margin,
-                                       MAX(m_colorPopUp->Frame().bottom, outerView->Frame().bottom) + m_margin + 2),
+                                              MAX(m_colorPopUp->Frame().bottom, outerView->Frame().bottom) + m_margin + 2),
                                        B_CELLS_32x8, 8, "PrefsViewInteface:colorControl", new BMessage(M_COLOR_CHANGE));
 
-
-    BStringView* defStrView = new BStringView(BRect(m_margin, m_colorControl->Frame().bottom +
-            2 * m_margin + 2 * m_vGap, 0, 0), NULL, B_TRANSLATE("Default interface settings:"));
+    BStringView* defStrView = new BStringView(BRect(m_margin, m_colorControl->Frame().bottom + 2 * m_margin + 2 * m_vGap, 0, 0),
+                                              NULL, B_TRANSLATE("Default interface settings:"));
     defStrView->SetFont(&m_sectionFont);
     defStrView->ResizeToPreferred();
 
@@ -221,7 +217,7 @@ void PrefsViewInterface::MessageReceived(BMessage* message)
             if (!item)
                 break;
 
-            BString itemText = item->Label();
+            BString const itemText = item->Label();
             if (itemText == B_TRANSLATE("Selected text color"))
                 m_actFore = m_colorControl->ValueAsColor();
             else if (itemText == B_TRANSLATE("Selected background color"))
