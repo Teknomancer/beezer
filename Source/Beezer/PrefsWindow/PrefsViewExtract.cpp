@@ -11,6 +11,8 @@
 #include "PrefsFields.h"
 
 #include <CheckBox.h>
+#include <LayoutBuilder.h>
+
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -33,29 +35,28 @@ PrefsViewExtract::PrefsViewExtract(BRect frame)
 
 void PrefsViewExtract::Render()
 {
-    m_openFolderChk = new BCheckBox(BRect(m_margin, m_margin, 0, 0), "PrefsViewExtract:openFolderChk",
+    m_openFolderChk = new BCheckBox("PrefsViewExtract:openFolderChk",
                                     B_TRANSLATE("Open destination folder after extracting"), NULL);
-    m_openFolderChk->ResizeToPreferred();
 
-    m_closeChk = new BCheckBox(BRect(m_margin, m_openFolderChk->Frame().bottom + m_vGap, 0, 0),
-                               "PrefsViewExtract:closeChk", B_TRANSLATE("Close window after extracting"), NULL);
-    m_closeChk->ResizeToPreferred();
+    m_closeChk = new BCheckBox("PrefsViewExtract:closeChk", B_TRANSLATE("Close window after extracting"), NULL);
 
     BString bufStr(B_TRANSLATE("Quit %appname% after extracting"));
     bufStr.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
-    m_quitChk = new BCheckBox(BRect(m_margin, m_closeChk->Frame().bottom + m_vGap, 0, 0),
-                              "PrefsViewExtract:closeChk", bufStr, NULL);
-    m_quitChk->ResizeToPreferred();
+    m_quitChk = new BCheckBox("PrefsViewExtract:closeChk", bufStr, NULL);
 
-    m_dragChk = new BCheckBox(BRect(m_margin, m_quitChk->Frame().bottom + m_vGap, 0, 0),
-                              "PrefsViewExtract:dragChk", B_TRANSLATE("Extract with full path during drag 'n drop"), NULL);
-    m_dragChk->ResizeToPreferred();
+    m_dragChk = new BCheckBox("PrefsViewExtract:dragChk", B_TRANSLATE("Extract with full path during drag 'n drop"), NULL);
 
-    AddChild(m_openFolderChk);
-    AddChild(m_closeChk);
-    AddChild(m_quitChk);
-    AddChild(m_dragChk);
-    AddRevertButton();
+    BLayoutBuilder::Group<> builder = BLayoutBuilder::Group<>(this, B_VERTICAL, B_USE_HALF_ITEM_SPACING);
+    builder
+        .SetInsets(m_margin)
+        .Add(m_openFolderChk)
+        .Add(m_closeChk)
+        .Add(m_quitChk)
+        .Add(m_dragChk)
+        .AddGlue() // add some free space at the bottom
+        .End();
+
+    AddRevertButton(builder);
 }
 
 
