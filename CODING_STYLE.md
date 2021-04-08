@@ -32,7 +32,7 @@ Whitespace
 - Whitespace between functions (or between pre-processor macros and functions) is 2 blank lines.
 - Even if the function is encapsulated in `#ifdef/#endif`, use 2 blank lines before and after the pre-processor line.
 - Indentation is 4 spaces (no tabs).
-- Empty lines must be not be indented (configure your editor to strip trailing spaces).
+- Empty lines must be not be indented (configure your editor to strip trailing spaces for CPP and H files).
 - One blank line at end of each source file.
 
 Comments
@@ -46,25 +46,29 @@ Comments
    ```
 - Comments that distinguishes overridden public/protected members from newly introduced in the class are fine.
 - Don't explain features of the C/C++ language unless it's very non-obvious.
-   ```
-       // strFaux must be de-allocated by free()     <-- Avoid these
-       char *strFaux = strdup(strSomeother);
-   ```
-   Assume the reader is familiar with C++ to a certain degree.
+  ```
+      // strFaux must be de-allocated by free()     <-- Avoid these
+      char *strFaux = strdup(strSomeother);
+  ```
+  Assume the reader is familiar with C++ to a certain degree.
 
 Naming
 ------
-- Class names and class member functions are in capitalized words case. E.g., `class PrefsWindow` and `PrefsWindow::IsHidden()`.
-- Class members variables are prefixed with `m_` and follow camel case. E.g.,`bool m_isFaulting`.
-- Message constants are upper case with underscores separating words. E.g., `const uint32 K_MSG_DONE = 'done';`.
-- Message constants that are static members of a class are prefixed with `k` and follow capitalized words. E.g., `static const uint32 kInputMessage;`.
-- Align following lines of the same statement to one column after the start of the previous logical bracket. E.g.,
-```
-m_innerView = new BevelView(BRect(K_MARGIN, sepView1->Frame().bottom + K_MARGIN,
-                                  Bounds().right - K_MARGIN,
-                                  Bounds().bottom - K_MARGIN),
-                            "FileJoinerWindow:InnerView", btNoBevel, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
-```
+- Class names and class member functions are in capitalized words case.  
+  E.g., `class PrefsWindow` and `PrefsWindow::IsHidden()`.
+- Class members variables are prefixed with `m_` and follow camel case.  
+  E.g.,`bool m_isFaulting`.
+- Message constants are upper case with underscores separating words.  
+  E.g., `const uint32 K_MSG_DONE = 'done';`.
+- Message constants that are static members of a class are prefixed with `k` and follow capitalized words.  
+  E.g., `static const uint32 kInputMessage;`.
+- Align following lines of the same statement to one column after the start of the previous logical bracket.  
+  E.g.:
+  ```
+  m_innerView = new BevelView(BRect(K_MARGIN, sepView1->Frame().bottom + K_MARGIN,
+                                    Bounds().right - K_MARGIN, Bounds().bottom - K_MARGIN),
+                              "FileJoinerWindow:InnerView", btNoBevel, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+  ```
 
 General
 -------
