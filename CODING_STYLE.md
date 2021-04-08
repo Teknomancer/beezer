@@ -40,15 +40,15 @@ Comments
 - Keep comments to an absolute minimum.
 - Avoid obvious comments.
    ```
-       private:
-           // Private members    <-- Avoid these
-           bool    m_IsWhatever;
+   private:
+       // Private members    <-- Avoid these
+       bool    m_IsWhatever;
    ```
 - Comments that distinguishes overridden public/protected members from newly introduced in the class are fine.
 - Don't explain features of the C/C++ language unless it's very non-obvious.
   ```
-      // strFaux must be de-allocated by free()     <-- Avoid these
-      char *strFaux = strdup(strSomeother);
+  // strFaux must be de-allocated by free()     <-- Avoid these
+  char *strFaux = strdup(strSomeother);
   ```
   Assume the reader is familiar with C++ to a certain degree.
 
