@@ -121,7 +121,7 @@ BeezerApp::BeezerApp()
         RegisterFileTypes();
 
     // Setup tools menu and popups
-    m_toolsMenu = new BMenu(BZ_TRANSLATE_COMMON(skToolsString));
+    m_toolsMenu = new BMenu(BZ_TR(kToolsString));
     BString buf = B_TRANSLATE("File splitter"); buf << B_UTF8_ELLIPSIS;
     m_toolsMenu->AddItem(new BMenuItem(buf.String(), new BMessage(M_TOOLS_FILE_SPLITTER)));
 
@@ -270,7 +270,7 @@ void BeezerApp::MessageReceived(BMessage* message)
 
             buf.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
 
-            BAlert* a = new BAlert("Done", buf, BZ_TRANSLATE_COMMON(skOKString), NULL, NULL,
+            BAlert* a = new BAlert("Done", buf, BZ_TR(kOKString), NULL, NULL,
                                    B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
             a->SetShortcut(0L, B_ESCAPE);
             a->Go();
@@ -454,7 +454,7 @@ void BeezerApp::MessageReceived(BMessage* message)
 
             if (helpFileEntry.Exists() == false)
             {
-                (new BAlert("Error", B_TRANSLATE("Couldn't locate the help files."), BZ_TRANSLATE_COMMON(skOKString),
+                (new BAlert("Error", B_TRANSLATE("Couldn't locate the help files."), BZ_TR(kOKString),
                             NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT))->Go();
             }
             else
@@ -473,7 +473,7 @@ void BeezerApp::MessageReceived(BMessage* message)
 
             status_t rc = be_roster->Launch("application/x-vnd.Be.URL.https", 1, &pURL);
             if (rc != B_OK && rc != B_ALREADY_RUNNING)
-                (new BAlert("Error", B_TRANSLATE("Failed to launch URL"), BZ_TRANSLATE_COMMON(skOKString),
+                (new BAlert("Error", B_TRANSLATE("Failed to launch URL"), BZ_TR(kOKString),
                             NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT))->Go();
             break;
         }
@@ -753,11 +753,11 @@ void BeezerApp::ShowCreateFilePanel()
 
     if (m_arkTypeField == NULL && panelWnd->LockLooper())
     {
-        m_createFilePanel->SetButtonLabel(B_DEFAULT_BUTTON, BZ_TRANSLATE_COMMON(skCreateString));
+        m_createFilePanel->SetButtonLabel(B_DEFAULT_BUTTON, BZ_TR(kCreateString));
 
         BView* backView = panelWnd->ChildAt(0L);
         BButton* saveBtn = (BButton*)panelWnd->FindView("default button");
-        saveBtn->SetLabel(BZ_TRANSLATE_COMMON(skCreateString));
+        saveBtn->SetLabel(BZ_TR(kCreateString));
         BTextControl* textField = (BTextControl*)panelWnd->FindView("text view");
         textField->ResizeBy(-20, 0);
         textField->TextView()->DisallowChar('*');
@@ -856,7 +856,7 @@ int8 BeezerApp::RegisterFileTypes() const
                 int32 index = 2L;
                 if (skipFurtherAlerts == false)
                 {
-                    BAlert* confAlert = new BAlert("Mimetypes", buf.String(), BZ_TRANSLATE_COMMON(skCancelString),
+                    BAlert* confAlert = new BAlert("Mimetypes", buf.String(), BZ_TR(kCancelString),
                                                    B_TRANSLATE("Make it preferred"), B_TRANSLATE("Register all types!"),
                                                    B_WIDTH_AS_USUAL, B_OFFSET_SPACING, B_WARNING_ALERT);
                     confAlert->SetDefaultButton(confAlert->ButtonAt(1L));

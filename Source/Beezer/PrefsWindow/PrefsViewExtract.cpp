@@ -26,7 +26,7 @@
 
 
 PrefsViewExtract::PrefsViewExtract(BRect frame)
-    : PrefsView(frame, BZ_TRANSLATE_COMMON(skExtractString), B_TRANSLATE("Extraction related settings"))
+    : PrefsView(frame, BZ_TR(kExtractString), B_TRANSLATE("Extraction related settings"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Extract", 20, 20));
     Render();

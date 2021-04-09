@@ -98,7 +98,7 @@ void PrefsViewPaths::Render()
     m_openPathView->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
     m_openPathView->TextView()->DisallowChar(B_INSERT);
 
-    BString buttonText = BZ_TRANSLATE_COMMON(skSelectString);
+    BString buttonText = BZ_TR(kSelectString);
     m_openPathBtn = new BButton(BRect(m_openPathView->Frame().right + m_margin, m_openPathView->Frame().top - 4,
                                       m_openPathView->Frame().right + m_margin + K_BUTTON_WIDTH,
                                       m_openPathView->Frame().top - 4 + K_BUTTON_HEIGHT), "PrefsViewPaths:openPathBtn",
@@ -353,7 +353,7 @@ void PrefsViewPaths::MessageReceived(BMessage* message)
                     {
                         BString errString = B_TRANSLATE("%filepath% is already present in your favorites");
                         errString.ReplaceAll("%filepath%", existingPath.String());
-                        BAlert* errAlert = new BAlert("Error", errString.String(), BZ_TRANSLATE_COMMON(skOKString),
+                        BAlert* errAlert = new BAlert("Error", errString.String(), BZ_TR(kOKString),
                                                       NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_INFO_ALERT);
                         errAlert->SetShortcut(0L, B_ESCAPE);
                         errAlert->Go();
