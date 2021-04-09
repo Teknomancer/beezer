@@ -72,7 +72,7 @@ StatusWindow::StatusWindow(const char* title, BWindow* callerWindow, const char*
     if (cancel)
         layout.Add(BGroupLayoutBuilder(B_HORIZONTAL, 0)
                    .AddGlue()
-                   .Add(new BButton("StatusWindow:CancelButton", BZ_TRANSLATE_COMMON(skCancelString), new BMessage(M_STOP_OPERATION)))
+                   .Add(new BButton("StatusWindow:CancelButton", BZ_TR(kCancelString), new BMessage(M_STOP_OPERATION)))
                    .AddGlue()
                   );
 

@@ -32,7 +32,7 @@ static const uint32 M_WARN = 'warn';
 
 
 PrefsViewAdd::PrefsViewAdd(BRect frame)
-    : PrefsView(frame, BZ_TRANSLATE_COMMON(skAddString), B_TRANSLATE("Settings related to adding entries to archives"))
+    : PrefsView(frame, BZ_TR(kAddString), B_TRANSLATE("Settings related to adding entries to archives"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Add", 20, 20));
     Render();
@@ -58,7 +58,7 @@ void PrefsViewAdd::Render()
     m_mbView->TextView()->DisallowChar(B_INSERT);
     m_mbView->TextView()->SetMaxBytes(4);
 
-    BStringView* mbStrView = new BStringView("PrefsViewAdd:mbStrView", BZ_TRANSLATE_COMMON(skMegabyteString), B_WILL_DRAW);
+    BStringView* mbStrView = new BStringView("PrefsViewAdd:mbStrView", BZ_TR(kMegabyteString), B_WILL_DRAW);
 
     m_dropChk = new BCheckBox("PrefsViewAdd:dropChk", B_TRANSLATE("Confirm when adding through drag 'n drop"), NULL,
                               B_WILL_DRAW | B_NAVIGABLE);

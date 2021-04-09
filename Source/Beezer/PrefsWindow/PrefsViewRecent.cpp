@@ -27,7 +27,7 @@
 
 
 PrefsViewRecent::PrefsViewRecent(BRect frame)
-    : PrefsView(frame, BZ_TRANSLATE_COMMON(skRecentString),
+    : PrefsView(frame, BZ_TR(kRecentString),
                 B_TRANSLATE("Configure recent archives & extract locations"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Recent", 20, 20));

@@ -208,17 +208,17 @@ BString LocaleStringFromBytes(uint64 val)
     if (val < kKiBSize)
         sprintf(buf, "%" B_PRIu64 " bytes");
     else if (val < kMiBSize)
-        sprintf(buf, "%.2f %s", (double)val / kKiBSize, BZ_TRANSLATE_COMMON(skKilobyteString));
+        sprintf(buf, "%.2f %s", (double)val / kKiBSize, BZ_TR(kKilobyteString));
     else if (val < kGiBSize)
-        sprintf(buf, "%.2f %s", (double)val / kMiBSize, BZ_TRANSLATE_COMMON(skMegabyteString));
+        sprintf(buf, "%.2f %s", (double)val / kMiBSize, BZ_TR(kMegabyteString));
     else if (val < kTiBSize)
-        sprintf(buf, "%.2f %s", (double)val / kGiBSize, BZ_TRANSLATE_COMMON(skGigabyteString));
+        sprintf(buf, "%.2f %s", (double)val / kGiBSize, BZ_TR(kGigabyteString));
     else if (val < kPiBSize)
-        sprintf(buf, "%.2f %s", (double)val / kTiBSize, BZ_TRANSLATE_COMMON(skTerrabyteString));
+        sprintf(buf, "%.2f %s", (double)val / kTiBSize, BZ_TR(kTerrabyteString));
     else if (val < kEiBSize)
-        sprintf(buf, "%.2f %s", (double)val / kPiBSize, BZ_TRANSLATE_COMMON(skPetabyteString));
+        sprintf(buf, "%.2f %s", (double)val / kPiBSize, BZ_TR(kPetabyteString));
     else
-        sprintf(buf, "%.2f %s", (double)val / kEiBSize, BZ_TRANSLATE_COMMON(skExabyteString));
+        sprintf(buf, "%.2f %s", (double)val / kEiBSize, BZ_TR(kExabyteString));
 
     BString str(buf);
     return str;

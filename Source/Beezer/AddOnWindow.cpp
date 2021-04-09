@@ -69,7 +69,7 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
     float divider = 0;
     divider = MAX(divider, m_backViewMain->StringWidth(B_TRANSLATE("Archive name:")));
     divider = MAX(divider, m_backViewMain->StringWidth(B_TRANSLATE("Archive type:")));
-    divider = MAX(divider, m_backViewMain->StringWidth(BZ_TRANSLATE_COMMON(skPasswordString)));
+    divider = MAX(divider, m_backViewMain->StringWidth(BZ_TR(kPasswordString)));
     divider += 10;
 
     m_fileName = new BTextControl(BRect(K_MARGIN, 2 * K_MARGIN, 0, 0), "AddOnWindow:fileName",
@@ -123,7 +123,7 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
         // We've seen enough there are no add-ons installed, no use proceeding!!! Call it quits NOW
         BString alertStr(B_TRANSLATE("Fatal error, no add-ons found! You cannot create any archives using %appname%."));
         alertStr.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
-        (new BAlert("Error", alertStr, BZ_TRANSLATE_COMMON(skCloseWindowString), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT))->Go();
+        (new BAlert("Error", alertStr, BZ_TR(kCloseWindowString), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT))->Go();
         PostMessage(B_QUIT_REQUESTED);
         Show();
         return;
@@ -158,14 +158,14 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
 
     m_helpBtn = new BButton(BRect(K_MARGIN, sepView2->Frame().bottom - K_MARGIN - K_BUTTON_HEIGHT,
                                   K_MARGIN + K_BUTTON_WIDTH, sepView2->Frame().bottom - K_MARGIN),
-                            "AddOnWindow:HelpButton", BZ_TRANSLATE_COMMON(skHelpString), new BMessage(M_ADDON_HELP),
+                            "AddOnWindow:HelpButton", BZ_TR(kHelpString), new BMessage(M_ADDON_HELP),
                             B_FOLLOW_LEFT | B_FOLLOW_BOTTOM, B_WILL_DRAW | B_NAVIGABLE);
     m_backView->AddChild(m_helpBtn);
 
     m_createBtn = new BButton(BRect(Bounds().right - K_MARGIN - 4 - K_BUTTON_WIDTH,
                                     sepView2->Frame().bottom - K_MARGIN - K_BUTTON_HEIGHT - 4,
                                     Bounds().right - K_MARGIN - 4, sepView2->Frame().bottom - K_MARGIN - 4),
-                              "AddOnWindow:CreateBtn", BZ_TRANSLATE_COMMON(skCreateString), new BMessage(M_ADDON_CREATE),
+                              "AddOnWindow:CreateBtn", BZ_TR(kCreateString), new BMessage(M_ADDON_CREATE),
                               B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW | B_NAVIGABLE);
     m_backView->AddChild(m_createBtn);
     m_createBtn->MakeDefault(true);
@@ -280,7 +280,7 @@ bool AddOnWindow::QuitRequested()
         // We cannot pause the creation thread as we cannot get "zip", "gzip"s thread ID, atbest we can
         // only get thread ID of the thread that spawned zip etc., so forget it for the time being
         BAlert* alert = new BAlert("Quit", B_TRANSLATE("Operation is in progress, force it to stop?"),
-                                   BZ_TRANSLATE_COMMON(skCancelString), BZ_TRANSLATE_COMMON(skForceStopString), NULL,
+                                   BZ_TR(kCancelString), BZ_TR(kForceStopString), NULL,
                                    B_WIDTH_AS_USUAL, B_WARNING_ALERT);
         alert->SetShortcut(0L, B_ESCAPE);
         alert->SetDefaultButton(alert->ButtonAt(1L));
@@ -344,7 +344,7 @@ void AddOnWindow::MessageReceived(BMessage* message)
                 {
                     m_inProgress = true;
                     UpdateStatus(B_TRANSLATE("Adding files to the archive"));
-                    m_createBtn->SetLabel(BZ_TRANSLATE_COMMON(skCancelString));
+                    m_createBtn->SetLabel(BZ_TR(kCancelString));
                     m_createBtn->MakeDefault(false);
                     m_cancel = false;
                     EnableControls(false);
@@ -394,7 +394,7 @@ void AddOnWindow::MessageReceived(BMessage* message)
                 m_cancel = true;
                 m_inProgress = false;
                 m_createBtn->MakeDefault(true);
-                m_createBtn->SetLabel(BZ_TRANSLATE_COMMON(skCreateString));
+                m_createBtn->SetLabel(BZ_TR(kCreateString));
 
                 EnableControls(true);
                 PostMessage(B_QUIT_REQUESTED);

@@ -13,10 +13,10 @@
 #define B_TRANSLATION_CONTEXT "Common"
 // for some reason Haiku doesn't have a B_TRANSLATE_NOCOLLECT_CONTEXT variant of the macro
 // so we use the ALL version with an empty comment
-#define BZ_TRANSLATE_COMMON(x) B_TRANSLATE_NOCOLLECT_ALL(x, "Common", "")
+#define BZ_TR(x) B_TRANSLATE_NOCOLLECT_ALL(x, "Common", "")
 #else
 #define B_TRANSLATE_MARK(x) x
-#define BZ_TRANSLATE_COMMON(x) x
+#define BZ_TR(x) x
 #endif
 
 
@@ -27,54 +27,55 @@
 *    BMenu::FindItem() and similar methods to work properly
 */
 
-static const char* skAboutString = B_TRANSLATE_MARK("About");
-static const char* skAddString = B_TRANSLATE_MARK("Add");
-static const char* skbytesString = B_TRANSLATE_MARK("bytes");
-static const char* skBytesString = B_TRANSLATE_MARK("Bytes");
-static const char* skCancelString = B_TRANSLATE_MARK("Cancel");
-static const char* skCloseWindowString = B_TRANSLATE_MARK("Close window");
-static const char* skCommentString = B_TRANSLATE_MARK("Comment");
-static const char* skCRCString = B_TRANSLATE_MARK("CRC");
-static const char* skCreateString = B_TRANSLATE_MARK("Create");
-static const char* skDateString = B_TRANSLATE_MARK("Date");
-static const char* skDeleteString = B_TRANSLATE_MARK("Delete");
-static const char* skExabyteString = B_TRANSLATE_MARK("EiB");
-static const char* skExtractSelectedString = B_TRANSLATE_MARK("Extract selected" B_UTF8_ELLIPSIS);
-static const char* skExtractString = B_TRANSLATE_MARK("Extract");
-static const char* skExtractToString = B_TRANSLATE_MARK("Extract to" B_UTF8_ELLIPSIS);
-static const char* skForceStopString = B_TRANSLATE_MARK("Force stop");
-static const char* skGigabyteString = B_TRANSLATE_MARK("GiB");
-static const char* skHelpString = B_TRANSLATE_MARK("Help");
-static const char* skKilobyteString = B_TRANSLATE_MARK("KiB");
-static const char* skMethodString = B_TRANSLATE_MARK("Method");
-static const char* skMegabyteString = B_TRANSLATE_MARK("MiB");
-static const char* skNameString = B_TRANSLATE_MARK("Name");
-static const char* skNewString = B_TRANSLATE_MARK("New");
-static const char* skOKString = B_TRANSLATE_MARK("OK");
-static const char* skOpenExistingString = B_TRANSLATE_MARK("Open an existing archive");
-static const char* skOpenString = B_TRANSLATE_MARK("Open");
-static const char* skOpenMenuString = B_TRANSLATE_MARK("Open" B_UTF8_ELLIPSIS);
-static const char* skPackedString = B_TRANSLATE_MARK("Packed");
-static const char* skPasswordString = B_TRANSLATE_MARK("Password:");
-static const char* skPathString = B_TRANSLATE_MARK("Path");
-static const char* skPetabyteString = B_TRANSLATE_MARK("PiB");
-static const char* skRatioString = B_TRANSLATE_MARK("Ratio");
-static const char* skRecentString = B_TRANSLATE_MARK("Recent");
-static const char* skSaveAsDefaultsString = B_TRANSLATE_MARK("Save as defaults");
-static const char* skSaveToArchiveString = B_TRANSLATE_MARK("Save to archive");
-static const char* skSaveString = B_TRANSLATE_MARK("Save");
-static const char* skSearchString = B_TRANSLATE_MARK("Search");
-static const char* skSelectAllString = B_TRANSLATE_MARK("Select all");
-static const char* skSelectString = B_TRANSLATE_MARK("Select");
-static const char* skSettingsString = B_TRANSLATE_MARK("Settings");
-static const char* skAllFoldedString = B_TRANSLATE_MARK("Show all items folded");
-static const char* skAllUnfoldedString = B_TRANSLATE_MARK("Show all items unfolded");
-static const char* skTwoUnfoldedString = B_TRANSLATE_MARK("Show first 2 levels unfolded");
-static const char* skFirstUnfoldedString = B_TRANSLATE_MARK("Show first level unfolded");
-static const char* skSizeString = B_TRANSLATE_MARK("Size");
-static const char* skTerrabyteString = B_TRANSLATE_MARK("TiB");
-static const char* skToolsString = B_TRANSLATE_MARK("Tools");
-static const char* skViewString = B_TRANSLATE_MARK("View");
-static const char* skWindowsString = B_TRANSLATE_MARK("Windows");
+static const char
+            *kAboutString           = B_TRANSLATE_MARK("About"),
+            *kAddString             = B_TRANSLATE_MARK("Add"),
+            *kbytesString           = B_TRANSLATE_MARK("bytes"),
+            *kBytesString           = B_TRANSLATE_MARK("Bytes"),
+            *kCancelString          = B_TRANSLATE_MARK("Cancel"),
+            *kCloseWindowString     = B_TRANSLATE_MARK("Close window"),
+            *kCommentString         = B_TRANSLATE_MARK("Comment"),
+            *kCRCString             = B_TRANSLATE_MARK("CRC"),
+            *kCreateString          = B_TRANSLATE_MARK("Create"),
+            *kDateString            = B_TRANSLATE_MARK("Date"),
+            *kDeleteString          = B_TRANSLATE_MARK("Delete"),
+            *kExabyteString         = B_TRANSLATE_MARK("EiB"),
+            *kExtractSelectedString = B_TRANSLATE_MARK("Extract selected" B_UTF8_ELLIPSIS),
+            *kExtractString         = B_TRANSLATE_MARK("Extract"),
+            *kExtractToString       = B_TRANSLATE_MARK("Extract to" B_UTF8_ELLIPSIS),
+            *kForceStopString       = B_TRANSLATE_MARK("Force stop"),
+            *kGigabyteString        = B_TRANSLATE_MARK("GiB"),
+            *kHelpString            = B_TRANSLATE_MARK("Help"),
+            *kKilobyteString        = B_TRANSLATE_MARK("KiB"),
+            *kMethodString          = B_TRANSLATE_MARK("Method"),
+            *kMegabyteString        = B_TRANSLATE_MARK("MiB"),
+            *kNameString            = B_TRANSLATE_MARK("Name"),
+            *kNewString             = B_TRANSLATE_MARK("New"),
+            *kOKString              = B_TRANSLATE_MARK("OK"),
+            *kOpenExistingString    = B_TRANSLATE_MARK("Open an existing archive"),
+            *kOpenString            = B_TRANSLATE_MARK("Open"),
+            *kOpenMenuString        = B_TRANSLATE_MARK("Open" B_UTF8_ELLIPSIS),
+            *kPackedString          = B_TRANSLATE_MARK("Packed"),
+            *kPasswordString        = B_TRANSLATE_MARK("Password:"),
+            *kPathString            = B_TRANSLATE_MARK("Path"),
+            *kPetabyteString        = B_TRANSLATE_MARK("PiB"),
+            *kRatioString           = B_TRANSLATE_MARK("Ratio"),
+            *kRecentString          = B_TRANSLATE_MARK("Recent"),
+            *kSaveAsDefaultsString  = B_TRANSLATE_MARK("Save as defaults"),
+            *kSaveToArchiveString   = B_TRANSLATE_MARK("Save to archive"),
+            *kSaveString            = B_TRANSLATE_MARK("Save"),
+            *kSearchString          = B_TRANSLATE_MARK("Search"),
+            *kSelectAllString       = B_TRANSLATE_MARK("Select all"),
+            *kSelectString          = B_TRANSLATE_MARK("Select"),
+            *kSettingsString        = B_TRANSLATE_MARK("Settings"),
+            *kAllFoldedString       = B_TRANSLATE_MARK("Show all items folded"),
+            *kAllUnfoldedString     = B_TRANSLATE_MARK("Show all items unfolded"),
+            *kTwoUnfoldedString     = B_TRANSLATE_MARK("Show first 2 levels unfolded"),
+            *kFirstUnfoldedString   = B_TRANSLATE_MARK("Show first level unfolded"),
+            *kSizeString            = B_TRANSLATE_MARK("Size"),
+            *kTerrabyteString       = B_TRANSLATE_MARK("TiB"),
+            *kToolsString           = B_TRANSLATE_MARK("Tools"),
+            *kViewString            = B_TRANSLATE_MARK("View"),
+            *kWindowsString         = B_TRANSLATE_MARK("Windows");
 
 #endif /* _COMMON_STRINGS_H */

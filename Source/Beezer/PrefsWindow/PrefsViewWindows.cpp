@@ -24,7 +24,7 @@
 
 
 PrefsViewWindows::PrefsViewWindows(BRect frame)
-    : PrefsView(frame, BZ_TRANSLATE_COMMON(skWindowsString),
+    : PrefsView(frame, BZ_TR(kWindowsString),
                 B_TRANSLATE("Configure remembering of windows' settings"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_Windows", 20, 20));

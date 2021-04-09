@@ -96,10 +96,10 @@ void PrefsViewInterface::Render()
     m_actionLogChk->ResizeToPreferred();
 
     m_foldingPopUp = new BPopUpMenu("");
-    m_foldingPopUp->AddItem(new BMenuItem(BZ_TRANSLATE_COMMON(skAllFoldedString), NULL));
-    m_foldingPopUp->AddItem(new BMenuItem(BZ_TRANSLATE_COMMON(skFirstUnfoldedString), NULL));
-    m_foldingPopUp->AddItem(new BMenuItem(BZ_TRANSLATE_COMMON(skTwoUnfoldedString), NULL));
-    m_foldingPopUp->AddItem(new BMenuItem(BZ_TRANSLATE_COMMON(skAllUnfoldedString), NULL));
+    m_foldingPopUp->AddItem(new BMenuItem(BZ_TR(kAllFoldedString), NULL));
+    m_foldingPopUp->AddItem(new BMenuItem(BZ_TR(kFirstUnfoldedString), NULL));
+    m_foldingPopUp->AddItem(new BMenuItem(BZ_TR(kTwoUnfoldedString), NULL));
+    m_foldingPopUp->AddItem(new BMenuItem(BZ_TR(kAllUnfoldedString), NULL));
     m_foldingPopUp->ItemAt(3)->SetMarked(true);
 
     float maxW = MAX(StringWidth(B_TRANSLATE("Show infobar")), StringWidth(B_TRANSLATE("Show toolbar")));

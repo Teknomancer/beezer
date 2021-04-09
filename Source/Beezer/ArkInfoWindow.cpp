@@ -222,7 +222,7 @@ void ArkInfoWindow::FillDetails()
     if (m_entry->Exists() == false)
     {
         Hide();
-        (new BAlert("Error", B_TRANSLATE("Operation failed. The archive is missing."), BZ_TRANSLATE_COMMON(skCloseWindowString),
+        (new BAlert("Error", B_TRANSLATE("Operation failed. The archive is missing."), BZ_TR(kCloseWindowString),
                     NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING, B_STOP_ALERT))->Go();
         PostMessage(B_QUIT_REQUESTED);
     }
@@ -271,7 +271,7 @@ void ArkInfoWindow::FillDetails()
         bytesStr = "???";
     buf = StringFromBytes(compressedSize);
     if (compressedSize >= 1024LL)
-        buf << " (" << bytesStr << " " << BZ_TRANSLATE_COMMON(skbytesString) << ")";
+        buf << " (" << bytesStr << " " << BZ_TR(kbytesString) << ")";
 
     m_compressedSizeStr->SetText(buf);
 
@@ -289,7 +289,7 @@ void ArkInfoWindow::FillDetails()
         bytesStr = "???";
     buf = StringFromBytes(originalSize);
     if (originalSize >= 1024LL)
-        buf << " (" << bytesStr << " " << BZ_TRANSLATE_COMMON(skbytesString) << ")";
+        buf << " (" << bytesStr << " " << BZ_TR(kbytesString) << ")";
 
     m_originalSizeStr->SetText(buf);
 
