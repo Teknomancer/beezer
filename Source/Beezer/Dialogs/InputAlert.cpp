@@ -10,10 +10,8 @@
 #include <TextControl.h>
 #include <Layout.h>
 #include <GroupLayout.h>
-#include <SpaceLayoutItem.h>
 
 #include <cassert>
-#include <cstdio>
 
 static const uint32 kButton0  = '_b0_';
 static const uint32 kButton2  = '_b2_';
