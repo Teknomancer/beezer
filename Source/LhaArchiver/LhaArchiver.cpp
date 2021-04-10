@@ -21,8 +21,6 @@
 #endif
 
 
-#define S_FASTEST       "(fastest)"
-#define S_BEST          "(best)"
 #define S_LHARC_COMPAT  "LHarc compatible format"
 
 
@@ -401,17 +399,12 @@ status_t LhaArchiver::Add(bool createMode, const char* relativePath, BMessage* m
     // Don't EVER check if archive exist (FOR LHA ONLY) this is because when all files from an open lha ark are
     // deleted, (lha binary) deletes the archive itself
     m_pipeMgr.FlushArgs();
-    char level[10];
-    BString menuStr("0");
-    menuStr << " " << B_TRANSLATE(S_FASTEST);
-    BMenu* ratioMenu = m_settingsMenu->FindItem(menuStr)->Menu();
 
     BString buf = "-a";
     if (m_settingsMenu->FindItem(B_TRANSLATE(S_LHARC_COMPAT))->IsMarked() == true)
         buf << "g";
 
-    sprintf(level, "%ld", ratioMenu->IndexOf(ratioMenu->FindMarked()));
-    buf << level;
+    buf << GetCompressionLevel();
     m_pipeMgr << m_lhaPath << buf.String() << m_archivePath.Path();
 
     int32 count = 0L;
@@ -635,24 +628,23 @@ status_t LhaArchiver::Create(BPath* archivePath, const char* relPath, BMessage* 
 
 void LhaArchiver::BuildDefaultMenu()
 {
-    BMenu* ratioMenu;
     BMenu* otherMenu;
     BMenuItem* item;
 
     m_settingsMenu = new BMenu(m_typeStr);
 
     // Build the header-level sub-menu
-    ratioMenu = new BMenu(B_TRANSLATE("Header level"));
-    ratioMenu->SetRadioMode(true);
+    m_compressionMenu = new BMenu(B_TRANSLATE("Header level"));
+    m_compressionMenu->SetRadioMode(true);
 
     BString menuStr("0");
-    menuStr << " " << B_TRANSLATE(S_FASTEST);
-    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
-    ratioMenu->AddItem(new BMenuItem("1", NULL));
+    menuStr << " " << B_TRANSLATE("(fastest)");
+    m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
+    m_compressionMenu->AddItem(new BMenuItem("1", NULL));
     menuStr = "2";
-    menuStr << " " << B_TRANSLATE(S_BEST);
+    menuStr << " " << B_TRANSLATE("(best)");
     BMenuItem* defaultItem = new BMenuItem(menuStr, NULL);
-    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
+    m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
 
     defaultItem->SetMarked(true);
 
@@ -665,7 +657,7 @@ void LhaArchiver::BuildDefaultMenu()
     otherMenu->AddItem(item);
 
     // Add sub-menus to settings menu
-    m_settingsMenu->AddItem(ratioMenu);
+    m_settingsMenu->AddItem(m_compressionMenu);
     m_settingsMenu->AddItem(otherMenu);
 }
 

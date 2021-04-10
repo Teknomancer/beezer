@@ -14,6 +14,7 @@
 #include <Directory.h>
 #include <File.h>
 #include <Menu.h>
+#include <MenuItem.h>
 #include <PathFinder.h>
 #include <Resources.h>
 #include <TypeConstants.h>
@@ -26,6 +27,7 @@ Archiver::Archiver()
     m_rulesMsg(new BMessage()),
     m_settingsDirectoryPath(NULL),
     m_settingsMenu(NULL),
+    m_compressionMenu(NULL),
     m_cachedPath(NULL),
     m_hashTable(NULL),
     m_tempDirPath(NULL),
@@ -42,6 +44,7 @@ Archiver::Archiver(const char* addonImagePath)
     m_rulesMsg(new BMessage()),
     m_settingsDirectoryPath(NULL),
     m_settingsMenu(NULL),
+    m_compressionMenu(NULL),
     m_cachedPath(NULL),
     m_hashTable(NULL),
     m_tempDirPath(NULL),
@@ -781,4 +784,32 @@ time_t Archiver::ArchiveModificationTime() const
     else
         modTime = 0;
     return modTime;
+}
+
+
+int32 Archiver::GetCompressionLevel(BMenu* menu)
+{
+    BMenuItem* item;
+    if (menu == NULL)
+    {
+        // we weren't passed a menu, check our default compression menu
+        if (m_compressionMenu == NULL)
+            return -1;
+
+        item = m_compressionMenu->FindMarked();
+    }
+    else
+        item = menu->FindMarked();
+
+    if (item == NULL)
+        return -1;
+
+    BString menuLabel(item->Label());
+
+    int32 idx = menuLabel.FindFirst(' ');
+    // strip off any extra text like " (best,default)" or " (none)"
+    if (idx != B_ERROR)
+        menuLabel.Truncate(idx, false);
+
+    return atol(menuLabel);
 }

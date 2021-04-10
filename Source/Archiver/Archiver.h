@@ -104,6 +104,7 @@ class Archiver
         void                MakeTime(struct tm* timeStruct, time_t* timeValue, const char* day, const char* month,
                                      const char* year, const char* hour, const char* min, const char* sec);
         time_t              ArchiveModificationTime() const;
+        int32               GetCompressionLevel(BMenu* menu = NULL);
 
         const char*         m_typeStr,
                            *m_extensionStr,
@@ -117,7 +118,8 @@ class Archiver
         entry_ref           m_archiveRef;
         BPath               m_archivePath;
         BMessage            m_errorDetails;
-        BMenu*              m_settingsMenu;
+        BMenu*              m_settingsMenu,
+                            *m_compressionMenu;
         PipeMgr             m_pipeMgr;
 
     private:
