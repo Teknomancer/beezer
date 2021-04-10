@@ -11,6 +11,8 @@
 
 #include <string.h>     // required for gcc2?
 
+static const float kContextWidth = 14.0;
+
 
 ImageButton::ImageButton(BRect frame, const char* name, const char* text, BBitmap* smallIcon,
                          BBitmap* disabled, BMessage* message, bool popUpMenu, const rgb_color bgColor,

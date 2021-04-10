@@ -7,8 +7,6 @@
 
 #include <View.h>
 
-const float kContextWidth = 14;
-
 enum textPosition
 {
     kRightOfIcon,
