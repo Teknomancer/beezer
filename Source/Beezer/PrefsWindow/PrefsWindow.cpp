@@ -27,6 +27,8 @@
 #include <ListView.h>
 #include <ScrollView.h>
 
+#include <cassert>
+
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -36,6 +38,9 @@
 #define B_TRANSLATE(x) x
 #endif
 
+static const uint32 M_SAVE_PREFS           = 'svpf';
+static const uint32 M_PREFS_PANEL_SELECTED = 'pspf';
+
 
 PrefsWindow::PrefsWindow()
     : BWindow(BRect(0, 0, 570+50, 320+100), BZ_TR(kSettingsString), B_TITLED_WINDOW,
@@ -44,55 +49,63 @@ PrefsWindow::PrefsWindow()
 {
     SetFeel(B_MODAL_APP_WINDOW_FEEL);
 
-    AddControls();
-    m_panelList.AddItem((void*)new PrefsViewExtract(m_panelFrame));
-    m_panelList.AddItem((void*)new PrefsViewAdd(m_panelFrame));
-    m_panelList.AddItem((void*)new PrefsViewState(m_panelFrame));
-    m_panelList.AddItem((void*)new PrefsViewWindows(m_panelFrame));
-    m_panelList.AddItem((void*)new PrefsViewPaths(m_panelFrame));
-    m_panelList.AddItem((void*)new PrefsViewRecent(m_panelFrame));
-    m_panelList.AddItem((void*)new PrefsViewInterface(m_panelFrame));
-    m_panelList.AddItem((void*)new PrefsViewMisc(m_panelFrame));
+    m_panelTitleFont = new BFont(be_plain_font);
+    m_panelTitleFont->SetFace(B_BOLD_FACE);
+    m_panelTitleFont->SetSize(be_plain_font->Size() + 1);
 
+    // Add all controls ((but the panels) to the UI.
+    BRect panelFrame;
+    AddControls(&panelFrame);
+
+    m_panelList.AddItem((void*)new PrefsViewExtract(panelFrame));
+    m_panelList.AddItem((void*)new PrefsViewAdd(panelFrame));
+    m_panelList.AddItem((void*)new PrefsViewState(panelFrame));
+    m_panelList.AddItem((void*)new PrefsViewWindows(panelFrame));
+    m_panelList.AddItem((void*)new PrefsViewPaths(panelFrame));
+    m_panelList.AddItem((void*)new PrefsViewRecent(panelFrame));
+    m_panelList.AddItem((void*)new PrefsViewInterface(panelFrame));
+    m_panelList.AddItem((void*)new PrefsViewMisc(panelFrame));
+
+    // Load all panels.
     for (int32 i = 0; i < m_panelList.CountItems(); i++)
     {
         PrefsView* prefPanel = (PrefsView*)m_panelList.ItemAtFast(i);
         prefPanel->Load();
-        m_backView->AddChild(prefPanel);
-        prefPanel->Hide();
-        PrefsListItem* listItem = new PrefsListItem(prefPanel->Title(), prefPanel->Bitmap());
-        m_listView->AddItem(listItem);
-
-        if (prefPanel->Bitmap())
-            listItem->SetHeight(MAX(prefPanel->Bitmap()->Bounds().Height() + 6, listItem->FontHeight() * 2 + 3));
-        else
-            listItem->SetHeight(listItem->Height() + 6);
     }
 
-    // Critical order
+    // Add panels to the UI.
+    AddPanels();
+
+    // Pick which panel to display and validate if settings are sane.
+    int8 panelIndex = _prefs_misc.FindInt8Def(kPfPrefPanelIndex, 0);
+    if (panelIndex < 0 || panelIndex >= m_panelList.CountItems())
+        panelIndex = 0;
+
+    // Set a panel (or restore last selected or 0 if none) as the active panel (critical order of operations below)
     m_listView->SetSelectionMessage(new BMessage(M_PREFS_PANEL_SELECTED));
     m_listView->SetTarget(this);
-    if (m_panelList.CountItems() >= 0)
-    {
-        m_currentPanel = (PrefsView*)m_panelList.ItemAtFast(0);
-        m_currentPanel->Show();
-        SetActivePanel(m_currentPanel);
-        m_listView->Select(_prefs_misc.FindInt8Def(kPfPrefPanelIndex, 0), false);
-        m_listView->ScrollToSelection();
-    }
+    m_listView->Select(panelIndex, false);
+    m_listView->ScrollToSelection();
 
-    // Center window on-screen & set the constraints
     CenterOnScreen();
 
-    // Restore from prefs
+    // Restore window position from prefs
     BRect frame;
     if (_prefs_windows.FindBoolDef(kPfPrefsWnd, true))
         if (_prefs_windows.FindRect(kPfPrefsWndFrame, &frame) == B_OK)
+        {
+            // TODO: If rect is off-screen don't bother moving it (leave it centered)
             MoveTo(frame.LeftTop());
+        }
 
     Show();
 }
 
+
+PrefsWindow::~PrefsWindow()
+{
+    delete m_panelTitleFont;
+}
 
 void PrefsWindow::Quit()
 {
@@ -112,12 +125,11 @@ void PrefsWindow::MessageReceived(BMessage* message)
     {
         case M_PREFS_PANEL_SELECTED:
         {
-            int32 selectedItem = m_listView->CurrentSelection();
+            int32 const selectedItem = m_listView->CurrentSelection();
             if (selectedItem >= 0L && selectedItem < m_panelList.CountItems())
             {
-                PrefsView* selectedPanel = (PrefsView*)m_panelList.ItemAtFast(selectedItem);
-                if (m_currentPanel != selectedPanel)
-                    SetActivePanel(selectedPanel);
+                PrefsView* selectedPanel = (PrefsView*)(m_panelList.ItemAtFast(selectedItem));
+                SetActivePanel(selectedPanel);
             }
             else if (m_currentPanel != NULL)
             {
@@ -158,55 +170,58 @@ void PrefsWindow::MessageReceived(BMessage* message)
 
 void PrefsWindow::SetActivePanel(PrefsView* activePanel)
 {
-    m_currentPanel->Hide();
+    assert(activePanel);
 
+    if (m_currentPanel)
+        m_currentPanel->Hide();
     m_currentPanel = activePanel;
+    m_currentPanel->Show();
+
     BString descText = m_currentPanel->Title();
     descText << '\n' << m_currentPanel->Description();
-    if (strcmp(m_descTextView->Text(), descText.String()) != 0)
+    if (strcmp(descText.String(), m_descTextView->Text()) != 0)
     {
-        int32 tlen = strlen(m_currentPanel->Title());
-        int32 dlen = strlen(m_currentPanel->Description());
-        m_descTextView->SetText(descText.String());
-        m_descTextView->SetFontAndColor(0, tlen, be_bold_font, B_FONT_ALL, &(K_DEEP_RED_COLOR));
         rgb_color textColor = ui_color(B_DOCUMENT_TEXT_COLOR);
-        m_descTextView->SetFontAndColor(tlen, tlen+dlen+1, be_plain_font, B_FONT_ALL, &textColor);
+        int32 const titleLen = strlen(m_currentPanel->Title());
+        int32 const descLen  = strlen(m_currentPanel->Description());
+        m_descTextView->SetText(descText.String());
+        m_descTextView->SetFontAndColor(0, titleLen, m_panelTitleFont, B_FONT_ALL, &(K_DEEP_RED_COLOR));
+        m_descTextView->SetFontAndColor(titleLen, titleLen + descLen + 1, be_plain_font, B_FONT_ALL, &textColor);
     }
-
-    m_currentPanel->Show();
 }
 
 
-void PrefsWindow::AddControls()
+void PrefsWindow::AddControls(BRect *panelFrame)
 {
     m_backView = new BevelView(Bounds(), "PrefsWindow:backView", BevelView::BevelType::OUTSET,
                                B_FOLLOW_ALL_SIDES);
     m_backView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
     AddChild(m_backView);
 
-    float margin = K_MARGIN + 2;
-    float maxWidth = 140;
+    float const margin = K_MARGIN + 2;
+    float const maxWidth = 140;
     font_height fntHt, boldFntHt;
     be_plain_font->GetHeight(&fntHt);
-    be_bold_font->GetHeight(&boldFntHt);
-    float totalHeight = fntHt.ascent + fntHt.descent + fntHt.leading + boldFntHt.ascent +
-    boldFntHt.descent + boldFntHt.leading + 8;
+    m_panelTitleFont->GetHeight(&boldFntHt);
+    float descTextHeight = boldFntHt.ascent + boldFntHt.descent + boldFntHt.leading  // panel title height
+                         + fntHt.ascent + fntHt.descent + fntHt.leading              // panel description height
+                         + 10;                                                       // extra interline space
 
     m_listView = new BListView(BRect(margin, margin, maxWidth,
                                      Bounds().bottom - margin), "PrefsWindow:listView",
                                B_SINGLE_SELECTION_LIST, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
 
     BScrollView* scrollView = new BScrollView("PrefsWindow:scrollView", m_listView, B_FOLLOW_LEFT,
-            B_WILL_DRAW, false, true, B_FANCY_BORDER);
+                                              B_WILL_DRAW, false, true, B_FANCY_BORDER);
     m_backView->AddChild(scrollView);
     m_listView->TargetedByScrollView(scrollView);
 
     BevelView* descViewDecor = new BevelView(BRect(scrollView->Frame().right + margin, margin,
-            Bounds().right - margin, margin + totalHeight + BevelView::kDeepThickness),
-            "PrefsWindow:descViewDecor", BevelView::BevelType::DEEP, B_FOLLOW_LEFT);
+                                                   Bounds().right - margin, margin + descTextHeight + BevelView::kDeepThickness),
+                                             "PrefsWindow:descViewDecor", BevelView::BevelType::DEEP, B_FOLLOW_LEFT);
     m_backView->AddChild(descViewDecor);
 
-    float border = descViewDecor->EdgeThickness();
+    float const border = descViewDecor->EdgeThickness();
     m_descTextView = new BTextView(BRect(border, border, descViewDecor->Frame().Width() - border,
                                          descViewDecor->Frame().Height() - border), "PrefsWindow:descTextView",
                                    BRect(2, 2, descViewDecor->Frame().Width() - 2 * border - 4, 0), B_FOLLOW_LEFT,
@@ -216,9 +231,6 @@ void PrefsWindow::AddControls()
     m_descTextView->MakeEditable(false);
     m_descTextView->MakeSelectable(false);
     descViewDecor->AddChild(m_descTextView);
-
-    m_panelFrame.Set(scrollView->Frame().right + margin, descViewDecor->Frame().bottom + margin,
-                     Bounds().right - margin, scrollView->Frame().bottom - K_BUTTON_HEIGHT - margin);
 
     BButton* discardBtn = new BButton(BRect(scrollView->Frame().right + margin,
                                             Bounds().bottom - K_BUTTON_HEIGHT - margin,
@@ -238,4 +250,31 @@ void PrefsWindow::AddControls()
     m_backView->AddChild(saveBtn);
     m_backView->AddChild(discardBtn);
     m_backView->AddChild(helpBtn);
+
+    assert(panelFrame);
+    panelFrame->Set(scrollView->Frame().right + margin, descViewDecor->Frame().bottom + margin,
+                    Bounds().right - margin, scrollView->Frame().bottom - K_BUTTON_HEIGHT - margin);
+}
+
+
+void PrefsWindow::AddPanels()
+{
+    assert(m_panelList.CountItems() > 0);
+
+    // Add all panels as children (but keep them hidden)
+    // Add also corresponding list-items of the panels
+    for (int32 i = 0; i < m_panelList.CountItems(); i++)
+    {
+        PrefsView* prefPanel = (PrefsView*)m_panelList.ItemAtFast(i);
+        m_backView->AddChild(prefPanel);
+        prefPanel->Hide();
+
+        PrefsListItem* listItem = new PrefsListItem(prefPanel->Title(), prefPanel->Bitmap());
+        m_listView->AddItem(listItem);
+
+        if (prefPanel->Bitmap())
+            listItem->SetHeight(MAX(prefPanel->Bitmap()->Bounds().Height() + 6, listItem->FontHeight() * 2 + 3));
+        else
+            listItem->SetHeight(listItem->Height() + 6);
+    }
 }

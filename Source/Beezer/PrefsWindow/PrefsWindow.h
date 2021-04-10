@@ -13,25 +13,25 @@ class BTextView;
 class BevelView;
 class PrefsView;
 
-const uint32 M_CLOSE_PREFS          = 'clpf';
-const uint32 M_SAVE_PREFS           = 'svpf';
-const uint32 M_PREFS_PANEL_SELECTED = 'pspf';
+const uint32 M_CLOSE_PREFS = 'clpf';
 
 class PrefsWindow : public BWindow
 {
     public:
         PrefsWindow();
+        virtual ~PrefsWindow();
 
         // Inherited hooks
         virtual void        Quit();
         virtual void        MessageReceived(BMessage* message);
 
     private:
-        void                AddControls();
+        void                AddControls(BRect *panelFrame);
+        void                AddPanels();
         void                SetActivePanel(PrefsView* panel);
 
-        BRect               m_panelFrame;
         BList               m_panelList;
+        BFont*              m_panelTitleFont;
         PrefsView*          m_currentPanel;
         BevelView*          m_backView;
         BListView*          m_listView;
