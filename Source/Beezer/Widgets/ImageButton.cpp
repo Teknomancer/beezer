@@ -3,18 +3,13 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <Bitmap.h>
-#include <Debug.h>
+#include "ImageButton.h"
+
 #include <MenuItem.h>
-#include <Message.h>
 #include <PopUpMenu.h>
-#include <View.h>
 #include <Window.h>
 
-#include <string.h>
-
-#include "ImageButton.h"
-#include "UIConstants.h"
+#include <string.h>     // required for gcc2?
 
 
 ImageButton::ImageButton(BRect frame, const char* name, const char* text, BBitmap* smallIcon,
