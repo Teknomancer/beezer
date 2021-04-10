@@ -20,10 +20,6 @@
 #define B_TRANSLATE(x) x
 #endif
 
-#define S_FASTEST       "(fastest)"
-#define S_DEFAULT       "(default)"
-#define S_BEST          "(best)"
-
 
 Archiver* load_archiver(const char* addonImagePath)
 {
@@ -301,37 +297,36 @@ bool ZstdArchiver::NeedsTempDirectory() const
 
 void ZstdArchiver::BuildDefaultMenu()
 {
-    BMenu* ratioMenu;
     m_settingsMenu = new BMenu(m_typeStr);
 
     // Build the compression-level sub-menu
-    ratioMenu = new BMenu(B_TRANSLATE("Compression level"));
-    ratioMenu->SetRadioMode(true);
+    m_compressionMenu = new BMenu(B_TRANSLATE("Compression level"));
+    m_compressionMenu->SetRadioMode(true);
 
     BString menuStr("1");
-    menuStr << " " << B_TRANSLATE(S_FASTEST);
-    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
+    menuStr << " " << B_TRANSLATE("(fastest)");
+    m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
     menuStr = "3";
-    menuStr << " " << B_TRANSLATE(S_DEFAULT);
+    menuStr << " " << B_TRANSLATE("(default)");
     BMenuItem* defaultItem = new BMenuItem(menuStr, NULL);
-    ratioMenu->AddItem(defaultItem);
-    ratioMenu->AddItem(new BMenuItem("5", NULL));
-    ratioMenu->AddItem(new BMenuItem("7", NULL));
-    ratioMenu->AddItem(new BMenuItem("9", NULL));
-    ratioMenu->AddItem(new BMenuItem("11", NULL));
-    ratioMenu->AddItem(new BMenuItem("13", NULL));
-    ratioMenu->AddItem(new BMenuItem("15", NULL));
-    ratioMenu->AddItem(new BMenuItem("17", NULL));
-    ratioMenu->AddItem(new BMenuItem("19", NULL));
-    ratioMenu->AddItem(new BMenuItem("21", NULL));
+    m_compressionMenu->AddItem(defaultItem);
+    m_compressionMenu->AddItem(new BMenuItem("5", NULL));
+    m_compressionMenu->AddItem(new BMenuItem("7", NULL));
+    m_compressionMenu->AddItem(new BMenuItem("9", NULL));
+    m_compressionMenu->AddItem(new BMenuItem("11", NULL));
+    m_compressionMenu->AddItem(new BMenuItem("13", NULL));
+    m_compressionMenu->AddItem(new BMenuItem("15", NULL));
+    m_compressionMenu->AddItem(new BMenuItem("17", NULL));
+    m_compressionMenu->AddItem(new BMenuItem("19", NULL));
+    m_compressionMenu->AddItem(new BMenuItem("21", NULL));
     menuStr = "22";
-    menuStr << " " << B_TRANSLATE(S_BEST);
-    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
+    menuStr << " " << B_TRANSLATE("(best)");
+    m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
 
     defaultItem->SetMarked(true);
 
     // Add sub-menus to settings menu
-    m_settingsMenu->AddItem(ratioMenu);
+    m_settingsMenu->AddItem(m_compressionMenu);
 }
 
 
@@ -370,19 +365,12 @@ BList ZstdArchiver::HiddenColumns(BList* columns) const
 void ZstdArchiver::CompressFromTemp()
 {
     // Get the compression ratio from the settings menu
-    char level[10];
-    BString menuStr("1");
-    menuStr << " " << B_TRANSLATE(S_FASTEST);
-    BMenu* ratioMenu = m_settingsMenu->FindItem(menuStr)->Menu();
-    int32 compLevel = ratioMenu->IndexOf(ratioMenu->FindMarked());
-    if (compLevel == ratioMenu->CountItems() - 1)
-        sprintf(level, " -22 ");
-    else
-        sprintf(level, " -%ld ", 1 + compLevel * 2);
+    BString levelStr;
+    levelStr.SetToFormat(" -%ld ", GetCompressionLevel());
 
     // Re-compress file, from .tar in temp to zstd
     BString cmd;
-    cmd << "\"" << m_zstdPath << "\"" << " -c --ultra" << level << "\"" << m_tarFilePath << "\" -o " << "\"" << m_archivePath.Path() << "\"";
+    cmd << "\"" << m_zstdPath << "\"" << " -c --ultra" << levelStr << "\"" << m_tarFilePath << "\" -o " << "\"" << m_archivePath.Path() << "\"";
 
     m_pipeMgr.FlushArgs();
     m_pipeMgr << "/bin/sh" << "-c" << cmd.String();

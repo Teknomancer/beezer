@@ -20,9 +20,6 @@
 #define B_TRANSLATE(x) x
 #endif
 
-#define S_NONE "(none)"
-#define S_FASTEST "(fastest)"
-#define S_BEST_DEFAULT "(best,default)"
 #define S_RECURSE_DIRS "Recurse into folders"
 #define S_UPDATE_FILES "Update files (new and newer)"
 #define S_FRESHEN_FILES "Freshen existing files"
@@ -436,24 +433,26 @@ status_t ArjArchiver::Add(bool createMode, const char* relativePath, BMessage* m
     m_pipeMgr << m_arjPath << "a" << "-i";
 
     // Add addtime options
-    BString noneMenuStr("0");
-    noneMenuStr << " " << B_TRANSLATE(S_NONE);
-    BString fastestMenuStr("4");
-    fastestMenuStr << " " << B_TRANSLATE(S_FASTEST);
-    BMenu* ratioMenu = m_settingsMenu->FindItem(noneMenuStr)->Menu();
-    BString level = ratioMenu->FindMarked()->Label();
-    if (level == noneMenuStr)
-        level = "-m0";
-    else if (level == "2")
-        level = "-m4";
-    else if (level == "3")
-        level = "-m3";
-    else if (level == fastestMenuStr)
-        level = "-m2";
-    else
-        level = "-m1";
+    BString levelStr;
+    switch (GetCompressionLevel())
+    {
+        case 0:
+            levelStr = "-m0";
+            break;
+        case 2:
+            levelStr = "-m4";
+            break;
+        case 3:
+            levelStr = "-m3";
+            break;
+        case 4:
+            levelStr = "-m2";
+            break;
+        default:
+            levelStr = "-m1";
+    }
 
-    m_pipeMgr << level.String();
+    m_pipeMgr << levelStr.String();
 
     if (m_settingsMenu->FindItem(B_TRANSLATE(S_RECURSE_DIRS))->IsMarked())
         m_pipeMgr << "-r";
@@ -683,27 +682,26 @@ status_t ArjArchiver::Create(BPath* archivePath, const char* relPath, BMessage* 
 void ArjArchiver::BuildDefaultMenu()
 {
     BMenu* extractMenu;
-    BMenu* ratioMenu;
     BMenu* addMenu;
     BMenuItem* item;
     m_settingsMenu = new BMenu(m_typeStr);
 
     // Build the compression-level sub-menu (sorry we can't avoid using english strings here)
-    ratioMenu = new BMenu(B_TRANSLATE("Compression level"));
-    ratioMenu->SetRadioMode(true);
+    m_compressionMenu = new BMenu(B_TRANSLATE("Compression level"));
+    m_compressionMenu->SetRadioMode(true);
 
     BString menuStr("0");
-    menuStr << " " << B_TRANSLATE(S_NONE);
-    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
+    menuStr << " " << B_TRANSLATE("(none)");
+    m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
     menuStr = "4";
-    menuStr << " " << B_TRANSLATE(S_FASTEST);
-    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
-    ratioMenu->AddItem(new BMenuItem("3", NULL));
-    ratioMenu->AddItem(new BMenuItem("2", NULL));
+    menuStr << " " << B_TRANSLATE("(fastest)");
+    m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
+    m_compressionMenu->AddItem(new BMenuItem("3", NULL));
+    m_compressionMenu->AddItem(new BMenuItem("2", NULL));
     menuStr = "1";
-    menuStr << " " << B_TRANSLATE(S_BEST_DEFAULT);
+    menuStr << " " << B_TRANSLATE("(best,default)");
     BMenuItem* defaultItem = new BMenuItem(menuStr, NULL);
-    ratioMenu->AddItem(defaultItem);
+    m_compressionMenu->AddItem(defaultItem);
 
     defaultItem->SetMarked(true);
 
@@ -726,7 +724,7 @@ void ArjArchiver::BuildDefaultMenu()
     item->SetMarked(true);
 
     // Add sub-menus to settings menu
-    m_settingsMenu->AddItem(ratioMenu);
+    m_settingsMenu->AddItem(m_compressionMenu);
     m_settingsMenu->AddItem(addMenu);
     m_settingsMenu->AddItem(extractMenu);
 }

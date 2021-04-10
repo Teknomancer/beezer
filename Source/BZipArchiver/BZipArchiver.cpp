@@ -20,9 +20,6 @@
 #define B_TRANSLATE(x) x
 #endif
 
-#define S_FASTEST       "(fastest)"
-#define S_DEFAULT       "(default)"
-#define S_BEST          "(best)"
 
 
 Archiver* load_archiver(const char* addonImagePath)
@@ -251,34 +248,33 @@ bool BZipArchiver::NeedsTempDirectory() const
 
 void BZipArchiver::BuildDefaultMenu()
 {
-    BMenu* ratioMenu;
     m_settingsMenu = new BMenu(m_typeStr);
 
     // Build the compression-level sub-menu
-    ratioMenu = new BMenu(B_TRANSLATE("Compression level"));
-    ratioMenu->SetRadioMode(true);
+    m_compressionMenu = new BMenu(B_TRANSLATE("Compression level"));
+    m_compressionMenu->SetRadioMode(true);
 
     BString menuStr("1");
-    menuStr << " " << B_TRANSLATE(S_FASTEST);
-    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
-    ratioMenu->AddItem(new BMenuItem("2", NULL));
-    ratioMenu->AddItem(new BMenuItem("3", NULL));
-    ratioMenu->AddItem(new BMenuItem("4", NULL));
-    ratioMenu->AddItem(new BMenuItem("5", NULL));
+    menuStr << " " << B_TRANSLATE("(fastest)");
+    m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
+    m_compressionMenu->AddItem(new BMenuItem("2", NULL));
+    m_compressionMenu->AddItem(new BMenuItem("3", NULL));
+    m_compressionMenu->AddItem(new BMenuItem("4", NULL));
+    m_compressionMenu->AddItem(new BMenuItem("5", NULL));
     menuStr = "6";
-    menuStr << " " << B_TRANSLATE(S_DEFAULT);
+    menuStr << " " << B_TRANSLATE("(default)");
     BMenuItem* defaultItem = new BMenuItem(menuStr, NULL);
-    ratioMenu->AddItem(defaultItem);
-    ratioMenu->AddItem(new BMenuItem("7", NULL));
-    ratioMenu->AddItem(new BMenuItem("8", NULL));
+    m_compressionMenu->AddItem(defaultItem);
+    m_compressionMenu->AddItem(new BMenuItem("7", NULL));
+    m_compressionMenu->AddItem(new BMenuItem("8", NULL));
     menuStr = "9";
-    menuStr << " " << B_TRANSLATE(S_BEST);
-    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
+    menuStr << " " << B_TRANSLATE("(best)");
+    m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
 
     defaultItem->SetMarked(true);
 
     // Add sub-menus to settings menu
-    m_settingsMenu->AddItem(ratioMenu);
+    m_settingsMenu->AddItem(m_compressionMenu);
 }
 
 
@@ -332,15 +328,12 @@ BList BZipArchiver::HiddenColumns(BList* columns) const
 void BZipArchiver::CompressFromTemp()
 {
     // Get the compression ratio from the settings menu
-    char level[10];
-    BString menuStr("1");
-    menuStr << " " << B_TRANSLATE(S_FASTEST);
-    BMenu* ratioMenu = m_settingsMenu->FindItem(menuStr)->Menu();
-    sprintf(level, " -%ld ", 1 + ratioMenu->IndexOf(ratioMenu->FindMarked()));
+    BString levelStr;
+    levelStr.SetToFormat(" -%ld", GetCompressionLevel());
 
     // Re-compress file, from .tar in temp to gzip
     BString cmd;
-    cmd << "\"" << m_bzipPath << "\"" << " -c " << level << "\"" << m_tarFilePath << "\" > " << "\"" <<
+    cmd << "\"" << m_bzipPath << "\"" << " -c " << levelStr << "\"" << m_tarFilePath << "\" > " << "\"" <<
     m_archivePath.Path() << "\"";
 
     m_pipeMgr.FlushArgs();

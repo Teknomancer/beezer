@@ -22,9 +22,6 @@
 #define B_TRANSLATE(x) x
 #endif
 
-#define S_FASTEST           "(fastest)"
-#define S_DEFAULT           "(default)"
-#define S_BEST              "(best)"
 #define S_NO_OVERWRITE      "Never overwrite existing files"
 #define S_UPDATE_FILES      "Update files, create if needed"
 #define S_FRESHEN_FILES     "Freshen existing files, create none"

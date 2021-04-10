@@ -21,9 +21,6 @@
 #define B_TRANSLATE(x) x
 #endif
 
-#define S_NONE          "(none)"
-#define S_DEFAULT       "(default)"
-#define S_BEST          "(best)"
 
 //#define S_ARCHIVE_ATTRS "Add attributes"
 #define S_USE_SOLID_BLOCKS      "Use solid blocks"
@@ -464,12 +461,9 @@ status_t z7Archiver::Add(bool createMode, const char* relativePath, BMessage* me
 
     m_pipeMgr.FlushArgs();
 
-    char level[10];
-    BString menuStr("0");
-    menuStr << " " << B_TRANSLATE(S_NONE);
-    BMenu* ratioMenu = m_settingsMenu->FindItem(menuStr)->Menu();
-    sprintf(level, "-mx%.1s", ratioMenu->FindMarked()->Label());
-    m_pipeMgr << m_7zPath << "a" << level;
+    BString levelStr;
+    levelStr.SetToFormat("-mx%ld", GetCompressionLevel());
+    m_pipeMgr << m_7zPath << "a" << levelStr.String();
 
     if (m_settingsMenu->FindItem(B_TRANSLATE(S_USE_MULTI_THREAD))->IsMarked() == true)
         m_pipeMgr << "-mmt";
@@ -799,7 +793,6 @@ status_t z7Archiver::Create(BPath* archivePath, const char* relPath, BMessage* f
 
 void z7Archiver::BuildDefaultMenu()
 {
-    BMenu* ratioMenu;
     BMenu* addMenu;
     BMenu* extractMenu;
     BMenuItem* item;
@@ -807,21 +800,21 @@ void z7Archiver::BuildDefaultMenu()
     m_settingsMenu = new BMenu(m_typeStr);
 
     // Build the header-level sub-menu
-    ratioMenu = new BMenu(B_TRANSLATE("Compression level"));
-    ratioMenu->SetRadioMode(true);
+    m_compressionMenu = new BMenu(B_TRANSLATE("Compression level"));
+    m_compressionMenu->SetRadioMode(true);
 
     BString menuStr("0");
-    menuStr << " " << B_TRANSLATE(S_NONE);
-    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
-    ratioMenu->AddItem(new BMenuItem("1", NULL));
+    menuStr << " " << B_TRANSLATE("(none)");
+    m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
+    m_compressionMenu->AddItem(new BMenuItem("1", NULL));
     menuStr = "5";
-    menuStr << " " << B_TRANSLATE(S_DEFAULT);
+    menuStr << " " << B_TRANSLATE("(default)");
     BMenuItem* defaultItem = new BMenuItem(menuStr, NULL);
-    ratioMenu->AddItem(defaultItem);
-    ratioMenu->AddItem(new BMenuItem("7", NULL));
+    m_compressionMenu->AddItem(defaultItem);
+    m_compressionMenu->AddItem(new BMenuItem("7", NULL));
     menuStr = "9";
-    menuStr << " " << B_TRANSLATE(S_BEST);
-    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
+    menuStr << " " << B_TRANSLATE("(best)");
+    m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
 
     defaultItem->SetMarked(true);
 
@@ -850,7 +843,7 @@ void z7Archiver::BuildDefaultMenu()
     defaultItem->SetMarked(true);
 
     // Add sub-menus to settings menu
-    m_settingsMenu->AddItem(ratioMenu);
+    m_settingsMenu->AddItem(m_compressionMenu);
     m_settingsMenu->AddItem(addMenu);
     m_settingsMenu->AddItem(extractMenu);
 }

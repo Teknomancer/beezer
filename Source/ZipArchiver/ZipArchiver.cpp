@@ -33,9 +33,6 @@
 #define B_TRANSLATE(x) x
 #endif
 
-#define S_NONE              "(none)"
-#define S_FASTEST           "(fastest)"
-#define S_BEST_DEFAULT      "(best,default)"
 #define S_DIR_RECURSE       "Recurse into folders"
 #define S_DIR_EXTRACT       "Extract folders"
 #define S_EXTRACT_ATTRS     "Extract attributes"
@@ -538,14 +535,10 @@ status_t ZipArchiver::Add(bool createMode, const char* relativePath, BMessage* m
             return BZR_ARCHIVE_PATH_INIT_ERROR;
     }
 
-    m_pipeMgr.FlushArgs();
-    char level[10];
-    BString menuStr("0");
-    menuStr << " " << B_TRANSLATE(S_NONE);
-    BMenu* ratioMenu = m_settingsMenu->FindItem(menuStr)->Menu();
+    BString levelStr;
+    levelStr.SetToFormat("-%ld", GetCompressionLevel());
 
-    sprintf(level, "-%ld", ratioMenu->IndexOf(ratioMenu->FindMarked()));
-    m_pipeMgr << m_zipPath << "-y" << level;
+    m_pipeMgr << m_zipPath << "-y" << levelStr.String();
     if (m_settingsMenu->FindItem(B_TRANSLATE(S_DIR_RECURSE))->IsMarked() == true)
         m_pipeMgr << "-r";
 
@@ -776,7 +769,6 @@ status_t ZipArchiver::Create(BPath* archivePath, const char* relPath, BMessage* 
 
 void ZipArchiver::BuildDefaultMenu()
 {
-    BMenu* ratioMenu;
     BMenu* addMenu;
     BMenu* extractMenu;
     BMenuItem* item;
@@ -784,26 +776,26 @@ void ZipArchiver::BuildDefaultMenu()
     m_settingsMenu = new BMenu(m_typeStr);
 
     // Build the compression-level sub-menu (sorry we can't avoid using english strings here)
-    ratioMenu = new BMenu(B_TRANSLATE("Compression level"));
-    ratioMenu->SetRadioMode(true);
+    m_compressionMenu = new BMenu(B_TRANSLATE("Compression level"));
+    m_compressionMenu->SetRadioMode(true);
 
     BString menuStr("0");
-    menuStr << " " << B_TRANSLATE(S_NONE);
-    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
+    menuStr << " " << B_TRANSLATE("(none)");
+    m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
     menuStr = "1";
-    menuStr << " " << B_TRANSLATE(S_FASTEST);
-    ratioMenu->AddItem(new BMenuItem(menuStr, NULL));
-    ratioMenu->AddItem(new BMenuItem("2", NULL));
-    ratioMenu->AddItem(new BMenuItem("3", NULL));
-    ratioMenu->AddItem(new BMenuItem("4", NULL));
-    ratioMenu->AddItem(new BMenuItem("5", NULL));
-    ratioMenu->AddItem(new BMenuItem("6", NULL));
-    ratioMenu->AddItem(new BMenuItem("7", NULL));
-    ratioMenu->AddItem(new BMenuItem("8", NULL));
+    menuStr << " " << B_TRANSLATE("(fastest)");
+    m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
+    m_compressionMenu->AddItem(new BMenuItem("2", NULL));
+    m_compressionMenu->AddItem(new BMenuItem("3", NULL));
+    m_compressionMenu->AddItem(new BMenuItem("4", NULL));
+    m_compressionMenu->AddItem(new BMenuItem("5", NULL));
+    m_compressionMenu->AddItem(new BMenuItem("6", NULL));
+    m_compressionMenu->AddItem(new BMenuItem("7", NULL));
+    m_compressionMenu->AddItem(new BMenuItem("8", NULL));
     menuStr = "9";
-    menuStr << " " << B_TRANSLATE(S_BEST_DEFAULT);
+    menuStr << " " << B_TRANSLATE("(best,default)");
     BMenuItem* defaultItem = new BMenuItem(menuStr, NULL);
-    ratioMenu->AddItem(defaultItem);
+    m_compressionMenu->AddItem(defaultItem);
 
     defaultItem->SetMarked(true);
 
@@ -844,7 +836,7 @@ void ZipArchiver::BuildDefaultMenu()
     extractMenu->AddItem(item);
 
     // Add sub-menus to settings menu
-    m_settingsMenu->AddItem(ratioMenu);
+    m_settingsMenu->AddItem(m_compressionMenu);
     m_settingsMenu->AddItem(addMenu);
     m_settingsMenu->AddItem(extractMenu);
 }
