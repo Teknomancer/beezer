@@ -1583,39 +1583,39 @@ void MainWindow::AddToolBar()
 
     // Construct the toolbar buttons
     m_newButton = new ImageButton(buttonRect, "MainWindow:New", BZ_TR(kNewString), _bmps->m_tbarNewBmp,
-                                  NULL, new BMessage(M_FILE_NEW), false, backColor, kBelowIcon);
+                                  NULL, new BMessage(M_FILE_NEW), false, backColor);
     m_newButton->SetToolTip(const_cast<char*>(B_TRANSLATE("Create a new archive")));
 
     m_openButton = new ImageButton(buttonRect, "MainWindow:Open", BZ_TR(kOpenString), _bmps->m_tbarOpenBmp,
-                                   NULL, new BMessage(M_FILE_OPEN), true, backColor, kBelowIcon);
+                                   NULL, new BMessage(M_FILE_OPEN), true, backColor);
     m_openButton->SetToolTip(const_cast<char*>(BZ_TR(kOpenExistingString)));
 
     m_searchButton = new ImageButton(buttonRect, "MainWindow:Search", BZ_TR(kSearchString),
                                      _bmps->m_tbarSearchBmp, _bmps->m_tbarSearchDisabledBmp,
-                                     new BMessage(M_ACTIONS_SEARCH_ARCHIVE), false, backColor, kBelowIcon);
+                                     new BMessage(M_ACTIONS_SEARCH_ARCHIVE), false, backColor);
     m_searchButton->SetToolTip(const_cast<char*>(B_TRANSLATE("Search for files in the archive")));
 
     m_extractButton = new ImageButton(buttonRect, "MainWindow:Extact", BZ_TR(kExtractString),
                                       _bmps->m_tbarExtractBmp, _bmps->m_tbarExtractDisabledBmp,
-                                      new BMessage(M_ACTIONS_EXTRACT), true, backColor, kBelowIcon);
+                                      new BMessage(M_ACTIONS_EXTRACT), true, backColor);
     m_extractButton->SetEnabled(false);
     m_extractButton->SetToolTip(const_cast<char*>(B_TRANSLATE("Extract contents of archive")));
 
     m_viewButton = new ImageButton(buttonRect, "MainWindow:View", BZ_TR(kViewString),
                                    _bmps->m_tbarViewBmp, _bmps->m_tbarViewDisabledBmp, new BMessage(M_ACTIONS_VIEW), false,
-                                   backColor, kBelowIcon);
+                                   backColor);
     m_viewButton->SetEnabled(false);
     m_viewButton->SetToolTip(const_cast<char*>(B_TRANSLATE("View selected file(s)")));
 
     m_addButton = new ImageButton(buttonRect, "MainWindow:Add", BZ_TR(kAddString),
                                   _bmps->m_tbarAddBmp, _bmps->m_tbarAddDisabledBmp, new BMessage(M_ACTIONS_ADD), false,
-                                  backColor, kBelowIcon);
+                                  backColor);
     m_addButton->SetEnabled(false);
     m_addButton->SetToolTip(const_cast<char*>(B_TRANSLATE("Add files to archive")));
 
     m_deleteButton = new ImageButton(buttonRect, "MainWindow:Delete", BZ_TR(kDeleteString),
                                      _bmps->m_tbarDeleteBmp, _bmps->m_tbarDeleteDisabledBmp,
-                                     new BMessage(M_ACTIONS_DELETE), false, backColor, kBelowIcon);
+                                     new BMessage(M_ACTIONS_DELETE), false, backColor);
     m_deleteButton->SetEnabled(false);
 
     m_deleteButton->SetToolTip(const_cast<char*>(B_TRANSLATE("Delete selected files & folders")));

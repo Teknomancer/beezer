@@ -7,26 +7,26 @@
 
 #include <View.h>
 
-enum textPosition
-{
-    kRightOfIcon,
-    kBelowIcon
-};
-
 class BPopUpMenu;
 
 class ImageButton : public BView
 {
     public:
+        enum text_position
+        {
+            RIGHT_OF_ICON,
+            BELOW_ICON
+        };
+
         ImageButton(BRect frame, const char* name, const char* text, BBitmap* bitmap, BBitmap* disabled,
                     BMessage* message, bool popUpMenu, const rgb_color backColor,
-                    textPosition textPos = kBelowIcon, bool borders = true, bool smallFont = true,
+                    text_position textPos = BELOW_ICON, bool borders = true, bool smallFont = true,
                     bool hoverHighlight = true, uint32 resizeMask = B_FOLLOW_LEFT | B_FOLLOW_TOP,
                     uint32 flags = B_WILL_DRAW);
 
         ImageButton(const char* name, const char* text, BBitmap* bitmap, BBitmap* disabled,
                     BMessage* message, bool popUpMenu, const rgb_color backColor,
-                    textPosition textPos = kBelowIcon, bool borders = true, bool smallFont = true,
+                    text_position textPos = BELOW_ICON, bool borders = true, bool smallFont = true,
                     bool hoverHighlight = true, uint32 flags = B_WILL_DRAW);
 
         virtual ~ImageButton();
@@ -87,7 +87,7 @@ class ImageButton : public BView
                             m_hoverHighlight,
                             m_mouseInside,
                             m_globalMouse;
-        int                 m_textPosition;
+        text_position       m_textPosition;
         float               m_fontPlacement,
                             m_marginWidth,
                             m_marginHeight;
