@@ -20,7 +20,6 @@ class BitmapMenuItem : public BMenuItem
         virtual void        GetContentSize(float* width, float* height);
 
     private:
-        // Private members
         BBitmap*            m_bitmap;
 };
 
