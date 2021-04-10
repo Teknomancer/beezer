@@ -67,7 +67,8 @@ FileJoinerWindow::FileJoinerWindow(RecentMgr* dirs)
     m_cancel(false),
     m_recentSplitDirs(dirs)
 {
-    m_backView = new BevelView(Bounds(), "FileJoinerWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
+    m_backView = new BevelView(Bounds(), "FileJoinerWindow:BackView", BevelView::BevelType::OUTSET,
+                               B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_backView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
     AddChild(m_backView);
 
@@ -85,7 +86,8 @@ FileJoinerWindow::FileJoinerWindow(RecentMgr* dirs)
 
     BevelView* sepView1 = new BevelView(BRect(-1, splitBmp->Bounds().Height() + 4 * K_MARGIN,
                                         Bounds().right - 1.0, splitBmp->Bounds().Height() + 4 * K_MARGIN + 1),
-                                        "FileJoinerWindow:SepView1", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+                                        "FileJoinerWindow:SepView1", BevelView::BevelType::INSET,
+                                        B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     m_backView->AddChild(sepView1);
 
     StaticBitmapView* splitBmpView = new StaticBitmapView(BRect(K_MARGIN * 5, K_MARGIN * 2,
@@ -119,8 +121,8 @@ FileJoinerWindow::FileJoinerWindow(RecentMgr* dirs)
 
     m_innerView = new BevelView(BRect(K_MARGIN, sepView1->Frame().bottom + K_MARGIN,
                                       Bounds().right - K_MARGIN,
-                                      Bounds().bottom - K_MARGIN), "FileJoinerWindow:InnerView", btNoBevel,
-                                B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+                                      Bounds().bottom - K_MARGIN), "FileJoinerWindow:InnerView",
+                                BevelView::BevelType::NO_BEVEL, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     m_backView->AddChild(m_innerView);
 
     m_filePathView = new BTextControl(BRect(K_MARGIN, K_MARGIN,
@@ -193,7 +195,8 @@ FileJoinerWindow::FileJoinerWindow(RecentMgr* dirs)
     BevelView* sepView2 = new BevelView(BRect(m_separatorView->Frame().right + 4 * K_MARGIN + 2,
                                         m_separatorView->Frame().top - 2,
                                         m_separatorView->Frame().right + 4 * K_MARGIN + 3, 0),
-                                        "FileJoinerWindow:sepView2", btInset, B_FOLLOW_LEFT, B_WILL_DRAW);
+                                        "FileJoinerWindow:sepView2", BevelView::BevelType::INSET,
+                                        B_FOLLOW_LEFT, B_WILL_DRAW);
     m_innerView->AddChild(sepView2);
 
     m_openChk = new BCheckBox(BRect(sepView2->Frame().left + 3 * K_MARGIN, m_separatorView->Frame().top, 0, 0),
@@ -223,7 +226,8 @@ FileJoinerWindow::FileJoinerWindow(RecentMgr* dirs)
 
     BevelView* sepView3 = new BevelView(BRect(-1, m_innerView->Frame().bottom + K_MARGIN + 1,
                                         Bounds().right - 1.0, m_innerView->Frame().bottom + K_MARGIN + 1 + 1),
-                                        "FileJoinerWindow:SepView2", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+                                        "FileJoinerWindow:SepView2", BevelView::BevelType::INSET,
+                                        B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     m_backView->AddChild(sepView3);
 
 
@@ -271,7 +275,8 @@ FileJoinerWindow::FileJoinerWindow(RecentMgr* dirs)
 
     BevelView* sepView4 = new BevelView(BRect(-1, m_sizeStr->Frame().bottom + K_MARGIN,
                                         Bounds().right - 1.0, m_sizeStr->Frame().bottom + K_MARGIN + 1),
-                                        "FileJoinerWindow:SepView4", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+                                        "FileJoinerWindow:SepView4", BevelView::BevelType::INSET,
+                                        B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     m_backView->AddChild(sepView4);
     sepView4->Hide();
 

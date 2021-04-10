@@ -179,7 +179,8 @@ void PrefsWindow::SetActivePanel(PrefsView* activePanel)
 
 void PrefsWindow::AddControls()
 {
-    m_backView = new BevelView(Bounds(), "PrefsWindow:backView", btOutset, B_FOLLOW_ALL_SIDES);
+    m_backView = new BevelView(Bounds(), "PrefsWindow:backView", BevelView::BevelType::OUTSET,
+                               B_FOLLOW_ALL_SIDES);
     m_backView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
     AddChild(m_backView);
 
@@ -201,8 +202,8 @@ void PrefsWindow::AddControls()
     m_listView->TargetedByScrollView(scrollView);
 
     BevelView* descViewDecor = new BevelView(BRect(scrollView->Frame().right + margin, margin,
-            Bounds().right - margin, margin + totalHeight + btDeepThickness),
-            "PrefsWindow:descViewDecor", btDeep, B_FOLLOW_LEFT);
+            Bounds().right - margin, margin + totalHeight + BevelView::kDeepThickness),
+            "PrefsWindow:descViewDecor", BevelView::BevelType::DEEP, B_FOLLOW_LEFT);
     m_backView->AddChild(descViewDecor);
 
     float border = descViewDecor->EdgeThickness();

@@ -54,7 +54,8 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
     m_inProgress(false),
     m_quitNow(false)
 {
-    m_backView = new BevelView(Bounds(), "AddOnWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
+    m_backView = new BevelView(Bounds(), "AddOnWindow:BackView", BevelView::BevelType::OUTSET,
+                               B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     AddChild(m_backView);
     m_backView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
 
@@ -62,7 +63,8 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
     // otherwise it will be hidden and a message like "Drop files here to archive" will be shown using
     // the alternate Back View
     m_backViewMain = new BevelView(Bounds().InsetByCopy(4, 2),
-                                   "AddOnWindow:BackViewMain", btNoBevel, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
+                                   "AddOnWindow:BackViewMain", BevelView::BevelType::NO_BEVEL,
+                                   B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_backView->AddChild(m_backViewMain);
     m_backViewMain->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
 
@@ -145,13 +147,14 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
     float fontHeight = fntHt.ascent + fntHt.descent + 1;
     BevelView* sepView2 = new BevelView(BRect(-1, Bounds().bottom - fontHeight - 4, Bounds().right,
                                         Bounds().bottom - fontHeight - 3),
-                                        "AddOnWindow:sepView2", btInset, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM,
-                                        B_WILL_DRAW);
+                                        "AddOnWindow:sepView2", BevelView::BevelType::INSET,
+                                        B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW);
     m_backView->AddChild(sepView2);
 
     BevelView* sepView = new BevelView(BRect(-1, sepView2->Frame().bottom - 2 * K_MARGIN - K_BUTTON_HEIGHT -
                                        4 - 8, Bounds().right, sepView2->Frame().bottom - 2 * K_MARGIN
-                                       - K_BUTTON_HEIGHT - 3 - 8),    "AddOnWindow:sepView", btInset,
+                                       - K_BUTTON_HEIGHT - 3 - 8), "AddOnWindow:sepView",
+                                       BevelView::BevelType::INSET,
                                        B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM, B_WILL_DRAW);
     m_backViewMain->AddChild(sepView);
     sepView->Hide();
@@ -180,7 +183,8 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
 
         // Add a control to ask for dropping of files
         m_backViewAlt = new BevelView(Bounds().InsetByCopy(2, 2),
-                                      "AddOnWindow:BackViewAlt", btInset, B_FOLLOW_LEFT, B_WILL_DRAW);
+                                      "AddOnWindow:BackViewAlt", BevelView::BevelType::INSET,
+                                      B_FOLLOW_LEFT, B_WILL_DRAW);
         m_backViewAlt->ResizeBy(0, -(2 * K_MARGIN + K_BUTTON_HEIGHT + 4 + fontHeight + 2));
         m_backViewAlt->SetResizingMode(B_FOLLOW_ALL_SIDES);
         m_backViewAlt->SetViewColor(0, 0, 0, 255);
@@ -233,7 +237,8 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
 
     m_addView = new BevelView(BRect(K_MARGIN, m_password->Frame().bottom + K_MARGIN,
                                     m_backViewMain->Bounds().right - K_MARGIN, sepView->Frame().top - K_MARGIN),
-                              "AddOnWindow:AddView", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+                              "AddOnWindow:AddView", BevelView::BevelType::INSET,
+                              B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     m_backViewMain->AddChild(m_addView);
 
     m_barberPole = new BarberPole(BRect(K_MARGIN, K_MARGIN, 0, K_MARGIN + fontHeight + K_MARGIN),
