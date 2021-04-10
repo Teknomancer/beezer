@@ -46,55 +46,37 @@ PrefsViewInterface::PrefsViewInterface(BRect frame)
 
 void PrefsViewInterface::Render()
 {
-    m_fullLengthBarsChk = new BCheckBox(BRect(m_margin, m_margin, 0, 0), "PrefsViewInterface:fullLenBars",
-                                        B_TRANSLATE("Full length toolbar & infobar"), NULL);
-    m_fullLengthBarsChk->ResizeToPreferred();
+    m_fullLengthBarsChk = new BCheckBox("PrefsViewInterface:fullLenBars", B_TRANSLATE("Full length toolbar & infobar"), NULL);
 
-    BStringView* colorStrView = new BStringView(BRect(m_margin, m_fullLengthBarsChk->Frame().bottom + m_margin + 2 * m_vGap, 0, 0),
-                                                NULL, B_TRANSLATE("Configure colors:"));
+    BStringView* colorStrView = new BStringView("PrefsViewInterface:colorStrView", B_TRANSLATE("Configure colors:"), B_WILL_DRAW);
     colorStrView->SetFont(&m_sectionFont);
-    colorStrView->ResizeToPreferred();
 
-    BevelView* outerView =     new BevelView(BRect(3 * m_margin, colorStrView->Frame().bottom + m_margin, 3 * m_margin + 30,
+    BevelView* colorWellContainerView = new BevelView(BRect(3 * m_margin, colorStrView->Frame().bottom + m_margin, 3 * m_margin + 30,
                                                    colorStrView->Frame().bottom + m_margin + 30),
-                                             "PrefsViewInterface:outerView", BevelView::BevelType::DEEP,
+                                             "PrefsViewInterface:colorWellContainerView", BevelView::BevelType::DEEP,
                                              B_FOLLOW_LEFT, B_WILL_DRAW);
-    float boundary = outerView->EdgeThickness();
-
-    m_colorWell = new BView(BRect(boundary, boundary, outerView->Frame().Width() - boundary,
-                                  outerView->Frame().Height() - boundary),
+    float const edgeThickness = colorWellContainerView->EdgeThickness();
+    m_colorWell = new BView(colorWellContainerView->Bounds().InsetBySelf(edgeThickness, edgeThickness),
                             "PrefsViewInterface:colorWell", B_FOLLOW_LEFT, B_WILL_DRAW);
-    outerView->AddChild(m_colorWell);
+    colorWellContainerView->AddChild(m_colorWell);
+    colorWellContainerView->SetExplicitMaxSize(BSize(30, 30));
 
     m_colorPopUp = new BPopUpMenu("");
-    m_colorField = new BMenuField(BRect(outerView->Frame().right + 3 * m_margin,
-                                        outerView->Frame().top + 2, Bounds().right - m_margin, 0),
-                                  "PrefsViewInterface:colorField", NULL, (BMenu*)m_colorPopUp, B_FOLLOW_LEFT,
-                                  B_WILL_DRAW);
     m_colorPopUp->AddItem(new BMenuItem(B_TRANSLATE("Selected text color"), new BMessage(M_ITEM_CHANGE)));
     m_colorPopUp->AddItem(new BMenuItem(B_TRANSLATE("Selected background color"), new BMessage(M_ITEM_CHANGE)));
-    m_colorPopUp->ResizeToPreferred();
+    m_colorField = new BMenuField("PrefsViewInterface:colorField", "", (BMenu*)m_colorPopUp);
 
     m_colorControl = new BColorControl(BPoint(3 * m_margin,
-                                              MAX(m_colorPopUp->Frame().bottom, outerView->Frame().bottom) + m_margin + 2),
-                                       B_CELLS_32x8, 8, "PrefsViewInteface:colorControl", new BMessage(M_COLOR_CHANGE));
+                                              MAX(m_colorPopUp->Frame().bottom, colorWellContainerView->Frame().bottom) + m_margin + 2),
+                                       B_CELLS_32x8, 8,
+                                       "PrefsViewInteface:colorControl", new BMessage(M_COLOR_CHANGE));
 
-    BStringView* defStrView = new BStringView(BRect(m_margin, m_colorControl->Frame().bottom + 2 * m_margin + 2 * m_vGap, 0, 0),
-                                              NULL, B_TRANSLATE("Default interface settings:"));
+    BStringView* defStrView = new BStringView("PrefsViewInterface:defStrView", B_TRANSLATE("Default interface settings:"), B_WILL_DRAW);
     defStrView->SetFont(&m_sectionFont);
-    defStrView->ResizeToPreferred();
 
-    m_toolbarChk = new BCheckBox(BRect(3 * m_margin, defStrView->Frame().bottom + m_vGap, 0, 0),
-                                 "PrefsViewInterface:toolbarChk", B_TRANSLATE("Show toolbar"), NULL);
-    m_toolbarChk->ResizeToPreferred();
-
-    m_infobarChk = new BCheckBox(BRect(3 * m_margin, m_toolbarChk->Frame().bottom + m_vGap, 0, 0),
-                                 "PrefsViewInterface:infoBarChk", B_TRANSLATE("Show infobar"), NULL);
-    m_infobarChk->ResizeToPreferred();
-
-    m_actionLogChk = new BCheckBox(BRect(3 * m_margin, m_infobarChk->Frame().bottom + m_vGap, 0, 0),
-                                   "PrefsViewInterface:actionLogChk", B_TRANSLATE("Show action log"), NULL);
-    m_actionLogChk->ResizeToPreferred();
+    m_toolbarChk = new BCheckBox("PrefsViewInterface:toolbarChk", B_TRANSLATE("Show toolbar"), NULL);
+    m_infobarChk = new BCheckBox("PrefsViewInterface:infoBarChk", B_TRANSLATE("Show infobar"), NULL);
+    m_actionLogChk = new BCheckBox("PrefsViewInterface:actionLogChk", B_TRANSLATE("Show action log"), NULL);
 
     m_foldingPopUp = new BPopUpMenu("");
     m_foldingPopUp->AddItem(new BMenuItem(BZ_TR(kAllFoldedString), NULL));
@@ -107,27 +89,43 @@ void PrefsViewInterface::Render()
     maxW = MAX(maxW, StringWidth(B_TRANSLATE("Show action log")));
     maxW += 5 * m_margin + 30;
 
-    m_foldingField = new BMenuField(BRect(m_toolbarChk->Frame().left + maxW,
-                                          m_toolbarChk->Frame().top, Bounds().right - m_margin, 0),
-                                    "PrefsViewInterface:foldingField", B_TRANSLATE("Folding:"),
-                                    (BMenu*)m_foldingPopUp, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
-    float div = m_foldingField->StringWidth(m_foldingField->Label()) + 10;
+    m_foldingField = new BMenuField("PrefsViewInterface:foldingField", B_TRANSLATE("Folding:"), (BMenu*)m_foldingPopUp);
+    float const div = m_foldingField->StringWidth(m_foldingField->Label()) + 10;
     m_foldingField->SetDivider(div);
 
     font_height fntHt;
     m_sectionFont.GetHeight(&fntHt);
 
-    AddChild(m_fullLengthBarsChk);
-    AddChild(colorStrView);
-    AddChild(outerView);
-    AddChild(m_colorField);
-    AddChild(m_colorControl);
-    AddChild(defStrView);
-    AddChild(m_toolbarChk);
-    AddChild(m_infobarChk);
-    AddChild(m_actionLogChk);
-    AddChild(m_foldingField);
-    AddRevertButton();
+    BLayoutBuilder::Group<> builder = BLayoutBuilder::Group<>(this, B_VERTICAL, B_USE_HALF_ITEM_SPACING);
+    builder
+        .SetInsets(B_USE_DEFAULT_SPACING)
+        .Add(m_fullLengthBarsChk)
+        .AddStrut(B_USE_HALF_ITEM_SPACING)  // extra space before starting next logical group
+        .Add(colorStrView)
+        .AddGroup(B_HORIZONTAL)
+            .Add(colorWellContainerView)
+            .Add(m_colorField)
+            .AddGlue()  // glue so color field doesn't stretch the full width
+        .End()
+        .Add(m_colorControl)
+        .AddStrut(B_USE_ITEM_SPACING)  // extra space before starting next logical group
+        .Add(defStrView)
+        .AddGroup(B_HORIZONTAL)
+            .AddGroup(B_VERTICAL, B_USE_HALF_ITEM_SPACING)
+                .Add(m_toolbarChk)
+                .Add(m_infobarChk)
+                .Add(m_actionLogChk)
+            .End()
+            .AddStrut(B_USE_ITEM_SPACING)
+            .AddGroup(B_VERTICAL)
+                .Add(m_foldingField)
+                .AddGlue()      // glue to push the folding field to top
+            .End()
+        .End()
+        .AddGlue() // add some free space at the bottom
+        .End();
+
+    AddRevertButton(builder);
 }
 
 
