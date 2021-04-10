@@ -184,13 +184,12 @@ void PrefsViewPaths::Render()
 
     m_addBtn = new ImageButton(BRect(m_scrollView->Frame().right + m_margin, m_scrollView->Frame().top + 1,
                                      m_scrollView->Frame().right + 20, m_scrollView->Frame().top + 21), "PrefsViewPaths:addBnt",
-                               NULL, m_addBmp, NULL, new BMessage(M_ADD_CLICKED), false, ViewColor(),
-                               kBelowIcon, true, true, true, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
+                               NULL, m_addBmp, NULL, new BMessage(M_ADD_CLICKED), false, ViewColor());
 
     m_removeBtn = new ImageButton(BRect(m_addBtn->Frame().left, m_addBtn->Frame().bottom + 2 * m_margin - 3,
                                         m_addBtn->Frame().right, m_addBtn->Frame().bottom + m_margin + 21),
                                   "PrefsViewPaths:removeBtn", NULL, m_removeBmp, NULL, new BMessage(M_REMOVE_CLICKED), false,
-                                  ViewColor(), kBelowIcon, true, true, true, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
+                                  ViewColor());
 
     AddChild(defaultStrView);
     AddChild(m_openPathView);

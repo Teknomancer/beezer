@@ -16,7 +16,7 @@ static const float kContextWidth = 14.0;
 
 ImageButton::ImageButton(BRect frame, const char* name, const char* text, BBitmap* smallIcon,
                          BBitmap* disabled, BMessage* message, bool popUpMenu, const rgb_color bgColor,
-                         textPosition textPos, bool borders, bool smallFont, bool hoverHighlight, uint32 resizeMask,
+                         text_position textPos, bool borders, bool smallFont, bool hoverHighlight, uint32 resizeMask,
                          uint32 flags)
     : BView(frame, name, resizeMask, flags),
       m_handler(NULL),
@@ -42,7 +42,7 @@ ImageButton::ImageButton(BRect frame, const char* name, const char* text, BBitma
 
 ImageButton::ImageButton(const char* name, const char* text, BBitmap* smallIcon,
                          BBitmap* disabled, BMessage* message, bool popUpMenu, const rgb_color bgColor,
-                         textPosition textPos, bool borders, bool smallFont, bool hoverHighlight,
+                         text_position textPos, bool borders, bool smallFont, bool hoverHighlight,
                          uint32 flags)
     : BView(name, flags),
       m_handler(NULL),
@@ -137,7 +137,7 @@ void ImageButton::Draw(BRect updateRect)
     // Draw the picture & render the text on its left, check for 'activeness'
     // and for missing data as well (in case we have NULL bmps or text)
     SetDrawingMode(B_OP_ALPHA);
-    if (m_textPosition == kRightOfIcon)
+    if (m_textPosition == RIGHT_OF_ICON)
         MovePenTo(m_marginWidth, m_marginHeight);
     else
     {
@@ -167,7 +167,7 @@ void ImageButton::Draw(BRect updateRect)
     }
 
     SetDrawingMode(B_OP_COPY);
-    if (m_textPosition == kRightOfIcon)
+    if (m_textPosition == RIGHT_OF_ICON)
     {
         if (m_clickBitmap)
             MovePenTo(2 * m_marginWidth + 20, m_marginHeight + m_fontPlacement);
@@ -533,7 +533,7 @@ void ImageButton::PushButton(BRect rect)
 
     // Draw with transparency the picture and then the text
     SetDrawingMode(B_OP_ALPHA);
-    if (m_textPosition == kRightOfIcon)
+    if (m_textPosition == RIGHT_OF_ICON)
         MovePenTo(m_marginWidth + 1, m_marginHeight + 1);
     else
     {
@@ -554,7 +554,7 @@ void ImageButton::PushButton(BRect rect)
     SetDrawingMode(B_OP_COPY);
     SetHighUIColor(B_CONTROL_TEXT_COLOR);
     SetLowColor(m_backColor);
-    if (m_textPosition == kRightOfIcon)
+    if (m_textPosition == RIGHT_OF_ICON)
     {
         if (m_clickBitmap || m_disabledBitmap)
             MovePenTo(2 * (m_marginWidth) + 20 + 1, m_marginHeight + 1 + m_fontPlacement);
@@ -604,7 +604,7 @@ void ImageButton::GetPreferredSize(float* width, float* height)
     }
 
     // Calculate the height of the view, leave width as it is
-    if (m_textPosition == kRightOfIcon)
+    if (m_textPosition == RIGHT_OF_ICON)
     {
         if (m_clickBitmap || m_disabledBitmap)
             *height = m_marginHeight + 20 + m_marginHeight - 1;
