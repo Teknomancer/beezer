@@ -26,7 +26,7 @@ class PrefsView : public BevelView
 
         const char*         Description() const;
         const char*         Title() const;
-        virtual bool        IsChecked(BCheckBox* chkBox) const;
+        virtual bool        IsChecked(BCheckBox* chkBox) const;     // TODO: Why did I make this virtual? Make it static perhaps? Hm.
         virtual void        Render();
         virtual void        Save();
         virtual void        Load();
