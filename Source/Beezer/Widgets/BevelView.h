@@ -10,7 +10,7 @@
 class BevelView : public BView
 {
     public:
-        enum BevelType
+        enum bevel_type
         {
             INSET,
             OUTSET,
@@ -19,7 +19,7 @@ class BevelView : public BView
             NO_BEVEL
         };
 
-        BevelView(BRect frame, const char* name, BevelType bevelMode, uint32 resizeMask = B_FOLLOW_LEFT,
+        BevelView(BRect frame, const char* name, bevel_type bevelMode, uint32 resizeMask = B_FOLLOW_LEFT,
                   uint32 flags = B_WILL_DRAW);
 
         // Inherited hooks
@@ -38,7 +38,7 @@ class BevelView : public BView
 
     private:
         BRect               m_cachedRect;
-        BevelType           m_bevelType;
+        bevel_type          m_bevelType;
         rgb_color           m_darkEdge1,
                             m_darkEdge2,
                             m_lightEdge;

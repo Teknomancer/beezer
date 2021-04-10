@@ -12,7 +12,7 @@ const float BevelView::kDeepThickness    = 2.0;
 const float BevelView::kNoBevelThickness = 0.0;
 
 // TODO: Make layout-kit compatible constructor etc.
-BevelView::BevelView(BRect frame, const char* name, BevelType bevelMode, uint32 resizeMask, uint32 flags)
+BevelView::BevelView(BRect frame, const char* name, bevel_type bevelMode, uint32 resizeMask, uint32 flags)
     : BView(frame, name, resizeMask, flags | B_FRAME_EVENTS)
 {
     // Set up colors, edges and cache the Bounds() rectangle
@@ -30,7 +30,7 @@ BevelView::BevelView(BRect frame, const char* name, BevelType bevelMode, uint32 
             m_darkEdge1 = tint_color(backColor, B_DARKEN_2_TINT);
             m_darkEdge2 = tint_color(backColor, B_DARKEN_3_TINT);
             m_lightEdge = tint_color(backColor, B_LIGHTEN_MAX_TINT);
-            m_edgeThickness = m_bevelType == BevelType::INSET ? kInsetThickness : kDeepThickness;
+            m_edgeThickness = m_bevelType == bevel_type::INSET ? kInsetThickness : kDeepThickness;
             break;
 
         case OUTSET:

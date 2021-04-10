@@ -23,7 +23,7 @@
 
 
 PrefsView::PrefsView(BRect frame, const char* title, const char* description)
-    : BevelView(frame, NULL, BevelView::BevelType::INSET, B_FOLLOW_LEFT, B_WILL_DRAW),
+    : BevelView(frame, NULL, BevelView::bevel_type::INSET, B_FOLLOW_LEFT, B_WILL_DRAW),
     m_revertBtn(NULL),
     m_margin(K_MARGIN + 2),         // For use in inherited classes - to provide consistency among them we give these
     m_vGap(1),                      // member functions which they are supposed to use when needed
