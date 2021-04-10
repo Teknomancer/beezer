@@ -48,7 +48,7 @@ void PrefsViewWindows::Render()
 
     BLayoutBuilder::Group<> builder = BLayoutBuilder::Group<>(this, B_VERTICAL, B_USE_HALF_ITEM_SPACING);
     builder
-        .SetInsets(m_margin)
+        .SetInsets(B_USE_DEFAULT_SPACING)
         .Add(m_searchChk)
         .Add(m_logChk)
         .Add(m_commentChk)
