@@ -76,7 +76,6 @@ void PrefsViewPaths::Render()
     defaultStrView->SetFont(&m_sectionFont);
     defaultStrView->ResizeToPreferred();
 
-    int8 dividerStrCount = 3;
     BString dividerStrings[] =
     {
         B_TRANSLATE("Open path:"),
@@ -84,11 +83,9 @@ void PrefsViewPaths::Render()
         B_TRANSLATE("Extract path:")
     };
 
-    float divider = -1;
-    for (int8 i = 0; i < dividerStrCount - 1; i++)
-        divider = MAX(StringWidth(dividerStrings[i].String()), StringWidth(dividerStrings[i+1].String()));
-
-    divider += 8;
+    float divider = 0;
+    for (size_t i = 0; i < B_COUNT_OF(dividerStrings); i++)
+        divider = MAX(divider, StringWidth(dividerStrings[i].String()));
 
     m_openPathView = new BTextControl(BRect(3 * m_margin, defaultStrView->Frame().bottom + m_vGap + 6,
                                             Bounds().right - (2 * m_margin) - K_BUTTON_WIDTH, 0), "PrefsViewPaths:openPathView",

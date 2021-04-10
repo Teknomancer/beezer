@@ -33,7 +33,6 @@ class PrefsViewPaths : public PrefsView
         virtual void        ToggleExtractPathView(bool enable);
 
     private:
-        // Private members
         BMessage*           m_message;
         BMessenger*         m_messenger;
         BFilePanel*         m_openPanel;
