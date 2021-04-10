@@ -10,8 +10,10 @@
 #include <TextControl.h>
 #include <Layout.h>
 #include <GroupLayout.h>
+#include <SpaceLayoutItem.h>
 
 #include <cassert>
+#include <cstdio>
 
 static const uint32 kButton0  = '_b0_';
 static const uint32 kButton2  = '_b2_';
@@ -78,34 +80,26 @@ void InputAlert::InitInputAlert(const char* title, const char* label, const char
     assert(m_LastButton);
 
     m_inputBox = new BTextControl(BRect(K_MARGIN, K_MARGIN, 400, 2 * K_MARGIN + lineHeight),
-                                  "_textInput_", label, NULL, NULL, B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
-
+                                  "_textInput_", label, initialText, NULL, B_FOLLOW_LEFT_TOP, B_WILL_DRAW | B_NAVIGABLE);
     m_inputBox->SetDivider(m_inputBox->StringWidth(label) + 10);
     m_inputBox->SetModificationMessage(new BMessage(kInputBox));
     m_inputBox->TextView()->HideTyping(hideTyping);
-    m_inputBox->SetText(initialText);
 
     if (strlen(initialText) == 0)
         m_LastButton->SetEnabled(false);
 
-    BView* parentView = FindView("_tv_");
-    assert(parentView);
-    BWindow *parentWindow = parentView->Window();
-    assert(parentWindow);
-
-    BLayout* layout = GetLayout();
+    BGroupLayout* layout = dynamic_cast<BGroupLayout*>(GetLayout());
     assert(layout);
     BView* alertView = FindView("TAlertView");
     assert(alertView);
-    BGroupLayout *group = (BGroupLayout*)layout;
-    group->SetOrientation(B_VERTICAL);
-    group->SetSpacing(K_MARGIN * 2);
+    layout->SetOrientation(B_VERTICAL);
+    layout->SetSpacing(K_MARGIN);
     int32 const textViewIndex = layout->IndexOfView(alertView);
-
     layout->AddView(textViewIndex + 1, m_inputBox);
 
-    parentWindow->ResizeTo(m_inputBox->Frame().Width(), 180);
-    parentWindow->CenterOnScreen();
+    ResizeTo(m_inputBox->Frame().Width(),
+             layout->LayoutArea().Height() + layout->ItemAt(layout->CountItems() - 1)->Layout()->LayoutArea().Height());
+    CenterOnScreen();
     m_inputBox->MakeFocus(true);
 }
 
