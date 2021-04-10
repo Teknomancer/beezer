@@ -55,15 +55,14 @@ Comments
 Naming
 ------
 - Class names and class member functions are in capitalized words case.\
-  E.g., `class PrefsWindow` and `PrefsWindow::IsHidden()`
+  `class PrefsWindow` and `PrefsWindow::IsHidden()`
 - Class members variables are prefixed with `m_` and follow camel case.\
-  E.g.,`bool m_isFaulting`
+  `bool m_isFaulting`
 - Message constants are upper case with underscores separating words.\
-  E.g., `const uint32 K_MSG_DONE = 'done';`
+  `const uint32 K_MSG_DONE = 'done';`
 - Message constants that are static members of a class are prefixed with `k` and follow capitalized words.\
-  E.g., `static const uint32 kInputMessage;`
+  `static const uint32 kInputMessage;`
 - Enums are snake case with their members upper case with underscores separating words.\
-  E.g.,
   ```
   enum bevel_type
   {
@@ -75,7 +74,6 @@ Naming
   };
   ```
 - Align following lines of the same statement to one column after the start of the previous logical bracket.\
-  E.g.:
   ```
   m_innerView = new BevelView(BRect(K_MARGIN, sepView1->Frame().bottom + K_MARGIN,
                                     Bounds().right - K_MARGIN, Bounds().bottom - K_MARGIN),
