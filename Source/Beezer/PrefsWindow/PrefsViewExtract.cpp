@@ -48,7 +48,7 @@ void PrefsViewExtract::Render()
 
     BLayoutBuilder::Group<> builder = BLayoutBuilder::Group<>(this, B_VERTICAL, B_USE_HALF_ITEM_SPACING);
     builder
-        .SetInsets(m_margin)
+        .SetInsets(B_USE_DEFAULT_SPACING)
         .Add(m_openFolderChk)
         .Add(m_closeChk)
         .Add(m_quitChk)

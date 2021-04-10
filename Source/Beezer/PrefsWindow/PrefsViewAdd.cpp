@@ -66,7 +66,7 @@ void PrefsViewAdd::Render()
     m_sortChk = new BCheckBox("PrefsViewAdd:sortChk", B_TRANSLATE("Sort after add (n/a for reloading archivers)"), NULL,
                               B_WILL_DRAW | B_NAVIGABLE);
 
-    BLayoutItem* mbLabel = m_mbView->CreateLabelLayoutItem();
+    // split the BTextControl but only use the input since the label is NULL
     BLayoutItem* mbInput = m_mbView->CreateTextViewLayoutItem();
     // add a few extra 9's to account for the border of the text input
     mbInput->SetExplicitMinSize(BSize(StringWidth("9999"), B_SIZE_UNSET));
@@ -74,7 +74,7 @@ void PrefsViewAdd::Render()
 
     BLayoutBuilder::Group<> builder = BLayoutBuilder::Group<>(this, B_VERTICAL, B_USE_HALF_ITEM_SPACING);
     builder
-        .SetInsets(m_margin)
+        .SetInsets(B_USE_DEFAULT_SPACING)
         .AddGroup(B_HORIZONTAL)
             // put it in a group with glue so that it doesn't extend the entire length
             .Add(m_replaceField)
@@ -82,7 +82,6 @@ void PrefsViewAdd::Render()
         .End()
         .AddGroup(B_HORIZONTAL, 0) // 0 spacing so the text/textcontrol is close to each other
             .Add(m_warnMBChk)
-            .Add(mbLabel)
             .Add(mbInput)
             .Add(mbStrView)
             .AddGlue()
