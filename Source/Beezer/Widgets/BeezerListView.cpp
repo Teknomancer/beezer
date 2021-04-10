@@ -3,27 +3,18 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <ClassInfo.h>
-#include <Clipboard.h>
-#include <Entry.h>
-#include <MenuItem.h>
-#include <Path.h>
-#include <PopUpMenu.h>
-#include <Window.h>
-
-#include <stdlib.h>
-#include <strings.h>
-
-#include "CLVEasyItem.h"
-
-#include "AppConstants.h"
-#include "AppUtils.h"
 #include "BeezerListView.h"
 #include "BitmapPool.h"
 #include "ListEntry.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
 #include "RegExString.h"
+
+#include <Clipboard.h>
+#include <MenuItem.h>
+#include <Path.h>
+#include <PopUpMenu.h>
+#include <Window.h>
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -33,6 +24,9 @@
 #else
 #define B_TRANSLATE(x) x
 #endif
+
+#include <stdlib.h>
+#include <strings.h>        // required for gcc2?
 
 const char* const kPfSpecialField = "beezer_special_field_magix!";
 
