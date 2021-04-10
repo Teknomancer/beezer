@@ -329,7 +329,7 @@ void BZipArchiver::CompressFromTemp()
 {
     // Get the compression ratio from the settings menu
     BString levelStr;
-    levelStr.SetToFormat(" -%ld", GetCompressionLevel());
+    levelStr.SetToFormat(" -%ld ", GetCompressionLevel());
 
     // Re-compress file, from .tar in temp to gzip
     BString cmd;
