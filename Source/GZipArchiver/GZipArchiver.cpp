@@ -301,7 +301,7 @@ void GZipArchiver::BuildDefaultMenu()
     m_settingsMenu = new BMenu(m_typeStr);
 
     // Build the compression-level sub-menu
-    m_compressionMenu = new BMenu(B_TRANSLATE("Compression level"));
+    m_compressionMenu = new BMenu(B_TRANSLATE(kCompressionLevelString));
     m_compressionMenu->SetRadioMode(true);
 
     BString menuStr("1");

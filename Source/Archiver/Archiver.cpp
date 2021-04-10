@@ -668,6 +668,10 @@ void Archiver::SetSettingsMenu(BMenu* menu)
     if (m_settingsMenu)
         delete m_settingsMenu;
     m_settingsMenu = menu;
+
+    BMenu* compressionMenu = m_settingsMenu->FindItem(kCompressionLevelString)->Submenu();
+    if (compressionMenu != NULL)
+        m_compressionMenu = compressionMenu;
 }
 
 
