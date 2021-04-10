@@ -25,7 +25,6 @@ class BarberPole : public BevelView
         void                Draw(BRect updateRect);
         void                Pulse();
 
-        // Data members
         BBitmap*            m_poleImage;
         float               m_imageHeight,
                             m_edgeThickness,

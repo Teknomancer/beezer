@@ -3,13 +3,12 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <Bitmap.h>
-#include <Message.h>
-#include <Window.h>
-
-#include "AppConstants.h"
 #include "BarberPole.h"
+#include "AppConstants.h"
 #include "LocalUtils.h"
+
+#include <Bitmap.h>
+#include <Window.h>
 
 
 BarberPole::BarberPole(BRect frame, const char* name)
