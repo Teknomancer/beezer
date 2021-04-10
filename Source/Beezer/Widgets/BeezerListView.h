@@ -8,9 +8,7 @@
 #include "ColumnListView.h"
 
 class ListEntry;
-
 class BPopUpMenu;
-class BString;
 
 class BeezerListView : public ColumnListView
 {
@@ -63,11 +61,9 @@ class BeezerListView : public ColumnListView
                                           int32 sortKey);
 
     private:
-        // Private hooks
         void                UpdateWindow() const;
         void                EraseIndicator();
 
-        // Private members
         BPopUpMenu*         m_contextMenu;
         bool                m_sendSelectionMessage;
         bool                m_dropPossible;
