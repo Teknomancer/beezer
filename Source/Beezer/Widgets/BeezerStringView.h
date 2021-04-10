@@ -35,7 +35,6 @@ class BeezerStringView : public BView
         // Protected hooks
         virtual void        RenderView(bool firstTime = false);
 
-        // Data members
         BView*              m_backView,
                             *m_mouseTargetView;
         BBitmap*            m_backBitmap;

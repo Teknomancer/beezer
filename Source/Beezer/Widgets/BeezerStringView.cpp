@@ -3,15 +3,13 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <Bitmap.h>
-#include <Clipboard.h>
-#include <Window.h>
-
-#include <ctype.h>
-#include <malloc.h>
-#include <string.h>
-
 #include "BeezerStringView.h"
+
+#include <Bitmap.h>
+
+#include <ctype.h>      // required for gcc2?
+#include <malloc.h>     // required for gcc2?
+#include <string.h>     // required for gcc2?
 
 
 BeezerStringView::BeezerStringView(BRect frame, const char* name, const char* label,
