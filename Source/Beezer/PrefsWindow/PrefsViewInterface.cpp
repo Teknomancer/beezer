@@ -85,16 +85,7 @@ void PrefsViewInterface::Render()
     m_foldingPopUp->AddItem(new BMenuItem(BZ_TR(kAllUnfoldedString), NULL));
     m_foldingPopUp->ItemAt(3)->SetMarked(true);
 
-    float maxW = MAX(StringWidth(B_TRANSLATE("Show infobar")), StringWidth(B_TRANSLATE("Show toolbar")));
-    maxW = MAX(maxW, StringWidth(B_TRANSLATE("Show action log")));
-    maxW += 5 * m_margin + 30;
-
     m_foldingField = new BMenuField("PrefsViewInterface:foldingField", B_TRANSLATE("Folding:"), (BMenu*)m_foldingPopUp);
-    float const div = m_foldingField->StringWidth(m_foldingField->Label()) + 10;
-    m_foldingField->SetDivider(div);
-
-    font_height fntHt;
-    m_sectionFont.GetHeight(&fntHt);
 
     BLayoutBuilder::Group<> builder = BLayoutBuilder::Group<>(this, B_VERTICAL, B_USE_HALF_ITEM_SPACING);
     builder
