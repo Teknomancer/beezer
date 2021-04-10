@@ -11,7 +11,7 @@ const float BevelView::kBulgeThickness   = 2.0;
 const float BevelView::kDeepThickness    = 2.0;
 const float BevelView::kNoBevelThickness = 0.0;
 
-
+// TODO: Make layout-kit compatible constructor etc.
 BevelView::BevelView(BRect frame, const char* name, BevelType bevelMode, uint32 resizeMask, uint32 flags)
     : BView(frame, name, resizeMask, flags | B_FRAME_EVENTS)
 {
