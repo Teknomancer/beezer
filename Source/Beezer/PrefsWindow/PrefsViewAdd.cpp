@@ -41,7 +41,6 @@ PrefsViewAdd::PrefsViewAdd(BRect frame)
 
 void PrefsViewAdd::Render()
 {
-
     m_replaceMenu = new BPopUpMenu("");
     m_replaceMenu->AddItem(new BMenuItem(B_TRANSLATE("Never replace"), NULL));
     m_replaceMenu->AddItem(new BMenuItem(B_TRANSLATE("Ask before replacing"), NULL));
