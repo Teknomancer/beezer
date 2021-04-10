@@ -5,6 +5,8 @@
 #ifndef _IMAGE_BUTTON_H
 #define _IMAGE_BUTTON_H
 
+#include <View.h>
+
 const float kContextWidth = 14;
 
 enum textPosition
@@ -49,7 +51,7 @@ class ImageButton : public BView
         virtual void        SetEnabled(bool enable);
         virtual bool        IsEnabled() const;
         virtual void        SetMessage(BMessage* msg);
-        virtual BMessage*    Message() const;
+        virtual BMessage*   Message() const;
         virtual void        SetClickable(bool clickable);
         virtual bool        IsClickable() const;
         virtual status_t    SetMargin(float width, float height);
@@ -58,14 +60,13 @@ class ImageButton : public BView
     protected:
         void                Init(const char* text);
 
-        // Protected hooks
+        // Additional hooks
         virtual void        DrawOutsideEdge(BRect rect);
         virtual void        DrawShinyEdge(BRect rect, bool isPressing);
         virtual void        PushButton(BRect rect);
         virtual void        ShowContextMenu(BPoint point);
         virtual void        HighlightNow(bool isPressing);
 
-        // Protected members
         const char*         m_buttonText;
         BHandler*           m_handler;
         BBitmap*            m_clickBitmap,
