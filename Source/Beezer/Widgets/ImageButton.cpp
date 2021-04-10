@@ -80,7 +80,7 @@ void ImageButton::Init(const char* text)
     m_marginHeight = 4;
 
     BFont font(be_plain_font);
-    font.SetSize(font.Size() > 10.0 ? 10 : font.Size());
+    font.SetSize(font.Size() > 10.0 ? 12 : font.Size());
     font_height fontHeight;
     font.GetHeight(&fontHeight);
     SetFont(&font);
