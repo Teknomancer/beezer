@@ -181,11 +181,11 @@ void PrefsWindow::SetActivePanel(PrefsView* activePanel)
     descText << '\n' << m_currentPanel->Description();
     if (strcmp(descText.String(), m_descTextView->Text()) != 0)
     {
-        rgb_color textColor = ui_color(B_DOCUMENT_TEXT_COLOR);
+        rgb_color textColor = ui_color(B_TOOL_TIP_TEXT_COLOR);
         int32 const titleLen = strlen(m_currentPanel->Title());
         int32 const descLen  = strlen(m_currentPanel->Description());
         m_descTextView->SetText(descText.String());
-        m_descTextView->SetFontAndColor(0, titleLen, m_panelTitleFont, B_FONT_ALL, &(K_DEEP_RED_COLOR));
+        m_descTextView->SetFontAndColor(0, titleLen, m_panelTitleFont, B_FONT_ALL, &textColor);
         m_descTextView->SetFontAndColor(titleLen, titleLen + descLen + 1, be_plain_font, B_FONT_ALL, &textColor);
     }
 }
@@ -216,20 +216,18 @@ void PrefsWindow::AddControls(BRect *panelFrame)
     m_backView->AddChild(scrollView);
     m_listView->TargetedByScrollView(scrollView);
 
-    rgb_color bgColor { 255, 252, 232, 255 };
-
     BevelView* descViewDecor = new BevelView(BRect(scrollView->Frame().right + margin, margin,
                                                    Bounds().right - margin, margin + descTextHeight + BevelView::kDeepThickness),
                                              "PrefsWindow:descViewDecor", BevelView::bevel_type::DEEP, B_FOLLOW_LEFT);
     m_backView->AddChild(descViewDecor);
-    descViewDecor->SetViewColor(bgColor);
+    descViewDecor->SetViewColor(ui_color(B_TOOL_TIP_BACKGROUND_COLOR));
 
     float const border = descViewDecor->EdgeThickness();
     m_descTextView = new BTextView(BRect(border + K_MARGIN, border, descViewDecor->Frame().Width() - border,
                                          descViewDecor->Frame().Height() - border), "PrefsWindow:descTextView",
                                    BRect(2, 2, descViewDecor->Frame().Width() - 2 * border - 4, 0), B_FOLLOW_LEFT,
                                    B_WILL_DRAW);
-    m_descTextView->SetViewColor(bgColor);
+    m_descTextView->SetViewColor(ui_color(B_TOOL_TIP_BACKGROUND_COLOR));
     m_descTextView->SetStylable(true);
     m_descTextView->MakeEditable(false);
     m_descTextView->MakeSelectable(false);
