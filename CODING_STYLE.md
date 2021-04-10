@@ -62,7 +62,7 @@ Naming
   `const uint32 K_MSG_DONE = 'done';`
 - Message constants that are static members of a class are prefixed with `k` and follow capitalized words.\
   `static const uint32 kInputMessage;`
-- Enums are snake case with their members upper case with underscores separating words.\
+- Enums are snake case with their members upper case with underscores separating words.
   ```
   enum bevel_type
   {
@@ -73,7 +73,7 @@ Naming
       NO_BEVEL
   };
   ```
-- Align following lines of the same statement to one column after the start of the previous logical bracket.\
+- Align following lines of the same statement to one column after the start of the previous logical bracket.
   ```
   m_innerView = new BevelView(BRect(K_MARGIN, sepView1->Frame().bottom + K_MARGIN,
                                     Bounds().right - K_MARGIN, Bounds().bottom - K_MARGIN),
