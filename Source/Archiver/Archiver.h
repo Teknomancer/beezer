@@ -32,6 +32,10 @@ class HashEntry;
 class BBitmap;
 class BMenu;
 
+
+static const char* kCompressionLevelString = "Compression level";
+
+
 class Archiver
 {
     public:
