@@ -185,7 +185,7 @@ void PrefsWindow::SetActivePanel(PrefsView* activePanel)
         int32 const titleLen = strlen(m_currentPanel->Title());
         int32 const descLen  = strlen(m_currentPanel->Description());
         m_descTextView->SetText(descText.String());
-        m_descTextView->SetFontAndColor(0, titleLen, m_panelTitleFont, B_FONT_ALL, &textColor);
+        m_descTextView->SetFontAndColor(0, titleLen, m_panelTitleFont, B_FONT_ALL, &(K_DEEP_RED_COLOR));
         m_descTextView->SetFontAndColor(titleLen, titleLen + descLen + 1, be_plain_font, B_FONT_ALL, &textColor);
     }
 }
@@ -216,18 +216,19 @@ void PrefsWindow::AddControls(BRect *panelFrame)
     m_backView->AddChild(scrollView);
     m_listView->TargetedByScrollView(scrollView);
 
+    rgb_color backColor = tint_color(ui_color(B_TOOL_TIP_BACKGROUND_COLOR), B_LIGHTEN_1_TINT);
     BevelView* descViewDecor = new BevelView(BRect(scrollView->Frame().right + margin, margin,
                                                    Bounds().right - margin, margin + descTextHeight + BevelView::kDeepThickness),
                                              "PrefsWindow:descViewDecor", BevelView::bevel_type::DEEP, B_FOLLOW_LEFT);
     m_backView->AddChild(descViewDecor);
-    descViewDecor->SetViewColor(ui_color(B_TOOL_TIP_BACKGROUND_COLOR));
+    descViewDecor->SetViewColor(backColor);
 
     float const border = descViewDecor->EdgeThickness();
     m_descTextView = new BTextView(BRect(border + K_MARGIN, border, descViewDecor->Frame().Width() - border,
                                          descViewDecor->Frame().Height() - border), "PrefsWindow:descTextView",
                                    BRect(2, 2, descViewDecor->Frame().Width() - 2 * border - 4, 0), B_FOLLOW_LEFT,
                                    B_WILL_DRAW);
-    m_descTextView->SetViewColor(ui_color(B_TOOL_TIP_BACKGROUND_COLOR));
+    m_descTextView->SetViewColor(backColor);
     m_descTextView->SetStylable(true);
     m_descTextView->MakeEditable(false);
     m_descTextView->MakeSelectable(false);
