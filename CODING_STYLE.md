@@ -77,7 +77,8 @@ Naming
   ```
   m_innerView = new BevelView(BRect(K_MARGIN, sepView1->Frame().bottom + K_MARGIN,
                                     Bounds().right - K_MARGIN, Bounds().bottom - K_MARGIN),
-                              "FileJoinerWindow:InnerView", btNoBevel, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+                              "FileJoinerWindow:InnerView", BevelView::bevel_type::INSET,
+                              B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
   ```
 
 General
