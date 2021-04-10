@@ -57,7 +57,8 @@ void PrefsViewInterface::Render()
 
     BevelView* outerView =     new BevelView(BRect(3 * m_margin, colorStrView->Frame().bottom + m_margin, 3 * m_margin + 30,
                                                    colorStrView->Frame().bottom + m_margin + 30),
-                                             "PrefsViewInterface:outerView", btDeep, B_FOLLOW_LEFT, B_WILL_DRAW);
+                                             "PrefsViewInterface:outerView", BevelView::BevelType::DEEP,
+                                             B_FOLLOW_LEFT, B_WILL_DRAW);
     float boundary = outerView->EdgeThickness();
 
     m_colorWell = new BView(BRect(boundary, boundary, outerView->Frame().Width() - boundary,

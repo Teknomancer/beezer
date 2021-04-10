@@ -102,8 +102,8 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
     // If you change the above BRect in the BWindow call, change accordingly the code at the end
     // of this constructor to match, i.e. current 550 - 10 = 540 is used below, if you change them
     // change the code below (see "Constrain size of window" comment)
-    m_backView = new BevelView(Bounds(), "FileSplitterWindow:BackView", btOutset, B_FOLLOW_ALL_SIDES,
-                               B_WILL_DRAW);
+    m_backView = new BevelView(Bounds(), "FileSplitterWindow:BackView", BevelView::BevelType::OUTSET,
+                               B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_backView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
     AddChild(m_backView);
 
@@ -111,7 +111,8 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
 
     BevelView* sepView1 = new BevelView(BRect(-1, splitBmp->Bounds().Height() + 4 * K_MARGIN,
                                               Bounds().right - 1.0, splitBmp->Bounds().Height() + 4 * K_MARGIN + 1),
-                                        "FileSplitterWindow:SepView1", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+                                        "FileSplitterWindow:SepView1", BevelView::BevelType::INSET,
+                                        B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     m_backView->AddChild(sepView1);
 
     StaticBitmapView* splitBmpView = new StaticBitmapView(BRect(K_MARGIN * 5, K_MARGIN * 2,
@@ -146,8 +147,8 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
 
     BevelView *innerView = new BevelView(BRect(K_MARGIN, sepView1->Frame().bottom + K_MARGIN,
                                       Bounds().right - K_MARGIN,
-                                      Bounds().bottom - K_MARGIN), "FileSplitterWindow:InnerView", btNoBevel,
-                                B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+                                      Bounds().bottom - K_MARGIN), "FileSplitterWindow:InnerView",
+                                BevelView::BevelType::NO_BEVEL, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     m_backView->AddChild(innerView);
 
     m_fileMenu = new BMenu(B_TRANSLATE("File to split:"));
@@ -257,8 +258,8 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
     maxPrefixWidth += m_customSizeView->Divider() + K_MARGIN;
 
     BevelView* sepView4 = new BevelView(BRect(maxPrefixWidth, sizeField->Frame().top, maxPrefixWidth + 1,
-                                        m_prefixField->Frame().bottom), "FileSplitterWindow:sepView4", btInset,
-                                        B_FOLLOW_LEFT, B_WILL_DRAW);
+                                        m_prefixField->Frame().bottom), "FileSplitterWindow:sepView4",
+                                        BevelView::BevelType::INSET, B_FOLLOW_LEFT, B_WILL_DRAW);
     innerView->AddChild(sepView4);
 
     m_openDirChk = new BCheckBox(BRect(sepView4->Frame().left + 3 * K_MARGIN, sizeField->Frame().top + 2, 0, 0),
@@ -313,7 +314,8 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
     // Add the next level of controls
     BevelView* sepView2 = new BevelView(BRect(-1, innerView->Frame().bottom + K_MARGIN + 1, Bounds().right - 1.0,
                                               innerView->Frame().bottom + K_MARGIN + 1 + 1),
-                                        "FileSplitterWindow:SepView2", btInset, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+                                        "FileSplitterWindow:SepView2", BevelView::BevelType::INSET,
+                                        B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
     m_backView->AddChild(sepView2);
 
     BStringView* noPiecesStr = new BStringView(BRect(2 * K_MARGIN, sepView2->Frame().bottom + 2 * K_MARGIN,
@@ -340,7 +342,8 @@ FileSplitterWindow::FileSplitterWindow(RecentMgr* files, RecentMgr* dirs)
 
     BevelView* sepView3 = new BevelView(BRect(-1, m_sizeStr->Frame().bottom + K_MARGIN, Bounds().right - 1.0,
                                               m_sizeStr->Frame().bottom + K_MARGIN + 1),
-                                        "FileSplitterWindow:SepView3", btInset, B_FOLLOW_LEFT_RIGHT,B_WILL_DRAW);
+                                        "FileSplitterWindow:SepView3", BevelView::BevelType::INSET,
+                                        B_FOLLOW_LEFT_RIGHT,B_WILL_DRAW);
     m_backView->AddChild(sepView3);
     sepView3->Hide();
 

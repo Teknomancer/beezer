@@ -5,6 +5,12 @@
 #include "BevelView.h"
 #include "UIConstants.h"
 
+const float BevelView::kInsetThickness   = 1.0;
+const float BevelView::kOutsetThickness  = 1.0;
+const float BevelView::kBulgeThickness   = 2.0;
+const float BevelView::kDeepThickness    = 2.0;
+const float BevelView::kNoBevelThickness = 0.0;
+
 
 BevelView::BevelView(BRect frame, const char* name, BevelType bevelMode, uint32 resizeMask, uint32 flags)
     : BView(frame, name, resizeMask, flags | B_FRAME_EVENTS)
@@ -20,28 +26,28 @@ BevelView::BevelView(BRect frame, const char* name, BevelType bevelMode, uint32 
 
     switch (m_bevelType)
     {
-        case btDeep: case btInset:
+        case DEEP: case INSET:
             m_darkEdge1 = tint_color(backColor, B_DARKEN_2_TINT);
             m_darkEdge2 = tint_color(backColor, B_DARKEN_3_TINT);
             m_lightEdge = tint_color(backColor, B_LIGHTEN_MAX_TINT);
-            m_edgeThickness = m_bevelType == btInset ? btInsetThickness : btDeepThickness;
+            m_edgeThickness = m_bevelType == BevelType::INSET ? kInsetThickness : kDeepThickness;
             break;
 
-        case btOutset:
+        case OUTSET:
             m_darkEdge1 = tint_color(backColor, B_LIGHTEN_MAX_TINT);
             m_darkEdge2 = tint_color(backColor, B_DARKEN_3_TINT);
             m_lightEdge = tint_color(backColor, B_DARKEN_2_TINT);
-            m_edgeThickness = btOutsetThickness;
+            m_edgeThickness = kOutsetThickness;
             break;
 
-        case btBulge:
+        case BULGE:
             m_lightEdge = tint_color(backColor, B_DARKEN_3_TINT);
             m_darkEdge2 = tint_color(backColor, B_DARKEN_2_TINT);
             m_darkEdge1 = tint_color(backColor, B_LIGHTEN_1_TINT);
-            m_edgeThickness = btBulgeThickness;
+            m_edgeThickness = kBulgeThickness;
             break;
 
-        case btNoBevel:
+        case NO_BEVEL:
             break;
     }
 
@@ -54,10 +60,11 @@ void BevelView::Draw(BRect updateRect)
     // Draw the edges based on the type of edge specified
     switch (m_bevelType)
     {
-        case btNoBevel:
+        case NO_BEVEL:
             break;
 
-        case btDeep: case btBulge:
+        case DEEP:
+        case BULGE:
         {
             SetHighColor(m_darkEdge2);
             StrokeRect(BRect(m_cachedRect.left + 1, m_cachedRect.top + 1, m_cachedRect.right - 1,
@@ -73,11 +80,12 @@ void BevelView::Draw(BRect updateRect)
             break;
         }
 
-        case btInset: case btOutset:
+        case INSET:
+        case OUTSET:
         {
             rgb_color c = m_lightEdge;
             c.red += 30; c.green += 30; c.blue += 30;
-            SetHighColor(m_bevelType == btInset ? m_lightEdge : c);
+            SetHighColor(m_bevelType == INSET ? m_lightEdge : c);
             StrokeRect(Bounds());
 
             SetHighColor(m_darkEdge1);

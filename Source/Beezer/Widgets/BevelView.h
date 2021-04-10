@@ -7,27 +7,18 @@
 
 #include <View.h>
 
-enum BevelThickness
-{
-    btInsetThickness = 1,
-    btOutsetThickness = 1,
-    btBulgeThickness = 2,
-    btDeepThickness = 2,
-    btNoBevelThickness = 0
-};
-
-enum BevelType
-{
-    btInset,
-    btDeep,
-    btOutset,
-    btBulge,
-    btNoBevel
-};
-
 class BevelView : public BView
 {
     public:
+        enum BevelType
+        {
+            INSET,
+            OUTSET,
+            BULGE,
+            DEEP,
+            NO_BEVEL
+        };
+
         BevelView(BRect frame, const char* name, BevelType bevelMode, uint32 resizeMask = B_FOLLOW_LEFT,
                   uint32 flags = B_WILL_DRAW);
 
@@ -39,8 +30,13 @@ class BevelView : public BView
         // Additional hooks
         float               EdgeThickness() const;
 
+        static const float  kInsetThickness;
+        static const float  kOutsetThickness;
+        static const float  kBulgeThickness;
+        static const float  kDeepThickness;
+        static const float  kNoBevelThickness;
+
     private:
-        // Private members
         BRect               m_cachedRect;
         BevelType           m_bevelType;
         rgb_color           m_darkEdge1,
