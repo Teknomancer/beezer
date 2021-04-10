@@ -193,7 +193,7 @@ void PrefsWindow::SetActivePanel(PrefsView* activePanel)
 
 void PrefsWindow::AddControls(BRect *panelFrame)
 {
-    m_backView = new BevelView(Bounds(), "PrefsWindow:backView", BevelView::BevelType::OUTSET,
+    m_backView = new BevelView(Bounds(), "PrefsWindow:backView", BevelView::bevel_type::OUTSET,
                                B_FOLLOW_ALL_SIDES);
     m_backView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
     AddChild(m_backView);
@@ -216,17 +216,20 @@ void PrefsWindow::AddControls(BRect *panelFrame)
     m_backView->AddChild(scrollView);
     m_listView->TargetedByScrollView(scrollView);
 
+    rgb_color bgColor { 255, 252, 232, 255 };
+
     BevelView* descViewDecor = new BevelView(BRect(scrollView->Frame().right + margin, margin,
                                                    Bounds().right - margin, margin + descTextHeight + BevelView::kDeepThickness),
-                                             "PrefsWindow:descViewDecor", BevelView::BevelType::DEEP, B_FOLLOW_LEFT);
+                                             "PrefsWindow:descViewDecor", BevelView::bevel_type::DEEP, B_FOLLOW_LEFT);
     m_backView->AddChild(descViewDecor);
+    descViewDecor->SetViewColor(bgColor);
 
     float const border = descViewDecor->EdgeThickness();
-    m_descTextView = new BTextView(BRect(border, border, descViewDecor->Frame().Width() - border,
+    m_descTextView = new BTextView(BRect(border + K_MARGIN, border, descViewDecor->Frame().Width() - border,
                                          descViewDecor->Frame().Height() - border), "PrefsWindow:descTextView",
                                    BRect(2, 2, descViewDecor->Frame().Width() - 2 * border - 4, 0), B_FOLLOW_LEFT,
                                    B_WILL_DRAW);
-    m_descTextView->SetViewColor(255, 252, 232, 255);
+    m_descTextView->SetViewColor(bgColor);
     m_descTextView->SetStylable(true);
     m_descTextView->MakeEditable(false);
     m_descTextView->MakeSelectable(false);

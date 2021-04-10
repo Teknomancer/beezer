@@ -12,7 +12,7 @@
 
 
 BarberPole::BarberPole(BRect frame, const char* name)
-    : BevelView(frame, name, BevelView::BevelType::INSET, B_FOLLOW_LEFT, B_WILL_DRAW | B_PULSE_NEEDED)
+    : BevelView(frame, name, BevelView::bevel_type::INSET, B_FOLLOW_LEFT, B_WILL_DRAW | B_PULSE_NEEDED)
 {
     m_poleImage = ResBitmap("Img:BarberPole");
     m_imageHeight = m_poleImage->Bounds().Height();

@@ -43,7 +43,7 @@ JoinerWindow::JoinerWindow()
     : BWindow(BRect(100, 100, 450, 210), B_TRANSLATE("Beezer: File Joiner"), B_TITLED_WINDOW,
               B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE | B_NOT_V_RESIZABLE)
 {
-    m_backView = new BevelView(Bounds(), "JoinerWindow:BackView", BevelView::BevelType::OUTSET,
+    m_backView = new BevelView(Bounds(), "JoinerWindow:BackView", BevelView::bevel_type::OUTSET,
                                B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_backView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
     AddChild(m_backView);
