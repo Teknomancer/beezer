@@ -21,6 +21,15 @@
 
 #include <stdlib.h> // needed for gcc2
 
+#ifdef HAIKU_ENABLE_I18N
+#include <Catalog.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "Archiver"
+#else
+#define B_TRANSLATE(x) x
+#endif
+
 
 Archiver::Archiver()
     :
@@ -669,7 +678,7 @@ void Archiver::SetSettingsMenu(BMenu* menu)
         delete m_settingsMenu;
     m_settingsMenu = menu;
 
-    BMenu* compressionMenu = m_settingsMenu->FindItem(kCompressionLevelString)->Submenu();
+    BMenu* compressionMenu = m_settingsMenu->FindItem(B_TRANSLATE(kCompressionLevelString))->Submenu();
     if (compressionMenu != NULL)
         m_compressionMenu = compressionMenu;
 }
@@ -747,6 +756,13 @@ void Archiver::LoadSettingsMenu()
         m_settingsMenu = new BMenu(&settingsMsg);
         if (m_settingsMenu == NULL)
             BuildDefaultMenu();
+        else
+        {
+            BMenu* compressionMenu = m_settingsMenu->FindItem(B_TRANSLATE(kCompressionLevelString))->Submenu();
+            if (compressionMenu != NULL)
+                m_compressionMenu = compressionMenu;
+        }
+
     }
     else
         BuildDefaultMenu();
