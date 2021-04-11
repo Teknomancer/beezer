@@ -3,40 +3,36 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
+#include "LogTextView.h"
+#include "MsgConstants.h"
+
 #include <Clipboard.h>
 #include <MenuItem.h>
-#include <Message.h>
 #include <PopUpMenu.h>
-#include <String.h>
 #include <Window.h>
 
 #include <ctype.h>
 
-#include "LogTextView.h"
-#include "MsgConstants.h"
-
 
 LogTextView::LogTextView(BRect frame, const char* name, uint32 resizeMask, uint32 flags)
-    : BTextView(frame, name, kInternalTextRect, resizeMask, flags)
+    : BTextView(frame, name, frame, resizeMask, flags),
+    m_contextMenu(NULL)
 {
-    InitSelf();
+    Init();
 }
 
 
 LogTextView::LogTextView(BRect frame, const char* name, const BFont* initialFont,
                          const rgb_color* initialColor, uint32 resizeMask, uint32 flags)
-    : BTextView(frame, name, kInternalTextRect, initialFont, initialColor, resizeMask, flags)
+    : BTextView(frame, name, frame, initialFont, initialColor, resizeMask, flags),
+    m_contextMenu(NULL)
 {
-    InitSelf();
+    Init();
 }
 
 
-void LogTextView::InitSelf()
+void LogTextView::Init()
 {
-    // Initialise members
-    m_contextMenu = NULL;
-
-    // Initialise methods
     MakeEditable(false);
     SetWordWrap(false);
 }
@@ -82,10 +78,12 @@ void LogTextView::AddText(const char* text, bool newLine, bool capitalizeFirstLe
 void LogTextView::MouseDown(BPoint point)
 {
     BMessage* msg = Window()->CurrentMessage();
-    int32 button = msg->FindInt32("buttons");
+    int32 const button = msg->FindInt32("buttons");
 
     // Detect right click for context menu popup
-    if (button == B_SECONDARY_MOUSE_BUTTON && m_contextMenu != NULL && TextLength() > 0)
+    if (button == B_SECONDARY_MOUSE_BUTTON
+        && m_contextMenu != NULL
+        && TextLength() > 0)
     {
         BPoint screenPt = point;
         BRect openRect(point.x - 2, point.y - 2, point.x + 2, point.y + 2);
@@ -111,16 +109,16 @@ void LogTextView::Copy()
     if (selStart == selEnd)
     {
         const char* text = Text();
-        uint32 len = strlen(text);
+        uint32 const len = strlen(text);
 
         if (len > 0L)
         {
             // Now copy the buffer to the clipboard
-            BMessage* clip = NULL;
             if (be_clipboard->Lock())
             {
                 be_clipboard->Clear();
-                if ((clip = be_clipboard->Data()))
+                BMessage* clip = be_clipboard->Data();
+                if (clip != NULL)
                 {
                     clip->AddData("text/plain", B_MIME_TYPE, text, len);
                     be_clipboard->Commit();

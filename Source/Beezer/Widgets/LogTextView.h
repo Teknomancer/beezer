@@ -10,8 +10,6 @@
 
 class BPopUpMenu;
 
-const BRect kInternalTextRect(2, 2, 6000, 0);
-
 class LogTextView : public BTextView
 {
     public:
@@ -30,10 +28,8 @@ class LogTextView : public BTextView
                                     bool capitalFirstLetter = false, bool trimLeadingSpaces = true);
 
     private:
-        // Private hooks
-        void                InitSelf();
+        void                Init();
 
-        // Private members
         BPopUpMenu*         m_contextMenu;
 };
 
