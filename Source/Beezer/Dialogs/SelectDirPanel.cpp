@@ -18,6 +18,8 @@ SelectDirPanel::SelectDirPanel(file_panel_mode mode, BMessenger* target, const e
     m_buttonLabel(NULL),
     m_buttonName(strdup("bzr:special_button"))
 {
+    (void)node_flavors; // UNUSED_PARAM
+
     Window()->LockLooper();
 
     BButton* cancelBtn = (BButton*)Window()->FindView("cancel button");
