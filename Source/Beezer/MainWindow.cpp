@@ -581,7 +581,7 @@ void MainWindow::MessageReceived(BMessage* message)
                 BString confirmStr(B_TRANSLATE("You are opening %numfiles% files simultenously."));
                 confirmStr << "\n" << B_TRANSLATE("Do you want to continue?");
                 BString countBuf;
-                countBuf.SetToFormat("%ld", fileCount);
+                countBuf.SetToFormat("%d", fileCount);
                 confirmStr.ReplaceAll("%numfiles%", countBuf);
                 BAlert* confirmAlert = new BAlert("Confirm", confirmStr, B_TRANSLATE("Open files"),
                                                   BZ_TR(kCancelString), NULL, B_WIDTH_AS_USUAL,
@@ -3483,7 +3483,7 @@ void MainWindow::AddNewFolder()
     else
         parentPath = B_TRANSLATE("(root of the archive)");
 
-	createDirStr << "\n" << parentPath << "\n";
+    createDirStr << "\n" << parentPath << "\n";
     InputAlert* dirAlert = new InputAlert(createDirStr.String(), B_TRANSLATE("New folder name:"), "", false,
                                           BZ_TR(kCancelString), B_TRANSLATE("Create folder"));
     dirAlert->SetDefaultButton(dirAlert->ButtonAt(1L));
