@@ -3,36 +3,29 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <Alert.h>
-#include <Application.h>
-#include <Bitmap.h>
-#include <Button.h>
-#include <Debug.h>
-#include <Entry.h>
-#include <Font.h>
-#include <List.h>
-#include <MenuField.h>
-#include <MenuItem.h>
-#include <Path.h>
-#include <PopUpMenu.h>
-#include <String.h>
-#include <TextControl.h>
-#include <TranslationUtils.h>
-#include <interface/StringView.h>
-
 #include "AddOnWindow.h"
 #include "AppConstants.h"
 #include "ArchiveRep.h"
 #include "Archiver.h"
 #include "ArchiverMgr.h"
 #include "BarberPole.h"
-#include "BevelView.h"
 #include "CommonStrings.h"
 #include "LocalUtils.h"
 #include "MsgConstants.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
 #include "UIConstants.h"
+
+#include <Alert.h>
+#include <Application.h>
+#include <Bitmap.h>
+#include <Button.h>
+#include <MenuField.h>
+#include <MenuItem.h>
+#include <PopUpMenu.h>
+#include <TextControl.h>
+#include <TranslationUtils.h>
+#include <interface/StringView.h>
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -45,6 +38,12 @@
 #endif
 
 #include <cassert>
+
+static const rgb_color kColorReady      = { 0,  128,   0, 255 };
+static const rgb_color kColorNotReady   = { 0,    0,   0, 255 };
+static const rgb_color kColorDirMissing = { 182,  0,   0, 255 };
+static const rgb_color kColorOverwrite  = { 128,  0,   0, 255 };
+static const rgb_color kColorBusy       = {   0,  0, 128, 255 };
 
 
 AddOnWindow::AddOnWindow(BMessage* refsMessage)
@@ -221,11 +220,11 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
     }
 
     BString statusString = B_TRANSLATE("Ready to create archive.");
-    m_statusColor = SC_READY;
+    m_statusColor = kColorReady;
     if (m_readyMode == false)
     {
         statusString = B_TRANSLATE("Waiting for input files.");
-        m_statusColor = SC_NOT_READY;
+        m_statusColor = kColorNotReady;
     }
 
     m_statusStr = new BStringView(BRect(K_MARGIN, Bounds().bottom - 2 - fontHeight, 0, 0),
@@ -583,13 +582,13 @@ bool AddOnWindow::ReplaceExtensionWith(const char* newExt)
 void AddOnWindow::UpdateStatus(const char* text)
 {
     if (strcmp(text, B_TRANSLATE("Warning! File already exists and will be overwritten!")) == 0)
-        m_statusStr->SetHighColor(SC_OVERWRITE);
+        m_statusStr->SetHighColor(kColorOverwrite);
     else if (strcmp(text, B_TRANSLATE("Ready to create archive.")) == 0)
-        m_statusStr->SetHighColor(SC_READY);
+        m_statusStr->SetHighColor(kColorReady);
     else if (strcmp(text, B_TRANSLATE("Error! Destination folder is incorrect.")) == 0)
-        m_statusStr->SetHighColor(SC_DIR_MISSING);
+        m_statusStr->SetHighColor(kColorDirMissing);
     else if (strcmp(text, B_TRANSLATE("Adding files to the archive")) == 0)
-        m_statusStr->SetHighColor(SC_BUSY);
+        m_statusStr->SetHighColor(kColorBusy);
     else
         m_statusStr->SetHighColor(0, 0, 0, 255);
 
