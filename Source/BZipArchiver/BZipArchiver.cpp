@@ -21,7 +21,6 @@
 #endif
 
 
-
 Archiver* load_archiver(const char* addonImagePath)
 {
     return new BZipArchiver(addonImagePath);

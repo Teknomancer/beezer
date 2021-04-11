@@ -21,7 +21,8 @@
 #endif
 
 
-#define S_LHARC_COMPAT  "LHarc compatible format"
+// keep track of our custom options/menuitems
+static const char* kLharcCompat = "LHarc compatible format";
 
 
 Archiver* load_archiver(const char* addonImagePath)
@@ -401,7 +402,7 @@ status_t LhaArchiver::Add(bool createMode, const char* relativePath, BMessage* m
     m_pipeMgr.FlushArgs();
 
     BString buf = "-a";
-    if (m_settingsMenu->FindItem(B_TRANSLATE(S_LHARC_COMPAT))->IsMarked() == true)
+    if (m_settingsMenu->FindItem(B_TRANSLATE(kLharcCompat))->IsMarked() == true)
         buf << "g";
 
     buf << GetCompressionLevel();
@@ -652,7 +653,7 @@ void LhaArchiver::BuildDefaultMenu()
     otherMenu = new BMenu(B_TRANSLATE("Other settings"));
     otherMenu->SetRadioMode(false);
 
-    item = new BMenuItem(B_TRANSLATE(S_LHARC_COMPAT), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(kLharcCompat), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(false);
     otherMenu->AddItem(item);
 

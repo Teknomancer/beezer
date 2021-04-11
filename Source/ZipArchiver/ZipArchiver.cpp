@@ -28,17 +28,20 @@
 #include <Catalog.h>
 
 #undef B_TRANSLATION_CONTEXT
-#define B_TRANSLATION_CONTEXT "XzArchiver"
+#define B_TRANSLATION_CONTEXT "ZipArchiver"
 #else
 #define B_TRANSLATE(x) x
 #endif
 
-#define S_DIR_RECURSE       "Recurse into folders"
-#define S_DIR_EXTRACT       "Extract folders"
-#define S_EXTRACT_ATTRS     "Extract attributes"
-#define S_NO_OVERWRITE      "Never overwrite existing files"
-#define S_UPDATE_FILES      "Update files, create if needed"
-#define S_FRESHEN_FILES     "Freshen existing files, create none"
+
+// keep track of our custom options/menuitems
+static const char
+    *kRecurseDirs  = "Recurse into folders",
+    *kExtractDirs  = "Extract folders",
+    *kExtractAttrs = "Extract attributes",
+    *kNoOverwrite  = "Never overwrite existing files",
+    *kUpdateFiles  = "Update files, create if needed",
+    *kFreshenFiles = "Freshen existing files, create none";
 
 
 Archiver* load_archiver(const char* addonImagePath)
@@ -188,22 +191,22 @@ status_t ZipArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
     // Setup argv, fill with selection names if needed
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_unzipPath;
-    if (m_settingsMenu->FindItem(B_TRANSLATE(S_EXTRACT_ATTRS))->IsMarked() == true)
+    if (m_settingsMenu->FindItem(B_TRANSLATE(kExtractAttrs))->IsMarked() == true)
         m_pipeMgr << "-o";
     else
         m_pipeMgr << "-Jo";
 
     // For normal quick-extraction i.e. with no Progressbar don't junk directories
-    if (m_settingsMenu->FindItem(B_TRANSLATE(S_DIR_EXTRACT))->IsMarked() == false && progress != NULL)
+    if (m_settingsMenu->FindItem(B_TRANSLATE(kExtractDirs))->IsMarked() == false && progress != NULL)
         m_pipeMgr << "-j";
 
     if (progress)    // Use extract options only when user is NOT viewing
     {
-        if (m_settingsMenu->FindItem(B_TRANSLATE(S_NO_OVERWRITE))->IsMarked() == true)
+        if (m_settingsMenu->FindItem(B_TRANSLATE(kNoOverwrite))->IsMarked() == true)
             m_pipeMgr << "-n";
-        else if (m_settingsMenu->FindItem(B_TRANSLATE(S_UPDATE_FILES))->IsMarked() == true)
+        else if (m_settingsMenu->FindItem(B_TRANSLATE(kUpdateFiles))->IsMarked() == true)
             m_pipeMgr << "-u";
-        else if (m_settingsMenu->FindItem(B_TRANSLATE(S_FRESHEN_FILES))->IsMarked() == true)
+        else if (m_settingsMenu->FindItem(B_TRANSLATE(kFreshenFiles))->IsMarked() == true)
             m_pipeMgr << "-f";
     }
 
@@ -539,7 +542,7 @@ status_t ZipArchiver::Add(bool createMode, const char* relativePath, BMessage* m
     levelStr.SetToFormat("-%ld", GetCompressionLevel());
 
     m_pipeMgr << m_zipPath << "-y" << levelStr.String();
-    if (m_settingsMenu->FindItem(B_TRANSLATE(S_DIR_RECURSE))->IsMarked() == true)
+    if (m_settingsMenu->FindItem(B_TRANSLATE(kRecurseDirs))->IsMarked() == true)
         m_pipeMgr << "-r";
 
     m_pipeMgr << m_archivePath.Path();
@@ -807,7 +810,7 @@ void ZipArchiver::BuildDefaultMenu()
     item->SetMarked(true);
     addMenu->AddItem(item);
 
-    item = new BMenuItem(B_TRANSLATE(S_DIR_RECURSE), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(kRecurseDirs), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(true);
     addMenu->AddItem(item);
 
@@ -815,23 +818,23 @@ void ZipArchiver::BuildDefaultMenu()
     extractMenu = new BMenu(B_TRANSLATE("While extracting"));
     extractMenu->SetRadioMode(false);
 
-    item = new BMenuItem(B_TRANSLATE(S_EXTRACT_ATTRS), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(kExtractAttrs), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(true);
     extractMenu->AddItem(item);
 
-    item = new BMenuItem(B_TRANSLATE(S_DIR_EXTRACT), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(kExtractDirs), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(true);
     extractMenu->AddItem(item);
 
-    item = new BMenuItem(B_TRANSLATE(S_NO_OVERWRITE), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(kNoOverwrite), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(false);
     extractMenu->AddItem(item);
 
-    item = new BMenuItem(B_TRANSLATE(S_UPDATE_FILES), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(kUpdateFiles), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(false);
     extractMenu->AddItem(item);
 
-    item = new BMenuItem(B_TRANSLATE(S_FRESHEN_FILES), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(kFreshenFiles), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(false);
     extractMenu->AddItem(item);
 

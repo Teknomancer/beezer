@@ -15,15 +15,18 @@
 #include <Catalog.h>
 
 #undef B_TRANSLATION_CONTEXT
-#define B_TRANSLATION_CONTEXT "BZipArchiver"
+#define B_TRANSLATION_CONTEXT "ArjArchiver"
 #else
 #define B_TRANSLATE(x) x
 #endif
 
-#define S_RECURSE_DIRS "Recurse into folders"
-#define S_UPDATE_FILES "Update files (new and newer)"
-#define S_FRESHEN_FILES "Freshen existing files"
-#define S_MULTI_VOLUMES "Enable multiple volumes"
+
+// keep track of our custom options/menuitems
+static const char
+    *kRecurseDirs  = "Recurse into folders",
+    *kUpdateFiles  = "Update files (new and newer)",
+    *kFreshenFiles = "Freshen existing files",
+    *kMultiVolume  = "Enable multiple volumes";
 
 
 Archiver* load_archiver(const char* addonImagePath)
@@ -186,13 +189,13 @@ status_t ArjArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
     // For quick-extraction (that is - viewing etc) don't process the below switches
     if (progress)
     {
-        if (m_settingsMenu->FindItem(B_TRANSLATE(S_UPDATE_FILES))->IsMarked() == true)
+        if (m_settingsMenu->FindItem(B_TRANSLATE(kUpdateFiles))->IsMarked() == true)
             m_pipeMgr << "-u";
-        else if (m_settingsMenu->FindItem(B_TRANSLATE(S_FRESHEN_FILES))->IsMarked() == true)
+        else if (m_settingsMenu->FindItem(B_TRANSLATE(kFreshenFiles))->IsMarked() == true)
             m_pipeMgr << "-f";
     }
 
-    if (m_settingsMenu->FindItem(B_TRANSLATE(S_MULTI_VOLUMES))->IsMarked() == true)
+    if (m_settingsMenu->FindItem(B_TRANSLATE(kMultiVolume))->IsMarked() == true)
         m_pipeMgr << "-v";
 
     m_pipeMgr << m_archivePath.Path() << dirPath.Path();
@@ -454,7 +457,7 @@ status_t ArjArchiver::Add(bool createMode, const char* relativePath, BMessage* m
 
     m_pipeMgr << levelStr.String();
 
-    if (m_settingsMenu->FindItem(B_TRANSLATE(S_RECURSE_DIRS))->IsMarked())
+    if (m_settingsMenu->FindItem(B_TRANSLATE(kRecurseDirs))->IsMarked())
         m_pipeMgr << "-r";
 
     m_pipeMgr << m_archivePath.Path();
@@ -709,7 +712,7 @@ void ArjArchiver::BuildDefaultMenu()
     addMenu = new BMenu(B_TRANSLATE("While adding"));
     addMenu->SetRadioMode(false);
 
-    item = new BMenuItem(B_TRANSLATE(S_RECURSE_DIRS), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(kRecurseDirs), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(true);
     addMenu->AddItem(item);
 
@@ -717,9 +720,9 @@ void ArjArchiver::BuildDefaultMenu()
     extractMenu = new BMenu(B_TRANSLATE("While extracting"));
     extractMenu->SetRadioMode(false);
 
-    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(S_UPDATE_FILES), new BMessage(BZR_MENUITEM_SELECTED)));
-    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(S_FRESHEN_FILES), new BMessage(BZR_MENUITEM_SELECTED)));
-    item = new BMenuItem(B_TRANSLATE(S_MULTI_VOLUMES), new BMessage(BZR_MENUITEM_SELECTED));
+    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(kUpdateFiles), new BMessage(BZR_MENUITEM_SELECTED)));
+    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(kFreshenFiles), new BMessage(BZR_MENUITEM_SELECTED)));
+    item = new BMenuItem(B_TRANSLATE(kMultiVolume), new BMessage(BZR_MENUITEM_SELECTED));
     extractMenu->AddItem(item);
     item->SetMarked(true);
 
