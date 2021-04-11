@@ -66,11 +66,12 @@ BString StringFromDigitalSize(char *size, char *unit)
     // But "atof" (below) doesn't understand ",". Therefore we need to feed
     // sanitized floating point numbers (just digits and decimal) to "atof".
     size_t i = 0;
-    while (i < sizeof(buf) - 1)
+    while (i < sizeof(buf) - 1 && size[i] != '\0')
     {
-        char ch = size[i];
+        const char ch = size[i];
         if (isdigit(ch) || ch == '.')
-            buf[i++] = ch;
+            buf[i] = ch;
+        ++i;
     }
 
     uint64 const bytes = (uint64)(atof(buf) * (double)DigitalUnitToBytes(unit));
