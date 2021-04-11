@@ -1546,8 +1546,12 @@ void MainWindow::AddInfoBar()
     slotPositions->AddItem((void*)&m_slotOneX);
     slotPositions->AddItem((void*)&m_slotTwoX);
 
+    font_height fntHt;
+    be_plain_font->GetHeight(&fntHt);
+    float infoBarHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 10;
+
     m_infoBar = new InfoBar(BRect(0, m_toolBar->Frame().bottom + 1, Bounds().right,
-                                  m_toolBar->Frame().bottom + 1 + K_INFOBAR_HEIGHT), slotPositions, "MainWindow:InfoBar",
+                                  m_toolBar->Frame().bottom + 1 + infoBarHeight), slotPositions, "MainWindow:InfoBar",
                             ui_color(B_PANEL_BACKGROUND_COLOR));
     m_backView->AddChild(m_infoBar);
 }

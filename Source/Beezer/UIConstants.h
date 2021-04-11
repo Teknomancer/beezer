@@ -22,7 +22,6 @@ const rgb_color K_HIGHLIGHT_GREY =           {225, 225, 225, 255},
 
 const float K_MARGIN =             5,
             K_TOOLBAR_WIDTH =      44,
-            K_INFOBAR_HEIGHT =     25,
             K_BUTTON_HEIGHT =      25,
             K_BUTTON_WIDTH =       76,
             K_PROGRESSBAR_HEIGHT = 15;
