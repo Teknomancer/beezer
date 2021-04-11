@@ -1140,6 +1140,10 @@ void BeezerListView::SendSelectionMessage(bool send)
 
 bool BeezerListView::InitiateDrag(BPoint point, int32 index, bool wasSelected)
 {
+    (void)point;        // UNUSED_PARAM
+    (void)index;        // UNUSED_PARAM
+    (void)wasSelected;  // UNUSED_PARAM
+
     BMessage* dragMessage = new BMessage(B_SIMPLE_DATA);
 
     int32 selCount = FullListSelectionCount();
