@@ -1628,7 +1628,7 @@ void MainWindow::AddToolBar()
     m_newButton->GetPreferredSize(&btnWidth, &btnHeight);
 
     m_toolBar = new ToolBar(BRect(0, m_mainMenu->Bounds().Height() + 1, Bounds().right,
-                                  m_mainMenu->Bounds().Height() + 2 + btnHeight + 2 * ToolBar::mk_Border),
+                                  m_mainMenu->Bounds().Height() + 2 + btnHeight + 2 * ToolBar::kBorder),
                             "MainWindow:ToolBar", backColor);
 
     // Add toolbar to the window's view and add toolbar buttons to the toolbar object

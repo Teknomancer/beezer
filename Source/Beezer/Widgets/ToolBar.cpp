@@ -3,22 +3,18 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <List.h>
-#include <Message.h>
-#include <Window.h>
-
+#include "ToolBar.h"
 #include "ImageButton.h"
 #include "MsgConstants.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
-#include "ToolBar.h"
-#include "UIConstants.h"
 
-// Initialize static non-integral vars here to make c++11 happy
-// while avoiding the use of constexpr which would break gcc2
-const float ToolBar::mk_vertSpacing = 3;
-const float ToolBar::mk_horizSpacing = 2;
-const float ToolBar::mk_Border = 2;
+#include <Window.h>
+
+static const float kVertSpacing  = 3;
+static const float kHorizSpacing = 2;
+
+const float ToolBar::kBorder     = 2;
 
 
 ToolBar::ToolBar(BRect frame, const char* name, rgb_color backColor)
@@ -27,11 +23,11 @@ ToolBar::ToolBar(BRect frame, const char* name, rgb_color backColor)
       m_finalSepEdge(NULL),
       m_isEnabled(true),
       m_isHidden(false),
-      m_ptToDraw(mk_Border, mk_Border),
-      m_nButtons(0),
+      m_ptToDraw(kBorder, kBorder),
+      m_nButtons(0L),
       m_nSeparators(0L),
-      m_horizGap((int32)static_cast<float>(mk_horizSpacing)),
-      m_vertGap((int32)static_cast<float>(mk_vertSpacing)),
+      m_horizGap(kHorizSpacing),
+      m_vertGap(kVertSpacing),
       m_backColor(backColor)
 {
 }

@@ -32,9 +32,7 @@ class ToolBar : public BView
         virtual float       Height() const;
 
         // Static constants
-        static const float  mk_vertSpacing;
-        static const float  mk_horizSpacing;
-        static const float  mk_Border;
+        static const float  kBorder;
 
     protected:
         // Protected members
@@ -47,8 +45,8 @@ class ToolBar : public BView
         bool               m_isHidden;
         BPoint             m_ptToDraw;
         int32              m_nButtons,
-                           m_nSeparators,
-                           m_horizGap,
+                           m_nSeparators;
+        float              m_horizGap,
                            m_vertGap;
         BList              m_buttonList,
                            m_separatorList;
