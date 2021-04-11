@@ -26,6 +26,9 @@
 *    used as labels for menus/menuitems and must be consistent across files for
 *    BMenu::FindItem() and similar methods to work properly
 */
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-variable"
 
 static const char
             *kAboutString           = B_TRANSLATE_MARK("About"),
@@ -77,5 +80,7 @@ static const char
             *kToolsString           = B_TRANSLATE_MARK("Tools"),
             *kViewString            = B_TRANSLATE_MARK("View"),
             *kWindowsString         = B_TRANSLATE_MARK("Windows");
+#pragma GCC diagnostic pop
+#endif  /* __GNUC__ */
 
 #endif /* _COMMON_STRINGS_H */
