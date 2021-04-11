@@ -161,7 +161,8 @@ AboutWindow::AboutWindow(const char* versionStr, const char* compileTimeStr)
     if (titleBmp == NULL)
     {
         Hide();
-        (new BAlert("Error", B_TRANSLATE("An error was encountered while trying to load resources for the About window."),
+        (new BAlert("Error",
+                    B_TRANSLATE("An error was encountered while trying to load resources for the About window."),
                     BZ_TR(kCloseWindowString), NULL, NULL, B_WIDTH_AS_USUAL, B_EVEN_SPACING,
                     B_STOP_ALERT))->Go();
         PostMessage(B_QUIT_REQUESTED);
@@ -224,6 +225,25 @@ AboutWindow::AboutWindow(const char* versionStr, const char* compileTimeStr)
     m_textView->SetText(m_lineFeeds.String());
     m_textView->Insert(m_lineFeeds.Length(), formatStr.String(), formatStr.Length());
 
+    // Search and color main headings
+    BString mainHeadings[] =
+    {
+        B_TRANSLATE("CREDITS"),
+        B_TRANSLATE("LEGAL MUMBO JUMBO"),
+        B_TRANSLATE("SPECIAL THANKS TO")
+    };
+    BString formattedStr = m_textView->Text();
+    for (int32 i = 0; i < (int32)B_COUNT_OF(mainHeadings); i++)
+    {
+        int32 const strt = formattedStr.FindFirst(mainHeadings[i].String());
+        if (strt != B_ERROR)
+        {
+            m_textView->SetFontAndColor(strt, strt + mainHeadings[i].Length(),
+                                        be_plain_font, B_FONT_ALL, &K_ABOUT_MAIN_HEADING);
+        }
+    }
+
+    // Search and color sub headings
     BString subHeadings[] =
     {
         B_TRANSLATE("[ Programming ]"),
@@ -233,43 +253,19 @@ AboutWindow::AboutWindow(const char* versionStr, const char* compileTimeStr)
         B_TRANSLATE("[ Documentation Updates ]"),
         B_TRANSLATE("[ Disclaimer ]")
     };
-
-    BString mainHeadings[] =
-    {
-        B_TRANSLATE("CREDITS"),                    // 0
-        B_TRANSLATE("LEGAL MUMBO JUMBO"),          // 1
-        B_TRANSLATE("SPECIAL THANKS TO")           // 2
-    };
-
-    // Search and color sub headings
-    BString temp = m_textView->Text();
-    int32 strt;
     for (int32 i = 0; i < (int32)B_COUNT_OF(subHeadings); i++)
     {
-        if ((strt = temp.FindFirst(subHeadings[i].String())) != B_ERROR)
+        int32 const strt = formattedStr.FindFirst(subHeadings[i].String());
+        if (strt != B_ERROR)
         {
-            m_textView->SetFontAndColor(strt, strt + strlen(subHeadings[i].String()),
+            m_textView->SetFontAndColor(strt, strt + subHeadings[i].Length(),
                                         be_plain_font, B_FONT_ALL, &K_ABOUT_SUB_HEADING);
         }
     }
 
-    // Search and color main headings
-    for (int32 i = 0; i < (int32)B_COUNT_OF(mainHeadings); i++)
-    {
-        if ((strt = temp.FindFirst(mainHeadings[i].String())) != B_ERROR)
-        {
-            m_textView->SetFontAndColor(strt, strt + strlen(mainHeadings[i].String()),
-                                        be_plain_font, B_FONT_ALL, &K_ABOUT_MAIN_HEADING);
-        }
-    }
-
-    // Center window on-screen
     CenterOnScreen();
-
-    // Spawn & resume the scroller thread now
     m_textView->Show();
     m_scrollThreadId = spawn_thread(_scroller, "_magic_scroller", B_NORMAL_PRIORITY, (void*)this);
-
     Show();
     resume_thread(m_scrollThreadId);
 }
@@ -286,10 +282,9 @@ void AboutWindow::DispatchMessage(BMessage* message, BHandler* handler)
 {
     switch (message->what)
     {
-        case B_KEY_DOWN: case B_MOUSE_DOWN:
+        case B_KEY_DOWN:
+        case B_MOUSE_DOWN:
         {
-            // According to BeBook its ok to call Quit() from message loop as it shuts down the message
-            // loop (and deletes any pending messages), so this will be the last message to be processed
             Quit();
             break;
         }
@@ -301,10 +296,10 @@ void AboutWindow::DispatchMessage(BMessage* message, BHandler* handler)
 
 int32 AboutWindow::_scroller(void* data)
 {
-    // This thread function controls the scrolling of the marqueeview
+    // This thread function controls the scrolling of the marquee view
     AboutWindow* wnd = reinterpret_cast<AboutWindow*>(data);
 
-    // Calculate a few things here so that our loop isn't strained
+    // Calculate a few things here so that our loop is smooth
     if (wnd && wnd->Lock())
     {
         float const height = wnd->Bounds().Height();
