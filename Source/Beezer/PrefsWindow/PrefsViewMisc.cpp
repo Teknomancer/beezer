@@ -10,7 +10,6 @@
 #include "MsgConstants.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
-#include "UIConstants.h"
 
 #include <Application.h>
 #include <Button.h>
