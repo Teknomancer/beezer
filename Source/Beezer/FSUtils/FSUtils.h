@@ -36,7 +36,7 @@ extern "C" _FS_IMPEXP void CopyAttributes(BNode* srcNode, BNode* destNode, void*
 
 extern "C" _FS_IMPEXP void RemoveDirectory(BDirectory* dir);
 
-extern "C" _FS_IMPEXP status_t SplitFile(BEntry* src, BDirectory* destDir, BMessenger* progress, uint64 fragmentSize,
+extern "C" _FS_IMPEXP status_t SplitFile(BEntry* src, BDirectory* destDir, BMessenger* progress, off_t fragmentSize,
                                          uint16 fragmentCount, char* sepChar, BString& firstChunkName,
                                          volatile bool* cancel);
 

@@ -13,6 +13,7 @@
 #include <Path.h>
 #include <SymLink.h>
 
+#include <cassert>
 #include <fs_attr.h>
 #include <stdio.h>
 #include <stdlib.h>     // required for gcc2?
@@ -194,10 +195,10 @@ status_t CopyFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress,  
         BFile srcFile(srcEntry, B_READ_ONLY);
         srcFile.GetStat(&srcStat);
 
-        const size_t kMinBufferSize = 1024 * 128;
-        const size_t kMaxBufferSize = 1024 * 1024;
+        const ssize_t kMinBufferSize = 1024 * 128;
+        const ssize_t kMaxBufferSize = 1024 * 1024;
 
-        size_t bufSize = kMinBufferSize;
+        ssize_t bufSize = kMinBufferSize;
 
         if (bufSize < srcStat.st_size)
         {
@@ -235,9 +236,9 @@ status_t CopyFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress,  
             ssize_t const bytes = srcFile.Read(buffer, bufSize);
             if (bytes > 0)
             {
-                ssize_t updateBytes = 0;
-                if (bytes > 32 * 1024)
-                    updateBytes = bytes / 2;
+                //ssize_t updateBytes = 0;
+                //if (bytes > 32 * 1024)
+                //    updateBytes = bytes / 2;
 
                 ssize_t result = destFile.Write(buffer, (size_t)bytes);
                 if (result != bytes)
@@ -290,9 +291,11 @@ void CopyAttributes(BNode* srcNode, BNode* destNode, void* buffer, size_t bufSiz
 }
 
 
-status_t SplitFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress, uint64 fragmentSize,
+status_t SplitFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress, off_t fragmentSize,
                    uint16 fragmentCount, char* sepString, BString& firstChunkName, volatile bool* cancel)
 {
+    assert(fragmentSize > 0);
+
     BAutolock autoLocker(&_fs_utils_locker);
     if (!autoLocker.IsLocked())
         return B_ERROR;
@@ -323,10 +326,10 @@ status_t SplitFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress, 
     BFile srcFile(srcEntry, B_READ_ONLY);
     srcFile.GetStat(&srcStat);
 
-    const size_t kMinBufferSize = 1024 * 128;
-    const size_t kMaxBufferSize = 1024 * 1024;
+    const ssize_t kMinBufferSize = 1024 * 128;
+    const ssize_t kMaxBufferSize = 1024 * 1024;
 
-    size_t bufSize = kMinBufferSize;
+    ssize_t bufSize = kMinBufferSize;
 
     if (bufSize < srcStat.st_size)
     {
