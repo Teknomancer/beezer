@@ -264,23 +264,24 @@ void MainWindow::MessageReceived(BMessage* message)
 
         case M_ADD_ITEMS:
         {
-            int32 i, totalItems;
-            if (message->FindInt32("start_index", &i) != B_OK) i = 0L;
-            i = AddItemsFromList(i, &totalItems);
+            int32 index, totalItems;
+            if (message->FindInt32("start_index", &index) != B_OK)
+                index = 0L;
+            index = AddItemsFromList(index, &totalItems);
 
             // Check if all items have been added
-            if (i < totalItems)
+            if (index < totalItems)
             {
                 message->RemoveName("start_index");
-                message->AddInt32("start_index", i);
+                message->AddInt32("start_index", index);
                 PostMessage(message);
             }
             else
             {
                 // Calculate the total size of the archive
-                for (int32 i = 0; i < totalItems; i++)
+                for (int32 k = 0; k < totalItems; k++)
                 {
-                    ListEntry* item = ((HashEntry*)m_fileList->ItemAtFast(i))->m_clvItem;
+                    ListEntry* item = ((HashEntry*)m_fileList->ItemAtFast(k))->m_clvItem;
                     if (item)
                         m_archiveSize += item->m_length;
                 }
@@ -1062,24 +1063,24 @@ void MainWindow::MessageReceived(BMessage* message)
 
         case M_ADD_ITEMS_LIST:
         {
-            int32 i;
-            if (message->FindInt32("start_index", &i) != B_OK)
-                i = 0L;
+            int32 index;
+            if (message->FindInt32("start_index", &index) != B_OK)
+                index = 0L;
 
-            i = AddItemsFromList(&m_addedFileList, i);
+            index = AddItemsFromList(&m_addedFileList, index);
             // Check if all items have been added
-            if (i < m_addedFileList.CountItems())
+            if (index < m_addedFileList.CountItems())
             {
                 message->RemoveName("start_index");
-                message->AddInt32("start_index", i);
+                message->AddInt32("start_index", index);
                 PostMessage(message);
             }
             else
             {
                 // Calculate the total size of the archive
-                for (int32 i = 0; i < m_addedFileList.CountItems(); i++)
+                for (int32 k = 0; k < m_addedFileList.CountItems(); k++)
                 {
-                    ListEntry* item = (ListEntry*)m_addedFileList.ItemAtFast(i);
+                    ListEntry* item = (ListEntry*)m_addedFileList.ItemAtFast(k);
                     if (item)
                         m_archiveSize += item->m_length;
                 }
@@ -3265,7 +3266,7 @@ bool MainWindow::ConfirmAddOperation(const char* addingUnderPath, BMessage* refs
                     }
 
                     // The warnType left is (1) i.e. to ask the user
-                    BString confirmBufStr = B_TRANSLATE("A folder named \"%name%\" already exists.");
+                    confirmBufStr = B_TRANSLATE("A folder named \"%name%\" already exists.");
                     confirmBufStr << "\n" << B_TRANSLATE("Do you want to replace it?");
                     confirmBufStr.ReplaceAll("%name%", hashEntry->m_clvItem->GetColumnContentText(2));
 
@@ -3548,12 +3549,12 @@ void MainWindow::AddNewFolder()
             status_t result = m_archiver->Add(false, m_tempDirPath, &addMsg, &newlyAddedPaths, NULL, NULL);
             UpdateIfNeeded();
 
-            BMessage* msg = new BMessage(M_ADD_DONE);
-            msg->AddRef("refs", &dirRef);
-            msg->AddPointer(kSuperItem, (void*)selectedItem);
-            msg->AddInt32(kResult, result);
-            msg->AddMessage(kFileList, &newlyAddedPaths);
-            PostMessage(msg);
+            BMessage* doneMsg = new BMessage(M_ADD_DONE);
+            doneMsg->AddRef("refs", &dirRef);
+            doneMsg->AddPointer(kSuperItem, (void*)selectedItem);
+            doneMsg->AddInt32(kResult, result);
+            doneMsg->AddMessage(kFileList, &newlyAddedPaths);
+            PostMessage(doneMsg);
             m_statusWnd->PostMessage(M_CLOSE);
         }
     }
