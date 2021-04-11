@@ -405,8 +405,8 @@ FileSplitterWindow::~FileSplitterWindow()
     if (m_dirPanel)
         delete m_dirPanel;
 
-    if (m_filePanel);
-    delete m_filePanel;
+    if (m_filePanel)
+        delete m_filePanel;
 
     if (m_sepString)
         free(m_sepString);
@@ -786,7 +786,7 @@ void FileSplitterWindow::UpdateData()
         m_sizeStr->SetText(sizeStr.String());
 
         // Determine the size of each piece that the user has selected in bytes
-        uint64 fragmentSize = 0;
+        off_t fragmentSize = 0;
         if (m_customSizeView->IsEnabled())
         {
             BString val;
@@ -801,7 +801,7 @@ void FileSplitterWindow::UpdateData()
                 case 3: val << BZ_TR(kGigabyteString); break;
             }
 
-            fragmentSize = BytesFromString((char*)val.String());
+            fragmentSize = (off_t)BytesFromString((char*)val.String());
             m_fragmentSize = fragmentSize;
         }
         else               // Predefined size
@@ -810,32 +810,24 @@ void FileSplitterWindow::UpdateData()
             int32 const index = sizeLabel.FindFirst("-");
             sizeLabel.Truncate(index - 1);
 
-            fragmentSize = BytesFromString((char*)sizeLabel.String());
+            fragmentSize = (off_t)BytesFromString((char*)sizeLabel.String());
             m_fragmentSize = fragmentSize;
         }
 
-        m_piecesStr->SetHighColor((rgb_color)
-        {
-            0, 0, 0, 255
-        });
+        m_piecesStr->SetHighColor((rgb_color){ 0, 0, 0, 255 });
+
         if (fragmentSize > 0)
         {
             int32 const noOfPieces = (size / fragmentSize);
             if (noOfPieces <= 0 && m_customSizeView->Text())
             {
                 m_piecesStr->SetText(B_TRANSLATE("Incorrect split size!"));
-                m_piecesStr->SetHighColor((rgb_color)
-                {
-                    210, 0, 0, 255
-                });
+                m_piecesStr->SetHighColor((rgb_color){ 210, 0, 0, 255 });
             }
             else if (noOfPieces > kMaxFragmentCount)
             {
                 m_piecesStr->SetText(B_TRANSLATE("Too many pieces!"));
-                m_piecesStr->SetHighColor((rgb_color)
-                {
-                    0, 0, 210, 255
-                });
+                m_piecesStr->SetHighColor((rgb_color){ 0, 0, 210, 255 });
             }
             else
             {
@@ -851,10 +843,7 @@ void FileSplitterWindow::UpdateData()
         else if (fragmentSize < 0)
         {
             m_piecesStr->SetText(B_TRANSLATE("Incorrect split size!"));
-            m_piecesStr->SetHighColor((rgb_color)
-            {
-                210, 0, 0, 255
-            });
+            m_piecesStr->SetHighColor((rgb_color){ 210, 0, 0, 255 });
         }
         else
             m_piecesStr->SetText("-");
