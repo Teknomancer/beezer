@@ -59,7 +59,7 @@ status_t JoinFile(const char* firstChunkPathStr, const char* outputDir, const ch
     const size_t kMaxBufferSize = 1024 * 1024;
 
     size_t bufSize = kMinBufferSize;
-    if (bufSize < srcStat.st_size)
+    if (bufSize < (size_t)srcStat.st_size)
     {
         // File is bigger than buffer size; find an optimal buffer size for copying
         system_info sysInfo;
@@ -99,11 +99,9 @@ status_t JoinFile(const char* firstChunkPathStr, const char* outputDir, const ch
             ssize_t bytes = srcFile.Read(buffer, bufSize);
             if (bytes > 0)
             {
-                ssize_t updateBytes = 0;
-                if (bytes > 32 * 1024)
-                    updateBytes = bytes / 2;
-
-                ssize_t result = destFile.WriteAt(writePosition, buffer, (size_t)bytes);
+                ssize_t const result = destFile.WriteAt(writePosition, buffer, (size_t)bytes);
+                if (result != bytes)
+                    return B_ERROR;
 
                 if (progress)
                 {
@@ -112,9 +110,6 @@ status_t JoinFile(const char* firstChunkPathStr, const char* outputDir, const ch
                     updateMessage.AddFloat("delta", (float)result);
                     progress->SendMessage(&updateMessage, &reply);
                 }
-
-                if (result != bytes)
-                    return B_ERROR;
 
                 writePosition += bytes;
             }
