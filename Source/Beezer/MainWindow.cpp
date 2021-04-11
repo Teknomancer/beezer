@@ -75,9 +75,6 @@
 #define B_TRANSLATE_SYSTEM_NAME(x) x
 #endif
 
-// Note: Don't let BeIDE sort function popups if we want these pragmas to work
-#pragma mark --- Inherited Hooks ---
-
 
 MainWindow::MainWindow(BRect frame, WindowMgr* windowMgr, RecentMgr* recentMgr,
                        RecentMgr* extractMgr, RuleMgr* ruleMgr)
@@ -1536,8 +1533,9 @@ void MainWindow::FrameResized(float newWidth, float newHeight)
 }
 
 
-#pragma mark -
-#pragma mark --- Interface Functions ---
+//
+// --- Interface Functions ---
+//
 
 
 void MainWindow::AddInfoBar()
@@ -1790,8 +1788,9 @@ void MainWindow::AdjustColumns()
 }
 
 
-#pragma mark -
-#pragma mark --- Update Functions ---
+//
+// --- Update Functions ---
+//
 
 
 void MainWindow::UpdateListView(bool invalidate)
@@ -2034,8 +2033,9 @@ void MainWindow::SetBusyState(bool on) const
 }
 
 
-#pragma mark -
-#pragma mark --- Delete Functions ----
+//
+// --- Delete Functions ----
+//
 
 
 void MainWindow::ClearDeleteLists()
@@ -2321,8 +2321,9 @@ void MainWindow::DeleteUpdate()
 }
 
 
-#pragma mark -
-#pragma mark --- Test Functions ---
+//
+// --- Test Functions ---
+//
 
 
 void MainWindow::TestArchive()
@@ -2410,8 +2411,9 @@ void MainWindow::TestDone(BMessage* message)
 }
 
 
-#pragma mark -
-#pragma mark --- Extract Functions ---
+//
+// --- Extract Functions ---
+//
 
 
 void MainWindow::ExtractDone(BMessage* message)
@@ -2695,8 +2697,9 @@ void MainWindow::SetupExtractPanel(BMessage* extractMessage)
 }
 
 
-#pragma mark -
-#pragma mark --- Open Functions ---
+//
+// --- Open Functions ---
+//
 
 
 int32 MainWindow::AddFolderToMessage(ListEntry* item, BMessage* message, bool countOnlyFiles,
@@ -3059,8 +3062,9 @@ void MainWindow::OpenArchivePartTwo(status_t result)
 }
 
 
-#pragma mark -
-#pragma mark -- Add Functions ---
+//
+// --- Add Functions ---
+//
 
 
 int32 MainWindow::AddFoldersFromList(BList* folderList, int32 index)
@@ -3556,8 +3560,9 @@ void MainWindow::AddNewFolder()
 }
 
 
-#pragma mark -
-#pragma mark -- State Functions ---
+//
+// --- State Functions ---
+//
 
 
 void MainWindow::SaveSettingsAsDefaults() const
@@ -3795,8 +3800,9 @@ void MainWindow::GetState(BMessage& msg) const
 }
 
 
-#pragma mark -
-#pragma mark -- Thread Functions ---
+//
+// --- Thread Functions ---
+//
 
 
 int32 MainWindow::_viewer(void* arg)
@@ -4156,8 +4162,9 @@ int32 MainWindow::_opener(void* arg)
 }
 
 
-#pragma mark -
-#pragma mark --- Miscellaneous ---
+//
+// --- Miscellaneous ---
+//
 
 
 void MainWindow::EditComment(bool failIfNoComment)
