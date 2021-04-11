@@ -421,9 +421,8 @@ status_t SplitFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress, 
         {
             sprintf(bufFileName, "%s%s%0*d", destLeaf, sepString, width, 1);
             destFile.Unset();
-            status_t const err = destFile.SetTo(destDir, bufFileName, B_READ_WRITE);
-
-            if (err == B_OK)
+            status_t const err2 = destFile.SetTo(destDir, bufFileName, B_READ_WRITE);
+            if (err2 == B_OK)
                 CopyAttributes(&srcFile, &destFile, buffer, bufSize);
 
             // Pass this information back to the caller!!
