@@ -17,6 +17,7 @@
 #include <Button.h>
 #include <CheckBox.h>
 #include <FilePanel.h>
+#include <LayoutBuilder.h>
 #include <ListView.h>
 #include <Path.h>
 #include <RadioButton.h>
@@ -71,10 +72,8 @@ PrefsViewPaths::~PrefsViewPaths()
 
 void PrefsViewPaths::Render()
 {
-    BStringView* defaultStrView = new BStringView(BRect(m_margin, m_margin, 0, 0), NULL,
-                                                  B_TRANSLATE("Default paths:"));
+    BStringView* defaultStrView = new BStringView("PrefsViewPath:defaultStrView", B_TRANSLATE("Default paths:"), B_WILL_DRAW);
     defaultStrView->SetFont(&m_sectionFont);
-    defaultStrView->ResizeToPreferred();
 
     BString dividerStrings[] =
     {
@@ -87,94 +86,71 @@ void PrefsViewPaths::Render()
     for (size_t i = 0; i < B_COUNT_OF(dividerStrings); i++)
         divider = MAX(divider, StringWidth(dividerStrings[i].String()));
 
-    m_openPathView = new BTextControl(BRect(3 * m_margin, defaultStrView->Frame().bottom + m_vGap + 6,
-                                            Bounds().right - (2 * m_margin) - K_BUTTON_WIDTH, 0), "PrefsViewPaths:openPathView",
-                                      B_TRANSLATE("Open path:"), NULL, NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP,
+    m_openPathView = new BTextControl("PrefsViewPaths:openPathView", B_TRANSLATE("Open path:"), NULL, NULL,
                                       B_WILL_DRAW | B_NAVIGABLE);
-    m_openPathView->SetDivider(divider);
     m_openPathView->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
     m_openPathView->TextView()->DisallowChar(B_INSERT);
 
-    BString buttonText = BZ_TR(kSelectString);
-    m_openPathBtn = new BButton(BRect(m_openPathView->Frame().right + m_margin, m_openPathView->Frame().top - 4,
-                                      m_openPathView->Frame().right + m_margin + K_BUTTON_WIDTH,
-                                      m_openPathView->Frame().top - 4 + K_BUTTON_HEIGHT), "PrefsViewPaths:openPathBtn",
-                                buttonText.String(), new BMessage(M_SELECT_OPEN_PATH),
-                                B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
+    BLayoutItem* openPathLabel = m_openPathView->CreateLabelLayoutItem();
+    openPathLabel->SetExplicitMinSize(BSize(divider, B_SIZE_UNSET));
+    openPathLabel->SetExplicitMaxSize(BSize(divider, B_SIZE_UNSET));
 
-    m_addPathView = new BTextControl(BRect(3 * m_margin, m_openPathView->Frame().bottom + m_vGap + 6,
-                                           m_openPathView->Frame().right, 0), "PrefsViewPaths:addPathView", B_TRANSLATE("Add path:"),
-                                     NULL, NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
-    m_addPathView->SetDivider(divider);
+    BLayoutItem* openPathTextView = m_openPathView->CreateTextViewLayoutItem();
+    openPathTextView->SetExplicitAlignment(BAlignment(B_ALIGN_LEFT, B_ALIGN_BOTTOM));
+
+    BString const selectBtnText = BZ_TR(kSelectString);
+    m_openPathBtn = new BButton("PrefsViewPaths:openPathBtn", selectBtnText.String(),
+                                new BMessage(M_SELECT_OPEN_PATH), B_WILL_DRAW | B_NAVIGABLE);
+
+    m_addPathView = new BTextControl("PrefsViewPaths:addPathView", B_TRANSLATE("Add path:"), NULL, NULL,
+                                     B_WILL_DRAW | B_NAVIGABLE);
     m_addPathView->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
     m_addPathView->TextView()->DisallowChar(B_INSERT);
 
-    m_addPathBtn = new BButton(BRect(m_addPathView->Frame().right + m_margin, m_addPathView->Frame().top - 4,
-                                     m_addPathView->Frame().right + m_margin + K_BUTTON_WIDTH,
-                                     m_addPathView->Frame().top - 4 + K_BUTTON_HEIGHT), "PrefsViewPaths:addPathBtn",
-                               buttonText.String(), new BMessage(M_SELECT_ADD_PATH),
-                               B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
+    BLayoutItem* addPathLabel = m_addPathView->CreateLabelLayoutItem();
+    addPathLabel->SetExplicitMinSize(BSize(divider, B_SIZE_UNSET));
+    addPathLabel->SetExplicitMaxSize(BSize(divider, B_SIZE_UNSET));
 
-    BStringView* extractStrView = new BStringView(BRect(m_addPathView->Frame().left,
-                                                        m_addPathView->Frame().bottom + 2 * m_vGap + 10,
-                                                        m_addPathView->Frame().left + StringWidth(B_TRANSLATE("Extract path:")), 0),
-                                                  "PrefsViewPaths:extractStrView", B_TRANSLATE("Extract path:"),
-                                                  B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
-    extractStrView->ResizeToPreferred();
+    BLayoutItem* addPathTextView = m_addPathView->CreateTextViewLayoutItem();
+    addPathTextView->SetExplicitAlignment(BAlignment(B_ALIGN_LEFT, B_ALIGN_BOTTOM));
 
-    m_arkDirOpt = new BRadioButton(BRect(extractStrView->Frame().left + 3 * m_margin,
-                                         extractStrView->Frame().bottom + m_vGap, 0, 0),
-                                   "PrefsViewPaths:arkDirOpt", B_TRANSLATE("Same folder as source (archive) file"),
-                                   new BMessage(M_ARK_DIR), B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
-    m_arkDirOpt->ResizeToPreferred();
+    m_addPathBtn = new BButton("PrefsViewPaths:addPathBtn", selectBtnText.String(), new BMessage(M_SELECT_ADD_PATH),
+                               B_WILL_DRAW | B_NAVIGABLE);
 
-    m_useDirOpt = new BRadioButton(BRect(m_arkDirOpt->Frame().left, m_arkDirOpt->Frame().bottom + m_vGap + 1,
-                                         0, 0), "PrefsViewPaths:useDirOpt", B_TRANSLATE("Use:"),
-                                   new BMessage(M_USE_DIR), B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
-    m_useDirOpt->ResizeToPreferred();
+    BStringView* extractStrView = new BStringView("PrefsViewPaths:extractStrView", B_TRANSLATE("Extract path:"),
+                                                  B_WILL_DRAW);
+
+    m_arkDirOpt = new BRadioButton("PrefsViewPaths:arkDirOpt", B_TRANSLATE("Same folder as source (archive) file"),
+                                   new BMessage(M_ARK_DIR), B_WILL_DRAW | B_NAVIGABLE);
+
+    m_useDirOpt = new BRadioButton("PrefsViewPaths:useDirOpt", B_TRANSLATE("Use:"),
+                                   new BMessage(M_USE_DIR), B_WILL_DRAW | B_NAVIGABLE);
     m_useDirOpt->SetValue(B_CONTROL_ON);
+    m_useDirOpt->SetExplicitAlignment(BAlignment(B_ALIGN_LEFT, B_ALIGN_BOTTOM));
 
-    float strW = m_useDirOpt->Frame().right;
-    strW = MAX(m_useDirOpt->Frame().right + 4, 3 * m_margin + divider);
-
-    m_extractPathView = new BTextControl(BRect(strW, m_arkDirOpt->Frame().bottom + m_vGap, m_addPathView->Frame().right, 0),
-                                         "PrefsViewPaths:extractPathView", NULL, NULL, NULL,
-                                         B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
+    m_extractPathView = new BTextControl("PrefsViewPaths:extractPathView", NULL, NULL, NULL,
+                                         B_WILL_DRAW | B_NAVIGABLE);
     m_extractPathView->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
     m_extractPathView->TextView()->DisallowChar(B_INSERT);
 
-    m_extractPathBtn = new BButton(BRect(m_extractPathView->Frame().right + m_margin,
-                                         m_extractPathView->Frame().top - 4,
-                                         m_extractPathView->Frame().right + m_margin + K_BUTTON_WIDTH,
-                                         m_extractPathView->Frame().top - 4 + K_BUTTON_HEIGHT),
-                                   "PrefsViewPaths:extractPathBtn", buttonText.String(),
-                                   new BMessage(M_SELECT_EXTRACT_PATH), B_FOLLOW_LEFT | B_FOLLOW_TOP,
-                                   B_WILL_DRAW | B_NAVIGABLE);
+    BLayoutItem* extractPathTextView = m_extractPathView->CreateTextViewLayoutItem();
+    extractPathTextView->SetExplicitAlignment(BAlignment(B_ALIGN_LEFT, B_ALIGN_BOTTOM));
 
-    BStringView* favStrView = new BStringView(BRect(defaultStrView->Frame().left,
-                                                    m_extractPathView->Frame().bottom + m_margin + m_vGap + 8,
-                                                    0, 0),
-                                              "PrefsViewPaths:favStrView", B_TRANSLATE("Favorite extract paths:"),
-                                              B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
+    m_extractPathBtn = new BButton("PrefsViewPaths:extractPathBtn", selectBtnText.String(),
+                                   new BMessage(M_SELECT_EXTRACT_PATH), B_WILL_DRAW | B_NAVIGABLE);
+
+    BStringView* favStrView = new BStringView("PrefsViewPaths:favStrView", B_TRANSLATE("Favorite extract paths:"),
+                                              B_WILL_DRAW);
     favStrView->SetFont(&m_sectionFont);
-    favStrView->ResizeToPreferred();
 
-    m_genChk = new BCheckBox(BRect(3 * m_margin, favStrView->Frame().bottom, 0, 0),
-                             "PrefsViewPaths:genChk", B_TRANSLATE("List more paths (using archive name)"),
-                             NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
-    m_genChk->ResizeToPreferred();
+    m_genChk = new BCheckBox("PrefsViewPaths:genChk", B_TRANSLATE("List more paths (using archive name)"),
+                             NULL, B_WILL_DRAW | B_NAVIGABLE);
 
-    m_favListView = new BListView(BRect(5  * m_margin, favStrView->Frame().bottom + m_vGap + m_margin,
-                                        m_openPathView->Frame().right - B_V_SCROLL_BAR_WIDTH - m_margin,
-                                        Bounds().bottom - m_margin - B_H_SCROLL_BAR_HEIGHT - m_genChk->Frame().Height() - 6),
-                                  "PrefsViewPaths:favListView", B_SINGLE_SELECTION_LIST, B_FOLLOW_LEFT,
+    m_favListView = new BListView("PrefsViewPaths:favListView", B_SINGLE_SELECTION_LIST,
                                   B_WILL_DRAW | B_NAVIGABLE | B_FRAME_EVENTS);
 
     m_scrollView = new BScrollView("PrefsViewPaths:scrollView", m_favListView,
-                                   B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_FRAME_EVENTS, true, true,
-                                   B_FANCY_BORDER);
-
-    m_genChk->MoveTo(m_genChk->Frame().left, m_scrollView->Frame().bottom + m_vGap + 4);
+                                   B_WILL_DRAW | B_FRAME_EVENTS, true /* horiz */, true /* vert */);
 
     m_addBmp = BitmapPool::LoadAppVector("Img:PlusSign", 20, 20);
     m_removeBmp = BitmapPool::LoadAppVector("Img:MinusSign", 20, 20);
@@ -182,28 +158,58 @@ void PrefsViewPaths::Render()
     m_addBtn = new ImageButton(BRect(m_scrollView->Frame().right + m_margin, m_scrollView->Frame().top + 1,
                                      m_scrollView->Frame().right + 20, m_scrollView->Frame().top + 21), "PrefsViewPaths:addBnt",
                                NULL, m_addBmp, NULL, new BMessage(M_ADD_CLICKED), false, ViewColor());
+    m_addBtn->SetExplicitMaxSize(BSize(30, 30));
+    m_addBtn->SetExplicitMinSize(BSize(30, 30));
 
     m_removeBtn = new ImageButton(BRect(m_addBtn->Frame().left, m_addBtn->Frame().bottom + 2 * m_margin - 3,
                                         m_addBtn->Frame().right, m_addBtn->Frame().bottom + m_margin + 21),
                                   "PrefsViewPaths:removeBtn", NULL, m_removeBmp, NULL, new BMessage(M_REMOVE_CLICKED), false,
                                   ViewColor());
+    m_removeBtn->SetExplicitMaxSize(BSize(30, 30));
+    m_removeBtn->SetExplicitMinSize(BSize(30, 30));
 
-    AddChild(defaultStrView);
-    AddChild(m_openPathView);
-    AddChild(m_openPathBtn);
-    AddChild(m_addPathView);
-    AddChild(m_addPathBtn);
-    AddChild(extractStrView);
-    AddChild(m_arkDirOpt);
-    AddChild(m_useDirOpt);
-    AddChild(m_extractPathView);
-    AddChild(m_extractPathBtn);
-    AddChild(favStrView);
-    AddChild(m_scrollView);
-    AddChild(m_genChk);
-    AddChild(m_addBtn);
-    AddChild(m_removeBtn);
-    AddRevertButton();
+    // Using 0 spacing in main vertical layout below to pack certain items (like
+    // the select buttons) tightly as otherwise the layout gets weird.
+    // We'll explicitly add half-item spacing instead.
+    BLayoutBuilder::Group<> builder = BLayoutBuilder::Group<>(this, B_VERTICAL, 0);
+    builder
+        .SetInsets(B_USE_DEFAULT_SPACING)
+        .Add(defaultStrView)
+        .AddGroup(B_HORIZONTAL, B_USE_HALF_ITEM_SPACING)
+            .Add(openPathLabel)
+            .Add(openPathTextView)
+            .Add(m_openPathBtn)
+        .End()
+        .AddGroup(B_HORIZONTAL, B_USE_HALF_ITEM_SPACING)
+            .Add(addPathLabel)
+            .Add(addPathTextView)
+            .Add(m_addPathBtn)
+        .End()
+        .AddStrut(B_USE_HALF_ITEM_SPACING)  // extra space before starting next logical group
+        .Add(extractStrView)
+        .AddGroup(B_HORIZONTAL, B_USE_HALF_ITEM_SPACING)
+            .Add(m_useDirOpt)
+            .Add(extractPathTextView)
+            .Add(m_extractPathBtn)
+        .End()
+        .AddStrut(B_USE_HALF_ITEM_SPACING)
+        .Add(m_arkDirOpt)
+        .AddStrut(B_USE_ITEM_SPACING)  // extra space before starting next logical group
+        .Add(favStrView)
+        .AddStrut(B_USE_HALF_ITEM_SPACING)
+        .AddGroup(B_HORIZONTAL, B_USE_HALF_ITEM_SPACING)
+            .Add(m_scrollView)
+            .AddGroup(B_VERTICAL, 0)
+                .Add(m_addBtn)
+                .Add(m_removeBtn)
+                .AddGlue()
+            .End()
+        .End()
+        .AddStrut(B_USE_HALF_ITEM_SPACING)
+        .Add(m_genChk)                 // don't add glue below so m_scrollView stretches to fill up vertical space
+        .End();
+
+    AddRevertButton(builder);
 }
 
 
