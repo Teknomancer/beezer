@@ -91,7 +91,7 @@ status_t ArchiveRep::InitArchiver(entry_ref* ref, char* mimeString)
     if (m_archiver == NULL)        // Handle unsupported types
         return errCode;
 
-    if ((errCode = m_archiver->InitCheck()) != BZR_DONE)    // Type is supported,
+    if ((errCode = m_archiver->InitCheck()) != B_OK)    // Type is supported,
         return errCode;
 
     if (m_archiver)

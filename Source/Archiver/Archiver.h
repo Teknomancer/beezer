@@ -127,6 +127,7 @@ class Archiver
         PipeMgr             m_pipeMgr;
 
     private:
+        void                Init();
         static int          CompareHashEntries(const void* a, const void* b);
         void                AddDirPathToTable(BList* dirList, const char* path);
         HashEntry*          AddFilePathToTable(BList* fileList, const char* path);
