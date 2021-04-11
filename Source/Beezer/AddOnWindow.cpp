@@ -44,6 +44,8 @@
 #define B_TRANSLATE_SYSTEM_NAME(x) x
 #endif
 
+#include <cassert>
+
 
 AddOnWindow::AddOnWindow(BMessage* refsMessage)
     : BWindow(BRect(10, 10, 420, 475), B_TRANSLATE("QuickCreate archive"), B_TITLED_WINDOW,
@@ -646,38 +648,42 @@ void AddOnWindow::RefsReceived(BMessage* message)
     uint32 type;
     int32 count;
     entry_ref ref;
-
     message->GetInfo("refs", &type, &count);
     if (type != B_REF_TYPE)
         return;
 
-    // Pull the first ref's directory from the list of refs
-    message->FindRef("refs", 0, &ref);
-    BEntry entry(&ref, false);
-    entry.GetParent(&entry);         // strange, but legal
-    BPath path;
-    entry.GetPath(&path);
-    m_archiveDirPath = path.Path();
+    assert(count > 0);
 
-    // OKAY get name of ref and append extension to it
-    if (count == 1)
+    // Get and record the directory (parent) path of the file(s) as the archive path.
     {
+        message->FindRef("refs", 0, &ref);
+        BEntry entry(&ref, false);
+        entry.GetParent(&entry);         // strange, but legal
+        BPath path;
+        entry.GetPath(&path);
+        m_archiveDirPath = path.Path();
+    }
+
+    if (count > 1)
+    {
+        // Multiple files are provided, use a generic filename.
+        BString buf = m_archiveDirPath;
+        buf << "/" << "Archive";
+        m_fileName->SetText(buf.String());
+    }
+    else if (count == 1)
+    {
+        // A single file is provided, use its own name (path).
         if (message->FindRef("refs", &ref) == B_OK)
         {
-            BEntry entry(&ref, false);         // No traversal link
+            BEntry entry(&ref, false);   // No traversal link
             BPath path;
             entry.GetPath(&path);
             m_fileName->SetText(path.Path());
         }
     }
-    else if (count > 1)
-    {
-        // Get the first ref and pull the directory name from it
-        BString buf = m_archiveDirPath;
-        buf << "/" << "Archive";
-        m_fileName->SetText(buf.String());
-    }
 
+    // Append archive file extension as required
     BMenuItem* marked = m_arkTypePopUp->FindMarked();
     if (marked)
         ReplaceExtensionWith((const char*)m_arkExtensions.ItemAt(m_arkTypePopUp->IndexOf(marked)));
