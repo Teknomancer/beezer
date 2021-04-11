@@ -6,13 +6,13 @@
 #ifndef _ARCHIVE_REP_H
 #define _ARCHIVE_REP_H
 
+#include <Entry.h>
+#include <Path.h>
 #include <SupportDefs.h>
 
 class Archiver;
 
 class BDirectory;
-class BEntry;
-class BPath;
 
 class ArchiveRep
 {
