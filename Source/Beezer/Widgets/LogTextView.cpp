@@ -16,7 +16,7 @@
 
 LogTextView::LogTextView(BRect frame, const char* name, uint32 resizeMask, uint32 flags)
     : BTextView(frame, name, frame, resizeMask, flags),
-    m_contextMenu(NULL)
+      m_contextMenu(NULL)
 {
     Init();
 }
@@ -25,7 +25,7 @@ LogTextView::LogTextView(BRect frame, const char* name, uint32 resizeMask, uint3
 LogTextView::LogTextView(BRect frame, const char* name, const BFont* initialFont,
                          const rgb_color* initialColor, uint32 resizeMask, uint32 flags)
     : BTextView(frame, name, frame, initialFont, initialColor, resizeMask, flags),
-    m_contextMenu(NULL)
+      m_contextMenu(NULL)
 {
     Init();
 }
