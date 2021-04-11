@@ -2940,7 +2940,7 @@ void MainWindow::SetupArchiver(entry_ref* ref, char* mimeString)
     InitArchiver();
 }
 
-#include <iostream>
+
 void MainWindow::InitArchiver()
 {
     m_archiver->SetFoldingLevel(m_foldingLevel);
