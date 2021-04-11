@@ -689,7 +689,7 @@ BMenu* Archiver::SettingsMenu() const
 }
 
 
-void Archiver::BuildMenu(BMessage& message)
+void Archiver::BuildMenu(BMessage&)
 {
     // Empty implementation (i.e. m_settingsMenu will be NULL if control comes here)
 }
