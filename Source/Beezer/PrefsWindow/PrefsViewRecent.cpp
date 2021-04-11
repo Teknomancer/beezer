@@ -103,9 +103,12 @@ void PrefsViewRecent::Render()
 
 void PrefsViewRecent::Save()
 {
+    int8 const numRecentArks = abs(atoi(m_recentArkView->Text()));
+    int8 const numRecentExt = abs(atoi(m_recentExtView->Text()));
+
     _prefs_recent.SetBool(kPfShowPathInRecent, IsChecked(m_showPathChk));
-    _prefs_recent.SetInt8(kPfNumRecentArk, (int8)abs(atoi(m_recentArkView->Text())));
-    _prefs_recent.SetInt8(kPfNumRecentExt, (int8)abs(atoi(m_recentExtView->Text())));
+    _prefs_recent.SetInt8(kPfNumRecentArk, numRecentArks);
+    _prefs_recent.SetInt8(kPfNumRecentExt, numRecentExt);
     _prefs_state.WritePrefs();
 }
 
@@ -114,19 +117,13 @@ void PrefsViewRecent::Load()
 {
     m_showPathChk->SetValue(_prefs_recent.FindBoolDef(kPfShowPathInRecent, false));
 
-    int8 num = 0;
-    BString buf;
+    int8 const numRecentArks = abs(_prefs_recent.GetInt8(kPfNumRecentArk, 10));
+    BString bufRecentArks;
+    bufRecentArks << numRecentArks;
+    m_recentArkView->SetText(bufRecentArks.String());
 
-    if (_prefs_recent.FindInt8(kPfNumRecentArk, &num) != B_OK)
-        num = 10;
-
-    buf << num;
-    m_recentArkView->SetText(buf.String());
-    buf = "";
-
-    if (_prefs_recent.FindInt8(kPfNumRecentExt, &num) != B_OK)
-        num = 5;
-
-    buf << num;
-    m_recentExtView->SetText(buf.String());
+    int8 const numRecentExt = abs(_prefs_recent.GetInt8(kPfNumRecentExt, 5));
+    BString bufRecentExt;
+    bufRecentExt << numRecentExt;
+    m_recentExtView->SetText(bufRecentExt.String());
 }
