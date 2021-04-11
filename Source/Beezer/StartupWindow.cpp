@@ -46,7 +46,6 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
 {
     SetLayout(new BGroupLayout(B_VERTICAL, 0));
 
-    float width, height;
     BString welcome(B_TRANSLATE("Welcome to %appname%"));
     welcome.ReplaceAll("%appname%", B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE));
     m_headingView = new BStringView("StartupWindow:HeadingView", welcome);
@@ -94,7 +93,7 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
                                  _bmps->m_tbarPrefsBmp, NULL, new BMessage(M_EDIT_PREFERENCES), false,
                                  ui_color(B_PANEL_BACKGROUND_COLOR), ImageButton::text_position::BELOW_ICON,
                                  false, true, true);
-    //TODO this causes the items to be shifted down, need to investigate
+    // TODO this causes the items to be shifted down, need to investigate
     //m_prefsBtn->SetExplicitMinSize(BSize(K_TOOLBAR_WIDTH, -1));
 
     m_helpBtn = new ImageButton("StartupWindow:Help", BZ_TR(kHelpString),
