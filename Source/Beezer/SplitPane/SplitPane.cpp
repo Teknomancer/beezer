@@ -94,6 +94,8 @@ void SplitPane::FrameResized(float w, float h)
 
 void SplitPane::Draw(BRect updateRect)
 {
+    (void)updateRect; // UNUSED_PARAM
+
     SetHighColor(160, 160, 160);
 
     if (align == B_VERTICAL)
@@ -301,6 +303,7 @@ bool SplitPane::IsInDraggerBounds(BPoint pt) const
 
 void SplitPane::MouseUp(BPoint point)
 {
+    (void)point; // UNUSED_PARAM
     Draggin = false; // stop following mouse
 }
 
@@ -308,47 +311,29 @@ void SplitPane::MouseUp(BPoint point)
 
 void SplitPane::MouseMoved(BPoint where, uint32 info, const BMessage* message)
 {
+    (void)info; // UNUSED_PARAM
+    (void)message; // UNUSED_PARAM
+
     if (Draggin)
     {
-        float minVal;
-        switch (align)
-        {
-            case B_HORIZONTAL:
-                pos.y = (where.y) - (thickness.y / 2);
-                minVal = MinSizeOne.y;
-                break;
-
-            case B_VERTICAL:
-                pos.x = (where.x) - (thickness.x / 2);
-                minVal = MinSizeOne.x;
-                break;
-        }
-
-        switch (align)
-        {
-            case B_HORIZONTAL:
-                if (pos.y < MinSizeOne.y)
-                    pos.y = MinSizeOne.y;
-                break;
-
-            case B_VERTICAL:
-                if (pos.x < MinSizeOne.x)
-                    pos.x = MinSizeOne.x;
-                break;
-        }
-
         if (align == B_VERTICAL)
         {
-            if (pos.x > (Bounds().Width() - thickness.x - MinSizeTwo.x))
-                pos.x = (Bounds().Width() - thickness.x - MinSizeTwo.x + 1);
-
+            float const boundsWidth = Bounds().Width();
+            pos.x = where.x - (thickness.x / 2);
+            if (pos.x < MinSizeOne.x)
+                pos.x = MinSizeOne.x;
+            else if (pos.x > (boundsWidth - thickness.x - MinSizeTwo.x))
+                pos.x = (boundsWidth - thickness.x - MinSizeTwo.x + 1);
             vertpos = pos;
         }
         else
         {
-            if (pos.y > (Bounds().Height() - thickness.y - MinSizeTwo.y))
-                pos.y = (Bounds().Height() - thickness.y - MinSizeTwo.y + 1);
-
+            float const boundsHeight = Bounds().Height();
+            pos.y = where.y - (thickness.y / 2);
+            if (pos.y < MinSizeOne.y)
+                pos.y = MinSizeOne.y;
+            else if (pos.y > (boundsHeight - thickness.y - MinSizeTwo.y))
+                pos.y = (boundsHeight - thickness.y - MinSizeTwo.y + 1);
             horizpos = pos;
         }
 
