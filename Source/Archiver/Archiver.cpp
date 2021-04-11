@@ -32,40 +32,54 @@
 
 
 Archiver::Archiver()
-    :
-    m_rulesMsg(new BMessage()),
-    m_settingsDirectoryPath(NULL),
-    m_settingsMenu(NULL),
-    m_compressionMenu(NULL),
-    m_cachedPath(NULL),
-    m_hashTable(NULL),
-    m_tempDirPath(NULL),
-    m_foldingLevel(3),
-    m_passwordRequired(false)
 {
-    m_typeStr = strdup("");
-    m_extensionStr = strdup("");
+    Init();
 }
 
 
 Archiver::Archiver(const char* addonImagePath)
-    :
-    m_rulesMsg(new BMessage()),
-    m_settingsDirectoryPath(NULL),
-    m_settingsMenu(NULL),
-    m_compressionMenu(NULL),
-    m_cachedPath(NULL),
-    m_hashTable(NULL),
-    m_tempDirPath(NULL),
-    m_foldingLevel(3),
-    m_passwordRequired(false)
 {
-    if (LoadMetaData(addonImagePath) != B_OK)
+    Init();
+    if (InitCheck() == B_OK)
     {
-        //TODO fill m_mimeList, m_rulesMsg,  and others or just set an error code?
-        m_typeStr = strdup("");
-        m_extensionStr = strdup("");
+        if (LoadMetaData(addonImagePath) != B_OK)
+        {
+            // TODO fill m_mimeList, m_rulesMsg,  and others or just set an error code?
+            m_typeStr = strdup("");
+            m_extensionStr = strdup("");
+        }
     }
+}
+
+
+void Archiver::Init()
+{
+    m_typeStr               = strdup("");
+    m_extensionStr          = strdup("");
+    m_settingsLangStr       = NULL;
+    m_settingsDirectoryPath = NULL;
+    m_tempDirPath           = NULL;
+    m_passwordRequired      = false;
+    m_settingsMenu          = NULL;
+    m_compressionMenu       = NULL;
+
+    m_rulesMsg              = new BMessage();
+    m_hashTable             = NULL;
+    m_cachedPath            = NULL;
+    m_iconList              = NULL;
+    m_folderBmp             = NULL;
+    m_binaryBmp             = NULL;
+    m_htmlBmp               = NULL;
+    m_textBmp               = NULL;
+    m_sourceBmp             = NULL;
+    m_audioBmp              = NULL;
+    m_archiveBmp            = NULL;
+    m_packageBmp            = NULL;
+    m_pdfBmp                = NULL;
+    m_imageBmp              = NULL;
+    m_foldingLevel          = 3;
+
+    m_error                 = B_OK;
 }
 
 
@@ -83,13 +97,13 @@ Archiver::~Archiver()
     if (m_tempDirPath != NULL)
         free((char*)m_tempDirPath);
 
-    int32 entryCount = m_entriesList.CountItems();
+    int32 const entryCount = m_entriesList.CountItems();
     for (int32 i = 0; i < entryCount; i++)
         delete reinterpret_cast<ArchiveEntry*>(m_entriesList.ItemAtFast(i));
 
     delete m_hashTable;
 
-    int32 mimeCount = m_mimeList.CountItems();
+    int32 const mimeCount = m_mimeList.CountItems();
     for (int32 i = 0; i < mimeCount; i++)
         free(reinterpret_cast<char*>(m_mimeList.ItemAtFast(i)));
 
