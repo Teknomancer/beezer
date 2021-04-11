@@ -349,7 +349,7 @@ status_t SplitFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress, 
     if (bufSize > fragmentSize)
         bufSize = fragmentSize;
 
-    size_t bufSizeOriginal = bufSize;
+    ssize_t bufSizeOriginal = bufSize;
     char bufFileName[B_FILE_NAME_LENGTH+1];
     for (uint16 i = 0; i < fragmentCount; i++)
     {
@@ -368,7 +368,7 @@ status_t SplitFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress, 
             bufSize = bufSizeOriginal;
 
         char* buffer = new char[bufSize];
-        uint64 bytesWritten = 0;
+        ssize_t bytesWritten = 0;
         for (;;)
         {
             if (cancel && *cancel == true)
