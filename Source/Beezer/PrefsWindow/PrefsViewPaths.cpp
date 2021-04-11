@@ -11,7 +11,6 @@
 #include "PrefsFields.h"
 #include "PrefsListItem.h"
 #include "Shared.h"
-#include "UIConstants.h"
 
 #include <Alert.h>
 #include <Button.h>
