@@ -185,7 +185,7 @@ void PrefsViewPaths::Render()
             .Add(addPathTextView)
             .Add(m_addPathBtn)
         .End()
-        .AddStrut(B_USE_HALF_ITEM_SPACING)  // extra space before starting next logical group
+        .AddStrut(B_USE_HALF_ITEM_SPACING)
         .Add(extractStrView)
         .AddGroup(B_HORIZONTAL, B_USE_HALF_ITEM_SPACING)
             .Add(m_useDirOpt)
