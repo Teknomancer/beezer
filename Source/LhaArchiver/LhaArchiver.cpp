@@ -627,7 +627,7 @@ status_t LhaArchiver::Create(BPath* archivePath, const char* relPath, BMessage* 
 }
 
 
-void LhaArchiver::BuildDefaultMenu()
+void LhaArchiver::BuildMenu(BMessage& message)
 {
     BMenu* otherMenu;
     BMenuItem* item;
@@ -644,22 +644,31 @@ void LhaArchiver::BuildDefaultMenu()
     m_compressionMenu->AddItem(new BMenuItem("1", NULL));
     menuStr = "2";
     menuStr << " " << B_TRANSLATE("(best)");
-    BMenuItem* defaultItem = new BMenuItem(menuStr, NULL);
     m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
 
-    defaultItem->SetMarked(true);
+    SetCompressionLevel(message.GetInt32(kCompressionLevelString, 2));
 
     // Build the "Other options" sub-menu
     otherMenu = new BMenu(B_TRANSLATE("Other settings"));
     otherMenu->SetRadioMode(false);
 
     item = new BMenuItem(B_TRANSLATE(kLharcCompat), new BMessage(BZR_MENUITEM_SELECTED));
-    item->SetMarked(false);
+    item->SetMarked(message.GetBool(kLharcCompat, false));
     otherMenu->AddItem(item);
 
     // Add sub-menus to settings menu
     m_settingsMenu->AddItem(m_compressionMenu);
     m_settingsMenu->AddItem(otherMenu);
+}
+
+
+status_t LhaArchiver::ArchiveSettings(BMessage& message)
+{
+    BMenuItem* item = m_settingsMenu->FindItem(B_TRANSLATE(kLharcCompat));
+    if (item != NULL)
+        message.AddBool(kLharcCompat, item->IsMarked());
+
+    return Archiver::ArchiveSettings(message);
 }
 
 

@@ -296,7 +296,7 @@ bool GZipArchiver::NeedsTempDirectory() const
 }
 
 
-void GZipArchiver::BuildDefaultMenu()
+void GZipArchiver::BuildMenu(BMessage& message)
 {
     m_settingsMenu = new BMenu(m_typeStr);
 
@@ -313,15 +313,14 @@ void GZipArchiver::BuildDefaultMenu()
     m_compressionMenu->AddItem(new BMenuItem("5", NULL));
     menuStr = "6";
     menuStr << " " << B_TRANSLATE("(default)");
-    BMenuItem* defaultItem = new BMenuItem(menuStr, NULL);
-    m_compressionMenu->AddItem(defaultItem);
+    m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
     m_compressionMenu->AddItem(new BMenuItem("7", NULL));
     m_compressionMenu->AddItem(new BMenuItem("8", NULL));
     menuStr = "9";
     menuStr << " " << B_TRANSLATE("(best)");
     m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
 
-    defaultItem->SetMarked(true);
+    SetCompressionLevel(message.GetInt32(kCompressionLevelString, 6));
 
     // Add sub-menus to settings menu
     m_settingsMenu->AddItem(m_compressionMenu);

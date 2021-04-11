@@ -226,6 +226,6 @@ status_t HPkgArchiver::Create(BPath* archivePath, const char* relPath, BMessage*
 }
 
 
-void HPkgArchiver::BuildDefaultMenu()
+void HPkgArchiver::BuildMenu(BMessage& message)
 {
 }

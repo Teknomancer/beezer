@@ -25,11 +25,12 @@
 
 // keep track of our custom options/menuitems
 static const char
-    *kNoOverwrite  = "Never overwrite existing files",
-    *kUpdateFiles  = "Update files, create if needed",
-    *kFreshenFiles = "Freshen existing files, create none",
-    *kKeepBroken   = "Keep broken extracted files",
-    *kProcessAttrs = "Process attributes";
+    *kAlwaysOverwrite = "Always overwrite (default)",
+    *kNoOverwrite     = "Never overwrite existing files",
+    *kUpdateFiles     = "Update files, create if needed",
+    *kFreshenFiles    = "Freshen existing files, create none",
+    *kKeepBroken      = "Keep broken extracted files",
+    *kProcessAttrs    = "Process attributes";
 
 
 Archiver* load_archiver(const char* addonImagePath)
@@ -468,7 +469,7 @@ status_t RarArchiver::Create(BPath* archivePath, const char* relPath, BMessage* 
 }
 
 
-void RarArchiver::BuildDefaultMenu()
+void RarArchiver::BuildMenu(BMessage& message)
 {
     BMenu *extractMenu, *othersMenu;
     BMenuItem* item;
@@ -479,20 +480,20 @@ void RarArchiver::BuildDefaultMenu()
     extractMenu = new BMenu(B_TRANSLATE("While extracting"));
     extractMenu->SetRadioMode(true);
 
-    item = new BMenuItem(B_TRANSLATE("Always overwrite (default)"), NULL);
-    item->SetMarked(true);
+    item = new BMenuItem(B_TRANSLATE(kAlwaysOverwrite), NULL);
+    item->SetMarked(message.GetBool(kAlwaysOverwrite, true));
     extractMenu->AddItem(item);
 
     item = new BMenuItem(B_TRANSLATE(kNoOverwrite), NULL);
-    item->SetMarked(false);
+    item->SetMarked(message.GetBool(kNoOverwrite, false));
     extractMenu->AddItem(item);
 
     item = new BMenuItem(B_TRANSLATE(kUpdateFiles), NULL);
-    item->SetMarked(false);
+    item->SetMarked(message.GetBool(kUpdateFiles, false));
     extractMenu->AddItem(item);
 
     item = new BMenuItem(B_TRANSLATE(kFreshenFiles), NULL);
-    item->SetMarked(false);
+    item->SetMarked(message.GetBool(kFreshenFiles, false));
     extractMenu->AddItem(item);
 
     // Build the "Other Options" sub-menu
@@ -500,16 +501,46 @@ void RarArchiver::BuildDefaultMenu()
     othersMenu->SetRadioMode(false);
 
     item = new BMenuItem(B_TRANSLATE(kProcessAttrs), new BMessage(BZR_MENUITEM_SELECTED));
-    item->SetMarked(true);
+    item->SetMarked(message.GetBool(kProcessAttrs, false));
     othersMenu->AddItem(item);
 
     item = new BMenuItem(B_TRANSLATE(kKeepBroken), new BMessage(BZR_MENUITEM_SELECTED));
-    item->SetMarked(false);
+    item->SetMarked(message.GetBool(kKeepBroken, false));
     othersMenu->AddItem(item);
 
     // Add sub-menus to settings menu
     m_settingsMenu->AddItem(extractMenu);
     m_settingsMenu->AddItem(othersMenu);
+}
+
+
+status_t RarArchiver::ArchiveSettings(BMessage& message)
+{
+    BMenuItem* item = m_settingsMenu->FindItem(B_TRANSLATE(kAlwaysOverwrite));
+    if (item != NULL)
+        message.AddBool(kAlwaysOverwrite, item->IsMarked());
+
+    item = m_settingsMenu->FindItem(B_TRANSLATE(kNoOverwrite));
+        if (item != NULL)
+            message.AddBool(kNoOverwrite, item->IsMarked());
+
+    item = m_settingsMenu->FindItem(B_TRANSLATE(kUpdateFiles));
+        if (item != NULL)
+            message.AddBool(kUpdateFiles, item->IsMarked());
+
+    item = m_settingsMenu->FindItem(B_TRANSLATE(kFreshenFiles));
+        if (item != NULL)
+            message.AddBool(kFreshenFiles, item->IsMarked());
+
+    item = m_settingsMenu->FindItem(B_TRANSLATE(kProcessAttrs));
+        if (item != NULL)
+            message.AddBool(kProcessAttrs, item->IsMarked());
+
+    item = m_settingsMenu->FindItem(B_TRANSLATE(kKeepBroken));
+        if (item != NULL)
+            message.AddBool(kKeepBroken, item->IsMarked());
+
+    return B_OK;
 }
 
 

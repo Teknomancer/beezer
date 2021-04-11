@@ -295,7 +295,7 @@ bool ZstdArchiver::NeedsTempDirectory() const
 }
 
 
-void ZstdArchiver::BuildDefaultMenu()
+void ZstdArchiver::BuildMenu(BMessage& message)
 {
     m_settingsMenu = new BMenu(m_typeStr);
 
@@ -308,8 +308,7 @@ void ZstdArchiver::BuildDefaultMenu()
     m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
     menuStr = "3";
     menuStr << " " << B_TRANSLATE("(default)");
-    BMenuItem* defaultItem = new BMenuItem(menuStr, NULL);
-    m_compressionMenu->AddItem(defaultItem);
+    m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
     m_compressionMenu->AddItem(new BMenuItem("5", NULL));
     m_compressionMenu->AddItem(new BMenuItem("7", NULL));
     m_compressionMenu->AddItem(new BMenuItem("9", NULL));
@@ -323,7 +322,7 @@ void ZstdArchiver::BuildDefaultMenu()
     menuStr << " " << B_TRANSLATE("(best)");
     m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
 
-    defaultItem->SetMarked(true);
+    SetCompressionLevel(message.GetInt32(kCompressionLevelString, 3));
 
     // Add sub-menus to settings menu
     m_settingsMenu->AddItem(m_compressionMenu);
