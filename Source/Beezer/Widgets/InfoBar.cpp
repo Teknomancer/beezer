@@ -3,23 +3,15 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <Bitmap.h>
-#include <Message.h>
-#include <NumberFormat.h>
-#include <Window.h>
-
-#include <stdio.h>
-#include <string.h>
-
-#include "AppUtils.h"
+#include "InfoBar.h"
 #include "BarberPole.h"
 #include "BeezerStringView.h"
-#include "ImageButton.h"
-#include "InfoBar.h"
 #include "MsgConstants.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
-#include "UIConstants.h"
+
+#include <NumberFormat.h>
+#include <Window.h>
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -31,24 +23,29 @@
 #define B_TRANSLATE_COMMENT(x, y) x
 #endif
 
-// Initialize static non-integral vars here to make c++11 happy
-// while avoiding the use of constexpr which would break gcc2
-const float InfoBar::mk_vertSpacing = 3;
-const float InfoBar::mk_horizSpacing = 2;
+// Default spacing (so we can override them in future via extra constructors perhaps)
+static const float kVertSpacing  = 3;
+static const float kHorizSpacing = 2;
 
 
 InfoBar::InfoBar(BRect frame, BList* slotPositions, const char* name, rgb_color backColor)
     : BView(frame, name, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_WILL_DRAW),
       m_finalSep(NULL),
       m_finalSepEdge(NULL),
+      m_filesStr(NULL),
+      m_bytesStr(NULL),
+      m_barberPole(NULL),
       m_isHidden(false),
-      m_horizGap((int32)static_cast<float>(mk_horizSpacing)),
-      m_vertGap((int32)static_cast<float>(mk_vertSpacing)),
-      m_filesTotal(0L),
+      m_horizGap(kHorizSpacing),
+      m_vertGap(kVertSpacing),
+      m_finalX(0.0),
+      m_filesTotal(0),
+      m_slotPositions(NULL),
       m_totalBytes(0),
+      m_selectedBytes(0),
       m_backColor(backColor)
 {
-	// @todo get rid of slotPositions, they aren't currently used
+	// TODO: get rid of slotPositions, they aren't currently used
     m_slotPositions = slotPositions;
 }
 
@@ -68,34 +65,34 @@ void InfoBar::AttachedToWindow()
     m_darkEdge2 = tint_color(ViewColor(), B_DARKEN_2_TINT);
     m_darkEdge3 = tint_color(ViewColor(), B_DARKEN_3_TINT);
 
-    m_barberPole = new BarberPole(BRect(m_horizGap + 6, m_vertGap, 0, Bounds().Height() - m_vertGap),
+    float const boundsHeight = Bounds().Height();
+
+    m_barberPole = new BarberPole(BRect(m_horizGap + 6, m_vertGap, 0, boundsHeight - m_vertGap),
                                   "InfoBar:BarberPole");
     AddChild(m_barberPole);
 
     font_height fntHt;
     GetFontHeight(&fntHt);
-
-    float normFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading + 2.0;
+    float const normFontHeight = fntHt.ascent + fntHt.descent + fntHt.leading;
+    float const top = (boundsHeight / 2) - (normFontHeight / 2) - 1;
+    float const padding = 6;
 
 	// Use realistic maximums for now, later figure a way to resize this dynamically
     float oneX = StringWidth(B_TRANSLATE("Entries:")) + StringWidth(B_TRANSLATE_COMMENT("of", "ex: 7 of 9"))
     					+ 2 * StringWidth(" 9999999");	// 99 million files
     float twoX = StringWidth(B_TRANSLATE("Bytes:")) + StringWidth(B_TRANSLATE_COMMENT("of", "ex: 7 of 9")) + StringWidth("(100%)")
     					+ 2 * StringWidth(" 1099511627776"); // 1 TB
-    m_filesStr = new BeezerStringView(BRect(m_barberPole->Frame().right + m_horizGap + 6,
-                                            Bounds().Height() / 2 - normFontHeight / 2 - 1,
-                                            m_barberPole->Frame().right + m_horizGap + 6 + oneX - 1,
-                                            Bounds().Height() / 2 - normFontHeight / 2 + normFontHeight),
+    m_filesStr = new BeezerStringView(BRect(m_barberPole->Frame().right + m_horizGap + padding, top,
+                                            m_barberPole->Frame().right + m_horizGap + padding + oneX - 1, top + normFontHeight),
                                             "InfoBar:FilesStr", B_TRANSLATE("Entries:"));
     AddChild(m_filesStr);
     m_filesStr->SendMouseEventsTo(this);
     UpdateFilesDisplay(0L, 0L, true);
     AddSeparatorItem(m_filesStr->Frame().right + 1, false);
 
-    m_bytesStr = new BeezerStringView(BRect(m_filesStr->Frame().right + m_horizGap + 6,
-                                            Bounds().Height() / 2 - normFontHeight / 2 - 1,
-                                            m_filesStr->Frame().right + m_horizGap + 6 + twoX - 1, Bounds().Height() / 2 -
-                                            normFontHeight / 2 + normFontHeight), "InfoBar:BytesStr", B_TRANSLATE("Bytes:"));
+    m_bytesStr = new BeezerStringView(BRect(m_filesStr->Frame().right + m_horizGap + padding, top,
+                                            m_filesStr->Frame().right + m_horizGap + padding + twoX - 1, top + normFontHeight),
+                                      "InfoBar:BytesStr", B_TRANSLATE("Bytes:"));
     AddChild(m_bytesStr);
     m_bytesStr->SendMouseEventsTo(this);
     UpdateBytesDisplay(0L, 0L, true);
@@ -299,7 +296,7 @@ void InfoBar::AddSeparatorItem(float x, bool finalSeparator)
         m_separatorList.AddItem((void*)sepViewEdge1);
     }
 
-    x ++;
+    x++;
     if (finalSeparator)
         m_finalX = x;
 }

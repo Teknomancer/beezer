@@ -32,10 +32,6 @@ class InfoBar : public BView
         virtual float       Height() const;
         BarberPole*         LoadIndicator() const;
 
-        // Static constants
-        static const float  mk_vertSpacing;
-        static const float  mk_horizSpacing;
-
     protected:
         // Protected members
         void                RenderEdges();
@@ -47,11 +43,11 @@ class InfoBar : public BView
                             *m_bytesStr;
         BarberPole*         m_barberPole;
         bool                m_isHidden;
-        int32               m_horizGap,
+        float               m_horizGap,
                             m_vertGap,
-                            m_filesTotal,
+                            m_finalX;
+        int32               m_filesTotal,
                             m_selectedFiles;
-        float               m_finalX;
         BList               m_separatorList,
                             *m_slotPositions;
         off_t               m_totalBytes,
