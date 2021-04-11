@@ -538,6 +538,7 @@ BList Archiver::HiddenColumns(BList* columns) const
     // By default return all columns as available (ie empty hidden list) columns for the archiver
     // Derived classes will over-ride removing unwanted column indices
     // Indices are: 0-name 1-size 2-packed 3-ratio 4-path 5-date 6-method 7-crc
+    (void)columns; // UNUSED_PARAM
     BList retList;
     return retList;
 }
@@ -645,6 +646,8 @@ status_t Archiver::GetComment(char*& commentStr)
 
 status_t Archiver::SetComment(char* commentStr, const char* tempDirPath)
 {
+    (void)commentStr;  // UNUSED_PARAM
+    (void)tempDirPath; // UNUSED_PARAM
     return BZR_DONE;
 }
 
