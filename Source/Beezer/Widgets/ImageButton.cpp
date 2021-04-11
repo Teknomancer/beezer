@@ -249,6 +249,8 @@ void ImageButton::DrawContextMenuTriangle(BPoint topLeftPoint)
 
 void ImageButton::MouseMoved(BPoint point, uint32 status, const BMessage* dragInfo)
 {
+    (void)dragInfo; // UNUSED_PARAM
+
     // Handle the mouse -- Don't alter this unless you know what you are doing
     int32 buttons = Window()->CurrentMessage()->FindInt32("buttons");
 
