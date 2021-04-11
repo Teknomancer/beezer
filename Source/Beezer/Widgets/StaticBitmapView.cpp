@@ -3,10 +3,9 @@
 // Copyright (c) 2012 Chris Roberts.
 // All rights reserved.
 
-#include <Bitmap.h>
-
 #include "StaticBitmapView.h"
 
+#include <Bitmap.h>
 
 
 StaticBitmapView::StaticBitmapView(BRect frame, const char* name, BBitmap* bmp,
