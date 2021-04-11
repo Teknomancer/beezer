@@ -66,11 +66,11 @@ BString StringFromDigitalSize(char *size, char *unit)
     // But "atof" (below) doesn't understand ",". Therefore we need to feed
     // sanitized floating point numbers (just digits and decimal) to "atof".
     size_t i = 0;
-    while (*size && i < sizeof(buf) - 1)
+    while (i < sizeof(buf) - 1)
     {
-        if (isdigit(*size) || *size == '.')
-            buf[i++] = *size;
-        *size++;
+        char ch = size[i];
+        if (isdigit(ch) || ch == '.')
+            buf[i++] = ch;
     }
 
     uint64 const bytes = (uint64)(atof(buf) * (double)DigitalUnitToBytes(unit));
@@ -119,7 +119,7 @@ int32 CountCharsInFront(char* str, char whatChar)
 {
     // Simply count "whatChar"s in the beginning of "str" without modifying "str" pointer
     int32 count = 0;
-    while (str[count] == ' ')
+    while (str[count] == whatChar)
         count++;
 
     return count;
