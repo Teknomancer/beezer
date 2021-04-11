@@ -49,11 +49,25 @@ static const rgb_color kColorBusy       = {   0,   0, 128, 255 };
 AddOnWindow::AddOnWindow(BMessage* refsMessage)
     : BWindow(BRect(10, 10, 420, 475), B_TRANSLATE("QuickCreate archive"), B_TITLED_WINDOW,
               B_NOT_ZOOMABLE | B_NOT_V_RESIZABLE | B_ASYNCHRONOUS_CONTROLS),
+    m_backView(NULL),
+    m_backViewMain(NULL),
+    m_backViewAlt(NULL),
+    m_addView(NULL),
+    m_fileName(NULL),
+    m_password(NULL),
+    m_arkTypeField(NULL),
     m_arkSettingsMenuField(NULL),
+    m_arkTypePopUp(NULL),
+    m_helpBtn(NULL),
+    m_createBtn(NULL),
+    m_statusStr(NULL),
+    m_addingFileStr(NULL),
+    m_barberPole(NULL),
     m_archive(NULL),
     m_readyMode(true),
     m_inProgress(false),
-    m_quitNow(false)
+    m_quitNow(false),
+    m_statusColor(kColorReady)
 {
     m_backView = new BevelView(Bounds(), "AddOnWindow:BackView", BevelView::bevel_type::OUTSET,
                                B_FOLLOW_ALL_SIDES, B_WILL_DRAW);

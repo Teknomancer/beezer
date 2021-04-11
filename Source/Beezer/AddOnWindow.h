@@ -32,7 +32,6 @@ class AddOnWindow : public BWindow
         virtual void        Quit();
 
     private:
-        // Private hooks
         bool                ReplaceExtensionWith(const char* newExt);
         void                UpdateStatus(const char* text);
         void                ValidateData();
@@ -40,7 +39,6 @@ class AddOnWindow : public BWindow
         void                EnableControls(bool enable);
         void                RefsReceived(BMessage* message);
 
-        // Private members
         BevelView*          m_backView,
                             *m_backViewMain,
                             *m_backViewAlt,
