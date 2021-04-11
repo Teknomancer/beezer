@@ -3,19 +3,15 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <Alert.h>
-#include <Application.h>
-#include <Bitmap.h>
-#include <Message.h>
-#include <String.h>
-#include <TranslationUtils.h>
-
-#include <malloc.h>
-
 #include "AboutWindow.h"
 #include "AppConstants.h"
 #include "CommonStrings.h"
 #include "UIConstants.h"
+
+#include <Alert.h>
+#include <Application.h>
+#include <Bitmap.h>
+#include <TranslationUtils.h>
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -27,7 +23,9 @@
 #define B_TRANSLATE_COMMENT(x, y) x
 #endif
 
-const char* kAboutText =
+static const bigtime_t kScrollDelay = 35000;
+
+static const char* kAboutText =
         "Version %appversion%\n"
         "%hdr_debug%\n\n"
         "Compiled on:\n%hdr_builddate%\n\n*  *  *\n\n\n\n\n\n\n\n\n\n"
@@ -111,19 +109,19 @@ const char* kAboutText =
 
 MarqueeView::MarqueeView(BRect frame, const char* name, BRect textRect, uint32 resizeMask,
                          uint32 flags)
-    : BTextView(frame, name, textRect, resizeMask, flags)
+    : BTextView(frame, name, textRect, resizeMask, flags),
+      m_curPos(Bounds().top),
+      m_rightEdge(Bounds().right)
 {
-    m_curPos = Bounds().top;
-    m_rightEdge = Bounds().right;
 }
 
 
 MarqueeView::MarqueeView(BRect frame, const char* name, BRect textRect, const BFont* initialFont,
                          const rgb_color* initialColor, uint32 resizeMask, uint32 flags)
-    : BTextView(frame, name, textRect, initialFont, initialColor, resizeMask, flags)
+    : BTextView(frame, name, textRect, initialFont, initialColor, resizeMask, flags),
+      m_curPos(Bounds().top),
+      m_rightEdge(Bounds().right)
 {
-    m_curPos = Bounds().top;
-    m_rightEdge = Bounds().right;
 }
 
 
@@ -153,7 +151,10 @@ void MarqueeView::ScrollBy(float dh, float dv)
 
 AboutWindow::AboutWindow(const char* versionStr, const char* compileTimeStr)
     : BWindow(BRect(0, 0, 319, 374), BZ_TR(kAboutString), B_MODAL_WINDOW,
-              B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE | B_NOT_RESIZABLE)
+              B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE | B_NOT_RESIZABLE),
+      m_backView(NULL),
+      m_scrollThreadId(0),
+      m_textView(NULL)
 {
     // Create the BBitmap objects and set its data with error checking
     BBitmap* titleBmp = BTranslationUtils::GetBitmap('PNG ', "Img:AboutBox");
@@ -174,6 +175,7 @@ AboutWindow::AboutWindow(const char* versionStr, const char* compileTimeStr)
     m_backView->SetViewBitmap(titleBmp);
 
     delete titleBmp;
+    titleBmp = NULL;
 
     m_textView = new MarqueeView(BRect(15, 130, bounds.right - 15, bounds.bottom - 45),
                                  "AboutWindow:CreditsView", BRect(0, 0, bounds.right - 2 * (15) - 5, 0),
@@ -184,14 +186,14 @@ AboutWindow::AboutWindow(const char* versionStr, const char* compileTimeStr)
     m_textView->MakeEditable(false);
     m_textView->SetAlignment(B_ALIGN_CENTER);
     m_textView->SetViewColor(m_backView->ViewColor());
-    rgb_color textColor = ui_color(B_DOCUMENT_TEXT_COLOR);
+    rgb_color const textColor = ui_color(B_DOCUMENT_TEXT_COLOR);
     m_textView->SetFontAndColor(be_plain_font, B_FONT_ALL, &textColor);
     m_textView->Hide();
 
-    // Calculate no of '\n's to leave to make the text go to the bottom, calculate the no. of lines
+    // Calculate no of '\n's to leave to make the text go to the bottom
     font_height fntHt;
     m_textView->GetFontHeight(&fntHt);
-    int32 noOfLines = (int32)(m_textView->Frame().Height() / (fntHt.ascent + fntHt.descent + fntHt.leading));
+    int32 const noOfLines = (int32)(m_textView->Frame().Height() / (fntHt.ascent + fntHt.descent + fntHt.leading));
     for (int32 i = 0; i < (int32)noOfLines; i++)
         m_lineFeeds << "\n";
 
@@ -219,15 +221,9 @@ AboutWindow::AboutWindow(const char* versionStr, const char* compileTimeStr)
     formatStr.ReplaceAll("%hdr_disclaimer%", B_TRANSLATE("[ Disclaimer ]"));
     formatStr.ReplaceAll("%hdr_thanks%", B_TRANSLATE("SPECIAL THANKS TO"));
 
-    m_creditsText = strdup(formatStr.String());
-
     m_textView->SetText(m_lineFeeds.String());
-    m_textView->Insert(m_lineFeeds.Length(), m_creditsText, strlen(m_creditsText));
+    m_textView->Insert(m_lineFeeds.Length(), formatStr.String(), formatStr.Length());
 
-    // Dealloc m_creditsText as our textview would have made a copy of it & we don't use it anywhere else
-    free((char*)m_creditsText);
-
-    int32 nSubHeadings = 8;
     BString subHeadings[] =
     {
         B_TRANSLATE("[ Programming ]"),
@@ -238,7 +234,6 @@ AboutWindow::AboutWindow(const char* versionStr, const char* compileTimeStr)
         B_TRANSLATE("[ Disclaimer ]")
     };
 
-    int32 nMainHeadings = 3;
     BString mainHeadings[] =
     {
         B_TRANSLATE("CREDITS"),                    // 0
@@ -249,30 +244,34 @@ AboutWindow::AboutWindow(const char* versionStr, const char* compileTimeStr)
     // Search and color sub headings
     BString temp = m_textView->Text();
     int32 strt;
-    for (int32 i = 0; i < nSubHeadings; i++)
+    for (int32 i = 0; i < (int32)B_COUNT_OF(subHeadings); i++)
+    {
         if ((strt = temp.FindFirst(subHeadings[i].String())) != B_ERROR)
         {
             m_textView->SetFontAndColor(strt, strt + strlen(subHeadings[i].String()),
                                         be_plain_font, B_FONT_ALL, &K_ABOUT_SUB_HEADING);
         }
+    }
 
     // Search and color main headings
-    for (int32 i = 0; i < nMainHeadings; i++)
+    for (int32 i = 0; i < (int32)B_COUNT_OF(mainHeadings); i++)
+    {
         if ((strt = temp.FindFirst(mainHeadings[i].String())) != B_ERROR)
         {
             m_textView->SetFontAndColor(strt, strt + strlen(mainHeadings[i].String()),
                                         be_plain_font, B_FONT_ALL, &K_ABOUT_MAIN_HEADING);
         }
+    }
 
     // Center window on-screen
     CenterOnScreen();
 
     // Spawn & resume the scroller thread now
     m_textView->Show();
-    m_scrollThreadID = spawn_thread(_scroller, "_magic_scroller", B_NORMAL_PRIORITY, (void*)this);
+    m_scrollThreadId = spawn_thread(_scroller, "_magic_scroller", B_NORMAL_PRIORITY, (void*)this);
 
     Show();
-    resume_thread(m_scrollThreadID);
+    resume_thread(m_scrollThreadId);
 }
 
 
@@ -326,7 +325,7 @@ int32 AboutWindow::_scroller(void* data)
                     vw->ScrollTo(0, 0);
 
                 wnd->Unlock();
-                snooze(K_SCROLL_DELAY);
+                snooze(kScrollDelay);
             }
             else
                 break;
