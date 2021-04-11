@@ -232,8 +232,8 @@ void InfoBar::Toggle()
     {
         if (m_barberPole->IsAnimating())
             m_barberPole->Show();
-            m_filesStr->Show();
-            m_bytesStr->Show();
+        m_filesStr->Show();
+        m_bytesStr->Show();
 
         for (int32 i = 0L; i < separatorCount; i++)
             ((BView*)m_separatorList.ItemAtFast(i))->Show();
