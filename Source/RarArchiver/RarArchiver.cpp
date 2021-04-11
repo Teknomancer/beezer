@@ -521,24 +521,24 @@ status_t RarArchiver::ArchiveSettings(BMessage& message)
         message.AddBool(kAlwaysOverwrite, item->IsMarked());
 
     item = m_settingsMenu->FindItem(B_TRANSLATE(kNoOverwrite));
-        if (item != NULL)
-            message.AddBool(kNoOverwrite, item->IsMarked());
+    if (item != NULL)
+        message.AddBool(kNoOverwrite, item->IsMarked());
 
     item = m_settingsMenu->FindItem(B_TRANSLATE(kUpdateFiles));
-        if (item != NULL)
-            message.AddBool(kUpdateFiles, item->IsMarked());
+    if (item != NULL)
+        message.AddBool(kUpdateFiles, item->IsMarked());
 
     item = m_settingsMenu->FindItem(B_TRANSLATE(kFreshenFiles));
-        if (item != NULL)
-            message.AddBool(kFreshenFiles, item->IsMarked());
+    if (item != NULL)
+        message.AddBool(kFreshenFiles, item->IsMarked());
 
     item = m_settingsMenu->FindItem(B_TRANSLATE(kProcessAttrs));
-        if (item != NULL)
-            message.AddBool(kProcessAttrs, item->IsMarked());
+    if (item != NULL)
+        message.AddBool(kProcessAttrs, item->IsMarked());
 
     item = m_settingsMenu->FindItem(B_TRANSLATE(kKeepBroken));
-        if (item != NULL)
-            message.AddBool(kKeepBroken, item->IsMarked());
+    if (item != NULL)
+        message.AddBool(kKeepBroken, item->IsMarked());
 
     return B_OK;
 }
