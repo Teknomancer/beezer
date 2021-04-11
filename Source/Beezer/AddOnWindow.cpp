@@ -39,11 +39,11 @@
 
 #include <cassert>
 
-static const rgb_color kColorReady      = { 0,  128,   0, 255 };
-static const rgb_color kColorNotReady   = { 0,    0,   0, 255 };
-static const rgb_color kColorDirMissing = { 182,  0,   0, 255 };
-static const rgb_color kColorOverwrite  = { 128,  0,   0, 255 };
-static const rgb_color kColorBusy       = {   0,  0, 128, 255 };
+static const rgb_color kColorReady      = {   0, 128,   0, 255 };
+static const rgb_color kColorNotReady   = {   0,   0,   0, 255 };
+static const rgb_color kColorDirMissing = { 182,   0,   0, 255 };
+static const rgb_color kColorOverwrite  = { 128,   0,   0, 255 };
+static const rgb_color kColorBusy       = {   0,   0, 128, 255 };
 
 
 AddOnWindow::AddOnWindow(BMessage* refsMessage)
