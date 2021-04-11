@@ -15,7 +15,7 @@ class ZstdArchiver : public TarArchiver
         ZstdArchiver(const char* addonImagePath);
 
         // Overridables
-        void               BuildDefaultMenu();
+        void               BuildMenu(BMessage& message);
 
         // Abstract Implementations & overridables
         status_t           Open(entry_ref* ref, BMessage* fileList);

@@ -682,7 +682,7 @@ status_t ArjArchiver::Create(BPath* archivePath, const char* relPath, BMessage* 
 }
 
 
-void ArjArchiver::BuildDefaultMenu()
+void ArjArchiver::BuildMenu(BMessage& message)
 {
     BMenu* extractMenu;
     BMenu* addMenu;
@@ -703,33 +703,56 @@ void ArjArchiver::BuildDefaultMenu()
     m_compressionMenu->AddItem(new BMenuItem("2", NULL));
     menuStr = "1";
     menuStr << " " << B_TRANSLATE("(best,default)");
-    BMenuItem* defaultItem = new BMenuItem(menuStr, NULL);
-    m_compressionMenu->AddItem(defaultItem);
+    m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
 
-    defaultItem->SetMarked(true);
+    SetCompressionLevel(message.GetInt32(kCompressionLevelString, 1));
 
     // Build the "While adding" sub-menu
     addMenu = new BMenu(B_TRANSLATE("While adding"));
     addMenu->SetRadioMode(false);
 
-    item = new BMenuItem(B_TRANSLATE(kRecurseDirs), new BMessage(BZR_MENUITEM_SELECTED));
-    item->SetMarked(true);
-    addMenu->AddItem(item);
+    addMenu->AddItem(item = new BMenuItem(B_TRANSLATE(kRecurseDirs), new BMessage(BZR_MENUITEM_SELECTED)));
+    item->SetMarked(message.GetBool(kRecurseDirs, true));
 
     // Build the extract sub-menu
     extractMenu = new BMenu(B_TRANSLATE("While extracting"));
     extractMenu->SetRadioMode(false);
 
-    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(kUpdateFiles), new BMessage(BZR_MENUITEM_SELECTED)));
-    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(kFreshenFiles), new BMessage(BZR_MENUITEM_SELECTED)));
-    item = new BMenuItem(B_TRANSLATE(kMultiVolume), new BMessage(BZR_MENUITEM_SELECTED));
-    extractMenu->AddItem(item);
-    item->SetMarked(true);
+    extractMenu->AddItem(item = new BMenuItem(B_TRANSLATE(kUpdateFiles), new BMessage(BZR_MENUITEM_SELECTED)));
+    item->SetMarked(message.GetBool(kUpdateFiles, false));
+
+    extractMenu->AddItem(item = new BMenuItem(B_TRANSLATE(kFreshenFiles), new BMessage(BZR_MENUITEM_SELECTED)));
+    item->SetMarked(message.GetBool(kFreshenFiles, false));
+
+    extractMenu->AddItem(item = new BMenuItem(B_TRANSLATE(kMultiVolume), new BMessage(BZR_MENUITEM_SELECTED)));
+    item->SetMarked(message.GetBool(kFreshenFiles, true));
 
     // Add sub-menus to settings menu
     m_settingsMenu->AddItem(m_compressionMenu);
     m_settingsMenu->AddItem(addMenu);
     m_settingsMenu->AddItem(extractMenu);
+}
+
+
+status_t ArjArchiver::ArchiveSettings(BMessage &message)
+{
+    BMenuItem* item = m_settingsMenu->FindItem(B_TRANSLATE(kRecurseDirs));
+    if (item != NULL)
+        message.AddBool(kRecurseDirs, item->IsMarked());
+
+    item = m_settingsMenu->FindItem(B_TRANSLATE(kUpdateFiles));
+        if (item != NULL)
+            message.AddBool(kUpdateFiles, item->IsMarked());
+
+    item = m_settingsMenu->FindItem(B_TRANSLATE(kFreshenFiles));
+        if (item != NULL)
+            message.AddBool(kFreshenFiles, item->IsMarked());
+
+    item = m_settingsMenu->FindItem(B_TRANSLATE(kMultiVolume));
+        if (item != NULL)
+            message.AddBool(kFreshenFiles, item->IsMarked());
+
+    return Archiver::ArchiveSettings(message);
 }
 
 

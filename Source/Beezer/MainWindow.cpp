@@ -2940,7 +2940,7 @@ void MainWindow::SetupArchiver(entry_ref* ref, char* mimeString)
     InitArchiver();
 }
 
-
+#include <iostream>
 void MainWindow::InitArchiver()
 {
     m_archiver->SetFoldingLevel(m_foldingLevel);
@@ -2962,11 +2962,17 @@ void MainWindow::InitArchiver()
 
     if (m_createMode == false)
     {
-        BMenu* arkMenuFromArchive = LoadArchiverFromArchive(&m_archiveRef);
-        if (arkMenuFromArchive != NULL && _prefs_state.FindBoolDef(kPfRestoreArk, true) == true)
-            m_archiver->SetSettingsMenu(arkMenuFromArchive);
+        if (_prefs_state.FindBoolDef(kPfRestoreArk, true) == true)
+        {
+            if (LoadArchiverFromArchive(&m_archiveRef) == NULL)
+                // no attribute on the archive file, try to load app defaults
+                m_archiver->LoadSettingsMenu();
+        }
         else
-            m_archiver->LoadSettingsMenu();
+        {
+            BMessage empty;
+            m_archiver->BuildMenu(empty);
+        }
     }
     else
         m_archiver->LoadSettingsMenu();
@@ -3614,32 +3620,18 @@ void MainWindow::SaveArchiverToArchive(BMessage* message)
 {
     // Save archiver menu to archive -- this function should probably be named
     // SaveArkSettingsToArchive() but anyway ;-)
-    BMenu* settingsMenu = m_archiver->SettingsMenu();
-    if (!settingsMenu)
-        return;
-
     BMessage msg('arkv');
-
-    // Remove "Save as default" "save to archive" and separator items
-    BMenuItem* item0 = settingsMenu->RemoveItem(settingsMenu->CountItems() - 1);
-    BMenuItem* item1 = settingsMenu->RemoveItem(settingsMenu->CountItems() - 1);
-    BMenuItem* item2 = settingsMenu->RemoveItem(settingsMenu->CountItems() - 1);
 
     // If no "message" is passed save the current archiver menu
     if (!message)
     {
-        settingsMenu->Archive(&msg, true);
+        m_archiver->ArchiveSettings(msg);
 
         // Cache the archiver state
         CacheState(&m_cachedArkState, &msg);
     }
     else        // else save the state in "message" that is passed
         msg = *message;
-
-    // Restore menu to its original form
-    settingsMenu->AddItem(item2);
-    settingsMenu->AddItem(item1);
-    settingsMenu->AddItem(item0);
 
     BNode archiveNode(&m_archiveEntry);
     ssize_t msgLength = msg.FlattenedSize();
@@ -3654,29 +3646,24 @@ BMenu* MainWindow::LoadArchiverFromArchive(entry_ref* ref)
 {
     // Load archiver settings from archive's attribute -- this function should probably be named
     // LoadArkSettingsFromArchive but anyway :)
-    BMenu* menu = NULL;
     BMessage msg;
     BNode archiveNode(ref);
 
     attr_info attribInfo;
-    if (archiveNode.GetAttrInfo(K_ARK_ATTRIBUTE, &attribInfo) == B_OK)
-    {
-        char* msgBuf = new char [attribInfo.size];
+    if (archiveNode.GetAttrInfo(K_ARK_ATTRIBUTE, &attribInfo) != B_OK)
+        return NULL;
 
-        archiveNode.ReadAttr(K_ARK_ATTRIBUTE, B_MESSAGE_TYPE, 0, msgBuf, attribInfo.size);
-        msg.Unflatten(msgBuf);
+    char* msgBuf = new char [attribInfo.size];
+    archiveNode.ReadAttr(K_ARK_ATTRIBUTE, B_MESSAGE_TYPE, 0, msgBuf, attribInfo.size);
+    msg.Unflatten(msgBuf);
+    delete[] msgBuf;
 
-        // Cache the archiver state
-        CacheState(&m_cachedArkState, &msg);
+    // Cache the archiver state
+    CacheState(&m_cachedArkState, &msg);
 
-        BArchivable* arkMenu = instantiate_object(&msg);
-        if (arkMenu)
-            menu = cast_as(arkMenu, BMenu);
+    m_archiver->BuildMenu(msg);
 
-        delete[] msgBuf;
-    }
-
-    return menu;
+    return m_archiver->SettingsMenu();
 }
 
 

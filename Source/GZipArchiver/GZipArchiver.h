@@ -15,7 +15,7 @@ class GZipArchiver : public TarArchiver
         GZipArchiver(const char* addonImagePath);
 
         // Overridables
-        void               BuildDefaultMenu();
+        void               BuildMenu(BMessage& message);
 
         // Abstract Implementations & overridables
         status_t           Open(entry_ref* ref, BMessage* fileList);

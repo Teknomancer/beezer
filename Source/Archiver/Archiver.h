@@ -60,7 +60,6 @@ class Archiver
         void                GetLists(BList*& fileList, BList*& folderList) const;
         void                FillLists(BList* fileList = NULL, BList* dirList = NULL);
         BMenu*              SettingsMenu() const;
-        void                SetSettingsMenu(BMenu* menu);
         void                SaveSettingsMenu();
         void                LoadSettingsMenu();
         void                SetTempDirectoryPath(const char* path);
@@ -69,9 +68,10 @@ class Archiver
         BString             Password() const;
 
         // Optionally-overridable functions
+        virtual status_t    ArchiveSettings(BMessage& message);
         virtual status_t    LoadMetaData(const char* addonImagePath);
         virtual BMessage*   GetRulesMessage();
-        virtual void        BuildDefaultMenu();
+        virtual void        BuildMenu(BMessage& message);
         virtual BList       HiddenColumns(BList* columnList) const;
         virtual bool        SupportsComment() const;
         virtual bool        SupportsFolderEntity() const;
@@ -109,6 +109,7 @@ class Archiver
                                      const char* year, const char* hour, const char* min, const char* sec);
         time_t              ArchiveModificationTime() const;
         int32               GetCompressionLevel(BMenu* menu = NULL);
+        status_t            SetCompressionLevel(int32 level);
 
         const char*         m_typeStr,
                            *m_extensionStr,

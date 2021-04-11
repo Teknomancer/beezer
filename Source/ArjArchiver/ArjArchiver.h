@@ -16,7 +16,8 @@ class ArjArchiver : public Archiver
         ArjArchiver(const char* addonImagePath);
 
         // Overridables
-        void                BuildDefaultMenu();
+        void                BuildMenu(BMessage& message);
+        status_t            ArchiveSettings(BMessage& message);
 
         // Abstract Implementations & overridables
         status_t            Open(entry_ref* ref, BMessage* fileList);

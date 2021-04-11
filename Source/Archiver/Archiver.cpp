@@ -689,21 +689,17 @@ BMenu* Archiver::SettingsMenu() const
 }
 
 
-void Archiver::SetSettingsMenu(BMenu* menu)
+void Archiver::BuildMenu(BMessage& message)
 {
-    if (m_settingsMenu)
-        delete m_settingsMenu;
-    m_settingsMenu = menu;
-
-    BMenu* compressionMenu = m_settingsMenu->FindItem(B_TRANSLATE(kCompressionLevelString))->Submenu();
-    if (compressionMenu != NULL)
-        m_compressionMenu = compressionMenu;
+    // Empty implementation (i.e. m_settingsMenu will be NULL if control comes here)
 }
 
 
-void Archiver::BuildDefaultMenu()
+status_t Archiver::ArchiveSettings(BMessage& message)
 {
-    // Empty implementation (i.e. m_settingsMenu will be NULL if control comes here)
+    if (m_compressionMenu != NULL)
+        message.AddInt32(kCompressionLevelString, GetCompressionLevel());
+    return B_OK;
 }
 
 
@@ -727,18 +723,8 @@ void Archiver::SaveSettingsMenu()
     BString settingsFilePath;
     BFile settingsFile;
 
-    // Remove the last 3 items which will be "Save as Defaults", "Save to archive" and separator item
-    // Then save the rest of the items,
-    BMenuItem* item0 = m_settingsMenu->RemoveItem(m_settingsMenu->CountItems() - 1);
-    BMenuItem* item1 = m_settingsMenu->RemoveItem(m_settingsMenu->CountItems() - 1);
-    BMenuItem* item2 = m_settingsMenu->RemoveItem(m_settingsMenu->CountItems() - 1);
-
-    m_settingsMenu->Archive(&settingsMsg, true);
-
-    // Restore menu to its original form
-    m_settingsMenu->AddItem(item2);
-    m_settingsMenu->AddItem(item1);
-    m_settingsMenu->AddItem(item0);
+    if (ArchiveSettings(settingsMsg) != B_OK)
+        return;
 
     BString temp = m_typeStr;
     temp.ToLower();        // Use lowercase filenames :)
@@ -764,25 +750,21 @@ void Archiver::LoadSettingsMenu()
     settingsFilePath = m_settingsDirectoryPath;
     settingsFilePath << "/" << temp.String() << "_settings";
 
+    BMessage settingsMsg;
     BFile settingsFile;
-    if (settingsFile.SetTo(settingsFilePath.String(), B_READ_ONLY) == B_OK)
+    if (settingsFile.SetTo(settingsFilePath.String(), B_READ_ONLY) != B_OK)
     {
-        BMessage settingsMsg;
-        settingsMsg.Unflatten(&settingsFile);
-
-        m_settingsMenu = new BMenu(&settingsMsg);
-        if (m_settingsMenu == NULL)
-            BuildDefaultMenu();
-        else
-        {
-            BMenu* compressionMenu = m_settingsMenu->FindItem(B_TRANSLATE(kCompressionLevelString))->Submenu();
-            if (compressionMenu != NULL)
-                m_compressionMenu = compressionMenu;
-        }
-
+        BuildMenu(settingsMsg); // use an empty message
+        return;
     }
-    else
-        BuildDefaultMenu();
+
+    if (settingsMsg.Unflatten(&settingsFile) != B_OK)
+    {
+        BuildMenu(settingsMsg); // use an empty message
+        return;
+    }
+
+    BuildMenu(settingsMsg);
 }
 
 
@@ -849,4 +831,28 @@ int32 Archiver::GetCompressionLevel(BMenu* menu)
         menuLabel.Truncate(idx, false);
 
     return atol(menuLabel);
+}
+
+
+status_t Archiver::SetCompressionLevel(int32 level)
+{
+    if (m_compressionMenu == NULL)
+        return B_ERROR;
+
+    for (int32 idx = 0; idx < m_compressionMenu->CountItems(); idx++)
+    {
+        BMenuItem* item = m_compressionMenu->ItemAt(idx);
+        BString label(item->Label());
+        int32 spaceIdx = label.FindFirst(' ');
+        if (spaceIdx != B_ERROR)
+            label.Truncate(spaceIdx, false);
+
+        if (atol(label) == level)
+        {
+            item->SetMarked(true);
+            return B_OK;
+        }
+    }
+
+    return B_ERROR;
 }
