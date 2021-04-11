@@ -86,9 +86,12 @@ BeezerApp::BeezerApp()
     m_defaultWindowRect.Set(40, 40, 610, 440);
 
     // If we detect a bigger screen size, make our rectangle bigger
-    BScreen screenRect;
-    if (screenRect.Frame().Width() > 641 && screenRect.Frame().Height() > 481)
+    BRect screenRect(BScreen().Frame());
+    if (screenRect.Width() > 641 && screenRect.Height() > 481)
+    {
         m_defaultWindowRect.Set(0, 0, 710, 500);
+        m_defaultWindowRect.OffsetBy(screenRect.Width()/6, screenRect.Height()/6);
+    }
 
     m_newWindowRect = m_defaultWindowRect;
 
@@ -486,10 +489,6 @@ void BeezerApp::MessageReceived(BMessage* message)
 
 MainWindow* BeezerApp::RegisterWindow(entry_ref* ref)
 {
-    m_newWindowRect.OffsetBy(15, 15);
-    if (m_newWindowRect.bottom >= BScreen().Frame().bottom || m_newWindowRect.right >= BScreen().Frame().right)
-        m_newWindowRect = m_defaultWindowRect;
-
     MainWindow* wndPtr = NULL;
     if (ref != NULL)
     {
@@ -619,6 +618,11 @@ MainWindow* BeezerApp::CreateWindow(entry_ref* ref)
 
     MainWindow* wndPtr = new MainWindow(m_newWindowRect, m_windowMgr, m_recentMgr,
                                         m_extractMgr, m_ruleMgr);
+
+    m_newWindowRect.OffsetBy(30, 30);
+    if (m_newWindowRect.bottom >= BScreen().Frame().bottom || m_newWindowRect.right >= BScreen().Frame().right)
+        m_newWindowRect = m_defaultWindowRect;
+
     m_windowMgr->AddWindow(wndPtr);
     if (ref)
         wndPtr->LoadSettingsFromArchive(ref);
