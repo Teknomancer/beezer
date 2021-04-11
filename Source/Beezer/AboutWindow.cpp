@@ -304,37 +304,33 @@ int32 AboutWindow::_scroller(void* data)
 {
     // This thread function controls the scrolling of the marqueeview
     AboutWindow* wnd = reinterpret_cast<AboutWindow*>(data);
-    float textLen, height;
-    float ptY;
-    BPoint pt;
 
     // Calculate a few things here so that our loop isn't strained
     if (wnd && wnd->Lock())
     {
-        textLen = wnd->m_textView->TextLength() - 1;
-        height = wnd->Bounds().Height();
-        pt = wnd->m_textView->PointAt(wnd->m_textView->TextLength() - 1);
-        wnd->Unlock();
-    }
-    else
-        return 0;
-
-    ptY = pt.y + height;
-    MarqueeView* vw = wnd->m_textView;
-
-    // Control the scrolling view
-    for (;;)
-    {
-        if (wnd->Lock() == true)
-            vw->ScrollBy(0, 1);
-        else
-            return 0;
-
-        if (vw->Bounds().bottom > ptY)
-            vw->ScrollTo(0, 0);
+        float const height = wnd->Bounds().Height();
+        BPoint pt = wnd->m_textView->PointAt(wnd->m_textView->TextLength() - 1);
 
         wnd->Unlock();
-        snooze(K_SCROLL_DELAY);
+
+        float const ptY = pt.y + height;
+        MarqueeView* vw = wnd->m_textView;
+
+        // Control the scrolling view
+        for (;;)
+        {
+            if (wnd->Lock() == true)
+            {
+                vw->ScrollBy(0, 1);
+                if (vw->Bounds().bottom > ptY)
+                    vw->ScrollTo(0, 0);
+
+                wnd->Unlock();
+                snooze(K_SCROLL_DELAY);
+            }
+            else
+                break;
+        }
     }
 
     return 0;
