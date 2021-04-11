@@ -206,7 +206,7 @@ BString LocaleStringFromBytes(uint64 val)
 
     char buf[64];
     if (val < kKiBSize)
-        sprintf(buf, "%" B_PRIu64 " bytes");
+        sprintf(buf, "%" B_PRIu64 " bytes", val);
     else if (val < kMiBSize)
         sprintf(buf, "%.2f %s", (double)val / kKiBSize, BZ_TR(kKilobyteString));
     else if (val < kGiBSize)
