@@ -51,6 +51,8 @@ void BeezerStringView::Invalidate(BRect invalRect)
 
 void BeezerStringView::RenderView(bool firstTime)
 {
+    (void)firstTime; // UNUSED_PARAM
+
     // Buffered draw, lock the bitmap, draw to the bitmap owned view, then render bitmap finally
     m_backBitmap->Lock();
 
