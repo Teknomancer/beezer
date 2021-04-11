@@ -160,12 +160,11 @@ int32 HashTable::FindUnder(BMessage* message, const char* fieldName, const char*
     message->AddString(fieldName, directoryPath);
     count++;
     for (int64 bucket = 0LL; bucket < m_tableSize; bucket++)
-        for (HashEntry * element = m_table[bucket]; element != NULL;)
+        for (HashEntry* element = m_table[bucket]; element != NULL;)
         {
             BString buf = element->m_pathStr;
             if (buf.FindFirst(directoryPath) >= 0L)
             {
-                BString buf = element->m_pathStr;
                 buf.ReplaceAll("*", "\\*");
                 // Don't add filenames - this is because tar will get stuck up when there are
                 // duplicate entries (same filenames) as samenames must be supplied to tar only
