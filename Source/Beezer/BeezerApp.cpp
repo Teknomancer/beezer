@@ -262,7 +262,7 @@ void BeezerApp::MessageReceived(BMessage* message)
             {
 	            buf = B_TRANSLATE("Completed registering of file types. Associated %count% file types with %appname%.");
 	            BString countBuf;
-	            countBuf.SetToFormat("%ld", regCount);
+	            countBuf.SetToFormat("%d", regCount);
 	            buf.ReplaceAll("%count%", countBuf);
             }
             else if (regCount == 0)
