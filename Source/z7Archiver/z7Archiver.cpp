@@ -16,19 +16,21 @@
 #include <Catalog.h>
 
 #undef B_TRANSLATION_CONTEXT
-#define B_TRANSLATION_CONTEXT "XzArchiver"
+#define B_TRANSLATION_CONTEXT "7zipArchiver"
 #else
 #define B_TRANSLATE(x) x
 #endif
 
 
-//#define S_ARCHIVE_ATTRS "Add attributes"
-#define S_USE_SOLID_BLOCKS      "Use solid blocks"
-#define S_USE_MULTI_THREAD      "Use multi-threading (for multi-core CPUs)"
-#define S_OVERWRITE_FILES       "Always overwrite (default)"
-#define S_NO_OVERWRITE          "Never overwrite existing files"
-#define S_RENAME_EXISTING       "Rename existing files"
-#define S_RENAME_EXTRACTED      "Rename extracted files"
+// keep track of our custom options/menuitems
+static const char
+    //*kArchiveAttrs    = "Add attributes", // unused?
+    *kSolidBlocks     = "Use solid blocks",
+    *kMultiThread     = "Use multi-threading (for multi-core CPUs)",
+    *kOverwriteFiles  = "Always overwrite (default)",
+    *kNoOverwrite     = "Never overwrite existing files",
+    *kRenameExisting  = "Rename existing files",
+    *kRenameExtracted = "Rename extracted files";
 
 
 Archiver* load_archiver(const char* addonImagePath)
@@ -172,11 +174,11 @@ status_t z7Archiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger*
 
     if (progress)    // Only enable extract options when user is NOT viewing
     {
-        if (m_settingsMenu->FindItem(B_TRANSLATE(S_NO_OVERWRITE))->IsMarked())
+        if (m_settingsMenu->FindItem(B_TRANSLATE(kNoOverwrite))->IsMarked())
             m_pipeMgr << "-aos";
-        else if (m_settingsMenu->FindItem(B_TRANSLATE(S_RENAME_EXISTING))->IsMarked())
+        else if (m_settingsMenu->FindItem(B_TRANSLATE(kRenameExisting))->IsMarked())
             m_pipeMgr << "-aot";
-        else if (m_settingsMenu->FindItem(B_TRANSLATE(S_RENAME_EXTRACTED))->IsMarked())
+        else if (m_settingsMenu->FindItem(B_TRANSLATE(kRenameExtracted))->IsMarked())
             m_pipeMgr << "-aou";
         else
             m_pipeMgr << "-aoa";
@@ -465,7 +467,7 @@ status_t z7Archiver::Add(bool createMode, const char* relativePath, BMessage* me
     levelStr.SetToFormat("-mx%ld", GetCompressionLevel());
     m_pipeMgr << m_7zPath << "a" << levelStr.String();
 
-    if (m_settingsMenu->FindItem(B_TRANSLATE(S_USE_MULTI_THREAD))->IsMarked() == true)
+    if (m_settingsMenu->FindItem(B_TRANSLATE(kMultiThread))->IsMarked() == true)
         m_pipeMgr << "-mmt";
 
     BString combo = Password();
@@ -479,7 +481,7 @@ status_t z7Archiver::Add(bool createMode, const char* relativePath, BMessage* me
     // Delete/update works only on whole solid block (so all files in such block have to be targetted).
     // Also files inside solid blocks do not show compressed size.
     // Of course using -msoff will not help with handling solid blocks in archives made by other apps.
-    if (m_settingsMenu->FindItem(B_TRANSLATE(S_USE_SOLID_BLOCKS))->IsMarked() == false)
+    if (m_settingsMenu->FindItem(B_TRANSLATE(kSolidBlocks))->IsMarked() == false)
         m_pipeMgr << "-ms=off";
 
     // 0.07: Added "-bd" switch to prevent percentage display in output
@@ -822,11 +824,11 @@ void z7Archiver::BuildDefaultMenu()
     addMenu = new BMenu(B_TRANSLATE("While adding"));
     addMenu->SetRadioMode(false);
 
-    item = new BMenuItem(B_TRANSLATE(S_USE_SOLID_BLOCKS), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(kSolidBlocks), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(false);
     addMenu->AddItem(item);
 
-    item = new BMenuItem(B_TRANSLATE(S_USE_MULTI_THREAD), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE(kMultiThread), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(true);
     addMenu->AddItem(item);
 
@@ -834,11 +836,11 @@ void z7Archiver::BuildDefaultMenu()
     extractMenu = new BMenu(B_TRANSLATE("While extracting"));
     extractMenu->SetRadioMode(true);
 
-    defaultItem = new BMenuItem(B_TRANSLATE(S_OVERWRITE_FILES), NULL);
+    defaultItem = new BMenuItem(B_TRANSLATE(kOverwriteFiles), NULL);
     extractMenu->AddItem(defaultItem);
-    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(S_NO_OVERWRITE), NULL));
-    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(S_RENAME_EXISTING), NULL));
-    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(S_RENAME_EXTRACTED), NULL));
+    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(kNoOverwrite), NULL));
+    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(kRenameExisting), NULL));
+    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(kRenameExtracted), NULL));
 
     defaultItem->SetMarked(true);
 
