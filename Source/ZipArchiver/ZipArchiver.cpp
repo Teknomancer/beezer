@@ -851,28 +851,28 @@ status_t ZipArchiver::ArchiveSettings(BMessage &message)
         message.AddBool(kAddAttrs, item->IsMarked());
 
     item = m_settingsMenu->FindItem(B_TRANSLATE(kRecurseDirs));
-        if (item != NULL)
-            message.AddBool(kRecurseDirs, item->IsMarked());
+    if (item != NULL)
+        message.AddBool(kRecurseDirs, item->IsMarked());
 
     item = m_settingsMenu->FindItem(B_TRANSLATE(kExtractAttrs));
-        if (item != NULL)
-            message.AddBool(kExtractAttrs, item->IsMarked());
+    if (item != NULL)
+        message.AddBool(kExtractAttrs, item->IsMarked());
 
     item = m_settingsMenu->FindItem(B_TRANSLATE(kExtractDirs));
-        if (item != NULL)
-            message.AddBool(kExtractDirs, item->IsMarked());
+    if (item != NULL)
+        message.AddBool(kExtractDirs, item->IsMarked());
 
     item = m_settingsMenu->FindItem(B_TRANSLATE(kNoOverwrite));
-        if (item != NULL)
-            message.AddBool(kNoOverwrite, item->IsMarked());
+    if (item != NULL)
+        message.AddBool(kNoOverwrite, item->IsMarked());
 
     item = m_settingsMenu->FindItem(B_TRANSLATE(kUpdateFiles));
-        if (item != NULL)
-            message.AddBool(kUpdateFiles, item->IsMarked());
+    if (item != NULL)
+        message.AddBool(kUpdateFiles, item->IsMarked());
 
     item = m_settingsMenu->FindItem(B_TRANSLATE(kFreshenFiles));
-        if (item != NULL)
-            message.AddBool(kFreshenFiles, item->IsMarked());
+    if (item != NULL)
+        message.AddBool(kFreshenFiles, item->IsMarked());
 
     return Archiver::ArchiveSettings(message);
 }

@@ -861,24 +861,24 @@ status_t z7Archiver::ArchiveSettings(BMessage &message)
         message.AddBool(kSolidBlocks, item->IsMarked());
 
     item = m_settingsMenu->FindItem(B_TRANSLATE(kMultiThread));
-        if (item != NULL)
-            message.AddBool(kMultiThread, item->IsMarked());
+    if (item != NULL)
+        message.AddBool(kMultiThread, item->IsMarked());
 
     item = m_settingsMenu->FindItem(B_TRANSLATE(kOverwriteFiles));
-        if (item != NULL)
-            message.AddBool(kOverwriteFiles, item->IsMarked());
+    if (item != NULL)
+        message.AddBool(kOverwriteFiles, item->IsMarked());
 
     item = m_settingsMenu->FindItem(B_TRANSLATE(kNoOverwrite));
-        if (item != NULL)
-            message.AddBool(kNoOverwrite, item->IsMarked());
+    if (item != NULL)
+        message.AddBool(kNoOverwrite, item->IsMarked());
 
     item = m_settingsMenu->FindItem(B_TRANSLATE(kRenameExisting));
-        if (item != NULL)
-            message.AddBool(kRenameExisting, item->IsMarked());
+    if (item != NULL)
+        message.AddBool(kRenameExisting, item->IsMarked());
 
     item = m_settingsMenu->FindItem(B_TRANSLATE(kRenameExtracted));
-        if (item != NULL)
-            message.AddBool(kRenameExtracted, item->IsMarked());
+    if (item != NULL)
+        message.AddBool(kRenameExtracted, item->IsMarked());
 
     return Archiver::ArchiveSettings(message);
 }

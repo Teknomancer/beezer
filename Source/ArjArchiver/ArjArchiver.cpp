@@ -741,16 +741,16 @@ status_t ArjArchiver::ArchiveSettings(BMessage &message)
         message.AddBool(kRecurseDirs, item->IsMarked());
 
     item = m_settingsMenu->FindItem(B_TRANSLATE(kUpdateFiles));
-        if (item != NULL)
-            message.AddBool(kUpdateFiles, item->IsMarked());
+    if (item != NULL)
+        message.AddBool(kUpdateFiles, item->IsMarked());
 
     item = m_settingsMenu->FindItem(B_TRANSLATE(kFreshenFiles));
-        if (item != NULL)
-            message.AddBool(kFreshenFiles, item->IsMarked());
+    if (item != NULL)
+        message.AddBool(kFreshenFiles, item->IsMarked());
 
     item = m_settingsMenu->FindItem(B_TRANSLATE(kMultiVolume));
-        if (item != NULL)
-            message.AddBool(kFreshenFiles, item->IsMarked());
+    if (item != NULL)
+        message.AddBool(kFreshenFiles, item->IsMarked());
 
     return Archiver::ArchiveSettings(message);
 }
