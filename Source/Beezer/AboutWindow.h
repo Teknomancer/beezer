@@ -9,8 +9,7 @@
 #include <TextView.h>
 #include <Window.h>
 
-#define K_SCROLL_DELAY        35000
-#define M_CLOSE_ABOUT        'clab'
+static const uint32 M_CLOSE_ABOUT = 'clab';
 
 class MarqueeView : public BTextView
 {
@@ -25,7 +24,6 @@ class MarqueeView : public BTextView
         void                ScrollTo(float x, float y);
 
     private:
-        // Private members
         float               m_curPos,
                             m_rightEdge;
 };
@@ -43,11 +41,9 @@ class AboutWindow : public BWindow
         // Thread functions
         static int32        _scroller(void* data);
 
-        // Private members
         BView*              m_backView;
         BString             m_lineFeeds;
-        thread_id           m_scrollThreadID;
-        const char*         m_creditsText;
+        thread_id           m_scrollThreadId;
 
         MarqueeView*        m_textView;
 
