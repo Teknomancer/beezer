@@ -547,7 +547,7 @@ bool AddOnWindow::ReplaceExtensionWith(const char* newExt)
         int32 extLocation = existingName.FindLast((char*)m_arkExtensions.ItemAtFast(i));
         if (extLocation >= 0L
                 // make sure it's exactly the same. otherwise extensions like tar get found before tar.xz
-                && (existingName.Length() - extLocation == strlen((char*)m_arkExtensions.ItemAtFast(i)))
+                && (existingName.Length() - extLocation == (int32)strlen((char*)m_arkExtensions.ItemAtFast(i)))
                 && existingName != newExtStr)
         {
             BString newExtension = existingName;
