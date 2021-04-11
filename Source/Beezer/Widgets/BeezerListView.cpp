@@ -866,39 +866,45 @@ int32 BeezerListView::Search(const BMessage* message, const char*& errorString)
 void BeezerListView::CopyToClipboard(char columnSeparator)
 {
     BList visibleColumnList;
-    int32 columnCount = CountColumns();
+    int32 const nColumns = CountColumns();
 
-    // Copy according to the display order by adding items to the visibleColumnList as per the display order
-    int32* displayOrderArray = new int32[columnCount];
+    // Copy according to the display order by adding items to the visibleColumnList.
+    int32* displayOrderArray = new int32[nColumns];
     GetDisplayOrder(displayOrderArray);
 
-    // Form the ordered visible column list now
-    for (int32 k = 2; k < columnCount; k++)
+    // Construct the ordered, visible column list now
+    for (int32 k = 0; k < nColumns; k++)
     {
-        CLVColumn* column = (CLVColumn*)ColumnAt(displayOrderArray[k]);
+        CLVColumn* column = ColumnAt(displayOrderArray[k]);
+
+        // Skip over expander (CLV_EXPANDER) and icon column (CLV_USER_SPECIAL_1)
+        int32 const flags = column->Flags();
+        if (flags & (CLV_EXPANDER | CLV_USER_SPECIAL_1))
+            continue;
+
         if (column->IsShown())
-            visibleColumnList.AddItem((void*)displayOrderArray[k]);
+            visibleColumnList.AddItem((void*)column);
     }
-    columnCount = visibleColumnList.CountItems();
 
+    int32 nVisibleColumns = visibleColumnList.CountItems();
 
-    // Now get all the selected items in the visible columns
+    // Now get the text from the selected items in the visible columns
     BString buf;
     CLVEasyItem* selectedItem = NULL;
     int32 i = 0L;
 
     while ((selectedItem = (CLVEasyItem*)FullListItemAt(FullListCurrentSelection(i++))) != NULL)
     {
-        for (int32 j = 0; j < columnCount; j++)
+        for (int32 j = 0; j < nVisibleColumns; j++)
         {
-            const char* columnText = selectedItem->GetColumnContentText((intptr_t)visibleColumnList.ItemAt(j));
+            int32 columnIndex = IndexOfColumn((CLVColumn*)visibleColumnList.ItemAt(j));
+            const char* columnText = selectedItem->GetColumnContentText(columnIndex);
             if (columnText && !(strcmp(columnText, "") == 0))
                 buf << columnText;
 
             buf << columnSeparator;
         }
         buf << '\n';
-
         UpdateWindow();
     }
 
@@ -1349,32 +1355,39 @@ void BeezerListView::SelectAllEx(bool superItems)
 
 void BeezerListView::GetState(BMessage& msg) const
 {
-    int8 nColumns = CountColumns();
+    int32 const nColumns = CountColumns();
 
-    // Add width AND visibility of columns
-    // This saves space -- we add minus width if the column is hidden instead of adding a bool for each
-    // column's visibility - nice optimization in terms of space we reduce a good 16 bytes
-    for (int8 i = 0; i < nColumns; i++)
-        if (ColumnAt(i)->IsShown() == true)
-            msg.AddFloat(kColumnWidth, ColumnAt(i)->Width());
-        else
-            msg.AddFloat(kColumnWidth, -ColumnAt(i)->Width());
-
-    // Add order of columns
+    // Get display order
     int32* displayOrder = new int32[nColumns];
     GetDisplayOrder(displayOrder);
-    for (int8 i = 0; i < nColumns; i++)
-        msg.AddInt8(kColumnOrder, (int8)displayOrder[i]);
+
+    // Add column count
+    msg.AddInt32(kColumnCount, nColumns);
+
+    // Add visibility, width and order of columns
+    // Don't use negative float widths just to save a few bytes (comparing floats is ugh)
+    for (int32 i = 0; i < nColumns; i++)
+    {
+        msg.AddBool(kColumnVisible, ColumnAt(i)->IsShown());
+        msg.AddFloat(kColumnWidth, ColumnAt(i)->Width());
+        msg.AddInt32(kColumnOrder, displayOrder[i]);
+    }
+
     delete[] displayOrder;
 
-    // Add sort settings
-    int32* sortKeys  = new int32[nColumns];
+    // Get sorting keys and modes
+    int32* sortKeys = new int32[nColumns];
     CLVSortMode* sortModes = new CLVSortMode[nColumns];
-    int32 nSortKeys = GetSorting(sortKeys, sortModes);
+    int32 const nSortKeys = GetSorting(sortKeys, sortModes);
+
+    // Add sort key count
+    msg.AddInt32(kSortKeyCount, nSortKeys);
+
+    // Add sort keys and modes
     for (int32 i = 0; i < nSortKeys; i++)
     {
-        msg.AddInt8(kSortKey, (int8)sortKeys[i]);
-        msg.AddInt8(kSortMode, (int8)sortModes[i]);
+        msg.AddInt32(kSortKey, sortKeys[i]);
+        msg.AddInt32(kSortMode, sortModes[i]);
     }
 
     delete[] sortKeys;
@@ -1384,51 +1397,77 @@ void BeezerListView::GetState(BMessage& msg) const
 
 void BeezerListView::SetState(BMessage* msg)
 {
-    int8 nColumns = CountColumns();
-    float width;
-    int8 dummy;
+    int32 const nColumns = CountColumns();
 
-    // Restore width AND visibility of columns
-    for (int8 i = 0; i < nColumns; i++)
+    int32 nSavedCols;
+    if (msg->FindInt32(kColumnCount, &nSavedCols) != B_OK)
     {
-        if (msg->FindFloat(kColumnWidth, i, &width) == B_OK)
+        // Column count not found, or saved state is corrupt or incompatible.
+        return;
+    }
+
+    if (nSavedCols != nColumns)
+    {
+        // Column count in saved state doesn't match current column count.
+        // We cannot reliably and meaningfully restore state.
+        return;
+    }
+
+    // Restore visibility and width of columns
+    int32* displayOrder = new int32[nColumns];
+    for (int32 index = 0; index < nColumns; index++)
+    {
+        bool isShown;
+        float width;
+        int32 order;
+        if (msg->FindBool(kColumnVisible, index, &isShown) == B_OK
+            && msg->FindFloat(kColumnWidth, index, &width) == B_OK
+            && msg->FindInt32(kColumnOrder, index, &order) == B_OK)
         {
-            if (width > 0)
-                ColumnAt(i)->SetWidth(width);
-            else
-            {
-                ColumnAt(i)->SetShown(false);
-                ColumnAt(i)->SetWidth(-width);
-            }
+            ColumnAt(index)->SetWidth(width);
+            ColumnAt(index)->SetShown(isShown);
+            displayOrder[index] = order;
+        }
+        else
+        {
+            // Corrupt or incompatible saved-state.
+            return;
         }
     }
 
     // Restore order of columns
-    int32* displayOrder = new int32[nColumns];
-    for (int8 i = 0; i < nColumns; i++)
-        if (msg->FindInt8(kColumnOrder, i, &dummy) != B_OK)
-            displayOrder[i] = i;
-        else
-            displayOrder[i] = (int32)dummy;
-
-    SetDisplayOrder(displayOrder);
-    delete[] displayOrder;
-
-    // Restore sort settings
-    int32* sortKeys = new int32[nColumns];
-    CLVSortMode* sortModes = new CLVSortMode[nColumns];
-    int8 nSortKeys = 0;
-    for (int32 i = 0; (msg->FindInt8(kSortKey, i, &dummy) == B_OK); i++)
+    // Get number of sort keys
+    int32 nSortKeys = 0;
+    if (msg->FindInt32(kSortKeyCount, &nSortKeys) != B_OK
+        || nSortKeys < 0 || nSortKeys > nColumns)
     {
-        sortKeys[i] = (int32)dummy;
-        int8 temp;
-        sortModes[i] = (msg->FindInt8(kSortMode, i, &temp) == B_OK) ? (CLVSortMode)temp : NoSort;
-        nSortKeys++;
+        // Corrupt or incompatible saved-state.
+        return;
     }
-
     if (nSortKeys > 0)
-        SetSorting(nSortKeys, sortKeys, sortModes);
+    {
+        int32* sortKeys = new int32[nSortKeys];
+        CLVSortMode* sortModes = new CLVSortMode[nSortKeys];
 
-    delete[] sortKeys;
-    delete[] sortModes;
+        for (int32 index = 0; index < nSortKeys; index++)
+        {
+            int32 sortKey;
+            int32 sortMode;
+            if (msg->FindInt32(kSortKey, index, &sortKey) == B_OK
+                && msg->FindInt32(kSortMode, index, &sortMode) == B_OK)
+            {
+                sortKeys[index] = sortKey;
+                sortModes[index] = (CLVSortMode)sortMode;
+            }
+            else
+            {
+                // Corrupt or incompatible saved-state.
+                return;
+            }
+        }
+
+        SetSorting(nSortKeys, sortKeys, sortModes);
+        delete[] sortKeys;
+        delete[] sortModes;
+    }
 }

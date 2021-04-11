@@ -79,10 +79,15 @@ const char* const kSuperItem =          "sitem",
 *const kFolding =                       "fd",
 *const kListViewState =                 "ls",
 
-*const kColumnWidth =                   "cw",
-*const kColumnOrder =                   "co",
-*const kSortKey =                       "sk",
-*const kSortMode =                      "sm";
+// "2" suffix is used to deliberately break compatibility with old state
+// TODO: Why can't we move these inside BeezerListView.cpp ?
+*const kColumnCount =                   "cc2",
+*const kColumnVisible =                 "cv2",
+*const kColumnWidth =                   "cw2",
+*const kColumnOrder =                   "co2",
+*const kSortKeyCount =                  "sc2",
+*const kSortKey =                       "sk2",
+*const kSortMode =                      "sm2";
 
 // Constant aliases -- used to not break backward compatibility but still
 //                give proper meaning to the message fields

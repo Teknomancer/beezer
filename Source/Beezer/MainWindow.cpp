@@ -1650,8 +1650,8 @@ void MainWindow::AddListView()
 
     // Set up the ColumnListView columns, first one is the expander column. Next column holds the icon
     m_listView->AddColumn(new CLVColumn(NULL, 20.0, CLV_EXPANDER | CLV_LOCK_AT_BEGINNING | CLV_NOT_MOVABLE));
-    m_listView->AddColumn(new CLVColumn(NULL, 20.0, CLV_LOCK_AT_BEGINNING | CLV_NOT_MOVABLE |
-                                        CLV_NOT_RESIZABLE | CLV_PUSH_PASS |    CLV_MERGE_WITH_RIGHT));
+    m_listView->AddColumn(new CLVColumn(NULL, 20.0, CLV_USER_SPECIAL_1 | CLV_LOCK_AT_BEGINNING | CLV_NOT_MOVABLE |
+                                        CLV_NOT_RESIZABLE | CLV_PUSH_PASS | CLV_MERGE_WITH_RIGHT));
 
     // Create the data columns
     uint32 columnFlags = CLV_SORT_KEYABLE | CLV_TELL_ITEMS_WIDTH | CLV_HEADER_TRUNCATE;
