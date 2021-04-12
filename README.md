@@ -28,4 +28,4 @@ If you have a powerful computer you may speed up compilation by using multiple j
 make -j8
 ```
 
-Once the build succeeds, the binaries should be available in the `build` directory.
+Once the build succeeds, the binaries should be available in the `build` directory.  Check the wiki for a list of the [build options](https://github.com/Teknomancer/beezer/wiki/CMake-Build-Options) available.
