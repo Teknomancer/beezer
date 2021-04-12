@@ -464,7 +464,7 @@ status_t z7Archiver::Add(bool createMode, const char* relativePath, BMessage* me
     m_pipeMgr.FlushArgs();
 
     BString levelStr;
-    levelStr.SetToFormat("-mx%ld", GetCompressionLevel());
+    levelStr.SetToFormat("-mx%d", GetCompressionLevel());
     m_pipeMgr << m_7zPath << "a" << levelStr.String();
 
     if (m_settingsMenu->FindItem(B_TRANSLATE(kMultiThread))->IsMarked() == true)

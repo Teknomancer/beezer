@@ -13,7 +13,7 @@
 #include "Shared.h"
 
 
-void process_refs(entry_ref dirRef, BMessage* message, void* reserved)
+void process_refs(entry_ref, BMessage* message, void*)
 {
     message->what = M_LAUNCH_TRACKER_ADDON;
     be_roster->Launch(K_APP_SIGNATURE, message);
