@@ -3,23 +3,17 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <Alert.h>
-#include <Application.h>
-#include <Autolock.h>
-#include <Debug.h>
-#include <List.h>
-#include <MenuItem.h>
-#include <Path.h>
-#include <PopUpMenu.h>
-#include <image.h>
-
-#include "AppConstants.h"
-#include "Archiver.h"
 #include "ArchiverMgr.h"
+#include "Archiver.h"
 #include "BeezerApp.h"
 #include "CommonStrings.h"
 #include "MsgConstants.h"
 #include "RuleMgr.h"
+
+#include <Alert.h>
+#include <Autolock.h>
+#include <MenuItem.h>
+#include <PopUpMenu.h>
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
