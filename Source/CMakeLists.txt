@@ -29,12 +29,6 @@ include_directories(
 		"${BEEZER_SOURCE_DIR}/AppUtils"
 		)
 
-add_subdirectory(ColumnListView)
-
-if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 2.96)
-	add_compile_options(-Wall -Wextra -Wshadow -Werror)
-endif()
-
 option(USE_CLANG "Enable building with clang instead of gcc" OFF)
 if(USE_CLANG)
 	set(CMAKE_CXX_COMPILER clang++)
@@ -44,6 +38,12 @@ if(USE_CLANG)
 	add_compile_options(-Wno-overloaded-virtual -Wno-unused-private-field
 						-Wno-return-type-c-linkage -Wno-unused-const-variable
 						-Wno-deprecated-register)
+endif()
+
+add_subdirectory(ColumnListView)
+
+if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 2.96)
+	add_compile_options(-Wall -Wextra -Wshadow -Werror)
 endif()
 
 add_subdirectory(Beezer)
