@@ -168,7 +168,6 @@ status_t ZipArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
     entry_ref dirRef;
 
     dirEntry.SetTo(refToDir);
-    status_t exitCode = BZR_DONE;
     if (progress)        // Perform output directory checking only when a messenger is passed
     {
         if (dirEntry.Exists() == false || dirEntry.IsDirectory() == false)
@@ -221,9 +220,8 @@ status_t ZipArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
             m_pipeMgr << SupressWildcards(pathString);
     }
 
-    FILE* out;
     int outdes[2], errdes[2];
-    thread_id tid = m_pipeMgr.Pipe(outdes, errdes);
+    thread_id const tid = m_pipeMgr.Pipe(outdes, errdes);
 
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;           // Handle unzip unloadable error here
@@ -239,11 +237,12 @@ status_t ZipArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
     close(errdes[1]);
     close(outdes[1]);
 
+    status_t exitCode = BZR_DONE;
     if (progress)
     {
-        out = fdopen(outdes[0], "r");
-        exitCode = ReadExtract(out, progress, cancel);
-        fclose(out);
+        FILE *outFile = fdopen(outdes[0], "r");
+        exitCode = ReadExtract(outFile, progress, cancel);
+        fclose(outFile);
     }
 
     close(outdes[0]);
@@ -540,7 +539,7 @@ status_t ZipArchiver::Add(bool createMode, const char* relativePath, BMessage* m
     }
 
     BString levelStr;
-    levelStr.SetToFormat("-%ld", GetCompressionLevel());
+    levelStr.SetToFormat("-%d", GetCompressionLevel());
 
     m_pipeMgr << m_zipPath << "-y" << levelStr.String();
     if (m_settingsMenu->FindItem(B_TRANSLATE(kRecurseDirs))->IsMarked() == true)
@@ -718,7 +717,7 @@ status_t ZipArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* pr
 }
 
 
-status_t ZipArchiver::ReadDelete(FILE* fp, char*& outputStr, BMessenger* progress,
+status_t ZipArchiver::ReadDelete(FILE* fp, char*& /*outputStr*/, BMessenger* progress,
                                  volatile bool* cancel)
 {
     char lineString[999];
