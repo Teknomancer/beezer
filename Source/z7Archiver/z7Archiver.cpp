@@ -58,7 +58,7 @@ status_t z7Archiver::ReadOpen(FILE* fp)
     uint16 len = B_PATH_NAME_LENGTH + 500;
     char lineString[len],
          attrStr[25], sizeStr[25], packedStr[20], dayStr[5],
-         monthStr[5], yearStr[8], hourStr[5], minuteStr[5], secondStr[5], dateStr[90],
+         monthStr[5], yearStr[8], hourStr[5], minuteStr[5], secondStr[5],
          pathStr[B_PATH_NAME_LENGTH + 1];
     uint32 lineCount = 0;
 
@@ -106,7 +106,7 @@ status_t z7Archiver::ReadOpen(FILE* fp)
 }
 
 
-status_t z7Archiver::Open(entry_ref* ref, BMessage* fileList)
+status_t z7Archiver::Open(entry_ref* ref, BMessage* /*fileList*/)
 {
     m_archiveRef = *ref;
     m_archivePath.SetTo(ref);
@@ -145,7 +145,6 @@ status_t z7Archiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger*
     entry_ref dirRef;
 
     dirEntry.SetTo(refToDir);
-    status_t exitCode = BZR_DONE;
     if (progress)        // Perform output directory checking only when a messenger is passed
     {
         if (dirEntry.Exists() == false || dirEntry.IsDirectory() == false)
@@ -202,7 +201,6 @@ status_t z7Archiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger*
             m_pipeMgr << SupressWildcards(pathString);
     }
 
-    FILE* out;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe(outdes, errdes);
 
@@ -213,18 +211,19 @@ status_t z7Archiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger*
         resume_thread(tid);
     else
     {
-        status_t exitCode;
-        wait_for_thread(tid, &exitCode);
+        status_t threadExitCode;
+        wait_for_thread(tid, &threadExitCode);
     }
 
     close(errdes[1]);
     close(outdes[1]);
 
+    status_t exitCode = BZR_DONE;
     if (progress)
     {
-        out = fdopen(outdes[0], "r");
-        exitCode = ReadExtract(out, progress, cancel);
-        fclose(out);
+        FILE *outFile = fdopen(outdes[0], "r");
+        exitCode = ReadExtract(outFile, progress, cancel);
+        fclose(outFile);
     }
 
     close(outdes[0]);
@@ -736,7 +735,7 @@ status_t z7Archiver::Delete(char*& outputStr, BMessage* message, BMessenger* pro
 }
 
 
-status_t z7Archiver::ReadDelete(FILE* fp, char*& outputStr, BMessenger* progress,
+status_t z7Archiver::ReadDelete(FILE* fp, char*& outputStr, BMessenger* /*progress*/,
                                 volatile bool* cancel)
 {
     status_t exitCode = B_ERROR;
