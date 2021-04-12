@@ -30,6 +30,8 @@
 #define B_TRANSLATE(x) x
 #endif
 
+#include <cassert>
+
 BLocker _ark_locker("_ark_mgr_lock", true);
 
 
@@ -191,6 +193,7 @@ status_t MergeArchiverRules(RuleMgr* ruleMgr)
             {
                 Archiver* ark = (*load_archiver)(path.Path());
                 BMessage* rulesMsg = ark->GetRulesMessage();
+                assert(rulesMsg);
                 char* mimeType;
                 int32 count = 0;
                 // iterate our loaded mime rules and add them to the rule manager
