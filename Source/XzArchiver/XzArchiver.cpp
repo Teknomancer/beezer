@@ -114,7 +114,6 @@ status_t XzArchiver::Open(entry_ref* ref, BMessage* fileList)
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_xzPath << "-lq" << m_archivePath.Leaf();
 
-    FILE* out, *err;
     int outdes[2], errdes[2];
 
     BPath parentPath;
@@ -125,24 +124,23 @@ status_t XzArchiver::Open(entry_ref* ref, BMessage* fileList)
     if (tid == B_ERROR || tid == B_NO_MEMORY)
         return B_ERROR;        // Handle unloadable error here
 
-    status_t exitCode;
     resume_thread(tid);
 
     close(errdes[1]);
     close(outdes[1]);
 
-    out = fdopen(outdes[0], "r");
-    exitCode = ReadOpen(out);
+    FILE *outFile = fdopen(outdes[0], "r");
+    status_t exitCode = ReadOpen(outFile);
+    fclose(outFile);
+
+    FILE *errFile = fdopen(errdes[0], "r");
+    exitCode = Archiver::ReadErrStream(errFile, NULL);
+    fclose(errFile);
 
     close(outdes[0]);
-    fclose(out);
-
-    err = fdopen(errdes[0], "r");
-    exitCode = Archiver::ReadErrStream(err, NULL);
     close(errdes[0]);
-    fclose(err);
 
-    return BZR_DONE;
+    return exitCode;
 }
 
 
@@ -183,7 +181,7 @@ status_t XzArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger*
 }
 
 
-status_t XzArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool* cancel)
+status_t XzArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool* /*cancel*/)
 {
     // Setup the archive testing process
     BEntry archiveEntry(m_archivePath.Path(), true);
