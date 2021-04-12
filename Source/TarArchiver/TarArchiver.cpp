@@ -46,11 +46,11 @@ status_t TarArchiver::InitBinaryPath()
 
 status_t TarArchiver::ReadOpen(FILE* fp)
 {
-    uint16 len = B_PATH_NAME_LENGTH + 500;
-    char lineString[len],
+    char lineString[B_PATH_NAME_LENGTH + 512],
          permStr[15], ownerStr[100], sizeStr[15],
          dayStr[5], monthStr[5], yearStr[8], hourStr[5], minuteStr[5],
          pathStr[2 * B_PATH_NAME_LENGTH + 10];
+    uint16 const len = sizeof(lineString);
 
     while (fgets(lineString, len, fp))
     {

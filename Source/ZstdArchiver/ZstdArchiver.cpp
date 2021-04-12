@@ -44,11 +44,11 @@ ZstdArchiver::ZstdArchiver(const char* addonImagePath)
 
 status_t ZstdArchiver::ReadOpen(FILE* fp)
 {
-    uint16 len = B_PATH_NAME_LENGTH + 500;
-    char lineString[len],
+    char lineString[B_PATH_NAME_LENGTH + 512],
          framesStr[20], skipsStr[20], packedStr[32], packedUnitStr[12], sizeStr[32], sizeUnitStr[12],
          ratioStr[15], checkStr[15],
          pathStr[B_PATH_NAME_LENGTH + 1];
+    uint16 const len = sizeof(lineString);
 
     // zstd does not report the file time of compressed files so take the last modified time of the archive instead.
     time_t const modTime = ArchiveModificationTime();

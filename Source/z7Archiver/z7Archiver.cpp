@@ -55,11 +55,11 @@ z7Archiver::z7Archiver(const char* addonImagePath)
 
 status_t z7Archiver::ReadOpen(FILE* fp)
 {
-    uint16 len = B_PATH_NAME_LENGTH + 500;
-    char lineString[len],
+    char lineString[B_PATH_NAME_LENGTH + 512],
          attrStr[25], sizeStr[25], packedStr[20], dayStr[5],
          monthStr[5], yearStr[8], hourStr[5], minuteStr[5], secondStr[5],
          pathStr[B_PATH_NAME_LENGTH + 1];
+    uint16 const len = sizeof(lineString);
     uint32 lineCount = 0;
 
     while (fgets(lineString, len, fp) && !feof(fp))
@@ -741,14 +741,14 @@ status_t z7Archiver::ReadDelete(FILE* fp, char*& outputStr, BMessenger* /*progre
     status_t exitCode = B_ERROR;
     BString fullOutputStr;
 
-    int32 len = B_PATH_NAME_LENGTH + strlen("Delete ") + 2;
-    char lineString[len];
+    char lineString[B_PATH_NAME_LENGTH + sizeof("Delete ") + 2];
+    int32 const len = sizeof(lineString);
 
     // Prepare message to update the progress bar
     BMessage updateMessage(BZR_UPDATE_PROGRESS), reply('DUMB');
     updateMessage.AddFloat("delta", 1.0f);
 
-    while (fgets(lineString, len - 1, fp))
+    while (fgets(lineString, len, fp))
     {
         if (cancel && *cancel == true)
             return BZR_CANCEL_ARCHIVER;

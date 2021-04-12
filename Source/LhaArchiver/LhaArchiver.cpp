@@ -47,11 +47,12 @@ LhaArchiver::LhaArchiver(const char* addonImagePath)
 
 status_t LhaArchiver::ReadOpen(FILE* fp)
 {
-    uint16 len = B_PATH_NAME_LENGTH + 500;
-    char lineString[len],
+    char lineString[B_PATH_NAME_LENGTH + 512],
          permStr[25], sizeStr[25], uidgidStr[20], methodStr[25], packedStr[25], ratioStr[15], dayStr[5],
          monthStr[5], yearStr[8], hourStr[5], minuteStr[5], secondStr[5], crcStr[25],
          pathStr[B_PATH_NAME_LENGTH + 1];
+    uint16 const len = sizeof(lineString);
+
 
     // Lha doesn't report the time for files (only date) hence we use the modification time of the
     // archive along with the corresponding date reported by lha
@@ -62,7 +63,8 @@ status_t LhaArchiver::ReadOpen(FILE* fp)
     sprintf(minuteStr, "%d", mod_tm.tm_min);
     sprintf(secondStr, "%d", mod_tm.tm_sec);
 
-    do {
+    do
+    {
         fgets(lineString, len, fp);
     } while (!feof(fp) && (strstr(lineString, "----------") == NULL));
 
@@ -580,14 +582,14 @@ status_t LhaArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* pr
 status_t LhaArchiver::ReadDelete(FILE* fp, char*& /*outputStr*/, BMessenger* progress,
                                  volatile bool* cancel)
 {
-    int32 len = B_PATH_NAME_LENGTH + strlen("Delete ") + 2;
-    char lineString[len];
+    char lineString[B_PATH_NAME_LENGTH + sizeof("Delete ") + 2];
+    int32 const len = sizeof(lineString);
 
     // Prepare message to update the progress bar
     BMessage updateMessage(BZR_UPDATE_PROGRESS), reply('DUMB');
     updateMessage.AddFloat("delta", 1.0f);
 
-    while (fgets(lineString, len - 1, fp))
+    while (fgets(lineString, len, fp))
     {
         if (cancel && *cancel == true)
             return BZR_CANCEL_ARCHIVER;
