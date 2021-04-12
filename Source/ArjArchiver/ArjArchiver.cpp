@@ -119,7 +119,7 @@ status_t ArjArchiver::ReadOpen(FILE* fp)
 }
 
 
-status_t ArjArchiver::Open(entry_ref* ref, BMessage* fileList)
+status_t ArjArchiver::Open(entry_ref* ref, BMessage* /*fileList*/)
 {
     m_archiveRef = *ref;
     m_archivePath.SetTo(ref);
@@ -219,8 +219,8 @@ status_t ArjArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
         resume_thread(tid);
     else
     {
-        status_t exitCode;
-        wait_for_thread(tid, &exitCode);
+        status_t threadExitCode;
+        wait_for_thread(tid, &threadExitCode);
     }
 
     close(errdes[1]);
@@ -427,7 +427,7 @@ bool ArjArchiver::CanPartiallyOpen() const
 }
 
 
-status_t ArjArchiver::Add(bool createMode, const char* relativePath, BMessage* message, BMessage* addedPaths,
+status_t ArjArchiver::Add(bool /*createMode*/, const char* relativePath, BMessage* message, BMessage* addedPaths,
                           BMessenger* progress, volatile bool* cancel)
 {
     // Don't EVER check if archive exist (FOR ARJ ONLY) this is because when all files from an open arj ark are
@@ -631,7 +631,7 @@ status_t ArjArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* pr
 }
 
 
-status_t ArjArchiver::ReadDelete(FILE* fp, char*& outputStr, BMessenger* progress,
+status_t ArjArchiver::ReadDelete(FILE* fp, char*& /*outputStr*/, BMessenger* progress,
                                  volatile bool* cancel)
 {
     int32 len = B_PATH_NAME_LENGTH + strlen("Deleting ") + 2;
