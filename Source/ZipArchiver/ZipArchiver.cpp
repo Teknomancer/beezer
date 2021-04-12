@@ -75,13 +75,14 @@ ZipArchiver::ZipArchiver(const char* addonImagePath)
 
 status_t ZipArchiver::ReadOpen(FILE* fp)
 {
-    uint16 len = B_PATH_NAME_LENGTH + 500;
-    char lineString[len],
+    char lineString[B_PATH_NAME_LENGTH + 512],
          sizeStr[25], methodStr[25], packedStr[25], ratioStr[15], dayStr[5],
          monthStr[5], yearStr[8], hourStr[5], minuteStr[5], crcStr[25],
          pathStr[B_PATH_NAME_LENGTH + 1];
+    uint16 const len = sizeof(lineString);
 
-    do {
+    do
+    {
         fgets(lineString, len, fp);
     } while (!feof(fp) && (strstr(lineString, "--------") == NULL));
 

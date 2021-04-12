@@ -57,11 +57,11 @@ RarArchiver::RarArchiver(const char* addonImagePath)
 
 status_t RarArchiver::ReadOpen(FILE* fp)
 {
-    uint16 len = B_PATH_NAME_LENGTH + 500;
-    char lineString[len],
+    char lineString[B_PATH_NAME_LENGTH + 512],
          sizeStr[25], packedStr[25], ratioStr[15], dayStr[5], permStr[50],
          monthStr[5], yearStr[8], hourStr[5], minuteStr[5], crcStr[25],
          pathStr[B_PATH_NAME_LENGTH + 1];
+    uint16 const len = sizeof(lineString);
 
     bool parseLine = false;
     while (!feof(fp)) {

@@ -51,17 +51,16 @@ ArjArchiver::ArjArchiver(const char* addonImagePath)
 
 status_t ArjArchiver::ReadOpen(FILE* fp)
 {
-    uint16 len = B_PATH_NAME_LENGTH + 500;
-    char lineString[len], fileCount[20], revisionStr[20],
+    char lineString[B_PATH_NAME_LENGTH + 512], fileCount[20], revisionStr[20],
          sizeStr[25], packedStr[25], ratioStr[15], dayStr[5], permStr[50],
          monthStr[5], yearStr[8], hourStr[5], minuteStr[5], secondStr[5], guaStr[25],
          bpmgsStr[20], osStr[30], osStr2[15], pathStr[B_PATH_NAME_LENGTH + 1];
+    uint16 const len = sizeof(lineString);
 
     do
     {
         fgets(lineString, len, fp);
-    }
-    while (!feof(fp) && (strstr(lineString, "--------") == NULL));
+    } while (!feof(fp) && (strstr(lineString, "--------") == NULL));
 
     fgets(lineString, len, fp);
 
@@ -634,14 +633,14 @@ status_t ArjArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* pr
 status_t ArjArchiver::ReadDelete(FILE* fp, char*& /*outputStr*/, BMessenger* progress,
                                  volatile bool* cancel)
 {
-    int32 len = B_PATH_NAME_LENGTH + strlen("Deleting ") + 2;
-    char lineString[len];
+    char lineString[B_PATH_NAME_LENGTH + sizeof("Deleting ") + 2];
+    int32 len = sizeof(lineString);
 
     // Prepare message to update the progress bar
     BMessage updateMessage(BZR_UPDATE_PROGRESS), reply('DUMB');
     updateMessage.AddFloat("delta", 1.0f);
 
-    while (fgets(lineString, len - 1, fp))
+    while (fgets(lineString, len, fp))
     {
         if (cancel && *cancel == true)
             return BZR_CANCEL_ARCHIVER;

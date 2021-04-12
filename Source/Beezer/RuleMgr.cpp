@@ -57,8 +57,8 @@ RuleMgr::~RuleMgr()
 
 void RuleMgr::ReadRules(BEntry* rulesEntry)
 {
-    int32 len = B_MIME_TYPE_LENGTH+30;    // we don't care for extensions more than 30 characters long ;-P
-    char buffer[len];
+    char buffer[B_MIME_TYPE_LENGTH + 30];     // we don't care for extensions more than 30 characters long ;-P
+    int32 const len = sizeof(buffer);
     BPath rulePath(rulesEntry);
 
     std::fstream f(rulePath.Path(), std::ios::in);

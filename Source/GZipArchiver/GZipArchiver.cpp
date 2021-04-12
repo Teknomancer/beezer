@@ -44,11 +44,11 @@ GZipArchiver::GZipArchiver(const char* addonImagePath)
 
 status_t GZipArchiver::ReadOpen(FILE* fp)
 {
-    uint16 len = B_PATH_NAME_LENGTH + 500;
-    char lineString[len],
+    char lineString[B_PATH_NAME_LENGTH + 512],
          sizeStr[15], methodStr[15], packedStr[15], ratioStr[10], dayStr[5],
          monthStr[5], hourStr[5], minuteStr[5], crcStr[15],
          pathStr[B_PATH_NAME_LENGTH + 1];
+    uint16 const len = sizeof(lineString);
 
     // gzip does not report the file time of compressed files so take the last modified time of the archive instead.
     time_t const modTime = ArchiveModificationTime();
