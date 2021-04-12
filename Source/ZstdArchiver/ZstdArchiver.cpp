@@ -99,14 +99,14 @@ status_t ZstdArchiver::Open(entry_ref* ref, BMessage* fileList)
         destEntry.GetRef(&destRef);
 
         // Open using TarArchiver
-        status_t exitCode = TarArchiver::Open(&destRef, fileList);
+        status_t const exitCodeTar = TarArchiver::Open(&destRef, fileList);
 
         // Reset these as TarArchiver's Open() would have changed them
         m_archivePath.SetTo(ref);
         strcpy(m_arkFilePath, m_archivePath.Path());
         m_archiveRef = *ref;
 
-        return exitCode;
+        return exitCodeTar;
     }
 
     // It's a "pure" Zstd.
@@ -114,16 +114,15 @@ status_t ZstdArchiver::Open(entry_ref* ref, BMessage* fileList)
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_zstdPath << "-l" << "-q" << m_archivePath.Leaf();
 
-    FILE* out, *err;
     int outdes[2], errdes[2];
 
     BPath parentPath;
     m_archivePath.GetParent(&parentPath);
     chdir(parentPath.Path());
-    thread_id tid = m_pipeMgr.Pipe(outdes, errdes);
+    thread_id const tid = m_pipeMgr.Pipe(outdes, errdes);
 
     if (tid == B_ERROR || tid == B_NO_MEMORY)
-        return B_ERROR;        // Handle unloadable error here
+        return B_ERROR;
 
     status_t exitCode;
     resume_thread(tid);
@@ -131,18 +130,18 @@ status_t ZstdArchiver::Open(entry_ref* ref, BMessage* fileList)
     close(errdes[1]);
     close(outdes[1]);
 
-    out = fdopen(outdes[0], "r");
-    exitCode = ReadOpen(out);
+    FILE *outFile = fdopen(outdes[0], "r");
+    exitCode = ReadOpen(outFile);
+    fclose(outFile);
+
+    FILE *errFile = fdopen(errdes[0], "r");
+    exitCode = Archiver::ReadErrStream(errFile, NULL);
+    fclose(errFile);
 
     close(outdes[0]);
-    fclose(out);
-
-    err = fdopen(errdes[0], "r");
-    exitCode = Archiver::ReadErrStream(err, NULL);
     close(errdes[0]);
-    fclose(err);
 
-    return BZR_DONE;
+    return exitCode;
 }
 
 
@@ -182,7 +181,7 @@ status_t ZstdArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenge
 }
 
 
-status_t ZstdArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool* cancel)
+status_t ZstdArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool* /*cancel*/)
 {
     // Setup the archive testing process
     BEntry archiveEntry(m_archivePath.Path(), true);
