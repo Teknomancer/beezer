@@ -48,17 +48,17 @@ Archiver* ArchiverForMime(const char* mimeType)
         BPath path;
         entry.GetPath(&path);
 
-        image_id addonID = load_add_on(path.Path());
-        if (addonID > 0L)
+        image_id const addonId = load_add_on(path.Path());
+        if (addonId > 0L)
         {
             // Archiver loaded successfully, now check if it supports the mimetype
             Archiver *(*load_archiver)(const char* addonImagePath);
-            if (get_image_symbol(addonID, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
+            if (get_image_symbol(addonId, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
             {
-                Archiver* ark = (*load_archiver)(path.Path());
+                Archiver* const ark = (*load_archiver)(path.Path());
 
                 BList* mimeList = ark->MimeTypeList();
-                int32 supportedMimeCount = mimeList->CountItems();
+                int32 const supportedMimeCount = mimeList->CountItems();
 
                 for (int32 i = 0; i < supportedMimeCount; i++)
                 {
@@ -68,7 +68,7 @@ Archiver* ArchiverForMime(const char* mimeType)
                 }
             }
 
-            unload_add_on(addonID);
+            unload_add_on(addonId);
         }
     }
 
@@ -138,19 +138,19 @@ Archiver* ArchiverForType(const char* archiverType)
         BPath path;
         entry.GetPath(&path);
 
-        image_id addonID = load_add_on(path.Path());
-        if (addonID > 0L)
+        image_id const addonId = load_add_on(path.Path());
+        if (addonId > 0L)
         {
             // Archiver loaded successfully, now check if it supports the mimetype
             Archiver *(*load_archiver)(const char* addonImagePath);
-            if (get_image_symbol(addonID, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
+            if (get_image_symbol(addonId, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
             {
-                Archiver* ark = (*load_archiver)(path.Path());
+                Archiver* const ark = (*load_archiver)(path.Path());
                 if (strcmp(ark->ArchiveType(), archiverType) == 0)
                     return ark;
             }
 
-            unload_add_on(addonID);
+            unload_add_on(addonId);
         }
     }
     return NULL;
@@ -178,15 +178,15 @@ status_t MergeArchiverRules(RuleMgr* ruleMgr)
         BPath path;
         entry.GetPath(&path);
 
-        image_id addonID = load_add_on(path.Path());
-        if (addonID > 0L)
+        image_id const addonId = load_add_on(path.Path());
+        if (addonId > 0L)
         {
             // Archiver loaded successfully, now check if it supports the mimetype
             Archiver *(*load_archiver)(const char* addonImagePath);
-            if (get_image_symbol(addonID, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
+            if (get_image_symbol(addonId, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
             {
-                Archiver* ark = (*load_archiver)(path.Path());
-                BMessage* rulesMsg = ark->GetRulesMessage();
+                Archiver* const ark = (*load_archiver)(path.Path());
+                BMessage* const rulesMsg = ark->GetRulesMessage();
                 assert(rulesMsg);
                 char* mimeType;
                 int32 count = 0;
@@ -202,7 +202,7 @@ status_t MergeArchiverRules(RuleMgr* ruleMgr)
                 }
             }
 
-            unload_add_on(addonID);
+            unload_add_on(addonId);
         }
     }
     return B_OK;
@@ -246,7 +246,7 @@ Archiver* NewArchiver(const char* name, bool popupErrors, status_t* returnCode)
         return ark;
     }
 
-    status_t result = ark->InitCheck();
+    status_t const result = ark->InitCheck();
     switch (result)
     {
         case BZR_BINARY_MISSING:
