@@ -85,7 +85,7 @@ status_t BZipArchiver::Open(entry_ref* ref, BMessage* fileList)
         return BZR_ERRSTREAM_FOUND;
 
     deflatedEntry.GetSize(&size);
-    sprintf(sizeStr, "%Ld", size);
+    sprintf(sizeStr, "%ld", size);
     BPath tempPath(destPath.String());
     strcpy(pathStr, tempPath.Leaf());
 
@@ -132,7 +132,7 @@ status_t BZipArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenge
 }
 
 
-status_t BZipArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool* cancel)
+status_t BZipArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool* /*cancel*/)
 {
     // Setup the archive testing process
     BEntry archiveEntry(m_archivePath.Path(), true);
