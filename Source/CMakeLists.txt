@@ -39,7 +39,7 @@ include_directories(
 add_subdirectory(ColumnListView)
 
 if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 2.96)
-	add_compile_options(-Wall -Wextra -Wshadow)
+	add_compile_options(-Wall -Wextra -Wshadow -Werror)
 endif()
 
 add_subdirectory(Beezer)
