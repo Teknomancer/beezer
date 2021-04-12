@@ -116,7 +116,7 @@ status_t LhaArchiver::ReadOpen(FILE* fp)
 }
 
 
-status_t LhaArchiver::Open(entry_ref* ref, BMessage* fileList)
+status_t LhaArchiver::Open(entry_ref* ref, BMessage* /*fileList*/)
 {
     m_archiveRef = *ref;
     m_archivePath.SetTo(ref);
@@ -205,8 +205,8 @@ status_t LhaArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
         resume_thread(tid);
     else
     {
-        status_t exitCode;
-        wait_for_thread(tid, &exitCode);
+        status_t threadExitCode;
+        wait_for_thread(tid, &threadExitCode);
     }
 
     close(errdes[1]);
@@ -394,7 +394,7 @@ bool LhaArchiver::CanPartiallyOpen() const
 }
 
 
-status_t LhaArchiver::Add(bool createMode, const char* relativePath, BMessage* message, BMessage* addedPaths,
+status_t LhaArchiver::Add(bool /*createMode*/, const char* relativePath, BMessage* message, BMessage* addedPaths,
                           BMessenger* progress, volatile bool* cancel)
 {
     // Don't EVER check if archive exist (FOR LHA ONLY) this is because when all files from an open lha ark are
@@ -539,7 +539,6 @@ status_t LhaArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* pr
         // Use SupressWildcardSet (which does not supress * character as lha needs * to delete folders fully)
     }
 
-    FILE* out, *err;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe(outdes, errdes);
 
@@ -554,17 +553,19 @@ status_t LhaArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* pr
     close(errdes[1]);
     close(outdes[1]);
 
-    out = fdopen(outdes[0], "r");
-    status_t exitCode = ReadDelete(out, outputStr, progress, cancel);
+    FILE *outFile = fdopen(outdes[0], "r");
+    status_t exitCode = ReadDelete(outFile, outputStr, progress, cancel);
+    fclose(outFile);
+
     if (exitCode != BZR_CANCEL_ARCHIVER)
     {
-        err = fdopen(errdes[0], "r");
-        exitCode = Archiver::ReadErrStream(err);
-        close(errdes[0]);
-        fclose(err);
+        FILE *errFile = fdopen(errdes[0], "r");
+        exitCode = Archiver::ReadErrStream(errFile);
+        fclose(errFile);
     }
+
     close(outdes[0]);
-    fclose(out);
+    close(errdes[0]);
 
     // Send signal to quit thread only AFTER pipes are closed
     if (exitCode == BZR_CANCEL_ARCHIVER)
@@ -576,7 +577,7 @@ status_t LhaArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* pr
 }
 
 
-status_t LhaArchiver::ReadDelete(FILE* fp, char*& outputStr, BMessenger* progress,
+status_t LhaArchiver::ReadDelete(FILE* fp, char*& /*outputStr*/, BMessenger* progress,
                                  volatile bool* cancel)
 {
     int32 len = B_PATH_NAME_LENGTH + strlen("Delete ") + 2;
