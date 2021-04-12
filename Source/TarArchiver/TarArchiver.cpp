@@ -88,7 +88,7 @@ status_t TarArchiver::ReadOpen(FILE* fp)
 }
 
 
-status_t TarArchiver::Open(entry_ref* ref, BMessage* fileList)
+status_t TarArchiver::Open(entry_ref* ref, BMessage* /*fileList*/)
 {
     m_archiveRef = *ref;
     m_archivePath.SetTo(ref);
@@ -180,8 +180,8 @@ status_t TarArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
         resume_thread(tid);
     else
     {
-        status_t exitCode;
-        wait_for_thread(tid, &exitCode);
+        status_t threadExitCode;
+        wait_for_thread(tid, &threadExitCode);
     }
 
     close(errdes[1]);
@@ -235,7 +235,7 @@ status_t TarArchiver::ReadExtract(FILE* fp, BMessenger* progress, volatile bool*
 }
 
 
-status_t TarArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool* cancel)
+status_t TarArchiver::Test(char*& /*outputStr*/, BMessenger* /*progress*/, volatile bool* /*cancel*/)
 {
     return BZR_NOT_SUPPORTED;
 }
@@ -407,8 +407,8 @@ status_t TarArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* pr
 }
 
 
-status_t TarArchiver::ReadDelete(FILE* fp, char*& outputStr, BMessenger* progress,
-                                 volatile bool* cancel)
+status_t TarArchiver::ReadDelete(FILE* fp, char*& /*outputStr*/, BMessenger* /*progress*/,
+                                 volatile bool* /*cancel*/)
 {
     char lineString[999];
     while (!feof(fp) && fgets(lineString, 998, fp))
