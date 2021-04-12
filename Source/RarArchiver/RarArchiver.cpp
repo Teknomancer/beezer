@@ -11,8 +11,6 @@
 #include <Messenger.h>
 #include <MenuItem.h>
 
-#include <stdlib.h> // needed for gcc2
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -21,6 +19,9 @@
 #else
 #define B_TRANSLATE(x) x
 #endif
+
+#include <cassert>
+#include <stdlib.h> // needed for gcc2
 
 
 // keep track of our custom options/menuitems
@@ -242,6 +243,7 @@ status_t RarArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
     close(errdes[1]);
     close(outdes[1]);
 
+    status_t exitCode = BZR_DONE;
     if (progress)
     {
         FILE *outFile = fdopen(outdes[0], "r");
@@ -249,14 +251,16 @@ status_t RarArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
         fclose(outFile);
     }
 
-    FILE *errFile = fdopen(errdes[0], "r");
-    BString errStreamOutput;
-    exitCode = Archiver::ReadStream(errFile, errStreamOutput);
-    fclose(err);
+    if (exitCode == BZR_DONE)
+    {
+        FILE *errFile = fdopen(errdes[0], "r");
+        BString errStreamOutput;
+        Archiver::ReadStream(errFile, errStreamOutput);
+        fclose(errFile);
 
-    if (exitCode == BZR_ERRSTREAM_FOUND
-        && errStreamOutput.FindFirst("Encrypted file:  CRC failed in ") > 0)
-        exitCode = BZR_PASSWORD_ERROR;
+        if (errStreamOutput.FindFirst("Encrypted file:  CRC failed in ") > 0)
+            exitCode = BZR_PASSWORD_ERROR;
+    }
 
     close(outdes[0]);
     close(errdes[0]);
@@ -454,15 +458,15 @@ status_t RarArchiver::Add(bool /*createMode*/, const char* /*relativePath*/, BMe
 }
 
 
-status_t RarArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* progress,
-                             volatile bool* cancel)
+status_t RarArchiver::Delete(char*& /*outputStr*/, BMessage* /*message*/, BMessenger* /*progress*/,
+                             volatile bool* /*cancel*/)
 {
     return BZR_NOT_SUPPORTED;
 }
 
 
-status_t RarArchiver::Create(BPath* archivePath, const char* relPath, BMessage* fileList, BMessage* addedPaths,
-                             BMessenger* progress, volatile bool* cancel)
+status_t RarArchiver::Create(BPath* /*archivePath*/, const char* /*relPath*/, BMessage* /*fileList*/,
+                             BMessage* /*addedPaths*/, BMessenger* /*progress*/, volatile bool* /*cancel*/)
 {
     return BZR_NOT_SUPPORTED;
 }
