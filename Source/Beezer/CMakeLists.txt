@@ -1,9 +1,5 @@
 include(CMakeDependentOption)
 
-if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 2.96)
-	add_compile_options(-Wall -Wextra -Wshadow)
-endif()
-
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BEEZER_BUILD_DIR})
 
 include_directories(
