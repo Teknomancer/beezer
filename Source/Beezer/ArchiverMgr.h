@@ -6,6 +6,9 @@
 #ifndef _ARCHIVER_MGR_H
 #define _ARCHIVER_MGR_H
 
+#include <SupportDefs.h>
+
+class BHandler;
 class BList;
 class BLocker;
 class BPopUpMenu;
@@ -13,7 +16,7 @@ class BPopUpMenu;
 class Archiver;
 class RuleMgr;
 
-const char* const kLoaderFunc =        "load_archiver";
+const char* const kLoaderFunc = "load_archiver";
 
 extern BLocker _ark_locker;
 
