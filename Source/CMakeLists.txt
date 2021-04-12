@@ -6,13 +6,6 @@ set(CMAKE_MODULE_PATH "${BEEZER_SOURCE_DIR}/CMakeModules")
 
 include(UseHaiku)
 
-option(USE_CLANG "Enable building with clang instead of gcc" OFF)
-if(USE_CLANG)
-	set(CMAKE_CXX_COMPILER clang++)
-	set(CMAKE_C_COMPILER clang)
-	add_compile_options(-fPIC)
-endif()
-
 set(BEEZER_BUILD_DIR ${BEEZER_BINARY_DIR}/build)
 
 set(BEEZER_BUILD_ADDONS_DIR ${BEEZER_BUILD_DIR}/add-ons)
@@ -40,6 +33,17 @@ add_subdirectory(ColumnListView)
 
 if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 2.96)
 	add_compile_options(-Wall -Wextra -Wshadow -Werror)
+endif()
+
+option(USE_CLANG "Enable building with clang instead of gcc" OFF)
+if(USE_CLANG)
+	set(CMAKE_CXX_COMPILER clang++)
+	set(CMAKE_C_COMPILER clang)
+	add_compile_options(-fPIC)
+	# clang finds a lot more problems than gcc, disable some of the warnings
+	add_compile_options(-Wno-overloaded-virtual -Wno-unused-private-field
+						-Wno-return-type-c-linkage -Wno-unused-const-variable
+						-Wno-deprecated-register)
 endif()
 
 add_subdirectory(Beezer)
