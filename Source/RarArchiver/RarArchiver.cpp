@@ -119,7 +119,7 @@ status_t RarArchiver::ReadOpen(FILE* fp)
 }
 
 
-status_t RarArchiver::Open(entry_ref* ref, BMessage* fileList)
+status_t RarArchiver::Open(entry_ref* ref, BMessage* /*fileList*/)
 {
     m_archiveRef = *ref;
     m_archivePath.SetTo(ref);
@@ -162,7 +162,6 @@ status_t RarArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
     entry_ref dirRef;
 
     dirEntry.SetTo(refToDir);
-    status_t exitCode = BZR_DONE;
     if (progress)        // Perform output directory checking only when a messenger is passed
     {
         if (dirEntry.Exists() == false || dirEntry.IsDirectory() == false)
@@ -226,7 +225,6 @@ status_t RarArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
     dirStr << '/';
     m_pipeMgr << dirStr.String();
 
-    FILE* out, *err;
     int outdes[2], errdes[2];
     thread_id tid = m_pipeMgr.Pipe(outdes, errdes);
 
@@ -237,8 +235,8 @@ status_t RarArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
         resume_thread(tid);
     else
     {
-        status_t exitCode;
-        wait_for_thread(tid, &exitCode);
+        status_t threadExitCode;
+        wait_for_thread(tid, &threadExitCode);
     }
 
     close(errdes[1]);
@@ -246,18 +244,19 @@ status_t RarArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
 
     if (progress)
     {
-        out = fdopen(outdes[0], "r");
-        exitCode = ReadExtract(out, progress, cancel);
-        fclose(out);
+        FILE *outFile = fdopen(outdes[0], "r");
+        exitCode = ReadExtract(outFile, progress, cancel);
+        fclose(outFile);
     }
 
-    err = fdopen(errdes[0], "r");
+    FILE *errFile = fdopen(errdes[0], "r");
     BString errStreamOutput;
-    Archiver::ReadStream(err, errStreamOutput);
-    if (errStreamOutput.FindFirst("Encrypted file:  CRC failed in ") > 0)
-        exitCode = BZR_PASSWORD_ERROR;
-
+    exitCode = Archiver::ReadStream(errFile, errStreamOutput);
     fclose(err);
+
+    if (exitCode == BZR_ERRSTREAM_FOUND
+        && errStreamOutput.FindFirst("Encrypted file:  CRC failed in ") > 0)
+        exitCode = BZR_PASSWORD_ERROR;
 
     close(outdes[0]);
     close(errdes[0]);
@@ -448,8 +447,8 @@ bool RarArchiver::CanPartiallyOpen() const
 }
 
 
-status_t RarArchiver::Add(bool createMode, const char* relativePath, BMessage* message, BMessage* addedPaths,
-                          BMessenger* progress, volatile bool* cancel)
+status_t RarArchiver::Add(bool /*createMode*/, const char* /*relativePath*/, BMessage* /*message*/,
+                          BMessage* /*addedPaths*/, BMessenger* /*progress*/, volatile bool* /*cancel*/)
 {
     return BZR_NOT_SUPPORTED;
 }
