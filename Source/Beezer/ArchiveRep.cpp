@@ -18,23 +18,23 @@
 
 
 ArchiveRep::ArchiveRep()
+    : m_archiver(NULL),
+      m_tempDirPath(NULL),
+      m_tempDir(NULL),
+      m_thread(0)
 {
-    m_tempDir = NULL;
-    m_archiver = NULL;
 }
 
 
 ArchiveRep::~ArchiveRep()
 {
-    if (m_archiver)
-        delete m_archiver;
-
+    delete m_archiver;
     if (m_tempDir)
     {
         RemoveDirectory(m_tempDir);
         delete m_tempDir;
-        free((char*)m_tempDirPath);
     }
+    free(m_tempDirPath);
 }
 
 
@@ -105,9 +105,16 @@ status_t ArchiveRep::InitArchiver(entry_ref* ref, char* mimeString)
 
 const char* ArchiveRep::MakeTempDirectory()
 {
-    if (m_tempDir == NULL)
+    if (m_tempDirPath == NULL)
+    {
         m_tempDirPath = strdup(CreateTempDirectory(NULL, &m_tempDir, true).String());
-
+        if (m_tempDirPath == NULL && m_tempDir)
+        {
+            RemoveDirectory(m_tempDir);
+            delete m_tempDir;
+            m_tempDir = NULL;
+        }
+    }
     return m_tempDirPath;
 }
 

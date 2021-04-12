@@ -20,7 +20,6 @@ class ArchiveRep
         ArchiveRep();
         virtual ~ArchiveRep();
 
-        // Additional Hooks
         Archiver*           Ark() const;
         thread_id           ThreadID() const;
         virtual status_t    InitArchiver(entry_ref* ref, char* mimeString);
@@ -33,26 +32,22 @@ class ArchiveRep
         virtual status_t    Create(BMessage* message);
 
     protected:
-        // Protected hooks
         const char*         MakeTempDirectory();
 
-        // Protected hooks (thread)
         static int32        _opener(void* arg);
         static int32        _tester(void* arg);
         static int32        _counter(void* arg);
         static int32        _adder(void* arg);
 
     private:
-        // Private hooks
         void                CleanMessage(BMessage* message);
 
-        // Private members
         Archiver*           m_archiver;
-        BPath               m_archivePath;
-        BEntry              m_archiveEntry;
         char*               m_tempDirPath;
         BDirectory*         m_tempDir;
         thread_id           m_thread;
+        BPath               m_archivePath;
+        BEntry              m_archiveEntry;
 };
 
 #endif /* _ARCHIVE_REP_H */
