@@ -6,6 +6,13 @@ set(CMAKE_MODULE_PATH "${BEEZER_SOURCE_DIR}/CMakeModules")
 
 include(UseHaiku)
 
+option(USE_CLANG "Enable building with clang instead of gcc" OFF)
+if(USE_CLANG)
+	set(CMAKE_CXX_COMPILER clang++)
+	set(CMAKE_C_COMPILER clang)
+	add_compile_options(-fPIC)
+endif()
+
 set(BEEZER_BUILD_DIR ${BEEZER_BINARY_DIR}/build)
 
 set(BEEZER_BUILD_ADDONS_DIR ${BEEZER_BUILD_DIR}/add-ons)

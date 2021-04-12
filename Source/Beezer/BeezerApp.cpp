@@ -740,11 +740,19 @@ void BeezerApp::VersionString(BString& output)
     output = "";
     output << verInfo.major << "." << verInfo.middle << "." << verInfo.minor << " ";
 #ifdef __386__
-    output << "(x86)";
+    output << "(x86 - ";
 #elif __x86_64__
-    output << "(x86_64)";
+    output << "(x86_64 - ";
 #else
-    output << "(unknown)";
+    output << "(unknown arch - ";
+#endif
+
+#ifdef __clang__
+    output << "clang)";
+#elif __GNUC__
+    output << "gcc)"; // probably gcc, others like clang also define this
+#else
+    output << "unkown compiler)";
 #endif
 }
 
