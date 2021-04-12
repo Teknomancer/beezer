@@ -83,10 +83,11 @@ status_t ArchiveRep::InitArchiver(entry_ref* ref, char* mimeString)
     status_t errCode = BZR_ERROR;
     m_archiver = ArchiverForMime(type);
 
-    if (m_archiver == NULL)        // Handle unsupported types
+    if (m_archiver == NULL)        // Archiver not found for type
         return errCode;
 
-    if ((errCode = m_archiver->InitCheck()) != B_OK)    // Type is supported,
+    errCode = m_archiver->InitCheck();
+    if (errCode != B_OK)
         return errCode;
 
     if (m_archiver)
@@ -205,7 +206,7 @@ int32 ArchiveRep::_opener(void* arg)
     msg->FindPointer(kArchiverPtr, reinterpret_cast<void**>(&ark));
     msg->FindRef(kRef, &ref);
 
-    status_t result = ark->Open(&ref);
+    status_t const result = ark->Open(&ref);
     delete msg;
 
     BMessage backMessage(M_OPEN_PART_TWO);
@@ -230,7 +231,7 @@ int32 ArchiveRep::_tester(void* arg)
     msg->FindMessenger(kProgressMessenger, &messenger);
 
     char* outputStr = NULL;
-    status_t result = ark->Test(outputStr, &messenger, cancel);
+    status_t const result = ark->Test(outputStr, &messenger, cancel);
 
     messenger.SendMessage(M_CLOSE);
     BMessage backMessage(M_TEST_DONE);
@@ -288,8 +289,8 @@ int32 ArchiveRep::_counter(void* arg)
 
     // Don't delete message here as it doesn't belong to us! SPECIAL CASE
     message->what = M_COUNT_COMPLETE;                  // See we are reusing the message
-    message->AddInt32(kFiles, fileCount);                // Add the critical fields as that is what
-    message->AddInt32(kFolders, folderCount);            // we are here for in the first place
+    message->AddInt32(kFiles, fileCount);              // Add the critical fields as that is what
+    message->AddInt32(kFolders, folderCount);          // we are here for in the first place
     message->AddInt64(kSize, totalSize);
     if (statusWnd)
         statusWnd->PostMessage(M_CLOSE);
@@ -322,10 +323,10 @@ int32 ArchiveRep::_adder(void* arg)
     msg->FindString(kLaunchDir, &relativePath);
     msg->FindString(kArchivePath, &archivePath);
 
-    BPath path(archivePath);
-
     if (msg->FindBool(kCreateMode, &createMode) != B_OK)
         createMode = false;
+
+    BPath path(archivePath);
 
     BMessage newlyAddedPaths;
     if (createMode == true)
