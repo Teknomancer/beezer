@@ -365,7 +365,7 @@ void ZstdArchiver::CompressFromTemp()
 {
     // Get the compression ratio from the settings menu
     BString levelStr;
-    levelStr.SetToFormat(" -%ld ", GetCompressionLevel());
+    levelStr.SetToFormat(" -%d ", GetCompressionLevel());
 
     // Re-compress file, from .tar in temp to zstd
     BString cmd;
