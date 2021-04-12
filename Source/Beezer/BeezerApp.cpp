@@ -752,7 +752,7 @@ void BeezerApp::VersionString(BString& output)
 #elif __GNUC__
     output << "gcc)"; // probably gcc, others like clang also define this
 #else
-    output << "unkown compiler)";
+    output << "unknown compiler)";
 #endif
 }
 
