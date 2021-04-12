@@ -15,7 +15,6 @@ add_library(CLV
 	ColumnListView/CLVEasyItem.cpp
 	ColumnListView/CLVListItem.cpp
 	ColumnListView/ColumnListView.cpp
-	ColumnListView/ColumnListView_jaf.cpp
 	Cursors/Cursors.cpp
 	NewStrings/NewStrings.cpp
 	PrefilledBitmap/PrefilledBitmap.cpp
