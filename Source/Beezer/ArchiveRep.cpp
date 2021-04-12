@@ -3,16 +3,6 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <Alert.h>
-#include <Directory.h>
-#include <Entry.h>
-#include <Mime.h>
-#include <NodeInfo.h>
-#include <Path.h>
-#include <Window.h>
-
-#include <malloc.h>
-
 #include "ArchiveRep.h"
 #include "Archiver.h"
 #include "ArchiverMgr.h"
@@ -20,6 +10,11 @@
 #include "BitmapPool.h"
 #include "FSUtils.h"
 #include "MsgConstants.h"
+
+#include <NodeInfo.h>
+#include <Window.h>
+
+#include <malloc.h>     // required for gcc2?
 
 
 ArchiveRep::ArchiveRep()
