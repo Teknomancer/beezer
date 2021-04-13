@@ -85,7 +85,7 @@ Constness
 ---------
 - Always make variables/members/data etc. `const` wherever possible regardless of whether you think the compiler might produce better optimized code.
   `const` makes the intention clear (both to the compiler and the programmer) and prevents accidental changes.
-- Always use `const` on the right-side of what is being made constant.
+- Always use `const` on the right-side of what is being made constant.\
   Use `int32 const idRef = 32;` rather than `const int32 idRef = 32;`
 
 General
