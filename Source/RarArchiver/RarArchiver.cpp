@@ -18,6 +18,8 @@
 #define B_TRANSLATION_CONTEXT "RarArchiver"
 #else
 #define B_TRANSLATE(x) x
+#define B_TRANSLATE_MARK(x) x
+#define B_TRANSLATE_NOCOLLECT(x) x
 #endif
 
 #include <cassert>
@@ -26,12 +28,12 @@
 
 // keep track of our custom options/menuitems
 static const char
-    *kAlwaysOverwrite = "Always overwrite (default)",
-    *kNoOverwrite     = "Never overwrite existing files",
-    *kUpdateFiles     = "Update files, create if needed",
-    *kFreshenFiles    = "Freshen existing files, create none",
-    *kKeepBroken      = "Keep broken extracted files",
-    *kProcessAttrs    = "Process attributes";
+    *kAlwaysOverwrite = B_TRANSLATE_MARK("Always overwrite (default)"),
+    *kNoOverwrite     = B_TRANSLATE_MARK("Never overwrite existing files"),
+    *kUpdateFiles     = B_TRANSLATE_MARK("Update files, create if needed"),
+    *kFreshenFiles    = B_TRANSLATE_MARK("Freshen existing files, create none"),
+    *kKeepBroken      = B_TRANSLATE_MARK("Keep broken extracted files"),
+    *kProcessAttrs    = B_TRANSLATE_MARK("Process attributes");
 
 
 Archiver* load_archiver(const char* addonImagePath)
@@ -189,11 +191,11 @@ status_t RarArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
 
     if (progress)        // Only enable extract options when user is NOT viewing
     {
-        if (m_settingsMenu->FindItem(B_TRANSLATE(kNoOverwrite))->IsMarked())
+        if (m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kNoOverwrite))->IsMarked())
             m_pipeMgr << "-o-";
-        else if (m_settingsMenu->FindItem(B_TRANSLATE(kUpdateFiles))->IsMarked())
+        else if (m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kUpdateFiles))->IsMarked())
             m_pipeMgr << "-u";
-        else if (m_settingsMenu->FindItem(B_TRANSLATE(kFreshenFiles))->IsMarked())
+        else if (m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kFreshenFiles))->IsMarked())
             m_pipeMgr << "-f";
         else
             m_pipeMgr << "-o+";
@@ -201,10 +203,10 @@ status_t RarArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
     else
         m_pipeMgr << "-o+";
 
-    if (m_settingsMenu->FindItem(B_TRANSLATE(kKeepBroken))->IsMarked())
+    if (m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kKeepBroken))->IsMarked())
         m_pipeMgr << "-kb";
 
-    if (m_settingsMenu->FindItem(B_TRANSLATE(kProcessAttrs))->IsMarked() == false)
+    if (m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kProcessAttrs))->IsMarked() == false)
         m_pipeMgr << "-ee";
 
     if (Password().Length() > 0)
@@ -483,19 +485,19 @@ void RarArchiver::BuildMenu(BMessage& message)
     extractMenu = new BMenu(B_TRANSLATE("While extracting"));
     extractMenu->SetRadioMode(true);
 
-    item = new BMenuItem(B_TRANSLATE(kAlwaysOverwrite), NULL);
+    item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kAlwaysOverwrite), NULL);
     item->SetMarked(message.GetBool(kAlwaysOverwrite, true));
     extractMenu->AddItem(item);
 
-    item = new BMenuItem(B_TRANSLATE(kNoOverwrite), NULL);
+    item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kNoOverwrite), NULL);
     item->SetMarked(message.GetBool(kNoOverwrite, false));
     extractMenu->AddItem(item);
 
-    item = new BMenuItem(B_TRANSLATE(kUpdateFiles), NULL);
+    item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kUpdateFiles), NULL);
     item->SetMarked(message.GetBool(kUpdateFiles, false));
     extractMenu->AddItem(item);
 
-    item = new BMenuItem(B_TRANSLATE(kFreshenFiles), NULL);
+    item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kFreshenFiles), NULL);
     item->SetMarked(message.GetBool(kFreshenFiles, false));
     extractMenu->AddItem(item);
 
@@ -503,11 +505,11 @@ void RarArchiver::BuildMenu(BMessage& message)
     othersMenu = new BMenu(B_TRANSLATE("Other options"));
     othersMenu->SetRadioMode(false);
 
-    item = new BMenuItem(B_TRANSLATE(kProcessAttrs), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kProcessAttrs), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(message.GetBool(kProcessAttrs, false));
     othersMenu->AddItem(item);
 
-    item = new BMenuItem(B_TRANSLATE(kKeepBroken), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kKeepBroken), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(message.GetBool(kKeepBroken, false));
     othersMenu->AddItem(item);
 
@@ -519,27 +521,27 @@ void RarArchiver::BuildMenu(BMessage& message)
 
 status_t RarArchiver::ArchiveSettings(BMessage& message)
 {
-    BMenuItem* item = m_settingsMenu->FindItem(B_TRANSLATE(kAlwaysOverwrite));
+    BMenuItem* item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kAlwaysOverwrite));
     if (item != NULL)
         message.AddBool(kAlwaysOverwrite, item->IsMarked());
 
-    item = m_settingsMenu->FindItem(B_TRANSLATE(kNoOverwrite));
+    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kNoOverwrite));
     if (item != NULL)
         message.AddBool(kNoOverwrite, item->IsMarked());
 
-    item = m_settingsMenu->FindItem(B_TRANSLATE(kUpdateFiles));
+    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kUpdateFiles));
     if (item != NULL)
         message.AddBool(kUpdateFiles, item->IsMarked());
 
-    item = m_settingsMenu->FindItem(B_TRANSLATE(kFreshenFiles));
+    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kFreshenFiles));
     if (item != NULL)
         message.AddBool(kFreshenFiles, item->IsMarked());
 
-    item = m_settingsMenu->FindItem(B_TRANSLATE(kProcessAttrs));
+    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kProcessAttrs));
     if (item != NULL)
         message.AddBool(kProcessAttrs, item->IsMarked());
 
-    item = m_settingsMenu->FindItem(B_TRANSLATE(kKeepBroken));
+    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kKeepBroken));
     if (item != NULL)
         message.AddBool(kKeepBroken, item->IsMarked());
 

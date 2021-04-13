@@ -18,11 +18,13 @@
 #define B_TRANSLATION_CONTEXT "LhaArchiver"
 #else
 #define B_TRANSLATE(x) x
+#define B_TRANSLATE_MARK(x) x
+#define B_TRANSLATE_NOCOLLECT(x) x
 #endif
 
 
 // keep track of our custom options/menuitems
-static const char* kLharcCompat = "LHarc compatible format";
+static const char* kLharcCompat = B_TRANSLATE_MARK("LHarc compatible format");
 
 
 Archiver* load_archiver(const char* addonImagePath)
@@ -404,7 +406,7 @@ status_t LhaArchiver::Add(bool /*createMode*/, const char* relativePath, BMessag
     m_pipeMgr.FlushArgs();
 
     BString buf = "-a";
-    if (m_settingsMenu->FindItem(B_TRANSLATE(kLharcCompat))->IsMarked() == true)
+    if (m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kLharcCompat))->IsMarked() == true)
         buf << "g";
 
     buf << GetCompressionLevel();
@@ -649,13 +651,13 @@ void LhaArchiver::BuildMenu(BMessage& message)
     menuStr << " " << B_TRANSLATE("(best)");
     m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
 
-    SetCompressionLevel(message.GetInt32(kCompressionLevelString, 2));
+    SetCompressionLevel(message.GetInt32(kCompressionLevelKey, 2));
 
     // Build the "Other options" sub-menu
     otherMenu = new BMenu(B_TRANSLATE("Other settings"));
     otherMenu->SetRadioMode(false);
 
-    item = new BMenuItem(B_TRANSLATE(kLharcCompat), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kLharcCompat), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(message.GetBool(kLharcCompat, false));
     otherMenu->AddItem(item);
 
@@ -667,7 +669,7 @@ void LhaArchiver::BuildMenu(BMessage& message)
 
 status_t LhaArchiver::ArchiveSettings(BMessage& message)
 {
-    BMenuItem* item = m_settingsMenu->FindItem(B_TRANSLATE(kLharcCompat));
+    BMenuItem* item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kLharcCompat));
     if (item != NULL)
         message.AddBool(kLharcCompat, item->IsMarked());
 
