@@ -37,7 +37,6 @@ static const uint32 M_PATH_SELECTED       = 'pths';
 static const uint32 M_SELECT_OPEN_PATH    = 'sopp';
 static const uint32 M_SELECT_ADD_PATH     = 'sadp';
 static const uint32 M_SELECT_EXTRACT_PATH = 'setp';
-static const uint32 M_USE_DIR             = 'used';
 static const uint32 M_ARK_DIR             = 'arkd';
 static const uint32 M_ADD_CLICKED         = 'addd';
 static const uint32 M_REMOVE_CLICKED      = 'remc';
@@ -71,31 +70,13 @@ PrefsViewPaths::~PrefsViewPaths()
 
 void PrefsViewPaths::Render()
 {
-    BStringView* defaultStrView = new BStringView("PrefsViewPath:defaultStrView", B_TRANSLATE("Default paths:"), B_WILL_DRAW);
+    BStringView* defaultStrView = new BStringView("PrefsViewPath:defaultStrView", B_TRANSLATE("Default paths"), B_WILL_DRAW);
     defaultStrView->SetFont(&m_sectionFont);
-
-    BString dividerStrings[] =
-    {
-        B_TRANSLATE("Open path:"),
-        B_TRANSLATE("Add path:"),
-        B_TRANSLATE("Extract path:")
-    };
-
-    float divider = 0;
-    for (size_t i = 0; i < B_COUNT_OF(dividerStrings); i++)
-        divider = MAX(divider, StringWidth(dividerStrings[i].String()));
 
     m_openPathView = new BTextControl("PrefsViewPaths:openPathView", B_TRANSLATE("Open path:"), NULL, NULL,
                                       B_WILL_DRAW | B_NAVIGABLE);
-    m_openPathView->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
     m_openPathView->TextView()->DisallowChar(B_INSERT);
-
-    BLayoutItem* openPathLabel = m_openPathView->CreateLabelLayoutItem();
-    openPathLabel->SetExplicitMinSize(BSize(divider, B_SIZE_UNSET));
-    openPathLabel->SetExplicitMaxSize(BSize(divider, B_SIZE_UNSET));
-
-    BLayoutItem* openPathTextView = m_openPathView->CreateTextViewLayoutItem();
-    openPathTextView->SetExplicitAlignment(BAlignment(B_ALIGN_LEFT, B_ALIGN_BOTTOM));
+    m_openPathView->TextView()->SetExplicitMaxSize(BSize(B_SIZE_UNSET, m_openPathView->TextView()->MinSize().Height()));
 
     BString const selectBtnText = BZ_TR(kSelectString);
     m_openPathBtn = new BButton("PrefsViewPaths:openPathBtn", selectBtnText.String(),
@@ -103,42 +84,23 @@ void PrefsViewPaths::Render()
 
     m_addPathView = new BTextControl("PrefsViewPaths:addPathView", B_TRANSLATE("Add path:"), NULL, NULL,
                                      B_WILL_DRAW | B_NAVIGABLE);
-    m_addPathView->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
     m_addPathView->TextView()->DisallowChar(B_INSERT);
-
-    BLayoutItem* addPathLabel = m_addPathView->CreateLabelLayoutItem();
-    addPathLabel->SetExplicitMinSize(BSize(divider, B_SIZE_UNSET));
-    addPathLabel->SetExplicitMaxSize(BSize(divider, B_SIZE_UNSET));
-
-    BLayoutItem* addPathTextView = m_addPathView->CreateTextViewLayoutItem();
-    addPathTextView->SetExplicitAlignment(BAlignment(B_ALIGN_LEFT, B_ALIGN_BOTTOM));
+    m_addPathView->TextView()->SetExplicitMaxSize(BSize(B_SIZE_UNSET, m_addPathView->TextView()->MinSize().Height()));
 
     m_addPathBtn = new BButton("PrefsViewPaths:addPathBtn", selectBtnText.String(), new BMessage(M_SELECT_ADD_PATH),
                                B_WILL_DRAW | B_NAVIGABLE);
 
-    BStringView* extractStrView = new BStringView("PrefsViewPaths:extractStrView", B_TRANSLATE("Extract path:"),
-                                                  B_WILL_DRAW);
-
-    m_arkDirOpt = new BRadioButton("PrefsViewPaths:arkDirOpt", B_TRANSLATE("Same folder as source (archive) file"),
-                                   new BMessage(M_ARK_DIR), B_WILL_DRAW | B_NAVIGABLE);
-
-    m_useDirOpt = new BRadioButton("PrefsViewPaths:useDirOpt", B_TRANSLATE("Use:"),
-                                   new BMessage(M_USE_DIR), B_WILL_DRAW | B_NAVIGABLE);
-    m_useDirOpt->SetValue(B_CONTROL_ON);
-    m_useDirOpt->SetExplicitAlignment(BAlignment(B_ALIGN_LEFT, B_ALIGN_BOTTOM));
-
-    m_extractPathView = new BTextControl("PrefsViewPaths:extractPathView", NULL, NULL, NULL,
+    m_extractPathView = new BTextControl("PrefsViewPaths:extractPathView", B_TRANSLATE("Extract path:"), NULL, NULL,
                                          B_WILL_DRAW | B_NAVIGABLE);
-    m_extractPathView->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
     m_extractPathView->TextView()->DisallowChar(B_INSERT);
-
-    BLayoutItem* extractPathTextView = m_extractPathView->CreateTextViewLayoutItem();
-    extractPathTextView->SetExplicitAlignment(BAlignment(B_ALIGN_LEFT, B_ALIGN_BOTTOM));
+    m_extractPathView->TextView()->SetExplicitMaxSize(BSize(B_SIZE_UNSET, m_extractPathView->TextView()->MinSize().Height()));
 
     m_extractPathBtn = new BButton("PrefsViewPaths:extractPathBtn", selectBtnText.String(),
                                    new BMessage(M_SELECT_EXTRACT_PATH), B_WILL_DRAW | B_NAVIGABLE);
 
-    BStringView* favStrView = new BStringView("PrefsViewPaths:favStrView", B_TRANSLATE("Favorite extract paths:"),
+    m_arkDirChk = new BCheckBox("PrefsViewPaths:arkDirOpt", B_TRANSLATE("Extract to the same folder as the source archive"), new BMessage(M_ARK_DIR));
+
+    BStringView* favStrView = new BStringView("PrefsViewPaths:favStrView", B_TRANSLATE("Favorite extract paths"),
                                               B_WILL_DRAW);
     favStrView->SetFont(&m_sectionFont);
 
@@ -154,18 +116,12 @@ void PrefsViewPaths::Render()
     m_addBmp = BitmapPool::LoadAppVector("Img:PlusSign", 20, 20);
     m_removeBmp = BitmapPool::LoadAppVector("Img:MinusSign", 20, 20);
 
-    m_addBtn = new ImageButton(BRect(m_scrollView->Frame().right + m_margin, m_scrollView->Frame().top + 1,
-                                     m_scrollView->Frame().right + 20, m_scrollView->Frame().top + 21), "PrefsViewPaths:addBnt",
-                               NULL, m_addBmp, NULL, new BMessage(M_ADD_CLICKED), false, ViewColor());
-    m_addBtn->SetExplicitMaxSize(BSize(30, 30));
-    m_addBtn->SetExplicitMinSize(BSize(30, 30));
+    m_addBtn = new ImageButton("PrefsViewPaths:addBnt", NULL, m_addBmp, NULL, new BMessage(M_ADD_CLICKED),false, ViewColor());
+    m_addBtn->SetExplicitSize(BSize(30, 30));
 
-    m_removeBtn = new ImageButton(BRect(m_addBtn->Frame().left, m_addBtn->Frame().bottom + 2 * m_margin - 3,
-                                        m_addBtn->Frame().right, m_addBtn->Frame().bottom + m_margin + 21),
-                                  "PrefsViewPaths:removeBtn", NULL, m_removeBmp, NULL, new BMessage(M_REMOVE_CLICKED), false,
+    m_removeBtn = new ImageButton("PrefsViewPaths:removeBtn", NULL, m_removeBmp, NULL, new BMessage(M_REMOVE_CLICKED), false,
                                   ViewColor());
-    m_removeBtn->SetExplicitMaxSize(BSize(30, 30));
-    m_removeBtn->SetExplicitMinSize(BSize(30, 30));
+    m_removeBtn->SetExplicitSize(BSize(30, 30));
 
     // Using 0 spacing in main vertical layout below to pack certain items (like
     // the select buttons) tightly as otherwise the layout gets weird.
@@ -174,29 +130,27 @@ void PrefsViewPaths::Render()
     builder
         .SetInsets(B_USE_DEFAULT_SPACING)
         .Add(defaultStrView)
-        .AddGroup(B_HORIZONTAL, B_USE_HALF_ITEM_SPACING)
-            .Add(openPathLabel)
-            .Add(openPathTextView)
-            .Add(m_openPathBtn)
+        .AddGroup(B_HORIZONTAL)
+            .AddStrut(B_USE_HALF_ITEM_SPACING)
+            .AddGrid(0.0, B_USE_HALF_ITEM_SPACING)
+                .AddTextControl(m_openPathView, 0, 0, B_ALIGN_RIGHT)
+                .Add(m_openPathBtn, 3, 0)
+                .AddTextControl(m_addPathView, 0, 1, B_ALIGN_RIGHT)
+                .Add(m_addPathBtn, 3, 1)
+                .AddTextControl(m_extractPathView, 0, 2, B_ALIGN_RIGHT)
+                .Add(m_extractPathBtn, 3, 2)
+                .AddGroup(B_HORIZONTAL, 0.0, 1, 4, 3, 1)
+                    .Add(m_arkDirChk)
+                    .AddGlue()
+                .End()
+                .Add(BSpaceLayoutItem::CreateHorizontalStrut(5), 2, 0, 1, 2)
+            .End()
         .End()
-        .AddGroup(B_HORIZONTAL, B_USE_HALF_ITEM_SPACING)
-            .Add(addPathLabel)
-            .Add(addPathTextView)
-            .Add(m_addPathBtn)
-        .End()
-        .AddStrut(B_USE_HALF_ITEM_SPACING)
-        .Add(extractStrView)
-        .AddGroup(B_HORIZONTAL, B_USE_HALF_ITEM_SPACING)
-            .Add(m_useDirOpt)
-            .Add(extractPathTextView)
-            .Add(m_extractPathBtn)
-        .End()
-        .AddStrut(B_USE_HALF_ITEM_SPACING)
-        .Add(m_arkDirOpt)
         .AddStrut(B_USE_ITEM_SPACING)  // extra space before starting next logical group
         .Add(favStrView)
         .AddStrut(B_USE_HALF_ITEM_SPACING)
         .AddGroup(B_HORIZONTAL, B_USE_HALF_ITEM_SPACING)
+            .AddStrut(B_USE_ITEM_SPACING)
             .Add(m_scrollView)
             .AddGroup(B_VERTICAL, 0)
                 .Add(m_addBtn)
@@ -205,7 +159,11 @@ void PrefsViewPaths::Render()
             .End()
         .End()
         .AddStrut(B_USE_HALF_ITEM_SPACING)
-        .Add(m_genChk)                 // don't add glue below so m_scrollView stretches to fill up vertical space
+        .AddGroup(B_HORIZONTAL)
+            .AddStrut(B_USE_ITEM_SPACING)
+            .Add(m_genChk)
+            .AddGlue()
+        .End()        // don't add glue below so m_scrollView stretches to fill up vertical space
         .End();
 
     AddRevertButton(builder);
@@ -217,7 +175,7 @@ void PrefsViewPaths::Save()
     _prefs_paths.SetString(kPfDefOpenPath, m_openPathView->Text());
     _prefs_paths.SetString(kPfDefAddPath, m_addPathView->Text());
     _prefs_paths.SetString(kPfDefExtractPath, m_extractPathView->Text());
-    _prefs_paths.SetBool(kPfUseArkDir, m_arkDirOpt->Value() == B_CONTROL_ON ? true : false);
+    _prefs_paths.SetBool(kPfUseArkDir, m_arkDirChk->Value() == B_CONTROL_ON ? true : false);
 
     BMessage favPathMsg('fav!');
     for (int32 i = 0; i < m_favListView->CountItems(); i++)
@@ -245,9 +203,9 @@ void PrefsViewPaths::Load()
     if (_prefs_paths.FindBool(kPfUseArkDir, &useArkDir) == B_OK)
     {
         if (useArkDir == true)
-            m_arkDirOpt->SetValue(B_CONTROL_ON);
+            m_arkDirChk->SetValue(B_CONTROL_ON);
         else
-            m_useDirOpt->SetValue(B_CONTROL_ON);
+            m_arkDirChk->SetValue(B_CONTROL_OFF);
 
         // m_useDirOpt->Invoke()won't work because SetTarget() in AttchdToWnd() would not yet have been exec
         ToggleExtractPathView(!useArkDir);
@@ -272,8 +230,7 @@ void PrefsViewPaths::AttachedToWindow()
     m_openPathBtn->SetTarget(this);
     m_addPathBtn->SetTarget(this);
     m_extractPathBtn->SetTarget(this);
-    m_arkDirOpt->SetTarget(this);
-    m_useDirOpt->SetTarget(this);
+    m_arkDirChk->SetTarget(this);
     m_addBtn->SetTarget(this);
     m_removeBtn->SetTarget(this);
     PrefsView::AttachedToWindow();
@@ -377,16 +334,9 @@ void PrefsViewPaths::MessageReceived(BMessage* message)
             break;
         }
 
-
-        case M_USE_DIR:
-        {
-            ToggleExtractPathView(true);
-            break;
-        }
-
         case M_ARK_DIR:
         {
-            ToggleExtractPathView(false);
+            ToggleExtractPathView(m_arkDirChk->Value() == B_CONTROL_ON ? false : true);
             break;
         }
 

@@ -23,7 +23,7 @@
 
 
 PrefsViewState::PrefsViewState(BRect frame)
-    : PrefsView(frame, B_TRANSLATE("State"), B_TRANSLATE("Configure what to tag along with archives as attributes"))
+    : PrefsView(frame, B_TRANSLATE("State"), B_TRANSLATE("Configure settings to automatically save and restore"))
 {
     SetBitmap(BitmapPool::LoadAppVector("Img:Prefs_State", 20, 20));
     Render();
