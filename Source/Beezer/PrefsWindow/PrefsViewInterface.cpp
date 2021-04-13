@@ -48,7 +48,7 @@ void PrefsViewInterface::Render()
 {
     m_fullLengthBarsChk = new BCheckBox("PrefsViewInterface:fullLenBars", B_TRANSLATE("Full length toolbar & infobar"), NULL);
 
-    BStringView* colorStrView = new BStringView("PrefsViewInterface:colorStrView", B_TRANSLATE("Configure colors:"), B_WILL_DRAW);
+    BStringView* colorStrView = new BStringView("PrefsViewInterface:colorStrView", B_TRANSLATE("Configure colors"), B_WILL_DRAW);
     colorStrView->SetFont(&m_sectionFont);
 
     BevelView* colorWellContainerView = new BevelView(BRect(3 * m_margin, colorStrView->Frame().bottom + m_margin, 3 * m_margin + 30,
@@ -59,19 +59,17 @@ void PrefsViewInterface::Render()
     m_colorWell = new BView(colorWellContainerView->Bounds().InsetBySelf(edgeThickness, edgeThickness),
                             "PrefsViewInterface:colorWell", B_FOLLOW_LEFT, B_WILL_DRAW);
     colorWellContainerView->AddChild(m_colorWell);
-    colorWellContainerView->SetExplicitMaxSize(BSize(30, 30));
+    colorWellContainerView->SetExplicitSize(BSize(30, 30));
 
     m_colorPopUp = new BPopUpMenu("");
     m_colorPopUp->AddItem(new BMenuItem(B_TRANSLATE("Selected text color"), new BMessage(M_ITEM_CHANGE)));
     m_colorPopUp->AddItem(new BMenuItem(B_TRANSLATE("Selected background color"), new BMessage(M_ITEM_CHANGE)));
     m_colorField = new BMenuField("PrefsViewInterface:colorField", "", (BMenu*)m_colorPopUp);
 
-    m_colorControl = new BColorControl(BPoint(3 * m_margin,
-                                              MAX(m_colorPopUp->Frame().bottom, colorWellContainerView->Frame().bottom) + m_margin + 2),
-                                       B_CELLS_32x8, 8,
+    m_colorControl = new BColorControl(BPoint(0, 0), B_CELLS_32x8, 8,
                                        "PrefsViewInteface:colorControl", new BMessage(M_COLOR_CHANGE));
 
-    BStringView* defStrView = new BStringView("PrefsViewInterface:defStrView", B_TRANSLATE("Default interface settings:"), B_WILL_DRAW);
+    BStringView* defStrView = new BStringView("PrefsViewInterface:defStrView", B_TRANSLATE("Default interface settings"), B_WILL_DRAW);
     defStrView->SetFont(&m_sectionFont);
 
     m_toolbarChk = new BCheckBox("PrefsViewInterface:toolbarChk", B_TRANSLATE("Show toolbar"), NULL);
@@ -94,14 +92,19 @@ void PrefsViewInterface::Render()
         .AddStrut(B_USE_HALF_ITEM_SPACING)  // extra space before starting next logical group
         .Add(colorStrView)
         .AddGroup(B_HORIZONTAL)
+            .AddStrut(B_USE_ITEM_SPACING)
             .Add(colorWellContainerView)
             .Add(m_colorField)
             .AddGlue()  // glue so color field doesn't stretch the full width
         .End()
-        .Add(m_colorControl)
-        .AddStrut(B_USE_ITEM_SPACING)  // extra space before starting next logical group
+        .AddGroup(B_HORIZONTAL)
+            .AddStrut(B_USE_ITEM_SPACING)
+            .Add(m_colorControl)
+        .End()
+        .AddStrut(B_USE_HALF_ITEM_SPACING)  // extra space before starting next logical group
         .Add(defStrView)
         .AddGroup(B_HORIZONTAL)
+            .AddStrut(B_USE_ITEM_SPACING)
             .AddGroup(B_VERTICAL, B_USE_HALF_ITEM_SPACING)
                 .Add(m_toolbarChk)
                 .Add(m_infobarChk)
@@ -112,8 +115,9 @@ void PrefsViewInterface::Render()
                 .Add(m_foldingField)
                 .AddGlue()      // glue to push the folding field to top
             .End()
+            .AddGlue() // prevent m_foldingField from extending
         .End()
-        .AddGlue() // add some free space at the bottom
+        .AddGlue(2.0) // heavy glue to prevent m_colorControl from taking up extra space
         .End();
 
     AddRevertButton(builder);

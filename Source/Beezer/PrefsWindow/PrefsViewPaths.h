@@ -42,9 +42,8 @@ class PrefsViewPaths : public PrefsView
         BButton*            m_openPathBtn,
                             *m_addPathBtn,
                             *m_extractPathBtn;
-        BRadioButton*       m_arkDirOpt,
-                            *m_useDirOpt;
-        BCheckBox*          m_genChk;
+        BCheckBox*          m_genChk,
+                            *m_arkDirChk;
         BListView*          m_favListView;
         BScrollView*        m_scrollView;
         ImageButton*        m_addBtn,

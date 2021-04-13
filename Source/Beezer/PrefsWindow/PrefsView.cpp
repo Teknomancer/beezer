@@ -86,9 +86,10 @@ void PrefsView::AddRevertButton(BLayoutBuilder::Group<>& builder)
     m_revertBtn = new BButton("PrefsView:defaultBtn", B_TRANSLATE("Revert"), new BMessage(M_REVERT),
                               B_WILL_DRAW | B_NAVIGABLE);
 
-    builder.AddGroup(B_HORIZONTAL)
-        .AddGlue()  // glue first adds padding and moves the button to the right
-        .Add(m_revertBtn)
+    builder
+        .AddGroup(B_HORIZONTAL)
+            .AddGlue()  // glue first adds padding and moves the button to the right
+            .Add(m_revertBtn)
         .End();
 
     m_revertBtn->SetTarget(this);
