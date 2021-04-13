@@ -97,6 +97,9 @@ const char* const kLooperPtr =          kWindowPtr;
 const char* const kRecentSplitFile =    "recent_split_file",
 *const kRecentSplitDir =                "recent_split_dir";
 
+// TODO: Consider making these into an anonymous enum.
+// That way we don't have to worry about duplicate values and still retain
+// using them without extra scoping.
 const uint32
 M_ARK_TYPE_SELECTED =                   'atsl',
 M_STOP_OPERATION =                      'stop',
