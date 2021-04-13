@@ -19,18 +19,21 @@
 #define B_TRANSLATION_CONTEXT "7zipArchiver"
 #else
 #define B_TRANSLATE(x) x
+#define B_TRANSLATE_MARK(x) x
+#define B_TRANSLATE_NOCOLLECT(x) x
 #endif
 
 
 // keep track of our custom options/menuitems
 static const char
-    //*kArchiveAttrs    = "Add attributes", // unused?
-    *kSolidBlocks     = "Use solid blocks",
-    *kMultiThread     = "Use multi-threading (for multi-core CPUs)",
-    *kOverwriteFiles  = "Always overwrite (default)",
-    *kNoOverwrite     = "Never overwrite existing files",
-    *kRenameExisting  = "Rename existing files",
-    *kRenameExtracted = "Rename extracted files";
+    //*kArchiveAttrs     = B_TRANSLATE_MARK("Add attributes"), // unused?
+    *kCompressionLevel = B_TRANSLATE_MARK("Compression level"),
+    *kMultiThread      = B_TRANSLATE_MARK("Use multi-threading (for multi-core CPUs)"),
+    *kNoOverwrite      = B_TRANSLATE_MARK("Never overwrite existing files"),
+    *kOverwriteFiles   = B_TRANSLATE_MARK("Always overwrite (default)"),
+    *kRenameExisting   = B_TRANSLATE_MARK("Rename existing files"),
+    *kRenameExtracted  = B_TRANSLATE_MARK("Rename extracted files"),
+    *kSolidBlocks      = B_TRANSLATE_MARK("Use solid blocks");
 
 
 Archiver* load_archiver(const char* addonImagePath)
@@ -173,11 +176,11 @@ status_t z7Archiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger*
 
     if (progress)    // Only enable extract options when user is NOT viewing
     {
-        if (m_settingsMenu->FindItem(B_TRANSLATE(kNoOverwrite))->IsMarked())
+        if (m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kNoOverwrite))->IsMarked())
             m_pipeMgr << "-aos";
-        else if (m_settingsMenu->FindItem(B_TRANSLATE(kRenameExisting))->IsMarked())
+        else if (m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kRenameExisting))->IsMarked())
             m_pipeMgr << "-aot";
-        else if (m_settingsMenu->FindItem(B_TRANSLATE(kRenameExtracted))->IsMarked())
+        else if (m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kRenameExtracted))->IsMarked())
             m_pipeMgr << "-aou";
         else
             m_pipeMgr << "-aoa";
@@ -466,7 +469,7 @@ status_t z7Archiver::Add(bool createMode, const char* relativePath, BMessage* me
     levelStr.SetToFormat("-mx%d", GetCompressionLevel());
     m_pipeMgr << m_7zPath << "a" << levelStr.String();
 
-    if (m_settingsMenu->FindItem(B_TRANSLATE(kMultiThread))->IsMarked() == true)
+    if (m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kMultiThread))->IsMarked() == true)
         m_pipeMgr << "-mmt";
 
     BString combo = Password();
@@ -480,7 +483,7 @@ status_t z7Archiver::Add(bool createMode, const char* relativePath, BMessage* me
     // Delete/update works only on whole solid block (so all files in such block have to be targetted).
     // Also files inside solid blocks do not show compressed size.
     // Of course using -msoff will not help with handling solid blocks in archives made by other apps.
-    if (m_settingsMenu->FindItem(B_TRANSLATE(kSolidBlocks))->IsMarked() == false)
+    if (m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kSolidBlocks))->IsMarked() == false)
         m_pipeMgr << "-ms=off";
 
     // 0.07: Added "-bd" switch to prevent percentage display in output
@@ -801,7 +804,7 @@ void z7Archiver::BuildMenu(BMessage& message)
     m_settingsMenu = new BMenu(m_typeStr);
 
     // Build the header-level sub-menu
-    m_compressionMenu = new BMenu(B_TRANSLATE(kCompressionLevelString));
+    m_compressionMenu = new BMenu(B_TRANSLATE_NOCOLLECT(kCompressionLevel));
     m_compressionMenu->SetRadioMode(true);
 
     BString menuStr("0");
@@ -816,17 +819,17 @@ void z7Archiver::BuildMenu(BMessage& message)
     menuStr << " " << B_TRANSLATE("(best)");
     m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
 
-    SetCompressionLevel(message.GetInt32(kCompressionLevelString, 5));
+    SetCompressionLevel(message.GetInt32(kCompressionLevelKey, 5));
 
     // Build the "While adding" sub-menu
     addMenu = new BMenu(B_TRANSLATE("While adding"));
     addMenu->SetRadioMode(false);
 
-    item = new BMenuItem(B_TRANSLATE(kSolidBlocks), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kSolidBlocks), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(message.GetBool(kSolidBlocks, false));
     addMenu->AddItem(item);
 
-    item = new BMenuItem(B_TRANSLATE(kMultiThread), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kMultiThread), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(message.GetBool(kMultiThread, true));
     addMenu->AddItem(item);
 
@@ -834,16 +837,16 @@ void z7Archiver::BuildMenu(BMessage& message)
     extractMenu = new BMenu(B_TRANSLATE("While extracting"));
     extractMenu->SetRadioMode(true);
 
-    extractMenu->AddItem(item = new BMenuItem(B_TRANSLATE(kOverwriteFiles), NULL));
+    extractMenu->AddItem(item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kOverwriteFiles), NULL));
     item->SetMarked(message.GetBool(kOverwriteFiles, true));
 
-    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(kNoOverwrite), NULL));
+    extractMenu->AddItem(new BMenuItem(B_TRANSLATE_NOCOLLECT(kNoOverwrite), NULL));
     item->SetMarked(message.GetBool(kNoOverwrite, false));
 
-    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(kRenameExisting), NULL));
+    extractMenu->AddItem(new BMenuItem(B_TRANSLATE_NOCOLLECT(kRenameExisting), NULL));
     item->SetMarked(message.GetBool(kRenameExisting, false));
 
-    extractMenu->AddItem(new BMenuItem(B_TRANSLATE(kRenameExtracted), NULL));
+    extractMenu->AddItem(new BMenuItem(B_TRANSLATE_NOCOLLECT(kRenameExtracted), NULL));
     item->SetMarked(message.GetBool(kRenameExtracted, false));
 
     // Add sub-menus to settings menu
@@ -855,27 +858,27 @@ void z7Archiver::BuildMenu(BMessage& message)
 
 status_t z7Archiver::ArchiveSettings(BMessage &message)
 {
-    BMenuItem* item = m_settingsMenu->FindItem(B_TRANSLATE(kSolidBlocks));
+    BMenuItem* item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kSolidBlocks));
     if (item != NULL)
         message.AddBool(kSolidBlocks, item->IsMarked());
 
-    item = m_settingsMenu->FindItem(B_TRANSLATE(kMultiThread));
+    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kMultiThread));
     if (item != NULL)
         message.AddBool(kMultiThread, item->IsMarked());
 
-    item = m_settingsMenu->FindItem(B_TRANSLATE(kOverwriteFiles));
+    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kOverwriteFiles));
     if (item != NULL)
         message.AddBool(kOverwriteFiles, item->IsMarked());
 
-    item = m_settingsMenu->FindItem(B_TRANSLATE(kNoOverwrite));
+    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kNoOverwrite));
     if (item != NULL)
         message.AddBool(kNoOverwrite, item->IsMarked());
 
-    item = m_settingsMenu->FindItem(B_TRANSLATE(kRenameExisting));
+    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kRenameExisting));
     if (item != NULL)
         message.AddBool(kRenameExisting, item->IsMarked());
 
-    item = m_settingsMenu->FindItem(B_TRANSLATE(kRenameExtracted));
+    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kRenameExtracted));
     if (item != NULL)
         message.AddBool(kRenameExtracted, item->IsMarked());
 

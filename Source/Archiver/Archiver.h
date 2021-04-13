@@ -36,7 +36,7 @@ class BMenu;
 // ignore the warnings if this is an add-on without a compression menu
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-variable"
-static const char* kCompressionLevelString = "Compression level";
+static const char* kCompressionLevelKey = "bzr:compression_level";
 #pragma GCC diagnostic pop
 
 

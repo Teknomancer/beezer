@@ -698,7 +698,7 @@ void Archiver::BuildMenu(BMessage&)
 status_t Archiver::ArchiveSettings(BMessage& message)
 {
     if (m_compressionMenu != NULL)
-        message.AddInt32(kCompressionLevelString, GetCompressionLevel());
+        message.AddInt32(kCompressionLevelKey, GetCompressionLevel());
     return B_OK;
 }
 

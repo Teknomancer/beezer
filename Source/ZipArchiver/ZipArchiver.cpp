@@ -31,18 +31,21 @@
 #define B_TRANSLATION_CONTEXT "ZipArchiver"
 #else
 #define B_TRANSLATE(x) x
+#define B_TRANSLATE_MARK(x) x
+#define B_TRANSLATE_NOCOLLECT(x) x
 #endif
 
 
 // keep track of our custom options/menuitems
 static const char
-    *kAddAttrs     = "Add attributes",
-    *kRecurseDirs  = "Recurse into folders",
-    *kExtractDirs  = "Extract folders",
-    *kExtractAttrs = "Extract attributes",
-    *kNoOverwrite  = "Never overwrite existing files",
-    *kUpdateFiles  = "Update files, create if needed",
-    *kFreshenFiles = "Freshen existing files, create none";
+    *kAddAttrs         = B_TRANSLATE_MARK("Add attributes"),
+    *kCompressionLevel = B_TRANSLATE_MARK("Compression level"),
+    *kExtractAttrs     = B_TRANSLATE_MARK("Extract attributes"),
+    *kExtractDirs      = B_TRANSLATE_MARK("Extract folders"),
+    *kFreshenFiles     = B_TRANSLATE_MARK("Freshen existing files, create none"),
+    *kNoOverwrite      = B_TRANSLATE_MARK("Never overwrite existing files"),
+    *kRecurseDirs      = B_TRANSLATE_MARK("Recurse into folders"),
+    *kUpdateFiles      = B_TRANSLATE_MARK("Update files, create if needed");
 
 
 Archiver* load_archiver(const char* addonImagePath)
@@ -192,22 +195,22 @@ status_t ZipArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger
     // Setup argv, fill with selection names if needed
     m_pipeMgr.FlushArgs();
     m_pipeMgr << m_unzipPath;
-    if (m_settingsMenu->FindItem(B_TRANSLATE(kExtractAttrs))->IsMarked() == true)
+    if (m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kExtractAttrs))->IsMarked() == true)
         m_pipeMgr << "-o";
     else
         m_pipeMgr << "-Jo";
 
     // For normal quick-extraction i.e. with no Progressbar don't junk directories
-    if (m_settingsMenu->FindItem(B_TRANSLATE(kExtractDirs))->IsMarked() == false && progress != NULL)
+    if (m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kExtractDirs))->IsMarked() == false && progress != NULL)
         m_pipeMgr << "-j";
 
     if (progress)    // Use extract options only when user is NOT viewing
     {
-        if (m_settingsMenu->FindItem(B_TRANSLATE(kNoOverwrite))->IsMarked() == true)
+        if (m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kNoOverwrite))->IsMarked() == true)
             m_pipeMgr << "-n";
-        else if (m_settingsMenu->FindItem(B_TRANSLATE(kUpdateFiles))->IsMarked() == true)
+        else if (m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kUpdateFiles))->IsMarked() == true)
             m_pipeMgr << "-u";
-        else if (m_settingsMenu->FindItem(B_TRANSLATE(kFreshenFiles))->IsMarked() == true)
+        else if (m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kFreshenFiles))->IsMarked() == true)
             m_pipeMgr << "-f";
     }
 
@@ -543,7 +546,7 @@ status_t ZipArchiver::Add(bool createMode, const char* relativePath, BMessage* m
     levelStr.SetToFormat("-%d", GetCompressionLevel());
 
     m_pipeMgr << m_zipPath << "-y" << levelStr.String();
-    if (m_settingsMenu->FindItem(B_TRANSLATE(kRecurseDirs))->IsMarked() == true)
+    if (m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kRecurseDirs))->IsMarked() == true)
         m_pipeMgr << "-r";
 
     m_pipeMgr << m_archivePath.Path();
@@ -780,7 +783,7 @@ void ZipArchiver::BuildMenu(BMessage& message)
     m_settingsMenu = new BMenu(m_typeStr);
 
     // Build the compression-level sub-menu (sorry we can't avoid using english strings here)
-    m_compressionMenu = new BMenu(B_TRANSLATE(kCompressionLevelString));
+    m_compressionMenu = new BMenu(B_TRANSLATE_NOCOLLECT(kCompressionLevel));
     m_compressionMenu->SetRadioMode(true);
 
     BString menuStr("0");
@@ -800,17 +803,17 @@ void ZipArchiver::BuildMenu(BMessage& message)
     menuStr << " " << B_TRANSLATE("(best,default)");
     m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
 
-    SetCompressionLevel(message.GetInt32(kCompressionLevelString, 9));
+    SetCompressionLevel(message.GetInt32(kCompressionLevelKey, 9));
 
     // Build the "While adding" sub-menu
     addMenu = new BMenu(B_TRANSLATE("While adding"));
     addMenu->SetRadioMode(false);
 
-    item = new BMenuItem(B_TRANSLATE(kAddAttrs), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kAddAttrs), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(message.GetBool(kAddAttrs, true));
     addMenu->AddItem(item);
 
-    item = new BMenuItem(B_TRANSLATE(kRecurseDirs), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kRecurseDirs), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(message.GetBool(kRecurseDirs, true));
     addMenu->AddItem(item);
 
@@ -818,23 +821,23 @@ void ZipArchiver::BuildMenu(BMessage& message)
     extractMenu = new BMenu(B_TRANSLATE("While extracting"));
     extractMenu->SetRadioMode(false);
 
-    item = new BMenuItem(B_TRANSLATE(kExtractAttrs), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kExtractAttrs), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(message.GetBool(kExtractAttrs, true));
     extractMenu->AddItem(item);
 
-    item = new BMenuItem(B_TRANSLATE(kExtractDirs), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kExtractDirs), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(message.GetBool(kExtractDirs, true));
     extractMenu->AddItem(item);
 
-    item = new BMenuItem(B_TRANSLATE(kNoOverwrite), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kNoOverwrite), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(message.GetBool(kNoOverwrite, false));
     extractMenu->AddItem(item);
 
-    item = new BMenuItem(B_TRANSLATE(kUpdateFiles), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kUpdateFiles), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(message.GetBool(kUpdateFiles, false));
     extractMenu->AddItem(item);
 
-    item = new BMenuItem(B_TRANSLATE(kFreshenFiles), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kFreshenFiles), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(message.GetBool(kFreshenFiles, false));
     extractMenu->AddItem(item);
 
@@ -846,31 +849,31 @@ void ZipArchiver::BuildMenu(BMessage& message)
 
 status_t ZipArchiver::ArchiveSettings(BMessage &message)
 {
-    BMenuItem* item = m_settingsMenu->FindItem(B_TRANSLATE(kAddAttrs));
+    BMenuItem* item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kAddAttrs));
     if (item != NULL)
         message.AddBool(kAddAttrs, item->IsMarked());
 
-    item = m_settingsMenu->FindItem(B_TRANSLATE(kRecurseDirs));
+    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kRecurseDirs));
     if (item != NULL)
         message.AddBool(kRecurseDirs, item->IsMarked());
 
-    item = m_settingsMenu->FindItem(B_TRANSLATE(kExtractAttrs));
+    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kExtractAttrs));
     if (item != NULL)
         message.AddBool(kExtractAttrs, item->IsMarked());
 
-    item = m_settingsMenu->FindItem(B_TRANSLATE(kExtractDirs));
+    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kExtractDirs));
     if (item != NULL)
         message.AddBool(kExtractDirs, item->IsMarked());
 
-    item = m_settingsMenu->FindItem(B_TRANSLATE(kNoOverwrite));
+    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kNoOverwrite));
     if (item != NULL)
         message.AddBool(kNoOverwrite, item->IsMarked());
 
-    item = m_settingsMenu->FindItem(B_TRANSLATE(kUpdateFiles));
+    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kUpdateFiles));
     if (item != NULL)
         message.AddBool(kUpdateFiles, item->IsMarked());
 
-    item = m_settingsMenu->FindItem(B_TRANSLATE(kFreshenFiles));
+    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kFreshenFiles));
     if (item != NULL)
         message.AddBool(kFreshenFiles, item->IsMarked());
 
