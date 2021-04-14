@@ -193,7 +193,7 @@ void PrefsWindow::SetActivePanel(PrefsView* activePanel)
 
 void PrefsWindow::AddControls(BRect *panelFrame)
 {
-    m_backView = new BevelView(Bounds(), "PrefsWindow:backView", BevelView::bevel_type::OUTSET,
+    m_backView = new BevelView(Bounds(), "PrefsWindow:backView", BevelView::OUTSET,
                                B_FOLLOW_ALL_SIDES);
     m_backView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
     AddChild(m_backView);
@@ -219,7 +219,7 @@ void PrefsWindow::AddControls(BRect *panelFrame)
     rgb_color backColor = tint_color(ui_color(B_TOOL_TIP_BACKGROUND_COLOR), B_LIGHTEN_1_TINT);
     BevelView* descViewDecor = new BevelView(BRect(scrollView->Frame().right + margin, margin,
                                                    Bounds().right - margin, margin + descTextHeight + BevelView::kDeepThickness),
-                                             "PrefsWindow:descViewDecor", BevelView::bevel_type::DEEP, B_FOLLOW_LEFT);
+                                             "PrefsWindow:descViewDecor", BevelView::DEEP, B_FOLLOW_LEFT);
     m_backView->AddChild(descViewDecor);
     descViewDecor->SetViewColor(backColor);
 
