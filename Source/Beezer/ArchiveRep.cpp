@@ -14,7 +14,7 @@
 #include <NodeInfo.h>
 #include <Window.h>
 
-#include <malloc.h>     // required for gcc2?
+#include <malloc.h>     // gcc2
 
 
 ArchiveRep::ArchiveRep()

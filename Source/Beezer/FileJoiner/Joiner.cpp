@@ -14,8 +14,6 @@
 
 #include <fs_attr.h>
 
-#include <stdlib.h>     // required for gcc2?
-
 
 status_t JoinFile(const char* firstChunkPathStr, const char* outputDir, const char* separator,
                   BMessenger* progress, volatile bool* cancel)

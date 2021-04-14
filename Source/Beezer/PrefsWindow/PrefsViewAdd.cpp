@@ -17,8 +17,6 @@
 #include <StringView.h>
 #include <TextControl.h>
 
-#include <stdlib.h>     // required for gcc2?
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -27,6 +25,8 @@
 #else
 #define B_TRANSLATE(x) x
 #endif
+
+#include <stdlib.h>     // gcc2
 
 static const uint32 M_WARN = 'warn';
 

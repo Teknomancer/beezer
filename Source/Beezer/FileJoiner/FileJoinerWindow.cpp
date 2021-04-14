@@ -40,9 +40,6 @@
 #define B_TRANSLATE_SYSTEM_NAME(x) x
 #endif
 
-#include <stdlib.h>     // required for gcc2?
-#include <stdio.h>
-
 const uint32 M_SELECT_JOIN_FILE     = 'sljf';
 const uint32 M_SELECT_JOIN_FOLDER   = 'sldr';
 const uint32 M_JOIN_FILE_SELECTED   = 'jfsl';
