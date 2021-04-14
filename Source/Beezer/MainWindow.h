@@ -8,10 +8,12 @@
 
 #include <Window.h>
 #include <Path.h>
+#include <String.h>
 
 class BFilePanel;
 class BMenu;
 class BStatusBar;
+struct entry_ref;
 
 class Archiver;
 class BeezerListView;
@@ -32,7 +34,6 @@ class WindowMgr;
 
 class CLVColumn;
 class CLVContainerView;
-class CLVListItem;
 class SplitPane;
 
 class MainWindow : public BWindow
@@ -115,7 +116,7 @@ class MainWindow : public BWindow
         void                OpenArchive();
         void                OpenArchivePartTwo(status_t result);
         void                ViewFile(BMessage* message);
-        void                ExtractArchive(entry_ref refToDir, bool fullArchive);
+        void                ExtractArchive(entry_ref *refToDir, bool fullArchive);
         bool                IsExtractPathValid(const char* path, bool throwAlertErrorIfAny) const;
         void                SetupExtractPanel(BMessage* extractMessage);
         void                SetupAddPanel();
