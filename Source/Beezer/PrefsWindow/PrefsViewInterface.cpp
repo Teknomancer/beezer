@@ -53,7 +53,7 @@ void PrefsViewInterface::Render()
 
     BevelView* colorWellContainerView = new BevelView(BRect(3 * m_margin, colorStrView->Frame().bottom + m_margin, 3 * m_margin + 30,
                                                    colorStrView->Frame().bottom + m_margin + 30),
-                                             "PrefsViewInterface:colorWellContainerView", BevelView::bevel_type::DEEP,
+                                             "PrefsViewInterface:colorWellContainerView", BevelView::DEEP,
                                              B_FOLLOW_LEFT, B_WILL_DRAW);
     float const edgeThickness = colorWellContainerView->EdgeThickness();
     m_colorWell = new BView(colorWellContainerView->Bounds().InsetBySelf(edgeThickness, edgeThickness),
