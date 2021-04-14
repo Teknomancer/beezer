@@ -10,6 +10,7 @@
 
 class BButton;
 class BMessenger;
+class BStatusBar;
 
 class BarberPole;
 
@@ -24,7 +25,6 @@ class ProgressWindow : public BWindow
         virtual void        MessageReceived(BMessage* message);
 
     protected:
-        // Protected members
         BarberPole*         m_barberPole;
         BStatusBar*         m_statusBar;
         BButton*            m_cancelButton;
