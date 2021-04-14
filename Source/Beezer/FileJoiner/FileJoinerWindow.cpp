@@ -40,6 +40,8 @@
 #define B_TRANSLATE_SYSTEM_NAME(x) x
 #endif
 
+#include <cstdio>   // gcc8
+
 const uint32 M_SELECT_JOIN_FILE     = 'sljf';
 const uint32 M_SELECT_JOIN_FOLDER   = 'sldr';
 const uint32 M_JOIN_FILE_SELECTED   = 'jfsl';
