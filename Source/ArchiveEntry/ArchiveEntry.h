@@ -6,7 +6,7 @@
 #ifndef _ARCHIVE_ENTRY_H
 #define _ARCHIVE_ENTRY_H
 
-#include <time.h>
+#include <ctime>
 
 class ArchiveEntry
 {
