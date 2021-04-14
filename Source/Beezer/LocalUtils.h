@@ -10,6 +10,8 @@ class BHandler;
 class BMenu;
 class BString;
 
+struct entry_ref;
+
 bool               OpenEntry(const char* tempDirPath, const char* entryPath, bool openWith);
 bool               TrackerOpenWith(entry_ref* ref);
 void               TrackerOpenFolder(entry_ref* refToDir);
