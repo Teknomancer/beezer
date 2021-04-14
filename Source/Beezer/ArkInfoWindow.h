@@ -25,10 +25,8 @@ class ArkInfoWindow : public BWindow
         virtual bool        QuitRequested();
 
     private:
-        // Private hooks
         void                FillDetails();
 
-        // Private members
         Archiver*           m_archiver;
 
         BEntry*             m_entry;
