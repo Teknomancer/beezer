@@ -14,8 +14,6 @@
 #include <StringView.h>
 #include <TextControl.h>
 
-#include <stdlib.h>
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -24,6 +22,8 @@
 #else
 #define B_TRANSLATE(x) x
 #endif
+
+#include <cstdlib>
 
 
 PrefsViewRecent::PrefsViewRecent(BRect frame)

@@ -23,7 +23,7 @@
 #include <TranslationKit.h>
 #include <TranslationUtils.h>
 
-#include <stdio.h>
+#include <cstdio>
 
 #include "SplitPane.h"
 

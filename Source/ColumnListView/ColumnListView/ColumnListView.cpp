@@ -27,7 +27,7 @@
 
 // All AssertWindowLocked() commented-out by Ram -- for performance
 
-#include <stdlib.h>               // Ram
+#include <cstdlib>               // Ram
 #include <Debug.h>               // Ram -- temp
 
 #include <support/ClassInfo.h> // jaf

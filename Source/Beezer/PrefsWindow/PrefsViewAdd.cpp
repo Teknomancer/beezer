@@ -26,7 +26,7 @@
 #define B_TRANSLATE(x) x
 #endif
 
-#include <stdlib.h>     // gcc2
+#include <cstdlib> // gcc2
 
 static const uint32 M_WARN = 'warn';
 

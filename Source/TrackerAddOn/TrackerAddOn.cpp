@@ -8,7 +8,7 @@
 #include <TrackerAddOn.h>
 #include <String.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "Shared.h"
 

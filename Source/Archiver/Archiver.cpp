@@ -19,8 +19,6 @@
 #include <Resources.h>
 #include <TypeConstants.h>
 
-#include <stdlib.h> // needed for gcc2
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -29,6 +27,8 @@
 #else
 #define B_TRANSLATE(x) x
 #endif
+
+#include <cstdlib> // needed for gcc2
 
 
 Archiver::Archiver()

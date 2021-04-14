@@ -49,9 +49,8 @@
 #include <OS.h>
 #include <Debug.h>
 
-#include <strings.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "RegExString.h"
 

@@ -17,7 +17,7 @@
 #include <Messenger.h>
 #include <Debug.h>
 
-#include <stdio.h>
+#include <cstdio>
 
 #include "JoinerWindow.h"
 

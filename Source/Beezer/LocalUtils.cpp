@@ -19,8 +19,8 @@
 #include <String.h>
 #include <View.h>
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "AppConstants.h"
 #include "CommonStrings.h"
