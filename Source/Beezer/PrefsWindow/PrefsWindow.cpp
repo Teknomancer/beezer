@@ -43,7 +43,7 @@ static const uint32 M_PREFS_PANEL_SELECTED = 'pspf';
 
 
 PrefsWindow::PrefsWindow()
-    : BWindow(BRect(0, 0, 620, 540), BZ_TR(kSettingsString), B_TITLED_WINDOW,
+    : BWindow(BRect(0, 0, 650, 540), BZ_TR(kSettingsString), B_TITLED_WINDOW,
               B_NOT_ZOOMABLE | B_NOT_RESIZABLE),
     m_currentPanel(NULL)
 {
