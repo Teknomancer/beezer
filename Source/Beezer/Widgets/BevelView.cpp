@@ -30,7 +30,7 @@ BevelView::BevelView(BRect frame, const char* name, bevel_type bevelMode, uint32
             m_darkEdge1 = tint_color(backColor, B_DARKEN_2_TINT);
             m_darkEdge2 = tint_color(backColor, B_DARKEN_3_TINT);
             m_lightEdge = tint_color(backColor, B_LIGHTEN_MAX_TINT);
-            m_edgeThickness = m_bevelType == bevel_type::INSET ? kInsetThickness : kDeepThickness;
+            m_edgeThickness = m_bevelType == INSET ? kInsetThickness : kDeepThickness;
             break;
 
         case OUTSET:
