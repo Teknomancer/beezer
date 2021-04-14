@@ -32,8 +32,6 @@
 #include <TextControl.h>
 #include <StringView.h>
 
-#include <cstdio>
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -44,6 +42,8 @@
 #define B_TRANSLATE_COMMENT(x, y) x
 #define B_TRANSLATE_CONTEXT(x, y) x
 #endif
+
+#include <cstdio>
 
 const uint32 M_SPLIT_NOW             = 'splt';
 const uint32 M_SELECT_SPLIT_FILE     = 'file';

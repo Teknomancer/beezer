@@ -12,8 +12,7 @@
 #include <Path.h>
 #include <PopUpMenu.h>
 
-#include <malloc.h>
-#include <string.h>
+#include <cstring>
 
 #include "MsgConstants.h"
 #include "Preferences.h"
