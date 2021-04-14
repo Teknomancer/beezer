@@ -46,12 +46,12 @@
 #ifndef _REGEX_STRING_H
 #define _REGEX_STRING_H
 
-#include <ctype.h>
+#include "RegExp.h"
 
 #include <OS.h>
 #include <String.h>
 
-#include "RegExp.h"
+#include <cctype>
 
 namespace BPrivate
 {
