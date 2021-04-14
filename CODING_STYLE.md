@@ -48,15 +48,15 @@ They pollute the global namespace but whether it's also available under `std` is
 ## Comments
 
 - Keep comments to an absolute minimum.
-- Prefer single-line comments where possible. In some situations open/close-style comments are preferred (like when ignoring unused function parameters).
+- Prefer single-line (aka C++-style/C99) comments wherever possible. In some situations open/close-style comments (`/* and */`) are preferred (like when ignoring unused function parameters).
 - Avoid obvious comments.
    ```
    private:
        // Private members    <-- Avoid these
        bool    m_IsWhatever;
    ```
-- Comments that distinguishes overridden public/protected members from newly introduced in the class are fine.
-- Don't explain features of the C/C++ language unless it's very non-obvious.
+- Comments that distinguishes overridden public/protected members from those newly introduced in the class are fine.
+- Don't explain features of the C/C++ language unless it's very non-obvious or obscure.
   ```
   // strFaux must be de-allocated by free()     <-- Avoid these
   char *strFaux = strdup(strSomeother);
