@@ -6,9 +6,9 @@
 #include "Shared.h"
 
 #include <cassert>
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
+#include <cctype>
+#include <cstdio>
+#include <cstdlib>
 
 
 BString StringFromBytes(uint64 val)
