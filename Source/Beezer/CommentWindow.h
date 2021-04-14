@@ -11,8 +11,6 @@
 class BFont;
 class BTextView;
 
-class BevelView;
-
 class CommentWindow : public BWindow
 {
     public:
@@ -24,10 +22,8 @@ class CommentWindow : public BWindow
         virtual void        MessageReceived(BMessage* message);
 
     private:
-        // Private members
-
-        BTextView*          m_textView;
         BWindow*            m_callerWindow;
+        BTextView*          m_textView;
 };
 
 #endif /* _COMMENT_WINDOW_H */
