@@ -1691,12 +1691,12 @@ void MainWindow::AddLogTextView()
     // Setup the output text view's background (parent) view (AddChild done by SplitPane)
     m_outputBackView = new BevelView(BRect(0, Bounds().bottom - (Bounds().Height() * (35.0 / 100.0)),
                                            Bounds().right, Bounds().bottom), "MainWindow:OutputBackView",
-                                     BevelView::bevel_type::OUTSET, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
+                                     BevelView::OUTSET, B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_outputBackView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
 
     // Create an inset view just for looks
     BevelView* insetView = new BevelView(m_outputBackView->Bounds().InsetByCopy(K_MARGIN, K_MARGIN),
-                                         "MainWindow:InnerLogBackView", BevelView::bevel_type::INSET,
+                                         "MainWindow:InnerLogBackView", BevelView::INSET,
                                          B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
     m_outputBackView->AddChild(insetView);
     float edge = insetView->EdgeThickness();
