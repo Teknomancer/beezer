@@ -33,8 +33,13 @@ ProgressWindow::ProgressWindow(BWindow* callerWindow, BMessage* actionMessage,
                                BMessenger*& messenger, volatile bool*& cancel)
     : BWindow(BRect(0, 0, 370, 0), NULL, B_MODAL_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
               B_ASYNCHRONOUS_CONTROLS | B_NOT_V_RESIZABLE | B_NOT_ZOOMABLE | B_NOT_CLOSABLE | B_AUTO_UPDATE_SIZE_LIMITS),
-    m_progressCount(1L),
-    m_cancel(false)
+    m_barberPole(NULL),
+    m_statusBar(NULL),
+    m_cancelButton(NULL),
+    m_fileCount(0),
+    m_progressCount(1),
+    m_cancel(false),
+    m_messenger(new BMessenger(this))
 {
     if (callerWindow)
     {
@@ -45,11 +50,13 @@ ProgressWindow::ProgressWindow(BWindow* callerWindow, BMessage* actionMessage,
     SetLayout(new BGroupLayout(B_VERTICAL, 0));
 
     BBitmap* actionIcon = NULL;
-    int32 fileCount(0L);
-    const char* strOfStrView = NULL, *prepareString = NULL;
+    int32 fileCount = 0;
+    const char* strOfStrView = NULL;
+    const char* prepareString = NULL;
     switch (actionMessage->what)
     {
-        case M_EXTRACT_TO: case M_EXTRACT_SELECTED_TO:
+        case M_EXTRACT_TO:
+        case M_EXTRACT_SELECTED_TO:
         {
             actionIcon = BitmapPool::LoadAppVector("Img:ExtractStatus", 32, 32);
             fileCount = actionMessage->FindInt32(kCount);
@@ -87,7 +94,7 @@ ProgressWindow::ProgressWindow(BWindow* callerWindow, BMessage* actionMessage,
     }
 
     StaticBitmapView* iconView = new StaticBitmapView(BRect(0, 0, actionIcon->Bounds().Width(), actionIcon->Bounds().Height()),
-            "ProgressWindow:iconView", actionIcon);
+                                                      "ProgressWindow:iconView", actionIcon);
 
     BStringView* strView = new BStringView("ProgressWindow:StringView", strOfStrView);
     strView->SetFont(be_bold_font);
@@ -138,8 +145,7 @@ ProgressWindow::ProgressWindow(BWindow* callerWindow, BMessage* actionMessage,
     else
         CenterOnScreen();
 
-    messenger = new BMessenger(this);
-    m_messenger = messenger;
+    messenger = m_messenger;
     cancel = &m_cancel;
     m_barberPole->SetValue(false, false);
     SetPulseRate(K_BARBERPOLE_PULSERATE);
@@ -177,7 +183,7 @@ void ProgressWindow::MessageReceived(BMessage* message)
         case M_STOP_OPERATION:
         {
             m_barberPole->SetValue(false, false);
-            m_cancel = true;
+            m_cancel = true;    // TODO: these probably need to be atomic at least, if not a mutex.
             break;
         }
 
