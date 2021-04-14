@@ -7,10 +7,10 @@
 #define _MAIN_WINDOW_H
 
 #include <Window.h>
+#include <Path.h>
 
 class BFilePanel;
 class BMenu;
-class BPath;
 class BStatusBar;
 
 class Archiver;

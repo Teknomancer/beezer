@@ -3,36 +3,12 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <AppFileInfo.h>
-#include <Bitmap.h>
-#include <Button.h>
-#include <DateTimeFormat.h>
-#include <Debug.h>
-#include <FilePanel.h>
-#include <FindDirectory.h>
-#include <List.h>
-#include <MenuField.h>
-#include <MenuItem.h>
-#include <MimeType.h>
-#include <Path.h>
-#include <PopUpMenu.h>
-#include <Resources.h>
-#include <Roster.h>
-#include <Screen.h>
-#include <String.h>
-#include <TextControl.h>
-#include <fs_attr.h>
-#include <image.h>
-#include <os/add-ons/tracker/TrackerAddOn.h>
-#include <parsedate.h>
-
+#include "BeezerApp.h"
 #include "AboutWindow.h"
 #include "AddOnWindow.h"
 #include "Alert.h"
 #include "AppConstants.h"
-#include "AppUtils.h"
 #include "ArchiverMgr.h"
-#include "BeezerApp.h"
 #include "BitmapPool.h"
 #include "CommonStrings.h"
 #include "FileJoinerWindow.h"
@@ -49,6 +25,17 @@
 #include "UIConstants.h"
 #include "WindowMgr.h"
 
+#include <AppFileInfo.h>
+#include <Button.h>
+#include <DateTimeFormat.h>
+#include <FindDirectory.h>
+#include <MenuField.h>
+#include <MenuItem.h>
+#include <PopUpMenu.h>
+#include <Roster.h>
+#include <Screen.h>
+#include <TextControl.h>
+
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -58,6 +45,11 @@
 #define B_TRANSLATE(x) x
 #define B_TRANSLATE_SYSTEM_NAME(x) x
 #endif
+
+#include <kernel/fs_attr.h>
+#include <kernel/image.h>
+#include <os/add-ons/tracker/TrackerAddOn.h>
+#include <support/parsedate.h>
 
 
 BeezerApp* _bzr()
