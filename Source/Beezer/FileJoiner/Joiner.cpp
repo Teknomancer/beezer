@@ -10,6 +10,7 @@
 #include <File.h>
 #include <Directory.h>
 #include <Debug.h>
+#include <Entry.h> // gcc2
 
 #include <fs_attr.h>
 

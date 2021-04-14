@@ -9,6 +9,7 @@
 #include <Clipboard.h>
 #include <MenuItem.h>
 #include <PopUpMenu.h>
+#include <String.h> // gcc2
 #include <Window.h>
 
 #include <ctype.h>

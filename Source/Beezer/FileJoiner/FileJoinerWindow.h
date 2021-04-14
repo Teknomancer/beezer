@@ -5,6 +5,7 @@
 #ifndef _FILE_JOINER_WINDOW_H
 #define _FILE_JOINER_WINDOW_H
 
+#include <String.h> // gcc2 - forward declaration wouldn't work
 #include <Window.h>
 
 class BStringView;
@@ -15,6 +16,7 @@ class BButton;
 class BFilePanel;
 class BCheckBox;
 class BStatusBar;
+class BEntry; // gcc2
 
 class BevelView;
 class SelectDirPanel;
