@@ -14,7 +14,7 @@ class Preferences : public BMessage
     public:
         Preferences();
         Preferences(const char* dir, const char* file);
-        ~Preferences();
+        virtual ~Preferences();
 
         // Additional hooks
         virtual void        Init(const char* dir, const char* file);
@@ -43,10 +43,8 @@ class Preferences : public BMessage
         rgb_color           FindColorDef(const char* name, rgb_color defaultValue);
 
     private:
-        // Private hooks
         void                FreePathString();
 
-        // Private members
         const char*         m_prefsPathStr;
 };
 

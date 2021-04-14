@@ -3,16 +3,15 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <Debug.h>
+#include "Preferences.h"
+
 #include <Directory.h>
-#include <Entry.h>
 #include <File.h>
 #include <Path.h>
 #include <String.h>
 
+#include <cstdlib>
 #include <cstring>
-
-#include "Preferences.h"
 
 Preferences _prefs_colors,
             _prefs_paths,
@@ -31,6 +30,7 @@ Preferences _prefs_colors,
 
 
 Preferences::Preferences(const char* dir, const char* file)
+    : m_prefsPathStr(NULL)
 {
     Init(dir, file);
 }
@@ -52,9 +52,7 @@ Preferences::~Preferences()
 
 void Preferences::FreePathString()
 {
-    if (m_prefsPathStr)
-        free((char*)m_prefsPathStr);
-
+    free((char*)m_prefsPathStr);
     m_prefsPathStr = NULL;
 }
 
