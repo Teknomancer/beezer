@@ -5,6 +5,7 @@
 #ifndef _COMMON_STRINGS_H
 #define _COMMON_STRINGS_H
 
+#include <InterfaceDefs.h>
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -19,13 +20,10 @@
 #define BZ_TR(x) x
 #endif
 
-
-/*
-*    These strings are shared across multiple source files.  Most of them are
-*    here to reduce duplicates and make it easier to translate.  Some are also
-*    used as labels for menus/menuitems and must be consistent across files for
-*    BMenu::FindItem() and similar methods to work properly
-*/
+// These strings are shared across multiple source files.  Most of them are
+// here to reduce duplicates and make it easier to translate.  Some are also
+// used as labels for menus/menuitems and must be consistent across files for
+// BMenu::FindItem() and similar methods to work properly
 #ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-variable"
