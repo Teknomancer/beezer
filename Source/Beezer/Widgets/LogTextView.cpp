@@ -12,7 +12,7 @@
 #include <String.h> // gcc2
 #include <Window.h>
 
-#include <ctype.h>
+#include <cctype>
 
 
 LogTextView::LogTextView(BRect frame, const char* name, uint32 resizeMask, uint32 flags)
