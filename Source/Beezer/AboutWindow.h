@@ -6,8 +6,10 @@
 #ifndef _ABOUT_WINDOW_H
 #define _ABOUT_WINDOW_H
 
+#include <String.h> // gcc2 - forward declaration wouldn't work
 #include <TextView.h>
 #include <Window.h>
+
 
 static const uint32 M_CLOSE_ABOUT = 'clab';
 
@@ -27,6 +29,7 @@ class MarqueeView : public BTextView
         float               m_curPos,
                             m_rightEdge;
 };
+
 
 class AboutWindow : public BWindow
 {

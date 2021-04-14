@@ -17,8 +17,8 @@ PrefsListItem::PrefsListItem(const char* text, BBitmap* bmp, bool makeBold)
     m_fontDelta(0),
     m_makeBold(makeBold),
     m_bitmap(bmp),
-    m_selBackColor {0,0,0,0},
-    m_selTextColor {0,0,0,0}
+    m_selBackColor((rgb_color){0,0,0,0}), // gcc2 requires the initializers like this
+    m_selTextColor((rgb_color){0,0,0,0})
 {
     font_height fntHt;
     if (makeBold == true)

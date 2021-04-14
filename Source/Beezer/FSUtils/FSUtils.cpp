@@ -7,6 +7,7 @@
 
 #include <Autolock.h>
 #include <Directory.h>
+#include <Entry.h> // gcc2
 #include <File.h>
 #include <FindDirectory.h>
 #include <Messenger.h>

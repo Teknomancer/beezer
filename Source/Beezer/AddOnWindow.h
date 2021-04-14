@@ -6,6 +6,7 @@
 #ifndef _ADDON_WINDOW_H
 #define _ADDON_WINDOW_H
 
+#include <String.h> // gcc2 - forward declaration wouldn't work
 #include <Window.h>
 
 class BButton;
