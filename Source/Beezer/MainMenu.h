@@ -8,8 +8,10 @@
 
 #include <MenuBar.h>
 
-class BitmapMenuItem;
+class BPopUpMenu;
+class BMenu;
 
+class BitmapMenuItem;
 
 class MainMenu : public BMenuBar
 {
