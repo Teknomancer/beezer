@@ -29,3 +29,5 @@ make -j8
 ```
 
 Once the build succeeds, the binaries should be available in the `build` directory.  Check the wiki for a list of the [build options](https://github.com/Teknomancer/beezer/wiki/CMake-Build-Options) available.
+
+If you're using gcc2, you will need the CMake 3.19.4 package. Newer CMake doesn't seem to work with gcc2.
