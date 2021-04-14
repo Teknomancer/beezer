@@ -3,10 +3,19 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <time.h>
+#include "ArkInfoWindow.h"
+#include "AppUtils.h"
+#include "Archiver.h"
+#include "BitmapPool.h"
+#include "CommonStrings.h"
+#include "HashTable.h"
+#include "ListEntry.h"
+#include "Preferences.h"
+#include "PrefsFields.h"
+#include "StaticBitmapView.h"
+#include "UIConstants.h"
 
 #include <Alert.h>
-#include <Bitmap.h>
 #include <Button.h>
 #include <DateTimeFormat.h>
 #include <Entry.h>
@@ -19,20 +28,6 @@
 #include <String.h>
 #include <StringView.h>
 
-#include "AppConstants.h"
-#include "AppUtils.h"
-#include "Archiver.h"
-#include "ArkInfoWindow.h"
-#include "BitmapPool.h"
-#include "CommonStrings.h"
-#include "HashTable.h"
-#include "ListEntry.h"
-#include "LocalUtils.h"
-#include "Preferences.h"
-#include "PrefsFields.h"
-#include "StaticBitmapView.h"
-#include "UIConstants.h"
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -42,6 +37,8 @@
 #define B_TRANSLATE(x) x
 #define B_TRANSLATE_COMMENT(x, y) x
 #endif
+
+#include <time.h>
 
 
 ArkInfoWindow::ArkInfoWindow(BWindow* callerWindow, Archiver* archiver, BEntry* entry)
