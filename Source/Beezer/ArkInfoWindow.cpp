@@ -38,8 +38,6 @@
 #define B_TRANSLATE_COMMENT(x, y) x
 #endif
 
-#include <time.h>
-
 
 ArkInfoWindow::ArkInfoWindow(BWindow* callerWindow, Archiver* archiver, BEntry* entry)
     : BWindow(BRect(30, 30, 440, 280), B_TRANSLATE("Archive Information"), B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
