@@ -3,27 +3,21 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <Application.h>
+#include "ProgressWindow.h"
+#include "AppConstants.h"
+#include "Archiver.h"
+#include "BarberPole.h"
+#include "BitmapPool.h"
+#include "CommonStrings.h"
+#include "MsgConstants.h"
+#include "StaticBitmapView.h"
+#include "UIConstants.h"
+
 #include <Bitmap.h>
 #include <Button.h>
 #include <GroupLayoutBuilder.h>
-#include <Messenger.h>
-#include <Resources.h>
 #include <StatusBar.h>
 #include <StringView.h>
-
-#include "AppConstants.h"
-#include "ArchiveEntry.h"
-#include "Archiver.h"
-#include "BarberPole.h"
-#include "BevelView.h"
-#include "BitmapPool.h"
-#include "CommonStrings.h"
-#include "LocalUtils.h"
-#include "MsgConstants.h"
-#include "ProgressWindow.h"
-#include "StaticBitmapView.h"
-#include "UIConstants.h"
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
