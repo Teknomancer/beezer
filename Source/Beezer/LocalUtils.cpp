@@ -3,29 +3,18 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
+#include "LocalUtils.h"
+#include "CommonStrings.h"
+#include "Shared.h"
+
 #include <Application.h>
 #include <Autolock.h>
 #include <Bitmap.h>
-#include <Debug.h>
-#include <Entry.h>
-#include <Handler.h>
-#include <Locker.h>
-#include <Menu.h>
 #include <MenuItem.h>
 #include <Mime.h>
 #include <Path.h>
 #include <Resources.h>
 #include <Roster.h>
-#include <String.h>
-#include <View.h>
-
-#include <cstdio>
-#include <cstdlib>
-
-#include "AppConstants.h"
-#include "CommonStrings.h"
-#include "LocalUtils.h"
-#include "Shared.h"
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -37,6 +26,8 @@
 #define B_TRANSLATE_COMMENT(x, y) x
 #endif
 
+#include <cstdio>
+#include <cstdlib>
 
 BLocker _local_utils_locker("_local_utils_lock", true);
 

@@ -6,9 +6,12 @@
 #ifndef _LOCAL_UTILS_H
 #define _LOCAL_UTILS_H
 
+#include <SupportDefs.h>
+#include <String.h>
+
+class BBitmap;
 class BHandler;
 class BMenu;
-class BString;
 
 struct entry_ref;
 
