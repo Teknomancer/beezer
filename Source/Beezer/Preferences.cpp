@@ -10,8 +10,7 @@
 #include <Path.h>
 #include <String.h>
 
-#include <malloc.h>
-#include <string.h>
+#include <cstring>
 
 #include "Preferences.h"
 

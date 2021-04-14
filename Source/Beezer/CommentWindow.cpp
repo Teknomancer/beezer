@@ -10,8 +10,7 @@
 #include <StringView.h>
 #include <TextView.h>
 
-#include <malloc.h>
-#include <string.h>
+#include <cstring>
 
 #include "AppConstants.h"
 #include "BitmapPool.h"
