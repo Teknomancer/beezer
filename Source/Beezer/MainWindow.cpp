@@ -3,28 +3,7 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <Alert.h>
-#include <Application.h>
-#include <Autolock.h>
-#include <Bitmap.h>
-#include <ClassInfo.h>
-#include <FilePanel.h>
-#include <FindDirectory.h>
-#include <Menu.h>
-#include <MenuItem.h>
-#include <Messenger.h>
-#include <NodeInfo.h>
-#include <Resources.h>
-#include <Roster.h>
-#include <SymLink.h>
-#include <View.h>
-#include <Volume.h>
-#include <fs_attr.h>
-
-#include <cctype>
-#include <cstdio>
-#include <cstdlib>
-
+#include "MainWindow.h"
 #include "AppConstants.h"
 #include "AppUtils.h"
 #include "Archiver.h"
@@ -33,10 +12,8 @@
 #include "BarberPole.h"
 #include "BeezerApp.h"
 #include "BeezerListView.h"
-#include "BevelView.h"
 #include "BitmapPool.h"
 #include "CLVColumnLabelView.h"
-#include "CLVEasyItem.h"
 #include "CommentWindow.h"
 #include "CommonStrings.h"
 #include "FSUtils.h"
@@ -49,10 +26,8 @@
 #include "LogTextView.h"
 #include "LogWindow.h"
 #include "MainMenu.h"
-#include "MainWindow.h"
 #include "MsgConstants.h"
 #include "Preferences.h"
-#include "PrefilledBitmap.h"
 #include "PrefsFields.h"
 #include "ProgressWindow.h"
 #include "RecentMgr.h"
@@ -64,6 +39,12 @@
 #include "ToolBar.h"
 #include "UIConstants.h"
 #include "WindowMgr.h"
+
+#include <FindDirectory.h>
+#include <NodeInfo.h>
+#include <Resources.h>
+#include <Volume.h>
+#include <kernel/fs_attr.h>
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -728,7 +709,7 @@ void MainWindow::MessageReceived(BMessage* message)
             }
 
             if (found == B_OK)
-                ExtractArchive(ref, allFiles);
+                ExtractArchive(&ref, allFiles);
 
             break;
         }
@@ -2538,7 +2519,7 @@ void MainWindow::ExtractDone(BMessage* message)
 }
 
 
-void MainWindow::ExtractArchive(entry_ref refToDir, bool fullArchive)
+void MainWindow::ExtractArchive(entry_ref *refToDir, bool fullArchive)
 {
     // Setup extraction process
 
@@ -2554,7 +2535,7 @@ void MainWindow::ExtractArchive(entry_ref refToDir, bool fullArchive)
     m_publicThreadCancel = false;        // Reset this incase some previous public thread was cancelled
     // as it will be checked in AddFolderToMessage()
     BMessage msg(fullArchive == true ? M_EXTRACT_TO : M_EXTRACT_SELECTED_TO);
-    msg.AddRef(kRef, &refToDir);
+    msg.AddRef(kRef, refToDir);
 
     // Don't include folder to the items to be extracted simply because archivers won't include
     // a progress-bar update for folder entries
@@ -2625,7 +2606,7 @@ void MainWindow::ExtractArchive(entry_ref refToDir, bool fullArchive)
     m_progressWnd =  new ProgressWindow(this, &msg, messenger, cancel);
 
     BMessage* threadInfo = new BMessage('inf_');
-    threadInfo->AddRef(kRef, &refToDir);
+    threadInfo->AddRef(kRef, refToDir);
     threadInfo->AddMessenger(kProgressMessenger, *messenger);
     threadInfo->AddPointer(kArchiverPtr, (void*)m_archiver);
     threadInfo->AddBool(kAllFiles, fullArchive);
@@ -2638,7 +2619,7 @@ void MainWindow::ExtractArchive(entry_ref refToDir, bool fullArchive)
     thread_id ext_id = spawn_thread(_extractor, "_extractor", B_NORMAL_PRIORITY, (void*)threadInfo);
 
     m_logTextView->AddText(B_TRANSLATE("Extracting to:"));
-    BPath dirPath(&refToDir);
+    BPath dirPath(refToDir);
     m_logTextView->AddText(dirPath.Path(), false, false, false);
 
     resume_thread(ext_id);
