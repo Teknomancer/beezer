@@ -48,6 +48,7 @@ They pollute the global namespace but whether it's also available under `std` is
 ## Comments
 
 - Keep comments to an absolute minimum.
+- Prefer single-line comments where possible. In some situations open/close-style comments are preferred (like when ignoring unused function parameters).
 - Avoid obvious comments.
    ```
    private:
