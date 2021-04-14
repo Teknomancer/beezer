@@ -3,22 +3,16 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <Application.h>
-#include <LayoutBuilder.h>
-#include <Menu.h>
-#include <MenuItem.h>
-#include <PopUpMenu.h>
-#include <Resources.h>
-#include <String.h>
-
+#include "MainMenu.h"
 #include "AppConstants.h"
-#include "ArchiverMgr.h"
 #include "BeezerApp.h"
 #include "BitmapMenuItem.h"
 #include "BitmapPool.h"
 #include "CommonStrings.h"
-#include "MainMenu.h"
 #include "MsgConstants.h"
+
+#include <LayoutBuilder.h>
+#include <PopUpMenu.h>
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
