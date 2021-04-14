@@ -53,11 +53,11 @@
 #include "BetterScrollView.h"
 #include "Colors.h"
 
-
 //******************************************************************************************************
 //**** BetterScrollView CLASS
 //******************************************************************************************************
-#include <stdio.h>
+#include <cstdio>
+
 BetterScrollView::BetterScrollView(const char* name, BView* target, uint32 resizeMask, uint32 flags,
                                    bool horizontal, bool vertical, bool scroll_view_corner, border_style border)
     : BScrollView(name, target, resizeMask, flags, horizontal, vertical, border)

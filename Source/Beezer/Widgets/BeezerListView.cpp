@@ -25,7 +25,7 @@
 #define B_TRANSLATE(x) x
 #endif
 
-#include <stdlib.h>
+#include <cstdlib>
 
 const char* const kPfSpecialField = "beezer_special_field_magix!";
 

@@ -23,7 +23,7 @@
 #endif
 
 #include <cassert>
-#include <stdlib.h> // needed for gcc2
+#include <cstdlib> // gcc2
 
 
 // keep track of our custom options/menuitems

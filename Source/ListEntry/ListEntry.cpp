@@ -5,7 +5,7 @@
 #include "ListEntry.h"
 #include "ColumnListView.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 
 
 // TODO: Why are these text0..text7 (give them better names?)

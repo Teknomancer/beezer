@@ -5,9 +5,9 @@
 #include "PipeMgr.h"
 
 #include <image.h>
-#include <malloc.h>
-#include <stdlib.h>
-#include <stdio.h>
+
+#include <cstdlib>
+#include <cstdio>
 
 
 PipeMgr::PipeMgr()

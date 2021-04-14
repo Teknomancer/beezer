@@ -10,7 +10,7 @@
 #include <Path.h>
 #include <String.h> // gcc2
 
-#include <stdlib.h> // gcc2
+#include <cstdlib> // gcc2
 
 
 SelectDirPanel::SelectDirPanel(file_panel_mode mode, BMessenger* target, const entry_ref* start_directory,

@@ -24,7 +24,7 @@
 #include <Entry.h>
 #include <Path.h>
 
-#include <stdio.h>
+#include <cstdio>
 
 class HashTable;
 class HashEntry;

@@ -15,9 +15,7 @@
 #include <Menu.h>
 #include <MenuItem.h>
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <malloc.h>
+#include <cstdlib>
 #include <fstream>
 
 #include "ZipArchiver.h"

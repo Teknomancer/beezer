@@ -25,7 +25,7 @@
  *
  */
 
-#include <stdlib.h>               // Ram
+#include <cstdlib>               // Ram
 
 #include <support/ClassInfo.h> // jaf
 #include <interface/Window.h>  // jaf

@@ -14,11 +14,12 @@
 #include <Path.h>
 #include <SymLink.h>
 
-#include <cassert>
-#include <fs_attr.h>
-#include <stdio.h>
-#include <stdlib.h>     // gcc2
+#include <kernel/fs_attr.h>
 #include <sys/stat.h>
+
+#include <cassert>
+#include <cstdio>
+#include <cstdlib> // gcc2
 
 // Global object declares
 BLocker _fs_utils_locker("_fs_utils_lock", true);

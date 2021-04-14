@@ -32,7 +32,7 @@
 #include <TextControl.h>
 #include <StringView.h>
 
-#include <stdio.h>
+#include <cstdio>
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
