@@ -3,15 +3,12 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
+#include "BitmapPool.h"
+
 #include <Application.h>
 #include <Bitmap.h>
 #include <IconUtils.h>
-#include <Message.h>
 #include <Resources.h>
-#include <Roster.h>
-
-#include "BitmapPool.h"
-#include "LocalUtils.h"
 
 BitmapPool* _glob_bitmap_pool;
 int32 BitmapPool::m_runCount = 0;
@@ -155,7 +152,7 @@ BBitmap* BitmapPool::LoadSystemVector(const char* mimestring, int width, int hei
 BBitmap* BitmapPool::LoadAppVector(const char* resource, int width, int height)
 {
     size_t size;
-    const void* buf = be_app->AppResources()->LoadResource(B_VECTOR_ICON_TYPE, resource, &size);
+    void const* buf = be_app->AppResources()->LoadResource(B_VECTOR_ICON_TYPE, resource, &size);
     if (buf == NULL)
         return NULL;
 

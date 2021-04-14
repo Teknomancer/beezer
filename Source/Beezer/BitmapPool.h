@@ -6,8 +6,9 @@
 #ifndef _BITMAP_POOL_H
 #define _BITMAP_POOL_H
 
+#include <List.h>
+
 class BBitmap;
-class BList;
 
 class BitmapPool
 {
