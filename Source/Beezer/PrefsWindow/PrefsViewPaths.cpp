@@ -143,7 +143,7 @@ void PrefsViewPaths::Render()
                     .Add(m_arkDirChk)
                     .AddGlue()
                 .End()
-                .Add(BSpaceLayoutItem::CreateHorizontalStrut(5), 2, 0, 1, 2)
+                .Add(BSpaceLayoutItem::CreateHorizontalStrut(5), 2, 0, 1, 3) // 3 row spacer between inputs and select buttons
             .End()
         .End()
         .AddStrut(B_USE_ITEM_SPACING)  // extra space before starting next logical group
