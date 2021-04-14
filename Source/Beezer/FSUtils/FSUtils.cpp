@@ -17,7 +17,7 @@
 #include <cassert>
 #include <fs_attr.h>
 #include <stdio.h>
-#include <stdlib.h>     // required for gcc2?
+#include <stdlib.h>     // gcc2
 #include <sys/stat.h>
 
 // Global object declares

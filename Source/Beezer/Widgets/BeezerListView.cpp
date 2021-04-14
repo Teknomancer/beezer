@@ -26,7 +26,6 @@
 #endif
 
 #include <stdlib.h>
-#include <strings.h>        // required for gcc2?
 
 const char* const kPfSpecialField = "beezer_special_field_magix!";
 

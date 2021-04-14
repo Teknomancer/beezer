@@ -9,8 +9,6 @@
 #include <PopUpMenu.h>
 #include <Window.h>
 
-#include <string.h>     // required for gcc2?
-
 static const float kContextWidth = 14.0;
 
 
