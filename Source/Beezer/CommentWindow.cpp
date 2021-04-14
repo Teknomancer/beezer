@@ -3,25 +3,21 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
+#include "CommentWindow.h"
+#include "BitmapPool.h"
+#include "CommonStrings.h"
+#include "MsgConstants.h"
+#include "Preferences.h"
+#include "PrefsFields.h"
+#include "StaticBitmapView.h"
+#include "UIConstants.h"
+
 #include <Bitmap.h>
 #include <Button.h>
 #include <GroupLayoutBuilder.h>
 #include <ScrollView.h>
 #include <StringView.h>
 #include <TextView.h>
-
-#include <cstring>
-
-#include "AppConstants.h"
-#include "BitmapPool.h"
-#include "CommentWindow.h"
-#include "CommonStrings.h"
-#include "LocalUtils.h"
-#include "MsgConstants.h"
-#include "Preferences.h"
-#include "PrefsFields.h"
-#include "StaticBitmapView.h"
-#include "UIConstants.h"
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -32,13 +28,16 @@
 #define B_TRANSLATE(x) x
 #endif
 
+#include <cstring>
+
 
 CommentWindow::CommentWindow(BWindow* callerWindow, const char* archiveName, const char* commentText,
                              BFont* displayFont)
     : BWindow(BRect(0, 0, 590, 290), BZ_TR(kCommentString), B_FLOATING_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
-              B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS)
+              B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS),
+      m_callerWindow(callerWindow),
+      m_textView(NULL)
 {
-    m_callerWindow = callerWindow;
     if (m_callerWindow)
     {
         SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
@@ -52,7 +51,7 @@ CommentWindow::CommentWindow(BWindow* callerWindow, const char* archiveName, con
 
     // Add icon view, make it hold the picture
     StaticBitmapView* commentBmpView = new StaticBitmapView(BRect(0, 0, commentBmp->Bounds().Width(), commentBmp->Bounds().Height()),
-            "CommentWindow:commentBmpView", commentBmp);
+                                                            "CommentWindow:commentBmpView", commentBmp);
 
     // Add the file name string view (align it vertically with the icon view)
     BStringView* fileNameStr = new BStringView("CommentWindow:FileNameView", archiveName);
