@@ -78,7 +78,8 @@ static const char
        *const kToolsString           = B_TRANSLATE_MARK("Tools"),
        *const kViewString            = B_TRANSLATE_MARK("View"),
        *const kWindowsString         = B_TRANSLATE_MARK("Windows");
-#pragma diagnostic pop
+
+#pragma GCC diagnostic pop
 #endif  /* __GNUC__ */
 
 #endif /* _COMMON_STRINGS_H */
