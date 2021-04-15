@@ -11,10 +11,10 @@
 
 #include <Window.h>
 
-static const float kVertSpacing  = 3;
-static const float kHorizSpacing = 2;
+static float const kVertSpacing  = 3;
+static float const kHorizSpacing = 2;
 
-const float ToolBar::kBorder     = 2;
+float const ToolBar::kBorder     = 2;
 
 
 ToolBar::ToolBar(BRect frame, const char* name, rgb_color backColor)

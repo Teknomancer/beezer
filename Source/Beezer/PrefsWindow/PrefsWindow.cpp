@@ -38,8 +38,8 @@
 #define B_TRANSLATE(x) x
 #endif
 
-static const uint32 M_SAVE_PREFS           = 'svpf';
-static const uint32 M_PREFS_PANEL_SELECTED = 'pspf';
+static uint32 const M_SAVE_PREFS           = 'svpf';
+static uint32 const M_PREFS_PANEL_SELECTED = 'pspf';
 
 
 PrefsWindow::PrefsWindow()

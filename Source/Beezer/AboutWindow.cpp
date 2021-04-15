@@ -6,6 +6,7 @@
 #include "AboutWindow.h"
 #include "AppConstants.h"
 #include "CommonStrings.h"
+#include "MsgConstants.h"
 #include "UIConstants.h"
 
 #include <Alert.h>
@@ -23,9 +24,9 @@
 #define B_TRANSLATE_COMMENT(x, y) x
 #endif
 
-static const bigtime_t kScrollDelay = 35000;
+static bigtime_t const kScrollDelay = 35000;
 
-static const char* kAboutText =
+static const char* const kAboutText =
         "Version %appversion%\n"
         "%hdr_debug%\n\n"
         "Compiled on:\n%hdr_builddate%\n\n*  *  *\n\n\n\n\n\n\n\n\n\n"

@@ -9,7 +9,7 @@
 #include <PopUpMenu.h>
 #include <Window.h>
 
-static const float kContextWidth = 14.0;
+static float const kContextWidth = 14.0;
 
 
 ImageButton::ImageButton(BRect frame, const char* name, const char* text, BBitmap* smallIcon,

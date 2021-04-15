@@ -33,13 +33,13 @@
 #define B_TRANSLATE(x) x
 #endif
 
-static const uint32 M_PATH_SELECTED       = 'pths';
-static const uint32 M_SELECT_OPEN_PATH    = 'sopp';
-static const uint32 M_SELECT_ADD_PATH     = 'sadp';
-static const uint32 M_SELECT_EXTRACT_PATH = 'setp';
-static const uint32 M_ARK_DIR             = 'arkd';
-static const uint32 M_ADD_CLICKED         = 'addd';
-static const uint32 M_REMOVE_CLICKED      = 'remc';
+static uint32 const M_PATH_SELECTED       = 'pths';
+static uint32 const M_SELECT_OPEN_PATH    = 'sopp';
+static uint32 const M_SELECT_ADD_PATH     = 'sadp';
+static uint32 const M_SELECT_EXTRACT_PATH = 'setp';
+static uint32 const M_ARK_DIR             = 'arkd';
+static uint32 const M_ADD_CLICKED         = 'addd';
+static uint32 const M_REMOVE_CLICKED      = 'remc';
 
 static const char* const kTextCtrlPtr = "txtctrptr";
 static const char* const kListCtrlPtr = "lstctrptr";
