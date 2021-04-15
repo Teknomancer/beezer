@@ -243,7 +243,9 @@ enum
 
     M_HELP_MANUAL,
     M_HELP_WEBSITE,
-    M_HELP_GITHUB
+    M_HELP_GITHUB,
+
+    M_CLOSE_ABOUT
 };
 
 #endif /* _MSG_CONSTANTS_H */

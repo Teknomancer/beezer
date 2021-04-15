@@ -30,11 +30,11 @@ class BevelView : public BView
         // Additional hooks
         float               EdgeThickness() const;
 
-        static const float  kInsetThickness;
-        static const float  kOutsetThickness;
-        static const float  kBulgeThickness;
-        static const float  kDeepThickness;
-        static const float  kNoBevelThickness;
+        static float const  kInsetThickness;
+        static float const  kOutsetThickness;
+        static float const  kBulgeThickness;
+        static float const  kDeepThickness;
+        static float const  kNoBevelThickness;
 
     private:
         BRect               m_cachedRect;

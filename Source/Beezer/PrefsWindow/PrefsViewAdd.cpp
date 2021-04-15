@@ -28,7 +28,7 @@
 
 #include <cstdlib> // gcc2
 
-static const uint32 M_WARN = 'warn';
+static uint32 const M_WARN = 'warn';
 
 
 PrefsViewAdd::PrefsViewAdd(BRect frame)

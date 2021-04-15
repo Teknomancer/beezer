@@ -24,8 +24,8 @@
 #endif
 
 // Default spacing (so we can override them in future via extra constructors perhaps)
-static const float kVertSpacing  = 3;
-static const float kHorizSpacing = 2;
+static float const kVertSpacing  = 3;
+static float const kHorizSpacing = 2;
 
 
 InfoBar::InfoBar(BRect frame, BList* slotPositions, const char* name, rgb_color backColor)

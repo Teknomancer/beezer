@@ -32,7 +32,7 @@ class ToolBar : public BView
         virtual float       Height() const;
 
         // Static constants
-        static const float  kBorder;
+        static float const  kBorder;
 
     protected:
         // Protected members

@@ -22,26 +22,26 @@ class InputAlert : public BAlert
                    button_spacing spacing, alert_type type = B_INFO_ALERT);
 
         // Inherited hooks
-        void                MessageReceived(BMessage* message);
+        void                     MessageReceived(BMessage* message);
 
         // Additional hooks
-        BMessage            GetInput(BWindow* window);
-        BTextControl*       TextControl() const;
+        BMessage                 GetInput(BWindow* window);
+        BTextControl*            TextControl() const;
 
-        static const uint32 kInputMessage;
-        static const char*  kInputText;
-        static const char*  kButtonIndex;
+        static uint32 const      kInputMessage;
+        static const char* const kInputText;
+        static const char* const kButtonIndex;
 
     private:
-        void                InitInputAlert(const char* title, const char* label, const char* initialText,
-                                           bool hideTyping);
+        void                     InitInputAlert(const char* title, const char* label, const char* initialText,
+                                                bool hideTyping);
 
-        BButton*            m_LastButton;
-        BTextControl*       m_inputBox;
-        BStringView*        m_bytesView;
-        const char*         m_inputText;
-        volatile bool       m_isQuitting;
-        int32               m_buttonIndex;
+        BButton*                 m_LastButton;
+        BTextControl*            m_inputBox;
+        BStringView*             m_bytesView;
+        const char*              m_inputText;
+        volatile bool            m_isQuitting;
+        int32                    m_buttonIndex;
 
 };
 

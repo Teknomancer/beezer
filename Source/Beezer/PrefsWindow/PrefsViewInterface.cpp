@@ -32,8 +32,8 @@
 #define B_TRANSLATE(x) x
 #endif
 
-static const uint32 M_COLOR_CHANGE = 'clch';
-static const uint32 M_ITEM_CHANGE  = 'itch';
+static uint32 const M_COLOR_CHANGE = 'clch';
+static uint32 const M_ITEM_CHANGE  = 'itch';
 
 
 PrefsViewInterface::PrefsViewInterface(BRect frame)
