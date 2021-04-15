@@ -100,6 +100,7 @@ They pollute the global namespace but whether it's also available under `std` is
   `const` makes the intention clear (both to the compiler and the programmer) and prevents accidental changes.
 - Always use `const` on the right-side of what is being made constant.\
   Use `int32 const idRef = 32;` rather than `const int32 idRef = 32;`
+  One exception to the rule is `const char*` since it's too widely used.
 
 
 ## General
