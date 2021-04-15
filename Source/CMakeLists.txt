@@ -38,7 +38,8 @@ endif()
 
 add_subdirectory(ColumnListView)
 
-if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 2.96)
+option(STRICT_WARNINGS "Compile with extra warnings and errors" ON)
+if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 2.96 AND STRICT_WARNINGS)
 	add_compile_options(-Wall -Wextra -Wshadow -Werror)
 	if(USE_CLANG)
 		# clang finds a lot more problems than gcc, disable some of the warnings
