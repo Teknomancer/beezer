@@ -1,0 +1,9 @@
+1	English	x-vnd.BeezerAddOn-RarArchiver	3006058885
+Freshen existing files, create none	RarArchiver		Freshen existing files, create none
+Keep broken extracted files	RarArchiver		Keep broken extracted files
+While extracting	RarArchiver		While extracting
+Always overwrite (default)	RarArchiver		Always overwrite (default)
+Update files, create if needed	RarArchiver		Update files, create if needed
+Never overwrite existing files	RarArchiver		Never overwrite existing files
+Process attributes	RarArchiver		Process attributes
+Other options	RarArchiver		Other options

@@ -1,21 +1,18 @@
-1	English	x-vnd.Ram-Beezer	3107473328
-Windows	PrefsViewWindows		Windows
+1	English	x-vnd.Ram-Beezer	40208308
 The order of joining is based on number suffixes in the filenames…	FileJoinerWindow		The order of joining is based on number suffixes in the filenames…
+Add	Common		Add
+Edit application settings	StartupWindow		Edit application settings
 Extract to	MainWindow		Extract to
 Preparing to open…	MainWindow		Preparing to open…
 When %appname% starts:	PrefsViewMisc		When %appname% starts:
-Size	MainMenu		Size
-Save as defaults	MainMenu		Save as defaults
 Drop files to create an archive.	AddOnWindow		Drop files to create an archive.
 %filename% is not an archive or is an unsupported type	MainWindow		%filename% is not an archive or is an unsupported type
-Default paths:	PrefsViewPaths		Default paths:
-Beezer	System name		Beezer
 Expand selected	MainMenu		Expand selected
-OK	AddOnWindow		OK
+Beezer	System name		Beezer
 Delete selected files & folders	MainWindow		Delete selected files & folders
+KiB	Common		KiB
 Prevents closing of this window before searching	SearchWindow		Prevents closing of this window before searching
-New	MainWindow		New
-Favorite extract paths:	PrefsViewPaths		Favorite extract paths:
+Do you want to replace it?	MainWindow		Do you want to replace it?
 Testing…	MainWindow		Testing…
 Github page	MainMenu		Github page
 File number separator:	FileSplitterWindow		File number separator:
@@ -23,46 +20,38 @@ _Create_	FileSplitterWindow	Prefix for stub files. The underscore at the beginni
 Error! Destination folder is incorrect.	AddOnWindow		Error! Destination folder is incorrect.
 Errors & warnings:	MainWindow		Errors & warnings:
 Paths	PrefsViewPaths		Paths
-Extract to…	MainMenu		Extract to…
+Continue adding the dropped files to the archive?	MainWindow		Continue adding the dropped files to the archive?
 Verifying archiver…	MainWindow		Verifying archiver…
 Restore automatically	PrefsViewState		Restore automatically
 Number of folders:	ArkInfoWindow		Number of folders:
+Register %mimetype% and make %appname% the preferred app for this type?	BeezerApp		Register %mimetype% and make %appname% the preferred app for this type?
 Delete pieces after joining them	FileJoinerWindow		Delete pieces after joining them
 Extract contents of archive	MainWindow		Extract contents of archive
 Ignore case	SearchWindow		Ignore case
 Archiver settings	PrefsViewState		Archiver settings
-OK	ArchiveMgr		OK
-Recent	PrefsViewRecent		Recent
+Create folder…	MainMenu		Create folder…
+archive	ArkInfoWindow	ex: zip archive, tar archive, ...	archive
+File already exists…	MainWindow		File already exists…
 folder	BeezerListView		folder
 Open manual	MainMenu		Open manual
-Configure what to tag along with archives as attributes	PrefsViewState		Configure what to tag along with archives as attributes
-Path	MainMenu		Path
 Ask before replacing	PrefsViewAdd		Ask before replacing
 An unknown error occured while splitting the file.	FileSplitterWindow		An unknown error occured while splitting the file.
 [ 7zip Add-on ]	AboutWindow		[ 7zip Add-on ]
-:Root:	MainWindow		:Root:
-Add	MainMenu		Add
-Close	AboutWindow		Close
-Completed registering of file types. Associated %count% file types with %appname%.	Beezer		Completed registering of file types. Associated %count% file types with %appname%.
-Settings:	AddOnWindow		Settings:
+About	Common		About
 Waiting for input files.	AddOnWindow		Waiting for input files.
-GiB	LocalUtils	abbreviation of gigabyte	GiB
-Create	MainWindow		Create
+Settings:	AddOnWindow		Settings:
 File to split:	FileSplitterWindow		File to split:
-Cancel	StatusWindow		Cancel
-Register file types now	PrefsViewMisc		Register file types now
 Deleting…	MainWindow		Deleting…
-Show first level unfolded	MainMenu		Show first level unfolded
+Register file types now	PrefsViewMisc		Register file types now
+Select all	Common		Select all
 View file	MainMenu		View file
+Name	Common		Name
 Archive Information	ArkInfoWindow		Archive Information
 Stub folder not found.  Cannot create self-joining executable.	FileSplitterWindow		Stub folder not found.  Cannot create self-joining executable.
-Test completed successfully without any errors.\nDo you want to view a detailed report?	MainWindow		Test completed successfully without any errors.\nDo you want to view a detailed report?
-CRC	MainWindow		CRC
-Tools	Beezer		Tools
+Extract to…	Common		Extract to…
 Show toolbar	PrefsViewInterface		Show toolbar
 Ready to create archive.	AddOnWindow		Ready to create archive.
 Log window	PrefsViewWindows		Log window
-Adding %size% of data could take some time.  Are you sure you wish to proceed?	MainWindow		Adding %size% of data could take some time.  Are you sure you wish to proceed?
 Store automatically	PrefsViewState		Store automatically
 Select	PrefsViewPaths		Select
 Operation failed. The archive is missing.	ArkInfoWindow		Operation failed. The archive is missing.
@@ -70,335 +59,306 @@ Found 1 entry.	MainWindow		Found 1 entry.
 Collapse all	MainMenu		Collapse all
 List more paths (using archive name)	PrefsViewPaths		List more paths (using archive name)
 CREDITS	AboutWindow		CREDITS
-Create	AddOnWindow		Create
 File number separator:	FileJoinerWindow		File number separator:
-Delete the selected item(s)?\nThis operation cannot be reverted.	MainWindow		Delete the selected item(s)?\nThis operation cannot be reverted.
 Cancelled.	MainWindow		Cancelled.
+OK	Common		OK
 Saving comment…	MainWindow		Saving comment…
-Select	FileJoinerWindow		Select
 Created on:	ArkInfoWindow		Created on:
-Open pieces folder after splitting	FileSplitterWindow		Open pieces folder after splitting
 Refresh	FileJoinerWindow		Refresh
+Open pieces folder after splitting	FileSplitterWindow		Open pieces folder after splitting
 Search for files in the archive	MainWindow		Search for files in the archive
+GiB	Common		GiB
 Deselects entries that don't match the search criteria	SearchWindow		Deselects entries that don't match the search criteria
 Folding:	PrefsViewInterface		Folding:
 Deselect unmatched entries	SearchWindow		Deselect unmatched entries
-View	MainMenu		View
+Open the help manual	StartupWindow		Open the help manual
+File number separator:	FileJoiner/Splitter		File number separator:
+Archive information	MainMenu		Archive information
+New…	MainMenu		New…
+Extract to the same folder as the source archive	PrefsViewPaths		Extract to the same folder as the source archive
+(root of the archive)	MainWindow		(root of the archive)
 Interface state	PrefsViewState		Interface state
-Use:	PrefsViewPaths		Use:
 Output file size:	FileJoinerWindow		Output file size:
 Bytes:	InfoBar		Bytes:
 Couldn't initialize archive path.	MainWindow		Couldn't initialize archive path.
 Invert	SearchWindow		Invert
-About	AboutWindow		About
-Save interace and folding settings to the archive?	MainWindow		Save interace and folding settings to the archive?
 Clear log	MainMenu		Clear log
-OK	ArkInfoWindow		OK
-Files	MainMenu		Files
-Path	MainWindow		Path
-View	MainWindow		View
-Archiver binary missing. Cannot continue.	MainWindow		Archiver binary missing. Cannot continue.
+Password:	Common		Password:
 File Splitter	FileSplitterWindow		File Splitter
-Method	MainMenu		Method
-Date	MainMenu		Date
-Windows	MainMenu		Windows
+Configure colors	PrefsViewInterface		Configure colors
+Packed	Common		Packed
+Open files	MainWindow		Open files
 Deselect folder	MainMenu		Deselect folder
-Failed to launch URL	Beezer		Failed to launch URL
 Extract archive	BeezerListView		Extract archive
 When last archive is closed:	PrefsViewMisc		When last archive is closed:
-Register %mimetype% and make %appname% the preferred app for this type?	Beezer		Register %mimetype% and make %appname% the preferred app for this type?
-OK	FileJoinerWindow		OK
 Select folder	MainMenu		Select folder
 Copy row as text	MainMenu		Copy row as text
 Copy log	MainMenu		Copy log
 Select folder for pieces:	FileSplitterWindow		Select folder for pieces:
-Method	MainWindow		Method
-Register all types!!	Beezer		Register all types!!
+Do you want to continue?	MainWindow		Do you want to continue?
+Select	Common		Select
 Enter the password to be used while extracting and adding files.	MainWindow		Enter the password to be used while extracting and adding files.
-Create	Beezer		Create
-Save to archive	MainMenu		Save to archive
+File joiner	BeezerApp		File joiner
 Expand all	MainMenu		Expand all
-Optional binary missing. Some features may not be available	MainWindow		Optional binary missing. Some features may not be available
 Select…	FileJoinerWindow		Select…
 Close	MainMenu		Close
 Ends with	SearchWindow		Ends with
 Add files to archive	MainWindow		Add files to archive
-Bytes	FileSplitterWindow		Bytes
 When new file is more recent	PrefsViewAdd		When new file is more recent
-Cancel	FileJoinerWindow		Cancel
-Packed	MainMenu		Packed
 Password protected file(s) found.	MainWindow		Password protected file(s) found.
+Append file	MainWindow		Append file
 Adding files to the archive	AddOnWindow		Adding files to the archive
-Date	MainWindow		Date
-Extract selected…	MainWindow		Extract selected…
-Cannot add \"%s\" as a file with the same name already exists.	MainWindow		Cannot add \"%s\" as a file with the same name already exists.
-Replace	MainWindow		Replace
+Cannot add \"%name%\" as a file with the same name already exists.	MainWindow		Cannot add \"%name%\" as a file with the same name already exists.
 Infobar	MainMenu		Infobar
 Move to Trash	MainWindow		Move to Trash
 Copy	MainMenu		Copy
-Packed	MainWindow		Packed
+Couldn't initialize archive path.  The location of the archive has been changed.  Either the archive was deleted or moved to another location.	MainWindow		Couldn't initialize archive path.  The location of the archive has been changed.  Either the archive was deleted or moved to another location.
 Selected text color	PrefsViewInterface		Selected text color
 1.44 MiB - (floppy)	FileSplitterWindow		1.44 MiB - (floppy)
 Preparing to extract…	MainWindow		Preparing to extract…
-Save	MainWindow		Save
-Extract selected…	MainMenu		Extract selected…
-Open	MainWindow		Open
-File splitter	Beezer		File splitter
+Do you want to view a detailed report?	MainWindow		Do you want to view a detailed report?
 Number of pieces:	FileJoinerWindow		Number of pieces:
-Name	MainWindow		Name
-Size	MainWindow		Size
-Save as defaults	MainWindow		Save as defaults
 Please wait…	MainWindow		Please wait…
 Close window after splitting	FileSplitterWindow		Close window after splitting
 New folder name:	MainWindow		New folder name:
 Total entries:	ArkInfoWindow		Total entries:
-Ratio	MainWindow		Ratio
 Gathering information	MainWindow		Gathering information
+bytes	Common		bytes
 Cannot create folder. A folder with this name already exists.	MainWindow		Cannot create folder. A folder with this name already exists.
 Comment window	PrefsViewWindows		Comment window
 Done.	MainWindow		Done.
 Last modified:	ArkInfoWindow		Last modified:
-A critical operation has been cancelled and the archive is in an unknown state.\n\nCannot continue, closing window…	MainWindow		A critical operation has been cancelled and the archive is in an unknown state.\n\nCannot continue, closing window…
 Failed to create destination folder.  File with the same name exists.	MainWindow		Failed to create destination folder.  File with the same name exists.
+Do you want to replace it with the file you are adding?	MainWindow		Do you want to replace it with the file you are adding?
 View report	MainWindow		View report
-File joiner	Beezer		File joiner
 Incorrect split size!	FileSplitterWindow		Incorrect split size!
 File size:	FileSplitterWindow		File size:
 Columns	MainMenu		Columns
-The archiver has encountered errors while deleting.\nDo you want to view a detailed report?	MainWindow		The archiver has encountered errors while deleting.\nDo you want to view a detailed report?
-Select	FileSplitterWindow		Select
+File splitter	BeezerApp		File splitter
 The file has been successfully split!	FileSplitterWindow		The file has been successfully split!
-Show all items unfolded	MainMenu		Show all items unfolded
-The archiver has encountered errors.\nDo you want to view a detailed report?	MainWindow		The archiver has encountered errors.\nDo you want to view a detailed report?
-Open an existing archive	StartupWindow		Open an existing archive
+Register all types!	BeezerApp		Register all types!
 Select default open path	PrefsViewPaths		Select default open path
-Extract to…	MainWindow		Extract to…
-archive	ArkInfoWindow		archive
 Configure remembering of windows' settings	PrefsViewWindows		Configure remembering of windows' settings
 Folder for pieces:	FileSplitterWindow		Folder for pieces:
 Error in regular expression:	MainWindow		Error in regular expression:
 [ Programming ]	AboutWindow		[ Programming ]
-Settings	StartupWindow		Settings
-Settings	PrefsWindow		Settings
+Number of pieces:	FileJoiner/Splitter		Number of pieces:
 Folder for output file:	FileJoinerWindow		Folder for output file:
 File Joiner	FileJoinerWindow		File Joiner
-Force	AddOnWindow		Force
-Extract	PrefsViewExtract		Extract
 Configure default & favorite paths	PrefsViewPaths		Configure default & favorite paths
-MiB	FileSplitterWindow		MiB
-Number of recent archives	PrefsViewRecent		Number of recent archives
 Confirm when adding through drag 'n drop	PrefsViewAdd		Confirm when adding through drag 'n drop
+Number of recent archives	PrefsViewRecent		Number of recent archives
+Select…	FileJoiner/Splitter		Select…
 Deselect all	MainMenu		Deselect all
 Which column to search in	SearchWindow		Which column to search in
 Entries:	InfoBar		Entries:
-Archiver binary missing. Cannot continue	ArchiveMgr		Archiver binary missing. Cannot continue
 Creating folder…	MainWindow		Creating folder…
 Cancelled	MainWindow		Cancelled
-Show all items folded	MainMenu		Show all items folded
 Open destination folder after extracting	PrefsViewExtract		Open destination folder after extracting
-Help	PrefsWindow		Help
-You are trying to add the file:\n\t%s1\n\t(%z1, %d1)\nwhile this:\n\t%s2\n\t(%z2, %d2)\nalready exists.\n\nAre you sure you wish to append another file with the same name?	MainWindow		You are trying to add the file:\n\t%s1\n\t(%z1, %d1)\nwhile this:\n\t%s2\n\t(%z2, %d2)\nalready exists.\n\nAre you sure you wish to append another file with the same name?
-Show first 2 levels unfolded	MainMenu		Show first 2 levels unfolded
+Archiver binary missing. Cannot continue	ArchiverMgr		Archiver binary missing. Cannot continue
+Save interface and folding settings to the archive?	MainWindow		Save interface and folding settings to the archive?
+A password protection error has occurred.  Please set the correct password and retry	MainWindow		A password protection error has occurred.  Please set the correct password and retry
+Size	Common		Size
+Save as defaults	Common		Save as defaults
 Extracting…	MainWindow		Extracting…
 Selected background color	PrefsViewInterface		Selected background color
 Error (password protected file)	MainWindow		Error (password protected file)
-Open a recently opened archive	StartupWindow		Open a recently opened archive
-KiB	FileSplitterWindow		KiB
+Create folder	MainWindow		Create folder
 Untitled	MainWindow		Untitled
 Select file or folder to join	FileJoinerWindow		Select file or folder to join
 [ SplitPane ]	AboutWindow		[ SplitPane ]
-Optional binary missing. Some features may not be available	ArchiveMgr		Optional binary missing. Some features may not be available
 Create folder in:	MainWindow		Create folder in:
-Extract	MainMenu		Extract
 Quit %appname%	PrefsViewMisc		Quit %appname%
+Cancel	Common		Cancel
+Cannot add \"%name%\" as a folder with the same name already exists.	MainWindow		Cannot add \"%name%\" as a folder with the same name already exists.
 Extract with full path during drag 'n drop	PrefsViewExtract		Extract with full path during drag 'n drop
 Persistent window	SearchWindow		Persistent window
 Success.	MainWindow		Success.
-Folders	MainMenu		Folders
-Show all items unfolded	PrefsViewInterface		Show all items unfolded
+Replace folder	MainWindow		Replace folder
+Failed to launch URL	BeezerApp		Failed to launch URL
 Password:	MainWindow		Password:
-Search	SearchWindow		Search
-Comment	MainMenu		Comment
 Confirm when adding more than 	PrefsViewAdd		Confirm when adding more than 
 The archiver does not support this operation.	MainWindow		The archiver does not support this operation.
 [ Disclaimer ]	AboutWindow		[ Disclaimer ]
 Set password…	MainWindow		Set password…
-Cannot add \"%s\" as a folder with the same name already exists.	MainWindow		Cannot add \"%s\" as a folder with the same name already exists.
+MiB	Common		MiB
 Extraction cancelled.	MainWindow		Extraction cancelled.
+TiB	Common		TiB
+Quit %appname% after extracting	PrefsViewExtract		Quit %appname% after extracting
 This tool lets you split a file into several small pieces.	FileSplitterWindow		This tool lets you split a file into several small pieces.
-No	Beezer		No
-[ BeShare ]	AboutWindow		[ BeShare ]
-A folder named \"%s\" already exists. Replace it with the one being added?	MainWindow		A folder named \"%s\" already exists. Replace it with the one being added?
-GiB	FileSplitterWindow		GiB
+Delete	Common		Delete
+This operation cannot be reverted.	MainWindow		This operation cannot be reverted.
 Select…	FileSplitterWindow		Select…
 1.20 MiB - (floppy)	FileSplitterWindow		1.20 MiB - (floppy)
-Force	FileJoinerWindow		Force
+Method	Common		Method
 file	BeezerListView		file
 Copying…	MainWindow		Copying…
 Configure graphical user interface settings	PrefsViewInterface		Configure graphical user interface settings
 Add to:	MainWindow		Add to:
-Recent	StartupWindow		Recent
+Make it preferred	BeezerApp		Make it preferred
 The pieces can later be rejoined to recreate the original file.	FileSplitterWindow		The pieces can later be rejoined to recreate the original file.
-Add	MainWindow		Add
-Show first 2 levels unfolded	PrefsViewInterface		Show first 2 levels unfolded
+Archive information window	PrefsViewWindows		Archive information window
+Comment	Common		Comment
 Select default extract path	PrefsViewPaths		Select default extract path
+Configure settings to automatically save and restore	PrefsViewState		Configure settings to automatically save and restore
+Open a recently viewed archive	StartupWindow		Open a recently viewed archive
+Password…	MainMenu		Password…
 Custom size…	FileSplitterWindow		Custom size…
+Add…	MainMenu		Add…
+Adding %size% of data could take some time.	MainWindow		Adding %size% of data could take some time.
+Open archive	BeezerApp		Open archive
+Path	Common		Path
 Open with…	MainMenu		Open with…
+Date	Common		Date
 Archive name:	AddOnWindow		Archive name:
+Default paths	PrefsViewPaths		Default paths
 Configure recent archives & extract locations	PrefsViewRecent		Configure recent archives & extract locations
-Same folder as source (archive) file	PrefsViewPaths		Same folder as source (archive) file
+Favorite extract paths	PrefsViewPaths		Favorite extract paths
 Number of recent extract paths	PrefsViewRecent		Number of recent extract paths
 Matches regular expression	SearchWindow		Matches regular expression
-Create folder	MainMenu		Create folder
+A critical operation has been cancelled and the archive is in an unknown state.	MainWindow		A critical operation has been cancelled and the archive is in an unknown state.
 Too many pieces!	FileSplitterWindow		Too many pieces!
+%appname% has already been associated with all supported archive types.	BeezerApp		%appname% has already been associated with all supported archive types.
 An unknown error occured while joining the files.	FileJoinerWindow		An unknown error occured while joining the files.
 Invert selection	MainMenu		Invert selection
 Close window after joining	FileJoinerWindow		Close window after joining
 250 MiB - (zip disk)	FileSplitterWindow		250 MiB - (zip disk)
-Type:	Beezer		Type:
+CRC	Common		CRC
+Search archive…	MainMenu		Search archive…
+Archiver binary is missing.	MainWindow		Archiver binary is missing.
 Searches all visible entries(Contents of folded folders will not be searched)	SearchWindow		Searches all visible entries(Contents of folded folders will not be searched)
 Recent archives	PrefsViewRecent		Recent archives
 Operation is in progress, force it to stop?	AddOnWindow		Operation is in progress, force it to stop?
 Joining is in progress.  Force it to stop?	FileJoinerWindow		Joining is in progress.  Force it to stop?
 Show full path in recent archives	PrefsViewRecent		Show full path in recent archives
-Open	StartupWindow		Open
+Windows	Common		Windows
 Size of pieces:	FileSplitterWindow		Size of pieces:
 Save interface and folding settings as defaults?	MainWindow		Save interface and folding settings as defaults?
-Help	AddOnWindow		Help
 Recent extract paths	PrefsViewRecent		Recent extract paths
-Tools	StartupWindow		Tools
 Check file types at startup	PrefsViewMisc		Check file types at startup
 Starts with	SearchWindow		Starts with
-Close	CommentWindow		Close
-Make %appname% the preferred app for this type?	Beezer		Make %appname% the preferred app for this type?
+Show first 2 levels unfolded	Common		Show first 2 levels unfolded
+Open…	Common		Open…
 Extraction related settings	PrefsViewExtract		Extraction related settings
 Collapse selected	MainMenu		Collapse selected
 Save %archivetype% settings to the archive?	MainWindow		Save %archivetype% settings to the archive?
-About	MainMenu		About
 Test	MainMenu		Test
 Options	SearchWindow		Options
 Adds found items to existing selection (if any)	SearchWindow		Adds found items to existing selection (if any)
-%appname% has already been associated with all supported archive types.	Beezer		%appname% has already been associated with all supported archive types.
-Open archive	Beezer		Open archive
-Comment	CommentWindow		Comment
-Yes, make it preferred	Beezer		Yes, make it preferred
-Force	FileSplitterWindow		Force
-OK	PrefsViewPaths		OK
+Help	Common		Help
+Default interface settings	PrefsViewInterface		Default interface settings
+PiB	Common		PiB
+Tools	Common		Tools
 Search archive	SearchWindow		Search archive
 Creating:	FileSplitterWindow		Creating:
 800 MiB - (CD)	FileSplitterWindow		800 MiB - (CD)
+Do you want to append another file with the same name?	MainWindow		Do you want to append another file with the same name?
+Open	Common		Open
 Compression ratio:	ArkInfoWindow		Compression ratio:
 Joining:	FileJoinerWindow		Joining:
-Cancel	FileSplitterWindow		Cancel
+Optional binary missing. Some features may not be available	ArchiverMgr		Optional binary missing. Some features may not be available
 First file piece:	FileJoinerWindow		First file piece:
 Close window after extracting	PrefsViewExtract		Close window after extracting
-Open with	MainMenu		Open with
 Sort after add (n/a for reloading archivers)	PrefsViewAdd		Sort after add (n/a for reloading archivers)
-Create archive	Beezer		Create archive
 Select default add path	PrefsViewPaths		Select default add path
-No	MainWindow		No
-You are trying to replace the file:\n\t%s1\n\t(%z1, %d1)\nwith:\n\t%s2\n\t(%z2, %d2)\n\nWould you like to replace it with the one you are adding?	MainWindow		You are trying to replace the file:\n\t%s1\n\t(%z1, %d1)\nwith:\n\t%s2\n\t(%z2, %d2)\n\nWould you like to replace it with the one you are adding?
+Close window	Common		Close window
 Show action log	PrefsViewInterface		Show action log
 While opening	MainMenu		While opening
-Open	MainMenu		Open
-MiB	PrefsViewAdd		MiB
-Ratio	MainMenu		Ratio
+Files	MainMenu	for 'Select all' menu	Files
+You are opening %numfiles% files simultenously.	MainWindow		You are opening %numfiles% files simultenously.
 1 GiB - (jaz disk)	FileSplitterWindow		1 GiB - (jaz disk)
 Additional tools	StartupWindow		Additional tools
-Cancel	MainWindow		Cancel
-Show welcome window	PrefsViewMisc		Show welcome window
+Bytes	Common		Bytes
+Type:	BeezerApp		Type:
 [ ColumnListView ]	AboutWindow		[ ColumnListView ]
+Show welcome window	PrefsViewMisc		Show welcome window
 Splitting is in progress. Force it to stop?	FileSplitterWindow		Splitting is in progress. Force it to stop?
-Show comments (if any) after opening an archive	PrefsViewMisc		Show comments (if any) after opening an archive
+Ratio	Common		Ratio
 Matches wildcard expression	SearchWindow		Matches wildcard expression
 Interface	PrefsViewInterface		Interface
-OK	Beezer		OK
-Archive info window	PrefsViewWindows		Archive info window
+Show comments (if any) after opening an archive	PrefsViewMisc		Show comments (if any) after opening an archive
+Create archive	BeezerApp		Create archive
+New	Common		New
 Revert	PrefsView		Revert
-KiB	LocalUtils	abbreviation of kilobyte	KiB
+Set password	MainWindow		Set password
 Number of pieces:	FileSplitterWindow		Number of pieces:
-A password protection error has occurred.\nPlease set the correct password and retry	MainWindow		A password protection error has occurred.\nPlease set the correct password and retry
+Show first level unfolded	Common		Show first level unfolded
 Custom size:	FileSplitterWindow		Custom size:
 Delete	MainWindow		Delete
 Found %number% entries.	MainWindow		Found %number% entries.
-TiB	LocalUtils	abbreviation of terrabyte	TiB
 Type:	ArkInfoWindow		Type:
 QuickCreate archive	AddOnWindow		QuickCreate archive
-Default interface settings:	PrefsViewInterface		Default interface settings:
-Continue	MainWindow		Continue
 Quit	MainMenu		Quit
 of	InfoBar	ex: 7 of 9	of
 File	MainMenu		File
-bytes	ArkInfoWindow		bytes
+Clear password	MainWindow		Clear password
+Extract	Common		Extract
+Save	Common		Save
 Add to selection	SearchWindow		Add to selection
 Detecting format…	MainWindow		Detecting format…
 Replace files:	PrefsViewAdd		Replace files:
 Show open archive panel	PrefsViewMisc		Show open archive panel
 Without asking	PrefsViewAdd		Without asking
 %filepath% is already present in your favorites	PrefsViewPaths		%filepath% is already present in your favorites
-Search archive	MainMenu		Search archive
 Miscellaneous	PrefsViewMisc		Miscellaneous
 Open destination folder after joining	FileJoinerWindow		Open destination folder after joining
+Recent	Common		Recent
 650 MiB - (CD)	FileSplitterWindow		650 MiB - (CD)
 700 MiB - (CD)	FileSplitterWindow		700 MiB - (CD)
 Error(s) found.	MainWindow		Error(s) found.
+Create	Common		Create
 Settings window	PrefsViewWindows		Settings window
+Save to archive	Common		Save to archive
+EiB	Common		EiB
 Archive type:	AddOnWindow		Archive type:
-You are opening %numfiles% files simultenously.  Are you sure you wish to proceed?	MainWindow		You are opening %numfiles% files simultenously.  Are you sure you wish to proceed?
+Show all items folded	Common		Show all items folded
 Visit website	MainMenu		Visit website
 This tool lets you join several files into a single file.	FileJoinerWindow		This tool lets you join several files into a single file.
-Add path:	PrefsViewPaths		Add path:
 Warning! File already exists and will be overwritten!	AddOnWindow		Warning! File already exists and will be overwritten!
+Add path:	PrefsViewPaths		Add path:
 Edit	MainMenu		Edit
-Configure colors:	PrefsViewInterface		Configure colors:
-Save	CommentWindow		Save
 to extract	BeezerListView		to extract
 Create self-joining executable	FileSplitterWindow		Create self-joining executable
 Preparing to add…	MainWindow		Preparing to add…
 Fatal error, no add-ons found! You cannot create any archives using %appname%.	AddOnWindow		Fatal error, no add-ons found! You cannot create any archives using %appname%.
 Column:	SearchWindow		Column:
+Cannot continue.	MainWindow		Cannot continue.
 Selects all entries that don't match the search criteria i.e. inverts the result of the search	SearchWindow		Selects all entries that don't match the search criteria i.e. inverts the result of the search
 Adding…	MainWindow		Adding…
-MiB	LocalUtils	abbreviation of megabyte	MiB
 Action log	MainMenu		Action log
 Searches only selected entries	SearchWindow		Searches only selected entries
 Extracting to:	MainWindow		Extracting to:
-Show first level unfolded	PrefsViewInterface		Show first level unfolded
+Completed registering of file types. Associated %count% file types with %appname%.	BeezerApp		Completed registering of file types. Associated %count% file types with %appname%.
 2 GiB - (jaz disk)	FileSplitterWindow		2 GiB - (jaz disk)
 Extract path:	PrefsViewPaths		Extract path:
+The archiver has encountered errors while deleting.	MainWindow		The archiver has encountered errors while deleting.
 Preparing to delete…	MainWindow		Preparing to delete…
 Preparing to test…	MainWindow		Preparing to test…
 Couldn't create destination folder.	MainWindow		Couldn't create destination folder.
 Discard	PrefsWindow		Discard
+Settings	Common		Settings
 Error!	MainWindow		Error!
+View	Common		View
 Skip	MainWindow		Skip
 Selected entries	SearchWindow		Selected entries
+Delete the selected item(s)?	MainWindow		Delete the selected item(s)?
 Other general settings	PrefsViewMisc		Other general settings
 View selected file(s)	MainWindow		View selected file(s)
+Extract selected…	Common		Extract selected…
 Search window	PrefsViewWindows		Search window
+Add files	MainWindow		Add files
 Done	MainWindow		Done
 Joining of the file was cancelled	FileJoinerWindow		Joining of the file was cancelled
 Create a new archive	MainWindow		Create a new archive
 Create a new archive	StartupWindow		Create a new archive
-Add	PrefsViewAdd		Add
-Select all	MainMenu		Select all
 Public release	AboutWindow		Public release
-[ URLView ]	AboutWindow		[ URLView ]
-CRC	MainMenu		CRC
-Extract	MainWindow		Extract
 Actions	MainMenu		Actions
-Cancel	ProgressWindow		Cancel
-Password	MainMenu		Password
-OK	FileSplitterWindow		OK
-New	StartupWindow		New
-Select all	MainWindow		Select all
 folders	BeezerListView		folders
+Optional binary is missing. Some features may not be available	MainWindow		Optional binary is missing. Some features may not be available
 Extract selected entries of	MainWindow		Extract selected entries of
 100 MiB - (zip disk)	FileSplitterWindow		100 MiB - (zip disk)
 Number of files:	ArkInfoWindow		Number of files:
-Open an existing archive	MainWindow		Open an existing archive
 Treats uppercase and lowercase letters as the same	SearchWindow		Treats uppercase and lowercase letters as the same
-Delete	MainMenu		Delete
 Password:	AddOnWindow		Password:
 Split	FileSplitterWindow		Split
 Never replace	PrefsViewAdd		Never replace
@@ -406,60 +366,54 @@ Loading archive…	MainWindow		Loading archive…
 Extract archive	MainWindow		Extract archive
 [ Documentation Updates ]	AboutWindow		[ Documentation Updates ]
 Toolbar	MainMenu		Toolbar
-Save	PrefsWindow		Save
-Add a favorite extract path	PrefsViewPaths		Add a favorite extract path
 The type of matching to do in the search	SearchWindow		The type of matching to do in the search
+Add a favorite extract path	PrefsViewPaths		Add a favorite extract path
 Settings related to adding entries to archives	PrefsViewAdd		Settings related to adding entries to archives
-OK	MainWindow		OK
 Join	FileJoinerWindow		Join
+Delete this archive from disk?	MainWindow		Delete this archive from disk?
+Replace file	MainWindow		Replace file
+Open an existing archive	Common		Open an existing archive
 Original size:	ArkInfoWindow		Original size:
 Welcome window	PrefsViewWindows		Welcome window
 Welcome to %appname%	StartupWindow		Welcome to %appname%
-Show all items folded	PrefsViewInterface		Show all items folded
-Default archiver:	PrefsViewMisc		Default archiver:
 Searches the entire archive(Automatically unfolds all folders before searching)	SearchWindow		Searches the entire archive(Automatically unfolds all folders before searching)
-Search	MainWindow		Search
+Default archiver:	PrefsViewMisc		Default archiver:
 Adding:	AddOnWindow		Adding:
 Operation unavailable.	MainWindow		Operation unavailable.
 Select folder to create the output (joined) file	FileJoinerWindow		Select folder to create the output (joined) file
 Show infobar	PrefsViewInterface		Show infobar
-Append	MainWindow		Append
-Quit %apptitle% after extracting	PrefsViewExtract		Quit %apptitle% after extracting
+Force stop	Common		Force stop
 Full length toolbar & infobar	PrefsViewInterface		Full length toolbar & infobar
 Searching for \"%searchstring%\"…	MainWindow		Searching for \"%searchstring%\"…
-Couldn't initialize archive path.\nThe location of the archive has been changed.\n\nEither the archive was deleted or moved to another location.	MainWindow		Couldn't initialize archive path.\nThe location of the archive has been changed.\n\nEither the archive was deleted or moved to another location.
-Edit application preferences	StartupWindow		Edit application preferences
-New	MainMenu		New
 LEGAL MUMBO JUMBO	AboutWindow		LEGAL MUMBO JUMBO
 All entries	SearchWindow		All entries
+Couldn't locate the help files.	BeezerApp		Couldn't locate the help files.
 files	BeezerListView		files
-Cancel	AddOnWindow		Cancel
-Couldn't locate the help files.	Beezer		Couldn't locate the help files.
-Name	MainMenu		Name
 Open path:	PrefsViewPaths		Open path:
-Archive info	MainMenu		Archive info
 State	PrefsViewState		State
-Delete this archive from disk?\nThis operation cannot be reverted.	MainWindow		Delete this archive from disk?\nThis operation cannot be reverted.
+Show all items unfolded	Common		Show all items unfolded
+The archiver has encountered errors.	MainWindow		The archiver has encountered errors.
 Save %archivetype% settings as defaults for %archivetype% files?	MainWindow		Save %archivetype% settings as defaults for %archivetype% files?
-Help	MainMenu		Help
 SPECIAL THANKS TO	AboutWindow		SPECIAL THANKS TO
 Settings…	MainMenu		Settings…
 Contains	SearchWindow		Contains
 The file was successfully joined!	FileJoinerWindow		The file was successfully joined!
+Make %appname% the preferred app for this type?	BeezerApp		Make %appname% the preferred app for this type?
 Splitting of the file was cancelled	FileSplitterWindow		Splitting of the file was cancelled
 Show create archive panel	PrefsViewMisc		Show create archive panel
 An error was encountered while trying to load resources for the About window.	AboutWindow		An error was encountered while trying to load resources for the About window.
 The archive is read-only, or is in a read-only partition.	MainWindow		The archive is read-only, or is in a read-only partition.
 Viewing:	MainWindow		Viewing:
-Proceed to add the dropped files to the archive?	MainWindow		Proceed to add the dropped files to the archive?
 Done extracting.	MainWindow		Done extracting.
-bytes	LocalUtils		bytes
 Compressed size:	ArkInfoWindow		Compressed size:
 Visible entries	SearchWindow		Visible entries
 What you are searching for	SearchWindow		What you are searching for
+Folders	MainMenu	for 'Select all' menu	Folders
 Test results:	MainWindow		Test results:
+A folder named \"%name%\" already exists.	MainWindow		A folder named \"%name%\" already exists.
+Search	Common		Search
 An unknown error occurred.	MainWindow		An unknown error occurred.
 Failed!	MainWindow		Failed!
 Partially successful.	MainWindow		Partially successful.
-Save to archive	MainWindow		Save to archive
+Test completed successfully without any errors.	MainWindow		Test completed successfully without any errors.
 Path:	ArkInfoWindow		Path:

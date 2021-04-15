@@ -1,0 +1,14 @@
+1	English	x-vnd.BeezerAddOn-ZipArchiver	152752028
+Extract folders	ZipArchiver		Extract folders
+Compression level	ZipArchiver		Compression level
+Recurse into folders	ZipArchiver		Recurse into folders
+Add attributes	ZipArchiver		Add attributes
+While extracting	ZipArchiver		While extracting
+(best,default)	ZipArchiver		(best,default)
+(none)	ZipArchiver		(none)
+Extract attributes	ZipArchiver		Extract attributes
+(fastest)	ZipArchiver		(fastest)
+While adding	ZipArchiver		While adding
+Update files, create if needed	ZipArchiver		Update files, create if needed
+Never overwrite existing files	ZipArchiver		Never overwrite existing files
+Freshen existing files, create none	ZipArchiver		Freshen existing files, create none

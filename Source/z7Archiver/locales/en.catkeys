@@ -1,0 +1,13 @@
+1	English	x-vnd.BeezerAddOn-7ZipArchiver	1133524571
+(none)	7zipArchiver		(none)
+Never overwrite existing files	7zipArchiver		Never overwrite existing files
+While extracting	7zipArchiver		While extracting
+Always overwrite (default)	7zipArchiver		Always overwrite (default)
+(best)	7zipArchiver		(best)
+While adding	7zipArchiver		While adding
+(default)	7zipArchiver		(default)
+Use multi-threading (for multi-core CPUs)	7zipArchiver		Use multi-threading (for multi-core CPUs)
+Rename extracted files	7zipArchiver		Rename extracted files
+Use solid blocks	7zipArchiver		Use solid blocks
+Compression level	7zipArchiver		Compression level
+Rename existing files	7zipArchiver		Rename existing files
