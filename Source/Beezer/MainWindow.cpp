@@ -544,7 +544,7 @@ void MainWindow::MessageReceived(BMessage* message)
                 break;
 
             ListEntry* selEntry(NULL);
-            BMessage* viewMsg = new BMessage(message->what != M_ENTER ? message->what : M_ACTIONS_VIEW);
+            BMessage* viewMsg = new BMessage(message->what != M_ENTER ? message->what : (int32)M_ACTIONS_VIEW);
             int32 i = 0L;
             int32 fileCount = 0L;
             while ((selEntry =
