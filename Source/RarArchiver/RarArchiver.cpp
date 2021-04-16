@@ -478,7 +478,6 @@ status_t RarArchiver::Create(BPath* /*archivePath*/, const char* /*relPath*/, BM
 void RarArchiver::BuildMenu(BMessage& message)
 {
     BMenu *extractMenu, *othersMenu;
-    BMenuItem* item;
 
     m_settingsMenu = new BMenu(m_typeStr);
 
@@ -486,33 +485,27 @@ void RarArchiver::BuildMenu(BMessage& message)
     extractMenu = new BMenu(B_TRANSLATE("While extracting"));
     extractMenu->SetRadioMode(true);
 
-    item = new KeyedMenuItem("bzr:AlwaysOverwrite", B_TRANSLATE_NOCOLLECT(kAlwaysOverwrite));
-    item->SetMarked(message.GetBool("bzr:AlwaysOverwrite", true));
-    extractMenu->AddItem(item);
+    extractMenu->AddItem(new KeyedMenuItem("bzr:AlwaysOverwrite", B_TRANSLATE_NOCOLLECT(kAlwaysOverwrite),
+                                           message, true));
 
-    item = new KeyedMenuItem("bzr:NoOverwrite", B_TRANSLATE_NOCOLLECT(kNoOverwrite));
-    item->SetMarked(message.GetBool("bzr:NoOverwrite", false));
-    extractMenu->AddItem(item);
+    extractMenu->AddItem(new KeyedMenuItem("bzr:NoOverwrite", B_TRANSLATE_NOCOLLECT(kNoOverwrite),
+                                           message, false));
 
-    item = new KeyedMenuItem("bzr:UpdateFiles", B_TRANSLATE_NOCOLLECT(kUpdateFiles));
-    item->SetMarked(message.GetBool("bzr:UpdateFiles", false));
-    extractMenu->AddItem(item);
+    extractMenu->AddItem(new KeyedMenuItem("bzr:UpdateFiles", B_TRANSLATE_NOCOLLECT(kUpdateFiles),
+                                           message, false));
 
-    item = new KeyedMenuItem("bzr:FreshenFiles", B_TRANSLATE_NOCOLLECT(kFreshenFiles));
-    item->SetMarked(message.GetBool("bzr:FreshenFiles", false));
-    extractMenu->AddItem(item);
+    extractMenu->AddItem(new KeyedMenuItem("bzr:FreshenFiles", B_TRANSLATE_NOCOLLECT(kFreshenFiles),
+                                           message, false));
 
     // Build the "Other Options" sub-menu
     othersMenu = new BMenu(B_TRANSLATE("Other options"));
     othersMenu->SetRadioMode(false);
 
-    item = new KeyedMenuItem("bzr:ProcessAttrs", B_TRANSLATE_NOCOLLECT(kProcessAttrs), new BMessage(BZR_MENUITEM_SELECTED));
-    item->SetMarked(message.GetBool("bzr:ProcessAttrs", false));
-    othersMenu->AddItem(item);
+    othersMenu->AddItem(new KeyedMenuItem("bzr:ProcessAttrs", B_TRANSLATE_NOCOLLECT(kProcessAttrs),
+                                          message, false, new BMessage(BZR_MENUITEM_SELECTED)));
 
-    item = new KeyedMenuItem("bzr:KeepBroken", B_TRANSLATE_NOCOLLECT(kKeepBroken), new BMessage(BZR_MENUITEM_SELECTED));
-    item->SetMarked(message.GetBool("bzr:KeepBroken", false));
-    othersMenu->AddItem(item);
+    othersMenu->AddItem(new KeyedMenuItem("bzr:KeepBroken", B_TRANSLATE_NOCOLLECT(kKeepBroken),
+                                          message, false, new BMessage(BZR_MENUITEM_SELECTED)));
 
     // Add sub-menus to settings menu
     m_settingsMenu->AddItem(extractMenu);

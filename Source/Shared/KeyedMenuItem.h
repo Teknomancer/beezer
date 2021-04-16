@@ -11,20 +11,33 @@
 class KeyedMenuItem : public BMenuItem
 {
     public:
-        KeyedMenuItem(const char* key, const char* label, BMessage* message = NULL)
+        KeyedMenuItem(const char* key, const char* label, BMessage& archive, bool markedByDefault = false,
+                      BMessage* message = NULL)
             : BMenuItem(label, message),
-            m_keyString(new BString(key))
-            {};
+            m_keyString(new BString(key)),
+            m_markedByDefault(markedByDefault)
+        {
+            SetMarked(archive.GetBool(key, markedByDefault));
+        };
+
 
         ~KeyedMenuItem()
         {
             delete m_keyString;
         }
 
+
         const char* Key()
         {
             return m_keyString->String();
         }
+
+
+        void ResetToDefault()
+        {
+            SetMarked(m_markedByDefault);
+        }
+
 
         static status_t ArchiveMenu(BMenu* menu, BMessage& message)
         {
@@ -45,6 +58,7 @@ class KeyedMenuItem : public BMenuItem
         }
 
         BString* m_keyString;
+        bool     m_markedByDefault;
 };
 
 #endif /* _KEYED_MENU_ITEM_H */

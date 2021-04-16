@@ -799,7 +799,6 @@ void z7Archiver::BuildMenu(BMessage& message)
 {
     BMenu* addMenu;
     BMenu* extractMenu;
-    BMenuItem* item;
 
     m_settingsMenu = new BMenu(m_typeStr);
 
@@ -825,29 +824,27 @@ void z7Archiver::BuildMenu(BMessage& message)
     addMenu = new BMenu(B_TRANSLATE("While adding"));
     addMenu->SetRadioMode(false);
 
-    item = new KeyedMenuItem("bzr:SolidBlocks", B_TRANSLATE_NOCOLLECT(kSolidBlocks), new BMessage(BZR_MENUITEM_SELECTED));
-    item->SetMarked(message.GetBool("bzr:SolidBlocks", false));
-    addMenu->AddItem(item);
+    addMenu->AddItem(new KeyedMenuItem("bzr:SolidBlocks", B_TRANSLATE_NOCOLLECT(kSolidBlocks),
+                                       message, false, new BMessage(BZR_MENUITEM_SELECTED)));
 
-    item = new KeyedMenuItem("bzr:MultiThread", B_TRANSLATE_NOCOLLECT(kMultiThread), new BMessage(BZR_MENUITEM_SELECTED));
-    item->SetMarked(message.GetBool("bzr:MultiThread", true));
-    addMenu->AddItem(item);
+    addMenu->AddItem(new KeyedMenuItem("bzr:MultiThread", B_TRANSLATE_NOCOLLECT(kMultiThread),
+                                       message, true, new BMessage(BZR_MENUITEM_SELECTED)));
 
     // Build the "While extracting" sub-menu
     extractMenu = new BMenu(B_TRANSLATE("While extracting"));
     extractMenu->SetRadioMode(true);
 
-    extractMenu->AddItem(item = new KeyedMenuItem("bzr:OverwriteFiles", B_TRANSLATE_NOCOLLECT(kOverwriteFiles), NULL));
-    item->SetMarked(message.GetBool("bzr:OverwriteFiles", true));
+    extractMenu->AddItem(new KeyedMenuItem("bzr:OverwriteFiles", B_TRANSLATE_NOCOLLECT(kOverwriteFiles),
+                                           message, true));
 
-    extractMenu->AddItem(new KeyedMenuItem("bzr:NoOverwrite", B_TRANSLATE_NOCOLLECT(kNoOverwrite), NULL));
-    item->SetMarked(message.GetBool("bzr:NoOverwrite", false));
+    extractMenu->AddItem(new KeyedMenuItem("bzr:NoOverwrite", B_TRANSLATE_NOCOLLECT(kNoOverwrite),
+                                           message, false));
 
-    extractMenu->AddItem(new KeyedMenuItem("bzr:RenameExisting", B_TRANSLATE_NOCOLLECT(kRenameExisting), NULL));
-    item->SetMarked(message.GetBool("bzr:RenameExisting", false));
+    extractMenu->AddItem(new KeyedMenuItem("bzr:RenameExisting", B_TRANSLATE_NOCOLLECT(kRenameExisting),
+                                           message, false));
 
-    extractMenu->AddItem(new KeyedMenuItem("bzr:RenameExtracted", B_TRANSLATE_NOCOLLECT(kRenameExtracted), NULL));
-    item->SetMarked(message.GetBool("bzr:RenameExtracted", false));
+    extractMenu->AddItem(new KeyedMenuItem("bzr:RenameExtracted", B_TRANSLATE_NOCOLLECT(kRenameExtracted),
+                                           message, false));
 
     // Add sub-menus to settings menu
     m_settingsMenu->AddItem(m_compressionMenu);
