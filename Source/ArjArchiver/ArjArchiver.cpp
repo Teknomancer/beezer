@@ -5,8 +5,8 @@
 
 #include "ArjArchiver.h"
 #include "ArchiveEntry.h"
-#include "ArchiverMenuItem.h"
 #include "AppUtils.h"
+#include "KeyedMenuItem.h"
 
 #include <NodeInfo.h>
 #include <Messenger.h>
@@ -713,20 +713,20 @@ void ArjArchiver::BuildMenu(BMessage& message)
     addMenu = new BMenu(B_TRANSLATE("While adding"));
     addMenu->SetRadioMode(false);
 
-    addMenu->AddItem(item = new ArchiverMenuItem("bzr:RecurseDirs", B_TRANSLATE_NOCOLLECT(kRecurseDirs), new BMessage(BZR_MENUITEM_SELECTED)));
+    addMenu->AddItem(item = new KeyedMenuItem("bzr:RecurseDirs", B_TRANSLATE_NOCOLLECT(kRecurseDirs), new BMessage(BZR_MENUITEM_SELECTED)));
     item->SetMarked(message.GetBool("bzr:RecurseDirs", true));
 
     // Build the extract sub-menu
     extractMenu = new BMenu(B_TRANSLATE("While extracting"));
     extractMenu->SetRadioMode(false);
 
-    extractMenu->AddItem(item = new ArchiverMenuItem("bzr:UpdateFiles", B_TRANSLATE_NOCOLLECT(kUpdateFiles), new BMessage(BZR_MENUITEM_SELECTED)));
+    extractMenu->AddItem(item = new KeyedMenuItem("bzr:UpdateFiles", B_TRANSLATE_NOCOLLECT(kUpdateFiles), new BMessage(BZR_MENUITEM_SELECTED)));
     item->SetMarked(message.GetBool("bzr:UpdateFiles", false));
 
-    extractMenu->AddItem(item = new ArchiverMenuItem("bzr:FreshenFiles", B_TRANSLATE_NOCOLLECT(kFreshenFiles), new BMessage(BZR_MENUITEM_SELECTED)));
+    extractMenu->AddItem(item = new KeyedMenuItem("bzr:FreshenFiles", B_TRANSLATE_NOCOLLECT(kFreshenFiles), new BMessage(BZR_MENUITEM_SELECTED)));
     item->SetMarked(message.GetBool("bzr:FreshenFiles", false));
 
-    extractMenu->AddItem(item = new ArchiverMenuItem("bzr:MultiVolume", B_TRANSLATE_NOCOLLECT(kMultiVolume), new BMessage(BZR_MENUITEM_SELECTED)));
+    extractMenu->AddItem(item = new KeyedMenuItem("bzr:MultiVolume", B_TRANSLATE_NOCOLLECT(kMultiVolume), new BMessage(BZR_MENUITEM_SELECTED)));
     item->SetMarked(message.GetBool("bzr:MultiVolume", true));
 
     // Add sub-menus to settings menu

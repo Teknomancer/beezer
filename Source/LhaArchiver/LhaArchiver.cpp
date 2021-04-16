@@ -5,8 +5,8 @@
 
 #include "LhaArchiver.h"
 #include "ArchiveEntry.h"
-#include "ArchiverMenuItem.h"
 #include "AppUtils.h"
+#include "KeyedMenuItem.h"
 
 #include <NodeInfo.h>
 #include <Messenger.h>
@@ -658,7 +658,7 @@ void LhaArchiver::BuildMenu(BMessage& message)
     otherMenu = new BMenu(B_TRANSLATE("Other settings"));
     otherMenu->SetRadioMode(false);
 
-    item = new ArchiverMenuItem("bzr:LharCompat", B_TRANSLATE_NOCOLLECT(kLharcCompat), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new KeyedMenuItem("bzr:LharCompat", B_TRANSLATE_NOCOLLECT(kLharcCompat), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(message.GetBool("bzr:LharCompat", false));
     otherMenu->AddItem(item);
 
