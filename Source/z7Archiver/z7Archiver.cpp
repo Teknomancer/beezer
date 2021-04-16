@@ -819,6 +819,7 @@ void z7Archiver::BuildMenu(BMessage& message)
     m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
 
     SetCompressionLevel(message.GetInt32(kCompressionLevelKey, 5));
+    SetDefaultCompressionLevel(5);
 
     // Build the "While adding" sub-menu
     addMenu = new BMenu(B_TRANSLATE("While adding"));

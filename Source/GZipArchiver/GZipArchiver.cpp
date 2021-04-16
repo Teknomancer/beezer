@@ -322,6 +322,7 @@ void GZipArchiver::BuildMenu(BMessage& message)
     m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
 
     SetCompressionLevel(message.GetInt32(kCompressionLevelKey, 6));
+    SetDefaultCompressionLevel(6);
 
     // Add sub-menus to settings menu
     m_settingsMenu->AddItem(m_compressionMenu);

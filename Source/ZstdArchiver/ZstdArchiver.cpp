@@ -322,6 +322,7 @@ void ZstdArchiver::BuildMenu(BMessage& message)
     m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
 
     SetCompressionLevel(message.GetInt32(kCompressionLevelKey, 3));
+    SetDefaultCompressionLevel(3);
 
     // Add sub-menus to settings menu
     m_settingsMenu->AddItem(m_compressionMenu);
