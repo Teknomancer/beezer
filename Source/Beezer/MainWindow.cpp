@@ -21,6 +21,7 @@
 #include "ImageButton.h"
 #include "InfoBar.h"
 #include "InputAlert.h"
+#include "KeyedMenuItem.h"
 #include "ListEntry.h"
 #include "LocalUtils.h"
 #include "LogTextView.h"
@@ -1412,6 +1413,13 @@ void MainWindow::MessageReceived(BMessage* message)
             if (alert->Go() == 1)
                 SaveArchiverToArchive(NULL);
 
+            break;
+        }
+
+        case M_RESET_ARK_TO_DEFAULT:
+        {
+            KeyedMenuItem::ResetMenu(m_archiver->SettingsMenu());
+            m_archiver->SetCompressionLevel(m_archiver->GetDefaultCompressionLevel());
             break;
         }
 
@@ -2968,6 +2976,7 @@ void MainWindow::AddArchiverMenu()
     if (m_createMode == false)
     {
         m_archiver->SettingsMenu()->AddSeparatorItem();
+        m_archiver->SettingsMenu()->AddItem(new BMenuItem(BZ_TR(kResetToDefaultsString), new BMessage(M_RESET_ARK_TO_DEFAULT)));
         m_archiver->SettingsMenu()->AddItem(new BMenuItem(BZ_TR(kSaveAsDefaultsString), new BMessage(M_SAVE_ARK_AS_DEFAULT)));
         m_archiver->SettingsMenu()->AddItem(new BMenuItem(BZ_TR(kSaveToArchiveString), new BMessage(M_SAVE_ARK_TO_ARCHIVE)));
         m_mainMenu->AddItem(m_archiver->SettingsMenu(), m_mainMenu->IndexOf(m_mainMenu->m_toolsMenu) + 1);
