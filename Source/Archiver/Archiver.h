@@ -73,6 +73,7 @@ class Archiver
 
         // Optionally-overridable functions
         virtual status_t    ArchiveSettings(BMessage& message);
+        virtual status_t    ArchiveMenu(BMenu* menu, BMessage& message);
         virtual status_t    LoadMetaData(const char* addonImagePath);
         virtual BMessage*   GetRulesMessage();
         virtual void        BuildMenu(BMessage& message);
