@@ -1423,6 +1423,31 @@ void MainWindow::MessageReceived(BMessage* message)
             break;
         }
 
+        case M_RESET_TO_DEFAULT:
+        {
+            KeyedMenuItem::ResetMenu(m_mainMenu->m_viewMenu);
+            BMenu* colMenu = m_mainMenu->m_columnsSubMenu;
+            m_sizeColumn->SetShown(colMenu->FindItem(M_TOGGLE_COLUMN_SIZE)->IsMarked());
+            m_packedColumn->SetShown(colMenu->FindItem(M_TOGGLE_COLUMN_PACKED)->IsMarked());
+            m_ratioColumn->SetShown(colMenu->FindItem(M_TOGGLE_COLUMN_RATIO)->IsMarked());
+            m_pathColumn->SetShown(colMenu->FindItem(M_TOGGLE_COLUMN_PATH)->IsMarked());
+            m_dateColumn->SetShown(colMenu->FindItem(M_TOGGLE_COLUMN_DATE)->IsMarked());
+            m_methodColumn->SetShown(colMenu->FindItem(M_TOGGLE_COLUMN_METHOD)->IsMarked());
+            m_crcColumn->SetShown(colMenu->FindItem(M_TOGGLE_COLUMN_CRC)->IsMarked());
+
+            BMenu* viewMenu = m_mainMenu->m_viewMenu;
+            if (viewMenu->FindItem(M_TOGGLE_TOOLBAR)->IsMarked() != m_toolBar->IsShown())
+                m_toolBar->Toggle();
+
+            if (viewMenu->FindItem(M_TOGGLE_INFOBAR)->IsMarked() != m_infoBar->IsShown())
+                m_infoBar->Toggle();
+
+            if (viewMenu->FindItem(M_TOGGLE_LOG)->IsMarked() == m_logHidden)
+                ToggleActionLog();
+
+            break;
+        }
+
         case M_TOGGLE_COLUMN_SIZE: ToggleColumn(m_sizeColumn, message); break;
         case M_TOGGLE_COLUMN_PACKED: ToggleColumn(m_packedColumn, message); break;
         case M_TOGGLE_COLUMN_RATIO: ToggleColumn(m_ratioColumn, message); break;

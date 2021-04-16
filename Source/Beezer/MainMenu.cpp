@@ -9,6 +9,7 @@
 #include "BitmapMenuItem.h"
 #include "BitmapPool.h"
 #include "CommonStrings.h"
+#include "KeyedMenuItem.h"
 #include "MsgConstants.h"
 
 #include <LayoutBuilder.h>
@@ -39,11 +40,7 @@ MainMenu::MainMenu(BRect frame)
         .AddSeparator()
         .AddItem(B_TRANSLATE("Quit"), M_FILE_QUIT, 'Q');
 
-    // keep track of these temporarily so we can call SetMarked()
-    BMenuItem* startupFoldedItem = NULL,
-             * viewToolbarItem = NULL,
-             * viewInfobarItem = NULL,
-             * viewActionLogItem = NULL;
+    BMessage emptyStr;
 
     BLayoutBuilder::Menu<>(this)
         .AddItem(new BitmapMenuItem(appMenu, _glob_bitmap_pool->m_smallAppIcon))
@@ -78,32 +75,29 @@ MainMenu::MainMenu(BRect frame)
         .End()
         .AddMenu(BZ_TR(kViewString))
             .GetMenu(m_viewMenu)
-            .AddItem(B_TRANSLATE("Toolbar"), M_TOGGLE_TOOLBAR)
-            .GetItem(viewToolbarItem)
-            .AddItem(B_TRANSLATE("Infobar"), M_TOGGLE_INFOBAR)
-            .GetItem(viewInfobarItem)
-            .AddItem(B_TRANSLATE("Action log"), M_TOGGLE_LOG)
-            .GetItem(viewActionLogItem)
+            .AddItem(new KeyedMenuItem("bzr:ViewToolbar", B_TRANSLATE("Toolbar"), emptyStr, true, new BMessage(M_TOGGLE_TOOLBAR)))
+            .AddItem(new KeyedMenuItem("bzr:ViewInfobar", B_TRANSLATE("Infobar"), emptyStr, true, new BMessage(M_TOGGLE_INFOBAR)))
+            .AddItem(new KeyedMenuItem("bzr:ViewActionLog", B_TRANSLATE("Action log"), emptyStr, true, new BMessage(M_TOGGLE_LOG)))
             .AddMenu(B_TRANSLATE("Columns"))
                 .GetMenu(m_columnsSubMenu)
-                .AddItem(BZ_TR(kNameString), M_TOGGLE_COLUMN_NAME).SetEnabled(false)
-                .AddItem(BZ_TR(kSizeString), M_TOGGLE_COLUMN_SIZE)
-                .AddItem(BZ_TR(kPackedString), M_TOGGLE_COLUMN_PACKED)
-                .AddItem(BZ_TR(kRatioString), M_TOGGLE_COLUMN_RATIO)
-                .AddItem(BZ_TR(kPathString), M_TOGGLE_COLUMN_PATH)
-                .AddItem(BZ_TR(kDateString), M_TOGGLE_COLUMN_DATE)
-                .AddItem(BZ_TR(kMethodString), M_TOGGLE_COLUMN_METHOD)
-                .AddItem(BZ_TR(kCRCString), M_TOGGLE_COLUMN_CRC)
+                .AddItem(new KeyedMenuItem("bzr:ViewColumnName", BZ_TR(kNameString), emptyStr, true, new BMessage(M_TOGGLE_COLUMN_NAME))).SetEnabled(false)
+                .AddItem(new KeyedMenuItem("bzr:ViewColumnSize", BZ_TR(kSizeString), emptyStr, true, new BMessage(M_TOGGLE_COLUMN_SIZE)))
+                .AddItem(new KeyedMenuItem("bzr:ViewColumnPacked", BZ_TR(kPackedString), emptyStr, true, new BMessage(M_TOGGLE_COLUMN_PACKED)))
+                .AddItem(new KeyedMenuItem("bzr:ViewColumnRatio", BZ_TR(kRatioString), emptyStr, true, new BMessage(M_TOGGLE_COLUMN_RATIO)))
+                .AddItem(new KeyedMenuItem("bzr:ViewColumnPath", BZ_TR(kPathString), emptyStr, true, new BMessage(M_TOGGLE_COLUMN_PATH)))
+                .AddItem(new KeyedMenuItem("bzr:ViewColumnDate", BZ_TR(kDateString), emptyStr, true, new BMessage(M_TOGGLE_COLUMN_DATE)))
+                .AddItem(new KeyedMenuItem("bzr:ViewColumnMethod", BZ_TR(kMethodString), emptyStr, true, new BMessage(M_TOGGLE_COLUMN_METHOD)))
+                .AddItem(new KeyedMenuItem("bzr:ViewColumnCRC", BZ_TR(kCRCString), emptyStr, true, new BMessage(M_TOGGLE_COLUMN_CRC)))
             .End()
             .AddMenu(B_TRANSLATE("While opening"))
                 .GetMenu(m_foldingMenu)
-                .AddItem(BZ_TR(kAllFoldedString), (BMessage*)NULL)
-                .AddItem(BZ_TR(kFirstUnfoldedString), (BMessage*)NULL)
-                .AddItem(BZ_TR(kTwoUnfoldedString), (BMessage*)NULL)
-                .AddItem(BZ_TR(kAllUnfoldedString), (BMessage*)NULL)
-                .GetItem(startupFoldedItem)
+                .AddItem(new KeyedMenuItem("bzr:ViewAllFolded", BZ_TR(kAllFoldedString), emptyStr, false))
+                .AddItem(new KeyedMenuItem("bzr:ViewFirstUnfolded", BZ_TR(kFirstUnfoldedString), emptyStr, false))
+                .AddItem(new KeyedMenuItem("bzr:ViewTwoUnfolded", BZ_TR(kTwoUnfoldedString), emptyStr, false))
+                .AddItem(new KeyedMenuItem("bzr:ViewAllUnfolded", BZ_TR(kAllUnfoldedString), emptyStr, true))
             .End()
             .AddSeparator()
+            .AddItem(BZ_TR(kResetToDefaultsString), M_RESET_TO_DEFAULT)
             .AddItem(BZ_TR(kSaveAsDefaultsString), M_SAVE_AS_DEFAULT)
             .AddItem(BZ_TR(kSaveToArchiveString), M_SAVE_TO_ARCHIVE)
         .End()
@@ -148,10 +142,6 @@ MainMenu::MainMenu(BRect frame)
 
     m_foldingMenu->SetRadioMode(true);
 
-    startupFoldedItem->SetMarked(true);
-    viewToolbarItem->SetMarked(true);
-    viewInfobarItem->SetMarked(true);
-    viewActionLogItem->SetMarked(true);
     int32 columnCount = m_columnsSubMenu->CountItems();
     for (int32 i = 0; i < columnCount; i++)
         m_columnsSubMenu->ItemAt(i)->SetMarked(true);
