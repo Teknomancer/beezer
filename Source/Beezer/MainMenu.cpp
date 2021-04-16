@@ -142,11 +142,6 @@ MainMenu::MainMenu(BRect frame)
 
     m_foldingMenu->SetRadioMode(true);
 
-    int32 columnCount = m_columnsSubMenu->CountItems();
-    for (int32 i = 0; i < columnCount; i++)
-        m_columnsSubMenu->ItemAt(i)->SetMarked(true);
-
-
     m_archiveContextMenu = new BPopUpMenu("_cntxt", false, false);
     BLayoutBuilder::Menu<>(m_archiveContextMenu)
         .AddItem(B_TRANSLATE("View file"), M_ACTIONS_VIEW)
