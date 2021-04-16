@@ -688,7 +688,6 @@ void ArjArchiver::BuildMenu(BMessage& message)
 {
     BMenu* extractMenu;
     BMenu* addMenu;
-    BMenuItem* item;
     m_settingsMenu = new BMenu(m_typeStr);
 
     // Build the compression-level sub-menu
@@ -713,21 +712,21 @@ void ArjArchiver::BuildMenu(BMessage& message)
     addMenu = new BMenu(B_TRANSLATE("While adding"));
     addMenu->SetRadioMode(false);
 
-    addMenu->AddItem(item = new KeyedMenuItem("bzr:RecurseDirs", B_TRANSLATE_NOCOLLECT(kRecurseDirs), new BMessage(BZR_MENUITEM_SELECTED)));
-    item->SetMarked(message.GetBool("bzr:RecurseDirs", true));
+    addMenu->AddItem(new KeyedMenuItem("bzr:RecurseDirs", B_TRANSLATE_NOCOLLECT(kRecurseDirs),
+                                       message, true, new BMessage(BZR_MENUITEM_SELECTED)));
 
     // Build the extract sub-menu
     extractMenu = new BMenu(B_TRANSLATE("While extracting"));
     extractMenu->SetRadioMode(false);
 
-    extractMenu->AddItem(item = new KeyedMenuItem("bzr:UpdateFiles", B_TRANSLATE_NOCOLLECT(kUpdateFiles), new BMessage(BZR_MENUITEM_SELECTED)));
-    item->SetMarked(message.GetBool("bzr:UpdateFiles", false));
+    extractMenu->AddItem(new KeyedMenuItem("bzr:UpdateFiles", B_TRANSLATE_NOCOLLECT(kUpdateFiles),
+                                           message ,false, new BMessage(BZR_MENUITEM_SELECTED)));
 
-    extractMenu->AddItem(item = new KeyedMenuItem("bzr:FreshenFiles", B_TRANSLATE_NOCOLLECT(kFreshenFiles), new BMessage(BZR_MENUITEM_SELECTED)));
-    item->SetMarked(message.GetBool("bzr:FreshenFiles", false));
+    extractMenu->AddItem(new KeyedMenuItem("bzr:FreshenFiles", B_TRANSLATE_NOCOLLECT(kFreshenFiles),
+                                           message, false, new BMessage(BZR_MENUITEM_SELECTED)));
 
-    extractMenu->AddItem(item = new KeyedMenuItem("bzr:MultiVolume", B_TRANSLATE_NOCOLLECT(kMultiVolume), new BMessage(BZR_MENUITEM_SELECTED)));
-    item->SetMarked(message.GetBool("bzr:MultiVolume", true));
+    extractMenu->AddItem(new KeyedMenuItem("bzr:MultiVolume", B_TRANSLATE_NOCOLLECT(kMultiVolume),
+                                           message, true, new BMessage(BZR_MENUITEM_SELECTED)));
 
     // Add sub-menus to settings menu
     m_settingsMenu->AddItem(m_compressionMenu);

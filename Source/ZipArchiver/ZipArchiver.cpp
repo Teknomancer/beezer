@@ -776,7 +776,6 @@ void ZipArchiver::BuildMenu(BMessage& message)
 {
     BMenu* addMenu;
     BMenu* extractMenu;
-    BMenuItem* item;
 
     m_settingsMenu = new BMenu(m_typeStr);
 
@@ -807,37 +806,30 @@ void ZipArchiver::BuildMenu(BMessage& message)
     addMenu = new BMenu(B_TRANSLATE("While adding"));
     addMenu->SetRadioMode(false);
 
-    item = new KeyedMenuItem("bzr:AddAttrs", B_TRANSLATE_NOCOLLECT(kAddAttrs), new BMessage(BZR_MENUITEM_SELECTED));
-    item->SetMarked(message.GetBool("bzr:AddAttrs", true));
-    addMenu->AddItem(item);
+    addMenu->AddItem(new KeyedMenuItem("bzr:AddAttrs", B_TRANSLATE_NOCOLLECT(kAddAttrs),
+                                       message, true, new BMessage(BZR_MENUITEM_SELECTED)));
 
-    item = new KeyedMenuItem("bzr:RecurseDirs", B_TRANSLATE_NOCOLLECT(kRecurseDirs), new BMessage(BZR_MENUITEM_SELECTED));
-    item->SetMarked(message.GetBool("bzr:RecurseDirs", true));
-    addMenu->AddItem(item);
+    addMenu->AddItem(new KeyedMenuItem("bzr:RecurseDirs", B_TRANSLATE_NOCOLLECT(kRecurseDirs),
+                                       message, true, new BMessage(BZR_MENUITEM_SELECTED)));
 
     // Build the extract sub-menu
     extractMenu = new BMenu(B_TRANSLATE("While extracting"));
     extractMenu->SetRadioMode(false);
 
-    item = new KeyedMenuItem("bzr:ExtractAttrs", B_TRANSLATE_NOCOLLECT(kExtractAttrs), new BMessage(BZR_MENUITEM_SELECTED));
-    item->SetMarked(message.GetBool("bzr:ExtractAttrs", true));
-    extractMenu->AddItem(item);
+    extractMenu->AddItem(new KeyedMenuItem("bzr:ExtractAttrs", B_TRANSLATE_NOCOLLECT(kExtractAttrs),
+                                           message, true, new BMessage(BZR_MENUITEM_SELECTED)));
 
-    item = new KeyedMenuItem("bzr:ExtractDirs", B_TRANSLATE_NOCOLLECT(kExtractDirs), new BMessage(BZR_MENUITEM_SELECTED));
-    item->SetMarked(message.GetBool("bzr:ExtractDirs", true));
-    extractMenu->AddItem(item);
+    extractMenu->AddItem(new KeyedMenuItem("bzr:ExtractDirs", B_TRANSLATE_NOCOLLECT(kExtractDirs),
+                                           message, true, new BMessage(BZR_MENUITEM_SELECTED)));
 
-    item = new KeyedMenuItem("bzr:NoOverwrite", B_TRANSLATE_NOCOLLECT(kNoOverwrite), new BMessage(BZR_MENUITEM_SELECTED));
-    item->SetMarked(message.GetBool("bzr:NoOverwrite", false));
-    extractMenu->AddItem(item);
+    extractMenu->AddItem(new KeyedMenuItem("bzr:NoOverwrite", B_TRANSLATE_NOCOLLECT(kNoOverwrite),
+                                           message, false, new BMessage(BZR_MENUITEM_SELECTED)));
 
-    item = new KeyedMenuItem("bzr:UpdateFiles", B_TRANSLATE_NOCOLLECT(kUpdateFiles), new BMessage(BZR_MENUITEM_SELECTED));
-    item->SetMarked(message.GetBool("bzr:UpdateFiles", false));
-    extractMenu->AddItem(item);
+    extractMenu->AddItem(new KeyedMenuItem("bzr:UpdateFiles", B_TRANSLATE_NOCOLLECT(kUpdateFiles),
+                                           message, false, new BMessage(BZR_MENUITEM_SELECTED)));
 
-    item = new KeyedMenuItem("bzr:FreshenFiles", B_TRANSLATE_NOCOLLECT(kFreshenFiles), new BMessage(BZR_MENUITEM_SELECTED));
-    item->SetMarked(message.GetBool("bzr:FreshenFiles", false));
-    extractMenu->AddItem(item);
+    extractMenu->AddItem(new KeyedMenuItem("bzr:FreshenFiles", B_TRANSLATE_NOCOLLECT(kFreshenFiles),
+                                           message, false, new BMessage(BZR_MENUITEM_SELECTED)));
 
     // Add sub-menus to settings menu
     m_settingsMenu->AddItem(m_compressionMenu);

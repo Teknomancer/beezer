@@ -636,7 +636,6 @@ status_t LhaArchiver::Create(BPath* archivePath, const char* relPath, BMessage* 
 void LhaArchiver::BuildMenu(BMessage& message)
 {
     BMenu* otherMenu;
-    BMenuItem* item;
 
     m_settingsMenu = new BMenu(m_typeStr);
 
@@ -658,9 +657,8 @@ void LhaArchiver::BuildMenu(BMessage& message)
     otherMenu = new BMenu(B_TRANSLATE("Other settings"));
     otherMenu->SetRadioMode(false);
 
-    item = new KeyedMenuItem("bzr:LharCompat", B_TRANSLATE_NOCOLLECT(kLharcCompat), new BMessage(BZR_MENUITEM_SELECTED));
-    item->SetMarked(message.GetBool("bzr:LharCompat", false));
-    otherMenu->AddItem(item);
+    otherMenu->AddItem(new KeyedMenuItem("bzr:LharCompat", B_TRANSLATE_NOCOLLECT(kLharcCompat),
+                                         message, false, new BMessage(BZR_MENUITEM_SELECTED)));
 
     // Add sub-menus to settings menu
     m_settingsMenu->AddItem(m_compressionMenu);
