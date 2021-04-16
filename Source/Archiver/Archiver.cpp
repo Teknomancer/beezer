@@ -55,30 +55,31 @@ Archiver::Archiver(const char* addonImagePath)
 
 void Archiver::Init()
 {
-    m_typeStr               = strdup("");
-    m_extensionStr          = strdup("");
-    m_settingsLangStr       = NULL;
-    m_settingsDirectoryPath = NULL;
-    m_tempDirPath           = NULL;
-    m_passwordRequired      = false;
-    m_settingsMenu          = NULL;
-    m_compressionMenu       = NULL;
+    m_typeStr                 = strdup("");
+    m_extensionStr            = strdup("");
+    m_settingsLangStr         = NULL;
+    m_settingsDirectoryPath   = NULL;
+    m_tempDirPath             = NULL;
+    m_passwordRequired        = false;
+    m_settingsMenu            = NULL;
+    m_compressionMenu         = NULL;
 
-    m_rulesMsg              = new BMessage();
-    m_hashTable             = NULL;
-    m_cachedPath            = NULL;
-    m_iconList              = NULL;
-    m_folderBmp             = NULL;
-    m_binaryBmp             = NULL;
-    m_htmlBmp               = NULL;
-    m_textBmp               = NULL;
-    m_sourceBmp             = NULL;
-    m_audioBmp              = NULL;
-    m_archiveBmp            = NULL;
-    m_packageBmp            = NULL;
-    m_pdfBmp                = NULL;
-    m_imageBmp              = NULL;
-    m_foldingLevel          = 3;
+    m_rulesMsg                = new BMessage();
+    m_hashTable               = NULL;
+    m_cachedPath              = NULL;
+    m_iconList                = NULL;
+    m_folderBmp               = NULL;
+    m_binaryBmp               = NULL;
+    m_htmlBmp                 = NULL;
+    m_textBmp                 = NULL;
+    m_sourceBmp               = NULL;
+    m_audioBmp                = NULL;
+    m_archiveBmp              = NULL;
+    m_packageBmp              = NULL;
+    m_pdfBmp                  = NULL;
+    m_imageBmp                = NULL;
+    m_foldingLevel            = 3;
+    m_defaultCompressionLevel = -1;
 
     m_error                 = B_OK;
 }
@@ -859,4 +860,17 @@ status_t Archiver::SetCompressionLevel(int32 level)
     }
 
     return B_ERROR;
+}
+
+
+status_t Archiver::SetDefaultCompressionLevel(int32 level)
+{
+    //TODO verify we were given a supported compression level
+    m_defaultCompressionLevel = level;
+    return B_OK;
+}
+
+int32 Archiver::GetDefaultCompressionLevel()
+{
+    return m_defaultCompressionLevel;
 }
