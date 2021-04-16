@@ -707,7 +707,7 @@ status_t Archiver::ArchiveSettings(BMessage& message)
 }
 
 
-status_t Archiver::ArchiveMenu(BMenu *menu, BMessage& message)
+status_t Archiver::ArchiveMenu(BMenu* menu, BMessage& message)
 {
     for (int32 x = 0; x < menu->CountItems(); x++)
     {
