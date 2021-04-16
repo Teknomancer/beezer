@@ -5,6 +5,7 @@
 
 #include "LhaArchiver.h"
 #include "ArchiveEntry.h"
+#include "ArchiverMenuItem.h"
 #include "AppUtils.h"
 
 #include <NodeInfo.h>
@@ -657,23 +658,13 @@ void LhaArchiver::BuildMenu(BMessage& message)
     otherMenu = new BMenu(B_TRANSLATE("Other settings"));
     otherMenu->SetRadioMode(false);
 
-    item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kLharcCompat), new BMessage(BZR_MENUITEM_SELECTED));
-    item->SetMarked(message.GetBool(kLharcCompat, false));
+    item = new ArchiverMenuItem("bzr:LharCompat", B_TRANSLATE_NOCOLLECT(kLharcCompat), new BMessage(BZR_MENUITEM_SELECTED));
+    item->SetMarked(message.GetBool("bzr:LharCompat", false));
     otherMenu->AddItem(item);
 
     // Add sub-menus to settings menu
     m_settingsMenu->AddItem(m_compressionMenu);
     m_settingsMenu->AddItem(otherMenu);
-}
-
-
-status_t LhaArchiver::ArchiveSettings(BMessage& message)
-{
-    BMenuItem* item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kLharcCompat));
-    if (item != NULL)
-        message.AddBool(kLharcCompat, item->IsMarked());
-
-    return Archiver::ArchiveSettings(message);
 }
 
 

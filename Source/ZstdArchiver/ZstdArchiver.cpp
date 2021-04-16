@@ -18,12 +18,7 @@
 #define B_TRANSLATION_CONTEXT "ZstdArchiver"
 #else
 #define B_TRANSLATE(x) x
-#define B_TRANSLATE_MARK(x) x
-#define B_TRANSLATE_NOCOLLECT(x) x
 #endif
-
-
-static const char* kCompressionLevel = B_TRANSLATE_MARK("Compression level");
 
 
 Archiver* load_archiver(const char* addonImagePath)
@@ -304,7 +299,7 @@ void ZstdArchiver::BuildMenu(BMessage& message)
     m_settingsMenu = new BMenu(m_typeStr);
 
     // Build the compression-level sub-menu
-    m_compressionMenu = new BMenu(B_TRANSLATE_NOCOLLECT(kCompressionLevel));
+    m_compressionMenu = new BMenu(B_TRANSLATE("Compression level"));
     m_compressionMenu->SetRadioMode(true);
 
     BString menuStr("1");
