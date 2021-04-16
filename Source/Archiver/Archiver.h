@@ -36,7 +36,7 @@ class BMenu;
 // ignore the warnings if this is an add-on without a compression menu
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-variable"
-static const char* const kCompressionLevelKey = "bzr:compression_level";
+static const char* const kCompressionLevelKey = "bzr:CompressionLevel";
 #pragma GCC diagnostic pop
 
 
@@ -73,7 +73,6 @@ class Archiver
 
         // Optionally-overridable functions
         virtual status_t    ArchiveSettings(BMessage& message);
-        virtual status_t    ArchiveMenu(BMenu* menu, BMessage& message);
         virtual status_t    LoadMetaData(const char* addonImagePath);
         virtual BMessage*   GetRulesMessage();
         virtual void        BuildMenu(BMessage& message);

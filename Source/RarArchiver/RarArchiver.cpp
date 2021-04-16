@@ -6,7 +6,7 @@
 #include "RarArchiver.h"
 #include "AppUtils.h"
 #include "ArchiveEntry.h"
-#include "ArchiverMenuItem.h"
+#include "KeyedMenuItem.h"
 
 #include <NodeInfo.h>
 #include <Messenger.h>
@@ -486,19 +486,19 @@ void RarArchiver::BuildMenu(BMessage& message)
     extractMenu = new BMenu(B_TRANSLATE("While extracting"));
     extractMenu->SetRadioMode(true);
 
-    item = new ArchiverMenuItem("bzr:AlwaysOverwrite", B_TRANSLATE_NOCOLLECT(kAlwaysOverwrite));
+    item = new KeyedMenuItem("bzr:AlwaysOverwrite", B_TRANSLATE_NOCOLLECT(kAlwaysOverwrite));
     item->SetMarked(message.GetBool("bzr:AlwaysOverwrite", true));
     extractMenu->AddItem(item);
 
-    item = new ArchiverMenuItem("bzr:NoOverwrite", B_TRANSLATE_NOCOLLECT(kNoOverwrite));
+    item = new KeyedMenuItem("bzr:NoOverwrite", B_TRANSLATE_NOCOLLECT(kNoOverwrite));
     item->SetMarked(message.GetBool("bzr:NoOverwrite", false));
     extractMenu->AddItem(item);
 
-    item = new ArchiverMenuItem("bzr:UpdateFiles", B_TRANSLATE_NOCOLLECT(kUpdateFiles));
+    item = new KeyedMenuItem("bzr:UpdateFiles", B_TRANSLATE_NOCOLLECT(kUpdateFiles));
     item->SetMarked(message.GetBool("bzr:UpdateFiles", false));
     extractMenu->AddItem(item);
 
-    item = new ArchiverMenuItem("bzr:FreshenFiles", B_TRANSLATE_NOCOLLECT(kFreshenFiles));
+    item = new KeyedMenuItem("bzr:FreshenFiles", B_TRANSLATE_NOCOLLECT(kFreshenFiles));
     item->SetMarked(message.GetBool("bzr:FreshenFiles", false));
     extractMenu->AddItem(item);
 
@@ -506,11 +506,11 @@ void RarArchiver::BuildMenu(BMessage& message)
     othersMenu = new BMenu(B_TRANSLATE("Other options"));
     othersMenu->SetRadioMode(false);
 
-    item = new ArchiverMenuItem("bzr:ProcessAttrs", B_TRANSLATE_NOCOLLECT(kProcessAttrs), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new KeyedMenuItem("bzr:ProcessAttrs", B_TRANSLATE_NOCOLLECT(kProcessAttrs), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(message.GetBool("bzr:ProcessAttrs", false));
     othersMenu->AddItem(item);
 
-    item = new ArchiverMenuItem("bzr:KeepBroken", B_TRANSLATE_NOCOLLECT(kKeepBroken), new BMessage(BZR_MENUITEM_SELECTED));
+    item = new KeyedMenuItem("bzr:KeepBroken", B_TRANSLATE_NOCOLLECT(kKeepBroken), new BMessage(BZR_MENUITEM_SELECTED));
     item->SetMarked(message.GetBool("bzr:KeepBroken", false));
     othersMenu->AddItem(item);
 
