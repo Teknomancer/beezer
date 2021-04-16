@@ -39,6 +39,25 @@ class KeyedMenuItem : public BMenuItem
         }
 
 
+        static status_t ResetMenu(BMenu* menu)
+        {
+            for (int32 x = 0; x < menu->CountItems(); x++)
+            {
+                BMenu* subMenu = menu->ItemAt(x)->Submenu();
+                if (subMenu != NULL)
+                    ResetMenu(subMenu); // recurse
+                else
+                {
+                    KeyedMenuItem* item = dynamic_cast<KeyedMenuItem*>(menu->ItemAt(x));
+                    if (item != NULL)
+                        item->ResetToDefault();
+                }
+            }
+
+            return B_OK;
+        }
+
+
         static status_t ArchiveMenu(BMenu* menu, BMessage& message)
         {
             for (int32 x = 0; x < menu->CountItems(); x++)
