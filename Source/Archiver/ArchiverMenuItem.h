@@ -11,10 +11,10 @@
 class ArchiverMenuItem : public BMenuItem
 {
     public:
-		ArchiverMenuItem(const char* key, const char* label, BMessage* message = NULL)
-			: BMenuItem(label, message),
-			m_keyString(new BString(key))
-			{};
+        ArchiverMenuItem(const char* key, const char* label, BMessage* message = NULL)
+            : BMenuItem(label, message),
+            m_keyString(new BString(key))
+            {};
 
         ~ArchiverMenuItem()
         {
