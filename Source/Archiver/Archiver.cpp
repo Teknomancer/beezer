@@ -10,6 +10,7 @@
 #include "ArchiveEntry.h"
 #include "MsgConstants.h"
 #include "AppConstants.h"
+#include "ArchiverMenuItem.h"
 
 #include <Directory.h>
 #include <File.h>
@@ -699,6 +700,28 @@ status_t Archiver::ArchiveSettings(BMessage& message)
 {
     if (m_compressionMenu != NULL)
         message.AddInt32(kCompressionLevelKey, GetCompressionLevel());
+
+    ArchiveMenu(m_settingsMenu, message);
+
+    return B_OK;
+}
+
+
+status_t Archiver::ArchiveMenu(BMenu *menu, BMessage& message)
+{
+    for (int32 x = 0; x < menu->CountItems(); x++)
+    {
+        BMenu* subMenu = menu->ItemAt(x)->Submenu();
+        if (subMenu != NULL)
+            ArchiveMenu(subMenu, message); // recurse
+        else
+        {
+            ArchiverMenuItem* item = dynamic_cast<ArchiverMenuItem*>(menu->ItemAt(x));
+            if (item != NULL)
+                message.AddBool(item->Key(), item->IsMarked());
+        }
+    }
+
     return B_OK;
 }
 
