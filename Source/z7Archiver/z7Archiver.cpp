@@ -6,6 +6,7 @@
 
 #include "z7Archiver.h"
 #include "ArchiveEntry.h"
+#include "ArchiverMenuItem.h"
 #include "AppUtils.h"
 
 #include <NodeInfo.h>
@@ -27,7 +28,6 @@
 // keep track of our custom options/menuitems
 static const char
     //*kArchiveAttrs     = B_TRANSLATE_MARK("Add attributes"), // unused?
-    *kCompressionLevel = B_TRANSLATE_MARK("Compression level"),
     *kMultiThread      = B_TRANSLATE_MARK("Use multi-threading (for multi-core CPUs)"),
     *kNoOverwrite      = B_TRANSLATE_MARK("Never overwrite existing files"),
     *kOverwriteFiles   = B_TRANSLATE_MARK("Always overwrite (default)"),
@@ -804,7 +804,7 @@ void z7Archiver::BuildMenu(BMessage& message)
     m_settingsMenu = new BMenu(m_typeStr);
 
     // Build the header-level sub-menu
-    m_compressionMenu = new BMenu(B_TRANSLATE_NOCOLLECT(kCompressionLevel));
+    m_compressionMenu = new BMenu(B_TRANSLATE("Compression level"));
     m_compressionMenu->SetRadioMode(true);
 
     BString menuStr("0");
@@ -825,64 +825,34 @@ void z7Archiver::BuildMenu(BMessage& message)
     addMenu = new BMenu(B_TRANSLATE("While adding"));
     addMenu->SetRadioMode(false);
 
-    item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kSolidBlocks), new BMessage(BZR_MENUITEM_SELECTED));
-    item->SetMarked(message.GetBool(kSolidBlocks, false));
+    item = new ArchiverMenuItem("bzr:SolidBlocks", B_TRANSLATE_NOCOLLECT(kSolidBlocks), new BMessage(BZR_MENUITEM_SELECTED));
+    item->SetMarked(message.GetBool("bzr:SolidBlocks", false));
     addMenu->AddItem(item);
 
-    item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kMultiThread), new BMessage(BZR_MENUITEM_SELECTED));
-    item->SetMarked(message.GetBool(kMultiThread, true));
+    item = new ArchiverMenuItem("bzr:MultiThread", B_TRANSLATE_NOCOLLECT(kMultiThread), new BMessage(BZR_MENUITEM_SELECTED));
+    item->SetMarked(message.GetBool("bzr:MultiThread", true));
     addMenu->AddItem(item);
 
     // Build the "While extracting" sub-menu
     extractMenu = new BMenu(B_TRANSLATE("While extracting"));
     extractMenu->SetRadioMode(true);
 
-    extractMenu->AddItem(item = new BMenuItem(B_TRANSLATE_NOCOLLECT(kOverwriteFiles), NULL));
-    item->SetMarked(message.GetBool(kOverwriteFiles, true));
+    extractMenu->AddItem(item = new ArchiverMenuItem("bzr:OverwriteFiles", B_TRANSLATE_NOCOLLECT(kOverwriteFiles), NULL));
+    item->SetMarked(message.GetBool("bzr:OverwriteFiles", true));
 
-    extractMenu->AddItem(new BMenuItem(B_TRANSLATE_NOCOLLECT(kNoOverwrite), NULL));
-    item->SetMarked(message.GetBool(kNoOverwrite, false));
+    extractMenu->AddItem(new ArchiverMenuItem("bzr:NoOverwrite", B_TRANSLATE_NOCOLLECT(kNoOverwrite), NULL));
+    item->SetMarked(message.GetBool("bzr:NoOverwrite", false));
 
-    extractMenu->AddItem(new BMenuItem(B_TRANSLATE_NOCOLLECT(kRenameExisting), NULL));
-    item->SetMarked(message.GetBool(kRenameExisting, false));
+    extractMenu->AddItem(new ArchiverMenuItem("bzr:RenameExisting", B_TRANSLATE_NOCOLLECT(kRenameExisting), NULL));
+    item->SetMarked(message.GetBool("bzr:RenameExisting", false));
 
-    extractMenu->AddItem(new BMenuItem(B_TRANSLATE_NOCOLLECT(kRenameExtracted), NULL));
-    item->SetMarked(message.GetBool(kRenameExtracted, false));
+    extractMenu->AddItem(new ArchiverMenuItem("bzr:RenameExtracted", B_TRANSLATE_NOCOLLECT(kRenameExtracted), NULL));
+    item->SetMarked(message.GetBool("bzr:RenameExtracted", false));
 
     // Add sub-menus to settings menu
     m_settingsMenu->AddItem(m_compressionMenu);
     m_settingsMenu->AddItem(addMenu);
     m_settingsMenu->AddItem(extractMenu);
-}
-
-
-status_t z7Archiver::ArchiveSettings(BMessage &message)
-{
-    BMenuItem* item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kSolidBlocks));
-    if (item != NULL)
-        message.AddBool(kSolidBlocks, item->IsMarked());
-
-    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kMultiThread));
-    if (item != NULL)
-        message.AddBool(kMultiThread, item->IsMarked());
-
-    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kOverwriteFiles));
-    if (item != NULL)
-        message.AddBool(kOverwriteFiles, item->IsMarked());
-
-    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kNoOverwrite));
-    if (item != NULL)
-        message.AddBool(kNoOverwrite, item->IsMarked());
-
-    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kRenameExisting));
-    if (item != NULL)
-        message.AddBool(kRenameExisting, item->IsMarked());
-
-    item = m_settingsMenu->FindItem(B_TRANSLATE_NOCOLLECT(kRenameExtracted));
-    if (item != NULL)
-        message.AddBool(kRenameExtracted, item->IsMarked());
-
-    return Archiver::ArchiveSettings(message);
 }
 
 
