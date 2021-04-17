@@ -5,18 +5,12 @@
 #ifndef _RULE_MGR_H
 #define _RULE_MGR_H
 
+#include <SupportDefs.h>
+
+class BEntry;
 class BList;
-class BString;
-
-class MimeRule
-{
-    public:
-        MimeRule(const char* mime, const char* extension);
-
-        // Public members
-        BString             m_mime,
-                            m_extension;
-};
+class BDirectory;
+class BPath;
 
 class RuleMgr
 {
@@ -24,18 +18,15 @@ class RuleMgr
         RuleMgr(BDirectory* ruleDir, const char* ruleFile);
         ~RuleMgr();
 
-        // Public hooks
         char*               ValidateFileType(BPath* filePath) const;
         status_t            AddMimeRule(const char* mime, const char* extension);
 
     private:
-        // Private hooks
         void                ReadRules(BEntry* rulesEntry);
 
-        // Private members
-        BList*              m_ruleList;
-
         static int32        m_runCount;
+
+        BList*              m_ruleList;
 };
 
 #endif /* _RULE_MGR_H */
