@@ -352,7 +352,7 @@ BString XzArchiver::OutputFileName(const char* fullFileName) const
 }
 
 
-BList XzArchiver::HiddenColumns(BList* columns) const
+BList XzArchiver::HiddenColumns(BList const& columns) const
 {
     if (m_tarArk == true)
         return TarArchiver::HiddenColumns(columns);

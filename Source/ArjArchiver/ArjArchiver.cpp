@@ -756,11 +756,11 @@ bool ArjArchiver::CanAddEmptyFolders() const
 }
 
 
-BList ArjArchiver::HiddenColumns(BList* columns) const
+BList ArjArchiver::HiddenColumns(BList const& columns) const
 {
     // Indices are: 0-name 1-size 2-packed 3-ratio 4-path 5-date 6-method 7-crc
     // Tar.GZip or Tar don't have 2,3,6,7 -- Pure Gzip have all
-    BList availList(*columns);
+    BList availList(columns);
     availList.RemoveItems(0, 6);     // Remove 0..5
 
     // Now list has 0-method 1-crc <-- these columns are to be hidden

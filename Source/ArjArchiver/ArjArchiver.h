@@ -28,7 +28,7 @@ class ArjArchiver : public Archiver
                                    BMessage* addedPaths, BMessenger* progress, volatile bool* cancel);
         status_t            Delete(char*& outputStr, BMessage* list, BMessenger* progress, volatile bool* cancel);
 
-        BList               HiddenColumns(BList* columns) const;
+        BList               HiddenColumns(BList const& columns) const;
         bool                SupportsFolderEntity() const;
         bool                CanPartiallyOpen() const;
         bool                CanAddEmptyFolders() const;

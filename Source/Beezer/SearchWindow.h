@@ -10,22 +10,22 @@
 
 class BButton;
 class BCheckBox;
+class BEntry;
+class BList;
 class BMenuField;
 class BRadioButton;
 class BTextControl;
 
-#define M_ALL_ENTRIES            '_all'
-#define M_VISIBLE_ENTRIES        '_vsb'
-#define M_SELECTED_ENTRIES       '_sel'
-#define M_SEARCH_CLICKED         '_scl'
-#define M_SEARCH_TEXT_MODIFIED   'stmf'
-#define M_SEARCH_CLOSED          'Xsrc'
+class CLVColumn;
+
+class Archiver;
 
 class SearchWindow : public BWindow
 {
     public:
         SearchWindow(BWindow* caller, BMessage* loadMessage,
-                     const BEntry* entry, const BList* columnList, const Archiver* ark);
+                     BEntry const* entry, BList const& columnList, Archiver const* ark);
+        virtual ~SearchWindow();
 
         // Inherited hooks
         virtual void        Quit();
@@ -38,8 +38,7 @@ class SearchWindow : public BWindow
         void                GetSettings(BMessage& msg, uint32 msgwhat) const;
 
     private:
-        // Private members
-        BList               m_tmpList;
+        BList*              m_columnList;
         BWindow*            m_callerWindow;
         BTextControl*       m_searchTextControl;
         BButton*            m_searchBtn;
