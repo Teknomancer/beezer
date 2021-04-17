@@ -28,6 +28,7 @@
 
 #include <cassert>
 
+
 BLocker _ark_locker("_ark_mgr_lock", true);
 
 static BMessage* gMetaDataMessage = NULL;
@@ -35,14 +36,19 @@ static BMessage* gMetaDataMessage = NULL;
 
 Archiver* InstantiateArchiver(const char* path)
 {
+    BMessage metaDataMsg;
+    if (gMetaDataMessage->FindMessage(path, &metaDataMsg) != B_OK)
+        return NULL;
+
     image_id addonID = load_add_on(path);
-    if (addonID > 0L)
-    {
-        // Archiver loaded successfully
-        Archiver *(*load_archiver)(const char* addonImagePath);
-        if (get_image_symbol(addonID, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
-            return (*load_archiver)(path);
-    }
+    if (addonID <= 0L)
+        return NULL;
+
+    // Archiver loaded successfully
+    BMessage* copyMsg = new BMessage(metaDataMsg);
+    Archiver *(*load_archiver)(BMessage* metaDataMessage);
+    if (get_image_symbol(addonID, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
+        return (*load_archiver)(copyMsg);
 
     return NULL;
 }

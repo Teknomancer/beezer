@@ -32,14 +32,14 @@ static const char
     *kRecurseDirs      = B_TRANSLATE_MARK("Recurse into folders");
 
 
-Archiver* load_archiver(const char* addonImagePath)
+Archiver* load_archiver(BMessage* metaDataMsg)
 {
-    return new ArjArchiver(addonImagePath);
+    return new ArjArchiver(metaDataMsg);
 }
 
 
-ArjArchiver::ArjArchiver(const char* addonImagePath)
-    : Archiver(addonImagePath)
+ArjArchiver::ArjArchiver(BMessage* metaDataMsg)
+    : Archiver(metaDataMsg)
 {
     // Detect arj binary
     if (GetBinaryPath(m_arjPath, "arj") == true)

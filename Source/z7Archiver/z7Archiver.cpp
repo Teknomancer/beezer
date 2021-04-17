@@ -36,14 +36,14 @@ static const char
     *kSolidBlocks      = B_TRANSLATE_MARK("Use solid blocks");
 
 
-Archiver* load_archiver(const char* addonImagePath)
+Archiver* load_archiver(BMessage* metaDataMsg)
 {
-    return new z7Archiver(addonImagePath);
+    return new z7Archiver(metaDataMsg);
 }
 
 
-z7Archiver::z7Archiver(const char* addonImagePath)
-    : Archiver(addonImagePath)
+z7Archiver::z7Archiver(BMessage* metaDataMsg)
+    : Archiver(metaDataMsg)
 {
     // Detect 7z binary
     if (GetBinaryPath(m_7zPath, "7za") == true)
