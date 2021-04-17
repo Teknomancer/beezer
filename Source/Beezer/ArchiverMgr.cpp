@@ -37,6 +37,7 @@ static BMessage* gMetaDataMessage = NULL;
 Archiver* InstantiateArchiver(const char* path)
 {
     BMessage metaDataMsg;
+    // find the submessage for this add-on
     if (gMetaDataMessage->FindMessage(path, &metaDataMsg) != B_OK)
         return NULL;
 
@@ -56,7 +57,7 @@ Archiver* InstantiateArchiver(const char* path)
 
 Archiver* ArchiverForMime(const char* mimeType)
 {
-    // Finds an archiver given its name (archiverType and name is the same, eg: zip, tar etc)
+    // Finds an archiver given its mime type
     if (gMetaDataMessage == NULL)
         return NULL;
 
@@ -91,8 +92,9 @@ void FreeArchiverMetaData()
 
 status_t LoadArchiverMetaData()
 {
-    // Load resource metadata from all of the add-ons and store it in metaMsg
+    // Load resource metadata from all of the add-ons and store it in global
 
+    // not a good idea to do this without adding locking to the other methods
     if (gMetaDataMessage != NULL)
         delete gMetaDataMessage;
 
@@ -133,7 +135,6 @@ status_t LoadArchiverMetaData()
 
 status_t ArchiversInstalled(BList& arkTypeList, BList* extensionStrings)
 {
-    // Finds an archiver given its name (archiverType and name is the same, eg: zip, tar etc)
     if (gMetaDataMessage == NULL)
         return B_ERROR;
 
