@@ -46,14 +46,14 @@ static const char
     *kUpdateFiles      = B_TRANSLATE_MARK("Update files, create if needed");
 
 
-Archiver* load_archiver(const char* addonImagePath)
+Archiver* load_archiver(BMessage* metaDataMsg)
 {
-    return new ZipArchiver(addonImagePath);
+    return new ZipArchiver(metaDataMsg);
 }
 
 
-ZipArchiver::ZipArchiver(const char* addonImagePath)
-    : Archiver(addonImagePath)
+ZipArchiver::ZipArchiver(BMessage* metaDataMsg)
+    : Archiver(metaDataMsg)
 {
 
     if (GetBinaryPath(m_unzipPath, "unzip") == true

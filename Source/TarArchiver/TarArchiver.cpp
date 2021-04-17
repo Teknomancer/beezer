@@ -21,15 +21,15 @@
 
 
 #ifndef STATIC_LIB_BUILD
-Archiver* load_archiver(const char* addonImagePath)
+Archiver* load_archiver(BMessage* metaDataMsg)
 {
-    return new TarArchiver(addonImagePath);
+    return new TarArchiver(metaDataMsg);
 }
 #endif
 
 
-TarArchiver::TarArchiver(const char* addonImagePath)
-    : Archiver(addonImagePath)
+TarArchiver::TarArchiver(BMessage* metaDataMsg)
+    : Archiver(metaDataMsg)
 {
     m_error = InitBinaryPath();
 }

@@ -37,14 +37,14 @@ static const char
     *kProcessAttrs    = B_TRANSLATE_MARK("Process attributes");
 
 
-Archiver* load_archiver(const char* addonImagePath)
+Archiver* load_archiver(BMessage* metaDataMsg)
 {
-    return new RarArchiver(addonImagePath);
+    return new RarArchiver(metaDataMsg);
 }
 
 
-RarArchiver::RarArchiver(const char* addonImagePath)
-    : Archiver(addonImagePath)
+RarArchiver::RarArchiver(BMessage* metaDataMsg)
+    : Archiver(metaDataMsg)
 {
     m_passwordRequired = false;
     // Detect rar binary

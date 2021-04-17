@@ -12,7 +12,7 @@ class BMessenger;
 class GZipArchiver : public TarArchiver
 {
     public:
-        GZipArchiver(const char* addonImagePath);
+        GZipArchiver(BMessage* metaDataMsg);
 
         // Overridables
         void               BuildMenu(BMessage& message);

@@ -13,7 +13,7 @@ class BMessenger;
 class RarArchiver : public Archiver
 {
     public:
-        RarArchiver(const char* addonImagePath);
+        RarArchiver(BMessage* metaDataMsg);
 
         // Overridables
         void               BuildMenu(BMessage& message);

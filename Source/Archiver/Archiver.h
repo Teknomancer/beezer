@@ -44,7 +44,7 @@ class Archiver
 {
     public:
         Archiver();
-        Archiver(const char* addonImagePath);
+        Archiver(BMessage* metaDataMsg);
         virtual ~Archiver();
 
         // Some must-call functions from the main app (to pass us some info)
@@ -73,8 +73,8 @@ class Archiver
 
         // Optionally-overridable functions
         virtual status_t    ArchiveSettings(BMessage& message);
-        virtual status_t    LoadMetaData(const char* addonImagePath);
-        virtual BMessage*   GetRulesMessage();
+        virtual status_t    LoadMetaData(BMessage* metaDataMsg);
+        virtual BMessage*   GetMetaDataMessage();
         virtual void        BuildMenu(BMessage& message);
         virtual BList       HiddenColumns(BList* columnList) const;
         virtual bool        SupportsComment() const;
@@ -142,7 +142,7 @@ class Archiver
         void                ResetCache();
         BBitmap*            BitmapForExtension(const char* str) const;
 
-        BMessage*           m_rulesMsg;
+        BMessage*           m_metaDataMsg;
         HashTable*          m_hashTable;
         BString             m_password;
         const char*         m_cachedPath;
@@ -163,6 +163,6 @@ class Archiver
         int32               m_defaultCompressionLevel;
 };
 
-extern "C" _BZR_IMPEXP Archiver* load_archiver(const char* addonImagePath);
+extern "C" _BZR_IMPEXP Archiver* load_archiver(BMessage* metaDataMsg);
 
 #endif /* _ARCHIVER_H */

@@ -13,7 +13,7 @@ class BMessenger;
 class XzArchiver : public TarArchiver
 {
     public:
-        XzArchiver(const char* addonImagePath);
+        XzArchiver(BMessage* metaDataMsg);
 
         // Overridables
         void               BuildMenu(BMessage& message);

@@ -12,7 +12,7 @@ class BMessenger;
 class LhaArchiver : public Archiver
 {
     public:
-        LhaArchiver(const char* addonImagePath);
+        LhaArchiver(BMessage* metaDataMsg);
 
         // Overridables
         void               BuildMenu(BMessage& message);

@@ -12,7 +12,7 @@ class BMessenger;
 class TarArchiver : public Archiver
 {
     public:
-        TarArchiver(const char *addonImagePath);
+        TarArchiver(BMessage* metaDataMsg);
 
         // Abstract Implementations & overridables
         status_t           Open(entry_ref* ref, BMessage* fileList);

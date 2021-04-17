@@ -22,14 +22,14 @@
 #endif
 
 
-Archiver* load_archiver(const char* addonImagePath)
+Archiver* load_archiver(BMessage* metaDataMsg)
 {
-    return new XzArchiver(addonImagePath);
+    return new XzArchiver(metaDataMsg);
 }
 
 
-XzArchiver::XzArchiver(const char* addonImagePath)
-    : TarArchiver(addonImagePath)
+XzArchiver::XzArchiver(BMessage* metaDataMsg)
+    : TarArchiver(metaDataMsg)
 {
     m_tarArk = true;
 

@@ -13,7 +13,7 @@ class BMessenger;
 class ArjArchiver : public Archiver
 {
     public:
-        ArjArchiver(const char* addonImagePath);
+        ArjArchiver(BMessage* metaDataMsg);
 
         // Overridables
         void                BuildMenu(BMessage& message);

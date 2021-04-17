@@ -28,14 +28,14 @@
 static const char* kLharcCompat = B_TRANSLATE_MARK("LHarc compatible format");
 
 
-Archiver* load_archiver(const char* addonImagePath)
+Archiver* load_archiver(BMessage* metaDataMsg)
 {
-    return new LhaArchiver(addonImagePath);
+    return new LhaArchiver(metaDataMsg);
 }
 
 
-LhaArchiver::LhaArchiver(const char* addonImagePath)
-    : Archiver(addonImagePath)
+LhaArchiver::LhaArchiver(BMessage* metaDataMsg)
+    : Archiver(metaDataMsg)
 {
     // Detect lha binary
     if (GetBinaryPath(m_lhaPath, "lha") == true)

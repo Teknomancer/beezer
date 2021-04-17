@@ -13,7 +13,7 @@ class BMessenger;
 class z7Archiver : public Archiver
 {
     public:
-        z7Archiver(const char* addonImagePath);
+        z7Archiver(BMessage* metaDataMsg);
 
         // Overridables
         void               BuildMenu(BMessage& message);
