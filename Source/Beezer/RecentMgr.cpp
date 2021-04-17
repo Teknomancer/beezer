@@ -39,7 +39,7 @@ RecentMgr::~RecentMgr()
     SavePrefs();
 
     for (int32 i = 0; i < m_paths->CountItems(); i++)
-        free(m_paths->RemoveItem(0L));
+        free(m_paths->RemoveItem(0));
 
     delete m_paths;
 }
