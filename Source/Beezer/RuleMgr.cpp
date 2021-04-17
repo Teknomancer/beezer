@@ -13,7 +13,7 @@
 
 #include <fstream>
 
-typedef struct MimeRule
+struct MimeRule
 {
     BString m_mime;
     BString m_extension;
