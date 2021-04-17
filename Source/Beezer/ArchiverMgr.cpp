@@ -14,6 +14,8 @@
 #include <Autolock.h>
 #include <MenuItem.h>
 #include <PopUpMenu.h>
+#include <Resources.h>
+
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -28,47 +30,46 @@
 
 BLocker _ark_locker("_ark_mgr_lock", true);
 
+static BMessage* gMetaDataMessage = NULL;
+
+
+Archiver* InstantiateArchiver(const char* path)
+{
+    image_id addonID = load_add_on(path);
+    if (addonID > 0L)
+    {
+        // Archiver loaded successfully
+        Archiver *(*load_archiver)(const char* addonImagePath);
+        if (get_image_symbol(addonID, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
+            return (*load_archiver)(path);
+    }
+
+    return NULL;
+}
+
 
 Archiver* ArchiverForMime(const char* mimeType)
 {
-    // Operate in a critical section as we access global data like BDirectory of be_app
-    BAutolock autoLocker(_ark_locker);
-    if (autoLocker.IsLocked() == false)
+    // Finds an archiver given its name (archiverType and name is the same, eg: zip, tar etc)
+    if (gMetaDataMessage == NULL)
         return NULL;
 
-    // Get the Archiver dir and the path of the Binaries dir (both from _bzr())
-    // Bug Fix: we dont ask the Window to pass these details to us anymore
-    BDirectory* archiversDir = &(_bzr()->m_addonsDir);
-    archiversDir->Rewind();
-
-    // Load/Unload all the add-ons and check which archiver supports the type
-    BEntry entry;
-    while (archiversDir->GetNextEntry(&entry, true) == B_OK)
+    char* arkPath;
+    for (int32 msgIdx = 0; gMetaDataMessage->GetInfo(B_MESSAGE_TYPE, msgIdx, &arkPath, NULL) == B_OK; msgIdx++)
     {
-        BPath path;
-        entry.GetPath(&path);
+        BMessage arkMsg;
+        if (gMetaDataMessage->FindMessage(arkPath, &arkMsg) != B_OK)
+            continue;
 
-        image_id const addonId = load_add_on(path.Path());
-        if (addonId > 0L)
+        BMessage rulesMsg;
+        if (arkMsg.FindMessage("rules", &rulesMsg) != B_OK)
+            continue;
+
+        char* foundMimeType;
+        for (int32 mimeIdx = 0; rulesMsg.GetInfo(B_STRING_TYPE, mimeIdx, &foundMimeType, NULL) == B_OK; mimeIdx++)
         {
-            // Archiver loaded successfully, now check if it supports the mimetype
-            Archiver *(*load_archiver)(const char* addonImagePath);
-            if (get_image_symbol(addonId, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
-            {
-                Archiver* const ark = (*load_archiver)(path.Path());
-
-                BList* mimeList = ark->MimeTypeList();
-                int32 const supportedMimeCount = mimeList->CountItems();
-
-                for (int32 i = 0; i < supportedMimeCount; i++)
-                {
-                    const char* mimeString = reinterpret_cast<const char*>(mimeList->ItemAtFast(i));
-                    if (strcmp(mimeString, mimeType) == 0)
-                        return ark;
-                }
-            }
-
-            unload_add_on(addonId);
+            if (strcmp(mimeType, foundMimeType) == 0)
+                return InstantiateArchiver(arkPath);
         }
     }
 
@@ -76,90 +77,20 @@ Archiver* ArchiverForMime(const char* mimeType)
 }
 
 
-BList ArchiversInstalled(BList* extensionStrings)
+void FreeArchiverMetaData()
 {
-    // Operate in a critical section as we access global data like BDirectory of be_app
-    BList installedArkList;
-    BAutolock autoLocker(_ark_locker);
-    if (autoLocker.IsLocked() == false)
-        return installedArkList;
-
-    // Get the Archiver dir and the path of the Binaries dir (both from _bzr())
-    // Bug Fix: we dont ask the Window to pass these details to us anymore
-    BDirectory* archiversDir = &(_bzr()->m_addonsDir);
-    archiversDir->Rewind();
-
-    // Load/Unload all the add-ons and check which archiver supports the type
-    BEntry entry;
-    while (archiversDir->GetNextEntry(&entry, true) == B_OK)
-    {
-        BPath path;
-        entry.GetPath(&path);
-
-        image_id addonID = load_add_on(path.Path());
-        if (addonID > 0L)
-        {
-            // Archiver loaded successfully, now check if it supports the mimetype
-            Archiver *(*load_archiver)(const char* addonImagePath);
-            if (get_image_symbol(addonID, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
-            {
-                Archiver* ark = (*load_archiver)(path.Path());
-                installedArkList.AddItem((void*)strdup(ark->ArchiveType()));
-                if (extensionStrings)
-                    extensionStrings->AddItem((void*)strdup(ark->ArchiveExtension()));
-            }
-
-            unload_add_on(addonID);
-        }
-    }
-
-    return installedArkList;
+    delete gMetaDataMessage;
 }
 
 
-Archiver* ArchiverForType(const char* archiverType)
+status_t LoadArchiverMetaData()
 {
-    // Finds an archiver given its name (archiverType and name is the same, eg: zip, tar etc)
+    // Load resource metadata from all of the add-ons and store it in metaMsg
 
-    // Operate in a critical section as we access global data like BDirectory of be_app
-    BAutolock autoLocker(_ark_locker);
-    if (autoLocker.IsLocked() == false)
-        return NULL;
+    if (gMetaDataMessage != NULL)
+        delete gMetaDataMessage;
 
-    // Get the Archiver dir and the path of the Binaries dir (both from _bzr())
-    // Bug Fix: we dont ask the Window to pass these details to us anymore
-    BDirectory* archiversDir = &(_bzr()->m_addonsDir);
-    archiversDir->Rewind();
-
-    // Load/Unload all the add-ons and check which archiver supports the type
-    BEntry entry;
-    while (archiversDir->GetNextEntry(&entry, true) == B_OK)
-    {
-        BPath path;
-        entry.GetPath(&path);
-
-        image_id const addonId = load_add_on(path.Path());
-        if (addonId > 0L)
-        {
-            // Archiver loaded successfully, now check if it supports the mimetype
-            Archiver *(*load_archiver)(const char* addonImagePath);
-            if (get_image_symbol(addonId, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
-            {
-                Archiver* const ark = (*load_archiver)(path.Path());
-                if (strcmp(ark->ArchiveType(), archiverType) == 0)
-                    return ark;
-            }
-
-            unload_add_on(addonId);
-        }
-    }
-    return NULL;
-}
-
-
-status_t MergeArchiverRules(RuleMgr* ruleMgr)
-{
-    // Finds an archiver given its name (archiverType and name is the same, eg: zip, tar etc)
+    gMetaDataMessage = new BMessage();
 
     // Operate in a critical section as we access global data like BDirectory of be_app
     BAutolock autoLocker(_ark_locker);
@@ -167,58 +98,127 @@ status_t MergeArchiverRules(RuleMgr* ruleMgr)
         return B_ERROR;
 
     // Get the Archiver dir and the path of the Binaries dir (both from _bzr())
-    // Bug Fix: we dont ask the Window to pass these details to us anymore
     BDirectory* archiversDir = &(_bzr()->m_addonsDir);
     archiversDir->Rewind();
 
-    // Load/Unload all the add-ons and get the list of rules
     BEntry entry;
     while (archiversDir->GetNextEntry(&entry, true) == B_OK)
     {
         BPath path;
         entry.GetPath(&path);
+        BResources res(path.Path());
+        if (res.InitCheck() != B_OK)
+            return B_ERROR;
 
-        image_id const addonId = load_add_on(path.Path());
-        if (addonId > 0L)
+        size_t dataSize;
+        const void* resData = res.LoadResource(B_MESSAGE_TYPE, "ArchiverMetaData", &dataSize);
+        if (resData == NULL)
+            return B_ERROR;
+
+        BMessage resMsg;
+        if (resMsg.Unflatten((const char*)resData) != B_OK)
+            return B_ERROR;
+
+        gMetaDataMessage->AddMessage(path.Path(), &resMsg);
+    }
+    return B_OK;
+}
+
+
+status_t ArchiversInstalled(BList& arkTypeList, BList* extensionStrings)
+{
+    // Finds an archiver given its name (archiverType and name is the same, eg: zip, tar etc)
+    if (gMetaDataMessage == NULL)
+        return B_ERROR;
+
+    char* arkPath;
+    for (int32 msgIdx = 0; gMetaDataMessage->GetInfo(B_MESSAGE_TYPE, msgIdx, &arkPath, NULL) == B_OK; msgIdx++)
+    {
+        BMessage arkMsg;
+        if (gMetaDataMessage->FindMessage(arkPath, &arkMsg) != B_OK)
+            continue;
+
+        BString arkDataStr;
+        if (arkMsg.FindString("type_name", &arkDataStr) != B_OK)
+            continue;
+
+        arkTypeList.AddItem((void*)strdup(arkDataStr.String()));
+
+        if (extensionStrings == NULL || arkMsg.FindString("default_extension", &arkDataStr) != B_OK)
+            continue;
+
+        extensionStrings->AddItem((void*)strdup(arkDataStr.String()));
+    }
+
+    return B_OK;
+}
+
+
+Archiver* ArchiverForType(const char* archiverType)
+{
+    // Finds an archiver given its name (archiverType and name is the same, eg: zip, tar etc)
+    if (gMetaDataMessage == NULL)
+        return NULL;
+
+    char* arkPath;
+    for (int32 msgIdx = 0; gMetaDataMessage->GetInfo(B_MESSAGE_TYPE, msgIdx, &arkPath, NULL) == B_OK; msgIdx++)
+    {
+        BMessage arkMsg;
+        if (gMetaDataMessage->FindMessage(arkPath, &arkMsg) != B_OK)
+            continue;
+
+        BString arkTypeStr;
+        if (arkMsg.FindString("type_name", &arkTypeStr) != B_OK)
+            continue;
+
+        if (arkTypeStr == archiverType)
+            return InstantiateArchiver(arkPath);
+    }
+
+    return NULL;
+}
+
+
+status_t MergeArchiverRules(RuleMgr* ruleMgr)
+{
+    if (gMetaDataMessage == NULL)
+        return B_ERROR;
+
+    char* arkPath;
+    for (int32 msgIdx = 0; gMetaDataMessage->GetInfo(B_MESSAGE_TYPE, msgIdx, &arkPath, NULL) == B_OK; msgIdx++)
+    {
+        BMessage arkMsg;
+        if (gMetaDataMessage->FindMessage(arkPath, &arkMsg) != B_OK)
+            continue;
+
+        BMessage rulesMsg;
+        if (arkMsg.FindMessage("rules", &rulesMsg) != B_OK)
+            continue;
+
+        char* mimeType;
+        int32 count = 0;
+        // iterate our loaded mime rules and add them to the rule manager
+        for (int32 idx = 0; rulesMsg.GetInfo(B_STRING_TYPE, idx, &mimeType, NULL, &count) == B_OK; idx++)
         {
-            // Archiver loaded successfully, now check if it supports the mimetype
-            Archiver *(*load_archiver)(const char* addonImagePath);
-            if (get_image_symbol(addonId, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
+            for (int32 subidx = 0; subidx < count; subidx++)
             {
-                Archiver* const ark = (*load_archiver)(path.Path());
-                BMessage* const rulesMsg = ark->GetRulesMessage();
-                assert(rulesMsg);
-                char* mimeType;
-                int32 count = 0;
-                // iterate our loaded mime rules and add them to the rule manager
-                for (int32 idx = 0; rulesMsg->GetInfo(B_STRING_TYPE, idx, &mimeType, NULL, &count) == B_OK; idx++)
-                {
-                    const char* extension;
-                    for (int32 subidx = 0; subidx < count; subidx++)
-                    {
-                        rulesMsg->FindString(mimeType, subidx, &extension);
-                        ruleMgr->AddMimeRule(strdup(mimeType), strdup(extension));
-                    }
-                }
+                const char* extension;
+                rulesMsg.FindString(mimeType, subidx, &extension);
+                ruleMgr->AddMimeRule(strdup(mimeType), strdup(extension));
             }
-
-            unload_add_on(addonId);
         }
     }
+
     return B_OK;
 }
 
 
 BPopUpMenu* BuildArchiveTypesMenu(BHandler* targetHandler, BList* arkExtensions)
 {
-    // Operate in a critical section as we access global data like BDirectory of be_app
-    BAutolock autoLocker(_ark_locker);
-    if (autoLocker.IsLocked() == false)
-        return NULL;
-
     // targetHandler is where the message will be sent when an archive type is selected from the menu
     BPopUpMenu* arkTypePopUp = new BPopUpMenu("");
-    BList arkTypes = ArchiversInstalled(arkExtensions);
+    BList arkTypes;
+    ArchiversInstalled(arkTypes, arkExtensions);
     for (int32 i = 0; i < arkTypes.CountItems(); i++)
     {
         BMessage* clickMsg = new BMessage(M_ARK_TYPE_SELECTED);
@@ -234,11 +234,6 @@ BPopUpMenu* BuildArchiveTypesMenu(BHandler* targetHandler, BList* arkExtensions)
 
 Archiver* NewArchiver(const char* name, bool popupErrors, status_t* returnCode)
 {
-    // Operate in a critical section as we access global data like BDirectory of be_app
-    BAutolock autoLocker(_ark_locker);
-    if (autoLocker.IsLocked() == false)
-        return NULL;
-
     Archiver* ark = ArchiverForType(name);
     if (!ark)
     {
