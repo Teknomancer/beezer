@@ -4,12 +4,9 @@
 // All rights reserved.
 
 #include "SearchWindow.h"
-#include "AppConstants.h"
 #include "Archiver.h"
-#include "BevelView.h"
 #include "BitmapPool.h"
 #include "CommonStrings.h"
-#include "LocalUtils.h"
 #include "MsgConstants.h"
 #include "StaticBitmapView.h"
 #include "UIConstants.h"
@@ -17,18 +14,14 @@
 #include "CLVColumn.h"
 #include "RegExString.h"
 
-#include <Bitmap.h>
 #include <Box.h>
 #include <Button.h>
 #include <CheckBox.h>
-#include <Entry.h>
 #include <GroupLayoutBuilder.h>
-#include <List.h>
 #include <MenuField.h>
 #include <MenuItem.h>
 #include <PopUpMenu.h>
 #include <RadioButton.h>
-#include <String.h>
 #include <StringView.h>
 #include <TextControl.h>
 
@@ -42,8 +35,8 @@
 #endif
 
 
-SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
-                           BEntry const* entry, BList const& columnList, Archiver const* ark)
+SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage, BEntry const* entry,
+                           BList const& columnList, Archiver const* ark)
     : BWindow(BRect(0, 0, 300, 300), B_TRANSLATE("Search archive"), B_FLOATING_WINDOW_LOOK, B_MODAL_SUBSET_WINDOW_FEEL,
               B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS | B_CLOSE_ON_ESCAPE),
     m_columnList(new BList(columnList)),
