@@ -26,8 +26,6 @@
 #define B_TRANSLATE(x) x
 #endif
 
-#include <cassert>
-
 
 BLocker _ark_locker("_ark_mgr_lock", true);
 
@@ -46,10 +44,12 @@ Archiver* InstantiateArchiver(const char* path)
         return NULL;
 
     // Archiver loaded successfully
-    BMessage* copyMsg = new BMessage(metaDataMsg);
-    Archiver *(*load_archiver)(BMessage* metaDataMessage);
+    Archiver *(*load_archiver)(BMessage*);
     if (get_image_symbol(addonID, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
+    {
+        BMessage* copyMsg = new BMessage(metaDataMsg);
         return (*load_archiver)(copyMsg);
+    }
 
     return NULL;
 }
