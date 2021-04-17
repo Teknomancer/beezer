@@ -6,7 +6,12 @@
 #ifndef _RECENT_MGR_H
 #define _RECENT_MGR_H
 
+#include <SupportDefs.h>
+
+class BHandler;
+class BList;
 class BLocker;
+class BMenu;
 class BPopUpMenu;
 
 class Preferences;
@@ -26,7 +31,6 @@ class RecentMgr
         RecentMgr(int32 maxNumPaths, Preferences* pref, RecentItemType itemType, bool showFullPath);
         virtual ~RecentMgr();
 
-        // Public hooks
         void                AddPath(const char* path);
         void                RemovePath(const char* path);
         void                SavePrefs();
@@ -41,15 +45,12 @@ class RecentMgr
         void                UpdateMenu(BMenu* recentMenu, const char* fieldName, BHandler* targetForItems);
 
     private:
-        // Private hooks
         void                FillMenu(BMenu* menu, const char* fieldName, BHandler* targetForItems);
 
-        // Static members
         static int32        m_maxInternalCount;
 
-        // Private members
         Preferences*        m_prefs;
-        BList               m_paths;
+        BList*              m_paths;
         bool                m_showFullPath;
         int32               m_maxNumPaths;
         uint32              m_command;
