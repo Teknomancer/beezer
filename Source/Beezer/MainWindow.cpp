@@ -1144,8 +1144,7 @@ void MainWindow::MessageReceived(BMessage* message)
                     _prefs_windows.FindMessage(kPfSearchWndFrame, m_searchSettingsMsg);
                 }
 
-                m_searchWnd = new SearchWindow(this, m_searchSettingsMsg, &m_archiveEntry,
-                                               &m_columnList, m_archiver);
+                m_searchWnd = new SearchWindow(this, m_searchSettingsMsg, &m_archiveEntry, m_columnList, m_archiver);
                 m_searchWnd->Show();
             }
             else
@@ -1793,7 +1792,7 @@ void MainWindow::ToggleActionLog()
 void MainWindow::AdjustColumns()
 {
     // Hide columns that the archiver doesn't have info about
-    BList newColumnList = m_archiver->HiddenColumns(&m_columnList);
+    BList newColumnList = m_archiver->HiddenColumns(m_columnList);
     for (int8 i = 0L; i < newColumnList.CountItems(); i++)
     {
         CLVColumn* hiddenColumn = (CLVColumn*)newColumnList.ItemAtFast(i);

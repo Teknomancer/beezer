@@ -528,12 +528,11 @@ void Archiver::ReadStream(FILE* fp, BString& str) const
 }
 
 
-BList Archiver::HiddenColumns(BList* columns) const
+BList Archiver::HiddenColumns(BList const& /*columns*/) const
 {
     // By default return all columns as available (ie empty hidden list) columns for the archiver
     // Derived classes will over-ride removing unwanted column indices
     // Indices are: 0-name 1-size 2-packed 3-ratio 4-path 5-date 6-method 7-crc
-    (void)columns; // UNUSED_PARAM
     BList retList;
     return retList;
 }

@@ -3,6 +3,20 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
+#include "SearchWindow.h"
+#include "AppConstants.h"
+#include "Archiver.h"
+#include "BevelView.h"
+#include "BitmapPool.h"
+#include "CommonStrings.h"
+#include "LocalUtils.h"
+#include "MsgConstants.h"
+#include "StaticBitmapView.h"
+#include "UIConstants.h"
+
+#include "CLVColumn.h"
+#include "RegExString.h"
+
 #include <Bitmap.h>
 #include <Box.h>
 #include <Button.h>
@@ -18,20 +32,6 @@
 #include <StringView.h>
 #include <TextControl.h>
 
-#include "CLVColumn.h"
-#include "RegExString.h"
-
-#include "AppConstants.h"
-#include "Archiver.h"
-#include "BevelView.h"
-#include "BitmapPool.h"
-#include "CommonStrings.h"
-#include "LocalUtils.h"
-#include "MsgConstants.h"
-#include "SearchWindow.h"
-#include "StaticBitmapView.h"
-#include "UIConstants.h"
-
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
 
@@ -43,13 +43,25 @@
 
 
 SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
-                           const BEntry* entry, const BList* columnList, const Archiver* ark)
+                           BEntry const* entry, BList const& columnList, Archiver const* ark)
     : BWindow(BRect(0, 0, 300, 300), B_TRANSLATE("Search archive"), B_FLOATING_WINDOW_LOOK, B_MODAL_SUBSET_WINDOW_FEEL,
               B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS | B_CLOSE_ON_ESCAPE),
+    m_columnList(new BList(columnList)),
     m_callerWindow(callerWindow),
+    m_searchTextControl(NULL),
+    m_searchBtn(NULL),
+    m_columnField(NULL),
+    m_matchField(NULL),
+    m_allEntriesOpt(NULL),
+    m_visibleEntriesOpt(NULL),
+    m_selEntriesOpt(NULL),
+    m_addToSelChk(NULL),
+    m_ignoreCaseChk(NULL),
+    m_invertChk(NULL),
+    m_persistentChk(NULL),
     m_loadMessage(loadMessage)
 {
-    AddToSubset(callerWindow);
+    AddToSubset(m_callerWindow);
 
     // Get previous settings (assign default values - for the first time)
     const char* searchText = NULL;
@@ -94,22 +106,20 @@ SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
 
     // Get the available list of columns - no point in searching columns that has no information
     // Eg: Tar archives won't have the columns: compressed size, ratio etc.
-    BList hiddenColumnList = ark->HiddenColumns(const_cast<BList*>(columnList));
-    m_tmpList = *columnList;
-    int32 hiddenCount = hiddenColumnList.CountItems();
-    for (int32 i = 0L; i < hiddenCount; i++)
-        m_tmpList.RemoveItem(hiddenColumnList.ItemAt(i));
+    BList hiddenColumnList = ark->HiddenColumns(columnList);
+    for (int32 i = 0; i < hiddenColumnList.CountItems(); i++)
+        m_columnList->RemoveItem(hiddenColumnList.ItemAt(i));
 
     // Setup the column names and the column menu
     BMenu* columnMenu = new BPopUpMenu("");
-    for (int32 i = 0; i < m_tmpList.CountItems(); i++)
-        columnMenu->AddItem(new BMenuItem(((CLVColumn*)m_tmpList.ItemAtFast(i))->GetLabel(), NULL));
+    for (int32 i = 0; i < m_columnList->CountItems(); i++)
+        columnMenu->AddItem(new BMenuItem(((CLVColumn*)m_columnList->ItemAtFast(i))->GetLabel(), NULL));
 
     columnMenu->SetLabelFromMarked(true);
     if (!column)
         columnMenu->ItemAt(0L)->SetMarked(true);
     else
-        columnMenu->ItemAt(m_tmpList.IndexOf(column))->SetMarked(true);
+        columnMenu->ItemAt(m_columnList->IndexOf(column))->SetMarked(true);
 
     m_columnField = new BMenuField("SearchWindow:ColumnField", B_TRANSLATE("Column:"), columnMenu);
 
@@ -149,17 +159,17 @@ SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
     scopeBox->SetFont(be_plain_font);
 
     // Draw the radio buttons inside the group box (co-ordinates are relative to the group box)
-    m_allEntriesOpt = new BRadioButton("SearchWindow:AllEntriesOpt", B_TRANSLATE("All entries"), new BMessage(M_ALL_ENTRIES));
+    m_allEntriesOpt = new BRadioButton("SearchWindow:AllEntriesOpt", B_TRANSLATE("All entries"), new BMessage(M_SEARCH_ALL_ENTRIES));
     m_allEntriesOpt->SetValue(allFiles == true ? B_CONTROL_ON : B_CONTROL_OFF);
     if (allFiles)
         m_allEntriesOpt->Invoke();
 
-    m_visibleEntriesOpt = new BRadioButton("SearchWindow:VisibleEntriesOpt", B_TRANSLATE("Visible entries"), new BMessage(M_VISIBLE_ENTRIES));
+    m_visibleEntriesOpt = new BRadioButton("SearchWindow:VisibleEntriesOpt", B_TRANSLATE("Visible entries"), new BMessage(M_SEARCH_VISIBLE_ENTRIES));
     m_visibleEntriesOpt->SetValue(allFiles == false ? B_CONTROL_ON : B_CONTROL_OFF);
     if (!allFiles)
         m_visibleEntriesOpt->Invoke();
 
-    m_selEntriesOpt = new BRadioButton("SearchWindow:SelectedEntriesOpt", B_TRANSLATE("Selected entries"), new BMessage(M_SELECTED_ENTRIES));
+    m_selEntriesOpt = new BRadioButton("SearchWindow:SelectedEntriesOpt", B_TRANSLATE("Selected entries"), new BMessage(M_SEARCH_SELECTED_ENTRIES));
     m_selEntriesOpt->SetValue(searchSelection == true ? B_CONTROL_ON : B_CONTROL_OFF);
     if (searchSelection)
         m_selEntriesOpt->Invoke();
@@ -212,23 +222,23 @@ SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
 
     AddChild(BGroupLayoutBuilder(B_VERTICAL)
              .AddGroup(B_HORIZONTAL)
-             .Add(searchBmpView, 0)
-             .Add(fileNameStr, 0)
-             .AddGlue()
-             .SetInsets(K_MARGIN, K_MARGIN, K_MARGIN, K_MARGIN)
+                .Add(searchBmpView, 0)
+                .Add(fileNameStr, 0)
+                .AddGlue()
+                .SetInsets(K_MARGIN, K_MARGIN, K_MARGIN, K_MARGIN)
              .End()
              .AddGroup(B_HORIZONTAL)
-             .Add(m_columnField)
-             .Add(m_matchField)
+                .Add(m_columnField)
+                .Add(m_matchField)
              .End()
              .Add(m_searchTextControl)
              .AddGroup(B_HORIZONTAL)
-             .Add(scopeBox)
-             .Add(optionsBox)
+                .Add(scopeBox)
+                .Add(optionsBox)
              .End()
              .AddGroup(B_HORIZONTAL)
-             .Add(m_persistentChk)
-             .Add(m_searchBtn)
+                .Add(m_persistentChk)
+                .Add(m_searchBtn)
              .End()
              .SetInsets(4 * K_MARGIN, 2 * K_MARGIN, 4 * K_MARGIN, 2 * K_MARGIN)
             );
@@ -239,7 +249,8 @@ SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
     {
         UpdateSizeLimits();
         BRect callerRect(callerWindow->Frame());
-        BPoint windowPoint(callerRect.left + callerRect.Width()/2 - Bounds().Width()/2, callerRect.top + callerRect.Height()/2 - Bounds().Height()/2);
+        BPoint windowPoint(callerRect.left + callerRect.Width() / 2 - Bounds().Width() / 2,
+                           callerRect.top + callerRect.Height() / 2 - Bounds().Height() / 2);
         // looks a bit better if we offset the window and don't cover the contents completely
         windowPoint.x += 100;
         windowPoint.y += 100;
@@ -255,10 +266,14 @@ SearchWindow::SearchWindow(BWindow* callerWindow, BMessage* loadMessage,
         ResizeTo(windowrect.Width(), windowrect.Height());
     }
 
-    // Assign tooltips
     SetToolTips();
-
     AddShortcut('W', B_COMMAND_KEY, new BMessage(B_QUIT_REQUESTED));
+}
+
+
+SearchWindow::~SearchWindow()
+{
+    delete m_columnList;
 }
 
 
@@ -266,7 +281,6 @@ void SearchWindow::Quit()
 {
     BMessage msg;
     GetSettings(msg, M_SEARCH_CLOSED);
-
     m_callerWindow->PostMessage(&msg);
     BWindow::Quit();
 }
@@ -282,7 +296,8 @@ void SearchWindow::MessageReceived(BMessage* message)
             break;
         }
 
-        case M_ALL_ENTRIES: case M_VISIBLE_ENTRIES:
+        case M_SEARCH_ALL_ENTRIES:
+        case M_SEARCH_VISIBLE_ENTRIES:
         {
             if (strcmp(m_addToSelChk->Label(), B_TRANSLATE("Add to selection")) != 0)
             {
@@ -290,11 +305,10 @@ void SearchWindow::MessageReceived(BMessage* message)
                 m_addToSelChk->SetLabel(B_TRANSLATE("Add to selection"));
                 m_addToSelChk->ResizeToPreferred();
             }
-
             break;
         }
 
-        case M_SELECTED_ENTRIES:
+        case M_SEARCH_SELECTED_ENTRIES:
         {
             if (strcmp(m_addToSelChk->Label(), B_TRANSLATE("Deselect unmatched entries")) != 0)
             {
@@ -302,14 +316,13 @@ void SearchWindow::MessageReceived(BMessage* message)
                 m_addToSelChk->SetLabel(B_TRANSLATE("Deselect unmatched entries"));
                 m_addToSelChk->ResizeToPreferred();
             }
-
             break;
         }
 
         case M_SEARCH_CLICKED:
         {
             const char* searchText = m_searchTextControl->Text();
-            if (!searchText || strlen(searchText) == 0L)
+            if (!searchText || strlen(searchText) == 0)
             {
                 // Shouldn't really come here
                 m_searchBtn->SetEnabled(false);
@@ -318,7 +331,7 @@ void SearchWindow::MessageReceived(BMessage* message)
 
             BMessage msg;
             GetSettings(msg, M_SEARCH);
-            bool persistent = msg.FindBool(kPersistent);
+            bool const persistent = msg.FindBool(kPersistent);
             if (!persistent)
                 Hide();
 
@@ -326,7 +339,6 @@ void SearchWindow::MessageReceived(BMessage* message)
 
             if (!persistent)
                 Quit();
-
             break;
         }
     }
@@ -338,12 +350,11 @@ void SearchWindow::MessageReceived(BMessage* message)
 int32 SearchWindow::ExpressionType() const
 {
     // Return the expression code from the menu field object m_matchField (assumed looper locked)
-    BMenuItem* item = m_matchField->Menu()->FindMarked();
+    BMenuItem * item = m_matchField->Menu()->FindMarked();
     if (!item)
         return kNone;
 
-    int32 index = m_matchField->Menu()->IndexOf(item);
-
+    int32 const index = m_matchField->Menu()->IndexOf(item);
     if (index < kStartsWith || index > kRegexpMatch)
         return kNone;
 
@@ -367,9 +378,8 @@ CLVColumn* SearchWindow::Column() const
     if (!item)
         return NULL;
 
-    int32 index = m_columnField->Menu()->IndexOf(item);
-
-    return (CLVColumn*)m_tmpList.ItemAtFast(index);
+    int32 const index = m_columnField->Menu()->IndexOf(item);
+    return (CLVColumn*)m_columnList->ItemAtFast(index);
 }
 
 

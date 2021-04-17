@@ -76,7 +76,7 @@ class Archiver
         virtual status_t    LoadMetaData(BMessage* metaDataMsg);
         virtual BMessage*   GetMetaDataMessage();
         virtual void        BuildMenu(BMessage& message);
-        virtual BList       HiddenColumns(BList* columnList) const;
+        virtual BList       HiddenColumns(BList const& columnList) const;
         virtual bool        SupportsComment() const;
         virtual bool        SupportsFolderEntity() const;
         virtual bool        CanReplaceFiles() const;

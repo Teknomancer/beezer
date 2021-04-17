@@ -349,7 +349,7 @@ BString ZstdArchiver::OutputFileName(const char* fullFileName) const
 }
 
 
-BList ZstdArchiver::HiddenColumns(BList* columns) const
+BList ZstdArchiver::HiddenColumns(BList const& columns) const
 {
     if (m_tarArk == true)
         return TarArchiver::HiddenColumns(columns);

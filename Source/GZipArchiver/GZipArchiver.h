@@ -29,7 +29,7 @@ class GZipArchiver : public TarArchiver
 
         bool               NeedsTempDirectory() const;
         bool               CanAddFiles() const;
-        BList              HiddenColumns(BList* columns) const;
+        BList              HiddenColumns(BList const& columns) const;
         BString            OutputFileName(const char* fullFileName) const;
 
     private:

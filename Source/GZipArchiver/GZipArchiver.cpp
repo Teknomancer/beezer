@@ -355,7 +355,7 @@ BString GZipArchiver::OutputFileName(const char* fullFileName) const
 }
 
 
-BList GZipArchiver::HiddenColumns(BList* columns) const
+BList GZipArchiver::HiddenColumns(BList const& columns) const
 {
     if (m_tarArk == true)
         return TarArchiver::HiddenColumns(columns);

@@ -303,7 +303,7 @@ BString BZipArchiver::OutputFileName(const char* fullFileName) const
 }
 
 
-BList BZipArchiver::HiddenColumns(BList* columns) const
+BList BZipArchiver::HiddenColumns(BList const& columns) const
 {
     if (m_tarArk == true)
         return TarArchiver::HiddenColumns(columns);
@@ -312,7 +312,7 @@ BList BZipArchiver::HiddenColumns(BList* columns) const
         // Bzip2 needs to hide some columns, unlike gzip bzip2 doesn't have a list option hence
         // we cannot get certain details namely packed, method, CRC - we hide these 3 columns
         // Indices are: 0-name 1-size 2-packed 3-ratio 4-path 5-date 6-method 7-crc
-        BList availList(*columns);
+        BList availList(columns);
         availList.RemoveItems(0, 2);     // Remove 0 and 1
 
         // Now list has 0-packed 1-ratio 2-path 3-date 4-method 5-crc
