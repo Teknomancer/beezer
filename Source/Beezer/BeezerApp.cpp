@@ -109,6 +109,7 @@ BeezerApp::BeezerApp()
 
     m_ruleMgr = new RuleMgr(&m_settingsDir, K_RULE_FILE);
 
+    LoadArchiverMetaData();
     // load the archivers and merge their internal rules list
     MergeArchiverRules(m_ruleMgr);
 
@@ -136,6 +137,8 @@ BeezerApp::~BeezerApp()
         if (arkTypeString)
             free((char*)arkTypeString);
     }
+
+    FreeArchiverMetaData();
 
     delete m_toolsMenu;
     delete _glob_bitmap_pool;
@@ -769,7 +772,7 @@ void BeezerApp::ShowCreateFilePanel()
         if (m_arkTypePopUp)
             delete m_arkTypePopUp;
 
-        m_arkTypes = ArchiversInstalled(&m_arkExtensions);
+        ArchiversInstalled(m_arkTypes, &m_arkExtensions);
         m_arkTypePopUp = BuildArchiveTypesMenu(this, &m_arkExtensions);
         m_arkTypeField = new BMenuField(BRect(textField->Frame().right + K_MARGIN,
                                               textField->Frame().top - 2, backView->Frame().Width(), 0),

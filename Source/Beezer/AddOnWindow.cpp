@@ -101,7 +101,7 @@ AddOnWindow::AddOnWindow(BMessage* refsMessage)
     m_fileName->TextView()->DisallowChar('*');
     m_fileName->TextView()->DisallowChar('?');
 
-    m_arkTypes = ArchiversInstalled(&m_arkExtensions);
+    ArchiversInstalled(m_arkTypes, &m_arkExtensions);
     m_arkTypePopUp = BuildArchiveTypesMenu(this, &m_arkExtensions);
     m_arkTypeField = new BMenuField(BRect(K_MARGIN, m_fileName->Frame().bottom + K_MARGIN,
                                           m_backViewMain->Frame().right, 0), "AddOnWindow:ArkTypeField",
