@@ -3,8 +3,8 @@
 // Copyright (c) 2021 Ramshankar (aka Teknomancer).
 // All rights reserved.
 
-#ifndef _RULEDEFAULTS_H_
-#define _RULEDEFAULTS_H_
+#ifndef _RULE_DEFAULTS_H_
+#define _RULE_DEFAULTS_H_
 
 const char* kDefaultRules = "\
 # Mime correction rules for Beezer\n\
@@ -56,4 +56,4 @@ const char* kDefaultRules = "\
 #application/x-vnd.haiku-package=.hpkg\n\
 ";
 
-#endif  // _RULEDEFAULTS_H_
+#endif  // _RULE_DEFAULTS_H_
