@@ -3,24 +3,24 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
+#include "WindowMgr.h"
+#include "MsgConstants.h"
+
 #include <Application.h>
 #include <Autolock.h>
-#include <List.h>
-#include <Message.h>
 #include <Window.h>
 
-#include "MsgConstants.h"
-#include "WindowMgr.h"
-
 int32 WindowMgr::m_runCount = 0;
+
 BLocker _wnd_locker("_window_mgr_lock", true);
 
 
 WindowMgr::WindowMgr()
+    : m_windowList(NULL)
 {
     // You only need one instance per application - critical for proper window management
     if (atomic_add(&m_runCount, 1) == 0)
-        m_windowList = new BList(5L);
+        m_windowList = new BList();
     else
         debugger("only one WindowMgr instance allowed/necessary");
 }
@@ -89,7 +89,7 @@ void WindowMgr::UpdateFrom(BWindow* sourceWnd, BMessage* message, bool updateBeA
     if (!autolocker.IsLocked())
         return;
 
-    int32 winCount = m_windowList->CountItems();
+    int32 const winCount = m_windowList->CountItems();
     BWindow* destWnd = NULL;
     message->AddPointer(kWindowList, reinterpret_cast<void**>(&m_windowList));
 

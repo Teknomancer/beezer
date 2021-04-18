@@ -6,8 +6,11 @@
 #ifndef _WINDOW_MGR_H
 #define _WINDOW_MGR_H
 
+#include <SupportDefs.h>
+
 class BList;
 class BLocker;
+class BMessage;
 class BWindow;
 
 extern BLocker _wnd_locker;
@@ -18,7 +21,6 @@ class WindowMgr
         WindowMgr();
         ~WindowMgr();
 
-        // Public hooks
         bool               AddWindow(BWindow* wnd);
         bool               RemoveWindow(BWindow* wnd);
         void               UpdateFrom(BWindow* sourceWnd, bool updateBeApp);
@@ -27,7 +29,6 @@ class WindowMgr
         BWindow*           WindowAt(int32 index) const;
 
     private:
-        // Private members
         BList*             m_windowList;
 
         static int32       m_runCount;
