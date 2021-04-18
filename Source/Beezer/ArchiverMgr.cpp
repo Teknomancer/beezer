@@ -93,10 +93,7 @@ Archiver* ArchiverMgr::InstantiateArchiver(const char* path)
     // Archiver loaded successfully
     Archiver *(*load_archiver)(BMessage*);
     if (get_image_symbol(addonID, kLoaderFunc, B_SYMBOL_TYPE_TEXT, (void**)&load_archiver) == B_OK)
-    {
-        BMessage* copyMsg = new BMessage(metaDataMsg);
-        return (*load_archiver)(copyMsg);
-    }
+        return (*load_archiver)(new BMessage(metaDataMsg)); // send a copy of the message for the archiver to own
 
     return NULL;
 }
