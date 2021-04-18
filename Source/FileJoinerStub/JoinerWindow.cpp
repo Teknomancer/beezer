@@ -100,18 +100,36 @@ void JoinerWindow::MessageReceived(BMessage* message)
     {
         case M_OPERATION_COMPLETE:
         {
-            status_t const result = message->FindInt32(JoinerWindow::kJoinResult);
-            if (result == B_OK)
+            int32 result;
+            status_t const resultFound = message->FindInt32(JoinerWindow::kJoinResult, &result);
+            if (resultFound == B_OK)
             {
-                snooze(100000);     // TODO: WHY? For visual effect?
-                PostMessage(B_QUIT_REQUESTED);
+                if (result == BZR_DONE)
+                {
+                    BAlert* alert = new BAlert("Info", B_TRANSLATE("The files were joined successfully."),
+                                               B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_INFO_ALERT);
+                    alert->Go();
+                }
+                else if (result == BZR_CANCEL)
+                {
+                    BAlert* alert = new BAlert("Error", B_TRANSLATE("Joining of the file was cancelled."),
+                                               B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
+                    alert->Go();
+                }
+                else
+                {
+                    BAlert* alert = new BAlert("Error", B_TRANSLATE("An unknown error occurred while joining the files."),
+                                               B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
+                    alert->Go();
+                }
             }
             else
             {
-                BAlert* alert = new BAlert("Error", B_TRANSLATE("An unknown error occurred while joining the files."),
-                            B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
+                BAlert* alert = new BAlert("Error", B_TRANSLATE("An internal error occurred while joining the files."),
+                                           B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
                 alert->Go();
             }
+            PostMessage(B_QUIT_REQUESTED);
             break;
         }
 
@@ -143,27 +161,28 @@ void JoinerWindow::MessageReceived(BMessage* message)
 
 status_t JoinerWindow::ReadSelf()
 {
+    // TODO: Better error messages for each failure.
+
     // Reads resource from itself (binary file)
     BResources* res = be_app->AppResources();
-    size_t readSize;
-
-    // need to NULL terminate strings read from resource, wow what a head-ache to finally find
-    // and fix this :) heh
-    char* buf = (char*)res->LoadResource(B_STRING_TYPE, K_FILENAME_ATTRIBUTE, &readSize);
-    buf[readSize] = '\0';
-    BString fileName = buf;
-
-    char* buf2 = (char*)res->LoadResource(B_STRING_TYPE, K_SEPARATOR_ATTRIBUTE, &readSize);
-    buf2[readSize] = '\0';
-    m_separatorStr = buf2;
-
-    // Why bother when the user deliberately messes up his resources :) nah, i'm thinking giving detailed
-    // error messages will further increase the executable file size which I want to avoid
-    if (fileName.Length() <= 0 || m_separatorStr.Length() <= 0)
-    {
-        PostMessage(B_QUIT_REQUESTED);
+    if (res == NULL)
         return B_ERROR;
-    }
+
+    size_t fileNameSize;
+    const char* fileNameData = (const char*)res->LoadResource(B_STRING_TYPE, K_FILENAME_ATTRIBUTE, &fileNameSize);
+    if (fileNameData == NULL || fileNameSize == 0)
+        return B_ERROR;
+
+    size_t separatorDataSize;
+    const char* separatorData = (const char*)res->LoadResource(B_STRING_TYPE, K_SEPARATOR_ATTRIBUTE, &separatorDataSize);
+    if (separatorData == NULL || separatorDataSize == 0)
+        return B_ERROR;
+
+    BString fileName(fileNameData, fileNameSize);
+    m_separatorStr.SetTo(separatorData, separatorDataSize);
+
+    if (fileName.Length() <= 0 || m_separatorStr.Length() <= 0)
+        return B_ERROR;
 
     // Now read self (resources)
     BEntry appEntry;
@@ -181,8 +200,8 @@ status_t JoinerWindow::ReadSelf()
     m_chunkPathStr << "/" << fileName;
 
     m_statusBar->Update(0, B_TRANSLATE("Computing file size" B_UTF8_ELLIPSIS));
-    // Call findchunks to find out the total size of the joined file to assign to the
-    // progress bar
+
+    // Call findchunks to find out the total size of the joined file to assign to the progress bar
     int32 fileCount = 0;
     off_t totalSize = 0;
     FindChunks(m_chunkPathStr.String(), m_separatorStr.String(), fileCount, totalSize, &m_cancel);
