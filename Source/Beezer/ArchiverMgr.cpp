@@ -29,14 +29,61 @@
 
 BLocker _ark_locker("_ark_mgr_lock", true);
 
-static BMessage* gMetaDataMessage = NULL;
+
+ArchiverMgr* _archiverMgr()
+{
+    return (dynamic_cast<BeezerApp*>(be_app))->GetArchiverMgr();
+}
 
 
-Archiver* InstantiateArchiver(const char* path)
+ArchiverMgr::ArchiverMgr()
+    :   m_fullMetaDataMsg(new BMessage())
+{
+    // Load resource metadata from all of the add-ons and store it in global
+
+    // Operate in a critical section as we access global data like BDirectory of be_app
+    BAutolock autoLocker(_ark_locker);
+    if (autoLocker.IsLocked() == false)
+        return;
+
+    // Get the Archiver dir and the path of the Binaries dir (both from _bzr())
+    BDirectory* archiversDir = &(_bzr()->m_addonsDir);
+    archiversDir->Rewind();
+
+    BEntry entry;
+    while (archiversDir->GetNextEntry(&entry, true) == B_OK)
+    {
+        BPath path;
+        entry.GetPath(&path);
+        BResources res(path.Path());
+        if (res.InitCheck() != B_OK)
+            continue;
+
+        size_t dataSize;
+        const void* resData = res.LoadResource(B_MESSAGE_TYPE, "ArchiverMetaData", &dataSize);
+        if (resData == NULL)
+            continue;
+
+        BMessage resMsg;
+        if (resMsg.Unflatten((const char*)resData) != B_OK)
+            continue;
+
+        m_fullMetaDataMsg->AddMessage(path.Path(), &resMsg);
+    }
+}
+
+
+ArchiverMgr::~ArchiverMgr()
+{
+    delete m_fullMetaDataMsg;
+}
+
+
+Archiver* ArchiverMgr::InstantiateArchiver(const char* path)
 {
     BMessage metaDataMsg;
     // find the submessage for this add-on
-    if (gMetaDataMessage->FindMessage(path, &metaDataMsg) != B_OK)
+    if (m_fullMetaDataMsg->FindMessage(path, &metaDataMsg) != B_OK)
         return NULL;
 
     image_id addonID = load_add_on(path);
@@ -55,17 +102,17 @@ Archiver* InstantiateArchiver(const char* path)
 }
 
 
-Archiver* ArchiverForMime(const char* mimeType)
+Archiver* ArchiverMgr::ArchiverForMime(const char* mimeType)
 {
     // Finds an archiver given its mime type
-    if (gMetaDataMessage == NULL)
+    if (m_fullMetaDataMsg == NULL)
         return NULL;
 
     char* arkPath;
-    for (int32 msgIdx = 0; gMetaDataMessage->GetInfo(B_MESSAGE_TYPE, msgIdx, &arkPath, NULL) == B_OK; msgIdx++)
+    for (int32 msgIdx = 0; m_fullMetaDataMsg->GetInfo(B_MESSAGE_TYPE, msgIdx, &arkPath, NULL) == B_OK; msgIdx++)
     {
         BMessage arkMsg;
-        if (gMetaDataMessage->FindMessage(arkPath, &arkMsg) != B_OK)
+        if (m_fullMetaDataMsg->FindMessage(arkPath, &arkMsg) != B_OK)
             continue;
 
         BMessage rulesMsg;
@@ -84,65 +131,16 @@ Archiver* ArchiverForMime(const char* mimeType)
 }
 
 
-void FreeArchiverMetaData()
+status_t ArchiverMgr::ArchiversInstalled(BList& arkTypeList, BList* extensionStrings)
 {
-    delete gMetaDataMessage;
-}
-
-
-status_t LoadArchiverMetaData()
-{
-    // Load resource metadata from all of the add-ons and store it in global
-
-    // not a good idea to do this without adding locking to the other methods
-    if (gMetaDataMessage != NULL)
-        delete gMetaDataMessage;
-
-    gMetaDataMessage = new BMessage();
-
-    // Operate in a critical section as we access global data like BDirectory of be_app
-    BAutolock autoLocker(_ark_locker);
-    if (autoLocker.IsLocked() == false)
-        return B_ERROR;
-
-    // Get the Archiver dir and the path of the Binaries dir (both from _bzr())
-    BDirectory* archiversDir = &(_bzr()->m_addonsDir);
-    archiversDir->Rewind();
-
-    BEntry entry;
-    while (archiversDir->GetNextEntry(&entry, true) == B_OK)
-    {
-        BPath path;
-        entry.GetPath(&path);
-        BResources res(path.Path());
-        if (res.InitCheck() != B_OK)
-            return B_ERROR;
-
-        size_t dataSize;
-        const void* resData = res.LoadResource(B_MESSAGE_TYPE, "ArchiverMetaData", &dataSize);
-        if (resData == NULL)
-            return B_ERROR;
-
-        BMessage resMsg;
-        if (resMsg.Unflatten((const char*)resData) != B_OK)
-            return B_ERROR;
-
-        gMetaDataMessage->AddMessage(path.Path(), &resMsg);
-    }
-    return B_OK;
-}
-
-
-status_t ArchiversInstalled(BList& arkTypeList, BList* extensionStrings)
-{
-    if (gMetaDataMessage == NULL)
+    if (m_fullMetaDataMsg == NULL)
         return B_ERROR;
 
     char* arkPath;
-    for (int32 msgIdx = 0; gMetaDataMessage->GetInfo(B_MESSAGE_TYPE, msgIdx, &arkPath, NULL) == B_OK; msgIdx++)
+    for (int32 msgIdx = 0; m_fullMetaDataMsg->GetInfo(B_MESSAGE_TYPE, msgIdx, &arkPath, NULL) == B_OK; msgIdx++)
     {
         BMessage arkMsg;
-        if (gMetaDataMessage->FindMessage(arkPath, &arkMsg) != B_OK)
+        if (m_fullMetaDataMsg->FindMessage(arkPath, &arkMsg) != B_OK)
             continue;
 
         BString arkDataStr;
@@ -161,17 +159,17 @@ status_t ArchiversInstalled(BList& arkTypeList, BList* extensionStrings)
 }
 
 
-Archiver* ArchiverForType(const char* archiverType)
+Archiver* ArchiverMgr::ArchiverForType(const char* archiverType)
 {
     // Finds an archiver given its name (archiverType and name is the same, eg: zip, tar etc)
-    if (gMetaDataMessage == NULL)
+    if (m_fullMetaDataMsg == NULL)
         return NULL;
 
     char* arkPath;
-    for (int32 msgIdx = 0; gMetaDataMessage->GetInfo(B_MESSAGE_TYPE, msgIdx, &arkPath, NULL) == B_OK; msgIdx++)
+    for (int32 msgIdx = 0; m_fullMetaDataMsg->GetInfo(B_MESSAGE_TYPE, msgIdx, &arkPath, NULL) == B_OK; msgIdx++)
     {
         BMessage arkMsg;
-        if (gMetaDataMessage->FindMessage(arkPath, &arkMsg) != B_OK)
+        if (m_fullMetaDataMsg->FindMessage(arkPath, &arkMsg) != B_OK)
             continue;
 
         BString arkTypeStr;
@@ -186,16 +184,16 @@ Archiver* ArchiverForType(const char* archiverType)
 }
 
 
-status_t MergeArchiverRules(RuleMgr* ruleMgr)
+status_t ArchiverMgr::MergeArchiverRules(RuleMgr* ruleMgr)
 {
-    if (gMetaDataMessage == NULL)
+    if (m_fullMetaDataMsg == NULL)
         return B_ERROR;
 
     char* arkPath;
-    for (int32 msgIdx = 0; gMetaDataMessage->GetInfo(B_MESSAGE_TYPE, msgIdx, &arkPath, NULL) == B_OK; msgIdx++)
+    for (int32 msgIdx = 0; m_fullMetaDataMsg->GetInfo(B_MESSAGE_TYPE, msgIdx, &arkPath, NULL) == B_OK; msgIdx++)
     {
         BMessage arkMsg;
-        if (gMetaDataMessage->FindMessage(arkPath, &arkMsg) != B_OK)
+        if (m_fullMetaDataMsg->FindMessage(arkPath, &arkMsg) != B_OK)
             continue;
 
         BMessage rulesMsg;
@@ -220,7 +218,7 @@ status_t MergeArchiverRules(RuleMgr* ruleMgr)
 }
 
 
-BPopUpMenu* BuildArchiveTypesMenu(BHandler* targetHandler, BList* arkExtensions)
+BPopUpMenu* ArchiverMgr::BuildArchiveTypesMenu(BHandler* targetHandler, BList* arkExtensions)
 {
     // targetHandler is where the message will be sent when an archive type is selected from the menu
     BPopUpMenu* arkTypePopUp = new BPopUpMenu("");
@@ -239,7 +237,7 @@ BPopUpMenu* BuildArchiveTypesMenu(BHandler* targetHandler, BList* arkExtensions)
 }
 
 
-Archiver* NewArchiver(const char* name, bool popupErrors, status_t* returnCode)
+Archiver* ArchiverMgr::NewArchiver(const char* name, bool popupErrors, status_t* returnCode)
 {
     Archiver* ark = ArchiverForType(name);
     if (!ark)

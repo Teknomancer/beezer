@@ -92,6 +92,8 @@ BeezerApp::BeezerApp()
     InitPrefs();
     _glob_bitmap_pool = new BitmapPool();
 
+    m_archiverMgr = new ArchiverMgr(); // must be done after paths are set up
+
     // Load preferences, recents and all that stuff
     int8 numArk, numExt;
     if (_prefs_recent.FindInt8(kPfNumRecentArk, &numArk) != B_OK) numArk = 10;
@@ -109,9 +111,7 @@ BeezerApp::BeezerApp()
 
     m_ruleMgr = new RuleMgr(&m_settingsDir, K_RULE_FILE);
 
-    LoadArchiverMetaData();
-    // load the archivers and merge their internal rules list
-    MergeArchiverRules(m_ruleMgr);
+    m_archiverMgr->MergeArchiverRules(m_ruleMgr);
 
     if (_prefs_misc.FindBoolDef(kPfMimeOnStartup, false))
         RegisterFileTypes();
@@ -138,8 +138,6 @@ BeezerApp::~BeezerApp()
             free((char*)arkTypeString);
     }
 
-    FreeArchiverMetaData();
-
     delete m_toolsMenu;
     delete _glob_bitmap_pool;
     delete m_recentMgr;
@@ -148,6 +146,7 @@ BeezerApp::~BeezerApp()
     delete m_splitDirsMgr;
     delete m_windowMgr;
     delete m_ruleMgr;
+    delete m_archiverMgr;
 
     if (m_arkTypePopUp != NULL)
     {
@@ -351,7 +350,7 @@ void BeezerApp::MessageReceived(BMessage* message)
                 break;
 
             status_t result;
-            Archiver* ark = NewArchiver(arkType->Label(), true, &result);
+            Archiver* ark = m_archiverMgr->NewArchiver(arkType->Label(), true, &result);
             if (!ark)
                 break;
 
@@ -772,8 +771,8 @@ void BeezerApp::ShowCreateFilePanel()
         if (m_arkTypePopUp)
             delete m_arkTypePopUp;
 
-        ArchiversInstalled(m_arkTypes, &m_arkExtensions);
-        m_arkTypePopUp = BuildArchiveTypesMenu(this, &m_arkExtensions);
+        m_archiverMgr->ArchiversInstalled(m_arkTypes, &m_arkExtensions);
+        m_arkTypePopUp = m_archiverMgr->BuildArchiveTypesMenu(this, &m_arkExtensions);
         m_arkTypeField = new BMenuField(BRect(textField->Frame().right + K_MARGIN,
                                               textField->Frame().top - 2, backView->Frame().Width(), 0),
                                         "Beezer:arkTypeField", B_TRANSLATE("Type:"), (BMenu*)m_arkTypePopUp,
@@ -916,6 +915,12 @@ BPopUpMenu* BeezerApp::BuildToolsPopUpMenu() const
     m_toolsMenu->Archive(&toolsMenuMsg, true);
 
     return new BPopUpMenu(&toolsMenuMsg);
+}
+
+
+ArchiverMgr* BeezerApp::GetArchiverMgr()
+{
+    return m_archiverMgr;
 }
 
 
