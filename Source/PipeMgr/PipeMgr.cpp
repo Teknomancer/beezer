@@ -5,6 +5,7 @@
 #include "PipeMgr.h"
 
 #include <image.h>
+#include <String.h>
 
 #include <cstdlib>
 #include <cstdio>
@@ -98,7 +99,7 @@ PipeMgr& PipeMgr::operator << (const char* arg)
 }
 
 
-PipeMgr& PipeMgr::operator << (BString arg)
+PipeMgr& PipeMgr::operator << (BString const& arg)
 {
     AddArg(arg.String());
     return *this;

@@ -19,10 +19,11 @@
 #include "PipeMgr.h"
 #include "Shared.h"
 
+#include <Entry.h>
 #include <List.h>
 #include <Message.h>
-#include <Entry.h>
 #include <Path.h>
+#include <String.h>
 
 #include <cstdio>
 
