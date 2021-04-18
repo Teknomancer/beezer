@@ -18,7 +18,6 @@ class JoinerStub : public BApplication
         void                ReadyToRun();
 
     private:
-        // Private members
         JoinerWindow*        m_joinWnd;
 };
 
