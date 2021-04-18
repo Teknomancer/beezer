@@ -27,8 +27,8 @@ class ArchiveEntry
                           *m_methodStr,
                           *m_crcStr,
                           *m_dirStr;
-        bool              m_isDir;
         time_t            m_timeValue;
+        bool              m_isDir;
 };
 
 #endif /* _ARCHIVE_ENTRY_H */
