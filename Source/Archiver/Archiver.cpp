@@ -268,30 +268,46 @@ void Archiver::FillLists(BList* files, BList* dirs)
     // Reset cache before filling our lists - bug fixed
     ResetCache();
 
-    // Dynamically size hash table for improved performance
-    int32 entryCount = m_entriesList.CountItems();
+    // Dynamically size the hash table for improved performance
+    // 'tableSizeMultiple' is the hash table size factor multiplier.
+    // We allocate 'tableSizeMultiple' times the entry count (since we shall
+    // split paths thus generating more items and storing them in the table).
+    // Currently, the multiplier is just a rough estimate.
+    float const tableSizeMultiple = 0.25;
+
+    int32 const entryCount = m_entriesList.CountItems();
+    int32 const tableSize = entryCount + (entryCount * tableSizeMultiple);
     if (!m_hashTable)
     {
-        m_hashTable = new HashTable(HashTable::OptimalSize(entryCount * 3.5L));
+        m_hashTable = new HashTable(HashTable::OptimalSize(tableSize));
         if (!m_hashTable)
             debugger("couldn't alloc hash table");
     }
 
-    BList fileList, dirList;
-    int32 i = 0L;
-
-    // First time opening, CountItems() will be zero, thereby we won't delete and reallocate hash
-    // table
-    if (CanPartiallyOpen() == false && m_hashTable->CountItems() > 0)
+    // If we reload the entire archive after adding file(s) (e.g, Tar),
+    // we can try re-allocate/grow the hash table given this new information.
+    // When opening any archive for the first time, since hash entries will be 0
+    // we won't reallocate needlessly below.
+    int32 const hashEntryCount = m_hashTable->CountItems();
+    if (CanPartiallyOpen() == false && hashEntryCount > 0)
     {
         m_hashTable->DeleteTable();
-        m_hashTable = new HashTable(HashTable::OptimalSize(entryCount * 3.5L));
         m_fileList.MakeEmpty();
         m_folderList.MakeEmpty();
+        if (tableSize > HashTable::OptimalSize(tableSize)               // if our needs have grown, grow the table.
+            && m_hashTable->TableSize() < m_hashTable->MaxCapacity())   // but if we're at max capacity already don't realloc
+        {
+            delete m_hashTable;
+            m_hashTable = new HashTable(HashTable::OptimalSize(tableSize));
+            if (!m_hashTable)
+                debugger("couldn't re-alloc hash table");
+        }
     }
 
     // Create the file items in our list
-    for (; i < entryCount; i++)
+    BList fileList;
+    BList dirList;
+    for (int32 i = 0; i < entryCount; i++)
     {
         ArchiveEntry* entry = reinterpret_cast<ArchiveEntry*>(m_entriesList.ItemAtFast(i));
         if (entry->m_dirStr != NULL)
@@ -334,10 +350,10 @@ void Archiver::FillLists(BList* files, BList* dirs)
                     if (existingEntry && existingEntry->IsSuperItem() == false)
                         existingItem->m_clvItem->Update(listItem);
 
-                    // Now if existingEntry is NULL that means there exists a folder and file with the same
+                    // Now if existingEntry is NULL that means there exists a folder and a file with the identical
                     // name in the archive, we don't handle such an odd situation
+                    // TODO: Should we assert?
                 }
-                delete listItem;
             }
         }
 
@@ -348,9 +364,9 @@ void Archiver::FillLists(BList* files, BList* dirs)
 
     // Create folder items also add to hash table for quick finding & uniqueness
     int32 uniqueDirCount = dirList.CountItems();
-    for (i = 0L; i < uniqueDirCount; i++)
+    for (int32 k = 0L; k < uniqueDirCount; k++)
     {
-        HashEntry* item = reinterpret_cast<HashEntry*>(dirList.ItemAtFast(i));
+        HashEntry* item = reinterpret_cast<HashEntry*>(dirList.ItemAtFast(k));
         const char* dirPath = item->m_pathStr;
 
         if (item->m_clvItem != NULL)

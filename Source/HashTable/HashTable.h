@@ -40,6 +40,7 @@ class HashTable
         void                FindUnder(const char* directoryPath, BList& fileList, BList& folderList) const;
 
         static int32        OptimalSize(int32 minSize);
+        static int32        MaxCapacity();
 
     private:
         HashEntry*          LookUp(const char* str) const;

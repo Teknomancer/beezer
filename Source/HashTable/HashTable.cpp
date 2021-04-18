@@ -10,9 +10,8 @@
 // Predefined table sizes - prime numbers
 static int32 const kTableSizes[] =
 {
-    1021, 1597, 2039, 4093, 8191, 16381, 32749, 65521, 131071, 262139,
-    524287, 1048573, 2097143, 4194301, 8388593, 16777213, 33554393, 67108859,
-    134217689, 268435399, 536870909, 0
+    1021, 1597, 2039, 4093, 8191, 16381, 32749,
+    65521, 131071, 262139, 524287, 1048573
 };
 
 
@@ -49,14 +48,18 @@ HashTable::~HashTable()
 }
 
 
+int32 HashTable::MaxCapacity()
+{
+    return kTableSizes[B_COUNT_OF(kTableSizes) - 1];
+}
+
+
 int32 HashTable::OptimalSize(int32 minSize)
 {
-    // Static function that returns an optimal prime-size given a desired size
-    for (int32 i = 0; kTableSizes[i] != 0; i++)
+    for (int32 i = 0; i < (int32)B_COUNT_OF(kTableSizes); i++)
         if (kTableSizes[i] >= minSize)
             return kTableSizes[i];
-
-    return 0;
+    return HashTable::MaxCapacity();
 }
 
 
