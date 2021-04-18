@@ -276,7 +276,7 @@ void Archiver::FillLists(BList* files, BList* dirs)
     float const tableSizeMultiple = 0.25;
 
     int32 const entryCount = m_entriesList.CountItems();
-    int32 const tableSize = entryCount + (entryCount * tableSizeMultiple);
+    int32 const tableSize = entryCount + (int32)(entryCount * tableSizeMultiple);
     if (!m_hashTable)
     {
         m_hashTable = new HashTable(HashTable::OptimalSize(tableSize));
