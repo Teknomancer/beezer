@@ -328,13 +328,15 @@ void Archiver::FillLists(BList* files, BList* dirs)
             {
                 // Or else update old listentry with new one
                 HashEntry* existingItem = m_hashTable->Find(entry->m_pathStr);
-                ListEntry* existingEntry = existingItem->m_clvItem;
-                if (existingEntry && existingEntry->IsSuperItem() == false)
-                    existingItem->m_clvItem->Update(listItem);
+                if (existingItem)
+                {
+                    ListEntry* existingEntry = existingItem->m_clvItem;
+                    if (existingEntry && existingEntry->IsSuperItem() == false)
+                        existingItem->m_clvItem->Update(listItem);
 
-                // Now if existingEntry is NULL that means there exists a folder and file with the same
-                // name in the archive, we don't handle such an odd situation
-
+                    // Now if existingEntry is NULL that means there exists a folder and file with the same
+                    // name in the archive, we don't handle such an odd situation
+                }
                 delete listItem;
             }
         }
@@ -372,8 +374,11 @@ void Archiver::FillLists(BList* files, BList* dirs)
         free((char*)parentDirPath);
     }
 
-    if (files) files->AddList(&fileList);
-    if (dirs) dirs->AddList(&dirList);
+    if (files)
+        files->AddList(&fileList);
+
+    if (dirs)
+        dirs->AddList(&dirList);
 
     m_fileList.AddList(&fileList);
     m_folderList.AddList(&dirList);
@@ -395,7 +400,7 @@ void Archiver::AddDirPathToTable(BList* dirList, const char* path)
         return;
 
     // Make sure "path" is unique
-    if (m_hashTable->IsFound(path) == true)
+    if (m_hashTable->Find(path) != NULL)
         return;
 
     // Store the full-path of the dir in the cache, so that files in consecutive directories get
@@ -406,21 +411,20 @@ void Archiver::AddDirPathToTable(BList* dirList, const char* path)
 
     // Break folders from the path, add each folder to the hash table.
     // e.g. bebook/art/deskbar/ will be added as 3 items: bebook, bebook/art, bebook/art/deskbar
-    int32 len = strlen(path);
+    int32 const len = strlen(path);
     for (int32 i = 0; i < len; i++)
     {
         if (path[i] != '/')
             continue;
 
-        char* t = new char[i+1];
-        strncpy(t, path, i);
-        t[i] = '\0';
+        char leaf[B_PATH_NAME_LENGTH + 1];
+        strncpy(leaf, path, i);
+        leaf[i] = '\0';
 
-        bool insertFailed;
-        m_hashTable->Insert(t, &insertFailed, false);
-        if (insertFailed == false)
-            dirList->AddItem((void*)(m_hashTable->LastAddedEntry()));
-        // For efficiency: we made Hashtable to use 't' rather than copy it, so don't delete[] t here.
+        bool added;
+        HashEntry *addedItem = m_hashTable->Insert(leaf, &added);
+        if (added == true)
+            dirList->AddItem((void*)addedItem);
     }
 }
 
@@ -432,19 +436,17 @@ HashEntry* Archiver::AddFilePathToTable(BList* fileList, const char* path)
     {
         if (CanReplaceFiles() == true)
         {
-            bool insertFailed;
-            m_hashTable->Insert((char*)path, &insertFailed, true);     // copy path into hashtable
-            if (insertFailed == false)
+            bool added;
+            HashEntry *addedItem = m_hashTable->Insert(path, &added);
+            if (added)
             {
-                HashEntry* addedItem = m_hashTable->LastAddedEntry();
                 fileList->AddItem((void*)addedItem);
-
                 return addedItem;
             }
         }
         else
         {
-            HashEntry* addedItem = m_hashTable->ForceInsert((char*)path, true);
+            HashEntry* addedItem = m_hashTable->Add(path);
             fileList->AddItem((void*)addedItem);
             return addedItem;
         }

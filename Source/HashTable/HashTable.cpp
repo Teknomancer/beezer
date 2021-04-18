@@ -5,32 +5,40 @@
 #include "HashTable.h"
 #include "ListEntry.h"
 
-#include <Message.h>
+#include <cstdlib>
+
+// Predefined table sizes - prime numbers
+static int32 const kTableSizes[] =
+{
+    1021, 1597, 2039, 4093, 8191, 16381, 32749, 65521, 131071, 262139,
+    524287, 1048573, 2097143, 4194301, 8388593, 16777213, 33554393, 67108859,
+    134217689, 268435399, 536870909, 0
+};
 
 
 HashEntry::HashEntry()
+    : m_next(NULL),
+    m_pathStr(NULL),
+    m_clvItem(NULL)
 {
-    m_pathStr = NULL;
-
-    m_clvItem = NULL;
-    m_next = NULL;
 }
 
 
 HashEntry::~HashEntry()
 {
-    if (m_pathStr != NULL)
-        delete[] m_pathStr;
-    // m_clvItem will be deleted by MainWindow
+    free(m_pathStr);
+    m_pathStr = NULL;
+    m_clvItem = NULL;  // will be deleted by MainWindow
+    m_next = NULL;
 }
 
 
 HashTable::HashTable(int32 sizeOfTable)
+    : m_lastFoundEntry(NULL),
+    m_tableSize(sizeOfTable),
+    m_itemCount(0),
+    m_table(new HashEntry*[m_tableSize])
 {
-    m_tableSize = sizeOfTable;
-    m_table = new HashEntry*[m_tableSize];
-    m_itemCount = 0L;
-
     InitializeTable();
 }
 
@@ -54,30 +62,31 @@ int32 HashTable::OptimalSize(int32 minSize)
 
 void HashTable::InitializeTable()
 {
-    // Very important we initialize NULL (zero) pointers so our "for" loops works
+    // Very important we initialize table with NULL pointers
     memset((void*)m_table, 0, m_tableSize * sizeof(HashEntry*));
-    m_lastAddedEntry = NULL;
     m_lastFoundEntry = NULL;
 }
 
 
 void HashTable::DeleteTable()
 {
-    // Delete all the hash table elements
+    // Delete all the hash table items
     for (int64 bucket = 0LL; bucket < m_tableSize; bucket++)
-        for (HashEntry * element = m_table[bucket]; element != NULL;)
+        for (HashEntry* item = m_table[bucket]; item != NULL; )
         {
-            // Don't simply delete element as we will lose it's m_next field, store m_next then delete
-            HashEntry* next = element->m_next;
+            // Don't simply delete item as we will lose it's m_next field, store m_next then delete
+            HashEntry* next = item->m_next;
 
-            // Reset cached entries
-            ResetCache(element);
-            delete element;
-            element = next;
+            // Reset cache so we don't point to stale/deleted item.
+            ResetCache(item);
+
+            delete item;
+            item = next;
         }
 
     m_itemCount = 0L;
     delete[] m_table;
+    m_table = NULL;
 }
 
 
@@ -98,160 +107,111 @@ int32 HashTable::Hash(const char* str) const
 }
 
 
-HashEntry* HashTable::ForceInsert(const char* str, bool copyInput)
+HashEntry* HashTable::Add(const char* str)
 {
-    // Never check if str exists already in the hashtable, simply insert whats given
-    int32 hashValue = Hash(str);
-    HashEntry* bucket = new HashEntry();
-    if (copyInput == true)
-    {
-        bucket->m_pathStr = new char [strlen(str) + 1];
-        strcpy(const_cast<char*>(bucket->m_pathStr), str);
-    }
-    else
-        bucket->m_pathStr = str;
+    // Adds 'str' to the hash table without checking if it already exists.
+    int32 const hashValue = Hash(str);
+    HashEntry* item = new HashEntry();
+    item->m_pathStr = strdup(str);
+    item->m_next = m_table[hashValue];
+    m_table[hashValue] = item;
+    ++m_itemCount;
 
-    m_lastAddedEntry = bucket;
-
-    bucket->m_next = m_table[hashValue];
-    m_table[hashValue] = bucket;
-    m_itemCount++;
-
-    return bucket;
+    return item;
 }
 
 
-HashEntry* HashTable::LookUp(const char* str, bool insert, bool* wasFound, bool copyInput)
+HashEntry* HashTable::LookUp(const char* str) const
 {
-    int32 hashValue = Hash(str);
-    HashEntry* bucket = NULL;
-    if (wasFound != NULL)
-        *wasFound = false;
-
-    // Lookup node in table
-    for (bucket = m_table[hashValue]; bucket != NULL; bucket = bucket->m_next)
-    {
-        if (strcmp(bucket->m_pathStr, str) == 0)
-        {
-            if (wasFound != NULL)
-                *wasFound = true;
-
-            return bucket;
-        }
-    }
-
-    // "str" is not found, if insert is needed then add it to the table
-    if (insert == false)
-        return NULL;
-
-    return ForceInsert(str, copyInput);
+    int32 const hashValue = Hash(str);
+    for (HashEntry* item = m_table[hashValue]; item != NULL; item = item->m_next)
+        if (strcmp(item->m_pathStr, str) == 0)
+            return item;
+    return NULL;
 }
 
 
-int32 HashTable::FindUnder(BMessage* message, const char* fieldName, const char* directoryPath,
-                           BList* fileList, BList* folderList)
+void HashTable::FindUnder(const char* directoryPath, BList& fileList, BList& folderList) const
 {
     // Add all hashitems which is under the specified directoryPath,
     // eg: if directory path is be/book, then add be/book/* (everything under it)
     // Could be an expensive operation since entire table is scanned
-    int32 count = 0L;
-    message->AddString(fieldName, directoryPath);
-    count++;
     for (int64 bucket = 0LL; bucket < m_tableSize; bucket++)
-        for (HashEntry* element = m_table[bucket]; element != NULL;)
+        for (HashEntry* item = m_table[bucket]; item != NULL; item = item->m_next)
         {
-            BString buf = element->m_pathStr;
+            BString buf = item->m_pathStr;
             if (buf.FindFirst(directoryPath) >= 0L)
             {
                 buf.ReplaceAll("*", "\\*");
                 // Don't add filenames - this is because tar will get stuck up when there are
-                // duplicate entries (same filenames) as samenames must be supplied to tar only
-                // once
-                //message->AddString (fieldName, buf.String());
-                //count++;
-                if (element->m_clvItem->IsSuperItem())
-                    folderList->AddItem((void*)element->m_clvItem);
+                // duplicate entries (same filenames) as samenames must be supplied to tar only once
+                if (item->m_clvItem->IsSuperItem())
+                    folderList.AddItem((void*)item->m_clvItem);
                 else
-                    fileList->AddItem((void*)element->m_clvItem);
+                    fileList.AddItem((void*)item->m_clvItem);
             }
-
-            element = element->m_next;
         }
-    return count;
-}
-
-
-bool HashTable::IsFound(const char* str)
-{
-    // Just find if "str" is found, don't add
-    bool isFound;
-    LookUp(str, false, &isFound, false);
-
-    return isFound;
 }
 
 
 HashEntry* HashTable::Find(const char* str)
 {
-    // Cached find - performance gain
-    if (m_lastFoundEntry)
-        if (strcmp(m_lastFoundEntry->m_pathStr, str) == 0)
-            return m_lastFoundEntry;
+    // Cached find - slight performance gain
+    if (m_lastFoundEntry && strcmp(m_lastFoundEntry->m_pathStr, str) == 0)
+        return m_lastFoundEntry;
 
-    // Cache result of current find, return what is found
-    m_lastFoundEntry = LookUp(const_cast<char*>(str), false, NULL, false);
-    return m_lastFoundEntry;
+    HashEntry* found = LookUp(str);
+    if (found != NULL)
+        m_lastFoundEntry = found;
+    return found;
 }
 
 
-HashEntry* HashTable::Insert(char* str, bool* wasFound, bool copyItem)
+HashEntry* HashTable::Insert(const char* str, bool *added)
 {
-    return LookUp(str, true, wasFound, copyItem);
-}
-
-
-bool HashTable::Delete(HashEntry* entry)
-{
-    // Delete the given entry without destroying links
-    return Delete((char*)entry->m_pathStr);
-}
-
-
-bool HashTable::Delete(char* str)
-{
-    // Find the item with the given "str" & remove not destroying the links between the elements
-    HashEntry* targetElement = NULL, *prevElement = NULL;
-    int32 hashValue = Hash(str);
-
-    for (targetElement = m_table[hashValue]; targetElement != NULL; targetElement = targetElement->m_next)
+    if (Find(str) == false)
     {
-        if (strcmp(targetElement->m_pathStr, str) == 0)
+        *added = true;
+        return Add(str);
+    }
+
+    *added = false;
+    return NULL;
+}
+
+
+bool HashTable::Delete(HashEntry* item)
+{
+    return Delete(item->m_pathStr);
+}
+
+
+bool HashTable::Delete(const char* str)
+{
+    int32 const hashValue = Hash(str);
+
+    HashEntry* prevItem = NULL;
+    for (HashEntry* item = m_table[hashValue]; item != NULL; item = item->m_next)
+    {
+        if (strcmp(item->m_pathStr, str) == 0)
         {
-            // If there is a prev element connect it to the next one, else make next element as top of bucket
-            if (prevElement != NULL)
-                prevElement->m_next = targetElement->m_next;
+            if (prevItem!= NULL)
+                prevItem->m_next = item->m_next;
             else
-                m_table[hashValue] = targetElement->m_next;
+                m_table[hashValue] = item->m_next;
 
-            // Reset cached entries -- very important
-            ResetCache(targetElement);
-            delete targetElement;
-            targetElement = NULL;
+            // Reset the cache (so we don't point to stale/deleted items).
+            ResetCache(item);
 
-            m_itemCount--;
+            delete item;
+            item = NULL;
+            --m_itemCount;
             return true;
         }
-        //prevElement = m_table[hashValue];
-        prevElement = targetElement;           // bug-fix
+        prevItem = item;
     }
 
     return false;
-}
-
-
-HashEntry* HashTable::LastAddedEntry() const
-{
-    return m_lastAddedEntry;
 }
 
 
@@ -267,10 +227,8 @@ int32 HashTable::TableSize() const
 }
 
 
-void HashTable::ResetCache(HashEntry* element)
+void HashTable::ResetCache(HashEntry* item)
 {
-    if (element == m_lastAddedEntry)
-        m_lastAddedEntry = NULL;
-    if (element == m_lastFoundEntry)
+    if (m_lastFoundEntry == item)
         m_lastFoundEntry = NULL;
 }

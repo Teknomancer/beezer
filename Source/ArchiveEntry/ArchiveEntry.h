@@ -18,8 +18,6 @@ class ArchiveEntry
 
         void              RecalculateRatio();
 
-        bool              m_isDir;
-        time_t            m_timeValue;
         char*             m_nameStr,
                           *m_pathStr,
                           *m_sizeStr,     // bytes as a string.
@@ -29,6 +27,8 @@ class ArchiveEntry
                           *m_methodStr,
                           *m_crcStr,
                           *m_dirStr;
+        bool              m_isDir;
+        time_t            m_timeValue;
 };
 
 #endif /* _ARCHIVE_ENTRY_H */

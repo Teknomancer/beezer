@@ -2151,8 +2151,10 @@ void MainWindow::DeleteFilesFromArchive()
                 if (selEntry->IsExpanded() == true)
                     hackEntryList.AddItem((void*)selEntry);
 
-                count += m_archiver->Table()->FindUnder(msg, kPath, selEntry->m_fullPath.String(),
-                                                        m_deleteFileList, m_deleteDirList);
+                msg->AddString(kPath, selEntry->m_fullPath.String());
+                ++count;
+
+                m_archiver->Table()->FindUnder(selEntry->m_fullPath.String(), *m_deleteFileList, *m_deleteDirList);
                 // Don't select any sub-items here as what happens is (since this main loop loops selected
                 // items we re-add items that are selected, so don't change selection here)
             }
