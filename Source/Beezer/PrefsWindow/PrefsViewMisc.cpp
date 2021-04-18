@@ -74,7 +74,7 @@ void PrefsViewMisc::Render()
     m_arkTypeField = new BMenuField("PrefsViewMisc:arkTypeField", B_TRANSLATE("Default archiver:"), (BMenu*)m_arkTypePopUp,
                                     B_WILL_DRAW);
 
-    ArchiversInstalled(m_arkTypes, NULL);
+    _archiverMgr()->ArchiversInstalled(m_arkTypes, NULL);
     for (int32 i = 0; i < m_arkTypes.CountItems(); i++)
         m_arkTypePopUp->AddItem(new BMenuItem((const char*)m_arkTypes.ItemAtFast(i), NULL));
 

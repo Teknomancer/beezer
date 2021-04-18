@@ -2901,7 +2901,7 @@ void MainWindow::SetupArchiver(entry_ref* ref, char* mimeString)
     }
 
     status_t errCode;
-    m_archiver = ArchiverForMime(type);
+    m_archiver = _archiverMgr()->ArchiverForMime(type);
 
     if (m_archiver == NULL)        // Handle unsupported types
     {

@@ -21,14 +21,25 @@ const char* const kLoaderFunc = "load_archiver";
 
 extern BLocker _ark_locker;
 
-Archiver*       ArchiverForMime(const char* mimeType);
-Archiver*       ArchiverForType(const char* archiverType);
-status_t        ArchiversInstalled(BList& arkTypeList, BList* extensionStrings);
-status_t        LoadArchiverMetaData();
-void            FreeArchiverMetaData();
-BPopUpMenu*     BuildArchiveTypesMenu(BHandler* targetHandler, BList* extensionStrings);
-status_t        MergeArchiverRules(RuleMgr* ruleMgr);
-Archiver*       NewArchiver(const char* name, bool popupErrors, status_t* returnCode);
-Archiver*       InstantiateArchiver(const char* path);
+class ArchiverMgr
+{
+    public:
+        ArchiverMgr();
+        ~ArchiverMgr();
+
+        Archiver*       ArchiverForMime(const char* mimeType);
+        Archiver*       ArchiverForType(const char* archiverType);
+        status_t        ArchiversInstalled(BList& arkTypeList, BList* extensionStrings);
+        BPopUpMenu*     BuildArchiveTypesMenu(BHandler* targetHandler, BList* extensionStrings);
+        status_t        MergeArchiverRules(RuleMgr* ruleMgr);
+        Archiver*       NewArchiver(const char* name, bool popupErrors, status_t* returnCode);
+        Archiver*       InstantiateArchiver(const char* path);
+
+    private:
+
+        BMessage* m_fullMetaDataMsg;
+};
+
+ArchiverMgr* _archiverMgr();
 
 #endif /* _ARCHIVER_MGR_H */

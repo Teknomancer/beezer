@@ -41,7 +41,7 @@ ArchiveRep::~ArchiveRep()
 status_t ArchiveRep::InitArchiver(const char* name, bool popupErrors)
 {
     status_t result;
-    m_archiver = NewArchiver(name, popupErrors, &result);
+    m_archiver = _archiverMgr()->NewArchiver(name, popupErrors, &result);
 
     if (m_archiver)
     {
@@ -81,7 +81,7 @@ status_t ArchiveRep::InitArchiver(entry_ref* ref, char* mimeString)
     }
 
     status_t errCode = BZR_ERROR;
-    m_archiver = ArchiverForMime(type);
+    m_archiver = _archiverMgr()->ArchiverForMime(type);
 
     if (m_archiver == NULL)        // Archiver not found for type
         return errCode;

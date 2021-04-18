@@ -18,6 +18,7 @@ class BString;
 
 class AboutWindow;
 class AddOnWindow;
+class ArchiverMgr;
 class FileJoinerWindow;
 class FileSplitterWindow;
 class MainWindow;
@@ -33,7 +34,6 @@ class BeezerApp : public BApplication
         BeezerApp();
         virtual ~BeezerApp();
 
-        // Inherited hooks
         virtual void        AboutRequested();
         virtual void        ArgvReceived(int32 argc, char** argv);
         virtual void        MessageReceived(BMessage* message);
@@ -41,7 +41,6 @@ class BeezerApp : public BApplication
         virtual void        ReadyToRun();
         virtual void        Quit();
 
-        // Additional hooks
         MainWindow*         RegisterWindow(entry_ref* ref = NULL);
         void                UnRegisterWindow(bool closeApp);
         void                CreateFilePanel(BFilePanel*& panel, file_panel_mode mode);
@@ -51,8 +50,8 @@ class BeezerApp : public BApplication
         MainWindow*         CreateWindow(entry_ref* ref);
         BMenu*              BuildToolsMenu() const;
         BPopUpMenu*         BuildToolsPopUpMenu() const;
+        ArchiverMgr*        GetArchiverMgr();
 
-        // Public members
         BString             m_settingsPathStr;
         BDirectory          m_addonsDir,
                             m_docsDir,
@@ -60,11 +59,8 @@ class BeezerApp : public BApplication
                             m_stubDir;
 
     private:
-        // Private members
         void                InitPaths();
         void                InitPrefs();
-        void                LoadArchivers();
-        void                UnloadArchivers();
         void                CompileTimeString(BString& output);
         void                VersionString(BString& output);
         void                ShowCreateFilePanel();
@@ -84,6 +80,7 @@ class BeezerApp : public BApplication
         BFilePanel*         m_openFilePanel,
                             *m_createFilePanel;
         WindowMgr*          m_windowMgr;
+        ArchiverMgr*        m_archiverMgr;
         RecentMgr*          m_recentMgr,
                             *m_extractMgr,
                             *m_splitFilesMgr,
