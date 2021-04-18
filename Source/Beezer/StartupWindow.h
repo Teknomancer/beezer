@@ -10,12 +10,11 @@
 
 class BBitmap;
 class BPopUpMenu;
+class BStringView;
 
 class BevelView;
 class ImageButton;
 class RecentMgr;
-
-#define M_CLOSE_STARTUP 'stcl'
 
 class StartupWindow : public BWindow
 {
@@ -27,8 +26,7 @@ class StartupWindow : public BWindow
         virtual void        Quit();
         virtual bool        QuitRequested();
 
-    protected:
-        // Protected members
+    private:
         BStringView*        m_headingView;
         ImageButton*        m_createBtn,
                             *m_openBtn,
