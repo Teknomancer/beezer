@@ -3,20 +3,19 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <Bitmap.h>
-#include <Button.h>
-#include <GroupLayoutBuilder.h>
-#include <StringView.h>
-
+#include "StatusWindow.h"
 #include "AppConstants.h"
 #include "BarberPole.h"
 #include "BitmapPool.h"
 #include "CommonStrings.h"
-#include "LocalUtils.h"
 #include "MsgConstants.h"
 #include "StaticBitmapView.h"
-#include "StatusWindow.h"
 #include "UIConstants.h"
+
+#include <Bitmap.h>
+#include <Button.h>
+#include <GroupLayoutBuilder.h>
+#include <StringView.h>
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -31,7 +30,9 @@
 StatusWindow::StatusWindow(const char* title, BWindow* callerWindow, const char* text, volatile bool* cancel,
                            bool showWindow)
     : BWindow(BRect(0, 0, 300, 0), title, B_MODAL_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL,
-              B_ASYNCHRONOUS_CONTROLS | B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_NOT_CLOSABLE | B_AUTO_UPDATE_SIZE_LIMITS)
+              B_ASYNCHRONOUS_CONTROLS | B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_NOT_CLOSABLE | B_AUTO_UPDATE_SIZE_LIMITS),
+    m_barberPole(NULL),
+    m_cancel(cancel)
 {
     if (callerWindow)
     {
@@ -55,21 +56,21 @@ StatusWindow::StatusWindow(const char* title, BWindow* callerWindow, const char*
 
     // Start the builder with vertical in case we need to add the cancel button
     BGroupLayoutBuilder layout = BGroupLayoutBuilder(B_VERTICAL)
-    .AddGroup(B_HORIZONTAL)
-    .Add(iconView, 0)
-    .AddGroup(B_VERTICAL, 0)
-    .Add(titleStrView)
-    .AddGroup(B_HORIZONTAL)
-    .Add(m_barberPole, 0)
-    .Add(textLabel)
-    .AddGlue()
-    .End()
-    .End()
-    .AddGlue()
-    .End()
-    .SetInsets(4 * K_MARGIN, 2 * K_MARGIN, 4 * K_MARGIN, 2 * K_MARGIN);
+        .AddGroup(B_HORIZONTAL)
+        .Add(iconView, 0)
+        .AddGroup(B_VERTICAL, 0)
+        .Add(titleStrView)
+        .AddGroup(B_HORIZONTAL)
+        .Add(m_barberPole, 0)
+        .Add(textLabel)
+        .AddGlue()
+        .End()
+        .End()
+        .AddGlue()
+        .End()
+        .SetInsets(4 * K_MARGIN, 2 * K_MARGIN, 4 * K_MARGIN, 2 * K_MARGIN);
 
-    if (cancel)
+    if (m_cancel)
         layout.Add(BGroupLayoutBuilder(B_HORIZONTAL, 0)
                    .AddGlue()
                    .Add(new BButton("StatusWindow:CancelButton", BZ_TR(kCancelString), new BMessage(M_STOP_OPERATION)))
@@ -91,9 +92,8 @@ StatusWindow::StatusWindow(const char* title, BWindow* callerWindow, const char*
     SetPulseRate(K_BARBERPOLE_PULSERATE);
     m_barberPole->SetValue(true, true);
 
-    if (cancel)
-        *cancel = false;
-    m_cancel = cancel;
+    if (m_cancel)
+        atomic_set((int32 *)m_cancel, false);
 
     if (showWindow == true)
         Show();
@@ -108,7 +108,7 @@ void StatusWindow::MessageReceived(BMessage* message)
         {
             m_barberPole->SetValue(false, false);
             if (m_cancel)
-                *m_cancel = true;
+                atomic_set((int32 *)m_cancel, true);
             break;
         }
 
