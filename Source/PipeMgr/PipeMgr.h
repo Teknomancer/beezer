@@ -7,8 +7,8 @@
 
 #include <OS.h>
 #include <List.h>
-#include <String.h>
-#include <SupportDefs.h>
+
+class BString;
 
 class PipeMgr
 {
@@ -16,7 +16,6 @@ class PipeMgr
         PipeMgr();
         virtual ~PipeMgr();
 
-        // Additional hooks
         void               FlushArgs();
         status_t           AddArg(const char* argv);
         void               Pipe() const;
@@ -24,12 +23,10 @@ class PipeMgr
         thread_id          Pipe(int* outdes, int* errdes) const;
         void               PrintToStream() const;
 
-        // Custom operators
         PipeMgr& operator  << (const char* arg);
-        PipeMgr& operator  << (BString arg);
+        PipeMgr& operator  << (BString const& arg);
 
     protected:
-        // Protected members
         BList              m_argList;
 };
 
