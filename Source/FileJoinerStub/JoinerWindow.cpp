@@ -106,7 +106,7 @@ void JoinerWindow::MessageReceived(BMessage* message)
             {
                 if (result == BZR_DONE)
                 {
-                    BAlert* alert = new BAlert("Info", B_TRANSLATE("The files were joined successfully."),
+                    BAlert* alert = new BAlert("Info", B_TRANSLATE("The file was joined successfully."),
                                                B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_INFO_ALERT);
                     alert->Go();
                 }
