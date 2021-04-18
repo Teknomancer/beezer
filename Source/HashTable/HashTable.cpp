@@ -169,7 +169,7 @@ HashEntry* HashTable::Find(const char* str)
 
 HashEntry* HashTable::Insert(const char* str, bool *added)
 {
-    if (Find(str) == false)
+    if (Find(str) == NULL)
     {
         *added = true;
         return Add(str);
