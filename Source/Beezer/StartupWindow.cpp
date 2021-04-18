@@ -3,30 +3,21 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-#include <Application.h>
-#include <Bitmap.h>
-#include <GroupLayoutBuilder.h>
-#include <MenuItem.h>
-#include <Message.h>
-#include <PopUpMenu.h>
-#include <String.h>
-#include <StringView.h>
-
+#include "StartupWindow.h"
 #include "AppConstants.h"
-#include "AppUtils.h"
-#include "ArchiverMgr.h"
 #include "BeezerApp.h"
-#include "BevelView.h"
 #include "BitmapPool.h"
 #include "CommonStrings.h"
-#include "FileSplitterWindow.h"
 #include "ImageButton.h"
 #include "MsgConstants.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
 #include "RecentMgr.h"
-#include "StartupWindow.h"
 #include "UIConstants.h"
+
+#include <GroupLayoutBuilder.h>
+#include <PopUpMenu.h>
+#include <StringView.h>
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -42,7 +33,16 @@
 StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
     : BWindow(BRect(10, 10, 0, 100), B_TRANSLATE_SYSTEM_NAME(K_APP_TITLE), B_TITLED_WINDOW,
               B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS | B_CLOSE_ON_ESCAPE),
-    m_recentMgr(recentMgr)
+    m_headingView(NULL),
+    m_createBtn(NULL),
+    m_openBtn(NULL),
+    m_openRecentBtn(NULL),
+    m_toolsBtn(NULL),
+    m_prefsBtn(NULL),
+    m_helpBtn(NULL),
+    m_recentMgr(recentMgr),
+    m_recentMenu(NULL),
+    m_toolsMenu(NULL)
 {
     SetLayout(new BGroupLayout(B_VERTICAL, 0));
 
@@ -63,7 +63,7 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
     sepViewDarkEdge->SetExplicitSize(BSize(B_SIZE_UNSET, 0));  // 0 height gives us 1 pixel
 
 
-    BitmapPool* _bmps = _glob_bitmap_pool;
+    BitmapPool const* _bmps = _glob_bitmap_pool;
 
     m_createBtn = new ImageButton("StartupWindow:New", BZ_TR(kNewString),
                                   _bmps->m_tbarNewBmp, NULL, new BMessage(M_FILE_NEW), false,
@@ -134,7 +134,6 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
     m_toolsBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Additional tools")));
     m_helpBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Open the help manual")));
 
-    // Center window on-screen
     CenterOnScreen();
 
     // Restore from prefs
@@ -149,7 +148,7 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
     m_recentMenu = NULL;
     m_toolsMenu = NULL;
 
-    int8 startupAction = _prefs_misc.FindInt8Def(kPfStartup, 0);
+    int8 const startupAction = _prefs_misc.FindInt8Def(kPfStartup, 0);
     if (startupAction == 0 || startup == false)
         Show();
     else if (startupAction == 1)
@@ -179,7 +178,10 @@ void StartupWindow::MessageReceived(BMessage* message)
 {
     switch (message->what)
     {
-        case M_FILE_OPEN: case M_FILE_NEW: case M_EDIT_PREFERENCES: case M_HELP_MANUAL:
+        case M_FILE_OPEN:
+        case M_FILE_NEW:
+        case M_EDIT_PREFERENCES:
+        case M_HELP_MANUAL:
         {
             be_app_messenger.SendMessage(message);
             break;
