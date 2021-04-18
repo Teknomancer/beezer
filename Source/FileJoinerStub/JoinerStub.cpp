@@ -5,12 +5,12 @@
 #include "JoinerStub.h"
 #include "JoinerWindow.h"
 
-#include "AppConstants.h"
 #include "Shared.h"
 
 
 JoinerStub::JoinerStub()
-    : BApplication(K_JOINER_STUB_SIGNATURE)
+    : BApplication(K_JOINER_STUB_SIGNATURE),
+    m_joinWnd(NULL)
 {
     Run();
 }
