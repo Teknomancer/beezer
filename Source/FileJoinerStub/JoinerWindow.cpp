@@ -3,30 +3,20 @@
 // Copyright (c) 2011 Chris Roberts.
 // All rights reserved.
 
-// TODO: Cleanup headers
-#include <View.h>
+#include "JoinerWindow.h"
+#include "AppConstants.h"
+#include "BevelView.h"
+#include "Joiner.h"
+#include "Shared.h"
+#include "UIConstants.h"
+
 #include <Application.h>
 #include <StatusBar.h>
 #include <Button.h>
-#include <CheckBox.h>
 #include <Alert.h>
 #include <Resources.h>
-#include <Entry.h>
 #include <Roster.h>
 #include <Path.h>
-#include <Messenger.h>
-#include <Debug.h>
-
-#include <cstdio>
-
-#include "JoinerWindow.h"
-
-#include "UIConstants.h"
-#include "Joiner.h"
-#include "BevelView.h"
-#include "AppConstants.h"
-
-#include "Shared.h"
 
 #ifdef HAIKU_ENABLE_I18N
 #include <Catalog.h>
@@ -38,10 +28,18 @@
 #define B_TRANSLATE_SYSTEM_NAME(x) x
 #endif
 
+const char* JoinerWindow::kJoinResult = "result";
+
 
 JoinerWindow::JoinerWindow()
     : BWindow(BRect(100, 100, 450, 210), B_TRANSLATE("Beezer: File Joiner"), B_TITLED_WINDOW,
-              B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE | B_NOT_V_RESIZABLE)
+              B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE | B_NOT_V_RESIZABLE),
+    m_backView(NULL),
+    m_statusBar(NULL),
+    m_cancelBtn(NULL),
+    m_cancel(false),
+    m_messenger(new BMessenger(this)),
+    m_thread(0)
 {
     m_backView = new BevelView(Bounds(), "JoinerWindow:BackView", BevelView::OUTSET,
                                B_FOLLOW_ALL_SIDES, B_WILL_DRAW);
@@ -70,19 +68,15 @@ JoinerWindow::JoinerWindow()
     CenterOnScreen();
 
     // Constrain window size
-    float minWidth = 350;
+    float const minWidth = 350;
     float minH, maxH, minV, maxV;
     GetSizeLimits(&minH, &maxH, &minV, &maxV);
     SetSizeLimits(minWidth, maxH, minV, maxV);
     if (Frame().Width() < minWidth)
         ResizeTo(minWidth, Frame().Height());
 
-    m_cancel = false;
-    m_joinInProgress = false;
-    m_messenger = new BMessenger(this);
-
-    status_t result = ReadSelf();
-    if (result == BZR_DONE)
+    status_t const result = ReadSelf();
+    if (result == B_OK)
         Show();
     else
     {
@@ -94,7 +88,7 @@ JoinerWindow::JoinerWindow()
 
 bool JoinerWindow::QuitRequested()
 {
-    m_cancel = true;
+    atomic_set((int32 *)&m_cancel, true);
     be_app->PostMessage(B_QUIT_REQUESTED);
     return BWindow::QuitRequested();
 }
@@ -106,35 +100,37 @@ void JoinerWindow::MessageReceived(BMessage* message)
     {
         case M_OPERATION_COMPLETE:
         {
-            status_t result = message->FindInt32(kResult);
-            if (result == BZR_ERROR)
+            status_t const result = message->FindInt32(JoinerWindow::kJoinResult);
+            if (result == B_OK)
             {
-                BAlert* alert = new BAlert("Error", B_TRANSLATE("An unknown error occurred while joining the files."), B_TRANSLATE("OK"), NULL, NULL,
-                                           B_WIDTH_AS_USUAL, B_STOP_ALERT);
+                snooze(100000);     // TODO: WHY? For visual effect?
+                PostMessage(B_QUIT_REQUESTED);
+            }
+            else
+            {
+                BAlert* alert = new BAlert("Error", B_TRANSLATE("An unknown error occurred while joining the files."),
+                            B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
                 alert->Go();
             }
-
-            snooze(100000);
-            PostMessage(B_QUIT_REQUESTED);
             break;
         }
 
         case M_CANCEL:
         {
-            m_cancel = true;
+            atomic_set((int32 *)&m_cancel, true);
             break;
         }
 
         case BZR_UPDATE_PROGRESS:
         {
-            char percentStr [100];
-            float delta = message->FindFloat("delta");
-            int8 percent = (int8)ceil(100 * ((m_statusBar->CurrentValue() + delta) / m_statusBar->MaxValue()));
-            sprintf(percentStr, "%d%%", percent);
+            float const delta = message->FindFloat("delta");
+            int8 const percent = (int8)ceil(100 * ((m_statusBar->CurrentValue() + delta) / m_statusBar->MaxValue()));
 
-            BString text = message->FindString("text");
+            BString percentStr;
+            percentStr << percent << "%";
 
-            m_statusBar->Update(delta, text.String(), percentStr);
+            BString const text = message->FindString("text");
+            m_statusBar->Update(delta, text.String(), percentStr.String());
             message->SendReply('DUMB');
             break;
         }
@@ -166,7 +162,7 @@ status_t JoinerWindow::ReadSelf()
     if (fileName.Length() <= 0 || m_separatorStr.Length() <= 0)
     {
         PostMessage(B_QUIT_REQUESTED);
-        return BZR_ERROR;
+        return B_ERROR;
     }
 
     // Now read self (resources)
@@ -195,9 +191,8 @@ status_t JoinerWindow::ReadSelf()
 
     // Now we have all we want to start the join process, then what're we waiting for :)
     m_thread = spawn_thread(_joiner, "_joiner", B_NORMAL_PRIORITY, (void*)this);
-    m_joinInProgress = true;
     resume_thread(m_thread);
-    return BZR_DONE;
+    return B_OK;
 }
 
 
@@ -205,11 +200,11 @@ int32 JoinerWindow::_joiner(void* arg)
 {
     JoinerWindow* wnd = (JoinerWindow*)arg;
 
-    status_t result = JoinFile(wnd->m_chunkPathStr.String(), wnd->m_dirPathStr.String(),
-                               wnd->m_separatorStr.String(), wnd->m_messenger, &(wnd->m_cancel));
+    status_t const result = JoinFile(wnd->m_chunkPathStr.String(), wnd->m_dirPathStr.String(),
+                                     wnd->m_separatorStr.String(), wnd->m_messenger, &(wnd->m_cancel));
 
     BMessage completeMsg(M_OPERATION_COMPLETE);
-    completeMsg.AddInt32(kResult, result);
+    completeMsg.AddInt32(JoinerWindow::kJoinResult, result);
     wnd->m_messenger->SendMessage(&completeMsg);
 
     return result;
