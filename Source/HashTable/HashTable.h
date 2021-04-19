@@ -29,9 +29,9 @@ class HashTable
         HashTable(int32 sizeOfTable);
         ~HashTable();
 
-        void                DeleteTable();
         bool                Delete(HashEntry* entry);
         bool                Delete(const char* str);
+        void                DeleteAll();
         int32               CountItems() const;
         int32               TableSize() const;
         HashEntry*          Find(const char* str);
@@ -43,9 +43,9 @@ class HashTable
         static int32        MaxCapacity();
 
     private:
+        void                Init();
         HashEntry*          LookUp(const char* str) const;
         int32               Hash(const char* str) const;
-        void                InitializeTable();
         void                ResetCache(HashEntry* element);
         HashEntry*          ItemAt(int32 bucket) const;
 
