@@ -7,7 +7,8 @@
 
 #include <cstdlib>
 
-// Predefined table sizes - prime numbers
+// Predefined table sizes of prime numbers.
+// Must be in ascending order.
 static int32 const kTableSizes[] =
 {
     1021, 1597, 2039, 4093, 8191, 16381, 32749,
