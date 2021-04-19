@@ -5,6 +5,7 @@
 #include "HashTable.h"
 #include "ListEntry.h"
 
+#include <cassert>
 #include <cstdlib>
 
 // Predefined table sizes of prime numbers.
@@ -39,13 +40,23 @@ HashTable::HashTable(int32 sizeOfTable)
     m_itemCount(0),
     m_table(new HashEntry*[m_tableSize])
 {
-    InitializeTable();
+    Init();
 }
 
 
 HashTable::~HashTable()
 {
-    DeleteTable();
+    DeleteAll();
+    delete[] m_table;
+    m_table = NULL;
+}
+
+
+void HashTable::Init()
+{
+    // Important we initialize table with NULL pointers
+    memset(m_table, 0, m_tableSize * sizeof(HashEntry*));
+    assert(m_itemCount == 0);
 }
 
 
@@ -64,15 +75,7 @@ int32 HashTable::OptimalSize(int32 minSize)
 }
 
 
-void HashTable::InitializeTable()
-{
-    // Very important we initialize table with NULL pointers
-    memset((void*)m_table, 0, m_tableSize * sizeof(HashEntry*));
-    m_lastFoundEntry = NULL;
-}
-
-
-void HashTable::DeleteTable()
+void HashTable::DeleteAll()
 {
     // Delete all the hash table items
     for (int64 bucket = 0LL; bucket < m_tableSize; bucket++)
@@ -89,8 +92,7 @@ void HashTable::DeleteTable()
         }
 
     m_itemCount = 0L;
-    delete[] m_table;
-    m_table = NULL;
+    Init();
 }
 
 

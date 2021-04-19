@@ -291,7 +291,7 @@ void Archiver::FillLists(BList* files, BList* dirs)
     int32 const hashEntryCount = m_hashTable->CountItems();
     if (CanPartiallyOpen() == false && hashEntryCount > 0)
     {
-        m_hashTable->DeleteTable();
+        m_hashTable->DeleteAll();
         m_fileList.MakeEmpty();
         m_folderList.MakeEmpty();
         if (tableSize > HashTable::OptimalSize(tableSize)               // if our needs have grown, grow the table.
