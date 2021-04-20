@@ -17,6 +17,7 @@ resource app_version {
 resource(42, "ArchiverMetaData") message {
 	"ArchiverName" = "arj",
 	"DefaultExtension" = ".arj",
+	"DefaultCompressionLevel" = 1,
 	"Rules" = message {
 		"application/x-arj-compressed" = ".arj",
 		"application/x-arj" = ".arj",

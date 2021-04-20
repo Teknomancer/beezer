@@ -17,6 +17,7 @@ resource app_version {
 resource(42, "ArchiverMetaData") message {
 	"ArchiverName" = "bzip2",
 	"DefaultExtension" = ".tar.bz2",
+	"DefaultCompressionLevel" = 6,
 	"Rules" = message {
 		"application/x-bzip2" = ".bz2",
 		"application/x-bzip2" = ".tbz2",

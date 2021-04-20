@@ -131,6 +131,8 @@ status_t Archiver::LoadMetaData(BMessage* metaDataMsg)
     else
         m_extensionStr = strdup("");
 
+    m_defaultCompressionLevel = metaDataMsg->GetInt32("DefaultCompressionLevel", -1);
+
     BMessage rulesMsg;
     if (metaDataMsg->FindMessage("Rules", &rulesMsg) == B_OK)
     {
