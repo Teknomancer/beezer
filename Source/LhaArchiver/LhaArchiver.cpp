@@ -651,7 +651,7 @@ void LhaArchiver::BuildMenu(BMessage& message)
     menuStr << " " << B_TRANSLATE("(best)");
     m_compressionMenu->AddItem(new BMenuItem(menuStr, NULL));
 
-    SetCompressionLevel(message.GetInt32(kCompressionLevelKey, 2));
+    SetCompressionLevel(message.GetInt32(kCompressionLevelKey, GetDefaultCompressionLevel()));
 
     // Build the "Other options" sub-menu
     otherMenu = new BMenu(B_TRANSLATE("Other settings"));

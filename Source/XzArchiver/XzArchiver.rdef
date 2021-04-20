@@ -17,6 +17,7 @@ resource app_version {
 resource(42, "ArchiverMetaData") message {
 	"ArchiverName" = "xz",
 	"DefaultExtension" = ".tar.xz",
+	"DefaultCompressionLevel" = 6,
 	"Rules" = message {
 		"application/x-xz" = ".xz",
 		"application/x-xz" = ".xzip",

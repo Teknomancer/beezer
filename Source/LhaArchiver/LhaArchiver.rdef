@@ -17,6 +17,7 @@ resource app_version {
 resource(42, "ArchiverMetaData") message {
 	"ArchiverName" = "lha",
 	"DefaultExtension" = ".lzh",
+	"DefaultCompressionLevel" = 2,
 	"Rules" = message {
 		"application/x-lzh" = ".lzh",
 		"application/x-lharc" = ".lha",

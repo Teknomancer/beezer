@@ -17,6 +17,7 @@ resource app_version {
 resource(42, "ArchiverMetaData") message {
 	"ArchiverName" = "zstd",
 	"DefaultExtension" = ".tar.zst",
+	"DefaultCompressionLevel" = 3,
 	"Rules" = message {
 		"application/x-zstd-compressed-tar" = ".tar.zst",
 		"application/x-zstd" = ".zst",

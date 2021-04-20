@@ -17,6 +17,7 @@ resource app_version {
 resource(42, "ArchiverMetaData") message {
 	"ArchiverName" = "7zip",
 	"DefaultExtension" = ".7z",
+	"DefaultCompressionLevel" = 5,
 	"Rules" = message {
 		"application/x-7z-compressed" = ".7z",
 		"application/x-7z-compressed" = ".7zip",
