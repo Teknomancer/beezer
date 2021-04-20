@@ -121,18 +121,18 @@ status_t Archiver::LoadMetaData(BMessage* metaDataMsg)
     m_metaDataMsg = metaDataMsg;
 
     BString bufStr;
-    if (metaDataMsg->FindString("type_name", &bufStr) == B_OK)
+    if (metaDataMsg->FindString("ArchiverName", &bufStr) == B_OK)
         m_typeStr = strdup(bufStr.String());
     else
         m_typeStr = strdup("unknown");
 
-    if (metaDataMsg->FindString("default_extension", &bufStr) == B_OK)
+    if (metaDataMsg->FindString("DefaultExtension", &bufStr) == B_OK)
         m_extensionStr = strdup(bufStr.String());
     else
         m_extensionStr = strdup("");
 
     BMessage rulesMsg;
-    if (metaDataMsg->FindMessage("rules", &rulesMsg) == B_OK)
+    if (metaDataMsg->FindMessage("Rules", &rulesMsg) == B_OK)
     {
         // populate our m_mimeList for convenient access to mimetypes
         char* mimeType;

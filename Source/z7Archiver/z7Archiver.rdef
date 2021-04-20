@@ -15,9 +15,9 @@ resource app_version {
 // resource id isn't important as long as it doesn't conflict with others
 // the 'ArchiverMetaData' name of the resource is required though
 resource(42, "ArchiverMetaData") message {
-	"type_name" = "7zip",
-	"default_extension" = ".7z",
-	"rules" = message {
+	"ArchiverName" = "7zip",
+	"DefaultExtension" = ".7z",
+	"Rules" = message {
 		"application/x-7z-compressed" = ".7z",
 		"application/x-7z-compressed" = ".7zip",
 		"application/x-7zip-compressed" = ".7z",
