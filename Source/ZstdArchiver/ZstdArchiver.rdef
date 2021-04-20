@@ -15,9 +15,9 @@ resource app_version {
 // resource id isn't important as long as it doesn't conflict with others
 // the 'ArchiverMetaData' name of the resource is required though
 resource(42, "ArchiverMetaData") message {
-	"type_name" = "zstd",
-	"default_extension" = ".tar.zst",
-	"rules" = message {
+	"ArchiverName" = "zstd",
+	"DefaultExtension" = ".tar.zst",
+	"Rules" = message {
 		"application/x-zstd-compressed-tar" = ".tar.zst",
 		"application/x-zstd" = ".zst",
 		"application/x-zstd" = ".zstd"

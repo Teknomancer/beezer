@@ -113,7 +113,7 @@ Archiver* ArchiverMgr::ArchiverForMime(const char* mimeType)
             continue;
 
         BMessage rulesMsg;
-        if (arkMsg.FindMessage("rules", &rulesMsg) != B_OK)
+        if (arkMsg.FindMessage("Rules", &rulesMsg) != B_OK)
             continue;
 
         char* foundMimeType;
@@ -141,12 +141,12 @@ status_t ArchiverMgr::ArchiversInstalled(BList& arkTypeList, BList* extensionStr
             continue;
 
         BString arkDataStr;
-        if (arkMsg.FindString("type_name", &arkDataStr) != B_OK)
+        if (arkMsg.FindString("ArchiverName", &arkDataStr) != B_OK)
             continue;
 
         arkTypeList.AddItem((void*)strdup(arkDataStr.String()));
 
-        if (extensionStrings == NULL || arkMsg.FindString("default_extension", &arkDataStr) != B_OK)
+        if (extensionStrings == NULL || arkMsg.FindString("DefaultExtension", &arkDataStr) != B_OK)
             continue;
 
         extensionStrings->AddItem((void*)strdup(arkDataStr.String()));
@@ -170,7 +170,7 @@ Archiver* ArchiverMgr::ArchiverForType(const char* archiverType)
             continue;
 
         BString arkTypeStr;
-        if (arkMsg.FindString("type_name", &arkTypeStr) != B_OK)
+        if (arkMsg.FindString("ArchiverName", &arkTypeStr) != B_OK)
             continue;
 
         if (arkTypeStr == archiverType)
@@ -194,7 +194,7 @@ status_t ArchiverMgr::MergeArchiverRules(RuleMgr* ruleMgr)
             continue;
 
         BMessage rulesMsg;
-        if (arkMsg.FindMessage("rules", &rulesMsg) != B_OK)
+        if (arkMsg.FindMessage("Rules", &rulesMsg) != B_OK)
             continue;
 
         char* mimeType;
