@@ -19,7 +19,6 @@
 #include "PrefsFields.h"
 #include "PrefsWindow.h"
 #include "RecentMgr.h"
-#include "RuleMgr.h"
 #include "Shared.h"
 #include "StartupWindow.h"
 #include "UIConstants.h"
@@ -109,10 +108,6 @@ BeezerApp::BeezerApp()
     m_splitFilesMgr->SetCommand(M_RECENT_SPLIT_FILE);
     m_splitDirsMgr->SetCommand(M_RECENT_SPLIT_DIR);
 
-    m_ruleMgr = new RuleMgr(&m_settingsDir, K_RULE_FILE);
-
-    m_archiverMgr->MergeArchiverRules(m_ruleMgr);
-
     if (_prefs_misc.FindBoolDef(kPfMimeOnStartup, false))
         RegisterFileTypes();
 
@@ -145,7 +140,6 @@ BeezerApp::~BeezerApp()
     delete m_splitFilesMgr;
     delete m_splitDirsMgr;
     delete m_windowMgr;
-    delete m_ruleMgr;
     delete m_archiverMgr;
 
     if (m_arkTypePopUp != NULL)
@@ -611,7 +605,7 @@ MainWindow* BeezerApp::CreateWindow(entry_ref* ref)
     }
 
     MainWindow* wndPtr = new MainWindow(m_newWindowRect, m_windowMgr, m_recentMgr,
-                                        m_extractMgr, m_ruleMgr);
+                                        m_extractMgr);
 
     m_newWindowRect.OffsetBy(30, 30);
     if (m_newWindowRect.bottom >= BScreen().Frame().bottom || m_newWindowRect.right >= BScreen().Frame().right)

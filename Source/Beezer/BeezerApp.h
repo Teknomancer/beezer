@@ -24,7 +24,6 @@ class FileSplitterWindow;
 class MainWindow;
 class PrefsWindow;
 class RecentMgr;
-class RuleMgr;
 class StartupWindow;
 class WindowMgr;
 
@@ -85,7 +84,6 @@ class BeezerApp : public BApplication
                             *m_extractMgr,
                             *m_splitFilesMgr,
                             *m_splitDirsMgr;
-        RuleMgr*            m_ruleMgr;
         BPopUpMenu*         m_arkTypePopUp;
         BMenu*              m_toolsMenu;
         BMenuField*         m_arkTypeField;

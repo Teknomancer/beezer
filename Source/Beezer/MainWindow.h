@@ -25,7 +25,6 @@ class LogTextView;
 class MainMenu;
 class ProgressWindow;
 class RecentMgr;
-class RuleMgr;
 class SearchWindow;
 class SelectDirPanel;
 class StatusWindow;
@@ -40,7 +39,7 @@ class MainWindow : public BWindow
 {
     public:
         MainWindow(BRect frame, WindowMgr* windowMgr, RecentMgr* recentMgr,
-                   RecentMgr* extractMgr, RuleMgr* ruleMgr);
+                   RecentMgr* extractMgr);
         ~MainWindow();
 
         // Inherited hooks
@@ -195,7 +194,6 @@ class MainWindow : public BWindow
         WindowMgr*          m_windowMgr;
         RecentMgr*          m_recentMgr,
                             *m_extractMgr;
-        RuleMgr*            m_ruleMgr;
         BMessage*           m_searchSettingsMsg,
                             *m_cachedUIState,
                             *m_cachedArkState,
