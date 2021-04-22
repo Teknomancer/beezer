@@ -112,12 +112,12 @@ Archiver* ArchiverMgr::ArchiverForMime(const char* mimeType)
         if (m_fullMetaDataMsg->FindMessage(arkPath, &arkMsg) != B_OK)
             continue;
 
-        BMessage rulesMsg;
-        if (arkMsg.FindMessage("Rules", &rulesMsg) != B_OK)
+        BMessage typesMsg;
+        if (arkMsg.FindMessage("FileTypes", &typesMsg) != B_OK)
             continue;
 
         char* foundMimeType;
-        for (int32 mimeIdx = 0; rulesMsg.GetInfo(B_STRING_TYPE, mimeIdx, &foundMimeType, NULL) == B_OK; mimeIdx++)
+        for (int32 mimeIdx = 0; typesMsg.GetInfo(B_MESSAGE_TYPE, mimeIdx, &foundMimeType, NULL) == B_OK; mimeIdx++)
         {
             if (strcmp(mimeType, foundMimeType) == 0)
                 return InstantiateArchiver(arkPath);
@@ -193,21 +193,19 @@ status_t ArchiverMgr::MergeArchiverRules(RuleMgr* ruleMgr)
         if (m_fullMetaDataMsg->FindMessage(arkPath, &arkMsg) != B_OK)
             continue;
 
-        BMessage rulesMsg;
-        if (arkMsg.FindMessage("Rules", &rulesMsg) != B_OK)
+        BMessage fileTypesMsg;
+        if (arkMsg.FindMessage("FileTypes", &fileTypesMsg) != B_OK)
             continue;
 
         char* mimeType;
-        int32 count = 0;
         // iterate our loaded mime rules and add them to the rule manager
-        for (int32 idx = 0; rulesMsg.GetInfo(B_STRING_TYPE, idx, &mimeType, NULL, &count) == B_OK; idx++)
+        for (int32 idx = 0; fileTypesMsg.GetInfo(B_MESSAGE_TYPE, idx, &mimeType, NULL) == B_OK; idx++)
         {
-            for (int32 subidx = 0; subidx < count; subidx++)
-            {
-                const char* extension;
-                rulesMsg.FindString(mimeType, subidx, &extension);
+            BMessage mimeMsg;
+            fileTypesMsg.FindMessage(mimeType, &mimeMsg);
+            const char* extension = NULL;
+            for (int32 subidx = 0; mimeMsg.FindString("Extension", subidx, &extension) == B_OK; subidx++)
                 ruleMgr->AddMimeRule(strdup(mimeType), strdup(extension));
-            }
         }
     }
 

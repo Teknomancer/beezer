@@ -18,10 +18,14 @@ resource(42, "ArchiverMetaData") message {
 	"ArchiverName" = "zstd",
 	"DefaultExtension" = ".tar.zst",
 	"DefaultCompressionLevel" = 3,
-	"Rules" = message {
-		"application/x-zstd-compressed-tar" = ".tar.zst",
-		"application/x-zstd" = ".zst",
-		"application/x-zstd" = ".zstd"
+	"FileTypes" = message {
+		"application/x-zstd-compressed-tar" = message {
+			"Extension" = ".tar.zst"
+		},
+		"application/x-zstd" = message {
+			"Extension" = ".zst",
+			"Extension" = ".zstd"
+		}
 	}
 };
 

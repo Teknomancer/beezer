@@ -18,13 +18,21 @@ resource(42, "ArchiverMetaData") message {
 	"ArchiverName" = "gzip",
 	"DefaultExtension" = ".tar.gz",
 	"DefaultCompressionLevel" = 6,
-	"Rules" = message {
-		"application/x-gzip" = ".gz",
-		"application/x-gzip" = ".tgz",
-		"application/x-gzip" = ".tar.gz",
-		"application/x-gunzip" = ".gz",
-		"application/gzip" = ".gz",
-		"application/gunzip" = ".gz"
+	"FileTypes" = message {
+		"application/x-gzip" = message {
+			"Extension" = ".gz",
+			"Extension" = ".tgz",
+			"Extension" = ".tar.gz"
+		},
+		"application/x-gunzip" = message {
+			"Extension" = ".gz"
+		},
+		"application/gzip" = message {
+			"Extension" = ".gz"
+		},
+		"application/gunzip" = message {
+			"Extension" = ".gz"
+		}
 	}
 };
 

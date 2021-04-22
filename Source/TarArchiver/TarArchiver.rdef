@@ -17,9 +17,13 @@ resource app_version {
 resource(42, "ArchiverMetaData") message {
 	"ArchiverName" = "tar",
 	"DefaultExtension" = ".tar",
-	"Rules" = message {
-		"application/tar" = ".tar",
-		"application/x-tar" = ".tar"
+	"FileTypes" = message {
+		"application/tar" = message {
+			"Extension" = ".tar"
+		},
+		"application/x-tar" = message {
+			"Extension" = ".tar"
+		}
 	}
 };
 

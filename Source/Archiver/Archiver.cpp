@@ -133,14 +133,14 @@ status_t Archiver::LoadMetaData(BMessage* metaDataMsg)
 
     m_defaultCompressionLevel = metaDataMsg->GetInt32("DefaultCompressionLevel", -1);
 
-    BMessage rulesMsg;
-    if (metaDataMsg->FindMessage("Rules", &rulesMsg) == B_OK)
+    BMessage typesMsg;
+    if (metaDataMsg->FindMessage("FileTypes", &typesMsg) == B_OK)
     {
         // populate our m_mimeList for convenient access to mimetypes
         char* mimeType;
         // we aren't concerned with the count found for each mimetype as we don't need to loop through
         // to get a list of extensions, we're only concerned with unique mimetypes
-        for (int32 idx = 0; rulesMsg.GetInfo(B_STRING_TYPE, idx, &mimeType, NULL, NULL) == B_OK; idx++)
+        for (int32 idx = 0; typesMsg.GetInfo(B_MESSAGE_TYPE, idx, &mimeType, NULL, NULL) == B_OK; idx++)
             m_mimeList.AddItem(strdup(mimeType));
     }
 

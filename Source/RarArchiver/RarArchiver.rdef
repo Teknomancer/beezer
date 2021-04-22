@@ -17,10 +17,16 @@ resource app_version {
 resource(42, "ArchiverMetaData") message {
 	"ArchiverName" = "rar",
 	"DefaultExtension" = ".rar",
-	"Rules" = message {
-		"application/x-rar" = ".rar",
-		"application/x-rar-compressed" = ".rar",
-		"application/rar" = ".rar"
+	"FileTypes" = message {
+		"application/x-rar" = message {
+			"Extension" = ".rar"
+		},
+		"application/x-rar-compressed" = message {
+			"Extension" = ".rar"
+		},
+		"application/rar" = message {
+			"Extension" = ".rar"
+		}
 	}
 };
 
