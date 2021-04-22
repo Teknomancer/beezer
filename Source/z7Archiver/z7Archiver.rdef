@@ -18,13 +18,21 @@ resource(42, "ArchiverMetaData") message {
 	"ArchiverName" = "7zip",
 	"DefaultExtension" = ".7z",
 	"DefaultCompressionLevel" = 5,
-	"Rules" = message {
-		"application/x-7z-compressed" = ".7z",
-		"application/x-7z-compressed" = ".7zip",
-		"application/x-7zip-compressed" = ".7z",
-		"application/x-7zip-compressed" = ".7zip",
-		"application/x-7zip" = ".7z",
-		"application/7zip" = ".7z"
+	"FileTypes" = message {
+		"application/x-7z-compressed" = message {
+			"Extension" = ".7z",
+			"Extension" = ".7zip"
+		},
+		"application/x-7zip-compressed" = message {
+			"Extension" = ".7z",
+			"Extension" = ".7zip"
+		},
+		"application/x-7zip" = message {
+			"Extension" = ".7z"
+		},
+		"application/7zip" = message {
+			"Extension" = ".7z"
+		}
 	}
 };
 

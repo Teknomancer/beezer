@@ -18,11 +18,19 @@ resource(42, "ArchiverMetaData") message {
 	"ArchiverName" = "lha",
 	"DefaultExtension" = ".lzh",
 	"DefaultCompressionLevel" = 2,
-	"Rules" = message {
-		"application/x-lzh" = ".lzh",
-		"application/x-lharc" = ".lha",
-		"application/lzh" = ".lzh",
-		"application/lharc" = ".lha"
+	"FileTypes" = message {
+		"application/x-lzh" = message {
+			"Extension" = ".lzh"
+		},
+		"application/x-lharc" = message {
+			"Extension" = ".lha"
+		},
+		"application/lzh" = message {
+			"Extension" = ".lzh"
+		},
+		"application/lharc" = message {
+			"Extension" = ".lha"
+		}
 	}
 };
 

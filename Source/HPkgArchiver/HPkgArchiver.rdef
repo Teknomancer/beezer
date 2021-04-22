@@ -17,8 +17,10 @@ resource app_version {
 resource(42, "ArchiverMetaData") message {
 	"ArchiverName" = "hpkg",
 	"DefaultExtension" = ".hpkg",
-	"Rules" = message {
-		"application/x-vnd.haiku-package" = ".hpkg"
+	"FileTypes" = message {
+		"application/x-vnd.haiku-package" = message {
+			"Extension" = ".hpkg"
+		}
 	}
 };
 

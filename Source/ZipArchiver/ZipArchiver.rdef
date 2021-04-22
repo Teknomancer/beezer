@@ -18,10 +18,16 @@ resource(42, "ArchiverMetaData") message {
 	"ArchiverName" = "zip",
 	"DefaultExtension" = ".zip",
 	"DefaultCompressionLevel" = 9,
-	"Rules" = message {
-		"application/zip" = ".zip",
-		"application/x-zip" = ".zip",
-		"application/x-zip-compressed" = ".zip"
+	"FileTypes" = message {
+		"application/zip" = message {
+			"Extension" = ".zip"
+		},
+		"application/x-zip" = message {
+			"Extension" = ".zip"
+		},
+		"application/x-zip-compressed" = message {
+			"Extension" = ".zip"
+		}
 	}
 };
 

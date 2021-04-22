@@ -18,11 +18,15 @@ resource(42, "ArchiverMetaData") message {
 	"ArchiverName" = "bzip2",
 	"DefaultExtension" = ".tar.bz2",
 	"DefaultCompressionLevel" = 6,
-	"Rules" = message {
-		"application/x-bzip2" = ".bz2",
-		"application/x-bzip2" = ".tbz2",
-		"application/x-bzip2" = ".tar.bz2",
-		"application/bzip2" = ".bz2"
+	"FileTypes" = message {
+		"application/x-bzip2" = message {
+			"Extension" = ".bz2",
+			"Extension" = ".tbz2",
+			"Extension" = ".tar.bz2"
+		},
+		"application/bzip2" = message {
+			"Extension" = ".bz2"
+		}
 	}
 };
 

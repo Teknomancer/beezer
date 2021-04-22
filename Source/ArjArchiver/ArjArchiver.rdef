@@ -18,10 +18,16 @@ resource(42, "ArchiverMetaData") message {
 	"ArchiverName" = "arj",
 	"DefaultExtension" = ".arj",
 	"DefaultCompressionLevel" = 1,
-	"Rules" = message {
-		"application/x-arj-compressed" = ".arj",
-		"application/x-arj" = ".arj",
-		"application/arj" = ".arj"
+	"FileTypes" = message {
+		"application/x-arj-compressed" = message {
+			"Extension" = ".arj"
+		},
+		"application/x-arj" = message {
+			"Extension" = ".arj"
+		},
+		"application/arj" = message {
+			"Extension" = ".arj"
+		}
 	}
 };
 
