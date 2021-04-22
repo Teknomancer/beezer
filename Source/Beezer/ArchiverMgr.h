@@ -12,6 +12,7 @@ class BHandler;
 class BList;
 class BLocker;
 class BMessage;
+class BPath;
 class BPopUpMenu;
 
 class Archiver;
@@ -24,20 +25,23 @@ extern BLocker _ark_locker;
 class ArchiverMgr
 {
     public:
-        ArchiverMgr();
-        ~ArchiverMgr();
+                        ArchiverMgr();
+                        ~ArchiverMgr();
 
         Archiver*       ArchiverForMime(const char* mimeType);
         Archiver*       ArchiverForType(const char* archiverType);
         status_t        ArchiversInstalled(BList& arkTypeList, BList* extensionStrings);
         BPopUpMenu*     BuildArchiveTypesMenu(BHandler* targetHandler, BList* extensionStrings);
-        status_t        MergeArchiverRules(RuleMgr* ruleMgr);
         Archiver*       NewArchiver(const char* name, bool popupErrors, status_t* returnCode);
         Archiver*       InstantiateArchiver(const char* path);
+        char*           ValidateFileType(BPath* path);
 
     private:
+        status_t        MergeArchiverRules();
 
-        BMessage* m_fullMetaDataMsg;
+        BMessage*       m_fullMetaDataMsg;
+        RuleMgr*        m_ruleMgr;
+
 };
 
 ArchiverMgr* _archiverMgr();

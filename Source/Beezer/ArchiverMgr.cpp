@@ -4,6 +4,7 @@
 // All rights reserved.
 
 #include "ArchiverMgr.h"
+#include "AppConstants.h"
 #include "Archiver.h"
 #include "BeezerApp.h"
 #include "CommonStrings.h"
@@ -37,7 +38,9 @@ ArchiverMgr* _archiverMgr()
 
 
 ArchiverMgr::ArchiverMgr()
-    :   m_fullMetaDataMsg(new BMessage())
+    :
+    m_fullMetaDataMsg(new BMessage()),
+    m_ruleMgr(new RuleMgr(&(_bzr()->m_settingsDir), K_RULE_FILE))
 {
     // Load resource metadata from all of the add-ons and store it in global
 
@@ -70,12 +73,15 @@ ArchiverMgr::ArchiverMgr()
 
         m_fullMetaDataMsg->AddMessage(path.Path(), &resMsg);
     }
+
+    MergeArchiverRules();
 }
 
 
 ArchiverMgr::~ArchiverMgr()
 {
     delete m_fullMetaDataMsg;
+    delete m_ruleMgr;
 }
 
 
@@ -181,7 +187,7 @@ Archiver* ArchiverMgr::ArchiverForType(const char* archiverType)
 }
 
 
-status_t ArchiverMgr::MergeArchiverRules(RuleMgr* ruleMgr)
+status_t ArchiverMgr::MergeArchiverRules()
 {
     if (m_fullMetaDataMsg == NULL)
         return B_ERROR;
@@ -205,7 +211,7 @@ status_t ArchiverMgr::MergeArchiverRules(RuleMgr* ruleMgr)
             fileTypesMsg.FindMessage(mimeType, &mimeMsg);
             const char* extension = NULL;
             for (int32 subidx = 0; mimeMsg.FindString("Extension", subidx, &extension) == B_OK; subidx++)
-                ruleMgr->AddMimeRule(strdup(mimeType), strdup(extension));
+                m_ruleMgr->AddMimeRule(strdup(mimeType), strdup(extension));
         }
     }
 
@@ -269,4 +275,9 @@ Archiver* ArchiverMgr::NewArchiver(const char* name, bool popupErrors, status_t*
 
     *returnCode = result;
     return ark;
+}
+
+char* ArchiverMgr::ValidateFileType(BPath *path)
+{
+    return m_ruleMgr->ValidateFileType(path);
 }

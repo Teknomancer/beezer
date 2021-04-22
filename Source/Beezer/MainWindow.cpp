@@ -32,7 +32,6 @@
 #include "PrefsFields.h"
 #include "ProgressWindow.h"
 #include "RecentMgr.h"
-#include "RuleMgr.h"
 #include "SearchWindow.h"
 #include "SelectDirPanel.h"
 #include "SplitPane.h"
@@ -59,7 +58,7 @@
 
 
 MainWindow::MainWindow(BRect frame, WindowMgr* windowMgr, RecentMgr* recentMgr,
-                       RecentMgr* extractMgr, RuleMgr* ruleMgr)
+                       RecentMgr* extractMgr)
     : BWindow(frame, B_TRANSLATE("Untitled"), B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS),
       m_searchWnd(NULL),
       m_extractToPanel(NULL),
@@ -78,7 +77,6 @@ MainWindow::MainWindow(BRect frame, WindowMgr* windowMgr, RecentMgr* recentMgr,
       m_windowMgr(windowMgr),
       m_recentMgr(recentMgr),
       m_extractMgr(extractMgr),
-      m_ruleMgr(ruleMgr),
       m_searchSettingsMsg(NULL),
       m_cachedUIState(NULL),
       m_cachedArkState(NULL),
@@ -3015,7 +3013,7 @@ void MainWindow::OpenArchive()
     // Setup the archiver and get mime from ValidateFileType (NULL if its available in the BNodeInfo or
     //     NULL if no mime string or extension was recognized, if no mimestring but extension, then
     //  a mime string from the rules would be returned
-    char* mime = m_ruleMgr->ValidateFileType(&m_archivePath);
+    char* mime = _archiverMgr()->ValidateFileType(&m_archivePath);
     SetupArchiver(&m_archiveRef, mime);
     if (mime)
         delete[] mime;
