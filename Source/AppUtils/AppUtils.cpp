@@ -254,3 +254,27 @@ BString SupressWildcardSet(const char* str)
     s.ReplaceAll("[", "\\[");
     return s;
 }
+
+
+bool IsPermString(const char *str)
+{
+    size_t const len = strlen(str);
+    if (len == 10)
+    {
+        for (size_t i = 0; i < 10; i++)
+        {
+            char const ch = str[i];
+            switch (ch)
+            {
+                case 'r':   case 'w':   case 'x':
+                case 'd':   case 'l':   case '-':
+                    break;
+                default:
+                    return false;
+            }
+        }
+        return true;
+    }
+    else
+        return false;
+}
