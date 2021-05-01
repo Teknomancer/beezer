@@ -360,8 +360,8 @@ BList GZipArchiver::HiddenColumns(BList const& columns) const
         return TarArchiver::HiddenColumns(columns);
     else
     {
-        BList noHiddenColumns;
-        return noHiddenColumns;
+        BList hiddenColumns;
+        return hiddenColumns;
     }
 }
 

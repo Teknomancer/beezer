@@ -471,14 +471,14 @@ BList TarArchiver::HiddenColumns(BList const& columns) const
 {
     // Indices are: 0-name 1-size 2-packed 3-ratio 4-path 5-date 6-method 7-crc
     // Tar.GZip or Tar don't have 2,3,6,7 -- Pure Gzip have all
-    BList availList(columns);
-    availList.RemoveItems(0, 2);     // Remove 0 and 1
+    BList hiddenColumns(columns);
+    hiddenColumns.RemoveItems(0, 2);     // Remove name and size
 
     // Now list has 0-packed 1-ratio 2-path 3-date 4-method 5-crc
-    availList.RemoveItems(2, 2);     // Remove 2 and 3
+    hiddenColumns.RemoveItems(2, 2);     // Remove path and date
 
     // Now list has 0-packed 1-ratio 2-method 3-crc <-- these columns are to be hidden
-    return availList;
+    return hiddenColumns;
 }
 
 
