@@ -256,9 +256,8 @@ BString SupressWildcardSet(const char* str)
 }
 
 
-bool IsPermString(const char *str)
+bool IsPermString(const char *str, size_t len)
 {
-    size_t const len = strlen(str);
     if (len == 10)
     {
         for (size_t i = 0; i < 10; i++)

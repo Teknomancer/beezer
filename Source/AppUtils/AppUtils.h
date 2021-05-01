@@ -19,6 +19,6 @@ extern const char*    FinalPathComponent(const char* path);
 extern bool           StrEndsWith(const char* str, const char* end);
 extern BString        SupressWildcards(const char* str);
 extern BString        SupressWildcardSet(const char* str);
-extern bool           IsPermString(const char *str);
+extern bool           IsPermString(const char *str, size_t len);
 
 #endif /* _APP_UTILS_H */
