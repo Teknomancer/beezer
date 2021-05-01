@@ -12,7 +12,7 @@ class BMessenger;
 class HPkgArchiver : public Archiver
 {
     public:
-        HPkgArchiver(const char* addonImagePath);
+        HPkgArchiver(BMessage* metaDataMsg);
 
         // Overridables
         void               BuildMenu(BMessage& message);

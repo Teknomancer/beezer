@@ -20,19 +20,18 @@
 #define B_TRANSLATE(x) x
 #endif
 
+#include <cassert>
+#include <cstdlib>
 
-// TODO: Update RuleDefaults.h
-// TODO: Update CMakeLists.txt
 
-
-Archiver* load_archiver(const char* addonImagePath)
+Archiver* load_archiver(BMessage* metaDataMsg)
 {
-	return new HPkgArchiver(addonImagePath);
+    return new HPkgArchiver(metaDataMsg);
 }
 
 
-HPkgArchiver::HPkgArchiver(const char* addonImagePath)
-	: Archiver(addonImagePath)
+HPkgArchiver::HPkgArchiver(BMessage* metaDataMsg)
+	: Archiver(metaDataMsg)
 {
     if (GetBinaryPath(m_hpkgPath, "package") == true)
 		m_error = BZR_DONE;
@@ -48,7 +47,7 @@ status_t HPkgArchiver::ReadOpen(FILE* fp, const char* metaInfo)
 {
     // Read (and drain) meta information from the file.
     size_t const metaLen = strlen(metaInfo);
-    char *metaStr = (char *)malloc(metaLen);
+    char *metaStr = (char*)malloc(metaLen);
     fread(metaStr, sizeof(char), metaLen, fp);
     metaStr[metaLen] = '\0';
 
@@ -57,7 +56,7 @@ status_t HPkgArchiver::ReadOpen(FILE* fp, const char* metaInfo)
     {
         // Read file list.
         uint16 len = B_PATH_NAME_LENGTH * 2 + 512;
-        char lineString[len],
+        char lineStr[len],
              sizeStr[64], yearStr[8], monthStr[8], dayStr[8], hourStr[8], minuteStr[8], secondStr[8], attrStr[16],
              leafStr[B_FILE_NAME_LENGTH + 1];
 
@@ -70,37 +69,71 @@ status_t HPkgArchiver::ReadOpen(FILE* fp, const char* metaInfo)
         uint8 const permLen = sizeof("lrwxrwxrwx") - 1;
         uint8 const permPaddedLen = colPadLen + permLen;
 
-        while (!feof(fp) && fgets(lineString, len, fp))
+        while (!feof(fp) && fgets(lineStr, len, fp))
         {
-            lineString[strlen(lineString) - 1] = '\0';
+            lineStr[strlen(lineStr) - 1] = '\0';
 
-            BString permStr;
-            BString lineStr = lineString;
+            BString permString;
+            BString lineString = lineStr;
+            bool permStringValid = false;
 
             // Could this be a symlink?
-            int32 found = lineStr.FindLast("  -> ");
+            int32 const found = lineString.FindLast("  -> ");
             if (found > permPaddedLen + dateTimePaddedLen /* + length of file name and file size could be included but don't know file name yet. */)
             {
                 // Try get file permissions
-                lineStr.CopyInto(permStr, found - permPaddedLen, permPaddedLen);
-                if (permStr.StartsWith(colPadStr, colPadLen) == true)
+                lineString.CopyInto(permString, found - permPaddedLen, permPaddedLen);
+                if (permString.StartsWith(colPadStr, colPadLen) == true)
                 {
-                    permStr.Remove(0, colPadLen);
-                    if (permStr[0] == 'l')
+                    permString.Remove(0, colPadLen);
+                    if (permString[0] == 'l')
                     {
-                        // Yes this looks like a symlink indeed.
-                        // TODO: Discard rest of path and continue.
+                        permStringValid = IsPermString(permString.String(), permString.Length());
+                        if (permStringValid)
+                        {
+                            // This looks like a symlink, discard target path and continue parsing.
+                            lineString.Truncate(found, true /* lazy, postpone memory optimization */);
+                        }
                     }
                 }
             }
 
-            // TODO: Parse as regular file/directory (i.e. non-symlink).
+            int32 const lineLen = lineString.Length();
+
+            // Have we already parsed the permission string (for symlinks above)?
+            if (permStringValid == false)
+            {
+                if (lineLen > permPaddedLen + dateTimePaddedLen)
+                {
+                    lineString.CopyInto(permString, lineLen - permLen, permLen);
+                    permStringValid = IsPermString(permString.String(), permString.Length());
+                }
+            }
+
+            // If we -still- don't have a permission string, something is wrong.
+            // Bail with an error.
+            if (permStringValid == false)
+                return BZR_ERROR;
+
+            BString dateTimeString;
+            assert(lineLen > permPaddedLen + dateTimePaddedLen);
+            lineString.CopyInto(dateTimeString, lineLen - permPaddedLen - dateTimeLen, dateTimeLen);
+
+            char yearStr[8], monthStr[4], dayStr[4], hourStr[4], minuteStr[4], secondStr[4];
+            sscanf(dateTimeString.String(),
+               "%[0-9]-%[0-9]-%[0-9] %[0-9]:%[0-9]:%[0-9]",
+               yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr);
+
+            struct tm timeStruct; time_t timeValue;
+            MakeTime(&timeStruct, &timeValue, dayStr, monthStr, yearStr, hourStr, minuteStr, secondStr);
+
+            // TODO: Parse file size and file path (including directory depth)
         }
     }
 
     free(metaStr);
     
-    return BZR_ERRSTREAM_FOUND;
+    return BZR_DONE;
 }
 
 
