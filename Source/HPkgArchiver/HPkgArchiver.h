@@ -35,6 +35,8 @@ class HPkgArchiver : public Archiver
 
         status_t           Delete(char*& outputStr, BMessage* list, BMessenger* progress, volatile bool* cancel);
 
+        BList              HiddenColumns(BList const& columnList) const;
+
     private:
         char               m_hpkgPath[B_PATH_NAME_LENGTH];
 };
