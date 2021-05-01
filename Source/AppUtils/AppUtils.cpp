@@ -278,3 +278,18 @@ bool IsPermString(const char *str, size_t len)
     else
         return false;
 }
+
+
+void StrReverse(char *str, size_t len)
+{
+    size_t begin = 0;
+    size_t end = len - 1;
+    while (begin < end)
+    {
+        char const tmp = str[begin];
+        str[begin] = str[end];
+        str[end] = tmp;
+        ++begin;
+        --end;
+    }
+}
