@@ -311,14 +311,14 @@ BList BZipArchiver::HiddenColumns(BList const& columns) const
         // Bzip2 needs to hide some columns, unlike gzip bzip2 doesn't have a list option hence
         // we cannot get certain details namely packed, method, CRC - we hide these 3 columns
         // Indices are: 0-name 1-size 2-packed 3-ratio 4-path 5-date 6-method 7-crc
-        BList availList(columns);
-        availList.RemoveItems(0, 2);     // Remove 0 and 1
+        BList hiddenColumns(columns);
+        hiddenColumns.RemoveItems(0, 2);     // Remove 0 and 1
 
         // Now list has 0-packed 1-ratio 2-path 3-date 4-method 5-crc
-        availList.RemoveItems(3, 1);     // Remove 3 we don't want to hide date
+        hiddenColumns.RemoveItems(3, 1);     // Remove 3 we don't want to hide date
 
         // Now list has 0-packed 1-ratio 2-path 3-method 4-crc <-- these columns are to be hidden
-        return availList;
+        return hiddenColumns;
     }
 }
 

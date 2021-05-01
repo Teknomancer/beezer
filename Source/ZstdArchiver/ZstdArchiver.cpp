@@ -354,8 +354,12 @@ BList ZstdArchiver::HiddenColumns(BList const& columns) const
         return TarArchiver::HiddenColumns(columns);
     else
     {
-        BList noHiddenColumns;
-        return noHiddenColumns;
+        // Indices are: 0-name 1-size 2-packed 3-ratio 4-path 5-date 6-method 7-crc
+        BList hiddenColumns(columns);
+        hiddenColumns.RemoveItems(0, 7);    // Remove name..method
+
+        // Now list has 0-crc <-- this column is to be hidden
+        return hiddenColumns;
     }
 }
 
