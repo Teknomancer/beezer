@@ -55,12 +55,6 @@ status_t HPkgArchiver::ReadOpen(FILE* fp, const char* metaInfo)
     // Meta information matches what we expect, proceed to read the actual file list.
     if (strcmp(metaStr, metaInfo) == 0)
     {
-        // Read file list.
-        uint16 len = B_PATH_NAME_LENGTH * 2 + 512;
-        char lineStr[len],
-             sizeStr[64], yearStr[8], monthStr[8], dayStr[8], hourStr[8], minuteStr[8], secondStr[8], attrStr[16],
-             leafStr[B_FILE_NAME_LENGTH + 1];
-
         const char colPadStr[] = "  ";                  // whitespace padding prior to each distinct column.
         uint8 const colPadLen = sizeof(colPadStr) - 1;
 
@@ -70,15 +64,21 @@ status_t HPkgArchiver::ReadOpen(FILE* fp, const char* metaInfo)
         uint8 const permLen = sizeof("lrwxrwxrwx") - 1;
         uint8 const permPaddedLen = colPadLen + permLen;
 
+        uint16 const len = B_PATH_NAME_LENGTH + 1024;
+        char lineStr[len],
+             sizeStr[64], yearStr[8], monthStr[8], dayStr[8], hourStr[8], minuteStr[8], secondStr[8],
+             permStr[permLen + 1],
+             dateTimeStr[dateTimeLen + 1],
+             leafStr[B_FILE_NAME_LENGTH + 1];
+
+        // Read file list.
         while (!feof(fp) && fgets(lineStr, len, fp))
         {
             lineStr[strlen(lineStr) - 1] = '\0';
-
             BString lineString = lineStr;
 
-            char permStr[permLen + 1];
-            memset(&permStr[0], 0, sizeof(permStr));
             bool permStringValid = false;
+            memset(&permStr[0], 0, sizeof(permStr));
 
             // Could this be a symlink?
             int32 const found = lineString.FindLast("  -> ");
@@ -109,23 +109,18 @@ status_t HPkgArchiver::ReadOpen(FILE* fp, const char* metaInfo)
                 permStringValid = IsPermString(permStr, permLen);
             }
 
-            // If we -still- don't have a permission string, something is terribly wrong.
             if (permStringValid == true)
             { /* likely */ }
             else
                 return BZR_ERROR;
 
             // Parse file date and time
-            char dateTimeStr[dateTimeLen + 1];
-            memset(&dateTimeStr[0], 0, sizeof(dateTimeStr));
-
             assert(lineLen > permPaddedLen + dateTimePaddedLen);
             int32_t const dateTimeIndex = lineLen - permPaddedLen - dateTimeLen;
+            memset(&dateTimeStr[0], 0, sizeof(dateTimeStr));
             lineString.CopyInto(&dateTimeStr[0], dateTimeIndex, dateTimeLen);
-
-            char yearStr[8], monthStr[4], dayStr[4], hourStr[4], minuteStr[4], secondStr[4];
             sscanf(dateTimeStr, "%[0-9]-%[0-9]-%[0-9] %[0-9]:%[0-9]:%[0-9]",
-                   yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr);
+                yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr);
 
             // Parse file size
             if (dateTimeIndex > 2 * colPadLen
@@ -134,10 +129,9 @@ status_t HPkgArchiver::ReadOpen(FILE* fp, const char* metaInfo)
             else
                 return BZR_ERROR;
 
-            char sizeStr[32];
-            memset(&sizeStr[0], 0, sizeof(sizeStr));
             int32 sizeRevIndex = dateTimeIndex - colPadLen - 1;
             int32 sizeIndex = 0;
+            memset(&sizeStr[0], 0, sizeof(sizeStr));
             do
             {
                 char ch = lineString[sizeRevIndex];
@@ -146,7 +140,7 @@ status_t HPkgArchiver::ReadOpen(FILE* fp, const char* metaInfo)
                 else
                     break;
                 --sizeRevIndex;
-            } while (sizeRevIndex > 0 && sizeIndex < sizeof(sizeStr) - 1);
+            } while (sizeRevIndex > 0 && sizeIndex < (int32)sizeof(sizeStr) - 1);
             StrReverse(sizeStr, sizeIndex);
 
             struct tm timeStruct;
@@ -154,6 +148,7 @@ status_t HPkgArchiver::ReadOpen(FILE* fp, const char* metaInfo)
             MakeTime(&timeStruct, &timeValue, dayStr, monthStr, yearStr, hourStr, minuteStr, secondStr);
 
             // TODO: Parse filename and directory
+            (void)leafStr;
         }
     }
 
@@ -163,7 +158,7 @@ status_t HPkgArchiver::ReadOpen(FILE* fp, const char* metaInfo)
 }
 
 
-status_t HPkgArchiver::Open(entry_ref* ref, BMessage* fileList)
+status_t HPkgArchiver::Open(entry_ref* ref, BMessage* /*fileList*/)
 {
     m_archiveRef = *ref;
     m_archivePath.SetTo(ref);
@@ -239,52 +234,52 @@ status_t HPkgArchiver::Open(entry_ref* ref, BMessage* fileList)
 }
 
 
-status_t HPkgArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger* progress,
-                              volatile bool* cancel)
+status_t HPkgArchiver::Extract(entry_ref* /*refToDir*/, BMessage* /*message*/, BMessenger* /*progress*/,
+                              volatile bool* /*cancel*/)
 {
     return BZR_NOT_SUPPORTED;
 }
 
 
-status_t HPkgArchiver::ReadExtract(FILE* fp, BMessenger* progress, volatile bool* cancel)
+status_t HPkgArchiver::ReadExtract(FILE* /*fp*/, BMessenger* /*progress*/, volatile bool* /*cancel*/)
 {
     return BZR_DONE;
 }
 
 
-status_t HPkgArchiver::Test(char*& outputStr, BMessenger* progress, volatile bool* cancel)
+status_t HPkgArchiver::Test(char*& /*outputStr*/, BMessenger* /*progress*/, volatile bool* /*cancel*/)
 {
     return BZR_NOT_SUPPORTED;
 }
 
 
-status_t HPkgArchiver::ReadTest(FILE* fp, char*& outputStr, BMessenger* progress, volatile bool* cancel)
+status_t HPkgArchiver::ReadTest(FILE* /*fp*/, char*& /*outputStr*/, BMessenger* /*progress*/, volatile bool* /*cancel*/)
 {
     return BZR_NOT_SUPPORTED;
 }
 
 
-status_t HPkgArchiver::Add(bool createMode, const char* relativePath, BMessage* message, BMessage* addedPaths,
-                          BMessenger* progress, volatile bool* cancel)
+status_t HPkgArchiver::Add(bool /*createMode*/, const char* /*relativePath*/, BMessage* /*message*/, BMessage* /*addedPaths*/,
+                          BMessenger* /*progress*/, volatile bool* /*cancel*/)
 {
     return BZR_NOT_SUPPORTED;   
 }
 
 
-status_t HPkgArchiver::Delete(char*& outputStr, BMessage* message, BMessenger* progress,
-                             volatile bool* cancel)
+status_t HPkgArchiver::Delete(char*& /*outputStr*/, BMessage* /*message*/, BMessenger* /*progress*/,
+                             volatile bool* /*cancel*/)
 {
     return BZR_NOT_SUPPORTED;
 }
 
 
-status_t HPkgArchiver::Create(BPath* archivePath, const char* relPath, BMessage* fileList, BMessage* addedPaths,
-                             BMessenger* progress, volatile bool* cancel)
+status_t HPkgArchiver::Create(BPath* /*archivePath*/, const char* /*relPath*/, BMessage* /*fileList*/, BMessage* /*addedPaths*/,
+                             BMessenger* /*progress*/, volatile bool* /*cancel*/)
 {
     return BZR_NOT_SUPPORTED;
 }
 
 
-void HPkgArchiver::BuildMenu(BMessage& message)
+void HPkgArchiver::BuildMenu(BMessage& /*message*/)
 {
 }
