@@ -169,9 +169,11 @@ status_t HPkgArchiver::ReadOpen(FILE* fp, const char* metaInfo)
                     break;
             }
             int32 curDirDepth = leadingSpaces / dirDepthPadLen;
-            // Depth must always increment by 1, so this must be a leaf with leading spaces.
             if (curDirDepth > dirDepth + 1)
+            {
+                // Depth must always increment by 1, so this must be a leaf with leading spaces.
                 curDirDepth = dirDepth + 1;
+            }
 
             // Parse out the leaf string.
             memset(&leafStr[0], 0, sizeof(leafStr));
@@ -179,7 +181,7 @@ status_t HPkgArchiver::ReadOpen(FILE* fp, const char* metaInfo)
             lineString.CopyInto(&leafStr[0], curDirDepthPadLen, trimIndex + 1 - curDirDepthPadLen);
 
             // TODO: It might be easier to maintain a BList of new BStrings or something
-            // to maintain directory structure than this horrible path parsing.
+            // to represent the directory structure than this horrible path parsing.
             // Nonetheless this seems to work for now.
             // The 'package' binary really should consider using a more machine-readable friendly
             // format. This is terrible.
@@ -193,7 +195,8 @@ status_t HPkgArchiver::ReadOpen(FILE* fp, const char* metaInfo)
             }
 
             // If this is a new subdirectory, add it to the existing directory path.
-            if (permStr[0] == 'd')
+            bool const isDirectory = !!(permStr[0] == 'd');
+            if (isDirectory)
             {
                 dirPath.Append(leafStr);
                 dirPath.Append("/");
@@ -210,10 +213,7 @@ status_t HPkgArchiver::ReadOpen(FILE* fp, const char* metaInfo)
                 time_t timeValue;
                 MakeTime(&timeStruct, &timeValue, dayStr, monthStr, yearStr, hourStr, minuteStr, secondStr);
 
-                if (permStr[0] == 'd')
-                    m_entriesList.AddItem(new ArchiveEntry(true, fullLeaf.String(), sizeStr, "", timeValue, "-", "-"));
-                else
-                    m_entriesList.AddItem(new ArchiveEntry(false, fullLeaf.String(), sizeStr, "", timeValue, "-", "-"));
+                m_entriesList.AddItem(new ArchiveEntry(isDirectory, fullLeaf.String(), sizeStr, "", timeValue, "-", "-"));
             }
 
             // Update directory depth for next iteration.
@@ -351,4 +351,18 @@ status_t HPkgArchiver::Create(BPath* /*archivePath*/, const char* /*relPath*/, B
 
 void HPkgArchiver::BuildMenu(BMessage& /*message*/)
 {
+}
+
+
+BList HPkgArchiver::HiddenColumns(BList const& columns) const
+{
+    // Indices are: 0-name 1-size 2-packed 3-ratio 4-path 5-date 6-method 7-crc
+    BList hiddenColumns(columns);
+    hiddenColumns.RemoveItems(0, 2);     // Remove name and size
+
+    // Now list has 0-packed 1-ratio 2-path 3-date 4-method 5-crc
+    hiddenColumns.RemoveItems(2, 2);     // Remove path and date
+
+    // Now list has 0-packed 1-ratio 2-method 3-crc <-- these columns are to be hidden
+    return hiddenColumns;
 }
