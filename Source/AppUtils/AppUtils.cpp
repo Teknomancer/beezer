@@ -258,9 +258,10 @@ BString SupressWildcardSet(const char* str)
 
 bool IsPermString(const char *str, size_t len)
 {
-    if (len == 10)
+    uint8 const permLen = sizeof("lrwxrwxrwx") - 1;
+    if (len == permLen)
     {
-        for (size_t i = 0; i < 10; i++)
+        for (size_t i = 0; i < permLen; i++)
         {
             char const ch = str[i];
             switch (ch)
