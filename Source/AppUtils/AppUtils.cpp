@@ -293,3 +293,27 @@ void StrReverse(char *str, size_t len)
         --end;
     }
 }
+
+
+BString RootPathAtDepth(const char *pathStr, size_t pathStrLen, size_t depth)
+{
+    // Given a path "a/b/c/d/e/f/g.jpg" and depth = 3, this returns "a/b/c/"
+    assert(pathStr);
+
+    size_t found = 0;
+    for (size_t i = 0; i < pathStrLen; i++)
+    {
+        if (pathStr[i] == '/')
+        {
+            ++found;
+            if (found == depth)
+            {
+                BString result(pathStr, i);
+                return result;
+            }
+        }
+    }
+
+    BString none;
+    return none;
+}

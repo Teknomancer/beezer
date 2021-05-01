@@ -21,5 +21,6 @@ extern BString        SupressWildcards(const char* str);
 extern BString        SupressWildcardSet(const char* str);
 extern bool           IsPermString(const char *str, size_t len);
 extern void           StrReverse(char *str, size_t len);
+extern BString        RootPathAtDepth(const char *pathStr, size_t pathStrLen, size_t depth);
 
 #endif /* _APP_UTILS_H */
