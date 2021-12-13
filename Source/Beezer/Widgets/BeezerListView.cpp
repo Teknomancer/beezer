@@ -454,7 +454,7 @@ void BeezerListView::MouseDown(BPoint point)
         // selection, even if one file exist in the selection enable it
         bool enabler = false;
         CLVEasyItem* selItem = NULL;
-        register int32 i = 0L;
+        int32 i = 0L;
 
         while ((selItem = (CLVEasyItem*)FullListItemAt(FullListCurrentSelection(i++))) != NULL)
         {
@@ -1076,7 +1076,7 @@ void BeezerListView::SelectSubItemsOfSelection(bool select)
     //           C               selected items like C. (Note A is not selected)
     //           D               if "select" is false - then deselect all instead of selecting.
 
-    register int32 i = 0L;
+    int32 i = 0L;
     BList originalSelectionList;
     CLVListItem* item;
 
