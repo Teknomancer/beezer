@@ -1,4 +1,4 @@
-# Beezer
+# ![Beezer Icon](Icons/Beezer.svg) Beezer
 
 Beezer is an archiver application for the Haiku operating system and functionally similar to programs like WinZip, Ark (on KDE) and Archive Manager (on Gnome). Beezer does **not** work on Windows, GNU/Linux or MacOS.
 
