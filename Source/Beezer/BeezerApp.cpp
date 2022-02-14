@@ -440,7 +440,7 @@ void BeezerApp::MessageReceived(BMessage* message)
 
         case M_HELP_MANUAL: case M_ADDON_HELP: case M_PREFS_HELP:
         {
-            BPath helpFilePath(&m_docsDir, "Index.html");
+            BPath helpFilePath(&m_docsDir, "index.html");
             BEntry helpFileEntry(helpFilePath.Path(), true);
 
             if (helpFileEntry.Exists() == false)

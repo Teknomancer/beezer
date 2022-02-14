@@ -20,7 +20,7 @@
 #define K_RULE_FILE                          "_bzr_rules.txt"
 #define K_STUB_JOINER_FILE                   "FileJoinerStub"
 #define K_ARK_DIR_NAME                       "add-ons/"
-#define K_DOC_DIR_NAME                       "docs/"
+#define K_DOC_DIR_NAME                       "UserGuide/"
 #define K_SETTINGS_DIR_NAME                  "Beezer"
 #define K_STUB_DIR_NAME                      "FileJoinerStub/"
 
