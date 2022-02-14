@@ -243,7 +243,7 @@ enum
 
     M_PREFS_HELP,
 
-    M_HELP_MANUAL,
+    M_HELP_USERGUIDE,
     M_HELP_WEBSITE,
     M_HELP_GITHUB,
 

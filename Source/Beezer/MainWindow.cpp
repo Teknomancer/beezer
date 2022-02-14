@@ -1104,7 +1104,7 @@ void MainWindow::MessageReceived(BMessage* message)
         }
 
         case M_FILE_NEW: case M_FILE_OPEN: case M_EDIT_PREFERENCES:
-        case M_HELP_MANUAL: case M_HELP_WEBSITE: case M_HELP_GITHUB:
+        case M_HELP_USERGUIDE: case M_HELP_WEBSITE: case M_HELP_GITHUB:
         case B_ABOUT_REQUESTED:
         {
             be_app_messenger.SendMessage(message);

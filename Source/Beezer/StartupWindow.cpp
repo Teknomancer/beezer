@@ -97,7 +97,7 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
     //m_prefsBtn->SetExplicitMinSize(BSize(K_TOOLBAR_WIDTH, -1));
 
     m_helpBtn = new ImageButton("StartupWindow:Help", BZ_TR(kHelpString),
-                                 _bmps->m_tbarHelpBmp, NULL, new BMessage(M_HELP_MANUAL), false,
+                                 _bmps->m_tbarHelpBmp, NULL, new BMessage(M_HELP_USERGUIDE), false,
                                  ui_color(B_PANEL_BACKGROUND_COLOR), ImageButton::BELOW_ICON,
                                 false, true, true);
     m_helpBtn->SetExplicitMinSize(BSize(K_TOOLBAR_WIDTH, -1));
@@ -132,7 +132,7 @@ StartupWindow::StartupWindow(RecentMgr* recentMgr, bool startup)
     m_openRecentBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Open a recently viewed archive")));
     m_prefsBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Edit application settings")));
     m_toolsBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Additional tools")));
-    m_helpBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Open the help manual")));
+    m_helpBtn->SetToolTip(const_cast<char*>(B_TRANSLATE("Open the user guide")));
 
     CenterOnScreen();
 
@@ -181,7 +181,7 @@ void StartupWindow::MessageReceived(BMessage* message)
         case M_FILE_OPEN:
         case M_FILE_NEW:
         case M_EDIT_PREFERENCES:
-        case M_HELP_MANUAL:
+        case M_HELP_USERGUIDE:
         {
             be_app_messenger.SendMessage(message);
             break;
