@@ -19,13 +19,13 @@ Beezer's official home page can be found here: https://ramshankar.org/software/b
 ## Build Instructions
 
 ```
-cd Source/
-cmake .
-make
+~/Beezer> cd Source
+~/Beezer/Source> cmake .
+~/Beezer/Source> make
 ```
 If you have a powerful computer you may speed up compilation by using multiple jobs. For example:
 ```
-make -j8
+~/Beezer/Source> make -j8
 ```
 
 Once the build succeeds, the binaries should be available in the `build` directory.  Check the wiki for a list of the [build options](https://github.com/Teknomancer/beezer/wiki/CMake-Build-Options) available.
