@@ -1,0 +1,91 @@
+
+/* disable uppercase on the main heading */
+div.header h2 {
+    margin-top: 10px;
+    text-transform: none;
+}
+
+div.header img.rightlogo {
+    margin-top: 10px;
+    float: left;
+}
+
+nav {
+    background-color: #f8f8f8;
+    width: fit-content;
+    margin: 0 auto;
+    margin-top: 15px;
+    margin-left: 0px;
+}
+
+.toctree-wrapper {
+    background-color: #f8f8f8;
+    width: fit-content;
+    min-width: 300px;
+    margin: 0 auto;
+    margin-top: 15px;
+    margin-left: 0px;
+    padding-right: 5px;
+}
+
+a:visited {
+    color: #dc3c01;
+}
+
+.section {
+    padding-top: 20px;
+}
+
+ul.simple li p a {
+    font-weight: normal;
+}
+
+.terminal .highlight {
+    border-color: #ffb11f;
+    border-radius: 5px;
+    border-style: dotted;
+    border-width: thin;
+    margin: 0;
+    padding: 0.5em;
+    background-color: #3a3a3a;
+    color: #ffb11f;
+}
+
+p.topic-title {
+    padding-bottom: 2px;
+    padding-top: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: #dfdfdf;
+    color: #0c3762;
+    font-size: 1.0em;
+}
+
+.caption-text {
+    padding-bottom: 2px;
+    padding-top: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: #dfdfdf;
+    color: #0c3762;
+    font-size: 1.1em;
+    font-weight: bold;
+    width: calc(100% - 5px);
+    display: inline-block
+}
+
+.caption {
+    margin: 0;
+}
+
+td p {
+    text-align: center;
+}
+
+table.docutils td {
+    border-bottom: 0px;
+}
+
+table.docutils td + td {
+    border-left: solid 1px #f0f0f0;
+}
