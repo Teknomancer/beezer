@@ -438,7 +438,7 @@ void BeezerApp::MessageReceived(BMessage* message)
             break;
         }
 
-        case M_HELP_MANUAL: case M_ADDON_HELP: case M_PREFS_HELP:
+        case M_HELP_USERGUIDE: case M_ADDON_HELP: case M_PREFS_HELP:
         {
             BPath helpFilePath(&m_docsDir, "index.html");
             BEntry helpFileEntry(helpFilePath.Path(), true);
