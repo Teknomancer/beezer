@@ -29,3 +29,12 @@ make -j8
 ```
 
 Once the build succeeds, the binaries should be available in the `build` directory.  Check the wiki for a list of the [build options](https://github.com/Teknomancer/beezer/wiki/CMake-Build-Options) available.
+
+## Build Requirements
+
+You will need to have `sphinx` installed if you want to build the user guide.  It can be insalled with the python `pip` command.  Depending on which python package you have installed the name of the `pip` command may be slightly different.  For example, to use python 3.8...
+
+```
+~> pkgman install pip_python38
+~> pip3.8 install sphinx
+```
