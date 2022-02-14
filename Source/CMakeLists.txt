@@ -65,10 +65,18 @@ add_subdirectory(z7Archiver)
 add_subdirectory(ZipArchiver)
 add_subdirectory(ZstdArchiver)
 
-add_custom_target("symlink-docs-to-build-dir"
-	ALL
-	COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_CURRENT_SOURCE_DIR}/../Docs/HelpManual" "${BEEZER_BUILD_DIR}/docs"
-	SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/../Docs/HelpManual"
-	VERBATIM)
+option(BUILD_USERGUIDE "Use sphinx to generate the user guide" ON)
+if(BUILD_USERGUIDE)
+	option(SPHINX_VERBOSE "Enable verbose sphinx output when building the user guide" ON)
+	option(SPHINX_FULL_REBUILD "Always copy static files and images when building the user guide" OFF)
+	find_package(Sphinx)
+	if (Sphinx_FOUND)
+		add_subdirectory(../Docs/UserGuide ${PROJECT_BINARY_DIR}/UserGuide)
+	else()
+		message(WARNING "Sphinx was not found.  You will not be able to build the user guide.")
+	endif()
+else()
+	message("Generating the user guide is disabled.")
+endif()
 
-set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES "${BEEZER_BUILD_DIR}/docs")
+set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES "${BEEZER_BUILD_DIR}/UserGuide")
