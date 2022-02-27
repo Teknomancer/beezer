@@ -8,11 +8,16 @@ A list of important changes that have come accross Beezer.
 
 **Version 1.00**
 
+   -  Add Haiku native translation/localisation
+   -  Add ability to open files on the command line
+   -  User guide rewrite
    -  Add basic support for multipart rar archives
    -  Disable arj support and creating/writing of rar archives until
       Haiku has modern ports of these
    -  Enhanced path checking for worker binaries
    -  Added support for xz archives
+   -  Added support for zstd archives
+   -  Added support for hpkg archives
    -  Removed obsolete ZETA code
    -  Migrate settings folder to B_USER_SETTINGS_DIRECTORY, to be more
       consistent with Haiku standards
