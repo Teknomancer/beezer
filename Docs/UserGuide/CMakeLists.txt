@@ -42,10 +42,12 @@ set(USERGUIDE_SOURCES
 	addons/Arj.rst
 	addons/Bzip2.rst
 	addons/Gzip.rst
+	addons/Hpkg.rst
 	addons/Lha.rst
 	addons/Rar.rst
 	addons/Xz.rst
 	addons/Zip.rst
+	addons/Zstd.rst
 	tools/FileJoiner.rst
 	tools/FileSplitter.rst
 	tools/QuickCreate.rst
