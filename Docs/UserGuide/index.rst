@@ -66,10 +66,12 @@ Welcome to the Beezer User Guide
    Arj <addons/Arj>
    Bzip2 <addons/Bzip2>
    Gzip <addons/Gzip>
+   Hpkg <addons/Hpkg>
    Lha <addons/Lha>
    Rar <addons/Rar>
    Xz <addons/Xz>
    Zip <addons/Zip>
+   Zstd <addons/Zstd>
 
 
 .. toctree::
