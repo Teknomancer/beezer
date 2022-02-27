@@ -73,7 +73,7 @@ the :doc:`Welcome window <../WelcomeWindow>` and the other from the
 
    This will start the process of joining the files.
 
-**! Tip**
+.. container:: tip
 
    You can drop the first piece file to the File Joiner window. Also, you
    can drop a folder on the File Joiner window to specify the folder for

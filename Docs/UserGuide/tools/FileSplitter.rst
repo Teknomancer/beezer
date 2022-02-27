@@ -107,7 +107,7 @@ The File Splitter can be opened from two places, either from the
       cancelled before it completes. Beezer will delete any partially created
       pieces, but whatever pieces are fully created will not be deleted.
 
-   **! Tip**
+.. container:: tip
 
       You can choose files to split from the *Tracker* by dropping them on the
       File Splitter window. Also, you can drop a folder on the File Splitter
