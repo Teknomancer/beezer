@@ -90,9 +90,9 @@ Context menu
       The Select Folder command select all the contents of all selected
       folders. It's sometimes handy to right-click a folder and choose this.
 
-   .. image:: images/ContextMenu.png
-      :alt: Context Menu
-      :align: center
+.. image:: images/ContextMenu.png
+   :alt: Context Menu
+   :align: center
 
 LogView
 =======
