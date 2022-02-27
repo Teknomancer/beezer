@@ -76,7 +76,7 @@ the "Create" button!! Cancelling the operation is allowed, but doing so
 will almost always delete the incomplete archive rather than get an
 archive with partially added files....
 
-**! Tip**
+.. container:: tip
 
    You can specify the default archive type to make the quick create
    process even faster! That can be done from

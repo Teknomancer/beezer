@@ -18,5 +18,7 @@ will leave the archive in an indeterminate state and you will have to
 re-open the archive. Read :ref:`this <AddingFiles:Cancelling the operation>`
 note on cancelling such critical operations.
 
-**Tip**: It is always quicker to delete folders if you collapse
-(fold) them before deleting.
+.. container:: tip
+
+   It is always quicker to delete folders if you collapse
+   (fold) them before deleting.
