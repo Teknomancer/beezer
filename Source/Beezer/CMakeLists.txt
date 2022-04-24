@@ -42,6 +42,7 @@ haiku_add_executable(Beezer
 	../HashTable/HashTable.cpp
 	../ListEntry/ListEntry.cpp
 	../PipeMgr/PipeMgr.cpp
+	../Shared/DirRefFilter.cpp
 	Dialogs/InputAlert.cpp
 	Dialogs/SelectDirPanel.cpp
 	FileJoiner/FileJoinerWindow.cpp

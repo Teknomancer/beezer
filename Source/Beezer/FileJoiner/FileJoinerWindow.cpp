@@ -8,6 +8,7 @@
 #include "BevelView.h"
 #include "BitmapPool.h"
 #include "CommonStrings.h"
+#include "DirRefFilter.h"
 #include "FSUtils.h"
 #include "UIConstants.h"
 #include "Joiner.h"
@@ -433,7 +434,7 @@ void FileJoinerWindow::MessageReceived(BMessage* message)
             if (m_dirPanel == NULL)
             {
                 m_dirPanel = new SelectDirPanel(B_OPEN_PANEL, new BMessenger(this), NULL, B_DIRECTORY_NODE,
-                                                false, new BMessage(M_JOIN_FOLDER_SELECTED), NULL, true, false);
+                                                false, new BMessage(M_JOIN_FOLDER_SELECTED), new DirRefFilter(), true, false);
 
                 m_dirPanel->SetButtonLabel(B_DEFAULT_BUTTON, BZ_TR(kSelectString));
                 m_dirPanel->Window()->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);

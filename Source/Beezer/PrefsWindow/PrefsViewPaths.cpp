@@ -6,6 +6,7 @@
 #include "PrefsViewPaths.h"
 #include "BitmapPool.h"
 #include "CommonStrings.h"
+#include "DirRefFilter.h"
 #include "ImageButton.h"
 #include "Preferences.h"
 #include "PrefsFields.h"
@@ -249,7 +250,7 @@ void PrefsViewPaths::MessageReceived(BMessage* message)
             if (m_openPanel == NULL)
             {
                 m_openPanel = new BFilePanel(B_OPEN_PANEL, m_messenger, NULL, B_DIRECTORY_NODE, false, NULL,
-                                             NULL, true, true);
+                                             new DirRefFilter(), true, true);
                 m_openPanel->SetButtonLabel(B_DEFAULT_BUTTON, B_TRANSLATE("Select"));
             }
 

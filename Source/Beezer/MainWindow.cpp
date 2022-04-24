@@ -16,6 +16,7 @@
 #include "CLVColumnLabelView.h"
 #include "CommentWindow.h"
 #include "CommonStrings.h"
+#include "DirRefFilter.h"
 #include "FSUtils.h"
 #include "HashTable.h"
 #include "ImageButton.h"
@@ -2691,7 +2692,7 @@ void MainWindow::SetupExtractPanel(BMessage* extractMessage)
     if (m_extractToPanel == NULL)
     {
         m_extractToPanel = new SelectDirPanel(B_OPEN_PANEL, new BMessenger(this), 0,
-                                              B_DIRECTORY_NODE, false, NULL);
+                                              B_DIRECTORY_NODE, false, NULL, new DirRefFilter());
         m_extractToPanel->SetButtonLabel(B_DEFAULT_BUTTON, BZ_TR(kExtractString));
         m_extractToPanel->Window()->SetFeel(B_MODAL_SUBSET_WINDOW_FEEL);
         m_extractToPanel->Window()->AddToSubset(this);
