@@ -32,7 +32,7 @@ Once the build succeeds, the binaries should be available in the `build` directo
 
 ## Build Requirements
 
-You will need to have `sphinx` installed if you want to build the user guide.  It can be insalled with the python `pip` command.  Depending on which python package you have installed the name of the `pip` command may be slightly different.  For example, to use python 3.8...
+You will need to have `sphinx` installed if you want to build the user guide.  It can be installed with the python `pip` command.  Depending on which python package you have installed the name of the `pip` command may be slightly different.  For example, to use python 3.8...
 
 ```
 ~> pkgman install pip_python38
