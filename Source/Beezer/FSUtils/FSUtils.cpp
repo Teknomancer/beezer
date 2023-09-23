@@ -352,12 +352,11 @@ status_t SplitFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress, 
         bufSize = fragmentSize;
 
     ssize_t bufSizeOriginal = bufSize;
-    char bufFileName[B_FILE_NAME_LENGTH+1];
     for (uint16 i = 0; i < fragmentCount; i++)
     {
         BFile destFile;
-        sprintf(bufFileName, "%s%s%0*d", destLeaf, sepString, width, i + 1);
-        BString destFileName = bufFileName;
+        BString destFileName;
+        destFileName.SetToFormat("%s%s%0*d", destLeaf, sepString, width, i + 1);
 
         status_t const err = destFile.SetTo(destDir, destFileName.String(),
                                             B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE);
@@ -421,7 +420,8 @@ status_t SplitFile(BEntry* srcEntry, BDirectory* destDir, BMessenger* progress, 
         // Copy attributes only for the first file
         if (i == 0)
         {
-            sprintf(bufFileName, "%s%s%0*d", destLeaf, sepString, width, 1);
+            BString bufFileName;
+            bufFileName.SetToFormat("%s%s%0*d", destLeaf, sepString, width, 1);
             destFile.Unset();
             status_t const err2 = destFile.SetTo(destDir, bufFileName, B_READ_WRITE);
             if (err2 == B_OK)
