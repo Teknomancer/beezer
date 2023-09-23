@@ -14,6 +14,8 @@ const float kListEntryHeight = 20.0f;
 class ListEntry : public CLVEasyItem
 {
     public:
+    using CLVEasyItem::Update;
+
         // TODO: Why are these text0..text7 (give them better names?)
         ListEntry(uint32 level, bool superitem, bool expanded, BBitmap* icon, const char* text0,
                   const char* text1, const char* text2, const char* text3, const char* text4,
