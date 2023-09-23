@@ -13,6 +13,8 @@ CMakeLists.txt.user
 Source/build*
 .dir-locals.el
 .ignore
+.cache
+.ccls-cache
 .clang-format
 GPATH
 GRTAGS
