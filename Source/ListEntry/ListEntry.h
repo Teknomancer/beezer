@@ -14,7 +14,9 @@ const float kListEntryHeight = 20.0f;
 class ListEntry : public CLVEasyItem
 {
     public:
+#if __GNUC__ != 2
     using CLVEasyItem::Update;
+#endif
 
         // TODO: Why are these text0..text7 (give them better names?)
         ListEntry(uint32 level, bool superitem, bool expanded, BBitmap* icon, const char* text0,
