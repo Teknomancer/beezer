@@ -69,6 +69,7 @@ Welcome to the Beezer User Guide
    Hpkg <addons/Hpkg>
    Lha <addons/Lha>
    Rar <addons/Rar>
+   SquashFS <addons/SquashFS>
    Xz <addons/Xz>
    Zip <addons/Zip>
    Zstd <addons/Zstd>
