@@ -54,6 +54,10 @@ const char* kDefaultRules = "\
 #application/x-zstd=.zstd\n\
 \n\
 #application/x-vnd.haiku-package=.hpkg\n\
+\n\
+#application/x-squashfs-image=.sfs\n\
+#application/x-squashfs-image=.sqfs\n\
+#application/x-squashfs-image=.squashfs\n\
 ";
 
 #endif  // _RULE_DEFAULTS_H_
