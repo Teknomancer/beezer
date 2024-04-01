@@ -66,15 +66,15 @@ They pollute the global namespace but whether it's also available under `std` is
 
 ## Naming
 
-- Class names and class member functions are in capitalized words case.\
+- Class names and class member functions are in upper camel case.\
   `class PrefsWindow` and `PrefsWindow::IsHidden()`
-- Class members variables are prefixed with `m_` and follow camel case.\
+- Class members variables are prefixed with `m_` followed by lower camel case.\
   `bool m_isFaulting`
-- Message constants are upper case with underscores separating words.\
+- Message constants are in upper case with underscores separating words.\
   `const uint32 K_MSG_DONE = 'done';`
-- Message constants that are static members of a class are prefixed with `k` and follow capitalized words.\
+- Message constants that are static members of a class are prefixed with lower case `k` and follow upper camel case.\
   `static const uint32 kInputMessage;`
-- Enums are snake case with their members upper case with underscores separating words.
+- Enums are snake case with their members in upper case with underscores separating words.
   ```
   enum bevel_type
   {
@@ -96,8 +96,7 @@ They pollute the global namespace but whether it's also available under `std` is
 
 ## Constness
 
-- Always make variables/members/data etc. `const` wherever possible regardless of whether you think the compiler might produce better optimized code.
-  `const` makes the intention clear (both to the compiler and the programmer) and prevents accidental changes.
+- Always make variables/members/data etc. `const` wherever possible regardless of whether you think the compiler might produce better optimized code. `const` makes the intention clear (both to the compiler and the programmer) and prevents accidental changes.
 - Always use `const` on the right-side of what is being made constant.\
   Use `int32 const idRef = 32;` rather than `const int32 idRef = 32;`\
   One exception to the rule is `const char*` since it's too widely used.
@@ -105,7 +104,7 @@ They pollute the global namespace but whether it's also available under `std` is
 
 ## General
 
-- Avoid using `#define`s for constants wherever as possible, prefer concrete types.
-- Beezer should compile with gcc2 to be compatible with Haiku x86/gcc2 so this means any advanced C++14/whatever features are out.
-- Avoid using C++ templates as far as possible.
+- Avoid `#define` for constants wherever possible, prefer concrete types.
+- Avoid C++ features that are not incompatible with gcc2 so Beezer remains compatible with Haiku x86/gcc2.
+- Avoid C++ templates as far as possible.
 - Avoid multiple-inheritence and `friend` as far as possible.
