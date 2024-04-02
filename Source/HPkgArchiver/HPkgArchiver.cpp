@@ -32,12 +32,12 @@ Archiver* load_archiver(BMessage* metaDataMsg)
 
 
 HPkgArchiver::HPkgArchiver(BMessage* metaDataMsg)
-	: Archiver(metaDataMsg)
+    : Archiver(metaDataMsg)
 {
     if (GetBinaryPath(m_hpkgPath, "package") == true)
-		m_error = BZR_DONE;
-	else
-	{
+        m_error = BZR_DONE;
+    else
+    {
         m_error = BZR_BINARY_MISSING;
         return;
     }
@@ -303,15 +303,91 @@ status_t HPkgArchiver::Open(entry_ref* ref, BMessage* /*fileList*/)
 }
 
 
-status_t HPkgArchiver::Extract(entry_ref* /*refToDir*/, BMessage* /*message*/, BMessenger* /*progress*/,
-                              volatile bool* /*cancel*/)
+status_t HPkgArchiver::Extract(entry_ref* refToDir, BMessage* message, BMessenger* progress,
+                              volatile bool* cancel)
 {
-    return BZR_NOT_SUPPORTED;
+    if (progress)
+    {
+        BEntry dirEntry(refToDir);
+        if (dirEntry.Exists() == false || dirEntry.IsDirectory() == false)
+            return BZR_EXTRACT_DIR_INIT_ERROR;
+    }
+
+    BPath dirPath(refToDir);
+    BEntry archiveEntry(&m_archiveRef, true);
+    if (archiveEntry.Exists() == false)
+        return BZR_ARCHIVE_PATH_INIT_ERROR;
+
+    int32 count = 0L;
+    if (message)
+    {
+        uint32 type;
+        message->GetInfo(kPath, &type, &count);
+        if (type != B_STRING_TYPE)
+            return BZR_UNKNOWN;
+    }
+
+    m_pipeMgr.FlushArgs();
+    m_pipeMgr << m_hpkgPath << "extract" << "-C" << dirPath.Path() << m_archivePath.Path();
+
+    for (int32 i = 0; i < count; i++)
+    {
+        const char* pathString = NULL;
+        if (message->FindString(kPath, i, &pathString) == B_OK)
+            m_pipeMgr << SupressWildcards(pathString);
+    }
+
+    int outdes[2], errdes[2];
+    thread_id tid = m_pipeMgr.Pipe(outdes, errdes);
+
+    if (tid == B_ERROR || tid == B_NO_MEMORY)
+        return B_ERROR;
+
+    if (progress)
+        resume_thread(tid);
+    else
+    {
+        status_t threadExitCode;
+        wait_for_thread(tid, &threadExitCode);
+    }
+
+    close(errdes[1]);
+    close(outdes[1]);
+
+    status_t exitCode = BZR_DONE;
+    if (progress)
+    {
+        FILE* out = fdopen(outdes[0], "r");
+        exitCode = ReadExtract(out, progress, cancel);
+        fclose(out);
+    }
+
+    close(outdes[0]);
+    close(errdes[0]);
+
+    // Send signal to quit archiver only AFTER pipes are closed
+    if (exitCode == BZR_CANCEL_ARCHIVER)
+        TerminateThread(tid);
+
+    m_pipeMgr.FlushArgs();
+    return exitCode;
 }
 
 
-status_t HPkgArchiver::ReadExtract(FILE* /*fp*/, BMessenger* /*progress*/, volatile bool* /*cancel*/)
+status_t HPkgArchiver::ReadExtract(FILE* fp, BMessenger* /*progress*/, volatile bool* cancel)
 {
+    // Note: currently, /bin/package extract doesn't outputs any lines, so getting progress
+    // info is not possible. Still, having an empty progress dialog open until extraction
+    // is complete, seems better than it dissapearing while files are still being extracted.
+
+    char lineString[999];
+
+    while (fgets(lineString, 998, fp))
+    {
+        if (cancel && *cancel == true)
+            return BZR_CANCEL_ARCHIVER;
+    }
+
     return BZR_DONE;
 }
 
