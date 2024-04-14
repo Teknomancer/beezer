@@ -1631,7 +1631,8 @@ resource file_types message {
 	"types" = "application/x-xz",
 	"types" = "application/x-7zip-compressed",
 	"types" = "application/x-7z-compressed",
-	"types" = "application/x-arj-compressed"
+	"types" = "application/x-arj-compressed",
+	"types" = "application/x-squashfs-image"
 };
 
 resource(3038, "Img:Background") #'PNG ' array {
