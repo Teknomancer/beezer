@@ -142,12 +142,6 @@ BeezerApp::~BeezerApp()
     delete m_windowMgr;
     delete m_archiverMgr;
 
-    if (m_arkTypePopUp != NULL)
-    {
-        delete m_arkTypePopUp;
-        m_arkTypePopUp = NULL;
-    }
-
     for (int32 i = 0; i < m_arkExtensions.CountItems(); i++)
         free((char*)m_arkExtensions.ItemAtFast(i));
 }
