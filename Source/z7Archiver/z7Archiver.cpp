@@ -63,13 +63,16 @@ status_t z7Archiver::ReadOpen(FILE* fp)
          monthStr[5], yearStr[8], hourStr[5], minuteStr[5], secondStr[5],
          pathStr[B_PATH_NAME_LENGTH + 1];
     uint16 const len = sizeof(lineString);
-    uint32 lineCount = 0;
+    bool skipIntroLines = true;
 
     while (fgets(lineString, len, fp) && !feof(fp))
     {
-        // skip first 8 lines
-        if (lineCount++ < 17)
+        // skip lines until we see the --------- line
+        if (skipIntroLines) {
+            if (strncmp(lineString, "-------------------", strlen("-------------------")) == 0)
+                skipIntroLines = false;
             continue;
+        }
 
         // list ends with "----" line, and last line contains sums, so break on first line with "-" as first char.
         if (lineString[0] == '-')
