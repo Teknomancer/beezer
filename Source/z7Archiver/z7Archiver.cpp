@@ -9,6 +9,7 @@
 #include "AppUtils.h"
 #include "KeyedMenuItem.h"
 
+#include <fnmatch.h>
 #include <NodeInfo.h>
 #include <Messenger.h>
 #include <MenuItem.h>
@@ -45,6 +46,8 @@ Archiver* load_archiver(BMessage* metaDataMsg)
 z7Archiver::z7Archiver(BMessage* metaDataMsg)
     : Archiver(metaDataMsg)
 {
+    m_passwordRequired = false;
+
     // Detect 7z binary
     if (GetBinaryPath(m_7zPath, "7za") == true)
         m_error = BZR_DONE;
@@ -69,6 +72,9 @@ status_t z7Archiver::ReadOpen(FILE* fp)
     {
         // skip lines until we see the --------- line
         if (skipIntroLines) {
+            if (!m_passwordRequired && fnmatch("Method = *7zAES*", lineString, 0) == 0)
+                    m_passwordRequired = true;
+
             if (strncmp(lineString, "-------------------", strlen("-------------------")) == 0)
                 skipIntroLines = false;
             continue;
